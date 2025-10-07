@@ -105,8 +105,9 @@ class BIM_Library:
                 # save file paths with forward slashes even on windows
                 pr.SetString("destination", addondir.replace("\\", "/"))
                 libok = True
-        task = FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
-        task.setDocumentName(FreeCAD.ActiveDocument.Name)
+        panel = BIM_Library_TaskPanel(offlinemode=libok)
+        task = FreeCADGui.Control.showDialog(panel)
+        task.setDocumentName(panel.mainDocName)
         task.setAutoCloseOnDeletedDocument(True)
 
 
@@ -554,6 +555,8 @@ class BIM_Library_TaskPanel:
         if hasattr(self, "box") and self.box:
             self.box.off()
         FreeCADGui.Control.closeDialog()
+        if self.previewDocName in FreeCAD.listDocuments():
+            FreeCAD.closeDocument(self.previewDocName)
         FreeCAD.ActiveDocument.recompute()
 
     def insert(self, index=None):
@@ -570,8 +573,6 @@ class BIM_Library_TaskPanel:
                 + "\n"
             )
             return
-        if self.previewDocName in FreeCAD.listDocuments().keys():
-            FreeCAD.closeDocument(self.previewDocName)
         if not index:
             index = self.form.tree.selectedIndexes()
             if not index:

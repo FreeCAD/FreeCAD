@@ -25,6 +25,7 @@
 
 #include <CXX/Extensions.hxx>
 
+#include <Mod/Part/PartGlobal.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
 

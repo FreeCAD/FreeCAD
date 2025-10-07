@@ -202,7 +202,6 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
-
         # Skip inactive operations
         if not PathUtil.activeForOp(obj):
             continue
@@ -321,7 +320,6 @@ def parse(pathobj):
             out += parse(p)
         return out
     else:  # parsing simple path
-
         # groups might contain non-path things like stock.
         if not hasattr(pathobj, "Path"):
             return out
@@ -337,7 +335,6 @@ def parse(pathobj):
         #
         # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
         for c in pathobj.Path.Commands:
-
             outstring = []
             command = c.Name
             outstring.append(command)
@@ -349,6 +346,34 @@ def parse(pathobj):
 
             if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
+
+            # Handle G84/G74 tapping cycles
+            if command in ("G84", "G74") and "F" in c.Parameters:
+                pitch_mm = float(c.Parameters["F"])
+                c.Parameters.pop("F")  # Remove F from output, we'll handle it
+
+                # Get spindle speed (from S param or last known value)
+                spindle_speed = None
+                if "S" in c.Parameters:
+                    spindle_speed = float(c.Parameters["S"])
+                    c.Parameters.pop("S")
+
+                # Convert pitch to inches if needed
+                if UNITS == "G20":  # imperial
+                    pitch = pitch_mm / 25.4
+                else:
+                    pitch = pitch_mm
+
+                # Calculate feed rate
+                if spindle_speed is not None:
+                    feed_rate = pitch * spindle_speed
+                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
+                    outstring.append(
+                        "F" + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
+                    )
+                else:
+                    # No spindle speed found, output pitch as F
+                    outstring.append("F" + format(pitch, precision_string))
 
             # Now add the remaining parameters in order
             for param in params:
@@ -428,8 +453,6 @@ def parse(pathobj):
                 # append the line to the final output
                 for w in outstring:
                     out += w + COMMAND_SPACE
-                # Note: Do *not* strip `out`, since that forces the allocation
-                # of a contiguous string & thus quadratic complexity.
                 out += "\n"
 
         return out

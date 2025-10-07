@@ -23,10 +23,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-#undef _PreComp_
-#endif
-
 #if defined(FC_OS_WIN32)
 #include <windows.h>
 #endif

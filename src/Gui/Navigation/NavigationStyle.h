@@ -189,6 +189,8 @@ public:
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
 
+    bool isDraggerUnderCursor(const SbVec2s pos) const;
+
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
 

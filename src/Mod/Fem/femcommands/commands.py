@@ -156,7 +156,7 @@ class _ClippingPlaneRemoveAll(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ClippingPlaneRemoveAll", "Remove all Clipping Planes"
+            "FEM_ClippingPlaneRemoveAll", "Remove All Clipping Planes"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ClippingPlaneRemoveAll", "Removes all clipping planes"

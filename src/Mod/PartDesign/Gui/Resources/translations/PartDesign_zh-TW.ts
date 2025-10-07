@@ -921,7 +921,7 @@ so that self intersection is avoided.</source>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="514"/>
-      <location filename="../../SketchWorkflow.cpp" line="742"/>
+      <location filename="../../SketchWorkflow.cpp" line="746"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -980,44 +980,6 @@ so that self intersection is avoided.</source>
       <location filename="../../TaskMultiTransformParameters.cpp" line="382"/>
       <source>Scale</source>
       <translation>縮放</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeaturePickDialog</name>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="42"/>
-      <source>Valid</source>
-      <translation>有效</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="43"/>
-      <source>Invalid shape</source>
-      <translation>非有效形狀</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="44"/>
-      <source>No wire in sketch</source>
-      <translation>草圖找不到線段</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="45"/>
-      <source>Sketch already used by other feature</source>
-      <translation>草圖已被其他特徵使用</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="46"/>
-      <source>Sketch belongs to another body feature</source>
-      <translation type="unfinished">Sketch belongs to another body feature</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="48"/>
-      <source>Feature is located after the tip of the body</source>
-      <translation type="unfinished">Feature is located after the tip of the body</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="47"/>
-      <source>Base plane</source>
-      <translation>基準面</translation>
     </message>
   </context>
   <context>
@@ -2251,7 +2213,7 @@ If zero, it is equal to Radius2</translation>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="175"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="182"/>
       <source>Error</source>
       <translation>錯誤</translation>
     </message>
@@ -3186,48 +3148,48 @@ measured along the specified direction</source>
       <translation>錯誤</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>Several sub-elements selected</source>
       <translation>多個次元素被選取</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="776"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="780"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="784"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="788"/>
+      <location filename="../../SketchWorkflow.cpp" line="792"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No support face selected</source>
       <translation>未選取基礎面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No planar support</source>
       <translation>無平面之基礎面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="791"/>
       <source>No valid planes in this document</source>
       <translation>在本文件的非法平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="702"/>
+      <location filename="../../SketchWorkflow.cpp" line="706"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3271,7 +3233,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="707"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -4518,7 +4480,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureExtrude.cpp" line="599"/>
       <location filename="../../../App/FeatureFillet.cpp" line="119"/>
       <location filename="../../../App/FeatureGroove.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2197"/>
       <location filename="../../../App/FeatureLoft.cpp" line="277"/>
       <location filename="../../../App/FeatureLoft.cpp" line="312"/>
       <location filename="../../../App/FeaturePipe.cpp" line="404"/>
@@ -4620,7 +4582,7 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="112"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1904"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1913"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4712,7 +4674,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2529"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2541"/>
       <source>Error: Result is not a solid</source>
       <translation>錯誤：產生形狀不是固體</translation>
     </message>
@@ -4754,73 +4716,78 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>螺紋類型無效</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1944"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1953"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>挖孔錯誤：不支援的長度規格</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1947"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>挖孔錯誤：無效的孔深</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1970"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1979"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>挖孔錯誤：無效斜角</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1991"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2000"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>挖孔錯誤：挖孔直徑太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1995"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2004"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>挖孔錯誤：孔的切割深度必須小於孔的深度</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1999"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2008"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>挖孔錯誤：孔的切割深度必須大於或等於零</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2021"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2030"/>
       <source>Hole error: Invalid countersink</source>
       <translation>挖孔錯誤：無效的埋頭孔</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>挖孔錯誤：無效的鑽尖角度</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
       <source>Hole error: Invalid drill point</source>
       <translation>挖孔錯誤：無效的鑽尖</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2098"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2107"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>挖孔錯誤：無法旋轉草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2102"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2111"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>挖孔錯誤：結果形狀為空</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2112"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
       <source>Error: Adding the thread failed</source>
       <translation>錯誤：添加螺旋失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2163"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <source>Hole error: Finding axis failed</source>
+      <translation type="unfinished">Hole error: Finding axis failed</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2175"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2180"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>布林運算在輪廓邊緣失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2174"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2186"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>布林運算在輪廓邊緣產生了非實體</translation>
     </message>
@@ -4830,23 +4797,23 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>布林運算失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2195"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>無法從草圖建立面。草圖實體的交叉或草圖中存在多個面不允許製作一個沖孔至一個面。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2345"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2357"/>
       <source>Thread type out of range</source>
       <translation>螺紋類型超出範圍</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2348"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2360"/>
       <source>Thread size out of range</source>
       <translation>螺紋尺寸超出範圍</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2504"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2516"/>
       <source>Error: Thread could not be built</source>
       <translation>錯誤：無法建立螺紋</translation>
     </message>

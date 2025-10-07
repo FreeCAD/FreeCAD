@@ -136,7 +136,7 @@
       <translation>Transformer</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2616"/>
+      <location filename="../ViewProviderLink.cpp" line="2676"/>
       <source>Toggle array elements</source>
       <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
@@ -327,26 +327,33 @@
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
-      <source>Store in VarSet...</source>
-      <translation>Enregistrer dans le jeu de variables...</translation>
+      <source>Store the expression in a newly created property in the selected Variable Set.
+The property of this object will refer to the property of the Variable Set.</source>
+      <translation type="unfinished">Store the expression in a newly created property in the selected Variable Set.
+The property of this object will refer to the property of the Variable Set.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="256"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
+      <source>Store in Variable Set...</source>
+      <translation type="unfinished">Store in Variable Set...</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="280"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="284"/>
       <source>Variable Set</source>
       <translation>Jeu de variables</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="297"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="301"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="290"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="294"/>
       <source>Group</source>
       <translation>Groupe</translation>
     </message>
@@ -1708,55 +1715,55 @@ L'élément sera déplacé au sein du niveau hiérarchique.</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="120"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="776"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="778"/>
       <source>Macros</source>
       <translation>Macros</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="466"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="468"/>
       <source>Macro file</source>
       <translation>Fichier de la macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="490"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="882"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1041"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="492"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="884"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1043"/>
       <source>Existing file</source>
       <translation>Fichier existant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="491"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="493"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>« %1 ». Ce fichier existe déjà.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="500"/>
       <source>Cannot create file</source>
       <translation>Impossible de créer le fichier</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="499"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="501"/>
       <source>Creation of file '%1' failed.</source>
       <translation>La création du fichier "%1" a échoué.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="536"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="538"/>
       <source>Delete macro</source>
       <translation>Supprimer la macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="570"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="572"/>
       <source>Do not show again</source>
       <translation>Ne plus afficher ce message</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="571"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="573"/>
       <source>Guided Walkthrough</source>
       <translation>Visite guidée</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="573"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="575"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1766,91 +1773,91 @@ Note: your changes will be applied when you next switch workbenches
 Remarque : vos modifications seront appliquées lorsque vous changerez d'atelier.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="653"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="655"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>Instructions pour la marche à suivre : remplissez les champs manquants (facultatif) puis cliquez sur Ajouter, puis sur Fermer</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="727"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="729"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation>Marche à suivre : sélectionnez une macro dans la liste, cliquez sur la flèche droite (→) puis sur Fermer.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="753"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="755"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation>Marche à suivre : cliquez sur Nouveau, sélectionnez une macro dans la liste, cliquez sur la flèche droite (→) puis sur Fermer.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="862"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="864"/>
       <source>Renaming Macro File</source>
       <translation>Renommer le fichier de la macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="448"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="450"/>
       <source>Read-Only</source>
       <translation>Lecture seule</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="469"/>
       <source>Enter a file name:</source>
       <translation>Entrer un nom de fichier :</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="537"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
       <source>Delete the macro '%1'?</source>
       <translation>Faut-il supprimer la macro « %1 » ?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="628"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="630"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation>Procédure pas à pas, fenêtre de dialogue 1 sur 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="693"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="695"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation>Procédure pas à pas, fenêtre de dialogue 1 sur 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="694"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="696"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation>Procédure pas à pas, fenêtre de dialogue 2 sur 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="863"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1024"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="865"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1026"/>
       <source>Enter new name</source>
       <translation>Entrer un nouveau nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="883"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1042"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1044"/>
       <source>'%1'
  already exists.</source>
       <translation>« %1 » existe déjà.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="887"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="889"/>
       <source>Rename Failed</source>
       <translation>Échec du changement de nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="888"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="890"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Le renommage en « %1 » a échoué. Peut-être s'agit-il d'une erreur de permission de fichier ?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1023"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1025"/>
       <source>Duplicate Macro</source>
       <translation>Dupliquer la macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1047"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1049"/>
       <source>Duplicate Failed</source>
       <translation>Échec de la duplication</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1048"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>La duplication vers « %1 » a échoué. Peut-être s'agit-il d'une erreur de permission de fichier ?</translation>
@@ -2204,37 +2211,37 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="89"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="94"/>
       <source>User-Saved Preference Packs</source>
       <translation>Kits de préférences enregistrés par l'utilisateur</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="93"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="98"/>
       <source>Built-In Preference Packs</source>
       <translation>Kits de préférences intégrés</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="125"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="130"/>
       <source>Toggle visibility of built-in preference pack '%1'</source>
       <translation>Activer/désactiver la visibilité du kit de préférences intégré '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="132"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="137"/>
       <source>Deletes the user-saved preference pack '%1'</source>
       <translation>Supprime le kit de préférences « %1 » enregistré par l'utilisateur.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="142"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="147"/>
       <source>Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</source>
       <translation>Active/désactive l'affichage du kit de préférences de l'extension « %1 » (utiliser le gestionnaire d'extensions pour le supprimer définitivement).</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="155"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="160"/>
       <source>Delete the preference pack named '%1'? This cannot be undone.</source>
       <translation>Faut-il supprimer le kit de préférences nommé « %1 » ? Cette opération ne peut pas être annulée.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="154"/>
+      <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="159"/>
       <source>Delete saved preference pack?</source>
       <translation>Supprimer le kit de préférences enregistré ?</translation>
     </message>
@@ -2890,7 +2897,7 @@ boîte englobante de l'objet 3D affichée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="515"/>
       <source>Size of core datum objects</source>
-      <translation type="unfinished">Size of core datum objects</translation>
+      <translation>Taille des objets du repère</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="518"/>
@@ -4738,71 +4745,76 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
       <translation>État</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="181"/>
+      <location filename="../DocumentRecovery.cpp" line="183"/>
       <source>Start Recovery</source>
       <translation>Démarrer la récupération</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="195"/>
+      <location filename="../DocumentRecovery.cpp" line="199"/>
+      <source>Original file corrupted</source>
+      <translation type="unfinished">Original file corrupted</translation>
+    </message>
+    <message>
+      <location filename="../DocumentRecovery.cpp" line="202"/>
       <source>Not yet recovered</source>
       <translation>Pas encore récupéré</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="267"/>
+      <location filename="../DocumentRecovery.cpp" line="275"/>
       <source>Unknown problem occurred</source>
       <translation>Un problème inconnu s'est produit</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="273"/>
-      <location filename="../DocumentRecovery.cpp" line="292"/>
+      <location filename="../DocumentRecovery.cpp" line="281"/>
+      <location filename="../DocumentRecovery.cpp" line="300"/>
       <source>Failed to recover</source>
       <translation>Impossible de récupérer</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="306"/>
+      <location filename="../DocumentRecovery.cpp" line="314"/>
       <source>Successfully recovered</source>
       <translation>Succès de la récupération</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="344"/>
+      <location filename="../DocumentRecovery.cpp" line="352"/>
       <source>&amp;Finish</source>
       <translation>&amp;Terminer</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="512"/>
-      <location filename="../DocumentRecovery.cpp" line="569"/>
+      <location filename="../DocumentRecovery.cpp" line="610"/>
+      <location filename="../DocumentRecovery.cpp" line="667"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="522"/>
+      <location filename="../DocumentRecovery.cpp" line="620"/>
       <source>Delete the selected transient directories?</source>
       <translation>Faut-il supprimer les répertoires temporaires sélectionnés ?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="523"/>
+      <location filename="../DocumentRecovery.cpp" line="621"/>
       <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
       <translation>Lorsque le répertoire transitoire sélectionné est supprimé, il n'est plus possible de récupérer les fichiers qu'il contenait.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="554"/>
+      <location filename="../DocumentRecovery.cpp" line="652"/>
       <source>Delete all transient directories?</source>
       <translation>Faut-il supprimer tous les répertoires transitoires ?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="555"/>
+      <location filename="../DocumentRecovery.cpp" line="653"/>
       <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
       <translation>Lorsque les répertoires transitoires sont supprimés, il n'est plus possible de récupérer les fichiers qu'ils contenaient.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="521"/>
-      <location filename="../DocumentRecovery.cpp" line="553"/>
+      <location filename="../DocumentRecovery.cpp" line="619"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
       <source>Cleanup</source>
       <translation>Nettoyer</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="569"/>
+      <location filename="../DocumentRecovery.cpp" line="667"/>
       <source>Transient directories deleted.</source>
       <translation>Répertoires temporaires supprimés</translation>
     </message>
@@ -6317,7 +6329,7 @@ Sur la vue de gauche, %1 points ont été sélectionnés, sur la vue de droite, 
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="97"/>
       <source>Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Faire glisser l'écran avec un doigt OU appuyer sur Alt + bouton gauche de la souris. Dans l'atelier Sketcher et d'autres modes d'édition, maintenir également la touche Alt enfoncée.</translation>
     </message>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="99"/>
@@ -6449,83 +6461,113 @@ Sur la vue de gauche, %1 points ont été sélectionnés, sur la vue de droite, 
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="400"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="391"/>
       <source>Edit</source>
       <translation>Éditer</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="411"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="402"/>
       <source>property</source>
       <translation>propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="853"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="854"/>
+      <source>Expand/Collapse Properties</source>
+      <translation type="unfinished">Expand/Collapse Properties</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="856"/>
+      <source>Expand to Default</source>
+      <translation type="unfinished">Expand to Default</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="858"/>
+      <source>Expand All</source>
+      <translation type="unfinished">Expand All</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="860"/>
+      <source>Collapse All</source>
+      <translation type="unfinished">Collapse All</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="866"/>
+      <source>Default Expand</source>
+      <translation type="unfinished">Default Expand</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <source>Auto Expand</source>
+      <translation type="unfinished">Auto Expand</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="872"/>
+      <source>Auto Collapse</source>
+      <translation type="unfinished">Auto Collapse</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="955"/>
       <source>Copy</source>
       <translation>Copier</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="861"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="963"/>
       <source>Add Property</source>
       <translation>Ajouter une propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="971"/>
       <source>Rename Property Group</source>
       <translation>Renommer le groupe de propriétés</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="979"/>
       <source>Rename Property</source>
       <translation>Renommer la propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="878"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="980"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1159"/>
       <source>Edit Property Tooltip</source>
-      <translation type="unfinished">Edit Property Tooltip</translation>
+      <translation>Éditer l'info-bulle de la propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="895"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
       <source>Delete Property</source>
       <translation>Supprimer une propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1047"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
       <source>Tooltip</source>
       <translation>Infobulle</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1073"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1186"/>
       <source>Rename property</source>
       <translation>Renommer la propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="902"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1007"/>
       <source>Show Hidden</source>
       <translation>Afficher les éléments masqués</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="908"/>
-      <source>Auto-Expand</source>
-      <translation/>
-    </message>
-    <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1024"/>
       <source>Expression</source>
       <translation>Expression</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1074"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
       <source>Property name</source>
       <translation>Nom de la propriété</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1098"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1211"/>
       <source>Rename property group</source>
       <translation>Renommer le groupe de propriétés</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1099"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
       <source>Group name:</source>
       <translation>Nom du groupe :</translation>
     </message>
@@ -6546,14 +6588,14 @@ Sur la vue de gauche, %1 points ont été sélectionnés, sur la vue de droite, 
   <context>
     <name>Gui::PropertyView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="89"/>
-      <location filename="../PropertyView.cpp" line="569"/>
+      <location filename="../PropertyView.cpp" line="88"/>
+      <location filename="../PropertyView.cpp" line="567"/>
       <source>View</source>
       <translation>Vue</translation>
     </message>
     <message>
-      <location filename="../PropertyView.cpp" line="95"/>
-      <location filename="../PropertyView.cpp" line="570"/>
+      <location filename="../PropertyView.cpp" line="93"/>
+      <location filename="../PropertyView.cpp" line="568"/>
       <source>Data</source>
       <translation>Données</translation>
     </message>
@@ -7869,63 +7911,49 @@ Consultez la vue rapport pour plus de détails.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="345"/>
+      <location filename="../StartupProcess.cpp" line="344"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Ce système utilise OpenGL %1.%2. FreeCAD nécessite OpenGL 2.0 ou supérieur. Mettre à jour le pilote graphique et/ou la carte graphique si nécessaire.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="354"/>
+      <location filename="../StartupProcess.cpp" line="353"/>
       <source>Invalid OpenGL Version</source>
       <translation>Version d'OpenGL non valide</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="611"/>
-      <source>Welcome to %1 v%2.%3</source>
-      <translation>Bienvenue sur %1 v%2.%3</translation>
-    </message>
-    <message>
-      <location filename="../StartupProcess.cpp" line="612"/>
-      <source>Welcome to %1 v%2.%3
-
-</source>
-      <translation>Bienvenue sur %1 v%2.%3
-
-</translation>
-    </message>
-    <message>
-      <location filename="../StartupProcess.cpp" line="613"/>
-      <source>Configuration data and addons from previous program version found. Migrate the old configuration to this version?</source>
-      <translation>Données de configuration et extensions d'une version précédente du programme trouvées. Migrer l'ancienne configuration vers cette version ?</translation>
-    </message>
-    <message>
-      <location filename="../StartupProcess.cpp" line="660"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="286"/>
       <source>Migrating</source>
       <translation>Migration</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="661"/>
-      <source>Migrating configuration data and addons...</source>
-      <translation>Migration des données de configuration et des extensions...</translation>
-    </message>
-    <message>
-      <location filename="../StartupProcess.cpp" line="672"/>
-      <source>Migration complete. Restarting...</source>
-      <translation>Migration terminée. Redémarrage...</translation>
-    </message>
-    <message>
-      <location filename="../StartupProcess.cpp" line="673"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="344"/>
       <source>Restarting</source>
       <translation>Redémarrage</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="697"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="298"/>
       <source>Migration failed</source>
       <translation>Échec de la migration</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="697"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="269"/>
+      <source>Estimated size of data to copy: %1</source>
+      <translation type="unfinished">Estimated size of data to copy: %1</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="287"/>
+      <source>Migrating configuration data and addons…</source>
+      <translation type="unfinished">Migrating configuration data and addons…</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="299"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation>La migration a échoué. Voir la vue rapport pour plus de détails.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="343"/>
+      <source> → Restarting…</source>
+      <translation type="unfinished"> → Restarting…</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="484"/>
@@ -8547,8 +8575,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Clarifier la sélection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="121"/>
-      <location filename="../ViewProviderLink.cpp" line="2640"/>
+      <location filename="../ViewProviderDragger.cpp" line="129"/>
+      <location filename="../ViewProviderLink.cpp" line="2700"/>
       <source>Transform</source>
       <translation>Paramètres de la transformation</translation>
     </message>
@@ -8583,12 +8611,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Certains documents n'ont pas pu être enregistrés. Faut-il annuler la fermeture ?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="529"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="531"/>
       <source>Delete macro</source>
       <translation>Supprimer la macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="530"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="532"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>La suppression des macros de l'ensemble du système n'est pas autorisée.</translation>
     </message>
@@ -8688,52 +8716,52 @@ Choisissez "Interrompre" pour annuler.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="819"/>
-      <location filename="../ViewProviderLink.cpp" line="2486"/>
+      <location filename="../ViewProviderLink.cpp" line="2546"/>
       <source>Apply to all</source>
       <translation>Appliquer à tous</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2468"/>
+      <location filename="../ViewProviderLink.cpp" line="2528"/>
       <source>Setup Configurable Object</source>
       <translation>Configurer l'objet configurable</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2469"/>
+      <location filename="../ViewProviderLink.cpp" line="2529"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Sélectionne quel objet copier ou exclure lorsque la configuration change. Tous les objets externes liés sont exclus par défaut.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2484"/>
+      <location filename="../ViewProviderLink.cpp" line="2544"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>Sélectionner les objets à copier lorsque la configuration est modifiée</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2487"/>
+      <location filename="../ViewProviderLink.cpp" line="2547"/>
       <source>Applies the setting to all links</source>
       <translation>Applique le paramètre à tous les liens.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2531"/>
+      <location filename="../ViewProviderLink.cpp" line="2591"/>
       <source>Copy on Change</source>
       <translation>Copier lors de la modification</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2532"/>
+      <location filename="../ViewProviderLink.cpp" line="2592"/>
       <source>Enable</source>
       <translation>Activer</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2533"/>
+      <location filename="../ViewProviderLink.cpp" line="2593"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Activer la copie automatique de l'objet lié lorsque sa configuration est modifiée</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2546"/>
+      <location filename="../ViewProviderLink.cpp" line="2606"/>
       <source>Tracking</source>
       <translation>Suivi</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2547"/>
+      <location filename="../ViewProviderLink.cpp" line="2607"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8741,17 +8769,17 @@ Also auto redo the copy if the original linked object is changed.
 Répète également automatiquement la copie si l'objet lié d'origine est modifié.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2566"/>
+      <location filename="../ViewProviderLink.cpp" line="2626"/>
       <source>Disable Copy on Change</source>
       <translation>Désactiver la copie lors de la modification</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2581"/>
+      <location filename="../ViewProviderLink.cpp" line="2641"/>
       <source>Refresh Configurable Object</source>
       <translation>Rafraîchir l'objet configurable</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2582"/>
+      <location filename="../ViewProviderLink.cpp" line="2642"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8760,23 +8788,23 @@ the current copy will be lost.
 Toute modification apportée à la copie en cours sera perdue.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2614"/>
+      <location filename="../ViewProviderLink.cpp" line="2674"/>
       <source>Toggle Array Elements</source>
       <translation>Activer/désactiver les éléments du réseau</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2623"/>
+      <location filename="../ViewProviderLink.cpp" line="2683"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Modifie l'affichage de chaque élément du réseau de liens en tant qu'objet individuel.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2641"/>
+      <location filename="../ViewProviderLink.cpp" line="2701"/>
       <source>Transforms the object at the origin of the placement</source>
       <translation>Transforme l'objet à l'origine de la position.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2651"/>
-      <location filename="../ViewProviderLink.cpp" line="2657"/>
+      <location filename="../ViewProviderLink.cpp" line="2711"/>
+      <location filename="../ViewProviderLink.cpp" line="2717"/>
       <source>Override Colors</source>
       <translation>Remplacer les couleurs</translation>
     </message>
@@ -9336,7 +9364,7 @@ Toute modification apportée à la copie en cours sera perdue.</translation>
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="392"/>
+      <location filename="../DocumentRecovery.cpp" line="404"/>
       <location filename="../MainWindow.cpp" line="2191"/>
       <source>Unnamed</source>
       <translation>Nouveau</translation>
@@ -11271,72 +11299,72 @@ Si cette option est cochée, FreeCAD affichera cet écran de démarrage.</transl
       <translation>Gérer les kits de préférences</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="495"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="497"/>
       <source>Small (%1px)</source>
       <translation>Petit (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="496"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="498"/>
       <source>Medium (%1px)</source>
       <translation>Moyen (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="497"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="499"/>
       <source>Large (%1px)</source>
       <translation>Grand (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="498"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="500"/>
       <source>Extra large (%1px)</source>
       <translation>Très grand (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="502"/>
       <source>Custom (%1px)</source>
       <translation>Personnaliser (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="569"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="571"/>
       <source>Combined</source>
       <translation>Combiné</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="570"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="572"/>
       <source>Independent</source>
       <translation>Indépendant</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="597"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="599"/>
       <source>Preference Pack Name</source>
       <translation>Nom du kit de préférences</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="598"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="600"/>
       <source>Tags</source>
       <translation>Mots-clés</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="635"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="637"/>
       <source>Apply</source>
       <translation>Appliquer</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="648"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="650"/>
       <source>Applies the %1 preference pack</source>
       <translation>Applique le kit de préférences %1.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="711"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="713"/>
       <source>Choose a FreeCAD config file to import</source>
       <translation>Choisir un fichier de configuration de FreeCAD à importer</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="722"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="724"/>
       <source>File exists</source>
       <translation>Le fichier existe</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="723"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="725"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
       <translation>Un kit de préférences portant ce nom existe déjà. Voulez-vous l'écraser ?</translation>
     </message>
@@ -12401,7 +12429,7 @@ sera toujours possible à l'aide de la molette de la souris.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="177"/>
       <source>Custom</source>
-      <translation>Personnalisée</translation>
+      <translation>Personnalisé</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="184"/>
@@ -14300,7 +14328,7 @@ Cela rend le panneau ancré transparent en tout temps.</translation>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="581"/>
+      <location filename="../PropertyView.cpp" line="579"/>
       <source>Property View</source>
       <translation>Vue des propriétés</translation>
     </message>
@@ -14321,43 +14349,43 @@ Cela rend le panneau ancré transparent en tout temps.</translation>
       <translation>Revenir à la dernière valeur calculée (comme une constante)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="343"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="368"/>
       <source> (Warning: unit discarded)</source>
       <translation>(Attention : unité annulée)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="448"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="473"/>
       <source>Invalid property name: %1</source>
       <translation>Nom de propriété invalide : %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="452"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="477"/>
       <source>Unknown object</source>
       <translation>Objet inconnu</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="458"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="825"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="483"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="871"/>
       <source>the name cannot be empty</source>
       <translation>Le nom ne peut pas être vide.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="468"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="493"/>
       <source>%1 is a unit</source>
       <translation>%1 est une unité.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="473"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="498"/>
       <source>%1 is a constant</source>
       <translation>%1 est une constante.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="479"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="504"/>
       <source>%1 already exists</source>
       <translation>%1 existe déjà.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="821"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="867"/>
       <source>Invalid group name: %1</source>
       <translation>Nom de groupe invalide : %1</translation>
     </message>
@@ -14482,12 +14510,12 @@ Cela rend le panneau ancré transparent en tout temps.</translation>
       <translation>Valeur hors plage (%1 en dehors de [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="330"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="355"/>
       <source>Not a number</source>
       <translation>Ce n'est pas un nombre.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="337"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="362"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>Incohérence entre l'unité du résultat et l'unité requise</translation>
     </message>
@@ -14512,6 +14540,79 @@ Cela rend le panneau ancré transparent en tout temps.</translation>
       <location filename="../Selection/SelectionView.cpp" line="1115"/>
       <source>Whole Object</source>
       <translation>Tout l'objet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgVersionMigrator</name>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="17"/>
+      <source>Dialog</source>
+      <translation>Fenêtre de dialogue</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="26"/>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="62"/>
+      <source>TextLabel</source>
+      <translation>Étiquette du texte</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="36"/>
+      <source>Configuration data and addons from a previous program version were found. Migrate the configuration to a new directory for this version?</source>
+      <translation type="unfinished">Configuration data and addons from a previous program version were found. Migrate the configuration to a new directory for this version?</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="49"/>
+      <source>Copying the configuration will ensure that any changes from the new version will not affect the previous installation. Sharing configuration between versions can cause problems and is not recommended.</source>
+      <translation type="unfinished">Copying the configuration will ensure that any changes from the new version will not affect the previous installation. Sharing configuration between versions can cause problems and is not recommended.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="87"/>
+      <source>Help</source>
+      <translation>Aide</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.ui" line="107"/>
+      <source>Copy Configuration (Recommended)</source>
+      <translation type="unfinished">Copy Configuration (Recommended)</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="128"/>
+      <source>Welcome to %1 %2.%3
+
+</source>
+      <translation type="unfinished">Welcome to %1 %2.%3
+
+</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="132"/>
+      <source>Calculating size…</source>
+      <translation type="unfinished">Calculating size…</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="135"/>
+      <source>Share configuration between versions</source>
+      <translation type="unfinished">Share configuration between versions</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="151"/>
+      <source>Share configuration with previous version</source>
+      <translation type="unfinished">Share configuration with previous version</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="152"/>
+      <source>Use a new default configuration</source>
+      <translation type="unfinished">Use a new default configuration</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="296"/>
+      <source>Migration complete</source>
+      <translation type="unfinished">Migration complete</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="329"/>
+      <source>New default configuration created</source>
+      <translation type="unfinished">New default configuration created</translation>
     </message>
   </context>
 </TS>

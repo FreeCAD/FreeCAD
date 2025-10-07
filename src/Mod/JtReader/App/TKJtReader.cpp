@@ -21,7 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 #include <gp_Trsf.hxx>
 
 #include "TKJtReader.h"

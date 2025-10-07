@@ -19,10 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include "ModelUuids.h"
 
 using namespace Materials;

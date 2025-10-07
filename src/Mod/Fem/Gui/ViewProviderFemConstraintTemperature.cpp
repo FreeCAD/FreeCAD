@@ -23,11 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Mod/Fem/App/FemConstraintTemperature.h"
 #include "TaskFemConstraintTemperature.h"
 #include "ViewProviderFemConstraintTemperature.h"

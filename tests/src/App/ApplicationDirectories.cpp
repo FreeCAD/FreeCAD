@@ -52,6 +52,11 @@ public:
     {
         return extractVersionFromConfigMap(config);
     }
+
+    static std::filesystem::path wrapSanitizePath(const std::string& pathAsString)
+    {
+        return sanitizePath(pathAsString);
+    }
 };
 
 class ApplicationDirectoriesTest: public ::testing::Test
@@ -552,16 +557,18 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsNonVersionedInputAppendsCurren
 }
 
 // Pre-existing destination -> throws Base::RuntimeError
-TEST_F(ApplicationDirectoriesTest, migrateAllPathsThrowsIfDestinationAlreadyExists_NonVersioned)
+TEST_F(ApplicationDirectoriesTest, migrateAllPathsIgnoresIfDestinationAlreadyExists_NonVersioned)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
     fs::path base = tempDir() / "exists_case";
     fs::create_directories(base);
-    fs::create_directories(versionedPath(base, 5, 4));  // destination already exists
+    fs::path dest = versionedPath(base, 5, 4);
+    fs::create_directories(dest);  // destination already exists
 
     std::vector<fs::path> inputs {base};
-    EXPECT_THROW(appDirs->migrateAllPaths(inputs), Base::RuntimeError);
+
+    ASSERT_NO_THROW(appDirs->migrateAllPaths(inputs));
 }
 
 // Multiple inputs: one versioned, one non-versioned -> both destinations created
@@ -743,6 +750,25 @@ TEST_F(ApplicationDirectoriesTest, extractVersionNegativeNumbersPassThrough)
     auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
     EXPECT_EQ(maj, -2);
     EXPECT_EQ(min, -7);
+}
+
+
+TEST_F(ApplicationDirectoriesTest, sanitizeRemovesNullCharacterAtEnd)
+{
+    std::string input = std::string("valid_path") + '\0' + "junk_after";
+    std::filesystem::path result = ApplicationDirectoriesTestClass::wrapSanitizePath(input);
+
+    EXPECT_EQ(result.string(), "valid_path");
+    EXPECT_EQ(result.string().find('\0'), std::string::npos);
+}
+
+TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter)
+{
+    std::string input = "clean_path/without_nulls";
+    std::filesystem::path result = ApplicationDirectoriesTestClass::wrapSanitizePath(input);
+
+    EXPECT_EQ(result.string(), input);
+    EXPECT_EQ(result.string().find('\0'), std::string::npos);
 }
 
 /* NOLINTEND(

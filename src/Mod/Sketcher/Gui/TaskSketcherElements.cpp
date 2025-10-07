@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QContextMenuEvent>
 #include <QImage>
 #include <QLineEdit>
@@ -35,7 +33,6 @@
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <limits>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

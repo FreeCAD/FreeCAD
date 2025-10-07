@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <BRepAdaptor_Curve.hxx>
 
@@ -58,7 +57,6 @@ namespace sp = std::placeholders;
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
     : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole Parameters"))
     , observer(new Observer(this, getObject<PartDesign::Hole>()))
-    , isApplying(false)
     , ui(new Ui_TaskHoleParameters)
 {
     // we need a separate container widget to add all controls to
@@ -1088,8 +1086,6 @@ void TaskHoleParameters::apply()
 {
     auto hole = getObject<PartDesign::Hole>();
 
-    isApplying = true;
-
     ui->Diameter->apply();
     ui->HoleCutDiameter->apply();
     ui->HoleCutDepth->apply();
@@ -1153,8 +1149,6 @@ void TaskHoleParameters::apply()
     if (!hole->BaseProfileType.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
     }
-
-    isApplying = false;
 }
 
 void TaskHoleParameters::updateHoleCutLimits(PartDesign::Hole* hole)
@@ -1172,7 +1166,7 @@ void TaskHoleParameters::setupGizmos(ViewProviderHole* vp)
 
     holeDepthGizmo = new LinearGizmo(ui->Depth);
 
-    gizmoContainer = GizmoContainer::createGizmo({holeDepthGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({holeDepthGizmo}, vp);
 
     setGizmoPositions();
 }
@@ -1233,6 +1227,10 @@ void TaskHoleParameters::setGizmoPositions()
     }
 
     auto hole = getObject<PartDesign::Hole>();
+    if (!hole || hole->isError()) {
+        gizmoContainer->visible = false;
+        return;
+    }
     Part::TopoShape profileShape = hole->getProfileShape(
         Part::ShapeOption::NeedSubElement |
         Part::ShapeOption::ResolveLink |

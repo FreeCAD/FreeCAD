@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <algorithm>
-#endif
+
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>

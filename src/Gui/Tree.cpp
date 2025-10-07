@@ -1155,7 +1155,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
     QAction* action = new QAction(tr("Show Description"), this);
     QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
-    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by by editing the 'label2' property."));
+    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by editing the 'label2' property."));
     action->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");

@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Precision.hxx>
 #include <Standard_Real.hxx>
-#endif
+
 #include "Blending/BlendPoint.h"
 #include "Blending/BlendPointPy.h"
 

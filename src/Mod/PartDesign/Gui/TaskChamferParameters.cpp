@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QAction>
 #include <QFontMetrics>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>
@@ -383,7 +379,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
         }
     });
 
-    gizmoContainer = GizmoContainer::createGizmo({
+    gizmoContainer = GizmoContainer::create({
         distanceGizmo, secondDistanceGizmo, angleGizmo
     }, vp);
 
@@ -399,11 +395,12 @@ void TaskChamferParameters::setGizmoPositions()
     }
 
     auto chamfer = getObject<PartDesign::Chamfer>();
-    if (!chamfer) {
+    if (!chamfer || chamfer->isError()) {
         gizmoContainer->visible = false;
         return;
     }
-    auto baseShape = chamfer->getBaseTopoShape();
+
+    PartDesign::TopoShape baseShape = chamfer->getBaseTopoShape(true);
     auto shapes = chamfer->getContinuousEdges(baseShape);
 
     if (shapes.size() == 0) {

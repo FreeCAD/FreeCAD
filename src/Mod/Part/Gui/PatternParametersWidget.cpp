@@ -21,16 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QDebug>
 #include <QTimer>
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QLabel>
 #include <QFormLayout>
-#endif
 
 #include "ui_PatternParametersWidget.h"
 #include "PatternParametersWidget.h"

@@ -591,7 +591,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
 
                 if (thirdParam->isSet) {
                     radius = thirdParam->getValue();
-                    if (radius < Precision::Confusion()) {
+                    if (radius < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
                         return;
                     }
@@ -613,7 +613,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 if (fourthParam->isSet) {
                     onSketchPos.y = fourthParam->getValue();
                 }
-                if (thirdParam->isSet && fourthParam->isSet
+                if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
                     && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
                     unsetOnViewParameter(thirdParam.get());
                     unsetOnViewParameter(fourthParam.get());
@@ -626,7 +626,8 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 if (fifthParam->isSet) {
                     double arcAngle = Base::toRadians(fifthParam->getValue());
-                    if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
+                    if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()
+                        && fifthParam->hasFinishedEditing) {
                         unsetOnViewParameter(fifthParam.get());
                         return;
                     }

@@ -48,6 +48,11 @@ class BIM_ProjectManager:
 
     def Activated(self):
 
+        # only raise the dialog if it is already open
+        if getattr(self, "form", None):
+            self.form.raise_()
+            return
+
         import FreeCADGui
         import ArchBuildingPart
         from PySide import QtGui
@@ -139,6 +144,7 @@ class BIM_ProjectManager:
     def reject(self):
 
         self.form.hide()
+        del self.form
         return True
 
     def accept(self):
@@ -400,7 +406,7 @@ class BIM_ProjectManager:
         if self.form.radioNative3.isChecked():
             from nativeifc import ifc_status
             ifc_status.set_button(True,True)
-        return True
+        return self.reject()
 
     def addGroup(self):
         from PySide import QtCore, QtGui

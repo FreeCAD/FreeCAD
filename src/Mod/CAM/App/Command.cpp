@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cinttypes>
 #include <iomanip>
 #include <boost/algorithm/string.hpp>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <ShapeBuild_ReShape.hxx>
-#endif
+
 
 #include "ShapeFix/ShapeFix_FixSmallSolidPy.h"
 #include "ShapeFix/ShapeFix_FixSmallSolidPy.cpp"

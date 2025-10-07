@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "GeomFormatPy.h"
 #include "GeomFormatPy.cpp"
 

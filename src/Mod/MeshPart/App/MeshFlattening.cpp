@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <map>
 #include <set>
 #include <vector>
@@ -33,7 +31,6 @@
 #include <Standard_Version.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TopLoc_Location.hxx>
-#endif
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"

@@ -145,8 +145,9 @@ protected:
     };
     //@}
 
-private:
     Base::Vector2d prevCursorPosition;
+
+private:
     Base::Vector2d lastControlEnforcedPosition;
 
     int nOnViewParameter = OnViewParametersT::defaultMethodSize();
@@ -178,6 +179,10 @@ private:
 
         bool isVisible(Gui::EditableDatumLabel* ovp) const
         {
+            if (ovp->getFunction() == Gui::EditableDatumLabel::Function::Forced) {
+                return true;
+            }
+
             switch (onViewParameterVisibility) {
 
                 case OnViewParameterVisibility::Hidden:
@@ -664,6 +669,7 @@ protected:
         onViewParameter->isSet = false;
         onViewParameter->hasFinishedEditing = false;
         onViewParameter->setDeactivatedColor();
+        onViewParameter->setLockedAppearance(false);
     }
 
     void setOnViewParameterValue(OnViewParameter index,

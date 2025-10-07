@@ -318,7 +318,6 @@ SET(FemGui_SRCS_Module
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
-    PreCompiled.cpp
     PreCompiled.h
     PropertyFemMeshItem.cpp
     PropertyFemMeshItem.h
@@ -355,12 +354,6 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_Post}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
@@ -385,6 +378,12 @@ SET(FemGuiSymbol_IV
 )
 
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(FemGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     FemGui

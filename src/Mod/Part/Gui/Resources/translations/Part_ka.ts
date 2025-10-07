@@ -5980,7 +5980,7 @@ Continue?</source>
       <translation>მიმაგრების რედაქტორი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="894"/>
+      <location filename="../../ViewProviderExt.cpp" line="896"/>
       <source>Appearance per Face</source>
       <translation>გარეგნობა თითოეული ზედაპირისთვის</translation>
     </message>

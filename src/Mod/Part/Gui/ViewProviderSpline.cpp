@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
 
@@ -43,7 +41,6 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-#endif
 
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>

@@ -53,6 +53,7 @@ class BIM_Views:
 
         vm = findWidget()
         self.allItemsInTree = []
+        self.oldData = [[], []]
         bimviewsbutton = None
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
@@ -191,6 +192,15 @@ class BIM_Views:
         if vm:
             vm.dockLocationChanged.connect(self.onDockLocationChanged)
 
+    def _treeToStringList(self, treeViewItems):
+        "generates a (nested) string list representation of treeViewItems"
+        def _toStringList(itm):
+            children = []
+            for i in range(itm.childCount()):
+                children.append(_toStringList(itm.child(i)))
+            return [itm.toolTip(0), itm.text(0), itm.text(1), children]
+        return [_toStringList(itm) for itm in treeViewItems]
+
     def update(self, retrigger=True):
         "updates the view manager"
 
@@ -198,144 +208,164 @@ class BIM_Views:
         import Draft
 
         vm = findWidget()
-        if vm and FreeCAD.ActiveDocument:
-            if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
-                vm.tree.clear()
-                self.allItemsInTree.clear()
-                treeViewItems = []  # QTreeWidgetItem to Display in tree
-                lvHold = []
-                soloProxyHold = []
-                for obj in FreeCAD.ActiveDocument.Objects:
-                    t = Draft.getType(obj)
-                    if obj and (
-                        t
-                        in [
-                            "Building",
-                            "BuildingPart",
-                            "IfcBuilding",
-                            "IfcBuildingStorey",
-                        ]
-                    ):
-                        if (
-                            t in ["Building", "IfcBuilding"]
-                            or getattr(obj, "IfcType", "") == "Building"
-                        ):
-                            building, _ = getTreeViewItem(obj)
-                            subObjs = obj.Group
-                            # find every levels belongs to the building
-                            for subObj in subObjs:
-                                if Draft.getType(subObj) in [
-                                    "BuildingPart",
-                                    "Building Storey",
-                                    "IfcBuildingStorey",
-                                ]:
-                                    lv, lvH = getTreeViewItem(subObj)
-                                    subSubObjs = subObj.Group
-                                    # find every working plane proxy belongs to the level
-                                    for subSubObj in subSubObjs:
-                                        if (
-                                            Draft.getType(subSubObj)
-                                            == "WorkingPlaneProxy"
-                                        ):
-                                            wp, _ = getTreeViewItem(subSubObj)
-                                            lv.addChild(wp)
-                                    lvHold.append((lv, lvH))
-                            sortLvHold = sorted(lvHold, key=lambda x: x[1])
-                            sortLvItems = [item[0] for item in sortLvHold]
-                            for lvItem in sortLvItems:
-                                building.addChild(lvItem)
-                            treeViewItems.append(building)
-                            lvHold.clear()
-
-                        if (
-                            t in ["Building Storey", "IfcBuildingStorey"]
-                            or getattr(obj, "IfcType", "") == "Building Storey"
+        if vm and vm.isVisible():
+            if FreeCAD.isRestoring() or not FreeCAD.ActiveDocument:
+                if vm.tree.state() != vm.tree.State.EditingState:
+                    self.oldData[0] = []
+                    vm.tree.clear()
+                if vm.viewtree.state() != vm.viewtree.State.EditingState:
+                    self.oldData[1] = []
+                    vm.viewtree.clear()
+            else:
+                if vm.tree.state() != vm.tree.State.EditingState:
+                    treeViewItems = []  # QTreeWidgetItem to Display in tree
+                    lvHold = []
+                    soloProxyHold = []
+                    for obj in FreeCAD.ActiveDocument.Objects:
+                        t = Draft.getType(obj)
+                        if obj and (
+                            t
+                            in [
+                                "Building",
+                                "BuildingPart",
+                                "IfcBuilding",
+                                "IfcBuildingStorey",
+                            ]
                         ):
                             if (
-                                Draft.getType(getParent(obj))
-                                in ["Building", "IfcBuilding"]
-                                or getattr(getParent(obj), "IfcType", "") == "Building"
+                                t in ["Building", "IfcBuilding"]
+                                or getattr(obj, "IfcType", "") == "Building"
+                            ):
+                                building, _ = getTreeViewItem(obj)
+                                subObjs = obj.Group
+                                # find every levels belongs to the building
+                                for subObj in subObjs:
+                                    if Draft.getType(subObj) in [
+                                        "BuildingPart",
+                                        "Building Storey",
+                                        "IfcBuildingStorey",
+                                    ]:
+                                        lv, lvH = getTreeViewItem(subObj)
+                                        subSubObjs = subObj.Group
+                                        # find every working plane proxy belongs to the level
+                                        for subSubObj in subSubObjs:
+                                            if (
+                                                Draft.getType(subSubObj)
+                                                == "WorkingPlaneProxy"
+                                            ):
+                                                wp, _ = getTreeViewItem(subSubObj)
+                                                lv.addChild(wp)
+                                        lvHold.append((lv, lvH))
+                                sortLvHold = sorted(lvHold, key=lambda x: x[1])
+                                sortLvItems = [item[0] for item in sortLvHold]
+                                for lvItem in sortLvItems:
+                                    building.addChild(lvItem)
+                                treeViewItems.append(building)
+                                lvHold.clear()
+
+                            if (
+                                t in ["Building Storey", "IfcBuildingStorey"]
+                                or getattr(obj, "IfcType", "") == "Building Storey"
+                            ):
+                                if (
+                                    Draft.getType(getParent(obj))
+                                    in ["Building", "IfcBuilding"]
+                                    or getattr(getParent(obj), "IfcType", "") == "Building"
+                                ):
+                                    continue
+                                lv, lvH = getTreeViewItem(obj)
+                                subObjs = obj.Group
+                                # find every working plane proxy belongs to the level
+                                for subObj in subObjs:
+                                    if Draft.getType(subObj) == "WorkingPlaneProxy":
+                                        wp, _ = getTreeViewItem(subObj)
+                                        lv.addChild(wp)
+                                lvHold.append((lv, lvH))
+                        if obj and (t == "WorkingPlaneProxy"):
+                            if (
+                                obj.getParent()
+                                and obj.getParent().IfcType == "Building Storey"
                             ):
                                 continue
-                            lv, lvH = getTreeViewItem(obj)
-                            subObjs = obj.Group
-                            # find every working plane proxy belongs to the level
-                            for subObj in subObjs:
-                                if Draft.getType(subObj) == "WorkingPlaneProxy":
-                                    wp, _ = getTreeViewItem(subObj)
-                                    lv.addChild(wp)
-                            lvHold.append((lv, lvH))
-                    if obj and (t == "WorkingPlaneProxy"):
-                        if (
-                            obj.getParent()
-                            and obj.getParent().IfcType == "Building Storey"
-                        ):
-                            continue
-                        wp, _ = getTreeViewItem(obj)
-                        soloProxyHold.append(wp)
-                sortLvHold = sorted(lvHold, key=lambda x: x[1])
-                sortLvItems = [item[0] for item in sortLvHold]
-                treeViewItems = treeViewItems + sortLvItems + soloProxyHold
-                vm.tree.addTopLevelItems(treeViewItems)
+                            wp, _ = getTreeViewItem(obj)
+                            soloProxyHold.append(wp)
+                    sortLvHold = sorted(lvHold, key=lambda x: x[1])
+                    sortLvItems = [item[0] for item in sortLvHold]
+                    treeViewItems = treeViewItems + sortLvItems + soloProxyHold
+                    new = self._treeToStringList(treeViewItems)
+                    if new != self.oldData[0]:
+                        self.oldData[0] = new
+                        vm.tree.clear()
+                        self.allItemsInTree.clear()
+                        vm.tree.addTopLevelItems(treeViewItems)
 
-            if vm.isVisible() and (vm.viewtree.state() != vm.viewtree.State.EditingState):
-                vm.viewtree.clear()
+                if vm.viewtree.state() != vm.viewtree.State.EditingState:
+                    ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
+                    treeViewItems = []
 
-                # add views
-                ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-                views = self.getViews()
-                if views:
-                    top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
-                    top.setIcon(0, ficon)
-                    for v in views:
-                        if hasattr(v, "Label"):
-                            i = QtGui.QTreeWidgetItem([v.Label, ""])
-                            if hasattr(v.ViewObject, "Icon"):
-                                i.setIcon(0, v.ViewObject.Icon)
-                            i.setToolTip(0, v.Name)
+                    views = self.getViews()
+                    if views:
+                        top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
+                        top.setIcon(0, ficon)
+                        for v in views:
+                            if hasattr(v, "Label"):
+                                i = QtGui.QTreeWidgetItem([v.Label, ""])
+                                if hasattr(v.ViewObject, "Icon"):
+                                    i.setIcon(0, v.ViewObject.Icon)
+                                i.setToolTip(0, v.Name)
+                                top.addChild(i)
+                        treeViewItems.append(top)
+
+                    pages = self.getPages()
+                    if pages:
+                        top = QtGui.QTreeWidgetItem([translate("BIM","Sheets"), ""])
+                        top.setIcon(0, ficon)
+                        for p in pages:
+                            i = QtGui.QTreeWidgetItem([p.Label, ""])
+                            if hasattr(p.ViewObject, "Icon"):
+                                    i.setIcon(0, p.ViewObject.Icon)
+                            i.setToolTip(0, p.Name)
                             top.addChild(i)
-                    vm.viewtree.addTopLevelItem(top)
+                        treeViewItems.append(top)
 
-                # add pages
-                pages = self.getPages()
-                if pages:
-                    top = QtGui.QTreeWidgetItem([translate("BIM","Sheets"), ""])
-                    top.setIcon(0, ficon)
-                    for p in pages:
-                        i = QtGui.QTreeWidgetItem([p.Label, ""])
-                        if hasattr(p.ViewObject, "Icon"):
-                                i.setIcon(0, p.ViewObject.Icon)
-                        i.setToolTip(0, p.Name)
-                        top.addChild(i)
-                    vm.viewtree.addTopLevelItem(top)
+                    new = self._treeToStringList(treeViewItems)
+                    if new != self.oldData[1]:
+                        self.oldData[1] = new
+                        vm.viewtree.clear()
+                        vm.viewtree.addTopLevelItems(treeViewItems)
 
+            # We reuse the variable later on in "Isolate", to not traverse the tree once
+            # again
+            self.allItemsInTree = getAllItemsInTree(vm.tree)
+            allItemsInTrees = self.allItemsInTree + getAllItemsInTree(vm.viewtree)
+
+            if allItemsInTrees:
                 # set TreeView Item selected if obj is selected
-                bold = QtGui.QFont()
-                bold.setBold(True)
                 objSelected = FreeCADGui.Selection.getSelection()
-                objNameSelected = [obj.Label for obj in objSelected]
+                objNameSelected = [obj.Name for obj in objSelected]
                 objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
                 if not objActive:
                     objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-                tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
-                activeColor = tparam.GetUnsigned("TreeActiveColor",0)
 
-                # We reuse the variable later on in "Isolate", to not traverse the tree once
-                # again
-                self.allItemsInTree = getAllItemsInTree(vm.tree)
-                allItemsInTrees = self.allItemsInTree + getAllItemsInTree(vm.viewtree)
-
+                default_background = allItemsInTrees[0].background(1)
+                default_font = allItemsInTrees[0].font(1)
                 for item in allItemsInTrees:
-                    if item.text(0) in objNameSelected:
-                        item.setSelected(True)
+                    item.setSelected(item.toolTip(0) in objNameSelected)
                     if objActive and item.toolTip(0) == objActive.Name:
+                        tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
+                        activeColor = tparam.GetUnsigned("TreeActiveColor",0)
                         if activeColor:
                             r = ((activeColor >> 24) & 0xFF) / 255.0
                             g = ((activeColor >> 16) & 0xFF) / 255.0
                             b = ((activeColor >> 8) & 0xFF) / 255.0
                             activeColor = QtGui.QColor.fromRgbF(r, g, b)
                             item.setBackground(0, QtGui.QBrush(activeColor, QtCore.Qt.SolidPattern))
+                            bold = QtGui.QFont()
+                            bold.setBold(True)
                             item.setFont(0, bold)
+                    else:
+                        item.setBackground(0, default_background)
+                        item.setFont(0, default_font)
 
         if retrigger:
             QtCore.QTimer.singleShot(UPDATEINTERVAL, self.update)

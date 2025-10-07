@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGuiApplication>
 # include <QMouseEvent>
-#endif
 
 #include "QGVNavStyleSolidWorks.h"
 #include "QGVPage.h"

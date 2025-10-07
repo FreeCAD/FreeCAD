@@ -10,7 +10,6 @@ set(Spreadsheet_SRCS
     Cell.cpp
     Cell.h
     DisplayUnit.h
-    PreCompiled.cpp
     PreCompiled.h
     PropertySheet.cpp
     PropertySheet.h
@@ -40,13 +39,13 @@ generate_from_py(PropertySheet)
 generate_from_py(PropertyColumnWidths)
 generate_from_py(PropertyRowHeights)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Spreadsheet_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Spreadsheet PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Spreadsheet PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     Spreadsheet

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef WEB_APP_PRECOMPILED_H
+#define WEB_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <stdexcept>
@@ -37,7 +35,5 @@
 // Qt
 #include <QCoreApplication>
 #include <QTcpSocket>
-
-#endif  //_PreComp_
 
 #endif

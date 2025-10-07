@@ -68,7 +68,10 @@ class _TaskPanel:
         # task panel, may be deactivate write and run button.
         self.fea = ccx(solver_object)
         self.fea.setup_working_dir()
-        self.fea.setup_ccx()
+        try:
+            self.fea.setup_ccx()
+        except FileNotFoundError as e:
+            FreeCAD.Console.PrintWarning(e.args[0])
 
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()

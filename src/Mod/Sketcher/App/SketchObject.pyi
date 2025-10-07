@@ -465,6 +465,12 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setVisibility(self) -> None:
+        """
+        Set the visibility of a constraint
+        """
+        ...
+
     def getVirtualSpace(self) -> bool:
         """
         Get the VirtualSpace status of a constraint

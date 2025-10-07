@@ -922,7 +922,7 @@ False = engrenage planétaire</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="514"/>
-      <location filename="../../SketchWorkflow.cpp" line="742"/>
+      <location filename="../../SketchWorkflow.cpp" line="746"/>
       <source>New Sketch</source>
       <translation>Créer une esquisse</translation>
     </message>
@@ -981,44 +981,6 @@ False = engrenage planétaire</translation>
       <location filename="../../TaskMultiTransformParameters.cpp" line="382"/>
       <source>Scale</source>
       <translation>Échelle</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeaturePickDialog</name>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="42"/>
-      <source>Valid</source>
-      <translation>Valide</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="43"/>
-      <source>Invalid shape</source>
-      <translation>Forme non valide</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="44"/>
-      <source>No wire in sketch</source>
-      <translation>Aucun fil dans l'esquisse</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="45"/>
-      <source>Sketch already used by other feature</source>
-      <translation>Esquisse déjà utilisée par une autre fonction</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="46"/>
-      <source>Sketch belongs to another body feature</source>
-      <translation>L'esquisse appartient à une autre fonction du corps.</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="48"/>
-      <source>Feature is located after the tip of the body</source>
-      <translation>La fonction est située après la fonction résultante du corps.</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="47"/>
-      <source>Base plane</source>
-      <translation>Plan de base</translation>
     </message>
   </context>
   <context>
@@ -2250,7 +2212,7 @@ S'il est égal à zéro, il est égal à Radius2.</translation>
       <translation>Plan</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="175"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="182"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -3185,48 +3147,48 @@ measured along the specified direction</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>Several sub-elements selected</source>
       <translation>Plusieurs sous-éléments sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="776"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Sélectionnez une seule face comme support pour une esquisse !</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="780"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Sélectionnez une face comme support pour une esquisse !</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="784"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Il est nécessaire d'avoir d'une face plane comme support pour une esquisse !</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="788"/>
+      <location filename="../../SketchWorkflow.cpp" line="792"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Il faut d'abord créer un plan ou sélectionner une face où placer l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No support face selected</source>
       <translation>Aucune face de support sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No planar support</source>
       <translation>Aucun plan de support</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="791"/>
       <source>No valid planes in this document</source>
       <translation>Pas de plan valide dans le document</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="702"/>
+      <location filename="../../SketchWorkflow.cpp" line="706"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3270,7 +3232,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="707"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -4511,7 +4473,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureExtrude.cpp" line="599"/>
       <location filename="../../../App/FeatureFillet.cpp" line="119"/>
       <location filename="../../../App/FeatureGroove.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2197"/>
       <location filename="../../../App/FeatureLoft.cpp" line="277"/>
       <location filename="../../../App/FeatureLoft.cpp" line="312"/>
       <location filename="../../../App/FeaturePipe.cpp" line="404"/>
@@ -4613,7 +4575,7 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="112"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1904"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1913"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4705,7 +4667,7 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2529"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2541"/>
       <source>Error: Result is not a solid</source>
       <translation>Erreur : le résultat n'est pas un solide.</translation>
     </message>
@@ -4747,73 +4709,78 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Le type de filetage est invalide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1944"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1953"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Erreur sur le trou : la spécification de la longueur n'est pas prise en charge.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1947"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Erreur sur le trou : la profondeur du trou n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1970"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1979"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Erreur sur le trou : l'angle du cône n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1991"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2000"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Erreur sur le trou : le diamètre de découpe du trou est trop petit.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1995"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2004"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Erreur sur le trou : la profondeur de découpe du trou doit être inférieure à la profondeur du trou.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1999"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2008"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Erreur sur le trou : la profondeur de découpe du trou doit être supérieure ou égale à zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2021"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2030"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Erreur sur le trou : le fraisage n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Erreur sur le trou : l'angle de la pointe du perçage n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Erreur sur le trou : la pointe du perçage n'est pas valide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2098"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2107"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Erreur sur le trou : impossible de faire tourner l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2102"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2111"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Erreur sur le trou : la forme résultante est vide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2112"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
       <source>Error: Adding the thread failed</source>
       <translation>Erreur : l'ajout du filetage a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2163"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <source>Hole error: Finding axis failed</source>
+      <translation type="unfinished">Hole error: Finding axis failed</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2175"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2180"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>L'opération booléenne a échoué sur le profil de l'arête.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2174"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2186"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>L'opération booléenne a produit des éléments non solides sur le profil de l'arête.</translation>
     </message>
@@ -4823,24 +4790,24 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>L'opération booléenne a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2195"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
 L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'est pas autorisée pour créer une cavité jusqu'à une face.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2345"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2357"/>
       <source>Thread type out of range</source>
       <translation>Type de filetage en dehors de la gamme</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2348"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2360"/>
       <source>Thread size out of range</source>
       <translation>Taille du filetage en dehors de la plage</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2504"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2516"/>
       <source>Error: Thread could not be built</source>
       <translation>Erreur : le filetage n'a pas pu être construit.</translation>
     </message>

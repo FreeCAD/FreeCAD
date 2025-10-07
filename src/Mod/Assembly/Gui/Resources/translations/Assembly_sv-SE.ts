@@ -356,59 +356,59 @@
       <translation>Länk inte</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="483"/>
+      <location filename="../../../CommandCreateSimulation.py" line="490"/>
       <source>Enter your formula...</source>
       <translation>Ange din formel...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <location filename="../../../CommandCreateSimulation.py" line="543"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>I versaler finns variabler som du måste ersätta med faktiska värden. Mer information om varje exempel finns i dess verktygstips.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="539"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Linjär: C + VEL*tid</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Kvadratisk: C + VEL*tid + ACC*tid^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmonisk: C + AMP*sin(VEL*tid - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Exponentiell: C*exp(tid/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="553"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Smidigt steg: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(tid - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="560"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(tid - T1)) - arctan(SLOPE*(tid - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="567"/>
+      <location filename="../../../CommandCreateSimulation.py" line="574"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(tid - T1)) - arctan(1000*(tid - T2))))*(((H2 - H1)/(T2 - T1))*(tid - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="584"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C är en konstant offset.
 VEL är en hastighet eller lutning eller gradient för den räta linjen.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="585"/>
+      <location filename="../../../CommandCreateSimulation.py" line="592"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -417,7 +417,7 @@ VEL är hastigheten eller lutningen eller gradienten för den räta linjen.
 ACC är accelerationen eller koefficienten av andra ordningen. Funktionen är en parabel.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="594"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -428,14 +428,14 @@ VEL är vinkelhastigheten i radianer per sekund.
 PHASE är sinusvågens fas.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="601"/>
+      <location filename="../../../CommandCreateSimulation.py" line="608"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C är en konstant.
 TIMEC är tidskonstanten för den exponentiella funktionen.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="609"/>
+      <location filename="../../../CommandCreateSimulation.py" line="616"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -444,7 +444,7 @@ L2 är stegnivån efter tiden = T0.
 SLOPE definierar brantheten i övergången mellan L1 och L2 vid tiden = T0. Högre värden ger skarpare hörnsteg. SLOPE = 1000 eller högre är lämpliga.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="618"/>
+      <location filename="../../../CommandCreateSimulation.py" line="625"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,7 +455,7 @@ T2 är slutet på impulsen.
 SLOPE definierar brantheten i övergången mellan 0 och H vid tiden = T1 och T2. Högre värden ger skarpare hörnimpulser. SLOPE = 1000 eller högre är lämpliga.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="629"/>
+      <location filename="../../../CommandCreateSimulation.py" line="636"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -470,13 +470,13 @@ H2 är höjden vid T2 i slutet av rampen.
 SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid = T1 respektive T2. Högre värden ger skarpare hörnimpulser. SLOPE = 1000 eller högre är lämpliga.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="667"/>
-      <location filename="../../../CommandCreateSimulation.py" line="684"/>
+      <location filename="../../../CommandCreateSimulation.py" line="674"/>
+      <location filename="../../../CommandCreateSimulation.py" line="691"/>
       <source>Help</source>
       <translation>Hjälp</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="682"/>
+      <location filename="../../../CommandCreateSimulation.py" line="689"/>
       <source>Hide help</source>
       <translation>Dölj hjälp</translation>
     </message>
@@ -894,53 +894,53 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="997"/>
       <source>Move part</source>
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1331"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1348"/>
       <source>Empty Assembly</source>
       <translation>Tomt montage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1352"/>
       <source>Over-constrained:</source>
       <translation>Överbelastad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1359"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1365"/>
       <source>Redundant joints:</source>
       <translation>Redundanta fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1372"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1378"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1384"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1386"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -948,7 +948,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1390"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -1109,7 +1109,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="495"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="511"/>
       <source>Joints</source>
       <translation>Fogar</translation>
     </message>

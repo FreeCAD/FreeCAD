@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef PART_DESIGN_APP_PRECOMPILED_H
+#define PART_DESIGN_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // stl
 #include <limits>
@@ -33,6 +31,5 @@
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-#endif // _PreComp_
 #endif
 

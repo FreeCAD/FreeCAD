@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # include <array>
 # include <cmath>
 # include <cstdlib>
@@ -158,7 +157,6 @@
 
 # include <boost/algorithm/string/predicate.hpp>
 # include <boost/core/ignore_unused.hpp>
-#endif // _PreComp_
 
 #include <App/Material.h>
 #include <App/ElementNamingUtils.h>

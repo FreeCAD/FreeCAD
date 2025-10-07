@@ -71,7 +71,11 @@ class BIM_Material:
 
     def Activated(self):
 
-        self.dlg = None
+        # only raise the dialog if it is already open
+        if getattr(self, "dlg", None):
+            self.dlg.raise_()
+            return
+
         self.dlg = QtGui.QDialog()
         self.dlg.objects = [
             obj
@@ -190,6 +194,7 @@ class BIM_Material:
             context4.triggered.connect(self.onDelete)
 
             # other signal/slots to connect
+            self.dlg.rejected.connect(self.onReject)
             matList.customContextMenuRequested.connect(self.onRightClick)
             matList.itemDoubleClicked.connect(self.onAccept)
             matList.itemChanged.connect(self.onEndRename)
@@ -199,7 +204,7 @@ class BIM_Material:
 
         else:
             # no material in the document
-            self.dlg = None
+            self.onReject()
             FreeCADGui.runCommand("Arch_Material")
 
     def onRightClick(self, pos):
@@ -425,14 +430,12 @@ class BIM_Material:
                         self.rescan()
 
     def onCreate(self):
-        if self.dlg:
-            self.dlg.hide()
-            FreeCADGui.runCommand("Arch_Material")
+        self.onReject()
+        FreeCADGui.runCommand("Arch_Material")
 
     def onMulti(self):
-        if self.dlg:
-            self.dlg.hide()
-            FreeCADGui.runCommand("Arch_MultiMaterial")
+        self.onReject()
+        FreeCADGui.runCommand("Arch_MultiMaterial")
 
     def onAccept(self, item=None):
         if self.dlg:
@@ -453,13 +456,14 @@ class BIM_Material:
             p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
             p.SetInt("BimMaterialDialogWidth", self.dlg.width())
             p.SetInt("BimMaterialDialogHeight", self.dlg.height())
-            from draftutils import todo
-
-            todo.ToDo.delay(self.dlg.hide, None)
+        from DraftGui import todo
+        # delay required for matList.itemDoubleClicked action
+        todo.delay(self.onReject, None)
 
     def onReject(self):
         if self.dlg:
             self.dlg.hide()
+            self.dlg = None
 
     def onUpArrow(self):
         if self.dlg:

@@ -103,8 +103,13 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","Nosing","Steps",QT_TRANSLATE_NOOP("App::Property","The size of the nosing"), locked=True)
         if not "TreadThickness" in pl:
             obj.addProperty("App::PropertyLength","TreadThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the treads"), locked=True)
-        if not "BlondelRatio" in pl:
-            obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"), locked=True)
+        if not ("BlondelRatio" in pl and obj.getTypeIdOfProperty('BlondelRatio') == 'App::PropertyLength'):
+            if "BlondelRatio" in pl:
+                obj.setPropertyStatus("BlondelRatio", "-LockDynamic")
+                obj.removeProperty("BlondelRatio")
+            # Change from unitless float to Length
+            #obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"), locked=True)
+            obj.addProperty("App::PropertyLength","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"), locked=True)
             obj.setEditorMode("BlondelRatio",1)
 
         if not "RiserThickness" in pl:
@@ -184,9 +189,12 @@ class _Stairs(ArchComponent.Component):
         if not "Landings" in pl:
             obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"), locked=True)
             obj.Landings = ["None","At center","At each corner"]
-        if not "Winders" in pl:
-            obj.addProperty("App::PropertyEnumeration","Winders","Structure",QT_TRANSLATE_NOOP("App::Property","The type of winders in these stairs"), locked=True)
-            obj.Winders = ["None","All","Corners strict","Corners relaxed"]
+
+        # Not implemented yet, remarked out at the moment
+        #if not "Winders" in pl:
+        #    obj.addProperty("App::PropertyEnumeration","Winders","Structure",QT_TRANSLATE_NOOP("App::Property","The type of winders in these stairs"), locked=True)
+        #    obj.Winders = ["None","All","Corners strict","Corners relaxed"]
+
         if not "Structure" in pl:
             obj.addProperty("App::PropertyEnumeration","Structure","Structure",QT_TRANSLATE_NOOP("App::Property","The type of structure of these stairs"), locked=True)
             obj.Structure = ["None","Massive","One stringer","Two stringers"]
@@ -345,7 +353,7 @@ class _Stairs(ArchComponent.Component):
 
         self.structures = []
         pl = obj.Placement
-        landings = 0 # TODO Any use? 2018.7.15
+        landings = 0
         base = None
         baseProxy = None
 
@@ -414,6 +422,8 @@ class _Stairs(ArchComponent.Component):
 
         # special case NumberOfSteps = 1 : multi-edges landing
         # TODO to Support individual width, height etc. for each flight/ landing
+
+        # TODO 2025.9.21: Fix - obj.Height.Value can be 0 if edge is inclined
         if (not base) and obj.Width.Value and obj.Height.Value and \
                 (obj.NumberOfSteps > 0):
             # Check if there is obj.Base and its validity to proceed
@@ -496,31 +506,36 @@ class _Stairs(ArchComponent.Component):
                     self.makeMultiEdgesLanding(obj,edge)
 
         steps = risers = None
-        if self.steps:
-            steps = self.steps
-        elif self.pseudosteps:
-            steps = self.pseudosteps
-        if self.risers:
-            risers = self.risers
-        elif self.pseudorisers:
-            risers = self.pseudorisers
+        # TODO 2025.9.25: 'steps'/'risers' not used, remarked out at the moment
+        #if self.steps:
+        #    steps = self.steps
+        #elif self.pseudosteps:
+        #    steps = self.pseudosteps
+        #if self.risers:
+        #    risers = self.risers
+        #elif self.pseudorisers:
+        #    risers = self.pseudorisers
 
         if self.structures or self.steps or self.risers:
             base = Part.makeCompound(self.structures + self.steps + self.risers)
+
+        # TODO 2025.9.25: Review here, to include self.pseudorisers?
         elif self.pseudosteps:
             shape = Part.makeCompound(self.pseudosteps)
             obj.Shape = shape
             obj.Placement = pl
             return
             # TODO No Railing etc?
+            # TODO 2025.9.25: Review here, no processSubShapes() etc.
+
         elif base:  # i.e. obj.Base has Shape e.g. it is another Stairs
+
             pass
         else:
             #base = None
             obj.Shape = Part.Shape()
             # TODO Clear Railings also
             # return ?
-
 
 
         base = self.processSubShapes(obj,base,pl)
@@ -578,20 +593,7 @@ class _Stairs(ArchComponent.Component):
                 print (" No railWireL created ")
 
         # compute step data
-        #if obj.NumberOfSteps > 1:
-        if False: # TODO Fix this - BlondelRatio is not computed
-            l = obj.Length.Value
-            h = obj.Height.Value
-            if obj.Base:
-                if hasattr(obj.Base,'Shape'):
-                    l = obj.Base.Shape.Length
-                    if obj.Base.Shape.BoundBox.ZLength:
-                        h = obj.Base.Shape.BoundBox.ZLength
-            if obj.LandingDepth:
-                obj.TreadDepth = float(l-(landings*obj.LandingDepth.Value))/(obj.NumberOfSteps-(1+landings))
-            else:
-                obj.TreadDepth = float(l-(landings*obj.Width.Value))/(obj.NumberOfSteps-(1+landings))
-            obj.RiserHeight = float(h)/obj.NumberOfSteps
+        if obj.NumberOfSteps > 1:
             obj.BlondelRatio = obj.RiserHeight.Value*2+obj.TreadDepth.Value
 
 
@@ -1500,6 +1502,8 @@ class _Stairs(ArchComponent.Component):
         # setup vLength (tread length(depth) ) : check treadDepthEnforce
         if treadDepthEnforce and treadDepthEnforce != 'Auto':
             vLength = DraftVecUtils.scaleTo(v_proj,treadDepthEnforce)
+            obj.TreadDepth = treadDepthEnforce
+
         elif treadDepthEnforce == 'Auto' or obj.TreadDepthEnforce == 0:  #elif treadDepth is None and ...
             # check landings
             if hasLanding:
@@ -1516,8 +1520,7 @@ class _Stairs(ArchComponent.Component):
             else:
                 reslength = v_proj.Length
                 treadDepth = reslength/(numOfSteps-1)
-            if treadDepthEnforce != 'Auto':
-                obj.TreadDepth = treadDepth
+            obj.TreadDepth = treadDepth
             vLength = DraftVecUtils.scaleTo(v_proj,treadDepth)
         else:  # if obj.TreadDepthEnforce
             obj.TreadDepth = obj.TreadDepthEnforce
@@ -1530,6 +1533,8 @@ class _Stairs(ArchComponent.Component):
         if riserHeightEnforce and riserHeightEnforce != 'Auto':
             h = riserHeightEnforce * numOfSteps
             hstep = riserHeight
+            obj.RiserHeight = hstep
+
         #if obj.RiserHeightEnforce == 0:
         elif riserHeightEnforce == 'Auto' or obj.RiserHeightEnforce == 0:  # elif riserHeightEnforce is None and ...
             if round(v.z,Draft.precision()) != 0:
@@ -1537,8 +1542,8 @@ class _Stairs(ArchComponent.Component):
             else:
                 h = height
             hstep = h/numOfSteps
-            if riserHeightEnforce != 'Auto':
-                obj.RiserHeight = hstep
+            obj.RiserHeight = hstep
+
         else:  # if obj.RiserHeightEnforce
             #h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps)
             h = obj.RiserHeightEnforce.Value * numOfSteps

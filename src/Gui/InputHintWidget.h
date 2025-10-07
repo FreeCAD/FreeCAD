@@ -24,16 +24,16 @@
 #ifndef INPUTHINTWIDGET_H
 #define INPUTHINTWIDGET_H
 
-#include <QLabel>
 #include <optional>
 
 #include <FCGlobal.h>
 
+#include "StatusBarLabel.h"
 #include "InputHint.h"
 
 namespace Gui
 {
-class GuiExport InputHintWidget : public QLabel
+class GuiExport InputHintWidget : public StatusBarLabel
 {
     Q_OBJECT
 

@@ -901,7 +901,7 @@
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Poravnaj XZ ravan tako da prođe kroz tri temena; X osa će proći kroz prve dve tačke.</translation>
+      <translation>Poravnaj XZ ravan tako da prođe kroz 3 temena; X osa će proći kroz prve dve tačke.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
@@ -4693,7 +4693,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="419"/>
       <source>Select at least 2 faces</source>
-      <translation>Izaberi najmanje dve stranice</translation>
+      <translation>Izaberi najmanje 2 stranice</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="480"/>
@@ -5982,7 +5982,7 @@ Da li želiš da nastaviš?</translation>
       <translation>Uređivač pridruživanja</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="894"/>
+      <location filename="../../ViewProviderExt.cpp" line="896"/>
       <source>Appearance per Face</source>
       <translation>Ofarbaj pojedinačne stranice</translation>
     </message>
@@ -7064,7 +7064,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="208"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Ne prikazuj više ovaj dijalog</translation>
     </message>
   </context>
   <context>
@@ -7072,7 +7072,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Ne prikazuj više ovaj dijalog</translation>
     </message>
   </context>
   <context>

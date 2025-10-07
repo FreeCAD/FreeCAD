@@ -20,9 +20,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -32,7 +29,6 @@
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
 #include <gp_Pnt.hxx>
-#endif
 
 #include <BRep_Builder.hxx>
 #include <TopoDS_Compound.hxx>
@@ -375,19 +371,27 @@ void TaskPatternParameters::apply()
 
     FCMD_OBJ_CMD(pattern, "SpacingPattern = " << parametersWidget->getSpacingPatternsAsString());
 
-    if (!parametersWidget2) {
-        return;
+    if (parametersWidget2) {
+        parametersWidget2->getAxis(obj, dirs);
+        direction = buildLinkSingleSubPythonStr(obj, dirs);
+
+        FCMD_OBJ_CMD(pattern, "Direction2 = " << direction.c_str());
+        FCMD_OBJ_CMD(pattern, "Reversed2 = " << parametersWidget2->getReverse());
+        FCMD_OBJ_CMD(pattern, "Mode2 = " << parametersWidget2->getMode());
+        parametersWidget2->applyQuantitySpinboxes();
+
+        FCMD_OBJ_CMD(pattern,
+                     "SpacingPattern2 = " << parametersWidget2->getSpacingPatternsAsString());
     }
 
-    parametersWidget2->getAxis(obj, dirs);
-    direction = buildLinkSingleSubPythonStr(obj, dirs);
-
-    FCMD_OBJ_CMD(pattern, "Direction2 = " << direction.c_str());
-    FCMD_OBJ_CMD(pattern, "Reversed2 = " << parametersWidget2->getReverse());
-    FCMD_OBJ_CMD(pattern, "Mode2 = " << parametersWidget2->getMode());
-    parametersWidget2->applyQuantitySpinboxes();
-
-    FCMD_OBJ_CMD(pattern, "SpacingPattern2 = " << parametersWidget2->getSpacingPatternsAsString());
+    // The user may have changed a value and immediately hit 'OK' or Enter.
+    // This triggers accept() before the update timer for the 3D view has a
+    // chance to fire. If the timer is active, it means a recompute is
+    // pending.
+    if (updateViewTimer && updateViewTimer->isActive()) {
+        updateViewTimer->stop();
+        recomputeFeature();
+    }
 }
 
 void TaskPatternParameters::updateSpacingLabels()
@@ -526,7 +530,3 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(
 }
 
 #include "moc_TaskPatternParameters.cpp"
-
-
-
-

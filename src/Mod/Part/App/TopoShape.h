@@ -497,7 +497,7 @@ public:
     /// Checks whether the shape is a planar face
     bool isPlanar(double tol = 1.0e-7) const;   // NOLINT
     /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
-    bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
+    bool isLinearEdge() const;
     /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
     bool isPlanarFace(double tol=1e-7) const;   // NOLINT
     //@}

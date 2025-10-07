@@ -26,8 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cinttypes>
 #include <cmath>
@@ -48,5 +46,4 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 
-#endif  // _PreComp_
 #endif  // ASSEMBLY_PRECOMPILED_H

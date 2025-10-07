@@ -5939,7 +5939,7 @@ Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="894"/>
+        <location filename="../../ViewProviderExt.cpp" line="896"/>
         <source>Appearance per Face</source>
         <translation type="unfinished"></translation>
     </message>

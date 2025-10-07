@@ -47,3 +47,33 @@ def format_value(value: FreeCAD.Units.Quantity | int | float | None, precision: 
             return value.getUserPreferred()[0]
         return value.UserString
     return str(value)
+
+
+def is_imperial_pitch(pitch_mm, tol=1e-6):
+    """
+    Classify a pitch in mm as imperial vs metric.
+    Rule:
+        - If pitch_mm is ~2 decimal places clean -> metric,
+        unless it corresponds to an exact whole-number TPI.
+        - Otherwise, treat as imperial.
+    """
+    import math
+
+    try:
+        mm = float(pitch_mm)
+    except Exception:
+        return False
+    if mm <= 0:
+        return False
+
+    # Check if it's "two-decimal clean"
+    two_dec_clean = abs(mm - round(mm, 2)) <= tol
+
+    # Compute TPI
+    tpi = 25.4 / mm
+    whole_tpi = round(tpi)
+    is_whole_tpi = math.isclose(tpi, whole_tpi, abs_tol=1e-6)
+
+    if two_dec_clean and not is_whole_tpi:
+        return False  # metric
+    return True  # imperial

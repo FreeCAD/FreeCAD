@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <gp_Trsf.hxx>
@@ -32,7 +30,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
-#endif
+
 
 #include <boost_regex.hpp>
 
@@ -574,7 +572,7 @@ private:
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
-        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+        if (DrawView::isProjGroupItem(dvp)) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
             TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
             if (dpg) {
@@ -732,7 +730,7 @@ private:
                         }
                         double grandParentX = 0.0;
                         double grandParentY = 0.0;
-                        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+                        if (DrawView::isProjGroupItem(dvp)) {
                             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
                             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
                             if (!dpg) {

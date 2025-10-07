@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>

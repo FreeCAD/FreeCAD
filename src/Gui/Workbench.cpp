@@ -718,12 +718,13 @@ MenuItem* StdWorkbench::setupMenuBar() const
     auto tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
 #ifdef BUILD_ADDONMGR
-    *tool << "Std_AddonMgr"
-          << "Separator";
+    if (Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
+        *tool << "Std_AddonMgr"
+              << "Separator";
+    }
 #endif
     *tool << "Std_Measure"
           << "Std_ClarifySelection"
-          << "Std_QuickMeasure"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_ViewLoadImage"

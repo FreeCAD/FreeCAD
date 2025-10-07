@@ -29,7 +29,7 @@ from collections import defaultdict
 from typing import Optional
 
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -128,7 +128,9 @@ def getAssetPath() -> pathlib.Path:
     # Check if we have a CamAssets path already set
     cam_assets_path = pref.GetString(ToolPath, "")
     if cam_assets_path:
-        return pathlib.Path(cam_assets_path)
+        # Use mostRecentConfigFromBase to get the most recent versioned path
+        most_recent_path = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(cam_assets_path)
+        return pathlib.Path(most_recent_path)
 
     # Migration: Check for legacy DefaultFilePath and use it for CamAssets
     legacy_path = defaultFilePath()
@@ -137,14 +139,21 @@ def getAssetPath() -> pathlib.Path:
         if legacy_path_obj.exists() and legacy_path_obj.is_dir():
             # Migrate: Set the legacy path as the new CamAssets path
             setAssetPath(legacy_path_obj)
-            return legacy_path_obj
+            # Return the most recent version of the legacy path
+            most_recent_legacy = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(
+                str(legacy_path_obj)
+            )
+            return pathlib.Path(most_recent_legacy)
 
     # Fallback to default if no legacy path found
     default = getDefaultAssetPath()
-    return pathlib.Path(default)
+    # Return the most recent version of the default path
+    most_recent_default = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(str(default))
+    return pathlib.Path(most_recent_default)
 
 
 def setAssetPath(path: pathlib.Path):
+    Path.Log.info(f"Setting asset path to {path}")
     assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
     pref = tool_preferences()
     current_path = pref.GetString(ToolPath, "")
@@ -156,6 +165,13 @@ def setAssetPath(path: pathlib.Path):
 
 def getToolBitPath() -> pathlib.Path:
     return getAssetPath() / "Tools" / "Bit"
+
+
+def getTemplateDirectory() -> pathlib.Path:
+    """Returns the directory where job templates should be saved."""
+    template_path = getAssetPath() / "Templates"
+    template_path.mkdir(parents=True, exist_ok=True)
+    return template_path
 
 
 def getLastToolLibrary() -> Optional[str]:
@@ -239,6 +255,9 @@ def macroFilePath():
 
 def searchPaths():
     paths = []
+    # Add new CamAssets/Templates directory first (highest priority)
+    paths.append(str(getTemplateDirectory()))
+    # Add legacy locations for backward compatibility
     p = defaultFilePath()
     if p:
         paths.append(p)

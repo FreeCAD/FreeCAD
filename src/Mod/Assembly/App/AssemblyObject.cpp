@@ -21,13 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
 #include <vector>
 #include <unordered_map>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Datums.h>
@@ -165,7 +163,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     }
 
     try {
-        mbdAssembly->runKINEMATIC();
+        mbdAssembly->runPreDrag();
     }
     catch (const std::exception& e) {
         FC_ERR("Solve failed: " << e.what());
@@ -288,8 +286,6 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 
         draggedParts.push_back(part);
     }
-
-    mbdAssembly->runPreDrag();
 }
 
 void AssemblyObject::doDragStep()
@@ -379,7 +375,7 @@ bool AssemblyObject::validateNewPlacements()
                     newPlacement = newPlacement * it->second.offsetPlc;
                 }
 
-                if (!oldPlc.isSame(newPlacement)) {
+                if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
                         obj->getFullLabel());
@@ -997,6 +993,11 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
 
         App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
         App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
+
+        if (!obj1 || !obj2) {
+            continue;
+        }
+
         if (obj1 == part) {
             auto* ref =
                 dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));
@@ -1131,7 +1132,7 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
             return CREATE<ASMTPerpendicularJoint>::With();
 
         case JointType::Angle: {
-            double angle = fabs(Base::toRadians(getJointDistance(joint)));
+            double angle = fabs(Base::toRadians(getJointAngle(joint)));
             if (fmod(angle, 2 * std::numbers::pi) < Precision::Confusion()) {
                 return CREATE<ASMTParallelAxesJoint>::With();
             }

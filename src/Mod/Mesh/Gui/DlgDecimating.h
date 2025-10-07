@@ -24,6 +24,8 @@
 #ifndef MESHGUI_DLGDECIMATING_H
 #define MESHGUI_DLGDECIMATING_H
 
+#include <Mod/Mesh/MeshGlobal.h>
+
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>

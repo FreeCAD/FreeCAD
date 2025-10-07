@@ -382,7 +382,6 @@ SET(Mesh_SRCS
     MeshPyImp.cpp
     MeshTexture.cpp
     MeshTexture.h
-    PreCompiled.cpp
     PreCompiled.h
     Segment.cpp
     Segment.h
@@ -398,9 +397,9 @@ if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Mesh PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions

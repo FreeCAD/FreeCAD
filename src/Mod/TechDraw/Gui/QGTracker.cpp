@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 # include <limits>
 
@@ -33,7 +31,6 @@
 # include <QPainterPath>
 # include <QStyleOptionGraphicsItem>
 # include <QTransform>
-#endif
 
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawUtil.h>

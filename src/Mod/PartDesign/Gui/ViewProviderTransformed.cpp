@@ -21,16 +21,14 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <QMenu>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>

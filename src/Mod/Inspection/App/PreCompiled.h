@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef INSPECTION_APP_PRECOMPILED_H
+#define INSPECTION_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // STL
 #include <numeric>
@@ -47,7 +45,5 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#endif  //_PreComp_
 
 #endif

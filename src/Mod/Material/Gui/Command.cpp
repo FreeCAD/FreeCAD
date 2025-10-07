@@ -19,10 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QPointer>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Gui/Control.h>

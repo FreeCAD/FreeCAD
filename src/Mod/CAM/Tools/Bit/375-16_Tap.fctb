@@ -4,17 +4,13 @@
   "shape": "tap.fcstd",
   "shape-type": "tap",
   "parameter": {
-    "Coating": "None",
     "CuttingEdgeLength": "1.063 \"",
     "Diameter": "0.375 \"",
     "Flutes": "3",
     "Length": "2.500 \"",
     "Pitch": "0.000 in",
-    "Rotation": "Right Hand",
     "ShankDiameter": "0.250 \"",
-    "TPI": "16",
-    "TipAngle": "90.000 \u00b0",
-    "Type": "HSS"
+    "TipAngle": "90.000 \u00b0"
   },
   "attribute": {}
 }

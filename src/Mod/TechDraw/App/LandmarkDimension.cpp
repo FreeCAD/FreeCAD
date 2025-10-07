@@ -26,14 +26,12 @@
 //* Reference3D features and DVP Vertices are always accessed by tag.
 //* References2D is only used to store the parent DVP
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <gp_Ax2.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Pnt2d.hxx>
 # include <HLRAlgo_Projector.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>

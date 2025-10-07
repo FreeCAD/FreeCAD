@@ -21,13 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>
@@ -278,7 +276,7 @@ void TaskThicknessParameters::setupGizmos(ViewProviderDressUp* vp)
 
     linearGizmo = new Gui::LinearGizmo(ui->Value);
 
-    gizmoContainer = GizmoContainer::createGizmo({linearGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({linearGizmo}, vp);
 
     setGizmoPositions();
 }

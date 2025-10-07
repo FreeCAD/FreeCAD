@@ -931,7 +931,12 @@ def getPathWithPlacement(pathobj):
     to the obj's path
     """
 
-    if not hasattr(pathobj, "Placement") or pathobj.Path is None:
+    if pathobj.Path is None:
+        return pathobj.Path
+
+    # check for no placement or placement POS=(0,0,0), Yaw-Pitch-Roll=(0,0,0)
+    # isIdentity() returns True if the placement has no displacement and no rotation
+    if not hasattr(pathobj, "Placement") or pathobj.Placement.isIdentity():
         return pathobj.Path
 
     return applyPlacementToPath(pathobj.Placement, pathobj.Path)
@@ -954,6 +959,15 @@ def applyPlacementToPath(placement, path):
     currX = 0
     currY = 0
     currZ = 0
+
+    # Angles of rotation (on A, B or C) do not need translation but may need a correction on start position, get transformed angles of 0 deg.
+    cmd = Path.Command("G0 A0 B0 C0")
+    t = cmd.transform(placement)
+    tparams = t.Parameters
+    transA0 = tparams.get("A", 0)
+    transB0 = tparams.get("B", 0)
+    transC0 = tparams.get("C", 0)
+
     for cmd in path.Commands:
         if (cmd.Name in CmdMoveRapid) or (cmd.Name in CmdMove) or (cmd.Name in CmdDrill):
             params = cmd.Parameters
@@ -983,7 +997,27 @@ def applyPlacementToPath(placement, path):
                     params.update({"J": j})
 
             cmd.Parameters = params
-        commands.append(cmd.transform(placement))
+
+        # Angles of rotation (on A, B or C) do not need translation, find values before translation.
+        params = cmd.Parameters
+        aVal = params.get("A", None)
+        bVal = params.get("B", None)
+        cVal = params.get("C", None)
+
+        t = cmd.transform(placement)
+
+        # Set angles of rotation on A, B or C corrected for the transformed angle of 0 deg..
+        tparams = t.Parameters
+        if aVal is not None:
+            tparams.update({"A": transA0 + aVal})
+        if bVal is not None:
+            tparams.update({"B": transB0 + bVal})
+        if cVal is not None:
+            tparams.update({"C": transC0 + cVal})
+        if aVal is not None or bVal is not None or cVal is not None:
+            t.Parameters = tparams
+
+        commands.append(t)
     newPath = Path.Path(commands)
 
     return newPath

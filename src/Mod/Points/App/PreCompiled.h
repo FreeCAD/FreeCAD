@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cstdio>
 
@@ -47,7 +45,5 @@
 
 // Qt
 #include <QtConcurrentMap>
-
-#endif  //_PreComp_
 
 #endif

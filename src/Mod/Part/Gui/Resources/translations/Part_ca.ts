@@ -5971,7 +5971,7 @@ Vol continuar?</translation>
       <translation>Editor d'adjunts</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="894"/>
+      <location filename="../../ViewProviderExt.cpp" line="896"/>
       <source>Appearance per Face</source>
       <translation>Aparença per cara</translation>
     </message>

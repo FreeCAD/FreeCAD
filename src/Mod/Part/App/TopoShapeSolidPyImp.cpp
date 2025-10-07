@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepClass3d.hxx>
 # include <BRepGProp.hxx>
@@ -41,7 +39,7 @@
 # include <gp_Pnt.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>

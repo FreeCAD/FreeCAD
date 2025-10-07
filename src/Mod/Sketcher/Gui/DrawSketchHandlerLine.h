@@ -424,7 +424,8 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                         // Both cannot be 0
                         if (fourthParam->isSet) {
                             double width = fourthParam->getValue();
-                            if (fabs(width) < Precision::Confusion()) {
+                            if (fabs(width) < Precision::Confusion()
+                                && fourthParam->hasFinishedEditing) {
                                 unsetOnViewParameter(thirdParam.get());
                                 return;
                             }
@@ -440,7 +441,8 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                         // Both cannot be 0
                         if (thirdParam->isSet) {
                             double length = thirdParam->getValue();
-                            if (fabs(length) < Precision::Confusion()) {
+                            if (fabs(length) < Precision::Confusion()
+                                && thirdParam->hasFinishedEditing) {
                                 unsetOnViewParameter(fourthParam.get());
                                 return;
                             }
@@ -460,7 +462,7 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
                 if (thirdParam->isSet) {
                     length = thirdParam->getValue();
-                    if (length < Precision::Confusion()) {
+                    if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
                         return;
                     }
@@ -484,7 +486,7 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 }
             }
 
-            if (thirdParam->isSet && fourthParam->isSet
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
                 && (onSketchPos - handler->startPoint).Length() < Precision::Confusion()) {
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());

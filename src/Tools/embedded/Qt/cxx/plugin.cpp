@@ -1,4 +1,3 @@
-#include "PreCompiled.h"
 
 #include <QApplication>
 #include <QMainWindow>

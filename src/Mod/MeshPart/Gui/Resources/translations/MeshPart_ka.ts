@@ -497,8 +497,8 @@ A value in the range of 0.2-10.</source>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shape.</translation>
+      <translation>შეცდომა: მონიშნულია სხეული ფუნქციის გარეშე.
+ან დააყენეთ სხეულის ფუნქცია, ან აირჩიეთ სხვა მოხაზულობა.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>

@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoEventCallback.h>
@@ -31,7 +29,7 @@
 #include <QMessageBox>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
@@ -2470,6 +2468,10 @@ void CmdFemPostFunctions::activated(int iMsg)
                       center[0],
                       center[1],
                       center[2]);
+            doCommand(Doc,
+                      "Gui.ActiveDocument.%s.Scale = %f",
+                      FeatName.c_str(),
+                      box.GetDiagonalLength());
         }
         else if (iMsg == 1) {  // Sphere
             doCommand(Doc,

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "Mod/PartDesign/App/Body.h"
 #include "Mod/PartDesign/App/Feature.h"

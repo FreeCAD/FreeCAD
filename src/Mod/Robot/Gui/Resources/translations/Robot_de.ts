@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
       <source>Insert in Trajectory</source>
-      <translation>Trajektorie einfügen</translation>
+      <translation>In Bewegungsbahn einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation>Fügt die Position des Roboter-Werkzeugs in die Trajektorie ein</translation>
+      <translation>Fügt die Position des Roboter-Werkzeugs in die Bewegungsbahn ein</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation>Fügt die Vorauswahlposition in die Trajektorie ein (W)</translation>
+      <translation>Fügt die Vorauswahlposition in die Bewegungsbahn ein (W)</translation>
     </message>
   </context>
   <context>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Simulate Trajectory</source>
-      <translation>Trajektorie simulieren</translation>
+      <translation>Bewegungsbahn simulieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Simulates robot movement along a selected trajectory</source>
-      <translation>Simuliert die Roboter-Bewegung entlang der ausgewählten Trajektorie</translation>
+      <translation>Simuliert die Roboter-Bewegung entlang der ausgewählten Bewegungsbahn</translation>
     </message>
   </context>
   <context>
@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="483"/>
       <source>Trajectory Compound</source>
-      <translation>Trajektorien-Verbund</translation>
+      <translation>Bewegungsbahnverbund</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="484"/>
       <source>Groups and connects multiple trajectories into one</source>
-      <translation>Gruppiert und verbindet mehrere Trajektorien zu einer</translation>
+      <translation>Gruppiert und verbindet mehrere Bewegungsbahnen zu einer</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory Tools</source>
-      <translation>Trajektorie-Werkzeuge</translation>
+      <translation>Bewegungsbahnwerkzeuge</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -899,17 +899,17 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
       <source>Position and orientation</source>
-      <translation>Position und Orientierung</translation>
+      <translation>Position und Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Do not change position &amp; orientation</source>
-      <translation type="unfinished">Do not change position &amp; orientation</translation>
+      <translation>Position und Ausrichtung nicht ändern</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
       <source>Use orientation</source>
-      <translation>Orientierung nutzen</translation>
+      <translation>Ausrichtung verwenden</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
@@ -919,7 +919,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
       <source>Add orientation</source>
-      <translation>Orientierung hinzufügen</translation>
+      <translation>Ausrichtung hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -927,7 +927,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation>Robot</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -937,7 +937,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation>Trajektorie exportieren</translation>
+      <translation>Bewegungsbahn exportieren</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

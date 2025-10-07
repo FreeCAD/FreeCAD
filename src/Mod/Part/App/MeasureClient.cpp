@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <Mod/Part/PartGlobal.h>
 

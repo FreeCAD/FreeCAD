@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Precision.hxx>
 #include <QDoubleValidator>
 #include <QLocale>
@@ -34,7 +32,6 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
