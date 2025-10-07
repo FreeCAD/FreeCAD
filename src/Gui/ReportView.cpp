@@ -463,8 +463,19 @@ ReportOutput::~ReportOutput()
 
 void ReportOutput::restoreFont()
 {
-    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    setFont(serifFont);
+    QFont font;
+    auto hPrefGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Editor");
+    int fontSize = hPrefGrp->GetInt("FontSize", 10);
+    auto serifFont = hPrefGrp->GetASCII("Font");
+    if (serifFont.empty()) {
+        font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        font.setPointSize(fontSize);
+    }
+    else {
+        font = QFont (QString::fromStdString(serifFont), fontSize);
+    }
+    setFont(font);
 }
 
 void ReportOutput::sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
