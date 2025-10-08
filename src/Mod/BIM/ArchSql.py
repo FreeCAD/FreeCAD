@@ -12,15 +12,24 @@
 
 import FreeCAD
 import re
+from collections import deque
 
 if FreeCAD.GuiUp:
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    from draftutils.translate import translate
+    # In GUI mode, import PySide and create real translation functions.
+    from PySide import QtCore
+    def translate(context, text, comment=None):
+        """Wraps the Qt translation function."""
+        return QtCore.QCoreApplication.translate(context, text, comment)
+    # QT_TRANSLATE_NOOP is used to mark strings for the translation tool but
+    # does not perform the translation at definition time.
+    QT_TRANSLATE_NOOP = QtCore.QT_TRANSLATE_NOOP
 else:
-    def translate(ctxt, txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    # In headless mode, create dummy (no-op) functions that simply
+    # return the original text. This ensures the code runs without a GUI.
+    def translate(context, text, comment=None):
+        return text
+    def QT_TRANSLATE_NOOP(context, text):
+        return text
 
 # Import exception types from the generated parser for type-safe handling.
 from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
@@ -186,8 +195,256 @@ def _map_results_to_objects(headers, data_rows):
 
     return found_objects
 
+def _is_generic_group(obj):
+    """
+    Checks if an object is a generic group that should be excluded from
+    architectural query results.
+    """
+    # A generic group is a group that is not an architecturally significant one
+    # like a BuildingPart (which covers Floors, Buildings, etc.).
+    return obj.isDerivedFrom("App::DocumentObjectGroup")
 
-def _execute_pipeline_for_objects(statements: List['ReportStatement']) -> List:
+def _get_bim_type(obj):
+    """
+    Gets the most architecturally significant type for a FreeCAD object.
+
+    This is a specialized utility for BIM reporting. It prioritizes explicit
+    BIM properties (.IfcType) to correctly distinguish between different Arch
+    objects that may share the same proxy (e.g., Doors and Windows).
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to inspect.
+
+    Returns
+    -------
+    str
+        The determined type string (e.g., 'Door', 'Building Storey', 'Wall').
+    """
+    if not obj:
+        return None
+
+    # 1. Prioritize the explicit IfcType for architectural objects.
+    #    This correctly handles Door vs. Window and returns the raw value.
+    if hasattr(obj, "IfcType"):
+        if obj.IfcType and obj.IfcType != "Undefined":
+            return obj.IfcType
+
+    # 2. Check for legacy .Class property from old IFC imports.
+    if hasattr(obj, "Class") and "Ifc" in str(obj.Class):
+        return obj.Class
+
+    # 3. Fallback to Proxy.Type for other scripted objects.
+    if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
+        return obj.Proxy.Type
+
+    # 4. Final fallback to the object's internal TypeId.
+    if hasattr(obj, 'TypeId'):
+        return obj.TypeId
+
+    return "Unknown"
+
+def _is_bim_group(obj):
+    """
+    Checks if an object is a group-like container in a BIM context.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to check.
+
+    Returns
+    -------
+    bool
+        True if the object is considered a BIM group.
+    """
+    bim_type = _get_bim_type(obj)
+    # Note: 'Floor' and 'Building' are obsolete but kept for compatibility.
+    return ((obj.isDerivedFrom("App::DocumentObjectGroup") and bim_type != "LayerContainer")
+            or bim_type in ("Project", "Site", "Building", "Building Storey",
+                       "Floor", "Building Element Part", "Space"))
+
+def _get_direct_children(obj, discover_hosted_elements, include_components_from_additions):
+    """
+    Finds the immediate descendants of a single object.
+
+    Encapsulates the different ways an object can be a "child" in FreeCAD's BIM context, checking
+    for hierarchical containment (.Group), architectural hosting (.Hosts/.Host), and geometric
+    composition (.Additions).
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The parent object to find the children of.
+
+    discover_hosted_elements : bool
+        If True, the function will perform checks to find objects that are architecturally hosted by
+        `obj` (e.g., a Window in a Wall).
+
+    include_components_from_additions : bool
+        If True, the function will include objects found in the `obj.Additions` list, which are
+        typically used for geometric composition.
+
+    Returns
+    -------
+    list of App::DocumentObject
+        A list of the direct child objects of `obj`.
+    """
+    children = []
+
+    # 1. Hierarchical children from .Group (containment)
+    if _is_bim_group(obj) and hasattr(obj, "Group") and obj.Group:
+        children.extend(obj.Group)
+
+    # 2. Architecturally-hosted elements
+    if discover_hosted_elements:
+        host_types = ["Wall", "Structure", "CurtainWall", "Precast", "Panel", "Roof"]
+        if _get_bim_type(obj) in host_types:
+            for item_in_inlist in obj.InList:
+                element_to_check = item_in_inlist
+                if hasattr(item_in_inlist, "getLinkedObject"):
+                    linked = item_in_inlist.getLinkedObject()
+                    if linked:
+                        element_to_check = linked
+
+                element_type = _get_bim_type(element_to_check)
+                is_confirmed_hosted = False
+                if element_type == "Window":
+                    if hasattr(element_to_check, "Hosts") and obj in element_to_check.Hosts:
+                        is_confirmed_hosted = True
+                elif element_type == "Rebar":
+                    if hasattr(element_to_check, "Host") and obj == element_to_check.Host:
+                        is_confirmed_hosted = True
+
+                if is_confirmed_hosted:
+                    children.append(element_to_check)
+
+    # 3. Geometric components from .Additions list
+    if include_components_from_additions and hasattr(obj, "Additions") and obj.Additions:
+        for addition_comp in obj.Additions:
+            actual_addition = addition_comp
+            if hasattr(addition_comp, "getLinkedObject"):
+                linked_add = addition_comp.getLinkedObject()
+                if linked_add:
+                    actual_addition = linked_add
+            children.append(actual_addition)
+
+    return children
+
+
+# TODO: Refactor architectural traversal logic.
+# This function is a temporary, enhanced copy of the traversal algorithm
+# found in ArchCommands.get_architectural_contents. It was duplicated here
+# to avoid creating a circular dependency and to keep the BIM Report PR
+# self-contained.
+#
+# A future refactoring task should:
+# 1. Move this enhanced implementation into a new, low-level core utility
+#    module (e.g., ArchCoreUtils.py).
+# 2. Add a comprehensive unit test suite for this new core function.
+# 3. Refactor this implementation and the original get_architectural_contents
+#    to be simple wrappers around the new, centralized core function.
+# This will remove the code duplication and improve the overall architecture.
+def _traverse_architectural_hierarchy(
+    initial_objects,
+    max_depth=0,
+    discover_hosted_elements=True,
+    include_components_from_additions=False,
+    include_groups_in_result=True,
+    include_initial_objects_in_result=True
+):
+    """
+    Traverses the BIM hierarchy to find all descendants of a given set of objects.
+
+    This function implements a Breadth-First Search (BFS) algorithm using a
+    queue to safely and efficiently traverse the model. It is the core engine
+    used by the CHILDREN and CHILDREN_RECURSIVE SQL functions.
+
+    Parameters
+    ----------
+    initial_objects : list of App::DocumentObject
+        The starting object(s) for the traversal.
+
+    max_depth : int, optional
+        The maximum number of architecturally significant levels to traverse.
+        A value of 0 (default) means the traversal is unlimited. A value of 1
+        will find direct children only. Generic organizational groups do not
+        count towards the depth limit.
+
+    discover_hosted_elements : bool, optional
+        If True (default), the traversal will find objects that are
+        architecturally hosted (e.g., Windows in Walls).
+
+    include_components_from_additions : bool, optional
+        If True, the traversal will include objects from `.Additions` lists.
+        Defaults to False, as these are typically geometric components, not
+        separate architectural elements.
+
+    include_groups_in_result : bool, optional
+        If True (default), generic organizational groups (App::DocumentObjectGroup)
+        will be included in the final output. If False, they are traversed
+        transparently but excluded from the results.
+
+    include_initial_objects_in_result : bool, optional
+        If True (default), the objects in `initial_objects` will themselves
+        be included in the returned list.
+
+    Returns
+    -------
+    list of App::DocumentObject
+        A flat, unique list of all discovered descendant objects.
+    """
+    final_contents_list = []
+    queue = deque()
+    processed_or_queued_names = set()
+
+    if not isinstance(initial_objects, list):
+        initial_objects_list = [initial_objects]
+    else:
+        initial_objects_list = list(initial_objects)
+
+    for obj in initial_objects_list:
+        queue.append((obj, 0))
+        processed_or_queued_names.add(obj.Name)
+
+    while queue:
+        obj, current_depth = queue.popleft()
+
+        is_initial = obj in initial_objects_list
+        if (is_initial and include_initial_objects_in_result) or not is_initial:
+            if obj not in final_contents_list:
+                final_contents_list.append(obj)
+
+        if max_depth != 0 and current_depth >= max_depth:
+            continue
+
+        direct_children = _get_direct_children(
+            obj,
+            discover_hosted_elements,
+            include_components_from_additions
+        )
+
+        for child in direct_children:
+            if child.Name not in processed_or_queued_names:
+                if _is_generic_group(child):
+                    next_depth = current_depth
+                else:
+                    next_depth = current_depth + 1
+
+                queue.append((child, next_depth))
+                processed_or_queued_names.add(child.Name)
+
+    if not include_groups_in_result:
+        filtered_list = [
+            obj for obj in final_contents_list if not _is_generic_group(obj)
+        ]
+        return filtered_list
+
+    return final_contents_list
+
+
+def _execute_pipeline_for_objects(statements: List["ReportStatement"]) -> List:
     """
     Internal helper to run a pipeline and get the final list of objects.
 
@@ -205,9 +462,7 @@ def _execute_pipeline_for_objects(statements: List['ReportStatement']) -> List:
 
         try:
             _, _, resulting_objects = _run_query(
-                statement.query_string,
-                mode='full_data',
-                source_objects=source
+                statement.query_string, mode="full_data", source_objects=source
             )
             pipeline_input_objects = resulting_objects
         except (SqlEngineError, BimSqlSyntaxError):
@@ -215,6 +470,7 @@ def _execute_pipeline_for_objects(statements: List['ReportStatement']) -> List:
             return []
 
     return pipeline_input_objects or []
+
 
 # --- Logical Classes for the SQL Statement Object Model ---
 
@@ -380,9 +636,7 @@ class TypeFunction(FunctionBase):
 
     def get_value(self, obj):
         # The argument for TYPE is the object itself, represented by '*'.
-        # Local import to prevent circular dependencies
-        from Draft import get_type
-        return get_type(obj)
+        return _get_bim_type(obj)
 
 
 @register_select_function(
@@ -535,49 +789,75 @@ class FromFunctionBase:
     name='CHILDREN',
     category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
     signature="CHILDREN(subquery)",
-    description=QT_TRANSLATE_NOOP("ArchSql", "Selects child objects of a given parent set."),
+    description=QT_TRANSLATE_NOOP("ArchSql", "Selects direct child objects of a given parent set."),
     snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')"
 )
 class ChildrenFromFunction(FromFunctionBase):
     """Implements the CHILDREN() function."""
 
-    def _collect_contained_children(self, parent_obj, results_set):
-        """
-        Simple recursive helper to find children in .Group,
-        traversing through any nested groups.
-        """
-        # Use safe getattr to avoid errors on objects without a .Group
-        group_list = getattr(parent_obj, 'Group', None)
-        if not group_list:
-            return
-
-        for member in group_list:
-            # If member is a group, recurse. Otherwise, add it to results.
-            if getattr(member, 'isDerivedFrom', lambda x: False)("App::DocumentObjectGroup"):
-                self._collect_contained_children(member, results_set)
-            else:
-                results_set.add(member)
-
     def get_objects(self, source_objects=None):
-        # Execute the subquery to find parent objects.
-        parent_objects = self._get_parent_objects(source_objects=source_objects)
+        recursive_handler = ChildrenRecursiveFromFunction(self.args)
+
+        # Get the root objects to start from.
+        subquery_statement = self.args[0]
+        parent_objects = recursive_handler._get_parent_objects_from_subquery(subquery_statement, source_objects)
         if not parent_objects:
             return []
 
-        parent_set = set(parent_objects)
-        results_set = set()
+        # Call the core traversal function with a hard-coded max_depth of 1.
+        return _traverse_architectural_hierarchy(
+            initial_objects=parent_objects,
+            max_depth=1,
+            include_groups_in_result=False,
+            include_initial_objects_in_result=False # Only return children
+        )
 
-        # 1. Find HOSTED children in a single pass over the document.
-        for obj in FreeCAD.ActiveDocument.Objects:
-            hosts = getattr(obj, 'Hosts', None)
-            if hosts and any(h in parent_set for h in hosts):
-                results_set.add(obj)
 
-        # 2. Find CONTAINED children by traversing .Group on each parent.
-        for parent in parent_set:
-            self._collect_contained_children(parent, results_set)
+@register_from_function(
+    name='CHILDREN_RECURSIVE',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
+    signature="CHILDREN_RECURSIVE(subquery, max_depth=15)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Selects all descendant objects of a given set, traversing the full hierarchy."),
+    snippet="SELECT * FROM CHILDREN_RECURSIVE(SELECT * FROM document WHERE Label = 'My Building')"
+)
+class ChildrenRecursiveFromFunction(FromFunctionBase):
+    """Implements the CHILDREN_RECURSIVE() function."""
 
-        return list(results_set)
+    def get_objects(self, source_objects=None):
+        # The subquery is always the first argument.
+        subquery_statement = self.args[0]
+        max_depth = 15  # Default safe depth limit
+
+        # The optional max_depth is the second argument. It will be a StaticExtractor.
+        if len(self.args) > 1 and isinstance(self.args[1], StaticExtractor):
+            # We get its raw value, which should be a float from the NUMBER terminal.
+            max_depth = int(self.args[1].get_value(None))
+
+        # Get the root objects to start from.
+        # The subquery runs on the pipeline source if provided.
+        parent_objects = self._get_parent_objects_from_subquery(subquery_statement, source_objects)
+        if not parent_objects:
+            return []
+
+        # Call our fully-tested core traversal function with the correct parameters.
+        return _traverse_architectural_hierarchy(
+            initial_objects=parent_objects,
+            max_depth=max_depth,
+            include_groups_in_result=False,
+            include_initial_objects_in_result=False # Critical: Only return children
+        )
+
+    def _get_parent_objects_from_subquery(self, substatement, source_objects=None):
+        """Helper to execute a subquery statement and return its objects."""
+        # This is a simplified version of the old _get_parent_objects method.
+        # It executes the substatement and maps the results back to objects.
+        if source_objects:
+            # If a pipeline provides the source, the subquery runs on that source.
+            headers, rows = substatement.execute(source_objects)
+        else:
+            headers, rows = substatement.execute(FreeCAD.ActiveDocument.Objects)
+
+        return _map_results_to_objects(headers, rows)
 
 
 @register_select_function(
@@ -599,7 +879,6 @@ class ParentFunction(FunctionBase):
         Walks up the document tree from the given on_object to find the first
         architecturally significant parent, transparently skipping generic groups.
         """
-        from Draft import get_type
         current_obj = on_object
 
         # Limit search depth to 20 levels to prevent infinite loops.
@@ -611,25 +890,19 @@ class ParentFunction(FunctionBase):
             if hasattr(current_obj, 'Hosts') and current_obj.Hosts:
                 immediate_parent = current_obj.Hosts[0]
 
-            # Priority 2: If no host, search InList for a container
+            # Priority 2: If no host, search InList for a true container.
+            # A true container is an object that has the current object in its .Group list.
             elif hasattr(current_obj, 'InList') and current_obj.InList:
                 for obj_in_list in current_obj.InList:
-                    # A container is any object that is a BuildingPart or a Group.
-                    # This check is broad, and we will refine significance next.
-                    if (obj_in_list.isDerivedFrom("App::DocumentObjectGroup") or
-                            get_type(obj_in_list) == "BuildingPart"):
+                    if hasattr(obj_in_list, "Group") and current_obj in obj_in_list.Group:
                         immediate_parent = obj_in_list
                         break
 
             if not immediate_parent:
                 return None # No parent found, top of branch.
 
-            # --- Step 2: Check if the found parent is a generic group to be skipped ---
-            parent_type = get_type(immediate_parent)
-            is_generic_group = (immediate_parent.isDerivedFrom("App::DocumentObjectGroup") and
-                                parent_type != "BuildingPart")
-
-            if is_generic_group:
+            # Check if the found parent is a generic group to be skipped.
+            if _is_generic_group(immediate_parent):
                 # The parent is a generic group. Skip it and continue the search
                 # from this parent's level in the next loop.
                 current_obj = immediate_parent
@@ -1331,13 +1604,14 @@ class SqlTransformerMixin:
 
     def from_function(self, items):
         function_name_token = items[0]
-        # The argument is the substatement to be executed
-        arg = items[1]
+        # The arguments are a list that can contain the subquery statement
+        # and an optional StaticExtractor for max_depth.
+        args = items[1:]
         function_name = str(function_name_token).upper()
         function_class = self.from_function_registry.get_class(function_name)
         if not function_class:
             raise ValueError(f"Unknown FROM function: {function_name}")
-        return function_class(arg)
+        return function_class(args)
 
     def group_by_clause(self, items):
         # Allow both property references and function calls as grouping keys.
