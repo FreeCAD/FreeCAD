@@ -2794,8 +2794,8 @@ struct nostream
 
 void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 {
-    // ofstream fout("adaptive_debug.txt");
-    nostream fout("adaptive_debug.txt");
+    ofstream fout("adaptive_debug.txt");
+    // nostream fout("adaptive_debug.txt");
     fout << "\n" << "\n" << "----------------------" << "\n";
     fout << "Start ProcessPolyNode" << "\n";
     Perf_ProcessPolyNode.Start();
@@ -3062,23 +3062,36 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 fout << "int pos " << newToolPos << " ";
 
                 // Skip iteration if this IntPoint has already been processed
+                bool intRepeat = false;
                 if (interp.m_min && newToolPos == interp.m_min->first.second) {
                     interp.addPoint(interp.m_min->second, {angle, newToolPos});
-                    if (interp.m_max
-                        && abs(interp.m_min->first.second.X - interp.m_max->first.second.X) <= 1
-                        && abs(interp.m_min->first.second.Y - interp.m_max->first.second.Y) <= 1) {
-                        fout << "hit integer floor" << "\n";
-                        break;
-                    }
-                    fout << "skip area calc " << "\n";
-                    continue;
+                    intRepeat = true;
                 }
                 if (interp.m_max && newToolPos == interp.m_max->first.second) {
                     interp.addPoint(interp.m_max->second, {angle, newToolPos});
-                    if (interp.m_min
+                    intRepeat = true;
+                }
+
+                if (intRepeat) {
+                    if (interp.m_min && interp.m_max
                         && abs(interp.m_min->first.second.X - interp.m_max->first.second.X) <= 1
                         && abs(interp.m_min->first.second.Y - interp.m_max->first.second.Y) <= 1) {
+                        if (pointNotInterp) {
+                            // if this happens while testing min/max of the range it doesn't mean
+                            // anything; only exit early if interpolation is down to adjacent
+                            // integers
+                            continue;
+                        }
                         fout << "hit integer floor" << "\n";
+                        // exit early, selecting the better of the two adjacent integers
+                        if (abs(interp.m_min->second) < abs(interp.m_max->second)) {
+                            newToolDir = rotate(toolDir, interp.m_min->first.first);
+                            newToolPos = interp.m_min->first.second;
+                        }
+                        else {
+                            newToolDir = rotate(toolDir, interp.m_max->first.first);
+                            newToolPos = interp.m_max->first.second;
+                        }
                         break;
                     }
                     fout << "skip area calc " << "\n";
