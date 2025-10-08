@@ -21,6 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "FCGlobal.h"
+
+#include <QMessageBox>
+#include <QString>
 #include <App/GeoFeature.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
