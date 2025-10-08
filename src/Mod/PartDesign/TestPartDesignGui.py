@@ -239,8 +239,16 @@ class PartDesignTransformed(unittest.TestCase):
         #not adding box to the body to imitate undertermined workflow
         tempDir = tempfile.gettempdir()
         self.TempDoc = os.path.join(tempDir, 'PartDesignTransformed.FCStd')
+        if os.path.exists(self.TempDoc):
+            os.remove(self.TempDoc)
         App.ActiveDocument.saveAs(self.TempDoc)
         App.closeDocument("PartDesignTransformed")
+
+    def tearDown(self):
+        #closing doc
+        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
+            App.closeDocument("PartDesignTransformed")
+        #print ("omit closing document for debugging")
 
     def testMultiTransformCase(self):
         App.Console.PrintMessage('Testing applying MultiTransform to the Box outside the body\n')
@@ -254,8 +262,14 @@ class PartDesignTransformed(unittest.TestCase):
 
         App.closeDocument("PartDesignTransformed")
 
+
+class CreateSketch(unittest.TestCase):
+
     def testPDCreateSketch(self):
         App.Console.PrintMessage("Testing the creation of a sketch\n")
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+        useAttachmentSaved = param.GetBool("NewSketchUseAttachmentDialog", False)
+        param.SetBool("NewSketchUseAttachmentDialog", False)
         App.newDocument()
         App.activeDocument().addObject("PartDesign::Body", "Body")
         App.ActiveDocument.getObject("Body").Label = "Body"
@@ -274,12 +288,7 @@ class PartDesignTransformed(unittest.TestCase):
         if taskspanel is not None:
             QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
         App.closeDocument(App.ActiveDocument.Name)
-
-    def tearDown(self):
-        #closing doc
-        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
-            App.closeDocument("PartDesignTransformed")
-        #print ("omit closing document for debugging")
+        param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
 
 #class PartDesignGuiTestCases(unittest.TestCase):
 #   def setUp(self):
