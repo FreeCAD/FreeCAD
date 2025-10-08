@@ -27,7 +27,8 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include "mrichtextedit.h"
+#include "MDIViewPage.h"
 
 class Ui_TaskRichAnno;
 
@@ -42,6 +43,7 @@ namespace TechDrawGui
 {
 class QGIView;
 class QGIPrimPath;
+class QGIRichAnno;
 class MDIViewPage;
 class QGMText;
 class ViewProviderRichAnno;
@@ -54,7 +56,7 @@ class TaskRichAnno : public QWidget
 public:
     TaskRichAnno(TechDraw::DrawView* baseFeat, TechDraw::DrawPage* page);
     explicit TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP);
-    ~TaskRichAnno() override = default;
+    ~TaskRichAnno() override;
 
     void finishSetup();
 
@@ -81,14 +83,16 @@ protected:
     Base::Color prefLineColor();
 
 protected Q_SLOTS:
-    void onRichTextChanged();
     void onMaxWidthChanged(double value);
     void onViewWidthChanged();
     void onShowFrameToggled(bool checked);
     void onFrameColorChanged();
     void onFrameWidthChanged(double value);
     void onFrameStyleChanged(int index);
+    void onViewTransformed();
 
+    void onViewSelectionChanged();
+    void onViewPositionChanged(const QPointF& scenePos);
 
 private:
     std::unique_ptr<Ui_TaskRichAnno> ui;
@@ -111,6 +115,11 @@ private:
     QPushButton* m_btnCancel;
 
     QString m_title;
+
+    QGIRichAnno* m_qgiAnno;
+    bool m_syncLock;
+    MDIViewPage* m_view;
+    MRichTextEdit* m_toolbar;
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog

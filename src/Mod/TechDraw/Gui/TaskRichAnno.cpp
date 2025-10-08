@@ -20,9 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <cmath>
-# include <QDialog>
-
+#include <cmath>
+#include <QDialog>
+#include <QTextEdit>
+#include <QGraphicsView>
+#include <QScrollBar>
+#include <QAbstractScrollArea>
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -38,10 +41,12 @@
 
 #include "ui_TaskRichAnno.h" //This will include mrichtextedit.h if the .ui file uses MRichTextEdit
 #include "TaskRichAnno.h"
+#include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "QGIRichAnno.h"
 #include "QGMText.h"
+#include "QGVPage.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
@@ -63,7 +68,11 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_createMode(false),
     m_inProgressLock(true), // Lock during setup
     m_btnOK(nullptr),
-    m_btnCancel(nullptr)
+    m_btnCancel(nullptr),
+    m_qgiAnno(nullptr),
+    m_syncLock(false),
+    m_view(nullptr),
+    m_toolbar(nullptr)
 {
     //existence of annoVP is guaranteed by caller being ViewProviderRichAnno.setEdit
 
@@ -87,11 +96,16 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
     m_vpp = static_cast<ViewProviderPage*>(vp);
+    m_view = m_vpp->getMDIViewPage();
 
     m_qgParent = nullptr;
     if (m_baseFeat) {
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
     }
+
+    QGVPage* graphicsView = nullptr;
+    graphicsView = m_vpp->getQGVPage();
+    m_toolbar = new MRichTextEdit(graphicsView->viewport());
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
 
@@ -119,17 +133,26 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_createMode(true),
     m_inProgressLock(true), // Lock during setup
     m_btnOK(nullptr),
-    m_btnCancel(nullptr)
+    m_btnCancel(nullptr),
+    m_qgiAnno(nullptr),
+    m_syncLock(false),
+    m_view(nullptr),
+    m_toolbar(nullptr)
 {
     //existence of baseFeat and page guaranteed by CmdTechDrawRichTextAnnotation (CommandAnnotate.cpp)
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
     m_vpp = static_cast<ViewProviderPage*>(vp);
+    m_view = m_vpp->getMDIViewPage();
 
     m_qgParent = nullptr;
     if (m_vpp->getQGSPage()) {
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(baseFeat);
     }
+
+    QGVPage* graphicsView = nullptr;
+    graphicsView = m_vpp->getQGVPage();
+    m_toolbar = new MRichTextEdit(graphicsView->viewport());
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
 
@@ -149,19 +172,163 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     finishSetup();
 }
 
+TaskRichAnno::~TaskRichAnno()
+{
+    if (m_toolbar) {
+        m_toolbar->close();  // This will delete
+        m_toolbar = nullptr;
+    }
+}
+
 void TaskRichAnno::finishSetup()
 {
-    // Connect signals for live updates
-    connect(ui->richTextEditor->document(), &QTextDocument::contentsChanged, this, &TaskRichAnno::onRichTextChanged);
-    connect(ui->dsbMaxWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &TaskRichAnno::onMaxWidthChanged);
+    m_inProgressLock = true;  // Lock during setup
+
+    // --- Step 1: Get pointer to the QGIRichAnno object ---
+    if (!m_annoVP || !m_view) {
+        Base::Console().error(
+            "TaskRichAnno::finishSetup - Critical m_annoVP are missing. Aborting setup.\n");
+        return;
+    }
+    m_qgiAnno = static_cast<QGIRichAnno*>(m_annoVP->getQView());
+    QGVPage* graphicsView = m_view->getViewProviderPage()->getQGVPage();
+
+    if (!m_qgiAnno || !graphicsView) {
+        Base::Console().error(
+            "TaskRichAnno::finishSetup - Critical m_qgiAnno is missing. Aborting setup.\n");
+        return;
+    }
+    
+    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+    m_toolbar->setAttribute(Qt::WA_DeleteOnClose);
+
+    // --- Step 2: Perform the "hide text area" trick ---
+    QTextEdit* textEditChild = m_toolbar->findChild<QTextEdit*>();
+    if (!textEditChild) {
+        delete m_toolbar;
+        m_toolbar = nullptr;
+        m_inProgressLock = false;
+        return;
+    }
+
+    textEditChild->setVisible(false);
+    textEditChild->setMinimumHeight(0);
+    textEditChild->setMaximumHeight(0);
+
+    m_toolbar->setMinimalMode(true);
+    m_toolbar->adjustSize();
+    m_toolbar->setFixedSize(m_toolbar->sizeHint());
+    m_toolbar->show();
+
+    // --- Step 3: Connect signals ---
+    // Get the internal document of the toolbar and link it to the QGIRichAnno
+    textEditChild->setDocument(m_qgiAnno->document());
+
+    // Connect signals to keep things in sync
+    connect(m_qgiAnno,
+            &QGIRichAnno::selectionChanged,
+            this,
+            &TaskRichAnno::onViewSelectionChanged);
+    connect(m_qgiAnno,
+            &QGIRichAnno::positionChanged,
+            this,
+            &TaskRichAnno::onViewPositionChanged);
+
+    // Also connect the width changed signal for resize handles
+    connect(m_qgiAnno, &QGIRichAnno::widthChanged, this, &TaskRichAnno::onViewWidthChanged);
+
+    connect(ui->dsbMaxWidth,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskRichAnno::onMaxWidthChanged);
     connect(ui->gbFrame, &QGroupBox::toggled, this, &TaskRichAnno::onShowFrameToggled);
     connect(ui->cpFrameColor, &Gui::ColorButton::changed, this, &TaskRichAnno::onFrameColorChanged);
-    connect(ui->dsbWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &TaskRichAnno::onFrameWidthChanged);
-    connect(ui->cFrameStyle, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskRichAnno::onFrameStyleChanged);
+    connect(ui->dsbWidth,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskRichAnno::onFrameWidthChanged);
+    connect(ui->cFrameStyle,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskRichAnno::onFrameStyleChanged);
 
-    ui->richTextEditor->setMinimalMode(true);
+    // Panning is detected by scroll bar value changes.
+    connect(graphicsView->horizontalScrollBar(),
+            &QScrollBar::valueChanged,
+            this,
+            &TaskRichAnno::onViewTransformed);
+    connect(graphicsView->verticalScrollBar(),
+            &QScrollBar::valueChanged,
+            this,
+            &TaskRichAnno::onViewTransformed);
 
-    m_inProgressLock = false; // Unlock after setup
+    onViewSelectionChanged();  // Sync initial cursor to hidden editor
+    m_qgiAnno->setEditMode(true);
+
+    QTimer::singleShot(0, m_qgiAnno, &QGIRichAnno::updateLayout);
+
+    m_inProgressLock = false;
+}
+
+void TaskRichAnno::onViewTransformed()
+{
+    // When the view pans, the item's scene position hasn't changed.
+    // We just need to re-run the position calculation with its current scenePos.
+    if (m_qgiAnno) {
+        onViewPositionChanged(m_qgiAnno->scenePos());
+    }
+}
+
+void TaskRichAnno::onViewSelectionChanged()
+{
+    if (m_syncLock) {
+        return;
+    }
+
+    // When the selection in the view changes, we need to update the
+    // toolbar's internal state so the buttons (Bold, etc.) reflect the selection.
+    if (m_toolbar && m_qgiAnno) {
+        QTextEdit* textEditChild = m_toolbar->findChild<QTextEdit*>();
+        if (textEditChild) {
+            m_syncLock = true;
+            textEditChild->setTextCursor(m_qgiAnno->textCursor());
+            m_syncLock = false;
+        }
+    }
+
+}
+
+void TaskRichAnno::onViewPositionChanged(const QPointF& scenePos)
+{
+    // Make sure you have a local variable for the QGVPage to make the code cleaner
+    QGVPage* graphicsView = nullptr;
+    if (m_view) {
+        graphicsView = m_view->getViewProviderPage()->getQGVPage();
+    }
+
+    if (m_toolbar && graphicsView && m_qgiAnno) {
+        // Get the item's bounding rectangle in Scene coordinates
+        QRectF itemRect = m_qgiAnno->mapToScene(m_qgiAnno->boundingRect()).boundingRect();
+
+        // Calculate the top-center point of the item in Scene coordinates
+        QPointF topCenterScenePos(itemRect.center().x(), itemRect.top());
+
+        // Map from scene using the correct QGVPage object
+        QPoint viewPos = graphicsView->mapFromScene(topCenterScenePos);
+
+        // Map the QGraphicsView point to global screen coordinates
+        QPoint globalPos = graphicsView->mapToGlobal(viewPos);
+
+        // Position the toolbar above this point, centered horizontally
+        int yOffset = 10;
+        QPoint toolbarPos(globalPos.x() - m_toolbar->width() / 2,
+                          globalPos.y() - m_toolbar->height() - yOffset);
+
+        m_toolbar->move(toolbarPos);
+
+        // Ensure the toolbar is raised to the top
+        m_toolbar->raise();
+    }
 }
 
 void TaskRichAnno::updateTask()
@@ -209,7 +376,7 @@ void TaskRichAnno::setUiPrimary()
 
 void TaskRichAnno::enableTextUi(bool enable)
 {
-    ui->richTextEditor->setEnabled(enable);
+    m_toolbar->setEnabled(enable);
 }
 
 void TaskRichAnno::setUiEdit()
@@ -224,7 +391,7 @@ void TaskRichAnno::setUiEdit()
             baseName = docObj->getNameInDocument();
         }
         ui->leBaseView->setText(QString::fromStdString(baseName));
-        ui->richTextEditor->setText(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
+        m_toolbar->setText(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
         ui->gbFrame->setChecked(m_annoFeat->ShowFrame.getValue());
     }
@@ -236,13 +403,6 @@ void TaskRichAnno::setUiEdit()
     }
 }
 
-
-// Slots for live updates
-void TaskRichAnno::onRichTextChanged() {
-    if (m_inProgressLock || !m_annoFeat) return;
-    m_annoFeat->AnnoText.setValue(ui->richTextEditor->toHtml().toUtf8());
-    m_annoFeat->requestPaint();
-}
 
 void TaskRichAnno::onMaxWidthChanged(double value)
 {
@@ -387,7 +547,7 @@ void TaskRichAnno::commonFeatureUpdate()
 //    Base::Console().message("TRA::commonFeatureUpdate()\n");
     if (!m_annoFeat) return;
 
-    m_annoFeat->AnnoText.setValue(ui->richTextEditor->toHtml().toUtf8());
+    m_annoFeat->AnnoText.setValue(m_toolbar->toHtml().toUtf8());
     m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
     m_annoFeat->ShowFrame.setValue(ui->gbFrame->isChecked());
 }
@@ -478,6 +638,10 @@ bool TaskRichAnno::accept()
         return false;
     }
 
+    if (m_qgiAnno) {
+        m_qgiAnno->setEditMode(false);
+    }
+
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
@@ -492,10 +656,16 @@ bool TaskRichAnno::reject()
         return false;
     }
 
+    if (m_qgiAnno) {
+        m_qgiAnno->setEditMode(false);
+    }
+
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    m_annoFeat->recomputeFeature();
+    if (!m_createMode) {  // Feature gone and m_annoFeat dangling if we are creating!
+        m_annoFeat->getDocument()->recompute();
+    }
 
     return true;
 }
