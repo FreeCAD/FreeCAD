@@ -35,7 +35,7 @@ statement: SELECT columns from_clause where_clause? group_by_clause? order_by_cl
 // or a function invocation that returns a set (e.g., CHILDREN(SELECT ...)).
 from_clause: FROM from_source
 from_source: CNAME | from_function
-from_function: CNAME "(" statement ")"
+from_function: CNAME "(" statement ("," operand)? ")"
 where_clause: WHERE boolean_expression
 group_by_clause: GROUP BY member_access ("," member_access)*
 order_by_clause: ORDER BY member_access ("," member_access)* (ASC | DESC)?
