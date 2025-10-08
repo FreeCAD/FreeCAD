@@ -27,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 from bimtests.TestArchBase import TestArchBase
 
+
 class TestArchBaseGui(TestArchBase):
     """
     The base class for all Arch/BIM GUI unit tests.
@@ -46,7 +47,7 @@ class TestArchBaseGui(TestArchBase):
         # Activating the workbench ensures all GUI commands are loaded and ready.
         # TODO: commenting out this line for now as it causes a timeout without further logging in
         # CI
-        #FreeCADGui.activateWorkbench("BIMWorkbench")
+        # FreeCADGui.activateWorkbench("BIMWorkbench")
 
     def setUp(self):
         """
@@ -64,10 +65,10 @@ class TestArchBaseGui(TestArchBase):
         """
         try:
             from PySide import QtCore
+
             loop = QtCore.QEventLoop()
             QtCore.QTimer.singleShot(int(timeout_ms), loop.quit)
             loop.exec_()
         except Exception:
             # Best-effort: if Qt isn't present or event pumping fails, continue.
             pass
-
