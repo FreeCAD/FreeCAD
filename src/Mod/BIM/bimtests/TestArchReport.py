@@ -11,6 +11,8 @@ import ArchReport
 from unittest.mock import patch
 from bimtests import TestArchBase
 from bimtests.fixtures.BimFixtures import create_test_model
+
+
 class TestArchReport(TestArchBase.TestArchBase):
 
     def setUp(self):
@@ -1661,12 +1663,9 @@ class TestArchReport(TestArchBase.TestArchBase):
         Arch.addComponents(window, host=wall)  # Wall hosts Window
         self.doc.recompute()
 
-        # Late import to allow the test to fail on a missing function
-        from ArchSql import _traverse_architectural_hierarchy
-
         # ACT: Run the traversal starting from the top-level object
         # We expect the initial object to be included in the results by default.
-        results = _traverse_architectural_hierarchy([floor])
+        results = ArchSql._traverse_architectural_hierarchy([floor])
         result_labels = sorted([obj.Label for obj in results])
 
         # ASSERT: The final list must contain the initial object and all its descendants.
@@ -1699,12 +1698,9 @@ class TestArchReport(TestArchBase.TestArchBase):
         group.addObject(space)
         self.doc.recompute()
 
-        # Import the function under test
-        from ArchSql import _traverse_architectural_hierarchy
-
         # ACT: Run the traversal, but this time with a flag to exclude groups
         # The new `include_groups_in_result=False` parameter will be used here.
-        results = _traverse_architectural_hierarchy(
+        results = ArchSql._traverse_architectural_hierarchy(
             [floor],
             include_groups_in_result=False
         )
@@ -1736,14 +1732,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         Arch.addComponents(window, host=wall)
         self.doc.recompute()
 
-        # Import the function under test
-        from ArchSql import _traverse_architectural_hierarchy
-
         # --- ACT & ASSERT ---
 
         # Sub-Test 1: max_depth = 1 (should find direct children only)
         with self.subTest(depth=1):
-            results_depth_1 = _traverse_architectural_hierarchy(
+            results_depth_1 = ArchSql._traverse_architectural_hierarchy(
                 [floor],
                 max_depth=1
             )
