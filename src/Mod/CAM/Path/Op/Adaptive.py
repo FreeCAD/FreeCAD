@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
 # *   Copyright (c) 2019-2021 Schildkroet                                   *
