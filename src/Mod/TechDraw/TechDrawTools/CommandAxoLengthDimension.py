@@ -61,9 +61,12 @@ class CommandAxoLengthDimension:
         App.setActiveTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
-        if Utils.getSelEdges(2):
-            edges = Utils.getSelEdges(2)
-            vertexes = Utils.getSelVertexes(0)
+
+        if not Utils.getSelEdges(2):
+            return
+            
+        edges = Utils.getSelEdges(2)
+        vertexes = Utils.getSelVertexes(0)
 
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
