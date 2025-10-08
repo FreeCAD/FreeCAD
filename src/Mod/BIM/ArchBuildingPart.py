@@ -60,6 +60,7 @@ else:
 unicode = str
 
 
+# fmt: off
 BuildingTypes = ['Undefined',
 'Agricultural - Barn',
 'Agricultural - Chicken coop or chickenhouse',
@@ -200,6 +201,7 @@ BuildingTypes = ['Undefined',
 'Other - Workshop',
 'Other - World trade centre'
 ]
+# fmt: on
 
 
 class BuildingPart(ArchIFC.IfcProduct):
