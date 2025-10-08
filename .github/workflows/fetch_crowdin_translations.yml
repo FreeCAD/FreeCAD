@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Qt ≥ 6.8
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           aqtversion: "==3.1.*"
           version: "6.8.3"
