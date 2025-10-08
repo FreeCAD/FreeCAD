@@ -24,7 +24,7 @@ jobs:
           arch: "linux_gcc_64"
 
       - name: Setup Python & dependencies
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: "3.x"
       - name: Install Python packages
