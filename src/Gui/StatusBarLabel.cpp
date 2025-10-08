@@ -42,7 +42,7 @@ StatusBarLabel::StatusBarLabel(QWidget *parent, const std::string& parameterName
             "User parameter:BaseApp/Preferences/MainWindow");
 
         // set visibility before storing parameterName to avoid saving it immediately
-        setVisible(hGrp->GetBool(parameterName.c_str(), false));
+        setVisible(hGrp->GetBool(parameterName.c_str(), true));
 
         // now we can store parameterName
         this->parameterName = parameterName;
