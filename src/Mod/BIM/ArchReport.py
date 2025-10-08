@@ -632,6 +632,46 @@ class _ArchReport:
         sp.recompute()
         sp.purgeTouched()
 
+    def __repr__(self):
+        """Provides an unambiguous representation for developers."""
+        return f"<BIM Report Label='{self.obj.Label}' Statements={len(self.live_statements)}>"
+
+    def __str__(self):
+        """
+        Provides a detailed, human-readable string representation of the report,
+        including the full SQL query for each statement.
+        """
+        num_statements = len(self.live_statements)
+        header = f"BIM Report: '{self.obj.Label}' ({num_statements} statements)"
+
+        lines = [header]
+        if not self.live_statements:
+            return header
+
+        for i, stmt in enumerate(self.live_statements, 1):
+            lines.append("")  # Add a blank line for spacing
+
+            # Build the flag string for the statement header
+            flags = []
+            if stmt.is_pipelined:
+                flags.append("Pipelined")
+            if stmt.use_description_as_header:
+                flags.append("Header")
+            flag_str = f" ({', '.join(flags)})" if flags else ""
+
+            # Add the statement header
+            lines.append(f"=== Statement [{i}]: {stmt.description}{flag_str} ===")
+
+            # Add the formatted SQL query
+            if stmt.query_string.strip():
+                query_lines = stmt.query_string.strip().split('\n')
+                for line in query_lines:
+                    lines.append(f"    {line}")
+            else:
+                lines.append("    (No query defined)")
+
+        return "\n".join(lines)
+
 
 class ViewProviderReport:
     """The ViewProvider for the ArchReport object."""
