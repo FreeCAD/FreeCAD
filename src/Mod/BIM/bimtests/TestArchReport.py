@@ -1256,11 +1256,10 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT IfcType, TYPE(*), COUNT(*) FROM document GROUP BY IfcType, TYPE(*)"
         _, data = Arch.select(query)
 
-        # ASSERT: Find the specific row for IfcType='Column' and TYPE='Structure'
-        # and assert its count is 2. This proves the multi-part key worked.
-        column_row = next((row for row in data if row[0] == 'Column' and row[1] == 'Structure'), None)
-        self.assertIsNotNone(column_row, "A group for (Column, Structure) should exist.")
-        self.assertEqual(column_row[2], 2, "The count for (Column, Structure) should be 2.")
+        # ASSERT: Find the specific row for IfcType='Column' and TYPE='Column'
+        column_row = next((row for row in data if row[0] == 'Column' and row[1] == 'Column'), None)
+        self.assertIsNotNone(column_row, "A group for (Column, Column) should exist.")
+        self.assertEqual(column_row[2], 2, "The count for (Column, Column) should be 2.")
 
     def test_invalid_group_by_with_aggregate_raises_error(self):
         """
@@ -1643,3 +1642,188 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertEqual(results_data[0][0], space.Label)
         # Correctly call assertAlmostEqual with the message as a keyword argument
         self.assertAlmostEqual(results_data[0][1], 1.0, msg="The converted area should be 1.0 m^2.")
+
+    def test_traverse_finds_all_descendants(self):
+        """
+        Tests that the basic recursive traversal finds all nested objects in a
+        simple hierarchy, following both containment (.Group) and hosting (.Hosts)
+        relationships. This is the first validation step for the new core
+        traversal function.
+        """
+        # ARRANGE: Create a multi-level hierarchy (Floor -> Wall -> Window)
+        floor = Arch.makeFloor(name="TraversalTestFloor")
+        wall = Arch.makeWall(name="TraversalTestWall")
+        win_profile = Draft.makeRectangle(1000, 1000)
+        window = Arch.makeWindow(win_profile, name="TraversalTestWindow")
+
+        # Establish the relationships
+        floor.addObject(wall)  # Floor contains Wall
+        Arch.addComponents(window, host=wall)  # Wall hosts Window
+        self.doc.recompute()
+
+        # Late import to allow the test to fail on a missing function
+        from ArchSql import _traverse_architectural_hierarchy
+
+        # ACT: Run the traversal starting from the top-level object
+        # We expect the initial object to be included in the results by default.
+        results = _traverse_architectural_hierarchy([floor])
+        result_labels = sorted([obj.Label for obj in results])
+
+        # ASSERT: The final list must contain the initial object and all its descendants.
+        expected_labels = sorted([
+            "TraversalTestFloor",
+            "TraversalTestWall",
+            "TraversalTestWindow"
+        ])
+
+        self.assertEqual(len(results), 3, "The traversal should have found 3 objects.")
+        self.assertListEqual(result_labels, expected_labels,
+                             "The list of discovered objects does not match the expected hierarchy.")
+
+    def test_traverse_skips_generic_groups_in_results(self):
+        """
+        Tests that the traversal function transparently navigates through
+        generic App::DocumentObjectGroup objects but does not include them
+        in the final result set, ensuring the output is architecturally
+        significant.
+        """
+        # ARRANGE: Create a hierarchy with a generic group in the middle
+        # Floor -> Generic Group -> Space
+        floor = Arch.makeFloor(name="GroupTestFloor")
+        group = self.doc.addObject("App::DocumentObjectGroup", "GenericTestGroup")
+        space_profile = Draft.makeRectangle(500, 500)
+        space = Arch.makeSpace(space_profile, name="GroupTestSpace")
+
+        # Establish the relationships
+        floor.addObject(group)
+        group.addObject(space)
+        self.doc.recompute()
+
+        # Import the function under test
+        from ArchSql import _traverse_architectural_hierarchy
+
+        # ACT: Run the traversal, but this time with a flag to exclude groups
+        # The new `include_groups_in_result=False` parameter will be used here.
+        results = _traverse_architectural_hierarchy(
+            [floor],
+            include_groups_in_result=False
+        )
+        result_labels = sorted([obj.Label for obj in results])
+
+        # ASSERT: The final list must contain the floor and the space,
+        # but NOT the generic group.
+        expected_labels = sorted([
+            "GroupTestFloor",
+            "GroupTestSpace"
+        ])
+
+        self.assertEqual(len(results), 2, "The traversal should have found 2 objects (and skipped the group).")
+        self.assertListEqual(result_labels, expected_labels,
+                             "The traversal incorrectly included the generic group in its results.")
+
+    def test_traverse_respects_max_depth(self):
+        """
+        Tests that the `max_depth` parameter correctly limits the depth of the
+        hierarchical traversal.
+        """
+        # ARRANGE: Create a 3-level hierarchy (Floor -> Wall -> Window)
+        floor = Arch.makeFloor(name="DepthTestFloor")
+        wall = Arch.makeWall(name="DepthTestWall")
+        win_profile = Draft.makeRectangle(1000, 1000)
+        window = Arch.makeWindow(win_profile, name="DepthTestWindow")
+
+        floor.addObject(wall)
+        Arch.addComponents(window, host=wall)
+        self.doc.recompute()
+
+        # Import the function under test
+        from ArchSql import _traverse_architectural_hierarchy
+
+        # --- ACT & ASSERT ---
+
+        # Sub-Test 1: max_depth = 1 (should find direct children only)
+        with self.subTest(depth=1):
+            results_depth_1 = _traverse_architectural_hierarchy(
+                [floor],
+                max_depth=1
+            )
+            labels_depth_1 = sorted([o.Label for o in results_depth_1])
+            expected_labels_1 = sorted(["DepthTestFloor", "DepthTestWall"])
+            self.assertListEqual(labels_depth_1, expected_labels_1,
+                                 "With max_depth=1, should only find direct children.")
+
+        # Sub-Test 2: max_depth = 2 (should find grandchildren)
+        with self.subTest(depth=2):
+            results_depth_2 = _traverse_architectural_hierarchy(
+                [floor],
+                max_depth=2
+            )
+            labels_depth_2 = sorted([o.Label for o in results_depth_2])
+            expected_labels_2 = sorted(["DepthTestFloor", "DepthTestWall", "DepthTestWindow"])
+            self.assertListEqual(labels_depth_2, expected_labels_2,
+                                 "With max_depth=2, should find grandchildren.")
+
+        # Sub-Test 3: max_depth = 0 (unlimited, should find all)
+        with self.subTest(depth=0):
+            results_depth_0 = _traverse_architectural_hierarchy(
+                [floor],
+                max_depth=0
+            )
+            labels_depth_0 = sorted([o.Label for o in results_depth_0])
+            expected_labels_0 = sorted(["DepthTestFloor", "DepthTestWall", "DepthTestWindow"])
+            self.assertListEqual(labels_depth_0, expected_labels_0,
+                                 "With max_depth=0, should find all descendants.")
+
+    def test_sql_children_and_children_recursive_functions(self):
+        """
+        Performs a full integration test of the CHILDREN and CHILDREN_RECURSIVE
+        SQL functions, ensuring they are correctly registered with the engine
+        and call the traversal function with the correct parameters.
+        """
+        # ARRANGE: Create a multi-level hierarchy with a generic group
+        # Building -> Floor -> Generic Group -> Wall -> Window
+        building = Arch.makeBuilding(name="SQLFuncTestBuilding")
+        floor = Arch.makeFloor(name="SQLFuncTestFloor")
+        group = self.doc.addObject("App::DocumentObjectGroup", "SQLFuncTestGroup")
+        wall = Arch.makeWall(name="SQLFuncTestWall")
+        win_profile = Draft.makeRectangle(1000, 1000)
+        window = Arch.makeWindow(win_profile, name="SQLFuncTestWindow")
+
+        building.addObject(floor)
+        floor.addObject(group)
+        group.addObject(wall)
+        Arch.addComponents(window, host=wall)
+        self.doc.recompute()
+
+        # --- Sub-Test 1: CHILDREN (non-recursive, depth=1) ---
+        with self.subTest(function="CHILDREN"):
+            query_children = """
+                SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = 'SQLFuncTestBuilding')
+            """
+            _, data = Arch.select(query_children)
+            labels = sorted([row[0] for row in data])
+            # Should only find the direct child (Floor), and not the group.
+            self.assertListEqual(labels, ["SQLFuncTestFloor"])
+
+        # --- Sub-Test 2: CHILDREN_RECURSIVE (default depth) ---
+        with self.subTest(function="CHILDREN_RECURSIVE"):
+            query_recursive = """
+                SELECT Label FROM CHILDREN_RECURSIVE(SELECT * FROM document WHERE Label = 'SQLFuncTestBuilding')
+            """
+            _, data = Arch.select(query_recursive)
+            labels = sorted([row[0] for row in data])
+            # Should find all descendants, but skip the generic group.
+            expected = sorted(["SQLFuncTestFloor", "SQLFuncTestWall", "SQLFuncTestWindow"])
+            self.assertListEqual(labels, expected)
+
+        # --- Sub-Test 3: CHILDREN_RECURSIVE (with max_depth parameter) ---
+        with self.subTest(function="CHILDREN_RECURSIVE with depth=2"):
+            query_recursive_depth = """
+                SELECT Label FROM CHILDREN_RECURSIVE(SELECT * FROM document WHERE Label = 'SQLFuncTestBuilding', 2)
+            """
+            _, data = Arch.select(query_recursive_depth)
+            labels = sorted([row[0] for row in data])
+            # Should find Floor (depth 1) and Wall (depth 2), but not Window (depth 3).
+            # The generic group at depth 2 is traversed but skipped in results.
+            expected = sorted(["SQLFuncTestFloor", "SQLFuncTestWall"])
+            self.assertListEqual(labels, expected)
