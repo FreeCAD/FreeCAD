@@ -1827,3 +1827,46 @@ class TestArchReport(TestArchBase.TestArchBase):
             # The generic group at depth 2 is traversed but skipped in results.
             expected = sorted(["SQLFuncTestFloor", "SQLFuncTestWall"])
             self.assertListEqual(labels, expected)
+
+    def test_default_header_uses_internal_units(self):
+        """
+        Tests that when a Quantity property is selected, the generated header
+        uses the object's internal unit (e.g., 'mm') to match the raw data.
+        This test temporarily changes the unit schema to ensure it is
+        independent of user preferences.
+        """
+        # ARRANGE: Get the user's current schema to restore it later.
+        original_schema_index = FreeCAD.Units.getSchema()
+
+        try:
+            # Get the list of available schema names.
+            schema_names = FreeCAD.Units.listSchemas()
+            # Find the index for "Meter decimal", which is guaranteed to use 'm'.
+            meter_schema_index = schema_names.index("MeterDecimal")
+
+            # Set the schema, forcing getUserPreferred() to return 'm'.
+            FreeCAD.Units.setSchema(meter_schema_index)
+
+            # ARRANGE: Create a simple object with a known internal unit ('mm').
+            box = self.doc.addObject("Part::Box", "UnitHeaderTestBox")
+            box.Length = 1500.0  # This is 1500 mm
+            self.doc.recompute()
+
+            report = Arch.makeReport(name="UnitHeaderTestReport")
+            report.Proxy.live_statements[0].query_string = "SELECT Label, Length FROM document WHERE Name = 'UnitHeaderTestBox'"
+            report.Proxy.commit_statements()
+
+            # ACT: Execute the report.
+            self.doc.recompute()
+
+            # ASSERT: Check the headers in the resulting spreadsheet.
+            spreadsheet = report.Target
+            self.assertIsNotNone(spreadsheet)
+
+            header_length = spreadsheet.get('B1')
+
+            self.assertEqual(header_length, "Length (mm)")
+
+        finally:
+            # CLEANUP: Always restore the user's original schema.
+            FreeCAD.Units.setSchema(original_schema_index)
