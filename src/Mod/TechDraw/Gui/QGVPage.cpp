@@ -393,6 +393,15 @@ void QGVPage::keyPressEvent(QKeyEvent* event)
         toolHandler->keyPressEvent(event);
     }
     else {
+        if (scene() && scene()->focusItem() != nullptr) {
+            // The event belongs to the focused item. The base QGraphicsView implementation
+            // will handle forwarding it correctly.
+            QGraphicsView::keyPressEvent(event);
+
+            // We MUST return here to prevent the navigation style from also
+            // processing (and likely consuming) the event.
+            return;
+        }
         m_navStyle->handleKeyPressEvent(event);
     }
     if (!event->isAccepted()) {

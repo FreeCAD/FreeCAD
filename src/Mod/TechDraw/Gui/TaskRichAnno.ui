@@ -6,21 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
-    <height>200</height>
+    <width>150</width>
+    <height>80</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>580</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Rich Text Annotation Block</string>
@@ -31,218 +19,156 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <widget class="QLabel" name="label_BaseFeature">
+     <property name="text">
+      <string>Base feature</string>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="leBaseView">
+     <property name="enabled">
+      <bool>false</bool>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_MaxWidth">
+     <property name="text">
+      <string>Width</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::QuantitySpinBox" name="dsbMaxWidth">
+     <property name="toolTip">
+      <string>Maximal width of the annotation block, if -1 then automatic width</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="minimum">
+      <double>-1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>-1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbFrame">
+     <property name="title">
+      <string>Frame</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_FrameProperties">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
       <item row="0" column="0">
-       <layout class="QFormLayout" name="formLayout_Base">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_BaseFeature">
-          <property name="text">
-           <string>Base feature</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="leBaseView">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="label_frameThickness">
+        <property name="text">
+         <string>Thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dsbWidth">
+        <property name="toolTip">
+         <string>Line width</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label_patternThickness">
+        <property name="text">
+         <string>Style</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="MRichTextEdit" name="richTextEditor">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cFrameStyle">
+        <property name="toolTip">
+         <string>Line style</string>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>150</height>
-         </size>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>NoLine</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Continuous</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dash</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DashDot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DashDotDot</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_colorThickness">
+        <property name="text">
+         <string>Color</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_BottomControls">
-        <item>
-         <widget class="QGroupBox" name="gbSize">
-          <property name="title">
-           <string>Size</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_FrameProperties">
-           <property name="leftMargin">
-            <number>6</number>
-           </property>
-           <property name="topMargin">
-            <number>6</number>
-           </property>
-           <property name="rightMargin">
-            <number>6</number>
-           </property>
-           <property name="bottomMargin">
-            <number>4</number>
-           </property>
-            <item>
-             <widget class="QLabel" name="label_MaxWidth">
-              <property name="text">
-               <string>Width</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="Gui::QuantitySpinBox" name="dsbMaxWidth">
-              <property name="toolTip">
-               <string>Maximal width of the annotation block, if -1 then automatic width</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="minimum">
-               <double>-1.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>-1.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_BottomControls">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="gbFrame">
-          <property name="title">
-           <string>Frame</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_FrameProperties">
-           <property name="leftMargin">
-            <number>6</number>
-           </property>
-           <property name="topMargin">
-            <number>6</number>
-           </property>
-           <property name="rightMargin">
-            <number>6</number>
-           </property>
-           <property name="bottomMargin">
-            <number>4</number>
-           </property>
-           <item>
-            <widget class="Gui::QuantitySpinBox" name="dsbWidth">
-             <property name="toolTip">
-              <string>Line width</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="singleStep">
-              <double>0.100000000000000</double>
-             </property>
-             <property name="value">
-              <double>0.500000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="cFrameStyle">
-             <property name="toolTip">
-              <string>Line style</string>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <item>
-              <property name="text">
-               <string>NoLine</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Continuous</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Dash</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Dot</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>DashDot</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>DashDotDot</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <widget class="Gui::ColorButton" name="cpFrameColor">
-             <property name="toolTip">
-              <string>Line color</string>
-             </property>
-             <property name="color">
-              <color>
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
+      <item row="2" column="1">
+       <widget class="Gui::ColorButton" name="cpFrameColor">
+        <property name="toolTip">
+         <string>Line color</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -259,11 +185,6 @@
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>MRichTextEdit</class>
-   <extends>QWidget</extends>
-   <header>mrichtextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

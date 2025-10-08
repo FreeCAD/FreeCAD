@@ -33,6 +33,9 @@
 # include <QTextBlock>
 # include <QTextCursor>
 # include <QTextDocumentFragment>
+# include <QTimer>
+# include <QGraphicsScene>
+# include <QGraphicsView>
 
 #include <App/Application.h>
 #include <Gui/Command.h>
@@ -70,7 +73,8 @@ QGIRichAnno::QGIRichAnno() :
     m_dragStartMouseScenePos(),
     m_initialItemScenePos(),
     m_initialTextWidthScene(0.0), 
-    m_frameWasHiddenOnHoverEnter(false)
+    m_frameWasHiddenOnHoverEnter(false),
+    m_isEditing(false)
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(true); // Enable hover events for cursor changes
@@ -93,6 +97,11 @@ QGIRichAnno::QGIRichAnno() :
 
     setZValue(ZVALUE::DIMENSION);
 
+    connect(m_text->document(),
+            &QTextDocument::contentsChanged,
+            this,
+            &QGIRichAnno::onContentsChanged);
+    connect(m_text, &QGCustomText::selectionChanged, this, &QGIRichAnno::selectionChanged);
 }
 
 void QGIRichAnno::updateView(bool update)
@@ -162,21 +171,16 @@ void QGIRichAnno::setTextItem()
 //    Base::Console().message("QGIRA::setTextItem() - %s - exportingSvg: %d\n", getViewName(), getExportingSvg());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
 
-    // convert the text size
-    QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
-    QString outHtml = convertTextSizes(inHtml);
+    updateLayout();
 
-    //position the text
-    prepareGeometryChange();
-    // control auto line break
-    if (annoFeat->MaxWidth.getValue() > 0.0) {
-        // we have set a maximum width, so convert it to scene units
-        m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
-    } else {
-        // we don't want to break lines
-        m_text->setTextWidth(annoFeat->MaxWidth.getValue());
+    // convert the text size
+    if (!m_isEditing) {
+        // This block now only runs on initial draw, or after an edit is finished.
+        QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
+        QString outHtml = convertTextSizes(inHtml);
+        m_text->setHtml(outHtml);
     }
-    m_text->setHtml(outHtml);
+
     if (getExportingSvg()) {
         // lines are correctly spaced on screen or in pdf, but svg needs this
         setLineSpacing(100);
@@ -197,10 +201,10 @@ void QGIRichAnno::setTextItem()
         m_rect->setPos(m_text->pos().x() - frameMargin, m_text->pos().y() - frameMargin);
     }
 
-    if (annoFeat->ShowFrame.getValue() || m_isResizing) {
-        m_rect->show();
-    } else {
-        m_rect->hide();
+    m_rect->setVisible(annoFeat->ShowFrame.getValue() || m_isResizing);
+
+    if (m_isEditing) {
+        Q_EMIT positionChanged(scenePos());
     }
 }
 
@@ -528,6 +532,13 @@ void QGIRichAnno::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         // and the item's scene position (this->pos()) will be updated by QGIView::itemChange
         // reacting to the X property change.
 
+        // Emit initial position. This should happen after the geometry update.
+        QTimer::singleShot(0, this, [this]() {
+            if (this && scene()) {
+                Q_EMIT positionChanged(scenePos());
+            }
+        });
+
         event->accept();
     }
     else {
@@ -551,6 +562,8 @@ void QGIRichAnno::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         m_isDraggingMidResize = false;
         m_currentResizeHandle = ResizeHandle::NoHandle;
         setCursor(Qt::ArrowCursor);  // Reset cursor
+
+        Q_EMIT positionChanged(scenePos());
 
         if (!isUnderMouse()) {
             QGraphicsSceneHoverEvent leaveEvent(QEvent::GraphicsSceneHoverLeave);
@@ -588,6 +601,137 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
         return;
     }
     vp->doubleClicked();
+}
+
+void QGIRichAnno::setEditMode(bool enable)
+{
+    m_isEditing = enable;
+    if (enable) {
+        m_text->setTextInteractionFlags(Qt::TextEditorInteraction);
+        // Maybe change border to indicate editing
+        m_rect->setPen(QPen(Qt::DashLine));
+        m_rect->show();  // Ensure frame is visible during editing
+
+        
+        QTextCursor cursor = m_text->textCursor();
+
+        // Check if the document is empty. If so, create a default format.
+        if (m_text->document()->isEmpty()) {
+            // Document is empty, so we need to create a default style from scratch.
+            // Let's use the default label font from preferences.
+            QFont font = PreferencesGui::labelFontQFont();
+
+            // We need to convert its point size to scene units, just like in convertTextSizes.
+            constexpr double mmPerPoint {0.353};
+            double sceneUnitsPerPoint = Rez::getRezFactor() * mmPerPoint;
+            double sceneUnitFontSize = font.pointSizeF() * sceneUnitsPerPoint;
+
+            QTextCharFormat defaultFormat;
+            defaultFormat.setFontPointSize(sceneUnitFontSize);
+            cursor.setCharFormat(defaultFormat);
+        }
+        else {
+            // Document has content. Let's use the format of the first character
+            // as the default for any new text.
+            cursor.setPosition(0);
+            QTextCharFormat formatAtStart = cursor.charFormat();
+
+            // Move the cursor back to its original position (or end of document)
+            cursor.movePosition(QTextCursor::End);
+
+            // Apply the format from the start of the document to the current cursor position.
+            // This sets the "default" format for subsequent typing.
+            cursor.setCharFormat(formatAtStart);
+        }
+
+        // IMPORTANT: Apply the modified cursor back to the text item.
+        m_text->setTextCursor(cursor);
+
+        if (scene()) {
+            if (!scene()->views().isEmpty()) {
+                scene()->views().first()->setFocus();
+            }
+
+            scene()->setFocusItem(m_text, Qt::OtherFocusReason);
+        }
+
+        Q_EMIT positionChanged(scenePos());
+    }
+    else {
+        m_text->setTextInteractionFlags(Qt::NoTextInteraction);
+        m_text->clearFocus();
+        clearFocus();
+        // Restore normal border
+        m_rect->setPen(rectPen());
+        // Hide frame if it's supposed to be hidden
+        if (!getFeature()->ShowFrame.getValue()) {
+            m_rect->hide();
+        }
+    }
+    update();
+}
+
+QTextDocument* QGIRichAnno::document() const
+{
+    return m_text->document();
+}
+
+QTextCursor QGIRichAnno::textCursor() const
+{
+    return m_text->textCursor();
+}
+
+void QGIRichAnno::setTextCursor(const QTextCursor& cursor)
+{
+    m_text->setTextCursor(cursor);
+}
+
+void QGIRichAnno::onContentsChanged()
+{
+    // Only process changes when in edit mode to avoid loops during setup
+    if (m_isEditing) {
+        // Update the feature property in real-time
+        getFeature()->AnnoText.setValue(m_text->toHtml().toUtf8());
+        // Emit signal for the task panel
+        Q_EMIT textChanged();
+    }
+}
+
+QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant& value)
+{
+
+    if (change == QGraphicsItem::ItemScenePositionHasChanged
+        && scene()) {
+        Q_EMIT positionChanged(scenePos());
+    }
+    return QGIView::itemChange(change, value);
+}
+
+void QGIRichAnno::updateLayout()
+{
+    TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (!annoFeat || !m_text) {
+        return;
+    }
+
+    prepareGeometryChange();
+
+    // This is the crucial part. We re-apply the width constraint
+    // from the feature to the QGraphicsTextItem.
+    double maxWidth = annoFeat->MaxWidth.getValue();
+    if (maxWidth > 0.0) {
+        m_text->setTextWidth(Rez::guiX(maxWidth));
+    }
+    else {
+        m_text->setTextWidth(-1.0);
+    }
+
+    // Now that the width is correctly configured, we can trigger the geometry update.
+    update();
+
+    if (scene()) {
+        Q_EMIT positionChanged(scenePos());
+    }
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>

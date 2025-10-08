@@ -103,8 +103,17 @@ public:
         return m_isExportingSvg;
     }
 
+    void setEditMode(bool enable);
+    QTextDocument* document() const;
+    QTextCursor textCursor() const;
+    void setTextCursor(const QTextCursor& cursor);
+    void updateLayout();
+
     Q_SIGNALS:
     void widthChanged();
+    void textChanged();
+    void selectionChanged();
+    void positionChanged(const QPointF& scenePos);
 
 protected:
     void draw() override;
@@ -121,6 +130,8 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
     QString convertTextSizes(const QString& inHtml) const;
+
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
     bool m_isExportingPdf;
     bool m_isExportingSvg;
@@ -139,6 +150,11 @@ protected:
 
     static const double HandleInteractionMargin;  // Margin for grabbing handles (scene units)
     static const double MinTextWidthDocument;     // Minimum resizable width (document units)
+
+    bool m_isEditing;
+
+private Q_SLOTS:
+    void onContentsChanged();
 };
 
 }  // namespace TechDrawGui
