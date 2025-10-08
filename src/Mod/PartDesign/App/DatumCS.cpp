@@ -21,12 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <gp_Pln.hxx>
-#endif
+
 
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/OCCError.h>

@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERSCALE_H
 #define PARTGUI_VIEWPROVIDERSCALE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProvider.h"
 
 

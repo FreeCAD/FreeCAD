@@ -309,3 +309,5 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
             else:
                 self.coords.point.deleteValues(0)
+        else:
+            ArchComponent.ViewProviderComponent.updateData(self,obj,prop)

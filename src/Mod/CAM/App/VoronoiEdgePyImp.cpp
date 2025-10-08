@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Geom_Parabola.hxx>
-#endif
+
 
 #include "Mod/Part/App/Geometry.h"
 #include "Mod/Part/App/TopoShapeEdgePy.h"

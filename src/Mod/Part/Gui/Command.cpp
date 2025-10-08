@@ -21,15 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QFileInfo>
 # include <QPointer>
 # include <QString>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
@@ -1067,7 +1065,7 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import Curve Net"));
         doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
         commitCommand();

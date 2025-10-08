@@ -21,11 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMenu>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -78,24 +76,6 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
     return new TaskDlgPipeParameters(this, false);
 }
-
-bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
-{/*
-    PartDesign::Pipe* pcPipe = getObject<PartDesign::Pipe>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcPipe->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPipe->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-*/
-    return ViewProvider::onDelete(s);
-}
-
-
 
 void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, bool on)
 {

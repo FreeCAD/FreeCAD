@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <Precision.hxx>
 # include <TopExp.hxx>
@@ -29,7 +29,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include <Base/Exception.h>
 
@@ -54,22 +54,38 @@ App::DocumentObjectExecReturn *Fillet::execute()
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        auto baseShape = Feature::getShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
-        TopoShape baseTopoShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+    TopoShape baseTopoShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        auto baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
         TopTools_IndexedMapOfShape mapOfShape;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
-        const auto &vals = EdgeLinks.getSubValues();
+        std::vector<Part::FilletElement> edges = Edges.getValues();
+        std::string fullErrMsg;
+
+        const auto &vals = EdgeLinks.getSubValues(true);
         const auto &subs = EdgeLinks.getShadowSubs();
         if(subs.size()!=(size_t)Edges.getSize())
             return new App::DocumentObjectExecReturn("Edge link size mismatch");
         size_t i=0;
-        for(const auto &info : Edges.getValues()) {
+        for(const auto &info : edges) {
             auto &sub = subs[i];
-            auto &ref = sub.newName.size()?sub.newName:vals[i];
+            auto &ref = sub.newName.empty() ? vals[i] : sub.newName;
+            auto &oldName = sub.oldName.empty() ? "" : sub.oldName;
             ++i;
+
+            if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
+                fullErrMsg.append("Missing edge link: ");
+                fullErrMsg.append(ref);
+                fullErrMsg.append("\n");
+
+                auto removeIt = std::remove(edges.begin(), edges.end(), info);
+                edges.erase(removeIt, edges.end());
+
+                continue;
+            }
+
             // Toponaming project March 2024:  Replaced this code because it wouldn't work:
 //            TopoDS_Shape edge;
 //            try {
@@ -77,19 +93,26 @@ App::DocumentObjectExecReturn *Fillet::execute()
 //            }catch(...){}
             auto id = Data::MappedName(ref.c_str()).toIndexedName().getIndex();
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges.FindKey(id));
+
             if(edge.IsNull())
-                return new App::DocumentObjectExecReturn("Invalid edge link");
+                return new App::DocumentObjectExecReturn("Invalid edge link");                
+
             double radius1 = info.radius1;
             double radius2 = info.radius2;
             mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
         }
+
+        if (!fullErrMsg.empty()) {
+            return new App::DocumentObjectExecReturn(fullErrMsg);
+        }
+        Edges.setValues(edges);
 
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopoShape res(0);
-        this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
+        this->Shape.setValue(res.makeElementShape(mkFillet, baseTopoShape, Part::OpCodes::Fillet));
         return Part::FilletBase::execute();
     }
     catch (Standard_Failure& e) {

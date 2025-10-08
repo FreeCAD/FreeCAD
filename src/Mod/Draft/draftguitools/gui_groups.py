@@ -70,7 +70,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToGroup",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group…"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds selected objects to a group, or removes them from any group")}
 
     def Activated(self):
@@ -167,7 +167,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_SelectGroup",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_SelectGroup", "Select Group"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects the contents of selected groups. For selected non-group objects, the contents of the goup they are in are selected.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.")}
 
     def Activated(self):
         """Execute when the command is called."""

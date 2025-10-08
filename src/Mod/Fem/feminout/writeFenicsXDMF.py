@@ -51,9 +51,9 @@ FreeCAD_to_Fenics_XDMF_dict = {
     ("Edge", 1): ("Polyline", 2),
     ("Edge", 2): ("Edge_3", 3),
     ("Triangle", 1): ("Triangle", 3),
-    ("Triangle", 2): ("Tri_6", 6),
+    ("Triangle", 2): ("Triangle_6", 6),
     ("Tetra", 1): ("Tetrahedron", 4),
-    ("Tetra", 2): ("Tet_10", 10),
+    ("Tetra", 2): ("Tetrahedron_10", 10),
 }
 
 # we need numpy functions to later access and process large data sets in a fast manner

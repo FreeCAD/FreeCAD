@@ -21,9 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
+#ifdef FC_OS_WIN32
+#include <Windows.h>
+#elif defined(Q_OS_UNIX)
+# include <sys/types.h>
+# include <ctime>
+# include <unistd.h>
+#endif
+
 # include <sstream>
 # include <QAbstractSpinBox>
 # include <QByteArray>
@@ -33,16 +40,12 @@
 # include <QFileOpenEvent>
 # include <QSessionManager>
 # include <QTimer>
-#endif
+
 
 #include <QLocalServer>
 #include <QLocalSocket>
 
-#if defined(Q_OS_UNIX)
-# include <sys/types.h>
-# include <ctime>
-# include <unistd.h>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>

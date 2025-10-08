@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QApplication>
 #include <QClipboard>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QString>
-#endif
+
 
 #include "TextDocumentEditorView.h"
 #include "Application.h"

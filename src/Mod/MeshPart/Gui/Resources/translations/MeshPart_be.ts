@@ -4,55 +4,53 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>MeshPart</source>
-      <translation>Паліганальная сетка Дэталяў</translation>
+      <translation>Паліганальная сетка дэталяў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <source>Cross-sections...</source>
-      <translation>Папярочныя перасекі...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="275"/>
-      <source>Cross-sections</source>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Cross-Sections</source>
       <translation>Папярочныя перасекі</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="273"/>
+      <source>Applies cross-sections to the mesh</source>
+      <translation>Прымяняе папярочныя перасекі паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Mesh</source>
       <translation>Паліганальная сетка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
-      <source>Curve on mesh...</source>
-      <translation>Крывая на паліганальнай сетцы...</translation>
+      <location filename="../../Command.cpp" line="308"/>
+      <source>Curve on Mesh</source>
+      <translation>Крывая на паліганальнай сетцы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
-      <source>Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</source>
-      <translation>Стварае набліжаную крывую - над паліганальнай сеткай.
-Каманда працуе толькі з аб'ектам 'паліганальная сетка'.</translation>
+      <location filename="../../Command.cpp" line="309"/>
+      <source>Creates an approximated curve on top of a mesh object</source>
+      <translation>Стварае набліжаную крывую па-над аб'ектам паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Mesh</source>
       <translation>Паліганальная сетка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
-      <source>Create mesh from shape...</source>
-      <translation>Стварыць паліганальную сетку з фігуры...</translation>
+      <location filename="../../Command.cpp" line="57"/>
+      <source>Mesh From Shape</source>
+      <translation>Паліганальная сетка з фігуры</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Tessellate shape</source>
       <translation>Мазаічная фігура</translation>
     </message>
@@ -60,17 +58,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Mesh</source>
       <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="189"/>
-      <source>Create section from mesh and plane</source>
-      <translation>Стварыць перасек з паліганальнай сеткі і плоскасці</translation>
+      <source>Creates a section from a mesh and plane</source>
+      <translation>Стварае перасек з паліганальнай сеткі і плоскасці</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Section</source>
       <translation>Перасек</translation>
     </message>
@@ -78,18 +76,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Mesh</source>
       <translation>Паліганальная сетка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <source>Trim mesh with a plane</source>
-      <translation>Абрэзаць паліганальную сетку плоскасцю</translation>
+      <location filename="../../Command.cpp" line="83"/>
+      <source>Trim Mesh</source>
+      <translation>Абрэзаць паліганальную сетку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trims a mesh with a plane</source>
       <translation>Абразае паліганальную сетку плоскасцю</translation>
     </message>
@@ -97,12 +94,12 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Trim with plane</source>
       <translation>Абрэзаць плоскасцю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Section with plane</source>
       <translation>Перасек плоскасцю</translation>
     </message>
@@ -111,12 +108,12 @@ This command only works with a 'mesh' object.</source>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
-      <source>Cross sections</source>
+      <source>Cross Sections</source>
       <translation>Папярочныя перасекі</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
-      <source>Guiding plane</source>
+      <source>Guiding Plane</source>
       <translation>Плоскасць накірунку</translation>
     </message>
     <message>
@@ -136,8 +133,13 @@ This command only works with a 'mesh' object.</source>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
-      <source>Position:</source>
-      <translation>Становішча:</translation>
+      <source>Position</source>
+      <translation>Становішча</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="109"/>
+      <source>Distance</source>
+      <translation>Адлегласць</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -155,11 +157,6 @@ This command only works with a 'mesh' object.</source>
       <translation>Колькасць</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.ui" line="109"/>
-      <source>Distance:</source>
-      <translation>Адлегласць:</translation>
-    </message>
-    <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
       <translation>Налады</translation>
@@ -170,7 +167,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Злучыць рэбры, калі адлегласць меней, чым</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="381"/>
       <source>Failure</source>
       <translation>Няўдача</translation>
     </message>
@@ -178,33 +175,33 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Create</source>
       <translation>Стварыць</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Close wire</source>
       <translation>Замкнуць ломаную лінію</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Clear</source>
       <translation>Ачысціць</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Cancel</source>
       <translation>Скасаваць</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
-      <source>Wrong mesh picked</source>
+      <location filename="../../CurveOnMesh.cpp" line="620"/>
+      <source>Wrong mesh selected</source>
       <translation>Абрана няправільная паліганальная сетка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
-      <source>No point was picked</source>
+      <location filename="../../CurveOnMesh.cpp" line="659"/>
+      <source>No point was selected</source>
       <translation>Не абрана ніводнай кропкі</translation>
     </message>
   </context>
@@ -212,17 +209,20 @@ This command only works with a 'mesh' object.</source>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
-      <source>Curve on mesh</source>
+      <source>Curve on Mesh</source>
       <translation>Крывая на паліганальнай сетцы</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>Націсніце 'Пуск', потым абярыце кропкі на паліганальнай сетцы; калі будзе дастатковуя колькасць кропак, пстрыкніце правай кнопкай мышы і абярыце 'Стварыць'. Паўтарыце гэты працэс, каб стварыць больш сплайнаў. Зачыніце гэтую панэль задач, каб завяршыць аперацыю.
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+      <translation>Націсніце 'Пуск', потым абярыце кропкі на паліганальнай сетцы; калі будзе дастатковая колькасць кропак, пстрыкніце правай кнопкай мышы і абярыце 'Стварыць'.
+Паўтарыце працэс, каб стварыць больш сплайнаў.
+Зачыніце гэтую панэль задач, каб завяршыць аперацыю.
 
-Каманда працуе толькі з аб'ектам 'паліганальная сетка', а не з звычайнымі гранямі ці паверхнямі. Каб пераўтварыць аб'ект у паліганальную сетку, ужывайце інструменты варштата Паліганальная сетка.</translation>
+Каманда працуе толькі з аб'ектам 'паліганальная сетка', а не з звычайнымі гранямі ці паверхнямі.
+Каб пераўтварыць аб'ект у паліганальную сетку, ужывайце інструменты варштата Паліганальная сетка.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -278,11 +278,6 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>Брукаванне</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="20"/>
-      <source>Meshing options</source>
-      <translation>Налады паліганальнай сеткі</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
       <translation>Звычайны</translation>
@@ -293,31 +288,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>Ужываць стандартны стваральнік паліганальных сетак</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="41"/>
-      <source>Surface deviation:</source>
-      <translation>Адхіленне паверхні:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
       <translation>Найбольшае лінейнае адхіленне сегмента паліганальнай сеткі ад паверхні аб'екта</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="67"/>
-      <source>Angular deviation:</source>
-      <translation>Вуглавое адхіленне:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
       <translation>Найбольшае кутняе адхіленне сегмента паліганальнай сеткі да наступнага сегменту</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="98"/>
-      <source>The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>Найбольшае лінейнае адхіленне сегмента паліганальнай сеткі будзе роўным паказанаму
-адхіленню паверхні, памножанае на даўжыню бягучага сегмента паліганальнай сеткі (рабра)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -358,9 +336,30 @@ this feature (e.g. the format OBJ).</source>
       <translation>Ужыць стваральнік паліганальных сетак Мефіста</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="20"/>
+      <source>Meshing Options</source>
+      <translation>Налады паліганальнай сеткі</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="41"/>
+      <source>Surface deviation</source>
+      <translation>Адхіленне паверхні</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="67"/>
+      <source>Angular deviation</source>
+      <translation>Вуглавое адхіленне</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="98"/>
+      <source>The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</source>
+      <translation>Найбольшае лінейнае адхіленне сегмента паліганальнай сеткі будзе роўным паказанаму адхіленню паверхні, памножанае на даўжыню бягучага сегмента паліганальнай сеткі (рабра)</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="156"/>
-      <source>Maximum edge length:</source>
-      <translation>Найбольшая даўжыня рабра:</translation>
+      <source>Maximum edge length</source>
+      <translation>Найбольшая даўжыня рабра</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -421,8 +420,18 @@ The smallest value is 0.</source>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
-      <source>Mesh size grading:</source>
-      <translation>Ступень памеру паліганальнай сетки:</translation>
+      <source>Mesh size grading</source>
+      <translation>Ступень памеру паліганальнай сетки</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="302"/>
+      <source>Elements per edge</source>
+      <translation>Колькасць элементаў на рабро</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="335"/>
+      <source>Elements per curvature radius</source>
+      <translation>Колькасць элементаў на радыус крывізны</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -432,22 +441,12 @@ A value in the range of 0.1-1.</source>
 Значэнне ў дыяпазоне 0.1-1.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="302"/>
-      <source>Elements per edge:</source>
-      <translation>Колькасць элементаў на рабро:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
       <translation>Калі гэтая налада больш, паліганальная сетка становіцца больш тонкай.
 Значэнне ў дыяпазоне 0.2-10.</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="335"/>
-      <source>Elements per curvature radius:</source>
-      <translation>Колькасць элементаў на радыус крывізны:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -485,32 +484,32 @@ A value in the range of 0.2-10.</source>
       <translation>Пакінуць панэль адчыненай</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
+      <location filename="../../Tessellation.cpp" line="60"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="240"/>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="238"/>
+      <location filename="../../Tessellation.cpp" line="244"/>
       <source>No active document</source>
       <translation>Без бягучага дакумента</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
-      <source>You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</source>
-      <translation>Вы абралі цела без наканечніка.
-Калі ласка, усталюйце наканечнік цела, альбо абярыце іншую фігуру.</translation>
+      <location filename="../../Tessellation.cpp" line="277"/>
+      <source>Error: body without a tip selected.
+Either set the tip of the body or select a different shape.</source>
+      <translation>Памылка: цела без абранага кончыка.
+Альбо ўсталяваць кончык цела ці абраць іншую фігуру.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="285"/>
-      <source>You have selected a shape without faces.
-Select a different shape, please.</source>
-      <translation>Вы абралі фігуру без граняў.
-Калі ласка, абярыце іншую фігуру.</translation>
+      <location filename="../../Tessellation.cpp" line="283"/>
+      <source>Error: shape without faces selected.
+Select a different shape.</source>
+      <translation>Памылка: абраная фігура без граняў.
+Абярыце іншую фігуру.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="289"/>
+      <location filename="../../Tessellation.cpp" line="287"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Спачатку абярыце фігуру для стварэння паліганальнай сеткі.</translation>
     </message>
@@ -518,14 +517,14 @@ Select a different shape, please.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Select plane</source>
       <translation>Абраць плоскасць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <source>Please select a plane at which you section the mesh.</source>
-      <translation>Калі ласка, абярыце плоскасць, якой вы будзеце разразаць паліганальную сетку.</translation>
+      <location filename="../../Command.cpp" line="202"/>
+      <source>Select a plane to section the mesh with.</source>
+      <translation>Абярыце плоскасць для перасеку паліганальнай сеткі.</translation>
     </message>
   </context>
   <context>
@@ -537,31 +536,31 @@ Select a different shape, please.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="96"/>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Калі ласка, абярыце плоскасць, якой вы будзеце абразаць паліганальную сетку.</translation>
+      <source>Select a plane to trim the mesh with.</source>
+      <translation>Абярыце плоскасць для абрэзкі паліганальнай сеткі.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
-      <source>Trim by plane</source>
+      <location filename="../../Command.cpp" line="102"/>
+      <source>Trim With Plane</source>
       <translation>Абрэзаць плоскасцю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Select the side you want to keep.</source>
-      <translation>Абярыце бок, які вы жадаеце пакінуць.</translation>
+      <location filename="../../Command.cpp" line="103"/>
+      <source>Select the side to keep</source>
+      <translation>Абраць бок, які пакінуць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
       <translation>Ніжэй</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Above</source>
       <translation>Вышэй</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>Split</source>
       <translation>Падзяліць</translation>
     </message>
@@ -569,35 +568,35 @@ Select a different shape, please.</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>MeshPart</source>
-      <translation>Паліганальная сетка Дэталяў</translation>
+      <translation>Паліганальная сетка дэталяў</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap mesh</source>
+      <source>Unwrap Mesh</source>
       <translation>Разгарнуць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Знайсці плоскае ўяўленне паліганальнай сеткі.</translation>
+      <source>Finds a flat representation of a mesh</source>
+      <translation>Шукае плоскае ўяеўленне паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap face</source>
+      <source>Unwrap Face</source>
       <translation>Разгарнуць грань</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
-      <source>Find a flat representation of a face.</source>
-      <translation>Знайсці плоскае ўяўленне грані.</translation>
+      <source>Finds a flat representation of a face</source>
+      <translation>Шукае плоскае ўяўленне грані</translation>
     </message>
   </context>
 </TS>

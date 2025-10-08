@@ -4,198 +4,202 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="249"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="250"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Cylinder</source>
       <translation>Zylinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="251"/>
-      <source>Approximate a cylinder</source>
-      <translation>Einen Zylinder annähern</translation>
+      <location filename="../../Command.cpp" line="248"/>
+      <source>Approximates a cylinder</source>
+      <translation>Zylinder angleichen</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>Plane</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
-      <source>Approximate a plane</source>
-      <translation>Approximieren einer Ebene</translation>
+      <location filename="../../Command.cpp" line="140"/>
+      <source>Approximates a plane</source>
+      <translation>Ebene angleichen</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
-      <source>Polynomial surface</source>
-      <translation>Polynomfläche</translation>
+      <location filename="../../Command.cpp" line="363"/>
+      <source>Polynomial Surface</source>
+      <translation>Polynomiale Fläche</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
-      <source>Approximate a polynomial surface</source>
-      <translation>Eine Polynomfläche annähern</translation>
+      <location filename="../../Command.cpp" line="364"/>
+      <source>Approximates a polynomial surface</source>
+      <translation>Polynomiale Fläche angleichen</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Sphere</source>
       <translation>Kugel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
-      <source>Approximate a sphere</source>
-      <translation>Eine Kugel annähern</translation>
+      <location filename="../../Command.cpp" line="316"/>
+      <source>Approximates a sphere</source>
+      <translation>Kugel angleichen</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Approximate B-spline surface...</source>
-      <translation>B-Spline-Fläche approximieren...</translation>
+      <location filename="../../Command.cpp" line="101"/>
+      <source>Approximate B-Spline Surface…</source>
+      <translation>B-Spline-Oberfläche angleichen…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
-      <source>Approximate a B-spline surface</source>
-      <translation>Approximiere eine B-Spline-Fläche</translation>
+      <location filename="../../Command.cpp" line="102"/>
+      <source>Approximates a B-spline surface</source>
+      <translation>Gleicht eine B-Spline-Oberfläche an</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
-      <source>Wire from mesh boundary...</source>
-      <translation>Draht von Netzgrenze...</translation>
+      <location filename="../../Command.cpp" line="533"/>
+      <source>Wire From Mesh Boundary…</source>
+      <translation>Linienzug aus Netz-Umgrenzung…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
-      <source>Create wire from mesh boundaries</source>
-      <translation>Erstelle Kantenzug aus Netzbegrenzungen</translation>
+      <location filename="../../Command.cpp" line="534"/>
+      <source>Creates a wire from mesh boundaries</source>
+      <translation>Kante aus Netz-Umgrenzung erzeugen</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
-      <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <location filename="../../Command.cpp" line="598"/>
+      <source>Poisson…</source>
+      <translation>Poisson…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="602"/>
-      <source>Poisson surface reconstruction</source>
-      <translation>Poisson-Oberflächenrekonstruktion</translation>
+      <location filename="../../Command.cpp" line="599"/>
+      <source>Performs Poisson surface reconstruction</source>
+      <translation>Poisson-Oberflächen-Rekonstruktion ausführen</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="420"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
-      <source>Mesh segmentation...</source>
-      <translation>Netz-Segmentierung...</translation>
+      <location filename="../../Command.cpp" line="421"/>
+      <source>Mesh Segmentation…</source>
+      <translation>Netz-Segmentierung…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="425"/>
-      <source>Create mesh segments</source>
-      <translation>Netz-Segmente erstellen</translation>
+      <location filename="../../Command.cpp" line="422"/>
+      <source>Creates separate mesh segments based on surface types</source>
+      <translation>Erstellt separate Netzsegmente basierend auf Oberflächentypen</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
-      <source>From components</source>
+      <location filename="../../Command.cpp" line="483"/>
+      <source>From Components</source>
       <translation>Aus Komponenten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
-      <source>Create mesh segments from components</source>
-      <translation>Erstelle Netzsegmente aus Komponenten</translation>
+      <location filename="../../Command.cpp" line="484"/>
+      <source>Creates mesh segments from components</source>
+      <translation>Netz-Segmente aus Komponenten erzeugen</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <source>Manual segmentation...</source>
-      <translation>Manuelle Segmentierung...</translation>
+      <location filename="../../Command.cpp" line="453"/>
+      <source>Manual Segmentation…</source>
+      <translation>Manuelle Segmentierung…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <source>Create mesh segments manually</source>
-      <translation>Netzsegmente manuell erstellen</translation>
+      <location filename="../../Command.cpp" line="454"/>
+      <source>Creates mesh segments manually</source>
+      <translation>Netz-Segmente manuell erzeugen</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="636"/>
-      <source>Structured point clouds</source>
-      <translation>Geordnete Punktwolken</translation>
+      <location filename="../../Command.cpp" line="632"/>
+      <source>Structured Point Clouds</source>
+      <translation>Strukturierte Punktwolken</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="637"/>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <source>Triangulates structured point clouds</source>
+      <translation>Triangulieren strukturierter Punktwolken</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="634"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Triangulation von geordneten Punktwolken</translation>
     </message>
@@ -203,64 +207,54 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="227"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Fit plane</source>
       <translation>Ebene einpassen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="256"/>
       <source>Fit cylinder</source>
       <translation>Zylinder einpassen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Fit sphere</source>
       <translation>Kugel einpassen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
       <translation>Polynomfläche einpassen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>View triangulation</source>
       <translation>Triangulation anzeigen</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="154"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="230"/>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <location filename="../../FitBSplineCurve.cpp" line="137"/>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-spline</source>
       <translation>B-Spline einpassen</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="83"/>
+      <location filename="../../Poisson.cpp" line="81"/>
       <source>Poisson reconstruction</source>
       <translation>Poisson-Rekonstruktion</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="281"/>
+      <location filename="../../SegmentationManual.cpp" line="279"/>
       <source>Segmentation</source>
       <translation>Segmentierung</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurface</name>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>B-Spline-Fläche annähern</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="20"/>
-      <source>u-Direction</source>
-      <translation>u-Richtung</translation>
-    </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
@@ -274,9 +268,19 @@
       <translation>Kontrollpunkte</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineSurface.ui" line="14"/>
+      <source>Fit B-Spline Surface</source>
+      <translation>B-Spline-Oberfläche einpassen</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="20"/>
+      <source>U-Direction</source>
+      <translation>U-Richtung</translation>
+    </message>
+    <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
-      <source>v-Direction</source>
-      <translation>v-Richtung</translation>
+      <source>V-Direction</source>
+      <translation>V-Richtung</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -300,18 +304,18 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
-      <source>Create placement</source>
-      <translation>Platzierung erstellen</translation>
+      <source>Create Placement</source>
+      <translation>Positionierung erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="247"/>
+      <source>Total weight</source>
+      <translation>Gesamtgewicht</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
       <translation>Glättung</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="247"/>
-      <source>Total Weight</source>
-      <translation>Gesamtgewicht</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
@@ -332,20 +336,20 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="165"/>
-      <location filename="../../FitBSplineSurface.cpp" line="237"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="235"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="205"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="206"/>
-      <source>Please select a single placement object to get local orientation.</source>
-      <translation>Bitte ein einzelnes Placement-Objekt zur lokalen Orientierung wählen.</translation>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
+      <source>Select a single placement object to get the local orientation.</source>
+      <translation>Wähle ein einzelnes Placement-Objekt, um die lokale Orientierung zu erhalten.</translation>
     </message>
   </context>
   <context>
@@ -376,7 +380,7 @@
       <translation>Samples pro Knoten</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="90"/>
+      <location filename="../../Poisson.cpp" line="88"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -384,32 +388,32 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <location filename="../../Command.cpp" line="121"/>
-      <location filename="../../Command.cpp" line="615"/>
+      <location filename="../../Command.cpp" line="80"/>
+      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="611"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <source>Please select a point cloud.</source>
-      <translation>Bitte eine Punktwolke auswählen.</translation>
+      <location filename="../../Command.cpp" line="81"/>
+      <source>Select a point cloud.</source>
+      <translation>Wähle eine Punktwolke.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
-      <source>Please select a point cloud or mesh.</source>
-      <translation>Bitte eine Punktwolke oder ein Netz auswählen.</translation>
+      <location filename="../../Command.cpp" line="119"/>
+      <source>Select a point cloud or mesh.</source>
+      <translation>Wähle eine Punktwolke oder ein Netz.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="616"/>
-      <source>Please select a single point cloud.</source>
-      <translation>Bitte eine einzelne Punktewolke auswählen.</translation>
+      <location filename="../../Command.cpp" line="612"/>
+      <source>Select a single point cloud.</source>
+      <translation>Wähle eine einzelne Punktwolke aus.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="665"/>
       <source>View triangulation failed</source>
       <translation>Ansichts-Triangulation fehlgeschlagen</translation>
     </message>
@@ -418,7 +422,7 @@
     <name>ReverseEngineeringGui::Segmentation</name>
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
-      <source>Mesh segmentation</source>
+      <source>Mesh Segmentation</source>
       <translation>Netz-Segmentierung</translation>
     </message>
     <message>
@@ -460,11 +464,6 @@
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.ui" line="14"/>
-      <source>Manual segmentation</source>
-      <translation>Manuelle Segmentierung</translation>
-    </message>
-    <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
       <translation>Auswählen</translation>
@@ -490,8 +489,13 @@
       <translation>&lt; Flächen als</translation>
     </message>
     <message>
+      <location filename="../../SegmentationManual.ui" line="14"/>
+      <source>Manual Mesh Segmentation</source>
+      <translation>Manuelle Netz-Segmentierung</translation>
+    </message>
+    <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
-      <source>Pick triangle</source>
+      <source>Pick Triangle</source>
       <translation>Dreieck auswählen</translation>
     </message>
     <message>
@@ -542,18 +546,18 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
-      <source>Region options</source>
-      <translation>Bereich Einstellungen</translation>
+      <source>Region Options</source>
+      <translation>Bereich-Einstellungen</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="297"/>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation>Nur Dreiecke mit zur Bildschirmseite gerichteten Normalen berücksichtigen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
       <translation>Nur sichtbare Dreiecke berücksichtigen</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="297"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Nur Dreiecke beachten deren Normals zum Bildschirm zeigen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -574,7 +578,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="351"/>
+      <location filename="../../SegmentationManual.cpp" line="349"/>
       <source>Create</source>
       <translation>Erstellen</translation>
     </message>
@@ -582,7 +586,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
@@ -591,8 +595,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline curve</source>
-      <translation>B-Spline Kurve annähern</translation>
+      <source>Fit B-Spline Curve</source>
+      <translation>B-Spline-Kurve anpassen</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -622,7 +626,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
       <source>Continuity</source>
-      <translation>Kontinuität</translation>
+      <translation>Stetigkeit</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>
@@ -698,25 +702,25 @@
   <context>
     <name>CmdApproxCurve</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <source>Approximate B-spline curve...</source>
-      <translation>B-Spline-Kurve approximieren...</translation>
+      <location filename="../../Command.cpp" line="68"/>
+      <source>Approximate B-Spline Curve…</source>
+      <translation>B-Spline-Kurve angleichen…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
-      <source>Approximate a B-spline curve</source>
-      <translation>Eine B-Spline-Kurve approximieren</translation>
+      <location filename="../../Command.cpp" line="69"/>
+      <source>Approximates a B-spline curve</source>
+      <translation>Eine B-Spline-Kurve angleichen</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="91"/>
+      <location filename="../../FitBSplineCurve.cpp" line="89"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>

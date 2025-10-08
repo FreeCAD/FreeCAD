@@ -36,11 +36,13 @@
 #include <Inventor/events/SoEvents.h>
 
 #include <QEvent>
+#include <QAction>
 #include <Base/BaseClass.h>
 #include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
 #include <memory>
+#include <optional>
 
 // forward declarations
 class SoEvent;
@@ -187,6 +189,8 @@ public:
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
 
+    bool isDraggerUnderCursor(const SbVec2s pos) const;
+
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
 
@@ -194,6 +198,8 @@ public:
     void setViewing(SbBool);
 
     SbVec3f getRotationCenter(SbBool&) const;
+
+    std::optional<SbVec2s>& getRightClickPosition();
 
     PyObject *getPyObject() override;
 
@@ -238,6 +244,13 @@ protected:
     virtual SbBool processSoEvent(const SoEvent * const ev);
     void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
+
+private:
+    bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
+    QWidget* findView3DInventorWidget() const;
+    void applyNavigationStyleChange(QAction* selectedAction);
+
+protected:
 
     void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
@@ -289,6 +302,10 @@ protected:
     //@}
 
     Py::SmartPtr pythonObject;
+
+    // store the position where right-click occurred just before
+    // the menu popped up
+    std::optional<SbVec2s> rightClickPosition;
 
 private:
     friend class NavigationAnimator;

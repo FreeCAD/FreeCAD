@@ -320,24 +320,24 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vS
                 offset = edge.Curve.Center - pt
             else:
                 pd = Part.Circle(xy(p1), xy(p2), xy(p3)).Center
-                Path.Log.debug(
-                    "**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)"
-                    % (
-                        cmd,
-                        flip,
-                        p1.x,
-                        p1.y,
-                        p1.z,
-                        p2.x,
-                        p2.y,
-                        p2.z,
-                        p3.x,
-                        p3.y,
-                        p3.z,
-                        pd.x,
-                        pd.y,
-                    )
-                )
+                # Path.Log.debug(
+                #    "**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)"
+                #    % (
+                #        cmd,
+                #        flip,
+                #        p1.x,
+                #        p1.y,
+                #        p1.z,
+                #        p2.x,
+                #        p2.y,
+                #        p2.z,
+                #        p3.x,
+                #        p3.y,
+                #        p3.z,
+                #        pd.x,
+                #        pd.y,
+                #    )
+                # )
 
                 # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
                 pa = xy(p1)
@@ -345,15 +345,15 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vS
                 pc = xy(p3)
                 offset = Part.Circle(pa, pb, pc).Center - pa
 
-                Path.Log.debug(
-                    "**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)"
-                    % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z)
-                )
-                Path.Log.debug(
-                    "**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)"
-                    % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z)
-                )
-            Path.Log.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
+                # Path.Log.debug(
+                #    "**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)"
+                #    % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z)
+                # )
+                # Path.Log.debug(
+                #    "**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)"
+                #    % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z)
+                # )
+            # Path.Log.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
 
             params.update({"I": offset.x, "J": offset.y, "K": (p3.z - p1.z) / 2})
             # G2/G3 commands are always performed at hSpeed
@@ -387,8 +387,8 @@ def edgeForCmd(cmd, startPoint):
     """edgeForCmd(cmd, startPoint).
     Returns an Edge representing the given command, assuming a given startPoint."""
 
-    Path.Log.debug("cmd: {}".format(cmd))
-    Path.Log.debug("startpoint {}".format(startPoint))
+    # Path.Log.debug("cmd: {}".format(cmd))
+    # Path.Log.debug("startpoint {}".format(startPoint))
 
     endPoint = commandEndPoint(cmd, startPoint)
     if (cmd.Name in CmdMoveStraight) or (cmd.Name in CmdMoveRapid) or (cmd.Name in CmdMoveDrill):
@@ -403,9 +403,9 @@ def edgeForCmd(cmd, startPoint):
         d = -B.x * A.y + B.y * A.x
 
         if isRoughly(d, 0, 0.005):
-            Path.Log.debug(
-                "Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z)
-            )
+            # Path.Log.debug(
+            #    "Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z)
+            # )
             # we're dealing with half a circle here
             angle = getAngle(A) + math.pi / 2
             if cmd.Name in CmdMoveCW:
@@ -413,34 +413,34 @@ def edgeForCmd(cmd, startPoint):
         else:
             C = A + B
             angle = getAngle(C)
-            Path.Log.debug(
-                "Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f"
-                % (d, center.x, center.y, center.z, angle / math.pi)
-            )
+            # Path.Log.debug(
+            #    "Arc (%8f) at: (%.2f, %.2f, %.2f) -> angle=%f"
+            #    % (d, center.x, center.y, center.z, angle / math.pi)
+            # )
 
         R = A.Length
-        Path.Log.debug(
-            "arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)"
-            % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y)
-        )
-        Path.Log.debug("arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d))
-        Path.Log.debug("arc: R=%.2f angle=%.2f" % (R, angle / math.pi))
+        # Path.Log.debug(
+        #    "arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)"
+        #    % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y)
+        # )
+        # Path.Log.debug("arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d))
+        # Path.Log.debug("arc: R=%.2f angle=%.2f" % (R, angle / math.pi))
         if isRoughly(startPoint.z, endPoint.z):
             midPoint = center + Vector(math.cos(angle), math.sin(angle), 0) * R
-            Path.Log.debug(
-                "arc: (%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)"
-                % (
-                    startPoint.x,
-                    startPoint.y,
-                    midPoint.x,
-                    midPoint.y,
-                    endPoint.x,
-                    endPoint.y,
-                )
-            )
-            Path.Log.debug("StartPoint:{}".format(startPoint))
-            Path.Log.debug("MidPoint:{}".format(midPoint))
-            Path.Log.debug("EndPoint:{}".format(endPoint))
+            # Path.Log.debug(
+            #    "arc: (%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)"
+            #    % (
+            #        startPoint.x,
+            #        startPoint.y,
+            #        midPoint.x,
+            #        midPoint.y,
+            #        endPoint.x,
+            #        endPoint.y,
+            #    )
+            # )
+            # Path.Log.debug("StartPoint:{}".format(startPoint))
+            # Path.Log.debug("MidPoint:{}".format(midPoint))
+            # Path.Log.debug("EndPoint:{}".format(endPoint))
 
             if pointsCoincide(startPoint, endPoint, 0.001):
                 return Part.makeCircle(R, center, FreeCAD.Vector(0, 0, 1))
@@ -472,17 +472,19 @@ def wireForPath(path, startPoint=Vector(0, 0, 0)):
     Returns a wire representing all move commands found in the given path."""
     edges = []
     rapid = []
+    rapid_indexes = set()
     if hasattr(path, "Commands"):
         for cmd in path.Commands:
             edge = edgeForCmd(cmd, startPoint)
             if edge:
                 if cmd.Name in CmdMoveRapid:
                     rapid.append(edge)
+                    rapid_indexes.add(len(edges))
                 edges.append(edge)
                 startPoint = commandEndPoint(cmd, startPoint)
     if not edges:
-        return (None, rapid)
-    return (Part.Wire(edges), rapid)
+        return (None, rapid, rapid_indexes)
+    return (Part.Wire(edges), rapid, rapid_indexes)
 
 
 def wiresForPath(path, startPoint=Vector(0, 0, 0)):

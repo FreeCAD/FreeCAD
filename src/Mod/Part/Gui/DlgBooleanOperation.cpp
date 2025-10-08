@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QTreeWidget>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>

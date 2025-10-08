@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPushButton>
-#endif
 
 #include "Dialogs/DlgInputDialogImp.h"
 #include "ui_DlgInputDialog.h"

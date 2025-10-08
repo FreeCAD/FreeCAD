@@ -23,14 +23,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <limits>
+#include <sstream>
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
-#include <sstream>
-#include <limits>
-#endif
 
 #include "Mod/Fem/App/FemConstraintContact.h"
 #include <Gui/Command.h>
@@ -139,6 +136,13 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
         ui->lw_referencesSlave->addItem(makeRefText(Objects[0], SubElements[0]));
     }
 
+    ui->lbl_info->setText(tr("Select slave geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
+                          + tr("click Add or Remove"));
+    ui->lbl_info_2->setText(tr("Select master geometry of type: ")
+                            + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
+                            + tr("click Add or Remove"));
+
     // Selection buttons
     connect(ui->btnAddSlave,
             &QToolButton::clicked,
@@ -215,9 +219,16 @@ void TaskFemConstraintContact::addToSelectionSlave()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
-        App::DocumentObject* obj = it.getObject();
 
+        App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (subNames.size() != 1) {
             QMessageBox::warning(this,
                                  tr("Selection error"),
@@ -227,8 +238,10 @@ void TaskFemConstraintContact::addToSelectionSlave()
         }
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces can be picked (edges in 2D models)"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
@@ -274,9 +287,9 @@ void TaskFemConstraintContact::removeFromSelectionSlave()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
+
         const std::vector<std::string>& subNames = it.getSubNames();
         const App::DocumentObject* obj = it.getObject();
-
         for (const auto& subName : subNames) {  // for every selected sub element
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
@@ -341,8 +354,15 @@ void TaskFemConstraintContact::addToSelectionMaster()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
         App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (subNames.size() != 1) {
             QMessageBox::warning(this,
                                  tr("Selection error"),
@@ -352,8 +372,10 @@ void TaskFemConstraintContact::addToSelectionMaster()
         }
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces can be picked (edges in 2D models)"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);

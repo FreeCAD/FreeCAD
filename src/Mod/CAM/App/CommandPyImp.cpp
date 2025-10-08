@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/algorithm/string.hpp>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/PlacementPy.h>

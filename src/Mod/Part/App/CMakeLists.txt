@@ -1,6 +1,8 @@
 add_library(Part SHARED)
 
-include_directories(
+target_include_directories(
+    Part
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -26,7 +28,10 @@ target_link_directories(Part PUBLIC ${OCC_LIBRARY_DIR})
 if(FREETYPE_FOUND)
     add_definitions(-DFCUseFreeType)
 
-    include_directories(
+    target_include_directories(
+        Part
+        SYSTEM
+        PUBLIC
         ${FREETYPE_INCLUDE_DIRS}
     )
 
@@ -557,7 +562,6 @@ SET(Part_SRCS
     ImportStep.h
     Interface.cpp
     Interface.h
-    PreCompiled.cpp
     PreCompiled.h
     Services.cpp
     Services.h
@@ -593,9 +597,9 @@ SET(Part_SRCS
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Part_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Part PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Part PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions
@@ -608,6 +612,12 @@ endif()
 
 target_sources(Part PRIVATE ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
 target_link_libraries(Part ${Part_LIBS})
+
+if (MSVC)
+    target_compile_definitions(Part PRIVATE WIN32_LEAN_AND_MEAN)
+    target_compile_options(Part PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Part)
 endif()

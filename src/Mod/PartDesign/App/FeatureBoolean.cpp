@@ -21,13 +21,11 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Mod/Part/App/modelRefine.h>
@@ -160,28 +158,64 @@ App::DocumentObjectExecReturn *Boolean::execute()
     result = refineShapeIfActive(result);
 
     if (!isSingleSolidRuleSatisfied(result.getShape())) {
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
     }
 
     this->Shape.setValue(getSolid(result));
-    return App::DocumentObject::StdReturn;
+
+    return StdReturn;
+}
+
+void Boolean::updatePreviewShape()
+{
+    if (strcmp(Type.getValueAsString(), "Cut") == 0) {
+        TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+        TopoShape result = Shape.getShape();
+
+        PreviewShape.setValue(base.makeElementCut(result.getShape()));
+        return;
+    }
+
+    if (strcmp(Type.getValueAsString(), "Fuse") == 0) {
+        std::vector<TopoShape> shapes;
+
+        for (auto& obj : Group.getValues()) {
+            shapes.push_back(getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform));
+        }
+
+        TopoShape result;
+        result.makeCompound(shapes);
+
+        PreviewShape.setValue(result.getShape());
+        return;
+    }
+
+    PreviewShape.setValue(Shape.getShape());
 }
 
 void Boolean::onChanged(const App::Property* prop) {
 
-    if(strcmp(prop->getName(), "Group") == 0)
+    if (strcmp(prop->getName(), "Group") == 0) {
         touch();
+    }
 
-    PartDesign::Feature::onChanged(prop);
+    if (strcmp(prop->getName(), "Shape") == 0) {
+        updatePreviewShape();
+    }
+
+    Feature::onChanged(prop);
 }
 
 void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
 {
     // The App::PropertyLinkList property was Bodies in the past
     Base::Type type = Base::Type::fromName(TypeName);
+
     if (Group.getClassTypeId() == type && strcmp(PropName, "Bodies") == 0) {
         Group.Restore(reader);
     }
 }
 
 }
+
+

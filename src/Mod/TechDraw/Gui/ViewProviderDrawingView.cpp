@@ -21,14 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <limits>
 #include <boost/signals2.hpp>
 #include <boost/signals2/connection.hpp>
-#endif
-
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -172,7 +167,6 @@ void ViewProviderDrawingView::hide()
         }
     }
 }
-
 QGIView* ViewProviderDrawingView::getQView()
 {
     TechDraw::DrawView* dv = getViewObject();
@@ -190,8 +184,9 @@ QGIView* ViewProviderDrawingView::getQView()
         return nullptr;
     }
 
-    if (vpp->getQGSPage()) {
-        return dynamic_cast<QGIView *>(vpp->getQGSPage()->findQViewForDocObj(getViewObject()));
+    QGSPage* page = vpp->getQGSPage();
+    if (page) {
+        return dynamic_cast<QGIView *>(page->findQViewForDocObj(getViewObject()));
     }
 
     return nullptr;

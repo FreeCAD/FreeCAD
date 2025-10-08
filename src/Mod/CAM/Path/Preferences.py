@@ -29,7 +29,7 @@ from collections import defaultdict
 from typing import Optional
 
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -54,6 +54,7 @@ PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
+LastToolLibrarySortKey = "LastToolLibrarySortKey"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -114,29 +115,63 @@ def getBuiltinToolBitPath() -> pathlib.Path:
     return getBuiltinAssetPath() / "Bit"
 
 
-def getDefaultAssetPath():
-    config = pathlib.Path(FreeCAD.ConfigGet("UserConfigPath"))
-    return config / "CamAssets"
+def getDefaultAssetPath() -> Path:
+    data_dir = pathlib.Path(FreeCAD.getUserAppDataDir())
+    asset_path = data_dir / "CamAssets"
+    asset_path.mkdir(parents=True, exist_ok=True)
+    return asset_path
 
 
 def getAssetPath() -> pathlib.Path:
     pref = tool_preferences()
+
+    # Check if we have a CamAssets path already set
+    cam_assets_path = pref.GetString(ToolPath, "")
+    if cam_assets_path:
+        # Use mostRecentConfigFromBase to get the most recent versioned path
+        most_recent_path = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(cam_assets_path)
+        return pathlib.Path(most_recent_path)
+
+    # Migration: Check for legacy DefaultFilePath and use it for CamAssets
+    legacy_path = defaultFilePath()
+    if legacy_path:
+        legacy_path_obj = pathlib.Path(legacy_path)
+        if legacy_path_obj.exists() and legacy_path_obj.is_dir():
+            # Migrate: Set the legacy path as the new CamAssets path
+            setAssetPath(legacy_path_obj)
+            # Return the most recent version of the legacy path
+            most_recent_legacy = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(
+                str(legacy_path_obj)
+            )
+            return pathlib.Path(most_recent_legacy)
+
+    # Fallback to default if no legacy path found
     default = getDefaultAssetPath()
-    path = pref.GetString(ToolPath, str(default))
-    return pathlib.Path(path or default)
+    # Return the most recent version of the default path
+    most_recent_default = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(str(default))
+    return pathlib.Path(most_recent_default)
 
 
 def setAssetPath(path: pathlib.Path):
+    Path.Log.info(f"Setting asset path to {path}")
     assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
-    if str(path) == str(getAssetPath()):
-        return
     pref = tool_preferences()
+    current_path = pref.GetString(ToolPath, "")
+    if str(path) == current_path:
+        return
     pref.SetString(ToolPath, str(path))
     _emit_change(ToolGroup, ToolPath, path)
 
 
 def getToolBitPath() -> pathlib.Path:
-    return getAssetPath() / "Bit"
+    return getAssetPath() / "Tools" / "Bit"
+
+
+def getTemplateDirectory() -> pathlib.Path:
+    """Returns the directory where job templates should be saved."""
+    template_path = getAssetPath() / "Templates"
+    template_path.mkdir(parents=True, exist_ok=True)
+    return template_path
 
 
 def getLastToolLibrary() -> Optional[str]:
@@ -148,6 +183,16 @@ def setLastToolLibrary(name: str):
     assert isinstance(name, str), f"Library name '{name}' is not a string"
     pref = tool_preferences()
     pref.SetString(LastToolLibrary, name)
+
+
+def getLastToolLibrarySortKey() -> Optional[str]:
+    pref = tool_preferences()
+    return pref.GetString(LastToolLibrarySortKey) or None
+
+
+def setLastToolLibrarySortKey(name: str):
+    pref = tool_preferences()
+    pref.SetString(LastToolLibrarySortKey, name)
 
 
 def allAvailablePostProcessors():
@@ -199,7 +244,7 @@ def defaultFilePath():
 def filePath():
     path = defaultFilePath()
     if not path:
-        path = macroFilePath()
+        path = getAssetPath()
     return path
 
 
@@ -210,6 +255,9 @@ def macroFilePath():
 
 def searchPaths():
     paths = []
+    # Add new CamAssets/Templates directory first (highest priority)
+    paths.append(str(getTemplateDirectory()))
+    # Add legacy locations for backward compatibility
     p = defaultFilePath()
     if p:
         paths.append(p)
@@ -235,13 +283,9 @@ def defaultJobTemplate():
     return ""
 
 
-def setJobDefaults(fileName, jobTemplate, geometryTolerance, curveAccuracy):
-    Path.Log.track(
-        "(%s='%s', %s, %s, %s)"
-        % (DefaultFilePath, fileName, jobTemplate, geometryTolerance, curveAccuracy)
-    )
+def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
+    Path.Log.track("(%s, %s, %s)" % (jobTemplate, geometryTolerance, curveAccuracy))
     pref = preferences()
-    pref.SetString(DefaultFilePath, fileName)
     pref.SetString(DefaultJobTemplate, jobTemplate)
     pref.SetFloat(GeometryTolerance, geometryTolerance)
     pref.SetFloat(LibAreaCurveAccuracy, curveAccuracy)

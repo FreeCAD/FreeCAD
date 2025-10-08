@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
@@ -29,7 +29,7 @@
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include <App/GeoFeaturePy.h>
 
 #include <Base/Tools.h>
@@ -304,6 +301,10 @@ std::vector<Data::IndexedName> GeoFeature::getHigherElements(const char* element
 Base::Placement GeoFeature::getPlacementFromProp(App::DocumentObject* obj, const char* propName)
 {
     Base::Placement plc = Base::Placement();
+    if (!obj) {
+        return plc;
+    }
+
     auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
     if (propPlacement) {
         plc = propPlacement->getValue();
@@ -384,3 +385,4 @@ Base::Placement GeoFeature::getGlobalPlacement(const DocumentObject* obj)
 
     return placementProperty->getValue();
 }
+

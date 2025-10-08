@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <array>
 # include <QAction>
 # include <QApplication>
@@ -31,7 +28,6 @@
 # include <QMouseEvent>
 # include <QPointer>
 # include <QTimer>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -276,10 +272,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 
     // set object name and window title needed for i18n stuff
     dw->setObjectName(QString::fromUtf8(name));
-    QString title = widget->windowTitle();
-    if (title.isEmpty())
-        title = QDockWidget::tr(name);
-    dw->setWindowTitle(title);
+    dw->setWindowTitle(widget->windowTitle());
     dw->setFeatures(QDockWidget::DockWidgetClosable
                     | QDockWidget::DockWidgetMovable
                     | QDockWidget::DockWidgetFloatable);

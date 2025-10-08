@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef SURFACE_GUI_PRECOMPILED_H
+#define SURFACE_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // STL
 #include <sstream>
@@ -47,7 +45,5 @@
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

@@ -1,7 +1,3 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 if(MSVC)
     include_directories(
         ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
@@ -15,11 +11,10 @@ set(MeshGui_LIBS
     FreeCADGui
 )
 
-generate_from_xml(ViewProviderMeshPy)
-generate_from_py_(ViewProviderMeshPy)
+generate_from_py(ViewProviderMesh)
 
 SET(MeshGui_XML_SRCS
-    ViewProviderMeshPy.xml
+    ViewProviderMesh.pyi
 )
 SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
 
@@ -131,7 +126,6 @@ SET(MeshGui_SRCS
     AppMeshGui.cpp
     Command.cpp
     Doxygen.cpp
-    PreCompiled.cpp
     PreCompiled.h
     MeshEditor.cpp
     MeshEditor.h
@@ -144,12 +138,6 @@ SET(MeshGui_SRCS
     Workbench.cpp
     Workbench.h
 )
-
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(MeshGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
 
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg
@@ -164,7 +152,24 @@ if (EIGEN3_NO_DEPRECATED_COPY)
 endif ()
 
 add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(MeshGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    MeshGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(MeshGui ${MeshGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshGui PRIVATE /wd4251 /wd4273 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshGui)
 endif()

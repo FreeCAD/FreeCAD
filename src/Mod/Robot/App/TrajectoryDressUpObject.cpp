@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "TrajectoryDressUpObject.h"
 #include "Waypoint.h"

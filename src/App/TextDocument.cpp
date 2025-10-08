@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "TextDocument.h"
 #include "DocumentObject.h"

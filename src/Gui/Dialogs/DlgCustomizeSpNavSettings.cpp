@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Dialogs/DlgCustomizeSpNavSettings.h"
 #include "ui_DlgCustomizeSpNavSettings.h"

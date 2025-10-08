@@ -21,14 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <array>
 # include <set>
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -2603,4 +2602,12 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
         return Py::new_reference_to(list);
     }
     PY_CATCH;
+}
+
+bool SelectionSingleton::isClarifySelectionActive() {
+    return clarifySelectionActive;
+}
+
+void SelectionSingleton::setClarifySelectionActive(bool active) {
+    clarifySelectionActive = active;
 }

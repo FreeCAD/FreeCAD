@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 #include <QAction>
 #include <QActionEvent>
 #include <QApplication>
@@ -39,7 +38,7 @@
 #include <QWidgetAction>
 #include <memory>
 #include <mutex>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>

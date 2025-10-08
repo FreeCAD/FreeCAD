@@ -4,40 +4,40 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="94"/>
+      <location filename="../../FirstStartWidget.cpp" line="92"/>
       <source>Done</source>
       <translation>Гатова</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="96"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
       <translation>Вітаем у %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
-      <source>To get started, set your basic configuration options below.</source>
-      <translation>Каб пачаць працу, задайце свае асноўныя параметры канфігурацыі, якія прыведзеныя ніжэй.</translation>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <source>Set your basic configuration options below.</source>
+      <translation>Задайце свае асноўныя параметры канфігурацыі, якія прыведзеныя ніжэй.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="100"/>
-      <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation>Гэтыя налады (і многія іншыя) могуць быць змененыя пазней у Перавагах.</translation>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <source>These options (and many more) can be changed later in the preferences.</source>
+      <translation>Гэтыя налады (і многія іншыя) могуць быць змененыя пазней у перавагах.</translation>
     </message>
   </context>
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="211"/>
       <source>Language</source>
       <translation>Мова</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="214"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Unit System</source>
       <translation>Сістэма адзінак вымярэння</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="230"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="228"/>
       <source>Navigation Style</source>
       <translation>Стыль навігацыі</translation>
     </message>
@@ -45,118 +45,113 @@
   <context>
     <name>CmdStart</name>
     <message>
-      <location filename="../../Manipulator.cpp" line="47"/>
+      <location filename="../../Manipulator.cpp" line="45"/>
       <source>Start</source>
       <translation>Пачаць</translation>
     </message>
     <message>
-      <location filename="../../Manipulator.cpp" line="48"/>
+      <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
       <translation>&amp;Пачатковая старонка</translation>
     </message>
     <message>
-      <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start Page</source>
+      <location filename="../../Manipulator.cpp" line="47"/>
+      <source>Displays the start page</source>
       <translation>Адлюстраваць пачатковую старонку</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="193"/>
-      <source>Empty file</source>
-      <translation>Пусты файл</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="194"/>
-      <source>Create a new empty FreeCAD file</source>
-      <translation>Стварыць новы пусты файл FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="197"/>
+      <location filename="../../StartView.cpp" line="209"/>
       <source>Open File</source>
       <translation>Адчыніць файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="198"/>
-      <source>Open an existing CAD file or 3D model</source>
-      <translation>Адчыніць файл CAD, які існуе, ці трохмерную мадэль</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="201"/>
-      <source>Parametric Part</source>
-      <translation>Параметрычная дэталь</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="202"/>
-      <source>Create a part with the Part Design workbench</source>
-      <translation>Стварыць дэталь з дапамогай варштату Праектавання дэталі</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Assembly</source>
       <translation>Зборка</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="206"/>
-      <source>Create an assembly project</source>
-      <translation>Стварыць праект зборкі</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>2D Draft</source>
       <translation>Двухмерны чарнавік</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="210"/>
-      <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Стварыць двухмерны чарнавік з дапамогай варштату Чарнавік</translation>
+      <location filename="../../StartView.cpp" line="222"/>
+      <source>Creates a 2D Draft document</source>
+      <translation>Стварае дакумент двухмернага чарнавіка</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Архітэктура</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
-      <source>Create an architectural project</source>
-      <translation>Стварыць архітэктурны праект</translation>
+      <location filename="../../StartView.cpp" line="205"/>
+      <source>Empty File</source>
+      <translation>Пусты файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="442"/>
+      <location filename="../../StartView.cpp" line="206"/>
+      <source>Creates a new empty FreeCAD file</source>
+      <translation>Стварае новы пусты файл FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="210"/>
+      <source>Opens an existing CAD file or 3D model</source>
+      <translation>Адчыніць файл CAD, які існуе, ці трохмерную мадэль</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="213"/>
+      <source>Parametric Body</source>
+      <translation>Параметрычнае цела</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="214"/>
+      <source>Creates a body with the Part Design workbench</source>
+      <translation>Стварае цела з дапамогай варштату Праектавання дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="218"/>
+      <source>Creates an assembly project</source>
+      <translation>Стварае праект зборкі</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="226"/>
+      <source>Creates an architectural project</source>
+      <translation>Стварае архітэктурны праект</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>Новы файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="443"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>Прыклады</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="444"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>Апошнія файлы</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="445"/>
-      <source>Custom Folder</source>
-      <translation type="unfinished">Custom Folder</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="448"/>
-      <source>Open first start setup</source>
+      <location filename="../../StartView.cpp" line="511"/>
+      <source>Open First Start Setup</source>
       <translation>Адчыніць налады пры першым запуску</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="450"/>
-      <source>Don't show this Start page again (start with blank screen)</source>
+      <location filename="../../StartView.cpp" line="513"/>
+      <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Больш не паказваць гэтую стартавую старонку (пачаць з пустога экрану)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="436"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>Пачаць</translation>
     </message>
@@ -184,25 +179,25 @@
       <translation>Тэма</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="240"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>Патрэбныя яшчэ тэмы?
 Вы можаце атрымаць іх з &lt;a href="freecad:Std_AddonMgr"&gt;Кіравання дадаткамі&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="246"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>Цёмны FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>Светлы FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>Класічны FreeCAD</translation>
@@ -218,39 +213,40 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Змест</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>Паказаць толькі файлы FreeCAD у дадатковым каталогу</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Паказаць змест каталогу з прыкладамі</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation>Паказаць змест дадатковага каталогу</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
-By using ";;" to separate paths, you can add several folders here.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-By using ";;" to separate paths, you can add several folders here.</translation>
+Multiple folders can be added using ";;" to separate paths.</source>
+      <translation>Неабавязковы карыстальніцкі каталог, які будзе адлюстроўвацца на пачатковай старонцы.
+Можна дадаць некалькі каталогаў, калі ўжыць ";;" для падзелу шляхоў.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
-      <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <source>Shows example files on the start page</source>
+      <translation>Паказвае файлы прыкладаў на пачатковай старонцы</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="86"/>
-      <source>If the additional folder contents should include only .FCStd files</source>
-      <translation type="unfinished">If the additional folder contents should include only .FCStd files</translation>
+      <location filename="../../DlgStartPreferences.ui" line="114"/>
+      <source>The start page is closed automatically when FreeCAD launches</source>
+      <translation>Пачатковая старонка аўтаматычна зачыняецца пры запуску FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -258,20 +254,15 @@ By using ";;" to separate paths, you can add several folders here.</translation>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="114"/>
-      <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
-    </message>
-    <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Зачыніць пачатковую старонку пасля загрузкі</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="131"/>
+      <location filename="../../AppStartGui.cpp" line="129"/>
       <source>Start</source>
       <translation>Пачаць</translation>
     </message>

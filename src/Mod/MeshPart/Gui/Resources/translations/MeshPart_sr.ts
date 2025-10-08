@@ -4,55 +4,53 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>MeshPart</source>
       <translation>Мрежа дела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <source>Cross-sections...</source>
-      <translation>Попречни пресеци...</translation>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Cross-Sections</source>
+      <translation>Попречни пресеци</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
-      <source>Cross-sections</source>
-      <translation>Попречни пресеци</translation>
+      <location filename="../../Command.cpp" line="273"/>
+      <source>Applies cross-sections to the mesh</source>
+      <translation>Направи попречне пресеке мреже</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Mesh</source>
       <translation>Мрежа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
-      <source>Curve on mesh...</source>
-      <translation>Крива на мрежи...</translation>
+      <location filename="../../Command.cpp" line="308"/>
+      <source>Curve on Mesh</source>
+      <translation>Крива на мрежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
-      <source>Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</source>
-      <translation>Направи приближну криву на површини мреже.
-Ова команда ради само са објектом који је мрежа.</translation>
+      <location filename="../../Command.cpp" line="309"/>
+      <source>Creates an approximated curve on top of a mesh object</source>
+      <translation>Направи апроксимирану криву на површини мреже</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Mesh</source>
       <translation>Мрежа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
-      <source>Create mesh from shape...</source>
-      <translation>Креирање мреже од облика ...</translation>
+      <location filename="../../Command.cpp" line="57"/>
+      <source>Mesh From Shape</source>
+      <translation>Мрежа помоћу облика</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Tessellate shape</source>
       <translation>Направити мозаик од облика</translation>
     </message>
@@ -60,17 +58,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Mesh</source>
       <translation>Мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="189"/>
-      <source>Create section from mesh and plane</source>
-      <translation>Направи пресек од мреже и равни</translation>
+      <source>Creates a section from a mesh and plane</source>
+      <translation>Исеци мрежу са равни</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Section</source>
       <translation>Пресек</translation>
     </message>
@@ -78,18 +76,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Mesh</source>
       <translation>Мрежа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <source>Trim mesh with a plane</source>
-      <translation>Опсеци мрежу помоћу равни</translation>
+      <location filename="../../Command.cpp" line="83"/>
+      <source>Trim Mesh</source>
+      <translation>Исеци мрежу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trims a mesh with a plane</source>
       <translation>Опсеца мрежу помоћи равни</translation>
     </message>
@@ -97,12 +94,12 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Trim with plane</source>
       <translation>Опсеци са равни</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Section with plane</source>
       <translation>Пресеци помоћу равни</translation>
     </message>
@@ -111,12 +108,12 @@ This command only works with a 'mesh' object.</source>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
-      <source>Cross sections</source>
+      <source>Cross Sections</source>
       <translation>Попречни пресеци</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
-      <source>Guiding plane</source>
+      <source>Guiding Plane</source>
       <translation>Раван водиља</translation>
     </message>
     <message>
@@ -136,8 +133,13 @@ This command only works with a 'mesh' object.</source>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
-      <source>Position:</source>
-      <translation>Положај:</translation>
+      <source>Position</source>
+      <translation>Положај</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="109"/>
+      <source>Distance</source>
+      <translation>Растојање</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -155,11 +157,6 @@ This command only works with a 'mesh' object.</source>
       <translation>Бројати</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.ui" line="109"/>
-      <source>Distance:</source>
-      <translation>Удаљеност:</translation>
-    </message>
-    <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
       <translation>Опције</translation>
@@ -170,7 +167,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Повежи ивице ако је растојање мање од</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="381"/>
       <source>Failure</source>
       <translation>Неуспех</translation>
     </message>
@@ -178,33 +175,33 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Create</source>
       <translation>Спакуј</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Close wire</source>
       <translation>Затвори жичани оквир</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Clear</source>
       <translation>Обриши</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Cancel</source>
       <translation>Откажи</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
-      <source>Wrong mesh picked</source>
+      <location filename="../../CurveOnMesh.cpp" line="620"/>
+      <source>Wrong mesh selected</source>
       <translation>Изабрана погрешна мрежа</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
-      <source>No point was picked</source>
+      <location filename="../../CurveOnMesh.cpp" line="659"/>
+      <source>No point was selected</source>
       <translation>Ниједна тачка није изабрана</translation>
     </message>
   </context>
@@ -212,14 +209,14 @@ This command only works with a 'mesh' object.</source>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
-      <source>Curve on mesh</source>
+      <source>Curve on Mesh</source>
       <translation>Крива на мрежи</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
       <translation>Притисни 'Почетак', а затим изабери тачке на мрежи; када је изабрано довољно тачака, кликни десним тастером миша и изабери „Направи“. Понови овај процес да би направо више сплајнова. Затвори панел задатака да би довршио операцију.
 
 Ова команда ради само са објектом који је мрежа, а не са обичном страницом или површи. Да би претворио објекат у мрежу, користи алатке Mesh радног окружења.</translation>
@@ -278,11 +275,6 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>Апроксимација приказаног облика</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="20"/>
-      <source>Meshing options</source>
-      <translation>Опције прављења мреже</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
       <translation>Стандард</translation>
@@ -293,31 +285,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>Користи стандарни генератор мреже</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="41"/>
-      <source>Surface deviation:</source>
-      <translation>Одступање површине:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
       <translation>Максимално линеарно одступање пресека мреже од површине објекта</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="67"/>
-      <source>Angular deviation:</source>
-      <translation>Угаоно одступање:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
       <translation>Максимални угаони отклон пресека мреже до следећег пресека</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="98"/>
-      <source>The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>Максимално линеарно одступање сегмента мреже биће наведено
-одступање површине помножено дужином тренутног сегмента мреже (ивице)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -359,9 +334,31 @@ this feature (e.g. the format OBJ).</source>
       <translation>Користи Mefisto генератор мреже</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="20"/>
+      <source>Meshing Options</source>
+      <translation>Опције прављења мреже</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="41"/>
+      <source>Surface deviation</source>
+      <translation>Одступање површине</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="67"/>
+      <source>Angular deviation</source>
+      <translation>Угаоно одступање</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="98"/>
+      <source>The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</source>
+      <translation>Максимално линеарно одступање сегмента мреже биће наведено
+одступање површине помножено дужином тренутног сегмента мреже (ивице)</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="156"/>
-      <source>Maximum edge length:</source>
-      <translation>Макcимална дужина ивице:</translation>
+      <source>Maximum edge length</source>
+      <translation>Макcимална дужина ивице</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -422,8 +419,18 @@ The smallest value is 0.</source>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
-      <source>Mesh size grading:</source>
-      <translation>Профилисање величине мреже:</translation>
+      <source>Mesh size grading</source>
+      <translation>Профилисање величине мреже</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="302"/>
+      <source>Elements per edge</source>
+      <translation>Елементи по ивици</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="335"/>
+      <source>Elements per curvature radius</source>
+      <translation>Елементи по полупречнику закривљености</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -433,22 +440,12 @@ A value in the range of 0.1-1.</source>
 Вредност у опсегу од 0,1-1.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="302"/>
-      <source>Elements per edge:</source>
-      <translation>Елементи по ивици:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
       <translation>Ако је овај параметар већи, мрежа постаје финија.
 Вредност у опсегу од 0,2-10.</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="335"/>
-      <source>Elements per curvature radius:</source>
-      <translation>Елементи по полупречнику закривљености:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -486,32 +483,32 @@ A value in the range of 0.2-10.</source>
       <translation>Остави панел отворен</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
+      <location filename="../../Tessellation.cpp" line="60"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="240"/>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="238"/>
+      <location filename="../../Tessellation.cpp" line="244"/>
       <source>No active document</source>
       <translation>Нема активног документа</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
-      <source>You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</source>
-      <translation>Изабрао си тело које нема крајњи типски облик.
+      <location filename="../../Tessellation.cpp" line="277"/>
+      <source>Error: body without a tip selected.
+Either set the tip of the body or select a different shape.</source>
+      <translation>Грешка: Изабрано је тело које нема крајњи типски облик.
 Или задај крајњи типски облик или изабери друго тело.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="285"/>
-      <source>You have selected a shape without faces.
-Select a different shape, please.</source>
-      <translation>Изабрао си облик без страница.
+      <location filename="../../Tessellation.cpp" line="283"/>
+      <source>Error: shape without faces selected.
+Select a different shape.</source>
+      <translation>Грешка: изабран је облик без страница.
 Изабери други облик.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="289"/>
+      <location filename="../../Tessellation.cpp" line="287"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Прво изаберите облик за мрежу.</translation>
     </message>
@@ -519,14 +516,14 @@ Select a different shape, please.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Select plane</source>
       <translation>Изабери раван</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <source>Please select a plane at which you section the mesh.</source>
-      <translation>Изабери раван којом ћете исећи мрежу.</translation>
+      <location filename="../../Command.cpp" line="202"/>
+      <source>Select a plane to section the mesh with.</source>
+      <translation>Изабери раван са којом ћеш пресећи мрежу.</translation>
     </message>
   </context>
   <context>
@@ -538,31 +535,31 @@ Select a different shape, please.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="96"/>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Изабери раван којом ћете исећи мрежу.</translation>
+      <source>Select a plane to trim the mesh with.</source>
+      <translation>Изабери раван са којом ћеш исећи мрежу.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="102"/>
+      <source>Trim With Plane</source>
+      <translation>Исеци са равни</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
-      <source>Trim by plane</source>
-      <translation>Опсеци помоћу равни</translation>
+      <source>Select the side to keep</source>
+      <translation>Изабери страну коју желиш задржати</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Select the side you want to keep.</source>
-      <translation>Изабери страну коју желите да задржите.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
       <translation>Испод</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Above</source>
       <translation>Изнад</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>Split</source>
       <translation>Подели</translation>
     </message>
@@ -570,7 +567,7 @@ Select a different shape, please.</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>MeshPart</source>
       <translation>Мрежа дела</translation>
     </message>
@@ -579,26 +576,26 @@ Select a different shape, please.</source>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap mesh</source>
+      <source>Unwrap Mesh</source>
       <translation>Одмотај мрежу</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Пронађи равански приказ мреже.</translation>
+      <source>Finds a flat representation of a mesh</source>
+      <translation>Пронађи равански облик мреже</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap face</source>
+      <source>Unwrap Face</source>
       <translation>Одмотај страницу</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
-      <source>Find a flat representation of a face.</source>
-      <translation>Пронађи равански приказ странице.</translation>
+      <source>Finds a flat representation of a face</source>
+      <translation>Пронађи равански облик странице</translation>
     </message>
   </context>
 </TS>

@@ -22,37 +22,17 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
-from PySide.QtCore import QT_TRANSLATE_NOOP
-import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
-import Path.Tool.assets.ui.preferences as AssetPreferences
-import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
-import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
-import Path.Op.Base
-import Path.Tool
-
-
-FreeCAD.__unit_test__ += ["TestCAMGui"]
-
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+    from FreeCADGui import Workbench
+else:
+    # Provide a dummy Workbench class when GUI is not available
+    class Workbench:
+        pass
 
-    FreeCADGui.addPreferencePage(
-        PathPreferencesPathJob.JobPreferencesPage,
-        QT_TRANSLATE_NOOP("QObject", "CAM"),
-    )
-    FreeCADGui.addPreferencePage(
-        AssetPreferences.AssetPreferencesPage,
-        QT_TRANSLATE_NOOP("QObject", "CAM"),
-    )
-    FreeCADGui.addPreferencePage(
-        PathPreferencesPathDressup.DressupPreferencesPage,
-        QT_TRANSLATE_NOOP("QObject", "CAM"),
-    )
-    FreeCADGui.addPreferencePage(
-        PathPreferencesAdvanced.AdvancedPreferencesPage,
-        QT_TRANSLATE_NOOP("QObject", "CAM"),
-    )
+
+FreeCAD.__unit_test__ += ["TestCAMGui"]
 
 
 class PathCommandGroup:
@@ -94,10 +74,13 @@ class CAMWorkbench(Workbench):
         import Path.Tool.assets.ui.preferences as AssetPreferences
         import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
+        translate = FreeCAD.Qt.translate
+
         # load the builtin modules
         import Path
         import PathScripts
         import PathGui
+        from PySide import QtCore, QtGui
 
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
@@ -112,11 +95,30 @@ class CAMWorkbench(Workbench):
 
         cam_assets.setup()
 
+        # Check if CAM asset migration is needed for version upgrade
+        from Path.Tool.migration.migration import CAMAssetMigrator
+
+        migrator = CAMAssetMigrator()
+        migrator.check_migration_needed()
+
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
         import PathCommands
         import subprocess
         from packaging.version import Version, parse
+
+        FreeCADGui.addPreferencePage(
+            PathPreferencesPathJob.JobPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
+        FreeCADGui.addPreferencePage(
+            AssetPreferences.AssetPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
+        FreeCADGui.addPreferencePage(
+            PathPreferencesPathDressup.DressupPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
 
         Path.GuiInit.Startup()
 
@@ -146,7 +148,7 @@ class CAMWorkbench(Workbench):
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
-        drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
+        drillingcmdlist = ["CAM_Drilling"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
             "CAM_DressupArray",
@@ -173,14 +175,21 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
-        drillingcmdgroup = ["CAM_DrillingTools"]
-        FreeCADGui.addCommand(
-            "CAM_DrillingTools",
-            PathCommandGroup(
-                drillingcmdlist,
-                QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
-            ),
-        )
+        if Path.Preferences.experimentalFeaturesEnabled():
+            drillingcmdlist.append("CAM_Tapping")
+
+        if set(["CAM_Drilling", "CAM_Tapping"]).issubset(drillingcmdlist):
+            drillingcmdgroup = ["CAM_DrillingTools"]
+            FreeCADGui.addCommand(
+                "CAM_DrillingTools",
+                PathCommandGroup(
+                    drillingcmdlist,
+                    QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
+                ),
+            )
+        else:
+            drillingcmdgroup = drillingcmdlist
+
         dressupcmdgroup = ["CAM_DressupTools"]
         FreeCADGui.addCommand(
             "CAM_DressupTools",
@@ -194,6 +203,7 @@ class CAMWorkbench(Workbench):
             prepcmdlist.append("CAM_PathShapeTC")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
             specialcmdlist.append("CAM_ThreadMilling")
+            twodopcmdlist.append("CAM_Slot")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -307,6 +317,14 @@ class CAMWorkbench(Workbench):
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
+        # keep this one the last entry in the preferences
+        import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
+        from Path.Preferences import preferences
+
+        FreeCADGui.addPreferencePage(
+            PathPreferencesAdvanced.AdvancedPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
         Log("Loading CAM workbench... done\n")
 
     def GetClassName(self):
@@ -322,6 +340,8 @@ class CAMWorkbench(Workbench):
         pass
 
     def ContextMenu(self, recipient):
+        import PathScripts
+
         menuAppended = False
         if len(FreeCADGui.Selection.getSelection()) == 1:
             obj = FreeCADGui.Selection.getSelection()[0]
@@ -344,6 +364,7 @@ class CAMWorkbench(Workbench):
                     "Profile" in selectedName
                     or "Contour" in selectedName
                     or "Dressup" in selectedName
+                    or "Pocket" in selectedName
                 ):
                     self.appendContextMenu("", "Separator")
                     # self.appendContextMenu("", ["Set_StartPoint"])

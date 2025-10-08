@@ -71,7 +71,11 @@ class BIM_Material:
 
     def Activated(self):
 
-        self.dlg = None
+        # only raise the dialog if it is already open
+        if getattr(self, "dlg", None):
+            self.dlg.raise_()
+            return
+
         self.dlg = QtGui.QDialog()
         self.dlg.objects = [
             obj
@@ -102,8 +106,8 @@ class BIM_Material:
             searchLayout = QtGui.QHBoxLayout()
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
-            searchBox.setPlaceholderText(translate("BIM", "Search…"))
-            searchBox.setToolTip(translate("BIM", "Searches object labels"))
+            searchBox.setPlaceholderText(translate("BIM", "Search Objects"))
+            searchBox.setToolTip(translate("BIM", "Searches for objects in the tree"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
             searchBox.textChanged.connect(self.onSearch)
@@ -124,14 +128,14 @@ class BIM_Material:
             lay.addLayout(searchLayout)
 
             createButtonsLayoutBox = QtGui.QGroupBox(
-                translate("BIM", " Material operations"), self.dlg
+                translate("BIM", " Material Operations"), self.dlg
             )
             createButtonsLayoutBox.setObjectName("matOpsGrpBox")
             createButtonsLayout = QtGui.QGridLayout()
 
             # create
             buttonCreate = QtGui.QPushButton(
-                translate("BIM", "Create new material"), self.dlg
+                translate("BIM", "New Material"), self.dlg
             )
             buttonCreate.setIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
             createButtonsLayout.addWidget(buttonCreate, 0, 0)
@@ -139,7 +143,7 @@ class BIM_Material:
 
             # create multi
             buttonMulti = QtGui.QPushButton(
-                translate("BIM", "Create new multi-material"), self.dlg
+                translate("BIM", "Create new Multi-Material"), self.dlg
             )
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
             createButtonsLayout.addWidget(buttonMulti, 0, 1)
@@ -148,7 +152,7 @@ class BIM_Material:
             # merge dupes
             opsLayout = QtGui.QHBoxLayout()
             buttonMergeDupes = QtGui.QPushButton(
-                translate("BIM", "Merge duplicates"), self.dlg
+                translate("BIM", "Merge Duplicates"), self.dlg
             )
             buttonMergeDupes.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
             createButtonsLayout.addWidget(buttonMergeDupes, 1, 0)
@@ -159,7 +163,7 @@ class BIM_Material:
 
             # delete unused
             buttonDeleteUnused = QtGui.QPushButton(
-                translate("BIM", "Delete unused"), self.dlg
+                translate("BIM", "Delete Unused"), self.dlg
             )
             buttonDeleteUnused.setIcon(QtGui.QIcon(":/icons/delete.svg"))
             createButtonsLayout.addWidget(buttonDeleteUnused, 1, 1)
@@ -190,6 +194,7 @@ class BIM_Material:
             context4.triggered.connect(self.onDelete)
 
             # other signal/slots to connect
+            self.dlg.rejected.connect(self.onReject)
             matList.customContextMenuRequested.connect(self.onRightClick)
             matList.itemDoubleClicked.connect(self.onAccept)
             matList.itemChanged.connect(self.onEndRename)
@@ -199,7 +204,7 @@ class BIM_Material:
 
         else:
             # no material in the document
-            self.dlg = None
+            self.onReject()
             FreeCADGui.runCommand("Arch_Material")
 
     def onRightClick(self, pos):
@@ -425,14 +430,12 @@ class BIM_Material:
                         self.rescan()
 
     def onCreate(self):
-        if self.dlg:
-            self.dlg.hide()
-            FreeCADGui.runCommand("Arch_Material")
+        self.onReject()
+        FreeCADGui.runCommand("Arch_Material")
 
     def onMulti(self):
-        if self.dlg:
-            self.dlg.hide()
-            FreeCADGui.runCommand("Arch_MultiMaterial")
+        self.onReject()
+        FreeCADGui.runCommand("Arch_MultiMaterial")
 
     def onAccept(self, item=None):
         if self.dlg:
@@ -453,13 +456,14 @@ class BIM_Material:
             p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
             p.SetInt("BimMaterialDialogWidth", self.dlg.width())
             p.SetInt("BimMaterialDialogHeight", self.dlg.height())
-            from draftutils import todo
-
-            todo.ToDo.delay(self.dlg.hide, None)
+        from DraftGui import todo
+        # delay required for matList.itemDoubleClicked action
+        todo.delay(self.onReject, None)
 
     def onReject(self):
         if self.dlg:
             self.dlg.hide()
+            self.dlg = None
 
     def onUpArrow(self):
         if self.dlg:

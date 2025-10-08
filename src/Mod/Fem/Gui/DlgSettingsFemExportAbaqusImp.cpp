@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/Application.h>
 
@@ -61,7 +60,7 @@ void DlgSettingsFemExportAbaqusImp::loadSettings()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Abaqus");
-    int index = hGrp->GetInt("AbaqusElementChoice", 0);
+    int index = hGrp->GetInt("AbaqusElementChoice", 2);
     if (index > -1) {
         ui->comboBoxElemChoiceParam->setCurrentIndex(index);
     }

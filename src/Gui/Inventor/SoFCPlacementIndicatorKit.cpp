@@ -21,10 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <sstream>
 
 #include <Inventor/nodes/SoBaseColor.h>
@@ -40,7 +36,6 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoFontStyle.h>
-#endif
 
 #include "SoFCPlacementIndicatorKit.h"
 

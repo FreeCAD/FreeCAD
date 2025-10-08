@@ -21,11 +21,9 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -44,8 +42,7 @@
 #include "ui_TaskMultiTransformParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "TaskMirroredParameters.h"
-#include "TaskLinearPatternParameters.h"
-#include "TaskPolarPatternParameters.h"
+#include "TaskPatternParameters.h"
 #include "TaskScaledParameters.h"
 #include "Utils.h"
 
@@ -170,6 +167,10 @@ void TaskMultiTransformParameters::closeSubTask()
             subTask->apply();
         }
 
+        delete subTask;
+        subTask = nullptr;
+        subFeature = nullptr;
+
         // Remove all parameter ui widgets and layout
         ui->subFeatureWidget->setUpdatesEnabled(false);
         qDeleteAll(
@@ -177,10 +178,6 @@ void TaskMultiTransformParameters::closeSubTask()
         qDeleteAll(
             ui->subFeatureWidget->findChildren<QLayout*>(QString(), Qt::FindDirectChildrenOnly));
         ui->subFeatureWidget->setUpdatesEnabled(true);
-
-        delete subTask;
-        subTask = nullptr;
-        subFeature = nullptr;
     }
 }
 
@@ -230,11 +227,9 @@ void TaskMultiTransformParameters::onTransformEdit()
     if (subFeature->is<PartDesign::Mirrored>()) {
         subTask = new TaskMirroredParameters(this, ui->subFeatureWidget);
     }
-    else if (subFeature->is<PartDesign::LinearPattern>()) {
-        subTask = new TaskLinearPatternParameters(this, ui->subFeatureWidget);
-    }
-    else if (subFeature->is<PartDesign::PolarPattern>()) {
-        subTask = new TaskPolarPatternParameters(this, ui->subFeatureWidget);
+    else if (subFeature->is<PartDesign::LinearPattern>()
+        || subFeature->is<PartDesign::PolarPattern>()) {
+        subTask = new TaskPatternParameters(this, ui->subFeatureWidget);
     }
     else if (subFeature->is<PartDesign::Scaled>()) {
         subTask = new TaskScaledParameters(this, ui->subFeatureWidget);

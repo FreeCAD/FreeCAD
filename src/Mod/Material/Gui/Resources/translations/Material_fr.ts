@@ -4,13 +4,17 @@
   <context>
     <name>CmdInspectAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="146"/>
-      <source>Inspect Appearance...</source>
-      <translation>Inspecter l'apparence...</translation>
+      <location filename="../../Command.cpp" line="144"/>
+      <source>Inspect Appearance</source>
+      <translation>Inspecter l'apparence</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="145"/>
+      <source>Inspects the appearance properties of the selected object</source>
+      <translation>Inspecte les propriétés d'apparence de l'objet sélectionné.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
-      <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
       <translation>Inspecter les propriétés d'apparence de l'objet sélectionné</translation>
     </message>
@@ -18,13 +22,17 @@
   <context>
     <name>CmdInspectMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
-      <source>Inspect Material...</source>
-      <translation>Inspecter le matériau...</translation>
+      <location filename="../../Command.cpp" line="171"/>
+      <source>Inspect Material</source>
+      <translation>Inspecter le matériau</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="172"/>
+      <source>Inspects the material properties of the selected object</source>
+      <translation>Inspecte les propriétés du matériau de l'objet sélectionné.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
-      <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
       <translation>Inspecter les propriétés du matériau de l'objet sélectionné</translation>
     </message>
@@ -37,13 +45,13 @@
       <translation>Matrice 2D</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="78"/>
-      <source>Delete row</source>
+      <location filename="../../Array2D.cpp" line="77"/>
+      <source>Delete Row</source>
       <translation>Supprimer une ligne</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="140"/>
-      <source>Context menu</source>
+      <location filename="../../Array2D.cpp" line="136"/>
+      <source>Context Menu</source>
       <translation>Menu contextuel</translation>
     </message>
   </context>
@@ -55,31 +63,31 @@
       <translation>Matrice 3D</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="77"/>
-      <location filename="../../Array3D.cpp" line="81"/>
-      <source>Delete row</source>
+      <location filename="../../Array3D.cpp" line="75"/>
+      <location filename="../../Array3D.cpp" line="79"/>
+      <source>Delete Row</source>
       <translation>Supprimer une ligne</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="231"/>
-      <location filename="../../Array3D.cpp" line="302"/>
-      <source>Context menu</source>
+      <location filename="../../Array3D.cpp" line="229"/>
+      <location filename="../../Array3D.cpp" line="300"/>
+      <source>Context Menu</source>
       <translation>Menu contextuel</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="263"/>
-      <location filename="../../Array3D.cpp" line="335"/>
+      <location filename="../../Array3D.cpp" line="261"/>
+      <location filename="../../Array3D.cpp" line="333"/>
       <source>Confirm Delete</source>
       <translation>Confirmer la suppression</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="265"/>
-      <location filename="../../Array3D.cpp" line="337"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation>Êtes-vous sûr de vouloir supprimer la ligne ?</translation>
+      <location filename="../../Array3D.cpp" line="263"/>
+      <location filename="../../Array3D.cpp" line="335"/>
+      <source>Delete the row?</source>
+      <translation>Voulez-vous supprimer la ligne ?</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="267"/>
+      <location filename="../../Array3D.cpp" line="265"/>
       <source>Removing this will also remove all 2D contents.</source>
       <translation>Supprimer ceci supprimera également tous les contenus 2D.</translation>
     </message>
@@ -87,12 +95,12 @@
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="148"/>
+      <location filename="../../ArrayDelegate.cpp" line="146"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="149"/>
+      <location filename="../../ArrayDelegate.cpp" line="147"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
@@ -100,12 +108,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="439"/>
+      <location filename="../../BaseDelegate.cpp" line="437"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="440"/>
+      <location filename="../../BaseDelegate.cpp" line="438"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
@@ -114,23 +122,23 @@
     <name>MatGui::DlgDisplayProperties</name>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
-      <source>Display properties</source>
+      <source>Display Properties</source>
       <translation>Afficher les propriétés</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
-      <source>Viewing mode</source>
+      <source>Viewing Mode</source>
       <translation>Mode d'affichage</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
-      <source>Document window:</source>
-      <translation>Fenêtre du document :</translation>
+      <source>Document window</source>
+      <translation>Fenêtre du document</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
-      <source>Plot mode:</source>
-      <translation>Mode de tracé :</translation>
+      <source>Plot mode</source>
+      <translation>Mode de tracé</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -139,66 +147,48 @@
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
-      <source>Point size:</source>
-      <translation>Taille des points :</translation>
+      <source>Point size</source>
+      <translation>Taille des points</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
-      <source>Line width:</source>
-      <translation>Largeur des lignes :</translation>
+      <source>Line width</source>
+      <translation>Largeur des lignes</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
-      <source>Transparency:</source>
-      <translation>Transparence :</translation>
+      <source>Transparency</source>
+      <translation>Transparence</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
-      <source>Line transparency:</source>
-      <translation>Transparence des lignes :</translation>
+      <source>Line transparency</source>
+      <translation>Transparence des lignes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="365"/>
+      <source>Color plot</source>
+      <translation>Couleur du tracé</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="372"/>
+      <source>Custom appearance</source>
+      <translation>Apparence personnalisée</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="382"/>
+      <source>Point color</source>
+      <translation>Couleur des points</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="389"/>
+      <source>Line color</source>
+      <translation>Couleur des lignes</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
       <source>Material</source>
       <translation>Gérer les matériaux</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="365"/>
-      <source>Color plot:</source>
-      <translation>Couleur des courbes :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="372"/>
-      <source>Custom appearance:</source>
-      <translation>Apparence personnalisée :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="382"/>
-      <source>Point color:</source>
-      <translation>Couleur des points :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="389"/>
-      <source>Line color:</source>
-      <translation>Couleur des lignes :</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgDisplayPropertiesImp</name>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
-      <source>Basic Appearance</source>
-      <translation>Apparence de base</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
-      <source>Texture Appearance</source>
-      <translation>Apparence des textures</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
-      <source>All Materials</source>
-      <translation>Tous les matériaux</translation>
     </message>
   </context>
   <context>
@@ -214,19 +204,19 @@
       <translation>Document</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>Nom du document</translation>
-    </message>
-    <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
       <translation>Nom du document actif</translation>
     </message>
     <message>
+      <location filename="../../DlgInspectAppearance.ui" line="50"/>
+      <source>Document name</source>
+      <translation>Nom du document</translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
-      <source>Label / Internal Name</source>
-      <translation>Étiquette/nom interne</translation>
+      <source>Label / internal name</source>
+      <translation>Libellé/nom interne</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
@@ -254,32 +244,32 @@
       <translation>Onglet 2</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="202"/>
-      <source>Diffuse Color</source>
+      <location filename="../../DlgInspectAppearance.cpp" line="200"/>
+      <source>Diffuse color</source>
       <translation>Couleur diffuse</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="211"/>
-      <source>Ambient Color</source>
+      <location filename="../../DlgInspectAppearance.cpp" line="209"/>
+      <source>Ambient color</source>
       <translation>Couleur ambiante</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="220"/>
-      <source>Emissive Color</source>
+      <location filename="../../DlgInspectAppearance.cpp" line="218"/>
+      <source>Emissive color</source>
       <translation>Couleur émissive</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="229"/>
-      <source>Specular Color</source>
+      <location filename="../../DlgInspectAppearance.cpp" line="227"/>
+      <source>Specular color</source>
       <translation>Couleur spéculaire</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="238"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="236"/>
       <source>Shininess</source>
       <translation>Brillance</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="246"/>
       <source>Transparency</source>
       <translation>Transparence</translation>
     </message>
@@ -297,19 +287,19 @@
       <translation>Document</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>Nom du document</translation>
-    </message>
-    <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
       <translation>Nom du document actif</translation>
     </message>
     <message>
+      <location filename="../../DlgInspectMaterial.ui" line="50"/>
+      <source>Document name</source>
+      <translation>Nom du document</translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
-      <source>Label / Internal Name</source>
-      <translation>Étiquette/nom interne</translation>
+      <source>Label / internal name</source>
+      <translation>Libellé/nom interne</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
@@ -328,121 +318,125 @@
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
-      <source>Copy to clipboard</source>
+      <source>Copy to Clipboard</source>
       <translation>Copier dans le presse-papiers</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="151"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="149"/>
       <source>Document: </source>
       <translation>Document : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="166"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="164"/>
       <source>Label: </source>
       <translation>Étiquette : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="172"/>
-      <source>Internal Name: </source>
+      <location filename="../../DlgInspectMaterial.cpp" line="170"/>
+      <source>Internal name: </source>
       <translation>Nom interne : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="188"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Type: </source>
       <translation>Type : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="192"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
       <source>TypeID: </source>
       <translation>TypeID : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="221"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="233"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="252"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="292"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="314"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="219"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="231"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="250"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="290"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="312"/>
       <source>Name: </source>
       <translation>Nom : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="246"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="285"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="309"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="360"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="244"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="283"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="307"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="358"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="266"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="341"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="264"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="339"/>
       <source>UUID: </source>
       <translation>UUID : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="269"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="267"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="342"/>
       <source>Library: </source>
       <translation>Bibliothèque : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="273"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="346"/>
-      <source>Library Directory: </source>
+      <location filename="../../DlgInspectMaterial.cpp" line="271"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
+      <source>Library directory: </source>
       <translation>Répertoire de la bibliothèque : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="276"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
-      <source>Sub Directory: </source>
+      <location filename="../../DlgInspectMaterial.cpp" line="274"/>
+      <source>Subdirectory: </source>
       <translation>Sous-répertoire : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="279"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="350"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="346"/>
+      <source>Sub directory: </source>
+      <translation>Sous-répertoire : </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="363"/>
+      <source>Appearance models:</source>
+      <translation>Modèles d'apparence :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="369"/>
+      <source>Physical models:</source>
+      <translation>Modèles physiques :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="375"/>
+      <source>Appearance properties:</source>
+      <translation>Propriétés d'apparence :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="381"/>
+      <source>Physical properties:</source>
+      <translation>Propriétés physiques :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="277"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Inherits:</source>
       <translation>Héritage :</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="327"/>
       <source>Model UUID: </source>
       <translation>UUID du modèle : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Has value: </source>
       <translation>A la valeur : </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>No</source>
       <translation>Non</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Yes</source>
       <translation>Oui</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
-      <source>Appearance Models:</source>
-      <translation>Modèles d'apparence :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
-      <source>Physical Models:</source>
-      <translation>Modèles physiques :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
-      <source>Appearance Properties:</source>
-      <translation>Propriétés de l'apparence :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
-      <source>Physical Properties:</source>
-      <translation>Propriétés physiques :</translation>
     </message>
   </context>
   <context>
@@ -462,7 +456,7 @@
       <translation>Matériau par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
+      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="50"/>
       <source>Physical</source>
       <translation>Physique</translation>
     </message>
@@ -475,24 +469,9 @@
       <translation>Général</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
-      <source>Card resources</source>
-      <translation>Sources des paramètres</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
-      <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation>Les paramètres intégrés à FreeCAD seront listés comme disponibles.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsMaterial.ui" line="34"/>
       <source>Use built-in materials</source>
       <translation>Utiliser des matériaux intégrés</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
-      <source>Use materials added by external workbenches.</source>
-      <translation>Utiliser des matériaux ajoutés par des ateliers externes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
@@ -500,95 +479,109 @@
       <translation>Utiliser des matériaux provenant d'ateliers externes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
-      <source>Also cards from FreeCAD&apos;s preferences directory will be listed as available.</source>
-      <translation>Les paramètres provenant du répertoire des préférences de FreeCAD seront aussi listés comme étant disponibles.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
-      <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
-      <translation>Utiliser les matériaux du répertoire Materials dans le répertoire de préférences FreeCAD de l'utilisateur</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
-      <source>Also material cards also from the specified directory
-will be listed as available.</source>
-      <translation>Les paramètres des matériaux provenant du répertoire spécifié seront aussi listés comme disponibles.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="92"/>
-      <source>Use materials from user defined directory</source>
-      <translation>Utiliser des matériaux provenant d'un répertoire défini par l'utilisateur</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="119"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="118"/>
       <source>User directory</source>
       <translation>Répertoire de l'utilisateur</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="155"/>
-      <source>Card sorting and duplicates</source>
+      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
+      <source>Card Resources</source>
+      <translation>Ressources des jeux de paramètres</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
+      <source>The cards built-in to FreeCAD will be listed as available</source>
+      <translation>Les jeux de paramètres intégrés à FreeCAD seront listés comme disponibles.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
+      <source>Use materials added by external workbenches</source>
+      <translation>Utiliser des matériaux ajoutés par des ateliers externes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
+      <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
+      <translation>Les jeux de paramètres du répertoire des préférences de FreeCAD sont également listées comme disponibles.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
+      <source>Use materials from the Materials preference directory</source>
+      <translation>Utiliser les matériaux du répertoire des préférences de Material</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
+      <source>Material cards from the specified directory will also be listed as available</source>
+      <translation>Les jeux de paramètres de matériau du répertoire spécifié seront également listées comme disponibles.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="91"/>
+      <source>Use materials from user-defined directory</source>
+      <translation>Utiliser les matériaux du répertoire défini par l'utilisateur</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="154"/>
+      <source>Card Sorting and Duplicates</source>
       <translation>Tri des jeux de paramètres et doublons</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
-      <source>Duplicate cards will be deleted from the displayed material card list.</source>
+      <location filename="../../DlgSettingsMaterial.ui" line="160"/>
+      <source>Duplicate cards will be deleted from the displayed material card list</source>
       <translation>Les jeux de paramètres en doublon seront supprimés de la liste des jeux de paramètres de matériaux affichés.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="164"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="163"/>
       <source>Delete card duplicates</source>
       <translation>Supprimer les doublons de jeux de paramètres</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="180"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Les paramètres des matériaux apparaissent triés par leurs sources (emplacements).
 S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="184"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
       <translation>Trier par sources d'information</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="203"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="202"/>
       <source>Material Selector</source>
       <translation>Sélecteur de matériaux</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="209"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="292"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="208"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="291"/>
       <source>Show favorites</source>
       <translation>Afficher les matériaux favoris</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="225"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="308"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="224"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="307"/>
       <source>Show recent</source>
       <translation>Afficher les matériaux récents</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="241"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="324"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="240"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="323"/>
       <source>Show empty libraries</source>
       <translation>Afficher les bibliothèques vides</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="257"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="340"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="256"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="339"/>
       <source>Show empty folders</source>
       <translation>Afficher les dossiers vides</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="270"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="353"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="269"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="352"/>
       <source>Show legacy files</source>
       <translation>Afficher les fichiers historiques</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="286"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
       <translation>Éditeur de matériaux</translation>
     </message>
@@ -607,8 +600,8 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
-      <source>File...</source>
-      <translation>Fichier...</translation>
+      <source>File</source>
+      <translation>Fichier</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
@@ -621,17 +614,17 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Épaisseur</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="195"/>
+      <location filename="../../ImageEdit.cpp" line="193"/>
       <source>Select an image</source>
       <translation>Sélectionner une image</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
+      <location filename="../../ImageEdit.cpp" line="204"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Fichiers image (*.jpg *.jpeg *.png *.bmp);;Tous les fichiers (*)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
+      <location filename="../../ImageEdit.cpp" line="216"/>
       <source>Image files (*.svg);;All files (*)</source>
       <translation>Fichiers image (*.svg);;Tous les fichiers (*)</translation>
     </message>
@@ -652,12 +645,12 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="475"/>
+      <location filename="../../MaterialDelegate.cpp" line="473"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="476"/>
+      <location filename="../../MaterialDelegate.cpp" line="474"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
@@ -671,103 +664,107 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
-      <source>Library:</source>
-      <translation>Bibliothèque :</translation>
+      <source>Library</source>
+      <translation>Bibliothèque</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="70"/>
+      <source>Filename</source>
+      <translation>Nom du fichier</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="104"/>
+      <source>Save as inherited</source>
+      <translation>Enregistrer comme hérité</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="485"/>
-      <location filename="../../MaterialSave.cpp" line="495"/>
       <source>New Folder</source>
       <translation>Nouveau dossier</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.ui" line="70"/>
-      <source>Filename:</source>
-      <translation>Nom du fichier :</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.ui" line="104"/>
-      <source>Save as Inherited</source>
-      <translation>Enregistrer comme hérité</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="92"/>
+      <location filename="../../MaterialSave.cpp" line="94"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
-      <source>Are you sure you want to save over &apos;%1&apos;?</source>
-      <translation>Êtes-vous sûr de vouloir économiser sur "%1" ?</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="194"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Enregistrer par-dessus le fichier d'origine peut endommager d'autres documents. Ceci n'est pas recommandé.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="217"/>
-      <source>Confirm Save As New Material</source>
-      <translation>Confirmer l'enregistrement en tant que nouveau matériau</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="219"/>
+      <location filename="../../MaterialSave.cpp" line="218"/>
       <source>Save as new material</source>
       <translation>Enregistrer en tant que nouveau matériau</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
-      <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation>Ce matériau existe déjà dans cette bibliothèque. Voulez-vous l'enregistrer en tant que nouveau matériau ?</translation>
+      <location filename="../../MaterialSave.cpp" line="191"/>
+      <source>Save over &apos;%1&apos;?</source>
+      <translation>Voulez-vous enregistrer par-dessus « %1 » ?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
-      <source>Confirm Save As Copy</source>
+      <location filename="../../MaterialSave.cpp" line="216"/>
+      <source>Confirm Save as New Material</source>
+      <translation>Confirmer l'enregistrement en tant que nouveau matériau</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="221"/>
+      <source>This material already exists in this library. Save as a new material?</source>
+      <translation>Ce matériau existe déjà dans cette bibliothèque. Voulez-vous l'enregistrer comme nouveau matériau ?</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="243"/>
+      <source>Confirm Save as Copy</source>
       <translation>Confirmer l'enregistrement en tant que copie</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="246"/>
-      <source>Save as Copy</source>
-      <translation>Enregistrer comme copie</translation>
+      <location filename="../../MaterialSave.cpp" line="245"/>
+      <source>Save as copy</source>
+      <translation>Enregistrer en tant que copie</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="249"/>
-      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation>Enregistrer une copie n'est pas recommandé car cela peut endommager d'autres documents. Il est recommandé de l'enregistrer comme un nouveau matériau.</translation>
+      <location filename="../../MaterialSave.cpp" line="248"/>
+      <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
+      <translation>Il n'est pas recommandé d'enregistrer une copie, car cela peut endommager d'autres documents. Il est recommandé d'enregistrer en tant que nouveau matériau.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="251"/>
       <source>Save Copy</source>
       <translation>Enregistrer une copie</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Save As New</source>
       <translation>Enregistrer comme nouveau</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="535"/>
-      <source>Context menu</source>
+      <location filename="../../MaterialSave.cpp" line="484"/>
+      <location filename="../../MaterialSave.cpp" line="494"/>
+      <source>New folder</source>
+      <translation>Nouveau dossier</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="534"/>
+      <source>Context Menu</source>
       <translation>Menu contextuel</translation>
     </message>
   </context>
   <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="142"/>
-      <source>Launch editor</source>
+      <location filename="../../MaterialTreeWidget.cpp" line="138"/>
+      <source>Launch Editor</source>
       <translation>Lancer l'éditeur</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="545"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="311"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="532"/>
       <source>Favorites</source>
       <translation>Favoris</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="552"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="311"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="539"/>
       <source>Recent</source>
       <translation>Récents</translation>
     </message>
@@ -816,8 +813,18 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
-      <source>Source Reference</source>
-      <translation>Référence de la source</translation>
+      <source>Source reference</source>
+      <translation>Référence source</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="202"/>
+      <source>Adds or removes to/from favorites</source>
+      <translation>Ajoute ou supprime vers/des favoris.</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="205"/>
+      <source>Toggle Favorite</source>
+      <translation>Activer/désactiver les favoris</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -833,11 +840,6 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
       <translation>Hériter</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialsEditor.ui" line="202"/>
-      <source>Add to favorites</source>
-      <translation>Ajouter aux matériaux favoris</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
@@ -870,78 +872,78 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Supprimer le modèle d'apparence</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="485"/>
+      <location filename="../../MaterialsEditor.cpp" line="482"/>
       <source>Unnamed</source>
       <translation>Nouveau</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="607"/>
+      <location filename="../../MaterialsEditor.cpp" line="604"/>
       <source>Old Format Material</source>
       <translation>Matériau à l'ancien format</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="609"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>This file is in the old material card format.</source>
       <translation>Ce fichier est à l'ancien format du jeu de paramètres du matériau.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="695"/>
+      <location filename="../../MaterialsEditor.cpp" line="692"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Ce jeu de paramètres utilise l'ancien format et doit être enregistré avant d'être utilisé.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="755"/>
-      <location filename="../../MaterialsEditor.cpp" line="787"/>
-      <location filename="../../MaterialsEditor.cpp" line="1088"/>
-      <location filename="../../MaterialsEditor.cpp" line="1150"/>
+      <location filename="../../MaterialsEditor.cpp" line="752"/>
+      <location filename="../../MaterialsEditor.cpp" line="784"/>
+      <location filename="../../MaterialsEditor.cpp" line="1086"/>
+      <location filename="../../MaterialsEditor.cpp" line="1148"/>
       <source>Property</source>
       <translation>Propriété</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="756"/>
-      <location filename="../../MaterialsEditor.cpp" line="788"/>
-      <location filename="../../MaterialsEditor.cpp" line="1089"/>
-      <location filename="../../MaterialsEditor.cpp" line="1151"/>
+      <location filename="../../MaterialsEditor.cpp" line="753"/>
+      <location filename="../../MaterialsEditor.cpp" line="785"/>
+      <location filename="../../MaterialsEditor.cpp" line="1087"/>
+      <location filename="../../MaterialsEditor.cpp" line="1149"/>
       <source>Value</source>
       <translation>Valeur</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="757"/>
-      <location filename="../../MaterialsEditor.cpp" line="789"/>
-      <location filename="../../MaterialsEditor.cpp" line="1090"/>
-      <location filename="../../MaterialsEditor.cpp" line="1152"/>
+      <location filename="../../MaterialsEditor.cpp" line="754"/>
+      <location filename="../../MaterialsEditor.cpp" line="786"/>
+      <location filename="../../MaterialsEditor.cpp" line="1088"/>
+      <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="880"/>
+      <location filename="../../MaterialsEditor.cpp" line="877"/>
       <source>Favorites</source>
       <translation>Favoris</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="887"/>
+      <location filename="../../MaterialsEditor.cpp" line="884"/>
       <source>Recent</source>
       <translation>Récents</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1153"/>
+      <location filename="../../MaterialsEditor.cpp" line="1151"/>
       <source>Units</source>
       <translation>Unités</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1320"/>
-      <source>Context menu</source>
+      <location filename="../../MaterialsEditor.cpp" line="1318"/>
+      <source>Context Menu</source>
       <translation>Menu contextuel</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1322"/>
-      <source>Inherit from</source>
+      <location filename="../../MaterialsEditor.cpp" line="1320"/>
+      <source>Inherit From</source>
       <translation>Hériter de</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1326"/>
-      <source>Inherit new material</source>
-      <translation>Hériter d'un nouveau matériau</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1324"/>
+      <source>Inherit New Material</source>
+      <translation>Hériter un nouveau matériau</translation>
     </message>
   </context>
   <context>
@@ -958,13 +960,13 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="49"/>
-      <location filename="../../ModelSelect.cpp" line="365"/>
+      <location filename="../../ModelSelect.cpp" line="363"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
-      <location filename="../../ModelSelect.cpp" line="364"/>
+      <location filename="../../ModelSelect.cpp" line="362"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
@@ -980,43 +982,48 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
-      <source>Add to favorites</source>
-      <translation>Ajouter aux matériaux favoris</translation>
+      <source>Adds or removes to/from favorites</source>
+      <translation>Ajoute ou supprime vers/des favoris.</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="162"/>
+      <source>Toggle Favorites</source>
+      <translation>Activer/désactiver les favoris</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
-      <location filename="../../ModelSelect.cpp" line="443"/>
-      <location filename="../../ModelSelect.cpp" line="459"/>
+      <location filename="../../ModelSelect.cpp" line="441"/>
+      <location filename="../../ModelSelect.cpp" line="457"/>
       <source>Properties</source>
       <translation>Propriétés</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="337"/>
+      <location filename="../../ModelSelect.cpp" line="335"/>
       <source>Favorites</source>
       <translation>Favoris</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="342"/>
+      <location filename="../../ModelSelect.cpp" line="340"/>
       <source>Recent</source>
       <translation>Récents</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="361"/>
+      <location filename="../../ModelSelect.cpp" line="359"/>
       <source>Inherited</source>
       <translation>Hérité</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="362"/>
+      <location filename="../../ModelSelect.cpp" line="360"/>
       <source>Property</source>
       <translation>Propriété</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="363"/>
+      <location filename="../../ModelSelect.cpp" line="361"/>
       <source>Units</source>
       <translation>Unités</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="446"/>
+      <location filename="../../ModelSelect.cpp" line="444"/>
       <source>Appearance</source>
       <translation>Apparence</translation>
     </message>
@@ -1038,8 +1045,8 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
-      <source>Material card</source>
-      <translation>Type de matériau</translation>
+      <source>Material Card</source>
+      <translation>Jeu de paramètres du matériau</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1058,44 +1065,44 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
-      <source>Open...</source>
-      <translation>Ouvrir...</translation>
+      <source>Open…</source>
+      <translation>Ouvrir…</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="80"/>
+      <source>Save As…</source>
+      <translation>Enregistrer sous…</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="96"/>
+      <source>Material Parameter</source>
+      <translation>Paramètre du matériau</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="115"/>
+      <source>Add/Remove Parameter</source>
+      <translation>Ajouter/supprimer le paramètre</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="126"/>
+      <source>Add Property</source>
+      <translation>Ajouter une propriété</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="133"/>
+      <source>Delete Property</source>
+      <translation>Supprimer une propriété</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
       <translation>Enregistrer ce matériau en tant que jeu de paramètres</translation>
     </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="80"/>
-      <source>Save as...</source>
-      <translation>Enregistrer sous...</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="96"/>
-      <source>Material parameter</source>
-      <translation>Paramètres du matériau</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="115"/>
-      <source>Add / remove parameter</source>
-      <translation>Ajouter/supprimer le paramètre</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="126"/>
-      <source>Add property</source>
-      <translation>Ajouter une propriété</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="133"/>
-      <source>Delete property</source>
-      <translation>Supprimer la propriété</translation>
-    </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="57"/>
+      <location filename="../../DlgMaterialImp.cpp" line="54"/>
       <source>Material</source>
       <translation>Gérer les matériaux</translation>
     </message>
@@ -1103,82 +1110,82 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMatGui.cpp" line="110"/>
-      <source>Material workbench</source>
+      <location filename="../../AppMatGui.cpp" line="106"/>
+      <source>Material Workbench</source>
       <translation>Atelier Material</translation>
     </message>
     <message>
-      <location filename="../../AppMatGui.cpp" line="112"/>
-      <location filename="../../AppMatGui.cpp" line="114"/>
-      <location filename="../../AppMatGui.cpp" line="117"/>
+      <location filename="../../AppMatGui.cpp" line="108"/>
+      <location filename="../../AppMatGui.cpp" line="110"/>
+      <location filename="../../AppMatGui.cpp" line="113"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="189"/>
+      <location filename="../../MaterialSave.cpp" line="188"/>
       <source>Confirm Overwrite</source>
       <translation>Confirmer le remplacement</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="378"/>
       <location filename="../../MaterialSave.cpp" line="379"/>
-      <location filename="../../MaterialSave.cpp" line="380"/>
       <source>No writeable library</source>
       <translation>Aucune bibliothèque accessible en écriture</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="567"/>
-      <source>Are you sure you want to delete &apos;%1&apos;?</source>
-      <translation>Êtes-vous sûr de vouloir supprimer "%1" ?</translation>
+      <location filename="../../MaterialSave.cpp" line="566"/>
+      <source>Delete &apos;%1&apos;?</source>
+      <translation>Voulez-vous supprimer « %1 » ?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="571"/>
+      <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Supprimer ceci supprimera également tous les contenus.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="610"/>
-      <source>You must save the material before using it.</source>
-      <translation>Vous devez enregistrer le matériau avant de l'utiliser.</translation>
+      <location filename="../../MaterialsEditor.cpp" line="607"/>
+      <source>Save the material before using it.</source>
+      <translation>Enregistrez le matériau avant de l'utiliser.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1347"/>
+      <location filename="../../MaterialsEditor.cpp" line="1345"/>
       <source>Unsaved Material</source>
       <translation>Matériau non sauvegardé</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1348"/>
-      <source>Do you want to save your changes to the material before closing?</source>
-      <translation>Voulez-vous enregistrer les modifications apportées à ce matériau avant de fermer ?</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1346"/>
+      <source>Save changes to the material before closing?</source>
+      <translation>Enregistrer les modifications du matériau avant de fermer ?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1350"/>
-      <source>If you don&apos;t save, your changes will be lost.</source>
-      <translation>Si vous n'enregistrez pas, vos modifications seront perdues.</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1347"/>
+      <source>Otherwise, all changes will be lost.</source>
+      <translation>Sinon, toutes les modifications seront perdues.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="564"/>
+      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../ListEdit.cpp" line="140"/>
+      <location filename="../../MaterialSave.cpp" line="563"/>
       <source>Confirm Delete</source>
       <translation>Confirmer la suppression</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="174"/>
-      <location filename="../../ListEdit.cpp" line="144"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation>Êtes-vous sûr de vouloir supprimer la ligne ?</translation>
+      <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <source>Delete the row?</source>
+      <translation>Voulez-vous supprimer la ligne ?</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
-      <source>&amp;Appearance...</source>
-      <translation>Définir l'&amp;apparence...</translation>
+      <location filename="../../Command.cpp" line="86"/>
+      <source>&amp;Appearance</source>
+      <translation>&amp;Définir l'apparence</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="87"/>
       <location filename="../../Command.cpp" line="89"/>
-      <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
       <translation>Définir les propriétés d'affichage de l'objet sélectionné</translation>
     </message>
@@ -1186,13 +1193,13 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>StdCmdSetMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="117"/>
-      <source>&amp;Material...</source>
-      <translation>Définir le &amp;matériau...</translation>
+      <location filename="../../Command.cpp" line="115"/>
+      <source>&amp;Material</source>
+      <translation>&amp;Définir le matériau</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="116"/>
       <location filename="../../Command.cpp" line="118"/>
-      <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
       <translation>Définir le matériau de l'objet sélectionné</translation>
     </message>
@@ -1200,12 +1207,12 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Materials</source>
       <translation>&amp;Matériaux</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Materials</source>
       <translation>Matériaux</translation>
     </message>
@@ -1215,27 +1222,27 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="14"/>
       <source>Materials Migration</source>
-      <translation type="unfinished">Materials Migration</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.ui" line="20"/>
-      <source>Select Material Libraries</source>
-      <translation type="unfinished">Select Material Libraries</translation>
+      <translation>Migration des matériaux</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
-      <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
+      <translation>Sélectionner les bibliothèques de matériaux à migrer. Les matériaux existants ne seront pas écrasés.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="20"/>
+      <source>Select material libraries</source>
+      <translation>Sélectionner les bibliothèques de matériaux</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
-      <source>Select Model Libraries</source>
-      <translation type="unfinished">Select Model Libraries</translation>
+      <source>Select model libraries</source>
+      <translation>Sélectionner les bibliothèques de modèles</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
       <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
-      <translation type="unfinished">Select model libraries to migrate. Existing models will not be overwritten.</translation>
+      <translation>Sélectionner les bibliothèques de modèles à migrer. Les modèles existants ne seront pas écrasés.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
@@ -1243,23 +1250,27 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>État</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="180"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="176"/>
       <source>&amp;Migrate</source>
-      <translation type="unfinished">&amp;Migrate</translation>
+      <translation>&amp;Migrer</translation>
     </message>
   </context>
   <context>
     <name>MatGui::DlgSettingsExternal</name>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="14"/>
-      <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External Interface</source>
-      <translation type="unfinished">External Interface</translation>
+      <translation>Interface externe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="20"/>
       <source>Use External Interface</source>
-      <translation type="unfinished">Use External Interface</translation>
+      <translation>Utiliser l'interface externe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="29"/>
+      <source>External interface</source>
+      <translation>Interface externe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1268,22 +1279,22 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
-      <source>Model Cache Size</source>
-      <translation type="unfinished">Model Cache Size</translation>
+      <source>Model cache size</source>
+      <translation>Taille du cache des modèles</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
-      <source>Hit Rate</source>
-      <translation type="unfinished">Hit Rate</translation>
+      <source>Hit rate</source>
+      <translation>Taux de réussite</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
-      <source>Material Cache Size</source>
-      <translation type="unfinished">Material Cache Size</translation>
+      <source>Material cache size</source>
+      <translation>Taille du cache des matériaux</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsExternal.cpp" line="97"/>
+      <location filename="../../DlgSettingsExternal.cpp" line="93"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
@@ -1291,91 +1302,109 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>MatGui::DlgMigrateExternal</name>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="77"/>
-      <source>Migrating Models...</source>
-      <translation type="unfinished">Migrating Models...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="73"/>
+      <source>Migrating models…</source>
+      <translation>Transférer des modèles…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="79"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="91"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="103"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="115"/>
+      <source>  Library: </source>
+      <translation>  Bibliothèque : </translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="83"/>
       <location filename="../../TaskMigrateExternal.cpp" line="95"/>
       <location filename="../../TaskMigrateExternal.cpp" line="107"/>
       <location filename="../../TaskMigrateExternal.cpp" line="119"/>
-      <source>  Library: </source>
-      <translation type="unfinished">  Library: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
       <source>done</source>
-      <translation type="unfinished">done</translation>
+      <translation>Valider</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="89"/>
-      <source>Validating Models...</source>
-      <translation type="unfinished">Validating Models...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="85"/>
+      <source>Validating models…</source>
+      <translation>Valider des modèles…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="101"/>
-      <source>Migrating Materials...</source>
-      <translation type="unfinished">Migrating Materials...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="97"/>
+      <source>Migrating materials…</source>
+      <translation>Transférer des matériaux…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="113"/>
-      <source>Validating Materials...</source>
-      <translation type="unfinished">Validating Materials...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="109"/>
+      <source>Validating materials…</source>
+      <translation>Valider des matériaux…</translation>
     </message>
     <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="146"/>
+      <source>Unknown exception - aborted</source>
+      <translation>Une exception inconnue s'est produite. L'opération a été interrompue.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
       <location filename="../../TaskMigrateExternal.cpp" line="127"/>
       <location filename="../../TaskMigrateExternal.cpp" line="131"/>
       <location filename="../../TaskMigrateExternal.cpp" line="135"/>
       <location filename="../../TaskMigrateExternal.cpp" line="139"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
       <source>Aborted</source>
-      <translation type="unfinished">Aborted</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="147"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="150"/>
-      <source>Unknown exception - Aborted</source>
-      <translation type="unfinished">Unknown exception - Aborted</translation>
+      <translation>Annulé</translation>
     </message>
   </context>
   <context>
     <name>CmdMaterialEdit</name>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="51"/>
       <source>Material</source>
       <translation>Gérer les matériaux</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
-      <source>Edit...</source>
-      <translation>Modifier...</translation>
+      <location filename="../../Command.cpp" line="52"/>
+      <source>Edit</source>
+      <translation>Éditer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
-      <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
+      <location filename="../../Command.cpp" line="53"/>
+      <source>Edits material properties</source>
+      <translation>Modifie les propriétés du matériau.</translation>
     </message>
   </context>
   <context>
     <name>CmdMigrateToExternal</name>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
-      <source>Migrate...</source>
-      <translation type="unfinished">Migrate...</translation>
+      <location filename="../../Command.cpp" line="200"/>
+      <source>Migrate</source>
+      <translation>Migrer</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="201"/>
+      <source>Migrates the materials to the external materials manager</source>
+      <translation>Transfère les matériaux vers le gestionnaire externe de matériaux.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
-      <source>Migrate the materials to the external materials manager</source>
-      <translation type="unfinished">Migrate the materials to the external materials manager</translation>
+      <source>Migrate existing materials to the external materials manager</source>
+      <translation>Migrer les matériaux existants vers le gestionnaire externe de matériaux</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgDisplayPropertiesImp</name>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="178"/>
+      <source>Basic appearance</source>
+      <translation>Apparence de base</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
-      <source>Migrate existing materials to the external materials manager</source>
-      <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="183"/>
+      <source>Texture appearance</source>
+      <translation>Apparence de la texture</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="188"/>
+      <source>All materials</source>
+      <translation>Tous les matériaux</translation>
     </message>
   </context>
 </TS>

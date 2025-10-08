@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "FemConstraintRigidBody.h"
 
@@ -52,32 +51,32 @@ ConstraintRigidBody::ConstraintRigidBody()
                       (0.0),
                       "ConstraintRigidBody",
                       App::Prop_Output,
-                      "Applied force in X direction");
+                      "Applied force in X-direction");
     ADD_PROPERTY_TYPE(ForceY,
                       (0.0),
                       "ConstraintRigidBody",
                       App::Prop_Output,
-                      "Applied force in Y direction");
+                      "Applied force in Y-direction");
     ADD_PROPERTY_TYPE(ForceZ,
                       (0.0),
                       "ConstraintRigidBody",
                       App::Prop_Output,
-                      "Applied force in Z direction");
+                      "Applied force in Z-direction");
     ADD_PROPERTY_TYPE(MomentX,
                       (0.0),
                       "ConstraintRigidBody",
                       App::Prop_Output,
-                      "Applied moment in X direction");
+                      "Applied moment in X-direction");
     ADD_PROPERTY_TYPE(MomentY,
                       (0.0),
                       "ConstraintRigidBody",
                       App::Prop_Output,
-                      "Applied moment in Y direction");
+                      "Applied moment in Y-direction");
     ADD_PROPERTY_TYPE(MomentZ,
                       (0.0),
                       "ConstraintRigidBody",
                       App::Prop_Output,
-                      "Applied moment in Z direction");
+                      "Applied moment in Z-direction");
     ADD_PROPERTY_TYPE(TranslationalModeX,
                       ("Free"),
                       "ConstraintRigidBody",
@@ -108,6 +107,17 @@ ConstraintRigidBody::ConstraintRigidBody()
                       "ConstraintRigidBody",
                       App::Prop_Output,
                       "Z-direction rotation/moment mode");
+
+    ADD_PROPERTY_TYPE(EnableAmplitude,
+                      (false),
+                      "ConstraintRigidBody",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude of the rigid body boundary condition or load");
+    ADD_PROPERTY_TYPE(AmplitudeValues,
+                      (std::vector<std::string> {"0, 0", "1, 1"}),
+                      "ConstraintRigidBody",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude values");
 
     TranslationalModeX.setEnums(boundaryModeEnum);
     TranslationalModeY.setEnums(boundaryModeEnum);

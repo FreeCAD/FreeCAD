@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <limits>
-# include <QMessageBox>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Precision.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-#endif
+#include <limits>
+
+#include <QMessageBox>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
+#include <ShapeExtend_Explorer.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -48,6 +46,8 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/FeatureRevolution.h>
+
+#include <Mod/Part/App/Part2DObject.h>
 
 #include "DlgRevolution.h"
 #include "ui_DlgRevolution.h"
@@ -434,11 +434,15 @@ void DlgRevolution::accept()
                      symmetric) //%13
                 ;
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
-            QByteArray to = name.toLatin1();
-            QByteArray from = shape.toLatin1();
-            Gui::Command::copyVisual(to, "ShapeAppearance", from);
-            Gui::Command::copyVisual(to, "LineColor", from);
-            Gui::Command::copyVisual(to, "PointColor", from);
+
+            auto newObj = activeDoc->getObject(name.toStdString().c_str());
+            auto sourceObj = activeDoc->getObject(shape.toStdString().c_str());
+
+            if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
+                Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
+                Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+                Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
+            }
         }
 
         activeDoc->commitTransaction();
@@ -585,3 +589,4 @@ bool TaskRevolution::accept()
 }
 
 #include "moc_DlgRevolution.cpp"
+

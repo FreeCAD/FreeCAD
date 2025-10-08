@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
-#endif
 
 #include <CXX/Objects.hxx>
 
@@ -208,14 +205,13 @@ PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
     }
 
     bool ok {};
-    QuantityFormat qf;
-    qf.format = QuantityFormat::toFormat(format[0], &ok);
-    qf.precision = decimals;
+    QuantityFormat qf {QuantityFormat::toFormat(format[0], &ok), decimals};
 
     if (!ok) {
         PyErr_SetString(PyExc_ValueError, "Invalid format string");
         return nullptr;
     }
 
-    return Py::new_reference_to(Py::String(toNumber(value, qf)));
+    const Quantity quantity {value};
+    return Py::new_reference_to(Py::String(quantity.toNumber(qf)));
 }

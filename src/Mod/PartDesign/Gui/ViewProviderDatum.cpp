@@ -21,9 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -38,7 +36,7 @@
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>

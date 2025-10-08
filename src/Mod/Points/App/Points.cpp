@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QtConcurrentMap>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <cmath>
 #include <iostream>
-#endif
+
 
 #include <Base/Matrix.h>
 #include <Base/Stream.h>
@@ -95,6 +93,21 @@ void PointKernel::transformGeometry(const Base::Matrix4D& rclMat)
 #else
     QtConcurrent::blockingMap(kernel, [rclMat](value_type& value) {
         rclMat.multVec(value, value);
+    });
+#endif
+}
+
+void PointKernel::moveGeometry(const Base::Vector3d& vec)
+{
+    Base::Vector3f offset = Base::toVector<float>(vec);
+    std::vector<value_type>& kernel = getBasicPoints();
+#ifdef _MSC_VER
+    Concurrency::parallel_for_each(kernel.begin(), kernel.end(), [offset](value_type& value) {
+        value += offset;
+    });
+#else
+    QtConcurrent::blockingMap(kernel, [offset](value_type& value) {
+        value += offset;
     });
 #endif
 }

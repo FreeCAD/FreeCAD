@@ -23,11 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QThread>
-#endif
+
 
 #include <App/Application.h>
 
@@ -43,13 +42,13 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
 {
     ui->setupUi(this);
     // set ranges
-    ui->dsb_ccx_analysis_time->setMaximum(std::numeric_limits<float>::max());
-    ui->dsb_ccx_initial_time_step->setMaximum(std::numeric_limits<float>::max());
+    ui->dsb_ccx_time_period->setMaximum(std::numeric_limits<float>::max());
+    ui->dsb_ccx_initial_time_increment->setMaximum(std::numeric_limits<float>::max());
 
     connect(ui->fc_ccx_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
+            &Gui::PrefFileChooser::fileNameSelected,
             this,
-            &DlgSettingsFemCcxImp::onfileNameChanged);
+            &DlgSettingsFemCcxImp::onfileNameSelected);
 }
 
 DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp() = default;
@@ -67,11 +66,11 @@ void DlgSettingsFemCcxImp::saveSettings()
     ui->cb_use_iterations_param->onSave();
 
     ui->cb_static->onSave();
-    ui->sb_ccx_max_iterations->onSave();      // Max number of iterations
-    ui->dsb_ccx_initial_time_step->onSave();  // Initial time step
-    ui->dsb_ccx_analysis_time->onSave();      // Analysis time
-    ui->dsb_ccx_minimum_time_step->onSave();  // Minimum time step
-    ui->dsb_ccx_maximum_time_step->onSave();  // Maximum time step
+    ui->sb_ccx_max_increments->onSave();           // Max number of increments
+    ui->dsb_ccx_initial_time_increment->onSave();  // Initial time increment
+    ui->dsb_ccx_time_period->onSave();             // Step time period
+    ui->dsb_ccx_minimum_time_increment->onSave();  // Minimum time increment
+    ui->dsb_ccx_maximum_time_increment->onSave();  // Maximum time increment
     ui->ckb_pipeline_result->onSave();
     ui->ckb_result_format->onSave();
 
@@ -83,7 +82,6 @@ void DlgSettingsFemCcxImp::saveSettings()
 
     ui->cb_int_editor->onSave();
     ui->fc_ext_editor->onSave();
-    ui->cb_ccx_binary_std->onSave();
     ui->fc_ccx_binary_path->onSave();
     ui->cb_split_inp_writer->onSave();
 }
@@ -96,11 +94,11 @@ void DlgSettingsFemCcxImp::loadSettings()
     ui->cb_use_iterations_param->onRestore();
 
     ui->cb_static->onRestore();
-    ui->sb_ccx_max_iterations->onRestore();      // Max number of iterations
-    ui->dsb_ccx_initial_time_step->onRestore();  // Initial time step
-    ui->dsb_ccx_analysis_time->onRestore();      // Analysis time
-    ui->dsb_ccx_minimum_time_step->onRestore();  // Minimum time step
-    ui->dsb_ccx_maximum_time_step->onRestore();  // Maximum time step
+    ui->sb_ccx_max_increments->onRestore();           // Max number of increments
+    ui->dsb_ccx_initial_time_increment->onRestore();  // Initial time increment
+    ui->dsb_ccx_time_period->onRestore();             // Step time period
+    ui->dsb_ccx_minimum_time_increment->onRestore();  // Minimum time increment
+    ui->dsb_ccx_maximum_time_increment->onRestore();  // Maximum time increment
     ui->ckb_pipeline_result->onRestore();
     ui->ckb_result_format->onRestore();
 
@@ -112,7 +110,6 @@ void DlgSettingsFemCcxImp::loadSettings()
 
     ui->cb_int_editor->onRestore();
     ui->fc_ext_editor->onRestore();
-    ui->cb_ccx_binary_std->onRestore();
     ui->fc_ccx_binary_path->onRestore();
     ui->cb_split_inp_writer->onRestore();
 
@@ -148,14 +145,10 @@ void DlgSettingsFemCcxImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemCcxImp::onfileNameChanged(QString FileName)
+void DlgSettingsFemCcxImp::onfileNameSelected(const QString& fileName)
 {
-    if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified executable\n'%1'\n does not exist!\n"
-                                 "Specify another file.")
-                                  .arg(FileName));
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("CalculiX"), tr("Executable '%1' not found").arg(fileName));
     }
 }
 

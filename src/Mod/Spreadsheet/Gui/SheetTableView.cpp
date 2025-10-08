@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <limits>
 #include <QAction>
 #include <QApplication>
@@ -31,7 +28,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
-#endif
+
 #include <QTextTableCell>
 
 #include <App/Application.h>
@@ -207,7 +204,7 @@ SheetTableView::SheetTableView(QWidget* parent)
                                tr("Merge Cells"),
                                &SheetTableView::mergeCells);
     actionSplit = createAction(":/icons/SpreadsheetSplitCell.svg",
-                               tr("Split Cells"),
+                               tr("Split Cell"),
                                &SheetTableView::splitCell);
     contextMenu.addSeparator();
     actionCut = createAction(":/icons/edit-cut.svg", tr("Cut"), &SheetTableView::cutSelection);
@@ -665,7 +662,7 @@ bool SheetTableView::event(QEvent* event)
         actionRecompute->setText(tr("Recompute"));
         actionConf->setText(tr("Configuration Table…"));
         actionMerge->setText(tr("Merge Cells"));
-        actionSplit->setText(tr("Split Cells"));
+        actionSplit->setText(tr("Split Cell"));
         actionCopy->setText(tr("Copy"));
         actionPaste->setText(tr("Paste"));
         actionCut->setText(tr("Cut"));
@@ -813,7 +810,7 @@ void SheetTableView::pasteClipboard()
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
-                              QObject::tr("Copy & Paste failed"),
+                              QObject::tr("Copy & Paste Failed"),
                               QString::fromLatin1(e.what()));
         return;
     }

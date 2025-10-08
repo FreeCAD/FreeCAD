@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 #include <App/DocumentObjectPy.h>
 
 #include "SelectionFilterPy.h"
@@ -47,10 +47,7 @@ SelectionFilterPy::~SelectionFilterPy() = default;
 
 Py::Object SelectionFilterPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "SelectionFilter";
-    return Py::String(s_out.str());
+    return Py::String("SelectionFilter");
 }
 
 Py::Object SelectionFilterPy::match()

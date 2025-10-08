@@ -81,6 +81,7 @@ public:
     void onBeforeChange(const App::Property* prop);
     void startRestoring();
     void finishRestoring();
+    void beforeDelete();
     ValueT onDelete(const std::vector<std::string> & sub);
     ValueT canDelete(App::DocumentObject *obj) const;
     //@}
@@ -161,6 +162,7 @@ private:
     FC_PY_ELEMENT(onBeforeChange) \
     FC_PY_ELEMENT(startRestoring) \
     FC_PY_ELEMENT(finishRestoring) \
+    FC_PY_ELEMENT(beforeDelete) \
     FC_PY_ELEMENT(onDelete) \
     FC_PY_ELEMENT(canDelete) \
     FC_PY_ELEMENT(isShow) \
@@ -332,6 +334,10 @@ public:
     }
     void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& c) const override {
         ViewProviderT::getTaskViewContent(c);
+    }
+    void beforeDelete() override {
+        imp->beforeDelete();
+        ViewProviderT::beforeDelete();
     }
     bool onDelete(const std::vector<std::string> & sub) override {
         switch(imp->onDelete(sub)) {

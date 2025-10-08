@@ -54,9 +54,6 @@
 //    - align and distribute the intersections along an "effective" section plane
 //      which is a flattened version of the profile
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
@@ -103,7 +100,6 @@
 #include <GeomAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
-#endif
 
 #include <cmath>
 
@@ -1709,7 +1705,7 @@ TopoDS_Wire DrawComplexSection::closeProfileForCut(const TopoDS_Wire& profileWir
 
     TopoDS_Edge circleEdge = BRepBuilderAPI_MakeEdge(circleArc);
 
-    // replace first and last edges and add cicular arc
+    // replace first and last edges and add circular arc
     std::vector<TopoDS_Edge> oldProfileEdges = DU::shapeToVector(flatWire);
     std::vector<TopoDS_Edge> newProfileEdges;
     newProfileEdges.emplace_back(firstReplacementEdge);

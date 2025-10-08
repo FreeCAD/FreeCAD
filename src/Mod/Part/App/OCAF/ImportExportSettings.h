@@ -29,6 +29,8 @@
 #include <Standard_Version.hxx>
 #include <Resource_FormatType.hxx>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part
 {
 

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
@@ -55,7 +54,7 @@
 # include <QWhatsThis>
 # include <QWindow>
 # include <QPushButton>
-#endif
+
 
 #if defined(Q_OS_WIN)
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
@@ -104,6 +103,7 @@
 #include "ReportView.h"
 #include "SelectionView.h"
 #include "SplashScreen.h"
+#include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Tree.h"
@@ -391,7 +391,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // labels and progressbar
     d->status = new StatusBarObserver();
-    d->actionLabel = new QLabel(statusBar());
+    d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     d->sizeLabel = new DimensionWidget(statusBar());
 
@@ -402,12 +402,19 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // hint label
     d->hintLabel = new InputHintWidget(statusBar());
+    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
+    //: A context menu action used to show or hide the input hints in the status bar
+    d->hintLabel->setWindowTitle(tr("Input hints"));
+
     statusBar()->addWidget(d->hintLabel);
 
     // right side label
-    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
+    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
+    //: A context menu action used to enable or disable quick measure in the status bar
+    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
@@ -555,7 +562,8 @@ bool MainWindow::setupTaskView()
         auto taskView = new Gui::TaskView::TaskView(this);
         bool restore = group->GetBool("RestoreWidth", taskView->shouldRestoreWidth());
         taskView->setRestoreWidth(restore);
-        taskView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
+        taskView->setObjectName(QStringLiteral("Tasks"));
+        taskView->setWindowTitle(QDockWidget::tr("Tasks"));
         taskView->setMinimumWidth(210);
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
@@ -571,8 +579,8 @@ bool MainWindow::setupSelectionView()
     // Selection view
     if (d->hiddenDockWindows.find("Std_SelectionView") == std::string::npos) {
         auto pcSelectionView = new SelectionView(nullptr, this);
-        pcSelectionView->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Selection view")));
+        pcSelectionView->setObjectName(QStringLiteral("Selection view"));
+        pcSelectionView->setWindowTitle(QDockWidget::tr("Selection View"));
         pcSelectionView->setMinimumWidth(210);
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
@@ -589,8 +597,8 @@ bool MainWindow::setupReportView()
     if (d->hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
         auto pcReport = new ReportOutput(this);
         pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
-        pcReport->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report View")));
+        pcReport->setObjectName(QStringLiteral("Report view"));
+        pcReport->setWindowTitle(QDockWidget::tr("Report View"));
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_ReportView", pcReport);
@@ -609,8 +617,8 @@ bool MainWindow::setupPythonConsole()
     if (d->hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
         auto pcPython = new PythonConsole(this);
         pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-        pcPython->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python Console")));
+        pcPython->setObjectName(QStringLiteral("Python console"));
+        pcPython->setWindowTitle(QDockWidget::tr("Python Console"));
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_PythonView", pcPython);
@@ -633,7 +641,8 @@ bool MainWindow::updateTreeView(bool show)
                 }
 
                 auto tree = new TreeDockWidget(0,getMainWindow());
-                tree->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+                tree->setObjectName(QStringLiteral("Tree view"));
+                tree->setWindowTitle(QDockWidget::tr("Tree View"));
                 tree->setMinimumWidth(210);
                 widget = tree;
                 return widget;
@@ -659,7 +668,8 @@ bool MainWindow::updatePropertyView(bool show)
                 }
 
                 auto pcPropView = new PropertyDockView(0, getMainWindow());
-                pcPropView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+                pcPropView->setObjectName(QStringLiteral("Property view"));
+                pcPropView->setWindowTitle(QDockWidget::tr("Property View"));
                 pcPropView->setMinimumWidth(210);
                 widget = pcPropView;
                 return widget;
@@ -687,7 +697,8 @@ bool MainWindow::updateTaskView(bool show)
                 }
 
                 widget = new TaskView::TaskView(getMainWindow());
-                widget->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Task List")));
+                widget->setObjectName(QStringLiteral("Task List"));
+                widget->setWindowTitle(QDockWidget::tr("Task List"));
                 return widget;
             });
 
@@ -712,7 +723,8 @@ bool MainWindow::updateComboView(bool show)
                 }
 
                 pcComboView = new ComboView(nullptr, getMainWindow());
-                pcComboView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget", "Model")));
+                pcComboView->setObjectName(QStringLiteral("Model"));
+                pcComboView->setWindowTitle(QDockWidget::tr("Model"));
                 pcComboView->setMinimumWidth(150);
                 widget = pcComboView;
                 return widget;
@@ -738,7 +750,8 @@ bool MainWindow::updateDAGView(bool show)
                 }
 
                 auto dagDockWindow = new DAG::DockWindow(nullptr, getMainWindow());
-                dagDockWindow->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+                dagDockWindow->setObjectName(QStringLiteral("DAG View"));
+                dagDockWindow->setWindowTitle(QDockWidget::tr("DAG View"));
                 widget = dagDockWindow;
                 return widget;
             });
@@ -2245,6 +2258,11 @@ void MainWindow::showMessage(const QString& message, int timeout) {
 void MainWindow::setRightSideMessage(const QString& message)
 {
     d->rightSideLabel->setText(message.simplified());
+}
+
+bool MainWindow::isRightSideMessageVisible() const
+{
+    return d->rightSideLabel->isVisible();
 }
 
 void MainWindow::showStatus(int type, const QString& message)

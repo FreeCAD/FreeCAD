@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
@@ -33,7 +30,8 @@
 # include <QPushButton>
 # include <QTimer>
 # include <QVBoxLayout>
-#endif
+
+#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <Gui/ActionFunction.h>
@@ -270,7 +268,10 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QWidget(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
+    : QWidget(parent)
+    , ActiveDialog(nullptr)
+    , ActiveCtrl(nullptr)
+    , hGrp(Gui::WindowParameter::getDefaultParameter()->GetGroup("General"))
 {
     mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -323,6 +324,14 @@ TaskView::TaskView(QWidget *parent)
         std::bind(&Gui::TaskView::TaskView::slotInEdit, this, sp::_1));
     //NOLINTEND
 
+    setShowTaskWatcher(hGrp->GetBool("ShowTaskWatcher", true));
+    connectShowTaskWatcherSetting = hGrp->Manager()->signalParamChanged.connect(
+        [this](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *name, const char * value) {
+            if(Param == hGrp && Type == ParameterGrp::ParamType::FCBool && name && strcmp(name, "ShowTaskWatcher") == 0) {
+                setShowTaskWatcher(value && *value == '1');
+            }
+    });
+
     updateWatcher();
 }
 
@@ -334,6 +343,7 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     connectApplicationInEdit.disconnect();
+    connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
 
     for (QWidget* panel : contextualPanels) {
@@ -701,9 +711,21 @@ void TaskView::removeDialog()
     tryRestoreWidth();
     triggerMinimumSizeHint();
 }
-
+void TaskView::setShowTaskWatcher(bool show)
+{
+    showTaskWatcher = show;
+    if (show) {
+        addTaskWatcher();
+    } else {
+        clearTaskWatcher();
+    }
+}
 void TaskView::updateWatcher()
 {
+    if (!showTaskWatcher) {
+        return;
+    }
+
     if (ActiveWatcher.empty()) {
         auto panel = Gui::Control().taskPanel();
         if (panel && panel->ActiveWatcher.size())
@@ -779,6 +801,9 @@ void TaskView::clearTaskWatcher()
 
 void TaskView::addTaskWatcher()
 {
+    if (!showTaskWatcher) {
+        return;
+    }
     // add all widgets for all watcher to the task view
     for (TaskWatcher* tw : ActiveWatcher) {
         std::vector<QWidget*> &cont = tw->getWatcherContent();

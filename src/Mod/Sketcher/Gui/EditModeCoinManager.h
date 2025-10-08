@@ -143,7 +143,6 @@ class SketcherGuiExport EditModeCoinManager
         void updateCurvedEdgeCountSegmentsParameter(const std::string& parametername);
         void updateLineRenderingOrderParameters(const std::string& parametername);
         void updateConstraintPresentationParameters(const std::string& parametername);
-        void updateElementSizeParameters(const std::string& parametername);
         void updateWidth(int& width, const std::string& parametername, int def);
         void updatePattern(unsigned int& pattern, const std::string& pname, unsigned int def);
         void updateColor(SbColor& sbcolor, const std::string& parametername);
@@ -222,7 +221,7 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
+    PreselectionResult detectPreselection(SoPickedPoint* Point);
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
@@ -261,6 +260,8 @@ public:
 
     // Updates the Axes extension to span the specified area.
     void updateAxesLength(const Base::BoundBox2d& bb);
+
+    void updateElementSizeParameters();
 
 private:
     // This function populates the coin nodes with the information of the current geometry

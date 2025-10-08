@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
@@ -44,7 +42,6 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#endif
 
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>

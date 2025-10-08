@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-#endif
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -295,10 +291,19 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Prevent interrupting rubber-band selection in sketcher
     if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
-        newmode = NavigationStyle::SELECTION;
+        if (!button1down || !button2down) { // Allow canceling rubber-band in sketcher if both button 1 and button 2 are pressed
+            newmode = NavigationStyle::SELECTION;
+        }
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

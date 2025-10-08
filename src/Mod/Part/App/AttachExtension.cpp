@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -123,7 +122,7 @@ AttachExtension::AttachExtension()
                                 (false),
                                 "Attachment",
                                 App::Prop_None,
-                                "Reverse Z direction (flip sketch upside down)");
+                                "Reverse Z-direction (flip sketch upside down)");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter,
                                 (0.0),
@@ -234,7 +233,7 @@ void AttachExtension::initBase(bool force)
                                props.mapReversed,
                                obj,
                                "BaseMapReversed",
-                               "Reverse Z direction of the base geometry attachment");
+                               "Reverse Z-direction of the base geometry attachment");
 
     getProp<App::PropertyFloat>(force,
                                 props.mapPathParameter,

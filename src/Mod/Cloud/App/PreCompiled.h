@@ -21,19 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef CLOUD_APP_PRECOMPILED_H
+#define CLOUD_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-#define CloudAppExport __declspec(dllexport)
-#else  // for Linux
-#define CloudAppExport
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -54,7 +46,5 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif  //_PreComp_
 
 #endif

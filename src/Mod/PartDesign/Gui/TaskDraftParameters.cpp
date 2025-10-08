@@ -22,14 +22,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QKeyEvent>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>
@@ -37,6 +35,8 @@
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
@@ -284,7 +284,7 @@ void TaskDraftParameters::apply()
 {
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().warning(tr("Empty draft created !\n").toStdString().c_str());
+        Base::Console().warning(tr("Empty draft created!\n").toStdString().c_str());
     }
 
     TaskDressUpParameters::apply();
@@ -301,6 +301,7 @@ TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft* DressUpView)
     parameter = new TaskDraftParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
-
 #ifndef SPREADSHEET_GLOBAL_H
 #define SPREADSHEET_GLOBAL_H
+
+#include <FCGlobal.h>
 
 
 // Spreadsheet

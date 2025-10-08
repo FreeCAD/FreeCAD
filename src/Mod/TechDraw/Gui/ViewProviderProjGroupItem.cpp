@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
  #include <QMessageBox>
  #include <QTextStream>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
@@ -33,6 +31,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
+#include "QGIView.h"
 #include "ViewProviderProjGroupItem.h"
 
 using namespace TechDrawGui;

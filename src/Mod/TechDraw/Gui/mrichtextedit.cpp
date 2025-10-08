@@ -26,9 +26,7 @@
  * for FreeCAD project https://www.freecad.org/
  ********************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <algorithm>
 # include <iostream>
 # include <QApplication>
@@ -46,7 +44,7 @@
 # include <QRegularExpression>
 # include <QSettings>
 # include <QTextList>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>

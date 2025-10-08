@@ -79,18 +79,18 @@ It cannot be zero.</string>
      <item row="2" column="0">
       <widget class="QLabel" name="label_number">
        <property name="toolTip">
-        <string>Number of circular layers or rings to create, including a copy of the original object.
+        <string>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</string>
        </property>
        <property name="text">
-        <string>Number of circular layers</string>
+        <string>Number of concentric circles</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="QSpinBox" name="spinbox_number">
        <property name="toolTip">
-        <string>Number of circular layers or rings to create, including a copy of the original object.
+        <string>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</string>
        </property>
        <property name="minimum">

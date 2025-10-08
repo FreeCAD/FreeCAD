@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
+
 
 #include "FeaturePathShape.h"
 

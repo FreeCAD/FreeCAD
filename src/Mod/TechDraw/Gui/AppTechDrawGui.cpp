@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFontDatabase>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -162,7 +160,6 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderWeld::init();
 
     TechDrawGui::ViewProviderPageExtension ::init();
-    //    TechDrawGui::ViewProviderPageExtensionPython::init();
     TechDrawGui::ViewProviderDrawingViewExtension::init();
     TechDrawGui::ViewProviderTemplateExtension::init();
 

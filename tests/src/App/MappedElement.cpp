@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <gtest/gtest.h>
+#include <utility>
+#include <map>
+#include <string>
+#include <vector>
+
 
 #include "App/IndexedName.h"
 #include "App/MappedElement.h"
@@ -172,11 +177,22 @@ TEST_F(MappedElementTest, comparatorBothStartWithTheSameHexDigits)
     EXPECT_FALSE(comp(mappedName1, mappedName2));
 }
 
-TEST_F(MappedElementTest, DISABLED_comparatorHexWithoutTerminatorIsBroken)
+TEST_F(MappedElementTest, comparatorHexWithoutTerminator)
 {
     // Arrange
     Data::MappedName mappedName1 {"#fed"};
     Data::MappedName mappedName2 {"#abcdef"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_TRUE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorHexWithoutTerminatorSameLength)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"#fed"};
+    Data::MappedName mappedName2 {"#abc"};
     auto comp = Data::ElementNameComparator();
 
     // Act & Assert
@@ -205,7 +221,7 @@ TEST_F(MappedElementTest, comparatorNoHexDigitsSameStringNumericCompare)
     EXPECT_FALSE(comp(mappedName1, mappedName2));
 }
 
-TEST_F(MappedElementTest, DISABLED_comparatorIntegerWithoutTerminatorIsBroken)
+TEST_F(MappedElementTest, comparatorIntegerWithoutTerminatorIsBroken)
 {
     // Arrange
     Data::MappedName mappedName1 {"Edge123456"};
@@ -214,4 +230,88 @@ TEST_F(MappedElementTest, DISABLED_comparatorIntegerWithoutTerminatorIsBroken)
 
     // Act & Assert
     EXPECT_FALSE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorThreeComplexHexNamesInMap)
+{
+    // Arrange
+    Data::MappedName name1("#19c9:e;:U;FUS;:Hce4:7,E");
+    Data::MappedName name2("#1dadb:11;:L#1061a;FUS;:H:d,E");
+    Data::MappedName name3("#1dae6:8;:L#1dae4;FUS;:H:d,E");
+
+    std::map<Data::MappedName, int, Data::ElementNameComparator> testMap;
+    testMap[name1] = 1;
+    testMap[name2] = 2;
+    testMap[name3] = 3;
+
+    // Assert: map should have 3 unique keys
+    EXPECT_EQ(testMap.size(), 3);
+
+    // Collect keys in order
+    std::vector<std::string> keys;
+    for (const auto& kv : testMap) {
+        keys.push_back(kv.first.toString());
+    }
+
+    // Print for debug (optional)
+    // for (const auto& k : keys) std::cout << k << std::endl;
+
+    // The expected order depends on your comparator logic.
+    // If you want to check the exact order, set it here:
+    // (Replace with the correct expected order if needed)
+    std::vector<std::string> expectedOrder = {"#19c9:e;:U;FUS;:Hce4:7,E",
+                                              "#1dadb:11;:L#1061a;FUS;:H:d,E",
+                                              "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
+
+    EXPECT_EQ(keys, expectedOrder);
+}
+
+TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
+{
+    // Arrange
+    Data::MappedName name0("Edge123;:U;FUS;:Hce4:7,E");
+    Data::MappedName name1("#1dad:e;:U;FUS;:Hce4:7,E");
+    Data::MappedName name2("#1dadb:11;:L#1061a;FUS;:H:d,E");
+    Data::MappedName name3("#1dae6:8;:L#1dae4;FUS;:H:d,E");
+    Data::MappedName name4("Edge999;;:L#1dae4;FUS;:H:d,E");
+    Data::MappedName name5("g4v2;SKT;:H1234,F;:H5678:2,E;:G0(g1;SKT;:H9012,E);XTR;:H3456:2,F");
+
+
+    std::map<Data::MappedName, int, Data::ElementNameComparator> testMap;
+    testMap[name0] = 1;
+    testMap[name1] = 2;
+    testMap[name2] = 3;
+    testMap[name3] = 4;
+    testMap[name0] = 5;   // Duplicate, should not affect size
+    testMap[name1] = 6;   // Duplicate, should not affect size
+    testMap[name4] = 7;   // New entry
+    testMap[name4] = 8;   // Duplicate, should not affect size
+    testMap[name2] = 9;   // Duplicate, should not affect size
+    testMap[name3] = 10;  // Duplicate, should not affect size
+    testMap[name5] = 11;
+
+    // Assert: map should have 5 unique keys
+    EXPECT_EQ(testMap.size(), 6);
+
+    // Collect keys in order
+    std::vector<std::string> keys;
+    for (const auto& kv : testMap) {
+        keys.push_back(kv.first.toString());
+    }
+
+    // Print for debug (optional)
+    // for (const auto& k : keys) std::cout << k << std::endl;
+
+    // The expected order depends on your comparator logic.
+    // If you want to check the exact order, set it here:
+    // (Replace with the correct expected order if needed)
+    std::vector<std::string> expectedOrder = {
+        "Edge123;:U;FUS;:Hce4:7,E",
+        "Edge999;;:L#1dae4;FUS;:H:d,E",
+        "g4v2;SKT;:H1234,F;:H5678:2,E;:G0(g1;SKT;:H9012,E);XTR;:H3456:2,F",
+        "#1dad:e;:U;FUS;:Hce4:7,E",
+        "#1dadb:11;:L#1061a;FUS;:H:d,E",
+        "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
+
+    EXPECT_EQ(keys, expectedOrder);
 }

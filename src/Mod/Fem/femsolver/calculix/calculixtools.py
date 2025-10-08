@@ -116,6 +116,8 @@ class CalculiXTools:
             "AnalysisNumCPUs", QThread.idealThreadCount()
         )
         env.insert("OMP_NUM_THREADS", str(num_cpu))
+        pastix_prec = "1" if self.obj.PastixMixedPrecision else "0"
+        env.insert("PASTIX_MIXED_PRECISION", pastix_prec)
         self.process.setProcessEnvironment(env)
         self.process.setWorkingDirectory(self.obj.WorkingDirectory)
 
@@ -126,17 +128,8 @@ class CalculiXTools:
 
     def update_properties(self):
         # TODO at the moment, only one .vtm file is assumed
-        if not self.obj.Results:
-            pipeline = self.obj.Document.addObject("Fem::FemPostPipeline", self.obj.Name + "Result")
-            self.analysis.addObject(pipeline)
-            self.obj.Results = [pipeline]
-            self._load_ccxfrd_results()
-            # default display mode
-            pipeline.ViewObject.DisplayMode = "Surface"
-            pipeline.ViewObject.SelectionStyle = "BoundBox"
-            pipeline.ViewObject.Field = self.get_default_field(self.obj.AnalysisType)
-        else:
-            self._load_ccxfrd_results()
+        self._load_ccxfrd_results()
+        self._load_ccxdat_results()
 
     def _clear_results(self):
         # result is a 'Result.vtm' file and a 'Result' directory
@@ -150,18 +143,66 @@ class CalculiXTools:
                 os.remove(path)
                 # remove dir with .vtu files
                 shutil.rmtree(base)
+            elif ext == ".dat":
+                # remove .dat file
+                os.remove(path)
+
+    def _load_ccxdat_results(self):
+        # search dat output
+        dat = None
+        for res in self.obj.Results:
+            if res.isDerivedFrom("App::TextDocument"):
+                dat = res
+
+        if not dat:
+            # create dat output
+            dat = self.obj.Document.addObject("App::TextDocument", self.obj.Name + "Output")
+            self.analysis.addObject(dat)
+            tmp = self.obj.Results
+            tmp.append(dat)
+            self.obj.Results = tmp
+
+        files = os.listdir(self.obj.WorkingDirectory)
+        for f in files:
+            if f.endswith(".dat"):
+                dat_file = os.path.join(self.obj.WorkingDirectory, f)
+                with open(dat_file, "r") as file:
+                    dat.Text = file.read()
+                break
 
     def _load_ccxfrd_results(self):
+        # search current pipeline
+        pipeline = None
+        create = False
+        for res in self.obj.Results:
+            if res.isDerivedFrom("Fem::FemPostPipeline"):
+                pipeline = res
+
+        if not pipeline:
+            # create pipeline
+            pipeline = self.obj.Document.addObject("Fem::FemPostPipeline", self.obj.Name + "Result")
+            self.analysis.addObject(pipeline)
+            tmp = self.obj.Results
+            tmp.append(pipeline)
+            self.obj.Results = tmp
+            create = True
+
         frd_result_prefix = os.path.join(self.obj.WorkingDirectory, self.input_deck)
         binary_mode = self.fem_param.GetGroup("Ccx").GetBool("BinaryOutput", False)
         Fem.frdToVTK(frd_result_prefix + ".frd", binary_mode)
         files = os.listdir(self.obj.WorkingDirectory)
         for f in files:
             if f.endswith(".vtm"):
-                res = os.path.join(self.obj.WorkingDirectory, f)
-                self.obj.Results[0].read(res)
-                self.obj.Results[0].renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
+                vtm_file = os.path.join(self.obj.WorkingDirectory, f)
+                pipeline.read(vtm_file)
+                pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
                 break
+
+        if create:
+            # default display mode
+            pipeline.ViewObject.DisplayMode = "Surface"
+            pipeline.ViewObject.SelectionStyle = "BoundBox"
+            pipeline.ViewObject.Field = self.get_default_field(self.obj.AnalysisType)
 
     def frd_var_conversion(self, analysis_type):
         common = {

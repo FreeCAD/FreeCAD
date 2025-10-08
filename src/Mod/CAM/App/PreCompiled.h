@@ -25,23 +25,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-#define PathExport __declspec(dllexport)
-// # define RobotExport __declspec(dllexport) uncomment this to use KDL
-#define PartExport __declspec(dllimport)
-#else  // for Linux
-#define PathExport
-// # define RobotExport uncomment this to use KDL
-#define PartExport
-#endif
-
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
-
-#ifdef _PreComp_
-
 // standard
 #include <cinttypes>
 #include <iomanip>
@@ -101,5 +84,4 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 
-#endif  // _PreComp_
 #endif

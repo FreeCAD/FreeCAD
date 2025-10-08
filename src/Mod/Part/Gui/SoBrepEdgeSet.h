@@ -36,6 +36,8 @@ class SoTextureCoordinateBundle;
 
 namespace PartGui {
 
+class ViewProviderPartExt;
+
 class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
     using inherited = SoIndexedLineSet;
 
@@ -44,6 +46,8 @@ class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
 public:
     static void initClass();
     SoBrepEdgeSet();
+    
+    void setViewProvider(ViewProviderPartExt* vp) { viewProvider = vp; }
 
 protected:
     ~SoBrepEdgeSet() override = default;
@@ -68,11 +72,15 @@ private:
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
 
+
 private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     uint32_t packedColor{0};
+    
+    // backreference to viewprovider that owns this node
+    ViewProviderPartExt* viewProvider = nullptr;
 };
 
 } // namespace PartGui

@@ -291,6 +291,9 @@ class ToolBit(Asset, ABC):
         """Returns the unique ID of the tool bit."""
         return self.id
 
+    def set_id(self, id: str = None):
+        self.id = id if id is not None else str(uuid.uuid4())
+
     def _promote_toolbit(self):
         """
         Updates the toolbit properties for backward compatibility.
@@ -510,6 +513,7 @@ class ToolBit(Asset, ABC):
         self._create_base_properties()
 
         # Transfer property values from the detached object to the real object
+        self._suppress_visual_update = True
         temp_obj.copy_to(self.obj)
 
         # Ensure label is set
@@ -517,12 +521,16 @@ class ToolBit(Asset, ABC):
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()
+        self._suppress_visual_update = False
         self._update_visual_representation()
 
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
         # Avoid acting during document restore or internal updates
         if "Restore" in obj.State:
+            return
+
+        if getattr(self, "_suppress_visual_update", False):
             return
 
         if hasattr(self, "_in_update") and self._in_update:
@@ -589,9 +597,11 @@ class ToolBit(Asset, ABC):
     def get_property(self, name: str):
         return self.obj.getPropertyByName(name)
 
-    def get_property_str(self, name: str, default: Optional[str] = None) -> Optional[str]:
+    def get_property_str(
+        self, name: str, default: str | None = None, precision: int | None = None
+    ) -> str | None:
         value = self.get_property(name)
-        return format_value(value) if value else default
+        return format_value(value, precision=precision) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)
@@ -673,7 +683,7 @@ class ToolBit(Asset, ABC):
             # Conditional to avoid unnecessary migration warning when called
             # from onDocumentRestored.
             if value is not None and getattr(self.obj, name) != value:
-                setattr(self.obj, name, value)
+                PathUtil.setProperty(self.obj, name, value)
 
         # 2. Add additional properties that are part of the shape,
         # but not part of the schema.
@@ -698,8 +708,45 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
 
             # Set the property value
-            PathUtil.setProperty(self.obj, name, value)
+            if value is not None and getattr(self.obj, name) != value:
+                PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
+
+        # 3. Ensure SpindleDirection property exists and is set
+        # Maybe this could be done with a global schema or added to each
+        # shape schema?
+        if not hasattr(self.obj, "SpindleDirection"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            self.obj.SpindleDirection = ["Forward", "Reverse", "None"]
+            self.obj.SpindleDirection = "Forward"  # Default value
+
+        spindle_value = self._tool_bit_shape.get_parameters().get("SpindleDirection")
+        if (
+            spindle_value in ("Forward", "Reverse", "None")
+            and self.obj.SpindleDirection != spindle_value
+        ):
+            # self.obj.SpindleDirection = spindle_value
+            PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
+
+        # 4. Ensure Material property exists and is set
+        if not hasattr(self.obj, "Material"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Tool material"),
+            )
+            self.obj.Material = ["HSS", "Carbide"]
+            self.obj.Material = "HSS"  # Default value
+
+        material_value = self._tool_bit_shape.get_parameters().get("Material")
+        if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
+            PathUtil.setProperty(self.obj, "Material", material_value)
 
     def _update_visual_representation(self):
         """
@@ -751,6 +798,7 @@ class ToolBit(Asset, ABC):
         Path.Log.track(self.obj.Label)
         attrs = {}
         attrs["version"] = 2
+        attrs["id"] = self.id
         attrs["name"] = self.obj.Label
         attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
         attrs["shape-type"] = self._tool_bit_shape.name

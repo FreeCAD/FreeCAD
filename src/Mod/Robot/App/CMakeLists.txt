@@ -1,6 +1,8 @@
 add_library(Robot SHARED)
 
-include_directories(
+target_include_directories(
+    Robot
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -20,32 +22,26 @@ set(Robot_LIBS
     FreeCADApp
 )
 
-generate_from_xml(Robot6AxisPy)
-generate_from_xml(TrajectoryPy)
-generate_from_xml(WaypointPy)
-generate_from_xml(RobotObjectPy)
-
-generate_from_py_(Robot6AxisPy)
-generate_from_py_(TrajectoryPy)
-generate_from_py_(WaypointPy)
-generate_from_py_(RobotObjectPy)
+generate_from_py(Robot6Axis)
+generate_from_py(Trajectory)
+generate_from_py(Waypoint)
+generate_from_py(RobotObject)
 
 
 
 SET(Python_SRCS
-    Robot6AxisPy.xml
+    Robot6Axis.pyi
     Robot6AxisPyImp.cpp
-    TrajectoryPy.xml
+    Trajectory.pyi
     TrajectoryPyImp.cpp
-    RobotObjectPy.xml
+    RobotObject.pyi
     RobotObjectPyImp.cpp
-    WaypointPy.xml
+    Waypoint.pyi
     WaypointPyImp.cpp
 )
 
 SET(Mod_SRCS
     AppRobot.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 
@@ -77,9 +73,9 @@ SET(Robot_SRCS
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Robot_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Robot PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Robot PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # FIXME: The bundled KDL has some extensions which makes it incompatible

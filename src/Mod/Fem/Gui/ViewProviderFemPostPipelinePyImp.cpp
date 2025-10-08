@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 // clang-format off
 #include "ViewProviderFemPostPipeline.h"

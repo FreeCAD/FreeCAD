@@ -72,13 +72,6 @@ protected:
 private:
 
     // Auto generated code (Tools/params_utils.py:400)
-    QGroupBox * groupTreeview = nullptr;
-    QLabel *labelItemBackgroundPadding = nullptr;
-    Gui::PrefSpinBox *ItemBackgroundPadding = nullptr;
-    QLabel *labelFontSize = nullptr;
-    Gui::PrefSpinBox *FontSize = nullptr;
-
-    // Auto generated code (Tools/params_utils.py:400)
     QGroupBox * groupOverlay = nullptr;
     QLabel *labelDockOverlayWheelDelay = nullptr;
     Gui::PrefSpinBox *DockOverlayWheelDelay = nullptr;

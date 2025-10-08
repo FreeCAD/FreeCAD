@@ -21,12 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMenu>
 # include <QMessageBox>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -49,10 +47,14 @@ ViewProviderHole::ViewProviderHole()
 
 ViewProviderHole::~ViewProviderHole() = default;
 
-std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderHole::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(getObject<PartDesign::Hole>()->Profile.getValue());
+
+    if (App::DocumentObject* profile = getObject<PartDesign::Hole>()->Profile.getValue();
+        profile && !profile->isDerivedFrom<PartDesign::Feature>()) {
+        temp.push_back(profile);
+    }
 
     return temp;
 }
@@ -60,24 +62,7 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit Hole"));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
-}
-
-bool ViewProviderHole::onDelete(const std::vector<std::string>& s)
-{
-    // get the Sketch
-    PartDesign::Hole* pcHole = getObject<PartDesign::Hole>();
-    Sketcher::SketchObject* pcSketch = nullptr;
-    if (pcHole->Profile.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcHole->Profile.getValue());
-    }
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch)) {
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
-
-    return ViewProvider::onDelete(s);
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters* ViewProviderHole::getEditDialog()

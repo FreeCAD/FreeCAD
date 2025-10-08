@@ -45,7 +45,7 @@ public:
     void setPen(QPen pen) { m_pen = pen; }
     QPen getPen()  { return m_pen; }
     void setParent(QGraphicsItem* parent) { m_parent = parent; }
-   
+
     void lineSetToFillItems(TechDraw::LineSet& ls);
 
 protected:

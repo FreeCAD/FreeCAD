@@ -1,11 +1,3 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${QtNetwork_INCLUDE_DIRS}
-)
 set(Web_LIBS
     FreeCADApp
     ${QtNetwork_LIBRARIES}
@@ -13,20 +5,33 @@ set(Web_LIBS
 
 SET(Web_SRCS
     AppWeb.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Server.cpp
     Server.h
 )
 
+add_library(Web SHARED ${Web_SRCS})
+
+target_include_directories(
+    Web
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    Web
+    SYSTEM
+    PUBLIC
+    ${QtNetwork_INCLUDE_DIRS}
+)
+target_link_libraries(Web ${Web_LIBS})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Web_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Web PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Web PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(Web SHARED ${Web_SRCS})
-target_link_libraries(Web ${Web_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Web)
 endif()

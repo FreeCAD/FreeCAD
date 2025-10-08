@@ -21,21 +21,20 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoLightModel.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
-#endif
+# include <Inventor/nodes/SoTransform.h>
 
 #include "ViewProviderPreviewExtension.h"
 #include "ViewProviderExt.h"
 
+#include <App/Document.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/So3DAnnotation.h>
+#include <Mod/Part/App/PreviewExtension.h>
 #include <Mod/Part/App/Tools.h>
 
 using namespace PartGui;
@@ -45,17 +44,16 @@ SO_NODE_SOURCE(SoPreviewShape);
 const SbColor SoPreviewShape::defaultColor = SbColor(1.F, 0.F, 1.F);
 
 SoPreviewShape::SoPreviewShape()
-    : coords(new SoCoordinate3)
-    , norm(new SoNormal)
-    , faceset(new PartGui::SoBrepFaceSet)
-    , lineset(new PartGui::SoBrepEdgeSet)
-    , nodeset(new PartGui::SoBrepPointSet)
 {
     SO_NODE_CONSTRUCTOR(SoPreviewShape);
 
     SO_NODE_ADD_FIELD(color, (defaultColor));
     SO_NODE_ADD_FIELD(transparency, (defaultTransparency));
     SO_NODE_ADD_FIELD(lineWidth, (defaultLineWidth));
+    SO_NODE_ADD_FIELD(transform, (SbMatrix::identity()));
+
+    pcTransform = new SoMatrixTransform;
+    pcTransform->matrix.connectFrom(&transform);
 
     auto pickStyle = new SoPickStyle;
     pickStyle->style = SoPickStyle::UNPICKABLE;
@@ -106,6 +104,7 @@ SoPreviewShape::SoPreviewShape()
     annotation->addChild(polygonOffset);
     annotation->addChild(faceset);
 
+    SoSeparator::addChild(pcTransform);
     SoSeparator::addChild(pickStyle);
     SoSeparator::addChild(solidLineStyle);
     SoSeparator::addChild(material);
@@ -146,7 +145,11 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
     pcPreviewShape = new SoPreviewShape;
 
     attachPreview();
-    updatePreview();
+
+    auto document = documentObject->getDocument();
+    if (!document->testStatus(App::Document::Restoring)) {
+        updatePreview();
+    }
 }
 
 void ViewProviderPreviewExtension::extensionBeforeDelete()
@@ -216,18 +219,14 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
 
     const auto updatePreviewShape = [vp](SoPreviewShape* preview, Part::TopoShape shape) {
         ViewProviderPartExt::setupCoinGeometry(shape.getShape(),
-                                               preview->coords,
-                                               preview->faceset,
-                                               preview->norm,
-                                               preview->lineset,
-                                               preview->nodeset,
+                                               preview,
                                                vp->Deviation.getValue(),
-                                               vp->AngularDeflection.getValue(),
-                                               false);
+                                               vp->AngularDeflection.getValue());
     };
 
     try {
         updatePreviewShape(preview, shape);
+        preview->transform.setValue(Base::convertTo<SbMatrix>(shape.getTransform()));
     } catch (Standard_Failure& e) {
         Base::Console().userTranslatedNotification(
             tr("Failure while rendering preview: %1. That usually indicates an error with model.")

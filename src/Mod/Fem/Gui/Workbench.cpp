@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <qobject.h>
-#endif
+
 
 #include <App/Application.h>
 #include <Gui/MenuManager.h>
@@ -356,6 +354,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *results << "Separator"
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
+             << "FEM_PostBranchFilter"
              << "Separator"
              << "FEM_PostFilterWarp"
              << "FEM_PostFilterClipScalar"

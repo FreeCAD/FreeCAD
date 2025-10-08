@@ -51,18 +51,18 @@ private Q_SLOTS:
     {
         auto quant = qsb->value();
         auto format = quant.getFormat();
-        format.precision = 7;
+        format.setPrecision(7);
         quant.setFormat(format);
 
         qsb->setValue(quant);
 
         auto val1 = qsb->value();
-        QCOMPARE(val1.getFormat().precision, 7);
+        QCOMPARE(val1.getFormat().getPrecision(), 7);
 
         // format shouldn't change after setting a double
         qsb->setValue(3.5);
         auto val2 = qsb->value();
-        QCOMPARE(val2.getFormat().precision, 7);
+        QCOMPARE(val2.getFormat().getPrecision(), 7);
     }
 
 private:

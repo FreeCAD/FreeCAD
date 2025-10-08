@@ -27,6 +27,8 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <Mod/Cloud/CloudGlobal.h>
+
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/framework/XMLPScanToken.hpp>

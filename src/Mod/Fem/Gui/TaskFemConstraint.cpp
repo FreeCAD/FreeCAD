@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QKeyEvent>
 #include <QListWidget>
 #include <QMessageBox>
 #include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -54,7 +52,7 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
                                      QWidget* parent,
                                      const char* pixmapname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),
-              tr("Analysis feature parameters"),
+              tr("Analysis Feature Properties"),
               true,
               parent)
     , proxy(nullptr)

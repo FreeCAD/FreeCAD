@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
 # include <QDoubleSpinBox>
 # include <QGridLayout>
 # include <memory>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Parameter.h>

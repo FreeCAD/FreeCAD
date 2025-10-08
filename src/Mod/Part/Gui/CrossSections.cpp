@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <limits>
+
 # include <QFuture>
 # include <QKeyEvent>
 
@@ -36,7 +34,6 @@
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <App/Document.h>
 #include <Base/Sequencer.h>
@@ -53,6 +50,10 @@
 
 #include "CrossSections.h"
 #include "ui_CrossSections.h"
+
+#include <QMessageBox>
+#include <Base/Interpreter.h>
+#include <Gui/MainWindow.h>
 
 
 using namespace PartGui;
@@ -205,11 +206,12 @@ void CrossSections::keyPressEvent(QKeyEvent* ke)
 
 void CrossSections::accept()
 {
-    apply();
-    QDialog::accept();
+    if (apply()) {
+        QDialog::accept();
+    }
 }
 
-void CrossSections::apply()
+bool CrossSections::apply()
 {
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().
             getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -267,38 +269,47 @@ void CrossSections::apply()
     }
 #else
     Base::SequencerLauncher seq("Cross-sections…", obj.size() * (d.size() + 1));
-    Gui::Command::runCommand(Gui::Command::App, "import Part\n");
-    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
-    for (auto it : obj) {
-        App::Document* doc = it->getDocument();
-        std::string s = it->getNameInDocument();
-        s += "_cs";
-        Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-            "wires=list()\n"
-            "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
-            .arg(QLatin1String(doc->getName()),
-                 QLatin1String(it->getNameInDocument())).toLatin1());
-
-        for (double jt : d) {
+    try {
+        Gui::Command::runCommand(Gui::Command::App, "import Part\n");
+        Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
+        for (auto it : obj) {
+            App::Document* doc = it->getDocument();
+            std::string s = it->getNameInDocument();
+            s += "_cs";
             Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-                "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
-                "    wires.append(i)\n"
-                ).arg(a).arg(b).arg(c).arg(jt).toLatin1());
-            seq.next();
+                "wires=list()\n"
+                "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
+                .arg(QLatin1String(doc->getName()),
+                     QLatin1String(it->getNameInDocument())).toLatin1());
+
+            for (double jt : d) {
+                Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
+                    "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
+                    "    wires.append(i)\n"
+                    ).arg(a).arg(b).arg(c).arg(jt).toLatin1());
+                seq.next();
+            }
+
+            Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
+                "comp=Part.makeCompound(wires)\n"
+                "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
+                "slice.Shape=comp\n"
+                "slice.purgeTouched()\n"
+                "del slice,comp,wires,shape")
+                .arg(QLatin1String(doc->getName()),
+                     QLatin1String(s.c_str())).toLatin1());
         }
-
-        Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-            "comp=Part.Compound(wires)\n"
-            "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
-            "slice.Shape=comp\n"
-            "slice.purgeTouched()\n"
-            "del slice,comp,wires,shape")
-            .arg(QLatin1String(doc->getName()),
-                 QLatin1String(s.c_str())).toLatin1());
-
         seq.next();
+    } catch (Base::Exception& e) {
+        e.reportException();
+        QMessageBox::critical(Gui::getMainWindow(), tr("Cannot compute cross-sections"), QString::fromStdString(e.getMessage()));
+        return false;
     }
+
+    seq.next();
 #endif
+
+    return true;
 }
 
 void CrossSections::xyPlaneClicked()

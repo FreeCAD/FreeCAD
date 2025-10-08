@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GeomPlate_BuildPlateSurface.hxx>
 # include <GeomPlate_MakeApprox.hxx>
 # include <GeomPlate_PointConstraint.hxx>
 # include <GeomPlate_Surface.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

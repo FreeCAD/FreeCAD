@@ -27,6 +27,7 @@
 #include <vector>
 #include <QScrollArea>
 
+#include <Base/Parameter.h>
 #include <Gui/QSint/include/QSint>
 #include <Gui/Selection/Selection.h>
 #include "TaskWatcher.h"
@@ -213,6 +214,8 @@ protected:
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog();
 
+    void setShowTaskWatcher(bool show);
+
     std::vector<TaskWatcher*> ActiveWatcher;
 
     QSint::ActionPanel* taskPanel;
@@ -220,6 +223,8 @@ protected:
     TaskEditControl *ActiveCtrl;
     bool restoreWidth = false;
     int currentWidth = 0;
+    ParameterGrp::handle hGrp;
+    bool showTaskWatcher;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
@@ -227,6 +232,7 @@ protected:
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
     Connection connectApplicationInEdit;
+    Connection connectShowTaskWatcherSetting;
 };
 
 } //namespace TaskView

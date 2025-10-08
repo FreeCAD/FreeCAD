@@ -20,18 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef MESH_PART_GUI_PRECOMPILED_H
+#define MESH_PART_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4290)
-#pragma warning(disable : 4275)
-#endif
-
-#ifdef _PreComp_
 
 // STL
 #include <sstream>
@@ -74,7 +66,5 @@
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__

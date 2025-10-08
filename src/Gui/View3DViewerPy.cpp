@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <string>
-#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
@@ -130,11 +126,10 @@ View3DInventorViewerPy::~View3DInventorViewerPy()
 
 Py::Object View3DInventorViewerPy::repr()
 {
-    std::ostringstream s_out;
     if (!_viewer)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "View3DInventorViewer";
-    return Py::String(s_out.str());
+
+    return Py::String("View3DInventorViewer");
 }
 
 View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = nullptr;

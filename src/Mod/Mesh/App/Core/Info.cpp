@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <set>
-#endif
+
 
 #include "Info.h"
 #include "Iterator.h"

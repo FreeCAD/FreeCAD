@@ -29,6 +29,8 @@
 #include <Gui/MDIViewPy.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+
 #include "SheetModel.h"
 
 

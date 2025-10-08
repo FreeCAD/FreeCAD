@@ -9,7 +9,9 @@ add_library(Sketcher SHARED)
 
 # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_NO_DEBUG") # Necessary to avoid SparseQR crash with Eigen 3.2 due to a wrong assertion
 
-include_directories(
+target_include_directories(
+    Sketcher
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -121,7 +123,6 @@ SOURCE_GROUP("PlaneGCS" FILES ${PlaneGCS_SRCS})
 SET(SketchModule_SRCS
     AppSketcher.cpp
     AppSketcherPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Measure.cpp
     Measure.h
@@ -147,14 +148,19 @@ SET(Sketcher_PCH_SRCS
 
 target_sources(Sketcher PRIVATE ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
+
+if (MSVC)
+    target_compile_options(Sketcher PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Sketcher)
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
+    target_precompile_headers(Sketcher PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions

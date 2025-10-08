@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <Mod/Part/PartGlobal.h>
@@ -31,6 +30,7 @@
 
 #include "PrimitiveFeature.h"
 #include "PartFeature.h"
+#include "Attacher.h"
 
 #include <Standard_Type.hxx>
 #include <Geom_CylindricalSurface.hxx>
@@ -40,117 +40,163 @@
 #include <Geom_Line.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <BRep_Tool.hxx>
+#include <GeomLib_IsPlanarSurface.hxx>
+#include <GeomLProp_SLProps.hxx>
 
+using Attacher::AttachEnginePlane;
 
 namespace Part {
 
 
-VectorAdapter::VectorAdapter() : status(false), vector()
+VectorAdapter::VectorAdapter()
+    : status(false)
 {
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn) :
-  status(false), vector(), origin(pickedPointIn)
+VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn)
+    : status(false)
+    , origin(pickedPointIn)
 {
-  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
-  if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface)))
-  {
-    Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
-    gp_Dir direction = eSurface->Axis().Direction();
-    vector = direction;
+    std::vector<std::function<bool(const TopoDS_Face &, const gp_Vec &)>> funcs = {
+        [this](const TopoDS_Face& face, const gp_Vec& vec) {
+            return this->handleElementarySurface(face, vec);
+        },
+        [this](const TopoDS_Face& face, const gp_Vec& vec) {
+            return this->handlePlanarSurface(face, vec);
+        }
+    };
+    for (const auto& it : funcs) {
+        if (it(faceIn, pickedPointIn)) {
+            break;
+        }
+    }
+}
+
+VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn)
+    : status(false)
+    , origin(pickedPointIn)
+{
+    TopoDS_Vertex firstVertex = TopExp::FirstVertex(edgeIn, Standard_True);
+    TopoDS_Vertex lastVertex = TopExp::LastVertex(edgeIn, Standard_True);
+    vector = convert(lastVertex) - convert(firstVertex);
+    if (vector.Magnitude() < Precision::Confusion()) {
+        return;
+    }
     vector.Normalize();
-    if (faceIn.Orientation() == TopAbs_REVERSED) {
-      vector.Reverse();
-    }
-    if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
-      surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
-    )
-    {
-      origin = eSurface->Axis().Location().XYZ();
-      projectOriginOntoVector(pickedPointIn);
-    }
-    else {
-      origin = pickedPointIn + vector;
-    }
+
     status = true;
-  }
+    projectOriginOntoVector(pickedPointIn);
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn) :
-  status(false), vector(), origin(pickedPointIn)
+VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In)
+    : status(false)
 {
-  TopoDS_Vertex firstVertex = TopExp::FirstVertex(edgeIn, Standard_True);
-  TopoDS_Vertex lastVertex = TopExp::LastVertex(edgeIn, Standard_True);
-  vector = convert(lastVertex) - convert(firstVertex);
-  if (vector.Magnitude() < Precision::Confusion()) {
-    return;
-  }
-  vector.Normalize();
+    vector = convert(vertex2In) - convert(vertex1In);
+    vector.Normalize();
 
-  status = true;
-  projectOriginOntoVector(pickedPointIn);
+    //build origin half way.
+    gp_Vec tempVector = (convert(vertex2In) - convert(vertex1In));
+    double mag = tempVector.Magnitude();
+    tempVector.Normalize();
+    tempVector *= (mag / 2.0);
+    origin = tempVector + convert(vertex1In);
+
+    status = true;
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In) :
-  status(false), vector(), origin()
+VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2)
+    : status(false)
 {
-  vector = convert(vertex2In) - convert(vertex1In);
-  vector.Normalize();
+    vector = vector2- vector1;
+    vector.Normalize();
 
-  //build origin half way.
-  gp_Vec tempVector = (convert(vertex2In) - convert(vertex1In));
-  double mag = tempVector.Magnitude();
-  tempVector.Normalize();
-  tempVector *= (mag / 2.0);
-  origin = tempVector + convert(vertex1In);
+    //build origin half way.
+    gp_Vec tempVector = vector2 - vector1;
+    double mag = tempVector.Magnitude();
+    tempVector.Normalize();
+    tempVector *= (mag / 2.0);
+    origin = tempVector + vector1;
 
-  status = true;
+    status = true;
 }
 
-VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2) :
-  status(false), vector(), origin()
+bool VectorAdapter::handleElementarySurface(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn)
 {
-  vector = vector2- vector1;
-  vector.Normalize();
+    Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
+    if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface))) {
+        Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
+        gp_Dir direction = eSurface->Axis().Direction();
+        vector = direction;
+        vector.Normalize();
+        if (faceIn.Orientation() == TopAbs_REVERSED) {
+            vector.Reverse();
+        }
+        if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
+            surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
+        ) {
+            origin = eSurface->Axis().Location().XYZ();
+            projectOriginOntoVector(pickedPointIn);
+        }
+        else {
+            origin = pickedPointIn + vector;
+        }
+        status = true;
+        return true;
+    }
 
-  //build origin half way.
-  gp_Vec tempVector = vector2 - vector1;
-  double mag = tempVector.Magnitude();
-  tempVector.Normalize();
-  tempVector *= (mag / 2.0);
-  origin = tempVector + vector1;
+    return false;
+}
 
-  status = true;
+bool VectorAdapter::handlePlanarSurface(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn)
+{
+    Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
+    GeomLib_IsPlanarSurface check(surface, AttachEnginePlane::planarPrecision());
+    if (check.IsPlanar()) {
+        double u1 {};
+        double u2 {};
+        double v1 {};
+        double v2 {};
+        surface->Bounds(u1, u2, v1, v2);
+        GeomLProp_SLProps prop(surface, u1, v1, 1, Precision::Confusion());
+        if (prop.IsNormalDefined()) {
+            vector = prop.Normal();
+            vector.Normalize();
+            if (faceIn.Orientation() == TopAbs_REVERSED) {
+                vector.Reverse();
+            }
+            origin = pickedPointIn + vector;
+            status = true;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
 {
-  Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
-  gp_Pnt tempPoint(pickedPointIn.XYZ());
-  GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
-  if (projection.NbPoints() < 1) {
-    return;
-  }
-  origin.SetXYZ(projection.Point(1).XYZ());
+    Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
+    gp_Pnt tempPoint(pickedPointIn.XYZ());
+    GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
+    if (projection.NbPoints() >= 1) {
+        origin.SetXYZ(projection.Point(1).XYZ());
+    }
 }
 
 VectorAdapter::operator gp_Lin() const
 {
-  gp_Pnt tempOrigin;
-  tempOrigin.SetXYZ(origin.XYZ());
-  return gp_Lin(tempOrigin, gp_Dir(vector));
+    gp_Pnt tempOrigin;
+    tempOrigin.SetXYZ(origin.XYZ());
+    return gp_Lin(tempOrigin, gp_Dir(vector));
 }
 
 
 /*convert a vertex to vector*/
 gp_Vec VectorAdapter::convert(const TopoDS_Vertex &vertex)
 {
-  gp_Pnt point = BRep_Tool::Pnt(vertex);
-  gp_Vec out(point.X(), point.Y(), point.Z());
-  return out;
+    gp_Pnt point = BRep_Tool::Pnt(vertex);
+    gp_Vec out(point.X(), point.Y(), point.Z());
+    return out;
 }
 
-
-
 }
-

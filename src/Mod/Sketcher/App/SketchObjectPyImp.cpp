@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
 #include <sstream>
 
 #include <Geom_TrimmedCurve.hxx>
-#endif
 
 #include <App/Document.h>
 #include <Base/AxisPy.h>
@@ -198,11 +195,14 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
 PyObject* SketchObjectPy::delGeometry(PyObject* args)
 {
     int Index;
-    if (!PyArg_ParseTuple(args, "i", &Index)) {
+    PyObject* noSolve = Py_False;
+    if (!PyArg_ParseTuple(args, "i|O!", &Index, &PyBool_Type, &noSolve)) {
         return nullptr;
     }
 
-    if (this->getSketchObjectPtr()->delGeometry(Index)) {
+    if (this->getSketchObjectPtr()->delGeometry(
+            Index,
+            Base::asBoolean(noSolve) ? DeleteOption::NoSolve : DeleteOption::UpdateGeometry)) {
         std::stringstream str;
         str << "Not able to delete a geometry with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -215,8 +215,8 @@ PyObject* SketchObjectPy::delGeometry(PyObject* args)
 PyObject* SketchObjectPy::delGeometries(PyObject* args)
 {
     PyObject* pcObj;
-
-    if (!PyArg_ParseTuple(args, "O", &pcObj)) {
+    PyObject* noSolve = Py_False;
+    if (!PyArg_ParseTuple(args, "O|O!", &pcObj, &PyBool_Type, &noSolve)) {
         return nullptr;
     }
 
@@ -230,7 +230,9 @@ PyObject* SketchObjectPy::delGeometries(PyObject* args)
             }
         }
 
-        if (this->getSketchObjectPtr()->delGeometries(geoIdList)) {
+        if (this->getSketchObjectPtr()->delGeometries(
+                geoIdList,
+                Base::asBoolean(noSolve) ? DeleteOption::NoSolve : DeleteOption::UpdateGeometry)) {
             std::stringstream str;
             str << "Not able to delete geometries";
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -247,11 +249,13 @@ PyObject* SketchObjectPy::delGeometries(PyObject* args)
 
 PyObject* SketchObjectPy::deleteAllGeometry(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
+    PyObject* noSolve = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &noSolve)) {
         return nullptr;
     }
 
-    if (this->getSketchObjectPtr()->deleteAllGeometry()) {
+    if (this->getSketchObjectPtr()->deleteAllGeometry(
+            Base::asBoolean(noSolve) ? DeleteOption::NoSolve : DeleteOption::UpdateGeometry)) {
         std::stringstream str;
         str << "Unable to delete Geometry";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -435,16 +439,67 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
 PyObject* SketchObjectPy::delConstraint(PyObject* args)
 {
     int Index;
-    if (!PyArg_ParseTuple(args, "i", &Index)) {
+    PyObject* noSolve = Py_False;
+
+    if (!PyArg_ParseTuple(args, "i|O!", &Index, &PyBool_Type, &noSolve)) {
         return nullptr;
     }
 
-    if (this->getSketchObjectPtr()->delConstraint(Index)) {
+    if (this->getSketchObjectPtr()->delConstraint(
+            Index,
+            Base::asBoolean(noSolve) ? DeleteOption::NoSolve : DeleteOption::UpdateGeometry)) {
         std::stringstream str;
         str << "Not able to delete a constraint with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
+
+    Py_Return;
+}
+PyObject* SketchObjectPy::delConstraints(PyObject* args)
+{
+    PyObject* pcObj;
+    PyObject* updateGeometry = Py_True;
+    PyObject* noSolve = Py_False;
+
+    if (!PyArg_ParseTuple(args,
+                          "O|O!O!",
+                          &pcObj,
+                          &PyBool_Type,
+                          &updateGeometry,
+                          &PyBool_Type,
+                          &noSolve)) {
+        return nullptr;
+    }
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+
+        std::vector<int> constraintIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr())) {
+                constraintIdList.push_back(PyLong_AsLong((*it).ptr()));
+            }
+        }
+
+        if (this->getSketchObjectPtr()->delConstraints(
+                constraintIdList,
+                (Base::asBoolean(updateGeometry) ? DeleteOption::UpdateGeometry
+                                                 : DeleteOption::NoFlag)
+                    | (Base::asBoolean(noSolve) ? DeleteOption::NoSolve : DeleteOption::NoFlag))
+            == -1) {
+            std::stringstream str;
+            str << "Not able to delete constraints, invalid indices";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of constraint indices (int), not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 
     Py_Return;
 }
@@ -980,6 +1035,57 @@ PyObject* SketchObjectPy::setVirtualSpace(PyObject* args)
                                                         Base::asBoolean(invirtualspace))) {
             std::stringstream str;
             str << "Not able set virtual space for constraint with the given index: "
+                << PyLong_AsLong(id_or_ids);
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of Constraint Ids, not ");
+    error += id_or_ids->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
+PyObject* SketchObjectPy::setVisibility(PyObject* args)
+{
+    PyObject* isVisible;
+    PyObject* id_or_ids;
+
+    if (!PyArg_ParseTuple(args, "OO!", &id_or_ids, &PyBool_Type, &isVisible)) {
+        return nullptr;
+    }
+
+    if (PyObject_TypeCheck(id_or_ids, &(PyList_Type))
+        || PyObject_TypeCheck(id_or_ids, &(PyTuple_Type))) {
+        std::vector<int> constrIds;
+        Py::Sequence list(id_or_ids);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr())) {
+                constrIds.push_back(PyLong_AsLong((*it).ptr()));
+            }
+        }
+
+        try {
+            int ret =
+                this->getSketchObjectPtr()->setVisibility(constrIds, Base::asBoolean(isVisible));
+
+            if (ret == -1) {
+                throw Py::TypeError("Impossible to set visibility!");
+            }
+        }
+        catch (const Base::ValueError& e) {
+            throw Py::ValueError(e.getMessage());
+        }
+
+        Py_Return;
+    }
+    else if (PyLong_Check(id_or_ids)) {
+        if (this->getSketchObjectPtr()->setVisibility(PyLong_AsLong(id_or_ids),
+                                                      Base::asBoolean(isVisible))) {
+            std::stringstream str;
+            str << "Not able set visibility for constraint with the given index: "
                 << PyLong_AsLong(id_or_ids);
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return nullptr;
@@ -2055,7 +2161,8 @@ PyObject* SketchObjectPy::autoRemoveRedundants(PyObject* args)
         return nullptr;
     }
 
-    this->getSketchObjectPtr()->autoRemoveRedundants(Base::asBoolean(updategeo));
+    this->getSketchObjectPtr()->autoRemoveRedundants(
+        Base::asBoolean(updategeo) ? DeleteOption::UpdateGeometry : DeleteOption::NoFlag);
 
     Py_Return;
 }

@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
 #include <QLineEdit>
 #include <QMenu>
 #include <QTextBlock>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -888,6 +887,8 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     else if (auto itemView = popup()) {
         itemView->setVisible(false);
     }
+    
+    Q_EMIT completerSlotUpdated();
 }
 
 ExpressionValidator::ExpressionValidator(QObject* parent)
@@ -1085,6 +1086,11 @@ void ExpressionTextEdit::setExactMatch(bool enabled)
     }
 }
 
+QSize ExpressionTextEdit::sizeHint() const
+{
+    return QSize(200, 30);
+}
+
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDocObj)
 {
     if (completer) {
@@ -1111,6 +1117,10 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDoc
                 &ExpressionTextEdit::textChanged2,
                 completer,
                 &ExpressionCompleter::slotUpdate);
+        connect(completer,
+                &ExpressionCompleter::completerSlotUpdated,
+                this,
+                &ExpressionTextEdit::adjustCompleterToCursor);
     }
 }
 
@@ -1130,6 +1140,7 @@ void ExpressionTextEdit::slotTextChanged()
 {
     if (!block) {
         QTextCursor cursor = textCursor();
+        completer->popup()->setVisible(false); // hide the completer to avoid flickering
         Q_EMIT textChanged2(cursor.block().text(), cursor.positionInBlock());
     }
 }
@@ -1152,6 +1163,57 @@ void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix)
 void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
 {
     Base::FlagToggler<bool> flag(block, true);
+
+    // Shift+Enter - insert a new line
+    if ((e->modifiers() & Qt::ShiftModifier) && (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)) {
+        this->setPlainText(this->toPlainText() + QLatin1Char('\n'));
+        this->moveCursor(QTextCursor::End);
+        if (completer) {
+            completer->popup()->setVisible(false);
+        }
+        e->accept();
+        return;
+    }
+
+    // handling if completer is visible
+    if (completer && completer->popup()->isVisible()) {
+        switch (e->key()) {
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+            case Qt::Key_Escape:
+            case Qt::Key_Backtab:
+                // default action
+                e->ignore();
+                return; 
+
+            case Qt::Key_Tab: 
+                // if no completion is selected, take top one
+                if (!completer->popup()->currentIndex().isValid()) {
+                    completer->popup()->setCurrentIndex(completer->popup()->model()->index(0, 0));
+                }
+                // insert completion
+                completer->setCurrentRow(completer->popup()->currentIndex().row());
+                slotCompleteText(completer->currentCompletion());
+            
+                // refresh completion list
+                completer->setCompletionPrefix(completer->currentCompletion());
+                if (completer->completionCount() == 1) {
+                    completer->popup()->setVisible(false);
+                }
+                e->accept();
+                return;
+
+            default:
+                break;
+        }
+    }
+
+    // Enter, Return or Tab - request default action
+    if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Tab) {
+        e->ignore();
+        return;
+    }
+
     QPlainTextEdit::keyPressEvent(e);
 }
 
@@ -1178,6 +1240,49 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent* event)
     }
 
     delete menu;
+}
+
+void ExpressionTextEdit::adjustCompleterToCursor()
+{
+    if (!completer || !completer->popup()) {
+        return;
+    }
+
+    // get longest string width
+    int maxCompletionWidth = 0;
+    for (int i = 0; i < completer->completionModel()->rowCount(); ++i) {
+        const QModelIndex index = completer->completionModel()->index(i, 0);
+        const QString element = completer->completionModel()->data(index).toString();        
+        maxCompletionWidth = std::max(maxCompletionWidth, static_cast<int>(element.size()) * completer->popup()->fontMetrics().averageCharWidth());
+    }
+    if (maxCompletionWidth == 0) {
+        return; // no completions available
+    }
+
+    const QPoint cursorPos = cursorRect(textCursor()).topLeft();    
+    int posX = cursorPos.x();
+    int posY = cursorPos.y();
+
+    completer->popup()->setMaximumWidth(this->viewport()->width() * 0.6);
+    completer->popup()->setMaximumHeight(this->viewport()->height() * 0.6);
+    
+    const QSize completerSize { maxCompletionWidth + 40, completer->popup()->size().height() }; // 40 is margin for scrollbar
+    completer->popup()->resize(completerSize);
+
+    // vertical correction
+    if (posY + completerSize.height() > viewport()->height()) {
+        posY -= completerSize.height();
+    } else {
+        posY += fontMetrics().height();
+    }
+    
+    // horizontal correction
+    if (posX + completerSize.width() > viewport()->width()) {
+        posX = viewport()->width() - completerSize.width();
+    }
+
+    completer->popup()->move(mapToGlobal(QPoint{ posX, posY }));
+    completer->popup()->setVisible(true);
 }
 
 ///////////////////////////////////////////////////////////////////////

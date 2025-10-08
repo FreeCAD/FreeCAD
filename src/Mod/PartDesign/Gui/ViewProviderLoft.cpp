@@ -21,11 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMenu>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -69,23 +67,6 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
     return new TaskDlgLoftParameters(this);
-}
-
-bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
-{/*
-    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcLoft->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcLoft->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);*/
-    return true;
 }
 
 void ViewProviderLoft::highlightProfile(bool on)

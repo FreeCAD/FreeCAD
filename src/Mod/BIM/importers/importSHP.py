@@ -127,7 +127,8 @@ def checkShapeFileLibrary():
     try:
         import shapefile
     except Exception:
-        url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py"
+        # pinning to pyshp upstream v2.4.1 since in 3.0.0 the path to shapefile.py changes
+        url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/refs/tags/2.4.1/shapefile.py"
         if FreeCAD.GuiUp:
             import urllib.request
             import FreeCADGui

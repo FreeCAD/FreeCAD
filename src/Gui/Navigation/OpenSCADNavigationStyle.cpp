@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-#endif
+
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -188,9 +187,14 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event *) ev;
         if (!viewer->isEditing() && curmode == NavigationStyle::SELECTION) {
-            newmode = NavigationStyle::DRAGGING;
-            saveCursorPosition(ev);
-            this->centerTime = ev->getTime();
+            if (button1down && isDraggerUnderCursor(ev->getPosition())) {
+                newmode = NavigationStyle::INTERACT;
+            }
+            else {
+                newmode = NavigationStyle::DRAGGING;
+                saveCursorPosition(ev);
+                this->centerTime = ev->getTime();
+            }
         }
         else if (curmode == NavigationStyle::ZOOMING) {
             // OpenSCAD uses vertical mouse position, not horizontal
@@ -242,7 +246,7 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::IDLE;
         break;
     case BUTTON1DOWN:
-        if (newmode != NavigationStyle::DRAGGING)
+        if (newmode != NavigationStyle::DRAGGING && newmode != NavigationStyle::INTERACT) 
             newmode = NavigationStyle::SELECTION;
         break;
     case BUTTON2DOWN:
@@ -268,6 +272,13 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

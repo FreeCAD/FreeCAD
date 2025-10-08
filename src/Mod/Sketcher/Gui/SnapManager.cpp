@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Tools.h>
 #include <Mod/Sketcher/App/SketchObject.h>

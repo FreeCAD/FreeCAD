@@ -44,8 +44,8 @@ class PartDesignExport Transformed: public PartDesign::FeatureRefine
 public:
     enum class Mode
     {
-        TransformToolShapes,
-        TransformBody
+        Features,
+        WholeShape
     };
 
     Transformed();

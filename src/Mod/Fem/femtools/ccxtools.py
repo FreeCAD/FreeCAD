@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 import os
 import sys
 import subprocess
+import shutil
 
 import FreeCAD
 
@@ -162,7 +163,12 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
-            self.purge_results()
+            # we remove the result objects only, not the postprocessing ones.
+            # Reason: "Not keep results" means for the user override the data. For postprocessing
+            #         this means keeping all filters, just change the data.
+            from femresult.resulttools import purge_result_objects as purge
+
+            purge(self.analysis)
 
     def reset_all(self):
         """Reset mesh color, deformation and removes all result objects"""
@@ -395,52 +401,24 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             Defaults to 'CalculiX'. Expected output from `ccx` when run empty.
 
         """
-        error_title = "No or wrong CalculiX binary ccx"
-        error_message = ""
-        from platform import system
+        self.ccx_binary = ccx_binary
+        if self.ccx_binary is None:
+            self.ccx_binary = FreeCAD.ParamGet(
+                "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
+            ).GetString("ccxBinaryPath", "")
 
-        ccx_std_location = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
-        ).GetBool("UseStandardCcxLocation", True)
-        if ccx_std_location:
-            if system() == "Windows":
-                ccx_path = FreeCAD.getHomePath() + "bin/ccx.exe"
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString(
-                    "ccxBinaryPath", ccx_path
-                )
-                self.ccx_binary = ccx_path
-            elif system() in ("Linux", "Darwin"):
-                p1 = subprocess.Popen(["which", "ccx"], stdout=subprocess.PIPE)
-                if p1.wait() == 0:
-                    ccx_path = p1.stdout.read().decode("utf8").split("\n")[0]
-                elif p1.wait() == 1:
-                    error_message = (
-                        "FEM: CalculiX binary ccx not found in "
-                        "standard system binary path. "
-                        "Please install ccx or set path to binary "
-                        "in FEM preferences tab CalculiX.\n"
-                    )
-                    if FreeCAD.GuiUp:
-                        QtGui.QMessageBox.critical(None, error_title, error_message)
-                    raise Exception(error_message)
-                self.ccx_binary = ccx_path
+        if not self.ccx_binary:
+            # search in system
+            self.ccx_binary = shutil.which("ccx")
         else:
-            if not ccx_binary:
-                self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-                ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
-                if not ccx_binary:
-                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetBool(
-                        "UseStandardCcxLocation", True
-                    )
-                    error_message = (
-                        "FEM: CalculiX binary ccx path not set at all. "
-                        "The use of standard path was activated in "
-                        "FEM preferences tab CalculiX. Please try again!\n"
-                    )
-                    if FreeCAD.GuiUp:
-                        QtGui.QMessageBox.critical(None, error_title, error_message)
-                    FreeCAD.Console.PrintError(error_message)
-            self.ccx_binary = ccx_binary
+            # check user defined path
+            self.ccx_binary = shutil.which(self.ccx_binary)
+
+        if self.ccx_binary is None:
+            raise FileNotFoundError(
+                "CalculiX binary not found\n"
+                "Install CalculiX or set path to binary in FEM user preferences"
+            )
 
         ccx_stdout = None
         ccx_stderr = None
@@ -469,7 +447,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 error_message = (
                     "FEM: CalculiX binary ccx '{}' not found. "
                     "Please set the CalculiX binary ccx path in "
-                    "FEM preferences tab CalculiX.\n".format(ccx_binary)
+                    "FEM preferences tab CalculiX.\n".format(self.ccx_binary)
                 )
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
@@ -482,7 +460,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 "contain expected phrase '{}'. "
                 "There are some problems when running the ccx binary. "
                 "Check if ccx runs standalone without FreeCAD.\n".format(
-                    ccx_binary, ccx_stdout, ccx_binary_sig
+                    self.ccx_binary, ccx_stdout, ccx_binary_sig
                 )
             )
             if FreeCAD.GuiUp:

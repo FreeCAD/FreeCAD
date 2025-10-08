@@ -23,6 +23,9 @@
 #ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
 #define PARTGUI_VIEWPROVIDERPARTEXT_H
 
+#include "SoFCShapeObject.h"
+
+
 #include <map>
 
 #include <App/PropertyUnits.h>
@@ -153,6 +156,9 @@ public:
 
     bool allowOverride(const App::DocumentObject &) const override;
 
+    void setFaceHighlightActive(bool active) { faceHighlightActive = active; }
+    bool isFaceHighlightActive() const { return faceHighlightActive; }
+
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;
@@ -169,7 +175,13 @@ public:
                                   SoBrepPointSet* nodeset,
                                   double deviation,
                                   double angularDeflection,
-                                  bool normalsFromUV);
+                                  bool normalsFromUV = false);
+
+    static void setupCoinGeometry(TopoDS_Shape shape,
+                                  SoFCShape* node,
+                                  double deviation,
+                                  double angularDeflection,
+                                  bool normalsFromUV = false);
 
 protected:
     bool setEdit(int ModNum) override;
@@ -204,6 +216,7 @@ protected:
 
     bool VisualTouched;
     bool NormalsFromUV;
+    bool faceHighlightActive = false;
 
 private:
     Gui::ViewProviderFaceTexture texture;

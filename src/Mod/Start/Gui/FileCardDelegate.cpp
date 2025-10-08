@@ -21,9 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QFile>
 #include <QFileIconProvider>
 #include <QImageReader>
@@ -35,14 +32,19 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QString>
-#endif
+#include <QAbstractItemView>
 
 #include "FileCardDelegate.h"
 #include "../App/DisplayedFilesModel.h"
 #include "App/Application.h"
 #include <Base/Color.h>
+#include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/MainWindow.h>
 
 using namespace Start;
+
+QCache<QString, QPixmap> FileCardDelegate::_thumbnailCache;
 
 FileCardDelegate::FileCardDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
@@ -50,6 +52,18 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
     setObjectName(QStringLiteral("thumbnailWidget"));
+
+    // Initialize cache size based on thumbnail size (only once)
+    if (_thumbnailCache.maxCost() == 0) {
+        int thumbnailSize =
+            static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));
+        int thumbnailMemory = thumbnailSize * thumbnailSize * 4;  // rgba
+        int maxCacheItems = (CACHE_SIZE_MB * 1024 * 1024) / thumbnailMemory;
+        _thumbnailCache.setMaxCost(maxCacheItems);
+        Base::Console().log("FileCardDelegate: Initialized thumbnail cache for %d items (%d MB)\n",
+                            maxCacheItems,
+                            CACHE_SIZE_MB);
+    }
 }
 
 void FileCardDelegate::paint(QPainter* painter,
@@ -135,49 +149,93 @@ QSize FileCardDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     return {cardWidth, cardHeight};
 }
 
-namespace
-{
-QPixmap pixmapToSizedQImage(const QImage& pixmap, int size)
-{
-    return QPixmap::fromImage(pixmap).scaled(size,
-                                             size,
-                                             Qt::AspectRatioMode::KeepAspectRatio,
-                                             Qt::TransformationMode::SmoothTransformation);
-}
-}  // namespace
-
 QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
 {
     auto thumbnailSize =
         static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
+
+    // check if we have this thumbnail already inside cache, don't load it once again
+    QString cacheKey = getCacheKey(path, thumbnailSize);
+    if (!cacheKey.isEmpty()) {
+        if (QPixmap* cachedThumbnail = _thumbnailCache.object(cacheKey)) {
+            return *cachedThumbnail;  // cache hit - we bail out
+        }
+    }
+
+    // cache miss - go and load the thumbnail as it could be changed
+    return loadAndCacheThumbnail(path, thumbnailSize);
+}
+
+QString FileCardDelegate::getCacheKey(const QString& path, int thumbnailSize) const
+{
+    QFileInfo fileInfo(path);
+    if (!fileInfo.exists()) {
+        return {};
+    }
+
+    // create cache key: path:modtime:size
+    QString modTime = QString::number(fileInfo.lastModified().toSecsSinceEpoch());
+    return QStringLiteral("%1:%2:%3").arg(path, modTime, QString::number(thumbnailSize));
+}
+
+QPixmap FileCardDelegate::loadAndCacheThumbnail(const QString& path, int thumbnailSize) const
+{
+    QPixmap thumbnail;
+
     if (path.endsWith(QLatin1String(".fcstd"), Qt::CaseSensitivity::CaseInsensitive)) {
         // This is a fallback, the model will have pulled the thumbnail out of the FCStd file if it
         // existed.
         QImageReader reader(QLatin1String(":/icons/freecad-doc.svg"));
-        reader.setScaledSize({thumbnailSize, thumbnailSize});
-        return QPixmap::fromImage(reader.read());
+        reader.setScaledSize(QSize(thumbnailSize, thumbnailSize));
+        thumbnail = QPixmap::fromImage(reader.read());
     }
-    if (path.endsWith(QLatin1String(".fcmacro"), Qt::CaseSensitivity::CaseInsensitive)) {
+    else if (path.endsWith(QLatin1String(".fcmacro"), Qt::CaseSensitivity::CaseInsensitive)) {
         QImageReader reader(QLatin1String(":/icons/MacroEditor.svg"));
-        reader.setScaledSize({thumbnailSize, thumbnailSize});
-        return QPixmap::fromImage(reader.read());
+        reader.setScaledSize(QSize(thumbnailSize, thumbnailSize));
+        thumbnail = QPixmap::fromImage(reader.read());
     }
-    if (!QImageReader::imageFormat(path).isEmpty()) {
+    else if (!QImageReader::imageFormat(path).isEmpty()) {
         // It is an image: it can be its own thumbnail
         QImageReader reader(path);
+
+        // get original size to calculate proper aspect-preserving scaled size
+        QSize originalSize = reader.size();
+        if (originalSize.isValid()) {
+            QSize scaledSize =
+                originalSize.scaled(thumbnailSize, thumbnailSize, Qt::KeepAspectRatio);
+            reader.setScaledSize(scaledSize);
+        }
+
         auto image = reader.read();
         if (!image.isNull()) {
-            return pixmapToSizedQImage(image, thumbnailSize);
+            thumbnail = QPixmap::fromImage(image);
+        }
+        else {
+            Base::Console().log("FileCardDelegate: Failed to load image %s: %s\n",
+                                path.toStdString().c_str(),
+                                reader.errorString().toStdString().c_str());
         }
     }
-    QIcon icon = QFileIconProvider().icon(QFileInfo(path));
-    if (!icon.isNull()) {
-        QPixmap pixmap = icon.pixmap(thumbnailSize);
-        if (!pixmap.isNull()) {
-            return pixmap;
+
+    // fallback to system icon if no thumbnail was generated
+    if (thumbnail.isNull()) {
+        QIcon icon = QFileIconProvider().icon(QFileInfo(path));
+        if (!icon.isNull()) {
+            thumbnail = icon.pixmap(thumbnailSize);
+        }
+        else {
+            thumbnail = QPixmap(thumbnailSize, thumbnailSize);
+            thumbnail.fill();
         }
     }
-    QPixmap pixmap = QPixmap(thumbnailSize, thumbnailSize);
-    pixmap.fill();
-    return pixmap;
+
+    // cache the thumbnail if valid
+    if (!thumbnail.isNull()) {
+        QString cacheKey = getCacheKey(path, thumbnailSize);
+        if (!cacheKey.isEmpty()) {
+            _thumbnailCache.insert(cacheKey, new QPixmap(thumbnail), 1);
+        }
+    }
+
+    return thumbnail;
 }

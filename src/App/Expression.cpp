@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #ifdef __GNUC__
 # include <unistd.h>
 #endif
@@ -2665,7 +2664,7 @@ Py::Object FunctionExpression::_getPyValue() const {
 Expression *FunctionExpression::simplify() const
 {
     size_t numerics = 0;
-    std::vector<Expression*> a;
+    std::vector<Expression*> simplifiedArgs;
 
     // Try to simplify each argument to function
     for (auto it : args) {
@@ -2673,20 +2672,21 @@ Expression *FunctionExpression::simplify() const
 
         if (freecad_cast<NumberExpression*>(v))
             ++numerics;
-        a.push_back(v);
+        simplifiedArgs.push_back(v);
     }
 
     if (numerics == args.size()) {
         // All constants, then evaluation must also be constant
 
-        // Clean-up
-        for (auto it : args)
+        // Clean-up the simplified arguments
+        for (auto it : simplifiedArgs)
             delete it;
 
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, std::string(fname), std::move(a));
+        return new FunctionExpression(owner, f, std::string(fname),
+                                      std::move(simplifiedArgs));
 }
 
 /**
@@ -3263,7 +3263,7 @@ Expression *ConditionalExpression::simplify() const
     if (!v)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
     else {
-        if (fabs(v->getValue()) > 0.5)
+        if (fabs(v->getValue()) >= Base::Precision::Confusion())
             return trueExpr->simplify();
         else
             return falseExpr->simplify();

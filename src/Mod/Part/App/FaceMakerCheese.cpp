@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
@@ -43,7 +41,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QtGlobal>
-#endif
+
 
 #include "FaceMakerCheese.h"
 
@@ -249,7 +247,7 @@ std::string FaceMakerCheese::getUserFriendlyName() const
 
 std::string FaceMakerCheese::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes, but no islands inside holes.").toStdString()};
+    return {tr("Supports making planar faces with holes, but no islands inside holes").toStdString()};
 }
 
 void FaceMakerCheese::Build_Essence()

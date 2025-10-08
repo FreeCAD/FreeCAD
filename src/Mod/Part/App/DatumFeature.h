@@ -24,6 +24,8 @@
 #ifndef PART_DATUMFEATURE_H
 #define PART_DATUMFEATURE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "AttachExtension.h"
 
 

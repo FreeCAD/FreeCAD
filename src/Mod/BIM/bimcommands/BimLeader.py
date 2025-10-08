@@ -61,6 +61,7 @@ class BIM_Leader(gui_lines.Line):
             rot, sup, pts, fil = self.getStrings()
             base = DraftVecUtils.toString(self.node[0])
             color = params.get_param("DefaultTextColor") | 0x000000FF
+            arrow = params.get_param("dimsymbolend")
             cmd_list = [
                 "pl = FreeCAD.Placement()",
                 "pl.Rotation.Q = " + rot,
@@ -68,7 +69,7 @@ class BIM_Leader(gui_lines.Line):
                 "points = " + pts,
                 "leader = Draft.make_wire(points, placement=pl)",
                 "leader.ViewObject.LineColor = " + str(color),
-                "leader.ViewObject.EndArrow = True",
+                "leader.ViewObject.ArrowTypeEnd = " + str(arrow),
                 "Draft.autogroup(leader)",
                 "FreeCAD.ActiveDocument.recompute()",
             ]

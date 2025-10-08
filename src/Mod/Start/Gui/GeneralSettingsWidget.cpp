@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QComboBox>
 #include <QGridLayout>
@@ -31,7 +29,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 #include <QWidget>
-#endif
+
 
 #include <algorithm>
 #include "GeneralSettingsWidget.h"

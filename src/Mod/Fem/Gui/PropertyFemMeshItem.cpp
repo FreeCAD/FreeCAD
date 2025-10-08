@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QTextStream>
 #include <SMESH_Mesh.hxx>
-#endif
+
 
 #include <Mod/Fem/App/FemMeshProperty.h>
 

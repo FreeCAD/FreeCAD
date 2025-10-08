@@ -22,12 +22,11 @@
   ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 #include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
-#endif
+
 
 #include "SoDevicePixelRatioElement.h"
 

@@ -33,8 +33,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class Text(DraftAnnotation):
@@ -77,12 +76,17 @@ class Text(DraftAnnotation):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_text", vp_class="ViewProviderText")
+
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
+            return
+
         # See loads:
-        if self.stored_type is None:
-            return
-        if not getattr(obj, "ViewObject", None):
-            return
-        self.update_properties_0v21(obj, obj.ViewObject)
+        if self.stored_type is not None:
+            self.update_properties_0v21(obj, vobj)
+
+        if hasattr(vobj, "LineWidth") or hasattr(vobj, "LineColor"):
+            self.update_properties_1v1(obj, vobj)
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""
@@ -90,8 +94,16 @@ class Text(DraftAnnotation):
         # switched: "2D text" becomes "World" and "3D text" becomes "Screen".
         # It should be the other way around:
         vobj.DisplayMode = "World" if vobj.DisplayMode == "Screen" else "Screen"
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
+        _log("v0.21, " + obj.Name + ", renamed 'DisplayMode' options to 'World/Screen'")
+
+    def update_properties_1v1(self, obj, vobj):
+        if hasattr(vobj, "LineWidth"):
+            vobj.setPropertyStatus("LineWidth", "-LockDynamic")
+            vobj.removeProperty("LineWidth")
+        if hasattr(vobj, "LineColor"):
+            vobj.setPropertyStatus("LineColor", "-LockDynamic")
+            vobj.removeProperty("LineColor")
+        _log("v1.1, " + obj.Name + ", removed view properties")
 
     def loads(self, state):
         # Before update_properties_0v21 the self.Type value was stored.

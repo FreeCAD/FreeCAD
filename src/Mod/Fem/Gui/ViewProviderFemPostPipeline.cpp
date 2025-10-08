@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <vtkPointData.h>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
@@ -58,9 +56,13 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
     FemGui::ViewProviderFemPostObject::updateData(prop);
 
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-    if ((prop == &pipeline->Data) || (prop == &pipeline->Group)) {
+    if ((prop == &pipeline->Data) || (prop == &pipeline->Group) || (prop == &pipeline->Frame)) {
 
         updateFunctionSize();
+        updateColorBars();
+    }
+    else if (prop == &pipeline->MergeDuplicate) {
+        updateVtk();
     }
 }
 
@@ -113,6 +115,16 @@ bool ViewProviderFemPostPipeline::onDelete(const std::vector<std::string>& objs)
     return ViewProviderFemPostObject::onDelete(objs);
 }
 
+void ViewProviderFemPostPipeline::beforeDelete()
+{
+    ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+    if (analyzeView) {
+        analyzeView->removeView(this);
+    }
+
+    ViewProviderFemPostObject::beforeDelete();
+}
+
 void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)
 {
     // If a FemPostObject is selected in the document tree we must refresh its
@@ -150,7 +162,7 @@ void ViewProviderFemPostPipeline::updateColorBars()
     }
 
     // if pipeline is visible, update it
-    if (this->isVisible()) {
+    if (this->Visibility.getValue()) {
         updateMaterial();
     }
 }

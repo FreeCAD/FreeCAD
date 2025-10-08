@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -36,11 +35,14 @@
 #include <BRepGProp.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <TopExp.hxx>
 #include <GProp_GProps.hxx>
 #include <ShapeAnalysis_Edge.hxx>
 #include <gp_Circ.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <GeomLib_IsPlanarSurface.hxx>
 
 #include <DatumFeature.h>
 #include <App/Application.h>
@@ -54,12 +56,14 @@
 #include <Base/Rotation.h>
 #include <Base/Vector3D.h>
 
+#include "Attacher.h"
 #include "VectorAdapter.h"
 #include "PartFeature.h"
 
 #include "MeasureClient.h"
 
 using namespace Part;
+using Attacher::AttachEnginePlane;
 
 
 // From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
@@ -100,7 +104,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
     Part::TopoShape shape = Part::Feature::getTopoShape(
         obj,
-          Part::ShapeOption::ResolveLink 
+          Part::ShapeOption::ResolveLink
         | Part::ShapeOption::Transform,
         subject.getElementName(),
         mat);
@@ -127,6 +131,13 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
 App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* subName)
 {
+    auto isStraightBezierCurve = [](Handle(Geom_BezierCurve) curve) {
+        return curve->NbPoles() == 2;
+    };
+    auto isStraightBSplineCurve = [](Handle(Geom_BSplineCurve) curve) {
+        return curve->NbPoles() == 2;
+    };
+
     TopoDS_Shape shape = Part::Feature::getShape(ob,
                                                     Part::ShapeOption::NeedSubElement
                                                   | Part::ShapeOption::ResolveLink
@@ -153,10 +164,18 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
                                                             : App::MeasureElementType::LINESEGMENT;
                 }
-                case GeomAbs_Circle: { return App::MeasureElementType::CIRCLE; }
-                case GeomAbs_BezierCurve:
+                case GeomAbs_Circle: {
+                    return App::MeasureElementType::CIRCLE;
+                }
+                case GeomAbs_BezierCurve: {
+                    return isStraightBezierCurve(curve.Bezier())
+                               ? App::MeasureElementType::LINESEGMENT
+                               : App::MeasureElementType::CURVE;
+                }
                 case GeomAbs_BSplineCurve: {
-                    return App::MeasureElementType::CURVE;
+                    return isStraightBSplineCurve(curve.BSpline())
+                               ? App::MeasureElementType::LINESEGMENT
+                               : App::MeasureElementType::CURVE;
                 }
                 default: { return App::MeasureElementType::INVALID; }
             }
@@ -166,11 +185,23 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
             BRepAdaptor_Surface surface(face);
 
             switch (surface.GetType()) {
-                case GeomAbs_Cylinder: { return App::MeasureElementType::CYLINDER; }
-                case GeomAbs_Plane: { return App::MeasureElementType::PLANE; }
+                case GeomAbs_Cylinder: {
+                    return App::MeasureElementType::CYLINDER;
+                }
+                case GeomAbs_Plane: {
+                    return App::MeasureElementType::PLANE;
+                }
                 default: {
-                    return App::MeasureElementType::SURFACE; }
+                    TopLoc_Location loc;
+                    Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                    GeomLib_IsPlanarSurface check(surf, AttachEnginePlane::planarPrecision());
+                    return check.IsPlanar() ? App::MeasureElementType::PLANE
+                                            : App::MeasureElementType::SURFACE;
+                }
             }
+        }
+        case TopAbs_SHELL: {
+            return App::MeasureElementType::SURFACE;
         }
         case TopAbs_SOLID: {
             return App::MeasureElementType::VOLUME;
@@ -324,7 +355,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
-    if (sType != TopAbs_FACE) {
+    if (sType != TopAbs_FACE && sType != TopAbs_SHELL && sType != TopAbs_SOLID) {
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
 

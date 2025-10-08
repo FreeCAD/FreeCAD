@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Utilities.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -106,6 +107,8 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     catch (const Base::Exception &ex) {
         ex.reportException();
     }
+
+    setupGizmos(RevolutionView);
 }
 
 Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() const
@@ -185,7 +188,7 @@ void TaskRevolutionParameters::setupDialog()
 void TaskRevolutionParameters::translateModeList(int index)
 {
     ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Dimension"));
+    ui->changeMode->addItem(tr("Angle"));
     if (!isGroove) {
         ui->changeMode->addItem(tr("To last"));
     }
@@ -194,7 +197,7 @@ void TaskRevolutionParameters::translateModeList(int index)
     }
     ui->changeMode->addItem(tr("To first"));
     ui->changeMode->addItem(tr("Up to face"));
-    ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->addItem(tr("Two angles"));
     ui->changeMode->setCurrentIndex(index);
 }
 
@@ -232,9 +235,9 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
             try {
                 App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(), std::string(), tr("Base x-axis"));
-                addAxisToCombo(orig->getY(), std::string(), tr("Base y-axis"));
-                addAxisToCombo(orig->getZ(), std::string(), tr("Base z-axis"));
+                addAxisToCombo(orig->getX(), std::string(), tr("Base X-axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base Y-axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z-axis"));
             } catch (const Base::Exception &ex) {
                 ex.reportException();
             }
@@ -291,7 +294,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     bool isReversedEnabled = false;
     bool isFaceEditEnabled = false;
 
-    if (mode == PartDesign::Revolution::RevolMethod::Dimension) {
+    if (mode == PartDesign::Revolution::RevolMethod::Angle) {
         isRevolveAngleVisible = true;
         ui->revolveAngle->selectNumber();
         QMetaObject::invokeMethod(ui->revolveAngle, "setFocus", Qt::QueuedConnection);
@@ -317,7 +320,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
             ui->buttonFace->setChecked(true);
         }
     }
-    else if (mode == PartDesign::Revolution::RevolMethod::TwoDimensions) {
+    else if (mode == PartDesign::Revolution::RevolMethod::TwoAngles) {
         isRevolveAngleVisible = true;
         isRevolveAngle2Visible = true;
         isReversedEnabled = true;
@@ -385,7 +388,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         int mode = ui->changeMode->currentIndex();
         if (selectionFace) {
-            QString refText = onAddSelection(msg);
+            auto rev = getObject<PartDesign::Revolution>();
+            QString refText = onAddSelection(msg, rev->UpToFace);
             if (refText.length() > 0) {
                 QSignalBlocker block(ui->lineFaceName);
                 ui->lineFaceName->setText(refText);
@@ -407,6 +411,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
 
                 recomputeFeature();
                 updateUI(mode);
+
+                setGizmoPositions();
             }
         }
     }
@@ -576,6 +582,10 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         }
 
         recomputeFeature();
+
+        if (gizmoContainer) {
+            setGizmoPositions();
+        }
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -587,6 +597,12 @@ void TaskRevolutionParameters::onMidplane(bool on)
     if (getObject()) {
         propMidPlane->setValue(on);
         recomputeFeature();
+
+        if (gizmoContainer) {
+            rotationGizmo->setMultFactor(
+                rotationGizmo->getMultFactor() * (on? 0.5: 2)
+            );
+        }
     }
 }
 
@@ -595,6 +611,10 @@ void TaskRevolutionParameters::onReversed(bool on)
     if (getObject()) {
         propReversed->setValue(on);
         recomputeFeature();
+
+        if (gizmoContainer) {
+            reverseGizmoDir();
+        }
     }
 }
 
@@ -604,7 +624,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
                                                   : &(getObject<PartDesign::Revolution>()->Type);
 
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
-    case PartDesign::Revolution::RevolMethod::Dimension:
+    case PartDesign::Revolution::RevolMethod::Angle:
         propEnum->setValue("Angle");
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
@@ -616,13 +636,17 @@ void TaskRevolutionParameters::onModeChanged(int index)
     case PartDesign::Revolution::RevolMethod::ToFace:
         propEnum->setValue("UpToFace");
         break;
-    case PartDesign::Revolution::RevolMethod::TwoDimensions:
+    case PartDesign::Revolution::RevolMethod::TwoAngles:
         propEnum->setValue("TwoAngles");
         break;
     }
 
     updateUI(index);
     recomputeFeature();
+
+    if (gizmoContainer) {
+        setGizmoVisibility();
+    }
 }
 
 void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
@@ -702,6 +726,102 @@ void TaskRevolutionParameters::apply()
         facename = getFaceName();
     }
     FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toLatin1().data());
+}
+
+void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
+{
+    if (!GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    rotationGizmo = new Gui::RadialGizmo(ui->revolveAngle);
+    rotationGizmo2 = new Gui::RadialGizmo(ui->revolveAngle2);
+
+    gizmoContainer = GizmoContainer::create({rotationGizmo, rotationGizmo2}, vp);
+    rotationGizmo->flipArrow();
+    rotationGizmo2->flipArrow();
+
+    setGizmoPositions();
+    if (getReversed()) {
+        reverseGizmoDir();
+    }
+    setGizmoVisibility();
+}
+
+void TaskRevolutionParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    Base::Vector3d profileCog;
+    Base::Vector3d basePos;
+    Base::Vector3d axisDir;
+
+    if (isGroove) {
+        auto groove = getObject<PartDesign::Groove>();
+        if (!groove || groove->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
+        Part::TopoShape profile = groove->getProfileShape();
+
+        profile.getCenterOfGravity(profileCog);
+        basePos = groove->Base.getValue();
+        axisDir = groove->Axis.getValue();
+    } else {
+        auto revolution = getObject<PartDesign::Revolution>();
+        if (!revolution || revolution->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
+        Part::TopoShape profile = revolution->getProfileShape();
+
+        profile.getCenterOfGravity(profileCog);
+        basePos = revolution->Base.getValue();
+        axisDir = revolution->Axis.getValue();
+    }
+    gizmoContainer->visible = true;
+
+    auto diff = profileCog - basePos;
+    axisDir.Normalize();
+    auto axisComp = axisDir * diff.Dot(axisDir);
+    auto normalComp = diff - axisComp;
+
+    rotationGizmo->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
+    rotationGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axisDir));
+
+    rotationGizmo2->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
+    rotationGizmo2->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(-axisDir));
+}
+
+void TaskRevolutionParameters::reverseGizmoDir()
+{
+    rotationGizmo->setMultFactor(-rotationGizmo->getMultFactor());
+    rotationGizmo->flipArrow();
+
+    rotationGizmo2->setMultFactor(-rotationGizmo2->getMultFactor());
+    rotationGizmo2->flipArrow();
+}
+
+void TaskRevolutionParameters::setGizmoVisibility()
+{
+    auto type = static_cast<PartDesign::Revolution::RevolMethod>(ui->changeMode->currentIndex());
+
+    switch (type) {
+        case PartDesign::Revolution::RevolMethod::Angle:
+            gizmoContainer->visible = true;
+            rotationGizmo->setVisibility(true);
+            rotationGizmo2->setVisibility(false);
+            break;
+        case PartDesign::Revolution::RevolMethod::TwoAngles:
+            gizmoContainer->visible = true;
+            rotationGizmo->setVisibility(true);
+            rotationGizmo2->setVisibility(true);
+            break;
+        default:
+            gizmoContainer->visible = false;
+    }
 }
 
 //**************************************************************************

@@ -4,17 +4,17 @@
   <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
-      <source>Bearing constraint</source>
+      <location filename="../../Command.cpp" line="241"/>
+      <source>Bearing Constraint</source>
       <translation>Restricció de rodament</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Creates a bearing constraint</source>
       <translation>Crea una restricció de rodament</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdFemConstraintContact</name>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
-      <source>Contact constraint</source>
+      <location filename="../../Command.cpp" line="289"/>
+      <source>Contact Constraint</source>
       <translation>Restricció de contacte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="292"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Creates a contact constraint between faces</source>
       <translation>Crea una restricció de contacte entre dues cares</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-      <location filename="../../Command.cpp" line="356"/>
+      <location filename="../../Command.cpp" line="354"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="357"/>
-      <source>Displacement boundary condition</source>
+      <location filename="../../Command.cpp" line="355"/>
+      <source>Displacement Boundary Condition</source>
       <translation>Condició de límit de desplaçament</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="356"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
       <translation>Crea una condició de límit de desplaçament per a una entitat geomètrica</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
-      <source>Fixed boundary condition</source>
-      <translation>Condició de límit de fixació</translation>
+      <location filename="../../Command.cpp" line="405"/>
+      <source>Fixed Boundary Condition</source>
+      <translation>Condició de límit fixa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
       <translation>Crea una condició de límit de fixació per a una entitat geomètrica</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="506"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
-      <source>Fluid boundary condition</source>
-      <translation>Condició de límit del fluid</translation>
+      <location filename="../../Command.cpp" line="507"/>
+      <source>Fluid Boundary Condition</source>
+      <translation>Condició de límit de fluid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
       <translation>Crea una condició de límit del fluid en una entitat de cara per la Dinàmica de Fluids Computacionals</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdFemConstraintForce</name>
     <message>
-      <location filename="../../Command.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="561"/>
-      <source>Force load</source>
+      <location filename="../../Command.cpp" line="559"/>
+      <source>Force Load</source>
       <translation>Càrrega de força</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="560"/>
       <source>Creates a force load applied to a geometric entity</source>
       <translation>Crea una càrrega de força aplicada a una entitat geomètrica</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdFemConstraintGear</name>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
-      <source>Gear constraint</source>
+      <location filename="../../Command.cpp" line="616"/>
+      <source>Gear Constraint</source>
       <translation>Restricció d'engranatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Creates a gear constraint</source>
       <translation>Crea una restricció d'engranatge</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdFemConstraintHeatflux</name>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="663"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="666"/>
-      <source>Heat flux load</source>
+      <location filename="../../Command.cpp" line="664"/>
+      <source>Heat Flux Load</source>
       <translation>Càrrega de flux de calor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="667"/>
+      <location filename="../../Command.cpp" line="665"/>
       <source>Creates a heat flux load acting on a face</source>
       <translation>Crea una càrrega de flux de calor actuant sobre una cara</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="727"/>
-      <source>Initial temperature</source>
+      <location filename="../../Command.cpp" line="725"/>
+      <source>Initial Temperature</source>
       <translation>Temperatura inicial</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Creates an initial temperature acting on a body</source>
       <translation>Crea una temperatura inicial actuant sobre un cos</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="775"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="778"/>
-      <source>Plane multi-point constraint</source>
+      <location filename="../../Command.cpp" line="776"/>
+      <source>Plane Multi-Point Constraint</source>
       <translation>Restricció de pla multipunt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="779"/>
+      <location filename="../../Command.cpp" line="777"/>
       <source>Creates a plane multi-point constraint for a face</source>
       <translation>Crea una restricció de pla multipunt sobre una cara</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="826"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
-      <source>Pressure load</source>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Pressure Load</source>
       <translation>Càrrega de pressió</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Creates a pressure load acting on a face</source>
       <translation>Crea una càrrega de pressió actuant sobre una cara</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="937"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
-      <source>Pulley constraint</source>
+      <location filename="../../Command.cpp" line="938"/>
+      <source>Pulley Constraint</source>
       <translation>Restricció de politja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="941"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>Creates a pulley constraint</source>
       <translation>Crea una restricció de politja</translation>
     </message>
@@ -220,35 +220,35 @@
   <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
-      <source>Spring</source>
-      <translation>Molla</translation>
+      <location filename="../../Command.cpp" line="883"/>
+      <source>Spring Boundary Condition</source>
+      <translation>Condició de límit de molla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
-      <source>Creates a spring acting on a face</source>
-      <translation>Crea una molla actuant sobre una cara</translation>
+      <location filename="../../Command.cpp" line="884"/>
+      <source>Creates a spring boundary condition on a face</source>
+      <translation>Crea una condició de límit de molla sobre una cara</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="990"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="993"/>
-      <source>Temperature boundary condition</source>
+      <location filename="../../Command.cpp" line="991"/>
+      <source>Temperature Boundary Condition</source>
       <translation>Condició de límit de temperatura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="994"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
       <translation>Crea una càrrega de temperatura/flux de calor actuant sobre una cara</translation>
     </message>
@@ -256,207 +256,206 @@
   <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="1041"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
-      <source>Local coordinate system</source>
+      <location filename="../../Command.cpp" line="1042"/>
+      <source>Local Coordinate System</source>
       <translation>Sistema de coordenades local</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1045"/>
-      <source>Create a local coordinate system on a face</source>
+      <location filename="../../Command.cpp" line="1043"/>
+      <source>Creates a local coordinate system on a face</source>
       <translation>Crea un sistema de coordenades local sobre una cara</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1189"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1190"/>
-      <source>Nodes set</source>
+      <location filename="../../Command.cpp" line="1188"/>
+      <source>Nodes Set</source>
       <translation>Conjunt de nodes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Creates a FEM mesh nodes set</source>
       <translation>Crea un conjunt de nodes de malla FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1225"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1227"/>
-      <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Seleccioneu una única malla MEF o un conjunt de nodes</translation>
+      <location filename="../../Command.cpp" line="1226"/>
+      <source>Select a single FEM mesh or nodes set.</source>
+      <translation>Seleccioneu una sola malla FEM o un conjunt de nodes.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
-      <source>Select a single FEM Mesh, please.</source>
-      <translation>Si us plau, seleccioneu una única malla FEM.</translation>
+      <location filename="../../Command.cpp" line="1375"/>
+      <source>Select a single FEM Mesh.</source>
+      <translation>Seleccioneu una sola malla FEM.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1128"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1131"/>
-      <source>Node set by poly</source>
-      <translation>Conjunt de nodes per politja</translation>
+      <location filename="../../Command.cpp" line="1129"/>
+      <source>Node Set by Polygon</source>
+      <translation>Conjunt de nodes per polígon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1132"/>
-      <location filename="../../Command.cpp" line="1134"/>
-      <source>Create node set by Poly</source>
-      <translation>Crea un conjunt de nodes per polígons</translation>
+      <location filename="../../Command.cpp" line="1130"/>
+      <source>Creates a node set by polygon selection</source>
+      <translation>Crea un conjunt de nodes per selecció de polígon</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2622"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
-      <source>Apply changes to pipeline</source>
-      <translation>Aplicar canvis a la canonada</translation>
+      <location filename="../../Command.cpp" line="2623"/>
+      <source>Apply Changes to Pipeline</source>
+      <translation>Aplica els canvis a la canonada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
-      <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation>Aplicar canvis als paràmetres directament, i no només en el recàlcul...</translation>
+      <location filename="../../Command.cpp" line="2624"/>
+      <source>Applies changes to parameters directly and not on recompute only</source>
+      <translation>Aplica els canvis als paràmetres directament i no només en recomputar</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2031"/>
-      <source>Region clip filter</source>
-      <translation>Filtre de regió de tall</translation>
+      <location filename="../../Command.cpp" line="2028"/>
+      <source>Region Clip Filter</source>
+      <translation>Filtre de retall de regió</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2033"/>
-      <source>Define/create a clip filter which uses functions to define the clipped region</source>
-      <translation>Defineix/crea un filtre de tall que utilitzi funcions per definir la regió de tall</translation>
+      <location filename="../../Command.cpp" line="2030"/>
+      <source>Defines a clip filter which uses functions to define the clipped region</source>
+      <translation>Defineix un filtre de retall que utilitza funcions per definir la regió retallada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2525"/>
+      <source>Select a pipeline.</source>
+      <translation>Seleccioneu una canonada.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2524"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2527"/>
-      <source>Select a pipeline, please.</source>
-      <translation>Si us plau, seleccioneu una canonada.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="2065"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2069"/>
-      <source>Function cut filter</source>
-      <translation>Filtre de tall de funció</translation>
+      <location filename="../../Command.cpp" line="2066"/>
+      <source>Function Cut Filter</source>
+      <translation>Filtre de tall per funció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
-      <source>Cut the data along an implicit function</source>
-      <translation>Tallar les dades al llarg d'una funció implícita</translation>
+      <location filename="../../Command.cpp" line="2067"/>
+      <source>Cuts the data along an implicit function</source>
+      <translation>Talla les dades al llarg d'una funció implícita</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2105"/>
+      <location filename="../../Command.cpp" line="2102"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2106"/>
-      <source>Line clip filter</source>
-      <translation>Filtre de línia de tall</translation>
+      <location filename="../../Command.cpp" line="2103"/>
+      <source>Line Clip Filter</source>
+      <translation>Filtre de retall per línia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2107"/>
-      <source>Define/create a clip filter which clips a field along a line</source>
-      <translation>Defineix/crea un filtre de tall que talli un camp al llarg d'una línia</translation>
+      <location filename="../../Command.cpp" line="2104"/>
+      <source>Defines a clip filter which clips a field along a line</source>
+      <translation>Defineix un filtre de retall que retalla un camp al llarg d'una línia</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2142"/>
+      <location filename="../../Command.cpp" line="2139"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2143"/>
-      <source>Data at point clip filter</source>
-      <translation>Dades al filtre de tall de punt</translation>
+      <location filename="../../Command.cpp" line="2140"/>
+      <source>Data at Point Clip Filter</source>
+      <translation>Filtre de retall de dades a un punt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2144"/>
-      <source>Define/create a clip filter which clips a field data at point</source>
-      <translation>Defineix/crea un filtre de tall que talli un camp de dades al punt</translation>
+      <location filename="../../Command.cpp" line="2141"/>
+      <source>Defines a clip filter which clips a field data at point</source>
+      <translation>Defineix un filtre de retall que retalla dades d'un camp en un punt</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2397"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2404"/>
-      <source>Filter functions</source>
+      <location filename="../../Command.cpp" line="2398"/>
+      <source>Filter Functions</source>
       <translation>Funcions de filtre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2405"/>
-      <source>Functions for use in postprocessing filter...</source>
-      <translation>Funcions a utilitzar en el filtre de postprocessament...</translation>
+      <location filename="../../Command.cpp" line="2399"/>
+      <source>Functions for use in postprocessing filter</source>
+      <translation>Funcions per usar en el filtre de postprocessament</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2578"/>
+      <location filename="../../Command.cpp" line="2576"/>
       <source>Plane</source>
       <translation>Pla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2585"/>
+      <location filename="../../Command.cpp" line="2583"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2590"/>
       <source>Cylinder</source>
       <translation>Cilindre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2599"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Box</source>
       <translation>Caixa</translation>
     </message>
@@ -464,258 +463,258 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1929"/>
+      <location filename="../../Command.cpp" line="1926"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Gruix [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1933"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Estrès [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1937"/>
+      <location filename="../../Command.cpp" line="1934"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Estressos linealitzats</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1941"/>
+      <location filename="../../Command.cpp" line="1938"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Membrana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1945"/>
+      <location filename="../../Command.cpp" line="1942"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Membrana i flexió</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
+      <location filename="../../Command.cpp" line="1946"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2180"/>
+      <location filename="../../Command.cpp" line="2177"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2181"/>
-      <source>Stress linearization plot</source>
-      <translation>Gràfic de linealització d'estrès</translation>
+      <location filename="../../Command.cpp" line="2178"/>
+      <source>Stress Linearization Plot</source>
+      <translation>Gràfica de linealització d'estrès</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2182"/>
-      <source>Define/create stress linearization plots</source>
-      <translation>Defineix/crea gràfics de linealització d'estrès</translation>
+      <location filename="../../Command.cpp" line="2179"/>
+      <source>Defines a stress linearization plot</source>
+      <translation>Defineix una gràfica de linealització d'estrès</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2219"/>
-      <location filename="../../Command.cpp" line="2228"/>
+      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2225"/>
+      <source>Select a clip filter which clips a stress field along a line</source>
+      <translation>Seleccioneu un filtre de retall que retalli un camp d'estrès al llarg d'una línia</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2224"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2220"/>
-      <location filename="../../Command.cpp" line="2229"/>
-      <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation>Si us plau, seleccioneu un filtre de tall que talli un camp d'Estrès al llarg d'una línia.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2665"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
-      <source>Post pipeline from result</source>
-      <translation>Publica la canonada dels resultats</translation>
+      <location filename="../../Command.cpp" line="2664"/>
+      <source>Post Pipeline From Result</source>
+      <translation>Canonada de postprocessament des del resultat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2667"/>
+      <location filename="../../Command.cpp" line="2665"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Crea una canonada de postprocessament d'un objecte resultat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2745"/>
+      <location filename="../../Command.cpp" line="2743"/>
       <source>Wrong selection type</source>
       <translation>Tipus de selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2746"/>
-      <source>Select a result object, please.</source>
-      <translation>Si us plau, seleccioneu un objecte resultat.</translation>
+      <location filename="../../Command.cpp" line="2744"/>
+      <source>Select a result object.</source>
+      <translation>Seleccioneu un objecte de resultats.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2255"/>
+      <location filename="../../Command.cpp" line="2250"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
-      <source>Scalar clip filter</source>
-      <translation>Filtre de tall escalar</translation>
+      <location filename="../../Command.cpp" line="2251"/>
+      <source>Scalar Clip Filter</source>
+      <translation>Filtre de retall escalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2258"/>
-      <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation>Defineix/crea un filtre de tall que talli un camp amb un valor escalar</translation>
+      <location filename="../../Command.cpp" line="2252"/>
+      <source>Defines a clip filter which clips a field with a scalar value</source>
+      <translation>Defineix un filtre de retall que retalla un camp amb un valor escalar</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2287"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2294"/>
-      <source>Warp filter</source>
-      <translation>Filtre de deformacions</translation>
+      <location filename="../../Command.cpp" line="2288"/>
+      <source>Warp Filter</source>
+      <translation>Filtre de deformació</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2295"/>
-      <source>Warp the geometry along a vector field by a certain factor</source>
+      <location filename="../../Command.cpp" line="2289"/>
+      <source>Warps the geometry along a vector field by a certain factor</source>
       <translation>Deforma la geometria al llarg d'un camp vectorial per un cert factor</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="525"/>
       <source>Create fluid boundary condition</source>
       <translation>Crea una condició de límit del fluid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="258"/>
       <source>Make bearing constraint</source>
       <translation>Crea una restricció de rodament</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Make contact constraint on a face</source>
       <translation>Crea una restricció de contacte sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Make displacement boundary condition on face</source>
       <translation>Crea una condició de límit de desplaçament sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Make fixed boundary condition for geometry</source>
       <translation>Crea una condició de límit de fixació per a una geometria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="474"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Make rigid body constraint</source>
       <translation>Crea una restricció de cos rígid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="578"/>
+      <location filename="../../Command.cpp" line="576"/>
       <source>Make force load on geometry</source>
       <translation>Crea una càrrega de força sobre una geometria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="634"/>
+      <location filename="../../Command.cpp" line="632"/>
       <source>Make gear constraint</source>
       <translation>Crea una restricció d'engranatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
+      <location filename="../../Command.cpp" line="681"/>
       <source>Make heat flux load on face</source>
       <translation>Crea una càrrega de flux de calor sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="744"/>
+      <location filename="../../Command.cpp" line="742"/>
       <source>Make initial temperature condition on body</source>
       <translation>Crea una condició de temperatura inicial sobre un cos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="795"/>
+      <location filename="../../Command.cpp" line="793"/>
       <source>Make plane multi-point constraint on face</source>
       <translation>Crea una restricció de pla multipunt sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="846"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Make pressure load on face</source>
       <translation>Crea una càrrega de pressió sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="902"/>
-      <source>Make spring on face</source>
-      <translation>Crea una molla sobre una cara</translation>
+      <location filename="../../Command.cpp" line="900"/>
+      <source>Make Spring Constraint</source>
+      <translation>Crear restricció de molla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>Make pulley constraint</source>
       <translation>Crea una restricció de politja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1010"/>
+      <location filename="../../Command.cpp" line="1008"/>
       <source>Make temperature boundary condition on face</source>
       <translation>Crea una condició de límit de temperatura sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1061"/>
+      <location filename="../../Command.cpp" line="1059"/>
       <source>Make local coordinate system on face</source>
       <translation>Crea un sistema de coordenades local sobre una cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1111"/>
-      <location filename="../../Command.cpp" line="1262"/>
+      <location filename="../../Command.cpp" line="1109"/>
+      <location filename="../../Command.cpp" line="1260"/>
       <source>Place robot</source>
       <translation>Col·locar robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1203"/>
       <source>Edit nodes set</source>
       <translation>Editar conjunt de nodes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1214"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Create nodes set</source>
       <translation>Crear conjunt de nodes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1353"/>
+      <location filename="../../Command.cpp" line="1351"/>
       <source>Edit Elements set</source>
       <translation>Editar conjunt d'elements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1362"/>
       <source>Create Elements set</source>
       <translation>Crear conjunt d'elements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1878"/>
+      <location filename="../../Command.cpp" line="1875"/>
       <source>Create filter</source>
       <translation>Crear filtre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2437"/>
+      <location filename="../../Command.cpp" line="2431"/>
       <source>Create function</source>
       <translation>Crear funció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2717"/>
+      <location filename="../../Command.cpp" line="2715"/>
       <source>Create pipeline from result</source>
       <translation>Crear canonada dels resultats</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="285"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="282"/>
       <source>Edit Mirror</source>
       <translation>Editar Reflexa en el mirall</translation>
     </message>
@@ -731,8 +730,8 @@
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
-      <source>Mesh groups detected. Please choose values for the different groups.</source>
-      <translation>S'ha detectat grups de malla. Si us plau, esculli valors pels diferents grups.</translation>
+      <source>Mesh groups detected. Choose values for the different groups.</source>
+      <translation>S'han detectat grups de malla. Trieu valors per als diferents grups.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -761,18 +760,18 @@
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
-      <source>Select the vertices, lines and surfaces:</source>
-      <translation>Seleccioneu els vèrtexs, línies i superfícies:</translation>
+      <source>Select the vertices, lines and surfaces</source>
+      <translation>Seleccioneu els vèrtexs, línies i superfícies</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
-      <source>Temperature:</source>
-      <translation>Temperatura:</translation>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
+      <source>Temperature</source>
+      <translation>Temperatura</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -788,30 +787,29 @@
     </message>
     <message>
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
-      <source>Insert component's
- initial temperature:</source>
-      <translation>Inserir temperatura inicial del component:</translation>
+      <source>Initial temperature</source>
+      <translation>Temperatura inicial</translation>
     </message>
   </context>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2580"/>
+      <location filename="../../Command.cpp" line="2578"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Crear una funció del pla, definit pel seu origen i normal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2587"/>
+      <location filename="../../Command.cpp" line="2585"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Crear una funció de l'esfera, definit pel seu centre i radi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2593"/>
+      <location filename="../../Command.cpp" line="2591"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Crear una funció del cilindre, definit pel seu centre, eix i radi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2600"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Crear una funció de la caixa, definit pel seu centre, longitud, amplada i alçada</translation>
     </message>
@@ -821,435 +819,347 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="14"/>
       <location filename="../../DlgSettingsFemCcx.ui" line="29"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="151"/>
       <source>CalculiX</source>
       <translation>CalculiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
-      <source>CalculiX binary</source>
-      <translation>Binari CalculiX</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
-      <source>Search in known binary directories</source>
-      <translation>Cerca en directoris binaris coneguts</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
-      <source>ccx binary path</source>
-      <translation>Camí del binari ccx</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="77"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
       <translation>Deixeu-ho en blanc per a utilitzar per defecte el fitxer binari ccx del CalculiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
-      <source>Input file Editor</source>
-      <translation>Editor de fitxers d'entrada</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="126"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="97"/>
       <source>Use internal editor for *.inp files</source>
       <translation>Utilitzeu un editor intern per als fitxers *.inp</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="151"/>
-      <source>External editor:</source>
-      <translation>Editor extern: </translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="171"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="142"/>
       <source>Input file splitting</source>
       <translation>Divisió dels fitxers d'entrada</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="181"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="152"/>
       <source>Split writing of  *.inp</source>
       <translation>Dividir escriptura dels fitxers *.inp</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="202"/>
-      <source>Analysis defaults</source>
-      <translation>Valors predeterminats d'anàlisis</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="210"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="181"/>
       <source>Type</source>
       <translation>Tipus</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="223"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="194"/>
       <source>Default type on analysis</source>
       <translation>Tipus d'anàlisi per defecte</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="233"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="204"/>
       <source>Static</source>
       <translation>Estàtic</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="242"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="213"/>
       <source>Frequency</source>
       <translation>Freqüència</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="251"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="222"/>
       <source>Thermomech</source>
       <translation>Termomecànica</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="260"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="231"/>
       <source>Check Mesh</source>
       <translation>Comprovar malla</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="269"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="240"/>
       <source>Buckling</source>
       <translation>Vinclament</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="286"/>
-      <source>Solver defaults</source>
-      <translation>Valors predeterminats del solucionador</translation>
+      <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
+      <source>Initial time increment</source>
+      <translation>Increment de temps inicial</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="337"/>
-      <source>Number of CPU's to use</source>
-      <translation>Nombre de processadors a emprar</translation>
+      <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
+      <source>Time period</source>
+      <translation>Període de temps</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="331"/>
       <source>Number of threads used for analysis</source>
       <translation>Nombre de fils utilitzats per a l'anàlisi</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="494"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="465"/>
       <source>Matrix solver</source>
       <translation>Solucionador de matriu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="870"/>
-      <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <location filename="../../DlgSettingsFemCcx.ui" line="492"/>
+      <source>Maximum number of increments</source>
+      <translation>Nombre màxim d'increments</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="392"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
+      <source>Minimum time increment</source>
+      <translation>Increment de temps mínim</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="629"/>
+      <source>Maximum time increment</source>
+      <translation>Increment de temps màxim</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="695"/>
+      <source>Thermo-Mechanical Defaults</source>
+      <translation>Valors predeterminats termo-mecànics</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="731"/>
+      <source>Frequency Defaults</source>
+      <translation>Valors predeterminats de freqüència</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="841"/>
+      <source> Hz</source>
+      <translation> Hz</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Default</source>
       <translation>Per defecte</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="397"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="90"/>
+      <source>Input file editor</source>
+      <translation>Editor del fitxer d'entrada</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="122"/>
+      <source>External editor</source>
+      <translation>Editor extern</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
+      <source>Analysis Defaults</source>
+      <translation>Valors predeterminats de l'anàlisi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="257"/>
+      <source>Solver Defaults</source>
+      <translation>Valors predeterminats del solucionador</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="308"/>
+      <source>Number of CPUs to use</source>
+      <translation>Nombre de CPU a utilitzar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
       <source>PaStiX</source>
       <translation>PaStiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
       <source>Pardiso</source>
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="407"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="378"/>
       <source>SPOOLES equation solver</source>
       <translation>Resolutor d'equacions SPOOLES</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="383"/>
       <source>Iterative Scaling</source>
       <translation>Escalat iteratiu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="425"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
       <source>Non-linear geometry</source>
       <translation>Geometria no lineal</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="579"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="550"/>
       <source>Use non-linear geometry</source>
       <translation>Utilitzar geometria no lineal</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="501"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="472"/>
       <source>Time incrementation control parameter</source>
       <translation>Paràmetre de control d'increment de temps</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="321"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
+      <source>CalculiX path</source>
+      <translation>Camí de CalculiX</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="292"/>
       <source>Use non ccx defaults</source>
       <translation>Utilitzi valors ccx no predeterminats</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
-      <source>Time Initial Step</source>
-      <translation>Temps de pas inicial</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
-      <source>Time End</source>
-      <translation>Final del temps</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="344"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="315"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>Sortida 3D, sense marcar per 2D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="636"/>
       <source>Result object</source>
-      <translation type="unfinished">Result object</translation>
+      <translation>Objecte resultant</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="672"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="643"/>
       <source>Pipeline only</source>
-      <translation type="unfinished">Pipeline only</translation>
+      <translation>Només canonada</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="675"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="646"/>
       <source>Load results as pipeline instead of CCX_Results objects.
 After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</source>
-      <translation type="unfinished">Load results as pipeline instead of CCX_Results objects.
-After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</translation>
+      <translation>Carrega els resultats com a canonada en comptes d'objectes CCX_Results.
+Després de desmarcar aquesta opció, la comanda CalculiX es comporta com SolverCalculiXCcxTools</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="692"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="663"/>
       <source>Result format</source>
-      <translation type="unfinished">Result format</translation>
+      <translation>Format resultant</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="699"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="670"/>
       <source>Save result in binary format.
 Only takes effect if 'Pipeline only' is enabled</source>
-      <translation type="unfinished">Save result in binary format.
-Only takes effect if 'Pipeline only' is enabled</translation>
+      <translation>Desa el resultat en format binari.
+Només té afecte si l'opció 'Només canonada' està marcada</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="674"/>
       <source>Use binary format</source>
       <translation>Utilitza el format binari</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
-      <source>Thermo mechanical defaults</source>
-      <translation>Valors predeterminats de Termomecànica</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="732"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Tipus d'anàlisi (transitori o estat estable)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="739"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="710"/>
       <source>Use steady state</source>
       <translation>Utilitzi estat estable</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
-      <source>Maximum number of iterations</source>
-      <translation>Nombre màxim d'iteracions</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="417"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="388"/>
       <source>Cholesky iterative solver</source>
       <translation>Solucionador iteratiu Cholesky</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
-      <source>Time Minimum Step</source>
-      <translation>Temps de pas mínim</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
-      <source>Time Maximum Step</source>
-      <translation>Temps de pas màxim</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="626"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
       <source>Beam, shell element 3D output format</source>
       <translation>Biga, format de sortida 3D d'element entorn</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="760"/>
-      <source>Frequency defaults</source>
-      <translation>Valors predeterminats de freqüència</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="800"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="771"/>
       <source>Eigenmode number</source>
       <translation>Número de mode propi</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="793"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="764"/>
       <source>High frequency limit</source>
       <translation>Límit d'alta freqüència</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="854"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="825"/>
       <source>Low frequency limit</source>
       <translation>Límit de baixa freqüència</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="155"/>
-      <source>File does not exist</source>
-      <translation>El fitxer no existeix</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="156"/>
-      <source>The specified executable
-'%1'
- does not exist!
-Specify another file please.</source>
-      <translation>L'executable especificat
-'%1'
- no existeix!
-Si us plau, especifiqueu un altre fitxer.</translation>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="151"/>
+      <source>Executable '%1' not found</source>
+      <translation>No s'ha trobat l'executable '%1'</translation>
     </message>
   </context>
   <context>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
-      <source>Elmer binaries</source>
-      <translation>Binaris d'Elmer</translation>
+      <location filename="../../DlgSettingsFemElmer.ui" line="44"/>
+      <source>ElmerSolver path</source>
+      <translation>Camí d'ElmerSolver</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="38"/>
-      <source>ElmerGrid:</source>
-      <translation>ElmerGrid:</translation>
+      <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
+      <source>Leave blank to use default ElmerSolver binary file</source>
+      <translation>Deixeu-ho en blanc per a utilitzar el fitxer binari predeterminat d'ElmerSolver</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="85"/>
-      <location filename="../../DlgSettingsFemElmer.ui" line="148"/>
-      <source>Search in known binary directories</source>
-      <translation>Cerca en directoris binaris coneguts</translation>
+      <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
+      <source>ElmerGrid path</source>
+      <translation>Camí d'ElmerGrid</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="173"/>
-      <source>ElmerGrid binary path</source>
-      <translation>Camí del binari ElmerGrid</translation>
+      <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
+      <source>Number of processes</source>
+      <translation>Nombre de processos</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-core CPU support:</source>
-      <translation>Suport de CPU de nucli múltiple:</translation>
+      <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
+      <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
+      <translation>Nombre de tasques paral·leles. Establiu-ho a `1` si l'Elmer no utilitza MPI.&lt;br&gt;Es recomana utilitzar un nombre parell de nuclis per beneficiar-te de les simetries de malla&lt;br&gt;(L'ús de 8 nuclis pot ser més ràpid que 9).&lt;br&gt;En casos extrems, és possible que ElmerSolver no convergi si el nombre de nuclis és massa alt.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
-      <source>The mesh volume regions processed by each CPU core
-will be merged to make the volume boundaries invisible.</source>
-      <translation>Les regions de volum de malla processades per cada nucli de CPU
-es fusionaran per a fer invisibles els límits del volum.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="272"/>
-      <source>Filter results</source>
-      <translation>Filtra els resultats</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="291"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
       <source>Results</source>
       <translation>Resultats</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
       <source>Save result in binary format</source>
       <translation>Desa el resultat en format binari</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
       <source>Use binary format</source>
       <translation>Utilitza el format binari</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
       <source>Save the index of geometric entities</source>
       <translation>Desa l'índex d'entitats geomètriques</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="319"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>Save geometry IDs</source>
       <translation>Desa els ID de geometria</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="125"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
       <translation>Deixeu-ho en blanc per a utilitzar per defecte el fitxer binari ElmerGrid</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
+      <source>Elmer Binaries</source>
+      <translation>Binaris d'Elmer</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
-      <source>ElmerSolver:</source>
-      <translation>ElmerSolver:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
-      <source>ElmerSolver binary path</source>
-      <translation>Camí del binari ElmerSolver</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deixeu-ho en blanc per a utilitzar per defecte el fitxer binari Elmer&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Per a utilitzar multithreading has d'especificar aquí&lt;br&gt; la variant executable amb el sufix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
-      <source>Multithreading:</source>
-      <translation>Multithreading:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
-      <source>CPU cores to be used:</source>
-      <translation>Nuclis de CPU a utilitzar:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="227"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Es recomana utilitzar un nombre de nuclis parells per beneficiar-se de les simetries de malla. (Utilitzant 8 nuclis pot ser més ràpid que 9.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Una altra nota:&lt;/span&gt; En alguns casos extrems, ElmerSolver podria no convergir si el nombre de nuclis és massa alt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="112"/>
-      <source>File does not exist</source>
-      <translation>El fitxer no existeix</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="113"/>
-      <source>The specified executable
-'%1'
- does not exist!
-Specify another file please.</source>
-      <translation>L'executable especificat
-'%1'
- no existeix!
-Si us plau, especifiqueu un altre fitxer.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="142"/>
-      <source>FEM Elmer: Not suitable for multithreading</source>
-      <translation>FEM Elmer: No apte pel multithreading</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
-      <source>Wrong Elmer setting: You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation>Configuració incorrecta d'Elmer: Has d'utilitzar més d'un nucli de CPU.
-Per tant, es necessita un executable amb el sufix '_mpi.exe'.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="143"/>
-      <source>Wrong Elmer setting: You use more than one CPU core.
-Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation>Configuració incorrecta d'Elmer: Has d'utilitzar més d'un nucli de CPU.
-Per tant, es necessita un executable amb el sufix '_mpi'.</translation>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <source>Executable '%1' not found</source>
+      <translation>No s'ha trobat l'executable '%1'</translation>
     </message>
   </context>
   <context>
@@ -1273,54 +1183,55 @@ Per tant, es necessita un executable amb el sufix '_mpi'.</translation>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="35"/>
       <source>All: All elements will be exported.
 
-Highest: Only the highest elements will be exported. This means
-for means volumes for a volume mesh and faces for a shell mesh.
+Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation>Tots: Tots els elements seran exportats.
+      <translation>Tot: Tots els elements seran exportats.
 
-Més alts: Només els elements més alts seran exportats. Això vol dir
-volums mitjans per a una malla de volum i cares per a una malla d'entorn.
+Més alts: Només s'exportaran els elements més alts. Això vol dir volums per a una malla de volums i cares per a una malla de closca.
 
-FEM: Només els elements FEM seran exportats. Això vol dir que només
-les vores que no pertanyin a cares i cares que no pertanyin a volums.</translation>
+FEM: Només s'exportaran els elements FEM. Això vol dir només arestes
+que no pertanyen a cares i cares que no pertanyen a volums.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
-      <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation>paràmetre d'element: Tots: tots els elements, Més alts: només els elements més alts, FEM: només els elements FEM (només vores que no pertanyen a cares i cares que no pertanyen a volums)</translation>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
+      <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
+      <translation>Paràmetres dels elements:
+- Tots: tots els elements
+- Més alts: només els elements més alts
+- FEM: només els elements FEM (només vores que no pertanyen a cares i cares que no pertanyen a volums)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="57"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
+      <source>Mesh groups are exported too.
+Every analysis feature and, if there are different materials,
+material consists of two mesh groups - faces and nodes where
+the constraint or material is applied.</source>
+      <translation>També s'exporten els grups de malles.
+Cada característica d'anàlisi i, si hi ha materials diferents,
+el material consta de dos grups de malla - cares i nodes on
+s'aplica la restricció o el material.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
       <source>All</source>
       <translation>Tot</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="62"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="61"/>
       <source>Highest</source>
       <translation>Més alts</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="67"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="66"/>
       <source>FEM</source>
       <translation>MEF</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="75"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="74"/>
       <source>Export group data</source>
       <translation>Exportar dades de grup</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
-      <source>Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups, faces and nodes where
-the constraint or material is applied.</source>
-      <translation>També s'exporten grups de malles.
-Cada característica d'anàlisi i, si hi ha materials diferents,
-el material consta de dos grups de malla, cares i nodes on
-s'aplica la restricció o el material.</translation>
     </message>
   </context>
   <context>
@@ -1329,11 +1240,6 @@ s'aplica la restricció o el material.</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="14"/>
       <source>General</source>
       <translation>General</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and Gmsh meshing</source>
-      <translation>Directori de treball per la resolució de l'anàlisi i el mallatge Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1371,11 +1277,6 @@ s'aplica la restricció o el material.</translation>
       <translation>Utilitzi un directori establert a continuació. Crea el seu propi subdirectori per a cada solucionador. Anomeni el directori amb l'etiqueta del solucionador precedit amb el nom del document.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
-      <source>Path:</source>
-      <translation>Camí:</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="247"/>
       <source>Overwrite solver working directory with the directory chosen above</source>
       <translation>Sobreescriure el directori de treball del solucionador amb el directori escollit a dalt</translation>
@@ -1386,9 +1287,19 @@ s'aplica la restricció o el material.</translation>
       <translation>Malla</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
+      <source>Working Directory for Solving Analysis and Gmsh Meshing</source>
+      <translation>Directoris de treball per a la resolució de l'anàlisi i el mallat Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
+      <source>Path</source>
+      <translation>Camí</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="279"/>
-      <source>Create mesh groups for analysis reference shapes (highly experimental)</source>
-      <translation>Crear grups de malla per formes de referència d'anàlisi (altament experimental)</translation>
+      <source>Create mesh groups for analysis reference shapes (experimental)</source>
+      <translation>Crea grups de malla per a formes de referència d'anàlisi (experimental)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
@@ -1458,69 +1369,54 @@ afegir un contenidor d'anàlisis</translation>
     <name>FemGui::DlgSettingsFemGmshImp</name>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="14"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="87"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
-      <source>Gmsh binary</source>
+      <source>Gmsh Binary</source>
       <translation>Binari Gmsh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="40"/>
-      <source>Search in known binary directories</source>
-      <translation>Cerca en directoris binaris coneguts</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="71"/>
-      <source>Gmsh binary path</source>
-      <translation>Camí del binari Gmsh</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="105"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="64"/>
       <source>Leave blank to use default Gmsh binary file</source>
       <translation>Deixeu-ho en blanc per a utilitzar per defecte el fitxer binari Gmsh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="123"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
+      <source>Gmsh path</source>
+      <translation>Camí de Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="101"/>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="109"/>
       <source>Log verbosity</source>
       <translation>Registra redundància</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="116"/>
       <source>Level of verbosity printed on the task panel</source>
       <translation>Nivell de redundància imprès al panell de tasques</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="135"/>
       <source>Number of threads</source>
       <translation>Nombre de fils</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="145"/>
       <source>Number of threads used for meshing</source>
       <translation>Nombre de fils utilitzats per mallat</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
-      <source>File does not exist</source>
-      <translation>El fitxer no existeix</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
-      <source>The specified executable
-'%1'
- does not exist!
-Specify another file please.</source>
-      <translation>L'executable especificat
-'%1'
- no existeix!
-Si us plau, especifiqueu un altre fitxer.</translation>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="87"/>
+      <source>Executable '%1' not found</source>
+      <translation>No s'ha trobat l'executable '%1'</translation>
     </message>
   </context>
   <context>
@@ -1603,136 +1499,117 @@ amb els fitxers VTK exportats per FreeCAD.</translation>
     <name>FemGui::DlgSettingsFemMystranImp</name>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="14"/>
+      <location filename="../../DlgSettingsFemMystranImp.cpp" line="76"/>
       <source>Mystran</source>
       <translation>Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
-      <source>Mystran binary</source>
+      <source>Mystran Binary</source>
       <translation>Binari Mystran</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystran.ui" line="40"/>
-      <source>Search in known binary directories</source>
-      <translation>Cerca en directoris binaris coneguts</translation>
+      <location filename="../../DlgSettingsFemMystran.ui" line="49"/>
+      <source>Mystran path</source>
+      <translation>Camí de Mystran</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystran.ui" line="65"/>
-      <source>Mystran binary path</source>
-      <translation>Camí del binari Mystran</translation>
+      <location filename="../../DlgSettingsFemMystran.ui" line="80"/>
+      <source>Leave blank to use default mystran binary file</source>
+      <translation>Deixeu-ho en blanc per a utilitzar el fitxer binari predeterminat de mystran</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystran.ui" line="99"/>
-      <source>Leave blank to use default Mystran binary file location</source>
-      <translation>Deixeu-ho en blanc per a utilitzar per defecte la ubicació del fitxer binari Mystran</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMystran.ui" line="112"/>
+      <location filename="../../DlgSettingsFemMystran.ui" line="93"/>
       <source>Comments</source>
       <translation>Comentaris</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystran.ui" line="119"/>
+      <location filename="../../DlgSettingsFemMystran.ui" line="100"/>
       <source>Write comments to input file</source>
       <translation>Escrigui comentaris al fitxer d'entrada</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
-      <source>File does not exist</source>
-      <translation>El fitxer no existeix</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
-      <source>The specified executable
-'%1'
- does not exist!
-Specify another file please.</source>
-      <translation>L'executable especificat
-'%1'
- no existeix!
-Si us plau, especifiqueu un altre fitxer.</translation>
+      <location filename="../../DlgSettingsFemMystranImp.cpp" line="76"/>
+      <source>Executable '%1' not found</source>
+      <translation>No s'ha trobat l'executable '%1'</translation>
     </message>
   </context>
   <context>
     <name>FemGui::DlgSettingsFemZ88Imp</name>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="14"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
       <source>Z88</source>
       <translation>Z88</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
-      <source>Z88 binary</source>
+      <source>Z88 Binary</source>
       <translation>Binari Z88</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="46"/>
-      <source>Search in known binary directories</source>
-      <translation>Cerca en directoris binaris coneguts</translation>
+      <location filename="../../DlgSettingsFemZ88.ui" line="52"/>
+      <source>z88r path</source>
+      <translation>Camí de z88r</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="77"/>
-      <source>z88r binary path</source>
-      <translation>Camí del binari z88r</translation>
+      <location filename="../../DlgSettingsFemZ88.ui" line="83"/>
+      <source>Leave blank to use default z88r binary file</source>
+      <translation>Deixeu-ho en blanc per a utilitzar el fitxer binari predeterminat de z88r</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88, z88r binary file</source>
-      <translation>Deixeu-ho en blanc per a utilitzar per defecte el fitxer binari Z88, z88r</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
-      <source>Solver settings</source>
+      <location filename="../../DlgSettingsFemZ88.ui" line="110"/>
+      <source>Solver Settings</source>
       <translation>Preferències del solucionador</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="149"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="121"/>
       <source>Solver method</source>
       <translation>Mètode del solucionador</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="165"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="137"/>
       <source>Solver method to be used</source>
       <translation>Mètode del solucionador a utilitzar</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="150"/>
       <source>Iteration solver with SOR preconditioning (-sorcg)</source>
       <translation>Solucionador iteratiu amb precondicionament SOR (-sorcg)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="183"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="155"/>
       <source>Iteration solver with SIC preconditioning (-siccg)</source>
       <translation>Solucionador iteratiu amb precondicionament SIC (-siccg)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="188"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="160"/>
       <source>Simple Cholesky solver (-choly)</source>
       <translation>Solucionador simple de Cholesky (-choly)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="196"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="168"/>
       <source>Max places in stiffness matrix</source>
       <translation>Llocs màxims a la matriu de rigidesa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="209"/>
-      <source>Maximal places in stiffnes matrix.
+      <location filename="../../DlgSettingsFemZ88.ui" line="181"/>
+      <source>Maximum places in the stiffness matrix.
 You might need to increase this when using the
-Cholesky solver and you get the error message
+Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Llocs màxims a la matriu de rigidesa.
-És possible que hàgiu d'augmentar-ho en utilitzar
-el solucionador de Cholesky i obtingueu el missatge
-d'error que s'ha d'augmentar "MAXGS".</translation>
+Potser caldrà augmentar-ho quan s'utilitzi
+el solucionador de Cholesky i aparegui el missatge d'error
+que "MAXGS" s'ha d'augmentar.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="240"/>
-      <source>Max places in coincidence vector</source>
+      <location filename="../../DlgSettingsFemZ88.ui" line="212"/>
+      <source>Maximum places in coincidence vector</source>
       <translation>Llocs màxims al vector de coincidència</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88.ui" line="253"/>
+      <location filename="../../DlgSettingsFemZ88.ui" line="225"/>
       <source>Maximal places in coincidence vector.
 (number of knots per element times
  number of finite elements)
@@ -1749,42 +1626,15 @@ un solucionador iteratiu i obtingueu el missatge
 d'error que s'ha d'augmentar "MAXKOI".</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="107"/>
-      <source>File does not exist</source>
-      <translation>El fitxer no existeix</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
-      <source>The specified z88r executable
-'%1'
- does not exist!
-Specify another file please.</source>
-      <translation>L'executable z88r especificat
-'%1'
- no existeix!
-Si us plau, especifiqueu un altre fitxer.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="120"/>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="126"/>
-      <source>Wrong file</source>
-      <translation>Fitxer erroni</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="121"/>
-      <source>You must specify the path to the z88r.exe!</source>
-      <translation>Has d'especificar el camí al z88r.exe!</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="126"/>
-      <source>You must specify the path to the z88r!</source>
-      <translation>Has d'especificar el camí al z88r!</translation>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
+      <source>Executable '%1' not found</source>
+      <translation>No s'ha trobat l'executable '%1'</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskAnalysisInfo</name>
     <message>
-      <location filename="../../TaskAnalysisInfo.cpp" line="35"/>
+      <location filename="../../TaskAnalysisInfo.cpp" line="34"/>
       <source>Nodes set</source>
       <translation>Conjunt de nodes</translation>
     </message>
@@ -1792,7 +1642,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskCreateNodeSet</name>
     <message>
-      <location filename="../../TaskCreateNodeSet.cpp" line="56"/>
+      <location filename="../../TaskCreateNodeSet.cpp" line="53"/>
       <source>Nodes set</source>
       <translation>Conjunt de nodes</translation>
     </message>
@@ -1800,13 +1650,13 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="215"/>
-      <location filename="../../TaskFemConstraint.cpp" line="233"/>
+      <location filename="../../TaskFemConstraint.cpp" line="234"/>
+      <location filename="../../TaskFemConstraint.cpp" line="252"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="216"/>
+      <location filename="../../TaskFemConstraint.cpp" line="235"/>
       <source>You must specify at least one reference</source>
       <translation>S'ha d'especificar com a mínim una referència</translation>
     </message>
@@ -1814,7 +1664,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="374"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="371"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1822,7 +1672,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="542"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="564"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1830,7 +1680,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="601"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="610"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1838,7 +1688,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1088"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1097"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1846,7 +1696,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="454"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="463"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1854,7 +1704,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="331"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1862,7 +1712,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="515"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="525"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1870,7 +1720,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="115"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="113"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1878,7 +1728,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="305"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="315"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1886,7 +1736,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="219"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="216"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1894,7 +1744,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="314"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="322"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1902,7 +1752,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="382"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="390"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1910,7 +1760,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="593"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="602"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1918,12 +1768,12 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgMeshShapeNetgen</name>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="71"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="69"/>
       <source>Edit FEM mesh</source>
       <translation>Edita la malla MEF</translation>
     </message>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="102"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="100"/>
       <source>Meshing failure</source>
       <translation>Ha fallat el mallat</translation>
     </message>
@@ -1931,7 +1781,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="364"/>
+      <location filename="../../TaskPostBoxes.cpp" line="375"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1939,7 +1789,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskDriver</name>
     <message>
-      <location filename="../../TaskDriver.cpp" line="35"/>
+      <location filename="../../TaskDriver.cpp" line="34"/>
       <source>Nodes set</source>
       <translation>Conjunt de nodes</translation>
     </message>
@@ -1947,12 +1797,17 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="56"/>
-      <source>Analysis feature parameters</source>
-      <translation>Paràmetres de característiques d'anàlisi</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="55"/>
+      <source>Analysis Feature Properties</source>
+      <translation>Propietats de la característica d'anàlisi</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="170"/>
+      <location filename="../../TaskFemConstraint.cpp" line="182"/>
+      <source>Clear list</source>
+      <translation>Buida la llista</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraint.cpp" line="193"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
@@ -1960,42 +1815,42 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="202"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="217"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="168"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="181"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="214"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="172"/>
-      <source>Please use only a single reference for bearing constraint</source>
-      <translation>Utilitzeu només una referència per a restricció de rodament</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="169"/>
+      <source>Use only a single reference for bearing constraint</source>
+      <translation>Utilitzeu només una sola referència per a la restricció de rodament</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
       <source>Only faces can be picked</source>
       <translation>Únicament es poden seleccionar cares</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="182"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Únicament es poden seleccionar cares cilíndriques</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="200"/>
       <source>Only planar faces can be picked</source>
       <translation>Únicament es poden seleccionar cares planes</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="208"/>
       <source>Only linear edges can be picked</source>
       <translation>Únicament es poden seleccionar arestes rectes</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="218"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <source>Only faces and edges can be picked</source>
       <translation>Únicament es poden seleccionar arestes i cares</translation>
     </message>
@@ -2003,78 +1858,108 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="58"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="64"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="55"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="61"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="193"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="223"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="319"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="391"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="129"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="219"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="243"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="332"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="368"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="377"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="413"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="422"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Només hi ha una cara a l'objecte! - mogut a la cara mestra</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="194"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
+      <source>Select slave geometry of type: </source>
+      <translation type="unfinished">Select slave geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="144"/>
+      <source>click Add or Remove</source>
+      <translation type="unfinished">click Add or Remove</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <source>Select master geometry of type: </source>
+      <translation type="unfinished">Select master geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="333"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Només hi ha una cara mestra i una cara esclava per a una restricció de contacte!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="391"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="413"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="224"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="235"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Només hi ha una cara esclava per a una restricció de contacte!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="219"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="422"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
-      <source>Only faces can be picked</source>
-      <translation>Únicament es poden seleccionar cares</translation>
+      <location filename="../../TaskFemConstraintContact.cpp" line="227"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="244"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="378"/>
+      <source>Only faces can be picked (edges in 2D models)</source>
+      <translation>Només es poden seleccionar cares (arestes en models 2D)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="344"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Només hi ha una mestra per a una restricció de contacte!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="369"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Només hi ha una cara mestra per a una restricció de contacte!</translation>
     </message>
@@ -2082,28 +1967,44 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="242"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="289"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
+      <source>Vertex, Edge, Face</source>
+      <translation type="unfinished">Vertex, Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="253"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="260"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="298"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="331"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="242"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="253"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="331"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="287"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="261"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="296"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Només es permet un tipus de selecció (vèrtex, cara o vora) per característica d'anàlisi!</translation>
     </message>
@@ -2111,28 +2012,44 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="119"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="156"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="188"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
+      <source>Vertex, Edge, Face</source>
+      <translation type="unfinished">Vertex, Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="127"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="164"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="179"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="119"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="188"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="154"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="128"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="162"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Només es permet un tipus de selecció (vèrtex, cara o vora) per característica d'anàlisi!</translation>
     </message>
@@ -2140,128 +2057,144 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="331"/>
       <source>Basic</source>
       <translation>Bàsic</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
       <source>Turbulence</source>
       <translation>Turbulència</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
       <source>Thermal</source>
       <translation>Tèrmica</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="337"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
       <source>select boundary type, faces and set value</source>
       <translation>seleccioneu un tipus de límit, cares i un valor establert</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="508"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="509"/>
       <source>Intensity [0~1]</source>
       <translation>Intensitat [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="510"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="511"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation>Taxa de dissipació [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="513"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="514"/>
       <source>Length Scale [m]</source>
       <translation>Escala de longitud [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="516"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="517"/>
       <source>Viscosity Ratio [1]</source>
       <translation>Taxa de viscositat [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="519"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="520"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>Diàmetre hidràulic [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="547"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="552"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="548"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="553"/>
       <source>Gradient [K/m]</source>
       <translation>Gradient [K/m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="557"/>
       <source>Flux [W/m2]</source>
       <translation>Flux [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="634"/>
       <source>Empty selection</source>
       <translation>Selecció buida</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
-      <source>Select an edge or a face, please.</source>
-      <translation>Si us plau, seleccioneu una aresta o cara.</translation>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="634"/>
+      <source>Select an edge or a face.</source>
+      <translation>Seleccioneu una aresta o una cara.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="670"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="678"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="685"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="671"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="679"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="686"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="647"/>
       <source>Selected object is not a part object!</source>
       <translation>L'objecte seleccionat no forma part d'un objecte!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="656"/>
       <source>Only one planar face or edge can be selected!</source>
       <translation>Només podeu seleccionar una cara planar o vora!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="671"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="672"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation>Només podeu seleccionar cares planars per 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="679"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="680"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation>Només podeu seleccionar vores planars per 2D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="686"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="687"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation>Només podeu seleccionar cares per parts 3D o vores per 2D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="822"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="832"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="839"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="877"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="900"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="910"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="822"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="900"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="832"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="910"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="866"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="840"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="875"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Només es permet un tipus de selecció (vèrtex, cara o vora) per característica d'anàlisi!</translation>
     </message>
@@ -2269,64 +2202,80 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="136"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
+      <source>Vertex, Edge, Face</source>
+      <translation type="unfinished">Vertex, Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="214"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="136"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="214"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="171"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="145"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Només es permet un tipus de selecció (vèrtex, cara o vora) per característica d'anàlisi!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="326"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="335"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
-      <source>Select an edge or a face, please.</source>
-      <translation>Si us plau, seleccioneu una aresta o cara.</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
+      <source>Select an edge or a face.</source>
+      <translation>Seleccioneu una aresta o una cara.</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="155"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="162"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="148"/>
       <source>Only planar faces can be picked</source>
       <translation>Únicament es poden seleccionar cares planes</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
       <source>Only linear edges can be picked</source>
       <translation>Únicament es poden seleccionar arestes rectes</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="163"/>
       <source>Only faces and edges can be picked</source>
       <translation>Únicament es poden seleccionar arestes i cares</translation>
     </message>
@@ -2334,73 +2283,105 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="286"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="340"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="350"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
+      <source>Edge, Face</source>
+      <translation type="unfinished">Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="295"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="360"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="339"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="340"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="349"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="351"/>
-      <source>Selection must only consist of faces!</source>
-      <translation>La selecció només ha de contenir cares!</translation>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="285"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="361"/>
+      <source>Selection must only consist of faces! (edges in 2D models)</source>
+      <translation>La selecció només ha de consistir en cares! (arestes en models 2D)</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="148"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="216"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
+      <source>Select single geometry of type: </source>
+      <translation type="unfinished">Select single geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="138"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="157"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="168"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="177"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="224"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="234"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="129"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="208"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
       <translation>Només podeu seleccionar una cara per a una restricció de pla multipunt!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="138"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="224"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="234"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="158"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
       <source>Only faces can be picked</source>
       <translation>Únicament es poden seleccionar cares</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="170"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="178"/>
       <source>Only planar faces can be picked</source>
       <translation>Únicament es poden seleccionar cares planes</translation>
     </message>
@@ -2408,41 +2389,57 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
+      <source>Edge, Face</source>
+      <translation type="unfinished">Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="184"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
-      <source>Only faces can be picked</source>
-      <translation>Únicament es poden seleccionar cares</translation>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="160"/>
+      <source>Only faces (edges in 2D models) can be picked</source>
+      <translation>Només es poden seleccionar cares (arestes en models 2D)</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="92"/>
       <source>Pulley diameter</source>
       <translation>Diàmetre de la politja</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="96"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="93"/>
       <source>Torque [Nm]</source>
       <translation>Parell [Nm]</translation>
     </message>
@@ -2450,28 +2447,44 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="130"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="139"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="182"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="191"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="156"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="199"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="130"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="190"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="139"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="191"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="140"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="199"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="156"/>
       <source>Only faces can be picked</source>
       <translation>Únicament es poden seleccionar cares</translation>
     </message>
@@ -2479,124 +2492,132 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="190"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="200"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="239"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="249"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
+      <source>Vertex, Edge, Face</source>
+      <translation type="unfinished">Vertex, Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="257"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="190"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="247"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="200"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="249"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="257"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="209"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
       <source>Analysis feature update error</source>
       <translation>Error d'actualització de característiques d'anàlisis</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
-      <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
-      <translation>Les cares transformables han canviat. Si us plau, afegiu només les cares transformables i elimineu les cares no transformables!</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="323"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="386"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="324"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="357"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="296"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="311"/>
       <source>Only one face for rectangular local coordinate system!</source>
       <translation>Només una cara per al sistema de coordenades local rectangular!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="332"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="340"/>
       <source>Only one face for local coordinate system!</source>
       <translation>Només una cara per al sistema de coordenades local!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="387"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="396"/>
       <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</translation>
+      <translation>Només podeu seleccionar cares transformables! Primer apliqueu la condició de límit de desplaçament o una càrrega de força a la cara i després apliqueu el sistema de coordenades local a la cara.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="323"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="324"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
+      <source>Select single geometry of type: </source>
+      <translation type="unfinished">Select single geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="204"/>
+      <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
+      <translation>Les cares transformables han canviat. Afegiu només les cares transformables i elimineu les cares no transformables!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="347"/>
       <source>Only faces can be picked</source>
       <translation>Únicament es poden seleccionar cares</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="358"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Únicament es poden seleccionar cares cilíndriques</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskObjectName</name>
-    <message>
-      <location filename="../../TaskObjectName.cpp" line="41"/>
-      <source>TaskObjectName</source>
-      <translation>Nom de l'objecte Tasca</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskPostClip</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1408"/>
-      <source>Clip region, choose implicit function</source>
-      <translation>Regió de tall, escull la funció implícita</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskPostCut</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1718"/>
-      <source>Function cut, choose implicit function</source>
-      <translation>Funció de tall, escull la funció implícita</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="629"/>
-      <source>Data along a line options</source>
+      <location filename="../../TaskPostBoxes.cpp" line="662"/>
+      <source>Data Along a Line Options</source>
       <translation>Opcions de dades al llarg d'una línia</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1013"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1046"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Longitud</translation>
@@ -2605,84 +2626,47 @@ Si us plau, especifiqueu un altre fitxer.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1050"/>
-      <source>Data at point options</source>
-      <translation>Opcions de dades al punt</translation>
+      <location filename="../../TaskPostBoxes.cpp" line="1083"/>
+      <source>Data at Point Options</source>
+      <translation>Opcions de dades en un punt</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1369"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1402"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 a (%2; %3; %4) és: %5 %6</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskPostDisplay</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="406"/>
-      <source>Result display options</source>
-      <translation>Opcions de visualització de resultats</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="484"/>
+      <location filename="../../TaskPostBoxes.cpp" line="512"/>
       <source>Implicit function</source>
       <translation>Funció implícita</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskPostScalarClip</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1851"/>
-      <source>Scalar clip options</source>
-      <translation>Opcions de tall escalar</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskPostWarpVector</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1972"/>
-      <source>Warp options</source>
-      <translation>Opcions de deformació</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskTetParameter</name>
     <message>
-      <location filename="../../TaskTetParameter.cpp" line="40"/>
+      <location filename="../../TaskTetParameter.cpp" line="38"/>
       <source>Tet Parameter</source>
       <translation>Paràmetre Tet</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::ViewProviderFemAnalysis</name>
-    <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
-      <source>Activate analysis</source>
-      <translation>Activa l'anàlisi</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::ViewProviderFemMeshShapeNetgen</name>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="73"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="71"/>
       <source>Meshing failure</source>
       <translation>Ha fallat el mallat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="75"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="73"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
       <translation>El mòdul MEF està compilat sense el suport de NETGEN. El mallat no funcionarà.</translation>
     </message>
   </context>
   <context>
     <name>FemMaterial</name>
-    <message>
-      <location filename="../ui/Material.ui" line="14"/>
-      <source>FEM material</source>
-      <translation>Material FEM</translation>
-    </message>
     <message>
       <location filename="../ui/Material.ui" line="437"/>
       <source>Use this task panel</source>
@@ -2694,24 +2678,49 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>Propietats bàsiques</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="14"/>
+      <source>FEM Material</source>
+      <translation>Material FEM</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="40"/>
+      <source>Density</source>
+      <translation>Densitat</translation>
+    </message>
+    <message>
       <location filename="../ui/Material.ui" line="91"/>
       <source>Mechanical Properties</source>
       <translation>Propietats mecàniques</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="102"/>
-      <source>Young's Modulus:</source>
-      <translation>Mòdul de Young:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="40"/>
-      <source>Density:</source>
-      <translation>Densitat:</translation>
+      <source>Young's modulus</source>
+      <translation>Mòdul de Young</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
-      <source>Poisson Ratio:</source>
-      <translation>Coeficient de Poisson:</translation>
+      <source>Poisson ratio</source>
+      <translation>Coeficient de Poisson</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="263"/>
+      <source>Thermal conductivity</source>
+      <translation>Conductivitat tèrmica</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="303"/>
+      <source>Expansion coefficient</source>
+      <translation>Coeficient d'expansió</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="343"/>
+      <source>Reference temperature</source>
+      <translation>Temperatura de referència</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="386"/>
+      <source>Specific heat capacity</source>
+      <translation>Capacitat calorífica específica</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
@@ -2719,39 +2728,19 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>Propietats de fluids</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="201"/>
+      <source>Kinematic viscosity</source>
+      <translation>Viscositat cinemàtica</translation>
+    </message>
+    <message>
       <location filename="../ui/Material.ui" line="252"/>
       <source>Thermal Properties</source>
       <translation>Propietats tèrmiques</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="343"/>
-      <source>Reference Temperature:</source>
-      <translation type="unfinished">Reference Temperature:</translation>
-    </message>
-    <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation type="unfinished">Reference temperature for thermal expansion</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="386"/>
-      <source>Specific Heat Capacity:</source>
-      <translation>Capacitat de calor específica:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="263"/>
-      <source>Thermal Conductivity:</source>
-      <translation>Conductivitat termal:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="201"/>
-      <source>Kinematic Viscosity:</source>
-      <translation type="unfinished">Kinematic Viscosity:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="303"/>
-      <source>Expansion Coefficient:</source>
-      <translation>Coeficient d'expansió:</translation>
+      <translation>Temperatura de referència per a expansió termal</translation>
     </message>
   </context>
   <context>
@@ -2760,11 +2749,6 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
       <translation>Paràmetre de selecció de fluid</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="45"/>
-      <source>Liquid Section Parameter</source>
-      <translation>Paràmetre de selecció de líquid</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -2783,31 +2767,46 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>0 mm^2</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="45"/>
+      <source>Liquid section parameter</source>
+      <translation>Paràmetre de secció de líquid</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementFluid1D.ui" line="64"/>
+      <location filename="../ui/ElementFluid1D.ui" line="369"/>
+      <location filename="../ui/ElementFluid1D.ui" line="415"/>
+      <location filename="../ui/ElementFluid1D.ui" line="461"/>
+      <location filename="../ui/ElementFluid1D.ui" line="561"/>
+      <location filename="../ui/ElementFluid1D.ui" line="717"/>
+      <source>Pipe area</source>
+      <translation>Àrea del tub</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
-      <source>Hydraulic Radius</source>
+      <source>Hydraulic radius</source>
       <translation>Radi hidràulic</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
-      <source>Manning Coefficient</source>
+      <source>Manning coefficient</source>
       <translation>Coeficient de Manning</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
-      <source>Initial Area</source>
+      <source>Initial area</source>
       <translation>Àrea inicial</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
-      <source>Enlarged Area</source>
+      <source>Enlarged area</source>
       <translation>Àrea ampliada</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
-      <source>Contracted Area</source>
-      <translation>Àrea contreta</translation>
+      <source>Contracted area</source>
+      <translation>Àrea reduïda</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2817,6 +2816,7 @@ Si us plau, especifiqueu un altre fitxer.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Pressió</translation>
     </message>
@@ -2854,39 +2854,44 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>Taxa de flux de massa de sortida</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="390"/>
+      <source>Entrance area</source>
+      <translation>Àrea d'entrada</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementFluid1D.ui" line="436"/>
+      <source>Diaphragm area</source>
+      <translation>Àrea de diafragma</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementFluid1D.ui" line="482"/>
+      <source>Bend radius / pipe diameter</source>
+      <translation>Radi de curvatura / diàmetre del tub</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementFluid1D.ui" line="509"/>
+      <source>Bend angle</source>
+      <translation>Angle de doplec</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementFluid1D.ui" line="613"/>
+      <source>Pump characteristic</source>
+      <translation>Corba característica de la bomba</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss [mm]</source>
       <translation>Pèrdua de càrrega [mm]</translation>
     </message>
     <message>
-      <location filename="../ui/ElementFluid1D.ui" line="64"/>
-      <location filename="../ui/ElementFluid1D.ui" line="369"/>
-      <location filename="../ui/ElementFluid1D.ui" line="415"/>
-      <location filename="../ui/ElementFluid1D.ui" line="461"/>
-      <location filename="../ui/ElementFluid1D.ui" line="561"/>
-      <location filename="../ui/ElementFluid1D.ui" line="717"/>
-      <source>Pipe Area</source>
-      <translation>Àrea del tub</translation>
+      <location filename="../ui/ElementFluid1D.ui" line="829"/>
+      <source>Gas section parameter</source>
+      <translation>Paràmetre de secció de gas</translation>
     </message>
     <message>
-      <location filename="../ui/ElementFluid1D.ui" line="390"/>
-      <source>Entrance Area</source>
-      <translation>Àrea d'entrada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="436"/>
-      <source>Diaphragm Area</source>
-      <translation>Àrea de diafragma</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="482"/>
-      <source>Bend Radius/Pipe Diameter</source>
-      <translation>Radi de flexió/diàmetre del tub</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="509"/>
-      <source>Bend Angle</source>
-      <translation>Angle de flexió</translation>
+      <location filename="../ui/ElementFluid1D.ui" line="843"/>
+      <source>Open channel section parameter</source>
+      <translation>Paràmetre de secció de canal obert</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2897,11 +2902,6 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
       <source>Gate valve closing coefficient</source>
       <translation>Coeficient de tancament de la vàlvula</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="613"/>
-      <source>Pump Characteristic</source>
-      <translation>Característica de la bomba</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
@@ -2919,18 +2919,8 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>Factor de forma de la secció transversal</translation>
     </message>
     <message>
-      <location filename="../ui/ElementFluid1D.ui" line="829"/>
-      <source>Gas Section Parameter</source>
-      <translation>Paràmetre de secció de gas</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="843"/>
-      <source>Open Channel Section Parameter</source>
-      <translation>Paràmetre de la secció oberta del canal</translation>
-    </message>
-    <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
-      <source>Tie parameter</source>
+      <source>Tie Parameter</source>
       <translation>Paràmetre d'enllaç</translation>
     </message>
     <message>
@@ -2940,8 +2930,8 @@ Si us plau, especifiqueu un altre fitxer.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
-      <source>Enable Adjust</source>
-      <translation>Habilitar ajustament</translation>
+      <source>Enable adjust</source>
+      <translation>Habilita ajust</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2951,29 +2941,29 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>0 mm</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="14"/>
-      <source>Centrif parameter</source>
-      <translation>Paràmetre de centrifugació</translation>
-    </message>
-    <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="34"/>
-      <source>Rotation Frequency:</source>
-      <translation>Freqüència de rotació:</translation>
-    </message>
-    <message>
       <location filename="../ui/ConstraintCentrif.ui" line="47"/>
       <source>Revolutions per second</source>
       <translation>Revolucions per segon</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paràmetre</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="14"/>
+      <source>Centrif Parameter</source>
+      <translation>Paràmetre centrífug</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="34"/>
+      <source>Rotation frequency</source>
+      <translation>Freqüència de rotació</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -2982,8 +2972,8 @@ Si us plau, especifiqueu un altre fitxer.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
-      <source>SectionPrint parameter</source>
-      <translation>Paràmetre de secció d'impressió</translation>
+      <source>Section Print Parameter</source>
+      <translation>Paràmetre d'impressió de secció</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
@@ -2991,36 +2981,24 @@ Si us plau, especifiqueu un altre fitxer.</translation>
       <translation>Variable</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <source>Analysis feature properties</source>
-      <translation>Propietats de característiques d'anàlisi</translation>
+      <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
+      <source>Boundary condition</source>
+      <translation>Condició de contorn</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="50"/>
-      <source>Potential:</source>
-      <translation>Potencial:</translation>
-    </message>
-    <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <source>unspecified</source>
-      <translation>sense especificar</translation>
+      <source>Potential</source>
+      <translation>Potencial</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="60"/>
       <source>Electric potential</source>
       <translation>Potencial elèctric</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
+      <source>Electromagnetic potential</source>
+      <translation>Potencial electromagnètic</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
@@ -3031,54 +3009,69 @@ with a harmonic/oscillating driving force</source>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="150"/>
       <source>Real part of scalar potential</source>
-      <translation type="unfinished">Real part of scalar potential</translation>
+      <translation>Part real del potencial escalar</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="211"/>
       <source>Real part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Part real del vector component x potencial
+Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="234"/>
       <source>Imaginary part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Part imaginària del vector potencial x-component
+Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="274"/>
       <source>Real part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Part real del component y potencial vectorial
+Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="297"/>
       <source>Imaginary part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Part imaginària del component y potencial vectorial
+Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="337"/>
       <source>Real part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Part real del component z potencial vectorial
+Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="360"/>
       <source>Imaginary part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Part imaginària del component z potencial vectorial
+Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="391"/>
-      <source>Electric Infinity</source>
-      <translation type="unfinished">Electric Infinity</translation>
+      <source>Electric infinity</source>
+      <translation>Infinit elèctric</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="419"/>
+      <source>Electric flux density</source>
+      <translation>Densitat de flux elèctric</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="445"/>
+      <source>Capacitance body</source>
+      <translation>Cos de capacitança</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="448"/>
+      <source>Enabled by 'Calculate capacity matrix' in Electrostatic equation</source>
+      <translation>Habilitat per 'Calcula la matriu de capacitat' en l'equació electrostàtica</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="398"/>
@@ -3086,34 +3079,24 @@ Note: has no effect if a solid was selected</translation>
       <translation>Si la condició de límit defineix un potencial constant</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="413"/>
-      <source>Neumann</source>
-      <translation type="unfinished">Neumann</translation>
+      <location filename="../ui/ElectrostaticPotential.ui" line="401"/>
+      <source>Potential constant</source>
+      <translation>Potencial constant</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="419"/>
-      <source>Electric Flux Density:</source>
-      <translation type="unfinished">Electric Flux Density:</translation>
+      <location filename="../ui/ElectrostaticPotential.ui" line="413"/>
+      <source>Neumann</source>
+      <translation>Neumann</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="426"/>
       <source>Normal component of electric displacement field</source>
-      <translation type="unfinished">Normal component of electric displacement field</translation>
+      <translation>Component normal del camp de desplaçament elèctric</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="439"/>
       <source>Capacitance</source>
-      <translation type="unfinished">Capacitance</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="445"/>
-      <source>Capacitance Body:</source>
-      <translation type="unfinished">Capacitance Body:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="448"/>
-      <source>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</source>
-      <translation type="unfinished">Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</translation>
+      <translation>Capacitància</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="388"/>
@@ -3121,38 +3104,28 @@ Note: has no effect if a solid was selected</translation>
       <translation>Si la condició de límit defineix un potencial de camp llunyà</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
-      <source>Boundary Condition:</source>
-      <translation type="unfinished">Boundary Condition:</translation>
-    </message>
-    <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="39"/>
       <source>Dirichlet</source>
-      <translation type="unfinished">Dirichlet</translation>
+      <translation>Dirichlet</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="81"/>
       <source>To define scalar potential and magnetic vector potential</source>
-      <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
+      <translation>Definir el potencial escalar i el potencial vectorial magnètic</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
-      <source>Electromagnetic Potential</source>
-      <translation type="unfinished">Electromagnetic Potential</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Real</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Imaginària</translation>
     </message>
@@ -3167,113 +3140,13 @@ Note: has no effect if a solid was selected</translation>
       <translation>Part imaginaria del potencial escalar</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <source>x</source>
-      <translation>x</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="401"/>
-      <source>Potential Constant</source>
-      <translation>Constant potencial</translation>
-    </message>
-    <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="455"/>
       <source>Counter of the body (or face) with a capacitance</source>
       <translation>Nombre de cossos (o cares) amb una capacitat</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="14"/>
-      <source>Beam section parameter</source>
-      <translation>Paràmetre de secció de biga</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementRotation1D.ui" line="20"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
-      <source>Cross section parameter</source>
-      <translation>Paràmetre de secció transversal</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="41"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="311"/>
-      <source>Width:</source>
-      <translation>Amplada:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="67"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="279"/>
-      <source>Height:</source>
-      <translation>Alçada:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="104"/>
-      <source>Diameter:</source>
-      <translation>Diàmetre:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="141"/>
-      <source>Outer diameter:</source>
-      <translation>Diàmetre extern:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="204"/>
-      <source>Axis1 Length:</source>
-      <translation>Longitud Eix1:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="236"/>
-      <source>Axis2 Length:</source>
-      <translation>Longitud Eix2:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="343"/>
-      <source>T1 Thickness:</source>
-      <translation>Gruix T1:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="375"/>
-      <source>T2 Thickness:</source>
-      <translation>Gruix T2:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="407"/>
-      <source>T3 Thickness:</source>
-      <translation>Gruix T3:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="439"/>
-      <source>T4 Thickness:</source>
-      <translation>Gruix T4:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
-      <source>Thickness:</source>
-      <translation>Gruix:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="14"/>
-      <source>Shell thickness parameter</source>
-      <translation>Paràmetre del gruix d'entorn</translation>
-    </message>
-    <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
-      <source>Beam section rotation</source>
+      <source>Beam Section Rotation</source>
       <translation>Rotació de secció de biga</translation>
     </message>
     <message>
@@ -3283,51 +3156,23 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
-      <source>Rotation:</source>
-      <translation>Rotació:</translation>
-    </message>
-    <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
-      <source>formula</source>
-      <translation>fórmula</translation>
-    </message>
-    <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
-      <source>Velocity x:</source>
-      <translation>Velocitat x:</translation>
-    </message>
-    <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
-      <source>Velocity y:</source>
-      <translation>Velocitat y:</translation>
-    </message>
-    <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
-      <source>Velocity z:</source>
-      <translation>Velocitat z:</translation>
+      <source>Rotation</source>
+      <translation>Rotació</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
-      <source>Mesh boundary layer settings</source>
+      <source>Mesh Boundary Layer Settings</source>
       <translation>Preferències de capa límit de malla</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
-      <source>Max Layers</source>
-      <translation>Capes màximes</translation>
+      <source>Maximum layers</source>
+      <translation>Nombre màxim de capes</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
-      <source>Min/1st thickness</source>
-      <translation>Gruix mínim de la primera capa</translation>
+      <source>Minimum/1st thickness</source>
+      <translation>Gruix mínim/primer</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
@@ -3336,13 +3181,13 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
-      <source>Mesh group</source>
-      <translation>Grup de malles</translation>
+      <source>Mesh Group</source>
+      <translation>Grup de malla</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
-      <source>Identifier used for mesh export</source>
-      <translation>Identificador utilitzat per l'exportació de malles</translation>
+      <source>Identifier Used for Mesh Export</source>
+      <translation>Identificador utilitzat per exportar la malla</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3355,36 +3200,140 @@ Note: has no effect if a solid was selected</translation>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="14"/>
-      <source>Mesh refinement</source>
-      <translation>Refinament de malla</translation>
+      <location filename="../ui/ElementGeometry1D.ui" line="14"/>
+      <source>Beam Section Parameter</source>
+      <translation>Paràmetre de secció de biga</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="37"/>
-      <source>Max element size:</source>
-      <translation>Mida màxima d'element:</translation>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
+      <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <source>Cross-Section Parameter</source>
+      <translation>Paràmetre de secció transversal</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="41"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="279"/>
+      <source>Width</source>
+      <translation>Amplària</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
-      <source>Pressure:</source>
-      <translation>Pressió:</translation>
+      <location filename="../ui/ElementGeometry1D.ui" line="67"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="311"/>
+      <source>Height</source>
+      <translation>Alçària</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="104"/>
+      <source>Diameter</source>
+      <translation>Diàmetre</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="141"/>
+      <source>Outer diameter</source>
+      <translation>Diàmetre exterior</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <source>Thickness</source>
+      <translation>Gruix</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="204"/>
+      <source>Axis1 length</source>
+      <translation>Longitud de l'eix 1</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="236"/>
+      <source>Axis2 length</source>
+      <translation>Longitud de l'eix 2</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="343"/>
+      <source>T1 thickness</source>
+      <translation>Gruix T1</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="375"/>
+      <source>T2 thickness</source>
+      <translation>Gruix T2</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="407"/>
+      <source>T3 thickness</source>
+      <translation>Gruix T3</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="439"/>
+      <source>T4 thickness</source>
+      <translation>Gruix T4</translation>
+    </message>
+    <message>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <source>Formula</source>
+      <translation>Fórmula</translation>
+    </message>
+    <message>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <source>Unspecified</source>
+      <translation>No especificat</translation>
+    </message>
+    <message>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <source>Velocity X</source>
+      <translation>Velocitat X</translation>
+    </message>
+    <message>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <source>Velocity Y</source>
+      <translation>Velocitat Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <source>Velocity Z</source>
+      <translation>Velocitat Z</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
       <source>Normal to boundary</source>
       <translation>Normal al límit</translation>
+    </message>
+    <message>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <source>Analysis Feature Properties</source>
+      <translation>Propietats de la característica d'anàlisi</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
@@ -3393,129 +3342,212 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
-      <source>Mode:</source>
-      <translation>Mode:</translation>
+      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <source>Mode</source>
+      <translation>Modus</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
-      <source>Total Power:</source>
-      <translation>Potència total:</translation>
+      <source>Total power</source>
+      <translation>Potència total</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
-      <source>Dissipation Rate:</source>
-      <translation>Taxa de dissipació:</translation>
+      <source>Dissipation rate</source>
+      <translation>Taxa de dissipació</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
-      <translation type="unfinished">Imaginary part is only used for equations
-with harmonic/oscillating driving current</translation>
+      <translation>La part imaginària només s'utilitza per a equacions
+motrius harmòniques/oscilants</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of magnetization x-component</source>
-      <translation type="unfinished">Real part of magnetization x-component</translation>
+      <translation>Part real del component x de la magnetització</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="88"/>
       <source>Imaginary part of magnetization x-component</source>
-      <translation type="unfinished">Imaginary part of magnetization x-component</translation>
+      <translation>Part imaginària del component x de la magnetització</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="117"/>
       <source>Real part of magnetization y-component</source>
-      <translation type="unfinished">Real part of magnetization y-component</translation>
+      <translation>Part real del component y de la magnetització</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="139"/>
       <source>Imaginary part of magnetization y-component</source>
-      <translation type="unfinished">Imaginary part of magnetization y-component</translation>
+      <translation>Part imaginària del component y de la magnetització</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="168"/>
       <source>Real part of magnetization z-component</source>
-      <translation type="unfinished">Real part of magnetization z-component</translation>
+      <translation>Part real del component z de la magnetització</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="190"/>
       <source>Imaginary part of magnetization z-component</source>
-      <translation type="unfinished">Imaginary part of magnetization z-component</translation>
+      <translation>Part imaginària del component z de la magnetització</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="50"/>
       <source>Free surface charge density</source>
-      <translation type="unfinished">Free surface charge density</translation>
+      <translation>Densitat de càrrega de la superfície lliure</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
-      <source>Density:</source>
-      <translation>Densitat:</translation>
+      <source>Density</source>
+      <translation>Densitat</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
       <source>Free volume charge density</source>
-      <translation type="unfinished">Free volume charge density</translation>
+      <translation>Densitat de càrrega del volum lliure</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="136"/>
       <source>Free total charge</source>
-      <translation type="unfinished">Free total charge</translation>
+      <translation>Càrrega total lliure</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="141"/>
-      <source>Total Charge:</source>
-      <translation type="unfinished">Total Charge:</translation>
+      <source>Total charge</source>
+      <translation>Càrrega total</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
-      <source>Select Custom mode to enable vector current density</source>
-      <translation type="unfinished">Select Custom mode to enable vector current density</translation>
+      <source>Select custom mode to enable vector current density</source>
+      <translation>Seleccioneu el mode personalitzat per habilitar la densitat de corrent vectorial</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="88"/>
       <source>Real part of current density x-component</source>
-      <translation type="unfinished">Real part of current density x-component</translation>
+      <translation>Part real del component x de la densitat de corrent</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="110"/>
       <source>Imaginary part of current density x-component</source>
-      <translation type="unfinished">Imaginary part of current density x-component</translation>
+      <translation>Part imaginària del component x de la densitat de corrent</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="139"/>
       <source>Real part of current density y-component</source>
-      <translation type="unfinished">Real part of current density y-component</translation>
+      <translation>Part real del component y de la densitat de corrent</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="161"/>
       <source>Imaginary part of current density y-component</source>
-      <translation type="unfinished">Imaginary part of current density y-component</translation>
+      <translation>Part imaginària del component y de la densitat de corrent</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="190"/>
       <source>Real part of current density z-component</source>
-      <translation type="unfinished">Real part of current density z-component</translation>
+      <translation>Part real del component z de la densitat de corrent</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="212"/>
       <source>Imaginary part of current density z-component</source>
-      <translation type="unfinished">Imaginary part of current density z-component</translation>
+      <translation>Part imaginària del component z de la densitat de corrent</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="237"/>
       <source>Current density normal to surface</source>
-      <translation type="unfinished">Current density normal to surface</translation>
+      <translation>Densitat de corrent normal a la superfície</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="263"/>
-      <source>Normal:</source>
-      <translation type="unfinished">Normal:</translation>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry2D.ui" line="14"/>
+      <source>Shell Thickness Parameter</source>
+      <translation>Paràmetre de gruix de làmina</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshRegion.ui" line="14"/>
+      <source>Mesh Refinement</source>
+      <translation>Refinament de la malla</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshRegion.ui" line="37"/>
+      <source>Maximum element size</source>
+      <translation>Mida màxima d'element</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <source>Field</source>
+      <translation>Camp</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <source>Frames</source>
+      <translation>Marcs</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>Un camp per a cada pas</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>Índex</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>Camp X</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <source>Y field</source>
+      <translation>Camp Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>Un camp Y per a cada pas</translation>
     </message>
   </context>
   <context>
@@ -3532,13 +3564,33 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
-      <source>Element Dimension:</source>
-      <translation>Cota de l’element:</translation>
+      <source>Element dimension</source>
+      <translation>Dimensió de l'element</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
-      <source>Maximum Size:</source>
-      <translation>Mida màxima:</translation>
+      <source>Maximum size</source>
+      <translation>Mida màxima</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="85"/>
+      <source>Minimum size</source>
+      <translation>Mida mínima</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="126"/>
+      <source>Element order</source>
+      <translation>Ordre de l'element</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="172"/>
+      <source>Time</source>
+      <translation>Temps</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="198"/>
+      <source>Gmsh Version</source>
+      <translation>Versió de Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
@@ -3547,55 +3599,35 @@ with harmonic/oscillating driving current</translation>
       <translation>Feu servir 0,0 per definir la mida automàticament</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="85"/>
-      <source>Minimum Size:</source>
-      <translation>Mida mínima:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGmsh.ui" line="126"/>
-      <source>Element Order:</source>
-      <translation>Ordre d'element:</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshGmsh.ui" line="144"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGmsh.ui" line="172"/>
-      <source>Time:</source>
-      <translation>Temps:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGmsh.ui" line="198"/>
-      <source>Gmsh version</source>
-      <translation>Versió Gmsh</translation>
     </message>
   </context>
   <context>
     <name>PlaneWidget</name>
     <message>
+      <location filename="../../PlaneWidget.ui" line="20"/>
+      <source>Origin</source>
+      <translation>Origen</translation>
+    </message>
+    <message>
       <location filename="../../PlaneWidget.ui" line="26"/>
       <location filename="../../PlaneWidget.ui" line="86"/>
-      <source>x</source>
-      <translation>x</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="43"/>
       <location filename="../../PlaneWidget.ui" line="103"/>
-      <source>y</source>
-      <translation>y</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="60"/>
       <location filename="../../PlaneWidget.ui" line="120"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
-    <message>
-      <location filename="../../PlaneWidget.ui" line="20"/>
-      <source>Origin</source>
-      <translation>Origen</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="80"/>
@@ -3606,115 +3638,100 @@ with harmonic/oscillating driving current</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>No active Analysis</source>
       <translation>No hi ha cap anàlisi activa.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="78"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>You need to create or activate a Analysis</source>
       <translation>Heu de crear o activar una anàlisi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="327"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="988"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="324"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="891"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ja hi ha un diàleg obert al panell de tasques</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="328"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="989"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="325"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="892"/>
       <source>Do you want to close this dialog?</source>
       <translation>Vols tancar aquest diàleg?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="58"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="56"/>
       <source>Meshing</source>
       <translation>Mallat</translation>
     </message>
     <message>
+      <location filename="../../AppFemGui.cpp" line="185"/>
       <location filename="../../AppFemGui.cpp" line="186"/>
       <location filename="../../AppFemGui.cpp" line="187"/>
       <location filename="../../AppFemGui.cpp" line="188"/>
       <location filename="../../AppFemGui.cpp" line="189"/>
       <location filename="../../AppFemGui.cpp" line="190"/>
-      <location filename="../../AppFemGui.cpp" line="191"/>
       <source>FEM</source>
       <translation>MEF</translation>
     </message>
     <message>
+      <location filename="../../AppFemGui.cpp" line="193"/>
       <location filename="../../AppFemGui.cpp" line="194"/>
-      <location filename="../../AppFemGui.cpp" line="195"/>
       <source>Import-Export</source>
       <translation>Importació-exportació</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="108"/>
       <source>Nodes</source>
       <translation>Nodes</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="109"/>
       <source>Edges</source>
       <translation>Vores</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
       <source>Faces</source>
       <translation>Cares</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
       <source>Polygons</source>
       <translation>Polígons</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="114"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
       <source>Volumes</source>
       <translation>Volums</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="115"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
       <source>Polyhedrons</source>
       <translation>Poliedres</translation>
     </message>
     <message>
-      <location filename="../../PropertyFemMeshItem.cpp" line="116"/>
+      <location filename="../../PropertyFemMeshItem.cpp" line="114"/>
       <source>Groups</source>
       <translation>Grups</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="315"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="313"/>
       <source>Are you sure you want to continue?</source>
       <translation>Segur que voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraint.cpp" line="159"/>
-      <source>Edit analysis feature</source>
+      <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
+      <source>Edit Analysis Feature</source>
       <translation>Editar característica d'anàlisi</translation>
     </message>
   </context>
   <context>
     <name>ShowDisplacement</name>
     <message>
-      <location filename="../ui/ResultShow.ui" line="14"/>
-      <source>Show result</source>
-      <translation>Mostra el resultat</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="26"/>
-      <source>Result type</source>
-      <translation>Tipus de resultat</translation>
-    </message>
-    <message>
       <location filename="../ui/ResultShow.ui" line="40"/>
       <source>None</source>
       <translation>Cap</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="56"/>
-      <source>Displacement Magnitude</source>
-      <translation>Magnitud de desplaçament</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
@@ -3727,19 +3744,9 @@ with harmonic/oscillating driving current</translation>
       <translation>Desplaçament X</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="83"/>
-      <source>Max Principal Stress</source>
-      <translation>Estrès principal màxim</translation>
-    </message>
-    <message>
       <location filename="../ui/ResultShow.ui" line="96"/>
       <source>Displacement Y</source>
       <translation>Desplaçament Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="103"/>
-      <source>Min Principal Stress</source>
-      <translation>Estrès principal mínim</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="116"/>
@@ -3747,44 +3754,14 @@ with harmonic/oscillating driving current</translation>
       <translation>Desplaçament Z</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="123"/>
-      <source>Max Shear Stress (Tresca)</source>
-      <translation>Estrès de cisalla màxima (Tresca)</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="136"/>
-      <source>Equivalent Plastic Strain</source>
-      <translation>Tensió plàstica equivalent</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="143"/>
-      <source>Mass Flow Rate</source>
-      <translation>Taxa de flux de massa</translation>
-    </message>
-    <message>
       <location filename="../ui/ResultShow.ui" line="156"/>
       <source>Temperature</source>
       <translation>Temperatura</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="163"/>
-      <source>Network Pressure</source>
-      <translation>Pressió de xarxa</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="181"/>
-      <source>Min:</source>
-      <translation>Mín:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="201"/>
-      <source>Max:</source>
-      <translation>Màx:</translation>
-    </message>
-    <message>
       <location filename="../ui/ResultShow.ui" line="229"/>
       <source>Displacement Scaling</source>
-      <translation type="unfinished">Displacement Scaling</translation>
+      <translation>Escalat de desplaçament</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="276"/>
@@ -3792,39 +3769,19 @@ with harmonic/oscillating driving current</translation>
       <translation>Factor</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="312"/>
-      <source>Slider Max</source>
-      <translation type="unfinished">Slider Max</translation>
-    </message>
-    <message>
       <location filename="../ui/ResultShow.ui" line="358"/>
       <source>Animation Control</source>
-      <translation type="unfinished">Animation Control</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="382"/>
-      <source>Number of Steps per Cycle</source>
-      <translation type="unfinished">Number of Steps per Cycle</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="429"/>
-      <source>Number of Cycles</source>
-      <translation type="unfinished">Number of Cycles</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="467"/>
-      <source>Frame Rate</source>
-      <translation type="unfinished">Frame Rate</translation>
+      <translation>Control d'animació</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="505"/>
       <source>Toggles between Start and Stop</source>
-      <translation type="unfinished">Toggles between Start and Stop</translation>
+      <translation>Alterna entre començar i aturar</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="508"/>
       <source>Start Animation</source>
-      <translation type="unfinished">Start Animation</translation>
+      <translation>Començar animació</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="170"/>
@@ -3832,13 +3789,88 @@ with harmonic/oscillating driving current</translation>
       <translation>Histograma</translation>
     </message>
     <message>
+      <location filename="../ui/ResultShow.ui" line="14"/>
+      <source>Show Result</source>
+      <translation>Mostra resultats</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="26"/>
+      <source>Result Type</source>
+      <translation>Tipus de resultat</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="56"/>
+      <source>Displacement magnitude</source>
+      <translation>Magnitud del desplaçament</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="83"/>
+      <source>Maximum principal stress</source>
+      <translation>Estrès principal màxim</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="103"/>
+      <source>Minimum principal stress</source>
+      <translation>Estrès principal mínim</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="123"/>
+      <source>Maximum shear stress (Tresca)</source>
+      <translation>Estrès de cisalla màxim (Tresca)</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="136"/>
+      <source>Equivalent plastic strain</source>
+      <translation>Tensió plàstica equivalent</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="143"/>
+      <source>Mass flow rate</source>
+      <translation>Taxa de flux de massa</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="163"/>
+      <source>Network pressure</source>
+      <translation>Pressió de xarxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="181"/>
+      <source>Minimum</source>
+      <translation>Mínim</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="201"/>
+      <source>Maximum</source>
+      <translation>Màxim</translation>
+    </message>
+    <message>
       <location filename="../ui/ResultShow.ui" line="237"/>
       <source>Show</source>
       <translation>Mostra</translation>
     </message>
     <message>
+      <location filename="../ui/ResultShow.ui" line="312"/>
+      <source>Slider maximum</source>
+      <translation>Màxim del control lliscant</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="382"/>
+      <source>Number of steps per cycle</source>
+      <translation>Nombre de passos per cicle</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="429"/>
+      <source>Number of cycles</source>
+      <translation>Nombre de cicles</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="467"/>
+      <source>Frame rate</source>
+      <translation>Taxa de fotogrames</translation>
+    </message>
+    <message>
       <location filename="../ui/ResultShow.ui" line="522"/>
-      <source>User defined equation</source>
+      <source>User-Defined Equation</source>
       <translation>Equació definida per l'usuari</translation>
     </message>
     <message>
@@ -3866,16 +3898,6 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
       <location filename="../ui/ResultShow.ui" line="556"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
       <translation>P1 - P3 # Max - Min Estrès principal</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="14"/>
-      <source>Hints user defined equations</source>
-      <translation>Equacions definides per l'usuari suggerides</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="20"/>
-      <source>Available result types:</source>
-      <translation>Tipus de resultat disponibles:</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="43"/>
@@ -3914,38 +3936,43 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
-      <source>max shear stress: MS</source>
-      <translation>estrès de cisalla màxima: MS</translation>
+      <source>maximum shear stress: MS</source>
+      <translation>estrès de cisalla màxim: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
-      <source>max princ. stress vector: s3x, s3y, s3z</source>
+      <source>maximum princ. stress vector: s3x, s3y, s3z</source>
       <translation>vector d'estrès principal màxim: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
-      <source>max principal stress: P1</source>
+      <source>maximum principal stress: P1</source>
       <translation>estrès principal màxim: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
-      <source>med princ. stress vector: s2x, s2y, s2z</source>
-      <translation>vector d'estrès principal intermedi: s2x, s2y, s2z</translation>
+      <source>medium princ. stress vector: s2x, s2y, s2z</source>
+      <translation>vector d'estrès principal mitjà: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
-      <source>med principal stress: P2</source>
-      <translation>estrès principal intermedi: P2</translation>
+      <source>medium principal stress: P2</source>
+      <translation>estrès principal mitjà: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
-      <source>min princ. stress vector: s1x, s1y, s1z</source>
+      <source>minimum princ. stress vector: s1x, s1y, s1z</source>
       <translation>vector d'estrès principal mínim: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
-      <source>min principal stress: P3</source>
+      <source>minimum principal stress: P3</source>
       <translation>estrès principal mínim: P3</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="248"/>
+      <source>Mohr-Coulomb: mc</source>
+      <translation>Mohr-Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -3953,9 +3980,14 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
       <translation>ràtio de reforç: rx, ry, rz</translation>
     </message>
     <message>
-      <location filename="../ui/ResultHints.ui" line="248"/>
-      <source>Mohr Coulomb: mc</source>
-      <translation>Mohr Coulomb: mc</translation>
+      <location filename="../ui/ResultHints.ui" line="14"/>
+      <source>Hints User-Defined Equations</source>
+      <translation>Consells per a equacions definides per l'usuari</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="20"/>
+      <source>Available Result Types</source>
+      <translation>Tipus de resultat disponibles</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
@@ -3967,17 +3999,17 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     <name>SolverCalculix</name>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="14"/>
-      <source>Mechanical analysis</source>
-      <translation>Anàlisi mecànica</translation>
+      <source>Mechanical Analysis</source>
+      <translation>Anàlisi mecanic</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="20"/>
-      <source>Working directory</source>
+      <source>Working Directory</source>
       <translation>Directori de treball</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
-      <source>Analysis type</source>
+      <source>Analysis Type</source>
       <translation>Tipus d'anàlisi</translation>
     </message>
     <message>
@@ -4007,41 +4039,41 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
-      <source>Write .inp file</source>
-      <translation>Escriu el fitxer .inp</translation>
+      <source>Write .inp File</source>
+      <translation>Escriure fitxer .inp</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
-      <source>Edit .inp file</source>
-      <translation>Edita el fitxer .inp</translation>
+      <source>Edit .inp File</source>
+      <translation>Editar fitxer .inp</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCcxTools.ui" line="151"/>
+      <source>Time</source>
+      <translation>Temps</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="130"/>
       <source>Run CalculiX</source>
       <translation>Executar Calculix</translation>
     </message>
-    <message>
-      <location filename="../ui/SolverCcxTools.ui" line="151"/>
-      <source>Time:</source>
-      <translation>Temps:</translation>
-    </message>
   </context>
   <context>
     <name>SphereWidget</name>
     <message>
       <location filename="../../SphereWidget.ui" line="26"/>
-      <source>x</source>
-      <translation>x</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="49"/>
-      <source>y</source>
-      <translation>y</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="72"/>
-      <source>z</source>
-      <translation>z</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="112"/>
@@ -4057,7 +4089,7 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="319"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="317"/>
       <source>Object dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
@@ -4066,8 +4098,8 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     <name>TaskAnalysisInfo</name>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
-      <source>Meshes:</source>
-      <translation>Malles:</translation>
+      <source>Meshes</source>
+      <translation>Malles</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
@@ -4114,26 +4146,26 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
-      <source>Angle-search</source>
-      <translation>Cerca d'angles</translation>
+      <source>Angle-Search</source>
+      <translation>Cerca d'angle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCreateNodeSet.ui" line="111"/>
+      <source>Stop angle</source>
+      <translation>Angle de parada</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
       <translation>Reuneix nodes adjacents</translation>
     </message>
-    <message>
-      <location filename="../../TaskCreateNodeSet.ui" line="111"/>
-      <source>Stop angle:</source>
-      <translation>Angle final:</translation>
-    </message>
   </context>
   <context>
     <name>TaskFemConstraint</name>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
-      <source>Add reference</source>
-      <translation>Afegeix una referència</translation>
+      <source>Add Reference</source>
+      <translation>Afegeix referència</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
@@ -4180,8 +4212,8 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     <name>TaskFemConstraintBearing</name>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
-      <source>Add reference</source>
-      <translation>Afegeix una referència</translation>
+      <source>Add Reference</source>
+      <translation>Afegeix referència</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -4247,11 +4279,6 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
   <context>
     <name>TaskFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master face, click Add or Remove</source>
-      <translation>Seleccioneu una cara mestra, feu clic a Afegeix o Suprimeix</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.ui" line="35"/>
       <location filename="../../TaskFemConstraintContact.ui" line="94"/>
       <source>Add</source>
@@ -4264,9 +4291,14 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
       <translation>Elimina</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="20"/>
+      <source>Select master geometry of type: Face; click Add or Remove</source>
+      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave face, click Add or Remove</source>
-      <translation>Seleccioneu una cara esclava, feu clic a Afegeix o Suprimeix</translation>
+      <source>Select slave geometry of type: Face; click Add or Remove</source>
+      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4275,28 +4307,28 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="157"/>
-      <source>Contact Stiffness</source>
+      <source>Contact stiffness</source>
       <translation>Rigidesa de contacte</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="180"/>
-      <source>Clearance Adjustment</source>
-      <translation>Ajustament de tolerància</translation>
+      <source>Clearance adjustment</source>
+      <translation>Ajust de joc</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="203"/>
-      <source>Enable Friction</source>
-      <translation>Habilitar fricció</translation>
+      <source>Enable friction</source>
+      <translation>Activa fricció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="210"/>
-      <source>Friction Coefficient</source>
+      <source>Friction coefficient</source>
       <translation>Coeficient de fricció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="233"/>
-      <source>Stick Slope</source>
-      <translation>Pendent d'adherència</translation>
+      <source>Stick slope</source>
+      <translation>Pendent d'adhesió</translation>
     </message>
   </context>
   <context>
@@ -4308,8 +4340,8 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
-      <source>Click Add or Remove and select geometric element(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu els elements geomètrics</translation>
+      <source>Select geometry of type: Vertex, Edge, Face</source>
+      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4320,11 +4352,6 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
       <location filename="../../TaskFemConstraintDisplacement.ui" line="74"/>
       <source>Remove</source>
       <translation>Elimina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
-      <source>Displacement x</source>
-      <translation>Desplaçament en X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="119"/>
@@ -4343,14 +4370,19 @@ pel solucionador Elmer</translation>
       <translation>Fórmula</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
+      <source>Displacement X</source>
+      <translation>Desplaçament X</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="140"/>
-      <source>Displacement y</source>
-      <translation>Desplaçament en Y</translation>
+      <source>Displacement Y</source>
+      <translation>Desplaçament Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="173"/>
-      <source>Displacement z</source>
-      <translation>Desplaçament en Z</translation>
+      <source>Displacement Z</source>
+      <translation>Desplaçament Z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="196"/>
@@ -4375,31 +4407,31 @@ generada pel flux
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
-      <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation>Les rotacions només són vàlides per als elements biga i closca.</translation>
+      <source>Rotations are only valid for beam and shell elements</source>
+      <translation>Les rotacions només són vàlides per a elements biga i làmina</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
-      <source>Rotation x</source>
-      <translation>Rotació en X</translation>
+      <source>Rotation X</source>
+      <translation>Rotació X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
-      <source>Rotation y</source>
-      <translation>Rotació en Y</translation>
+      <source>Rotation Y</source>
+      <translation>Rotació Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
-      <source>Rotation z</source>
-      <translation>Rotació en Z</translation>
+      <source>Rotation Z</source>
+      <translation>Rotació Z</translation>
     </message>
   </context>
   <context>
     <name>TaskFemConstraintFixed</name>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
-      <source>Click Add or Remove and select geometric element(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu els elements geomètrics</translation>
+      <source>Select geometry of type: Vertex, Edge, Face</source>
+      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4426,8 +4458,8 @@ generada pel flux
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Seleccioneu una o múltiples cares, feu clic a Afegeix o Suprimeix</translation>
+      <source>Select geometry of type: Face</source>
+      <translation type="unfinished">Select geometry of type: Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4531,8 +4563,8 @@ vector normal de la cara s'utilitza com a direcció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
-      <source>Click Add or Remove and select geometric element(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu els elements geomètrics</translation>
+      <source>Select geometry of type: Vertex, Edge, Face</source>
+      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4581,13 +4613,13 @@ vector normal de la cara s'utilitza com a direcció</translation>
     <name>TaskFemConstraintHeatflux</name>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
-      <source>Task Fem Heat flux Load</source>
-      <translation>Tasca FEM de càrrega de flux de calor</translation>
+      <source>Task Heat Flux Load</source>
+      <translation>Tasca de càrrega de flux de calor</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
-      <source>Click Add or Remove and select face(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu les cares</translation>
+      <source>Select  geometry of type: Edge, Face</source>
+      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4601,23 +4633,23 @@ vector normal de la cara s'utilitza com a direcció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="70"/>
-      <source>Constraint Type</source>
-      <translation type="unfinished">Constraint Type</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
-      <source>Film Coefficient</source>
-      <translation>Coeficient de convecció</translation>
+      <source>Constraint type</source>
+      <translation>Tipus de restricció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="96"/>
-      <source>Surface Heat Flux</source>
-      <translation>Flux de calor de superfície</translation>
+      <source>Surface heat flux</source>
+      <translation>Flux de calor superficial</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
+      <source>Film coefficient</source>
+      <translation>Coeficient de pel·lícula</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
-      <source>Ambient Temperature</source>
+      <source>Ambient temperature</source>
       <translation>Temperatura ambient</translation>
     </message>
     <message>
@@ -4635,16 +4667,16 @@ vector normal de la cara s'utilitza com a direcció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="20"/>
-      <source>Insert component's initial temperature:</source>
-      <translation>Inserir temperatura inicial del component:</translation>
+      <source>Initial temperature</source>
+      <translation>Temperatura inicial</translation>
     </message>
   </context>
   <context>
     <name>TaskFemConstraintPlaneRotation</name>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
-      <source>Select a single face, click Add or Remove</source>
-      <translation>Seleccioneu una sola cara, feu clic a Afegeix o Suprimeix</translation>
+      <source>Select single geometry of type: Face</source>
+      <translation type="unfinished">Select single geometry of type: Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4661,8 +4693,8 @@ vector normal de la cara s'utilitza com a direcció</translation>
     <name>TaskFemConstraintPressure</name>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
-      <source>Click Add or Remove and select face(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu les cares</translation>
+      <source>Select geometry of type: Edge, Face</source>
+      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4681,17 +4713,12 @@ vector normal de la cara s'utilitza com a direcció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="87"/>
-      <source>Reverse Direction</source>
+      <source>Reverse direction</source>
       <translation>Inverteix la direcció</translation>
     </message>
   </context>
   <context>
     <name>TaskFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
-      <source>Click Add or Remove and select face(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu les cares</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="35"/>
       <source>Add</source>
@@ -4704,8 +4731,13 @@ vector normal de la cara s'utilitza com a direcció</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="75"/>
-      <source>Normal Stiffness</source>
+      <source>Normal stiffness</source>
       <translation>Rigidesa normal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
+      <source>Stiffness used for the Elmer solver</source>
+      <translation>Rigidesa utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
@@ -4714,29 +4746,27 @@ vector normal de la cara s'utilitza com a direcció</translation>
       <translation>N/m</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
-      <source>Stiffness for Elmer</source>
-      <translation>Rigidesa per Elmer</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
-      <source>What stiffness should be
-used for the Elmer solver</source>
-      <translation>Quina rigidesa hauria de ser
-utilitzada pel solucionador Elmer</translation>
+      <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
+      <source>Select geometry of type: Face</source>
+      <translation type="unfinished">Select geometry of type: Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
-      <source>Tangential Stiffness</source>
+      <source>Tangential stiffness</source>
       <translation>Rigidesa tangencial</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
+      <source>Stiffness for Elmer</source>
+      <translation>Rigidesa per Elmer</translation>
     </message>
   </context>
   <context>
     <name>TaskFemConstraintTemperature</name>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
-      <source>Click Add or Remove and select geometric element(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu els elements geomètrics</translation>
+      <source>Select geometry of type: Vertex, Edge, Face</source>
+      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4778,8 +4808,8 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
-      <source>Select a face, click Add or Remove</source>
-      <translation>Seleccioneu una cara, feu clic a Afegeix o Suprimeix</translation>
+      <source>Select single geometry of type: Face</source>
+      <translation type="unfinished">Select single geometry of type: Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -4798,28 +4828,28 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="133"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="150"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="167"/>
-      <source>Angle:</source>
-      <translation>Angle:</translation>
+      <source>Angle</source>
+      <translation>Angle</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="190"/>
       <location filename="../../TaskFemConstraintTransform.ui" line="209"/>
-      <source>Transformable surfaces</source>
+      <source>Transformable Surfaces</source>
       <translation>Superfícies transformables</translation>
     </message>
   </context>
@@ -4832,13 +4862,13 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
-      <source>Inside Out</source>
-      <translation>Dins cap a fora</translation>
+      <source>Inside out</source>
+      <translation>De dins cap a fora</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
-      <source>Cut Cells</source>
-      <translation>Tallar cel·les</translation>
+      <source>Cut cells</source>
+      <translation>Retalla cel·les</translation>
     </message>
   </context>
   <context>
@@ -4857,21 +4887,6 @@ utilitzada pel solucionador Elmer</translation>
       <translation>Coordenades</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDataAlongLine.ui" line="64"/>
-      <source>x</source>
-      <translation>x</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDataAlongLine.ui" line="103"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDataAlongLine.ui" line="142"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="32"/>
       <source>Point 1</source>
       <translation>Punt 1</translation>
@@ -4880,6 +4895,21 @@ utilitzada pel solucionador Elmer</translation>
       <location filename="../../TaskPostDataAlongLine.ui" line="48"/>
       <source>Point 2</source>
       <translation>Punt 2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAlongLine.ui" line="64"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAlongLine.ui" line="103"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAlongLine.ui" line="142"/>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="184"/>
@@ -4921,28 +4951,28 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
-      <source>x</source>
-      <translation>x</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="58"/>
-      <source>y</source>
-      <translation>y</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="87"/>
-      <source>z</source>
-      <translation>z</translation>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostDataAtPoint.ui" line="122"/>
+      <source>Value</source>
+      <translation>Valor</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="113"/>
       <source>Select Point</source>
       <translation>Seleccioneu punt</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDataAtPoint.ui" line="122"/>
-      <source>Value:</source>
-      <translation>Valor:</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="169"/>
@@ -5036,18 +5066,18 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
-      <source>Min scalar</source>
+      <source>Minimum scalar</source>
       <translation>Escalar mínim</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostScalarClip.ui" line="121"/>
+      <source>Maximum scalar</source>
+      <translation>Escalar màxim</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
       <translation>Tallar escalar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="121"/>
-      <source>Max scalar</source>
-      <translation>Escalar màxim</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
@@ -5069,41 +5099,41 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="98"/>
-      <source>Min warp</source>
+      <source>Minimum warp</source>
       <translation>Deformació mínima</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostWarpVector.ui" line="118"/>
+      <source>Maximum warp</source>
+      <translation>Deformació màxima</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="105"/>
       <source>Warp factor</source>
       <translation>Factor de deformació</translation>
     </message>
-    <message>
-      <location filename="../../TaskPostWarpVector.ui" line="118"/>
-      <source>Max warp</source>
-      <translation>Deformació màxima</translation>
-    </message>
   </context>
   <context>
     <name>TaskTetParameter</name>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="28"/>
-      <source>Max. Size:</source>
-      <translation>Mida màxima:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="46"/>
-      <source>Min. Size:</source>
-      <translation>Mida mínima:</translation>
-    </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="62"/>
       <source>Second order</source>
       <translation>Segon ordre</translation>
     </message>
     <message>
+      <location filename="../../TaskTetParameter.ui" line="28"/>
+      <source>Maximum size</source>
+      <translation>Mida màxima</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="46"/>
+      <source>Minimum size</source>
+      <translation>Mida mínima</translation>
+    </message>
+    <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
-      <source>Fineness:</source>
-      <translation>Precisió:</translation>
+      <source>Fineness</source>
+      <translation>Finor</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
@@ -5137,204 +5167,204 @@ utilitzada pel solucionador Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
-      <source>Growth Rate:</source>
-      <translation>Taxa de creixement:</translation>
+      <source>Growth rate</source>
+      <translation>Taxa de creixement</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Number of Segments per Edge:</source>
-      <translation>Nombre de segments per vora:</translation>
+      <source>Number of segments per edge</source>
+      <translation>Nombre de segments per vora</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Number of Segments per Radius:</source>
-      <translation>Nombre de segments per radi:</translation>
+      <source>Number of segments per radius</source>
+      <translation>Nombre de segments per radi</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="184"/>
+      <source>Node count</source>
+      <translation>Recompte de nodes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="198"/>
+      <source>Triangle count</source>
+      <translation>Recompte de triangles</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="212"/>
+      <source>Tetrahedron count</source>
+      <translation>Recompte de tetraedres</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
       <source>Optimize</source>
       <translation>Optimitza</translation>
     </message>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="184"/>
-      <source>Node count:</source>
-      <translation>Nombre de nodes:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="198"/>
-      <source>Triangle count:</source>
-      <translation>Recompte de triangles:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="212"/>
-      <source>Tetrahedron count:</source>
-      <translation>Recompte de tetraedres:</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>FEM</source>
       <translation>MEF</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>&amp;FEM</source>
       <translation>&amp;MEF</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>M&amp;odel</source>
       <translation>M&amp;odel</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Materials</source>
       <translation>Materials</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Materials</source>
       <translation>&amp;Materials</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Element Geometry</source>
       <translation>Geometria d'element</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Element Geometry</source>
       <translation>$Geometria d'element</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>Electrostatic Boundary Conditions</source>
+      <translation>Condicions de límit electrostàtiques</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>&amp;Electrostatic Boundary Conditions</source>
+      <translation>&amp;Condicions de límit electrostàtiques</translation>
+    </message>
+    <message>
       <location filename="../../Workbench.cpp" line="50"/>
-      <source>Electrostatic boundary conditions</source>
-      <translation>Condicions de límit electroestàtiques</translation>
+      <source>Fluid Boundary Conditions</source>
+      <translation>Condicions de límit de fluid</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>&amp;Electrostatic boundary conditions</source>
-      <translation>&amp;Condicions de límit electroestàtiques</translation>
+      <source>&amp;Fluid Boundary Conditions</source>
+      <translation>&amp;Condicions de límit de fluid</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>Fluid boundary conditions</source>
-      <translation>Condició de límit del fluid</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="53"/>
-      <source>&amp;Fluid boundary conditions</source>
-      <translation>&amp;Condició de límit del fluid</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>Electromagnetic boundary conditions</source>
+      <source>Electromagnetic Boundary Conditions</source>
       <translation>Condicions de límit electromagnètiques</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
-      <source>&amp;Electromagnetic boundary conditions</source>
+      <location filename="../../Workbench.cpp" line="53"/>
+      <source>&amp;Electromagnetic Boundary Conditions</source>
       <translation>&amp;Condicions de límit electromagnètiques</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>Geometrical Analysis Features</source>
+      <translation>Característiques d'anàlisi geomètrica</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="55"/>
+      <source>&amp;Geometrical Analysis Features</source>
+      <translation>&amp;Característiques d'anàlisi geomètrica</translation>
+    </message>
+    <message>
       <location filename="../../Workbench.cpp" line="56"/>
-      <source>Geometrical analysis features</source>
-      <translation>Característiques d'anàlisi geomètriques</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="57"/>
-      <source>&amp;Geometrical analysis features</source>
-      <translation>&amp;Característiques d'anàlisi geomètriques</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="58"/>
-      <source>Mechanical boundary conditions and loads</source>
+      <source>Mechanical Boundary Conditions and Loads</source>
       <translation>Condicions de límit i càrregues mecàniques</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
-      <source>&amp;Mechanical boundary conditions and loads</source>
+      <location filename="../../Workbench.cpp" line="57"/>
+      <source>&amp;Mechanical Boundary Conditions and Loads</source>
       <translation>&amp;Condicions de límit i càrregues mecàniques</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
-      <source>Thermal boundary conditions and loads</source>
+      <location filename="../../Workbench.cpp" line="58"/>
+      <source>Thermal Boundary Conditions and Loads</source>
       <translation>Condicions de límit i càrregues tèrmiques</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
-      <source>&amp;Thermal boundary conditions and loads</source>
+      <location filename="../../Workbench.cpp" line="59"/>
+      <source>&amp;Thermal Boundary Conditions and Loads</source>
       <translation>&amp;Condicions de límit i càrregues tèrmiques</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
-      <source>Analysis features without solver</source>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Analysis Features Without Solver</source>
       <translation>Característiques d'anàlisi sense solucionador</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="63"/>
-      <source>&amp;Analysis features without solver</source>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>&amp;Analysis Features Without Solver</source>
       <translation>&amp;Característiques d'anàlisi sense solucionador</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="73"/>
+      <source>Filter Functions</source>
+      <translation>Funcions de filtre</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="74"/>
+      <source>&amp;Filter Functions</source>
+      <translation>&amp;Funcions de filtre</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>Overwrite Constants</source>
       <translation>Sobreescriure constants</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="65"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>&amp;Overwrite Constants</source>
       <translation>&amp;Sobreescriure constants</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="68"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>M&amp;esh</source>
       <translation>M&amp;alla</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Solve</source>
       <translation>Resol</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="71"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>&amp;Solve</source>
       <translation>&amp;Resoldre</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Results</source>
       <translation>Resultats</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>&amp;Results</source>
       <translation>&amp;Resultats</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
-      <source>Filter functions</source>
-      <translation>Funcions de filtre</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="76"/>
-      <source>&amp;Filter functions</source>
-      <translation>&amp;Funcions de filtre</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="78"/>
       <source>Utilities</source>
       <translation>Utilitats</translation>
     </message>
@@ -5342,38 +5372,38 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Error: Només es pot aplicar un filtre a un sol objecte.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1841"/>
-      <location filename="../../Command.cpp" line="1852"/>
+      <location filename="../../Command.cpp" line="1838"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>The filter could not be set up.</source>
       <translation>No s'ha pogut configurar el filtre.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1851"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>Error: no post processing object selected.</source>
       <translation>Error: no hi ha cap objecte de postprocessament seleccionat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="1866"/>
       <source>Error: Object not in a post processing group</source>
-      <translation type="unfinished">Error: Object not in a post processing group</translation>
+      <translation>Error: L'objecte no està dins de cap grup de postprocessament</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
-      <translation type="unfinished">The filter could not be set up: Object not in a post processing group.</translation>
+      <translation>No s'ha pogut configurar el filtre: L'objecte no forma part d'un grup de postprocessament.</translation>
     </message>
   </context>
   <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="61"/>
-      <source>Analysis container</source>
-      <translation>Contenidor d'anàlisi</translation>
+      <source>New Analysis</source>
+      <translation>Nou anàlisi</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="65"/>
@@ -5382,183 +5412,27 @@ utilitzada pel solucionador Elmer</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ClippingPlaneAdd</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="96"/>
-      <source>Clipping plane on face</source>
-      <translation>Pla de retall a la cara</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="99"/>
-      <source>Add a clipping plane on a selected face</source>
-      <translation>Afegir un pla de retall a una cara seleccionada</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="152"/>
-      <source>Remove all clipping planes</source>
-      <translation>Eliminar tots els plans de retall</translation>
+      <location filename="../../../femcommands/commands.py" line="161"/>
+      <source>Remove All Clipping Planes</source>
+      <translation>Elimina tots els plans de tall</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="155"/>
+      <location filename="../../../femcommands/commands.py" line="164"/>
       <source>Removes all clipping planes</source>
       <translation>Elimina tots els plans de retall</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstantVacuumPermittivity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="176"/>
-      <source>Constant vacuum permittivity</source>
-      <translation>Constant de permitivitat del buit</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="180"/>
-      <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation>Crea una constant FEM de permitivitat del buit per sobreescriure el valor estàndard</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementFluid1D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="362"/>
-      <source>Fluid section for 1D flow</source>
-      <translation>Secció de fluid per al flux 1D</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="365"/>
-      <source>Creates a FEM fluid section for 1D flow</source>
-      <translation>Crea una secció de fluid FEM per al flux 1D</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementGeometry1D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="375"/>
-      <source>Beam cross section</source>
-      <translation>Secció transversal de biga</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="378"/>
-      <source>Creates a FEM beam cross section</source>
-      <translation>Crea una secció transversal d'una biga FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementGeometry2D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="388"/>
-      <source>Shell plate thickness</source>
-      <translation>Gruix de placa d'entorn</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="391"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Crea un gruix de placa d'entorn FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ElementRotation1D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="401"/>
-      <source>Beam rotation</source>
-      <translation>Rotació de biga</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="402"/>
-      <source>Creates a FEM beam rotation</source>
-      <translation>Crea una rotació d'una biga FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationElectrostatic</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="452"/>
-      <source>Electrostatic equation</source>
-      <translation>Equació electroestàtica</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="455"/>
-      <source>Creates a FEM equation for electrostatic</source>
-      <translation>Crea una restricció FEM d'equació electroestàtica</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationElasticity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="426"/>
-      <source>Elasticity equation</source>
-      <translation>Equació d'elasticitat</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="429"/>
-      <source>Creates a FEM equation for elasticity (stress)</source>
-      <translation>Crea una restricció FEM d'equació d'elasticitat (estrès)</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationFlow</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="465"/>
-      <source>Flow equation</source>
-      <translation>Equació de flux</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="466"/>
-      <source>Creates a FEM equation for flow</source>
-      <translation>Crea una equació FEM de flux</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationFlux</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="476"/>
-      <source>Flux equation</source>
-      <translation>Equació de flux</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="477"/>
-      <source>Creates a FEM equation for flux</source>
-      <translation>Crea una equació FEM de flux</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationElectricforce</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="439"/>
-      <source>Electricforce equation</source>
-      <translation>Equació de força elèctrica</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="442"/>
-      <source>Creates a FEM equation for electric forces</source>
-      <translation>Crea una restricció FEM d'equació de força elèctrica</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationHeat</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="487"/>
-      <source>Heat equation</source>
-      <translation>Equació de calor</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="488"/>
-      <source>Creates a FEM equation for heat</source>
-      <translation>Crea una equació FEM de calor</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_Examples</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="544"/>
-      <source>Open FEM examples</source>
-      <translation>Obrir exemples FEM</translation>
+      <location filename="../../../femcommands/commands.py" line="551"/>
+      <source>FEM Examples</source>
+      <translation>Exemples de FEM</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="545"/>
+      <location filename="../../../femcommands/commands.py" line="552"/>
       <source>Opens the FEM examples</source>
       <translation>Obre els exemples FEM</translation>
     </message>
@@ -5566,116 +5440,51 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_MaterialEditor</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="559"/>
-      <source>Material editor</source>
+      <location filename="../../../femcommands/commands.py" line="566"/>
+      <source>Material Editor</source>
       <translation>Editor de material</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="562"/>
+      <location filename="../../../femcommands/commands.py" line="569"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>Obre l'editor de material FreeCAD</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MaterialFluid</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="575"/>
-      <source>Material for fluid</source>
-      <translation>Material per a fluid</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="576"/>
-      <source>Creates a FEM material for fluid</source>
-      <translation>Crea un material MEF per a fluid</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialMechanicalNonlinear</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="588"/>
-      <source>Nonlinear mechanical material</source>
-      <translation>Material mecànic no lineal</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="591"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation>Crea material mecànic no lineal</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="655"/>
-      <source>Reinforced material (concrete)</source>
-      <translation>Material reforçat (formigó)</translation>
+      <location filename="../../../femcommands/commands.py" line="662"/>
+      <source>Reinforced Material (Concrete)</source>
+      <translation>Material armat (formigó)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="659"/>
+      <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
       <translation>Crea un material per a material de matriu reforçat com el formigó</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MaterialSolid</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="669"/>
-      <source>Material for solid</source>
-      <translation>Material per a sòlid</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="671"/>
-      <source>Creates a FEM material for solid</source>
-      <translation>Crea un material FEM per a sòlid</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="681"/>
-      <source>FEM mesh to mesh</source>
+      <location filename="../../../femcommands/commands.py" line="688"/>
+      <source>FEM Mesh to Mesh</source>
       <translation>Malla FEM a malla</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="684"/>
+      <location filename="../../../femcommands/commands.py" line="691"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation>Converteix la superfície de malla FEM en malla</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshBoundaryLayer</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="723"/>
-      <source>FEM mesh boundary layer</source>
-      <translation>Capa de límit de malla FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Creates a FEM mesh boundary layer</source>
-      <translation>Crea una capa de límit de malla FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshClear</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="736"/>
-      <source>Clear FEM mesh</source>
-      <translation>Netejar la malla FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="737"/>
-      <source>Clears the Mesh of a FEM mesh object</source>
-      <translation>Neteja la malla d'un objecte malla FEM</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="756"/>
-      <source>Display FEM mesh info</source>
-      <translation>Mostrar la informació de la malla FEM</translation>
+      <location filename="../../../femcommands/commands.py" line="763"/>
+      <source>Display Mesh Info</source>
+      <translation>Mostra informació de la malla</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="757"/>
+      <location filename="../../../femcommands/commands.py" line="764"/>
       <source>Displays FEM mesh information</source>
       <translation>Mostra la informació de la malla FEM</translation>
     </message>
@@ -5683,77 +5492,38 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="780"/>
-      <source>FEM mesh from shape by Gmsh</source>
-      <translation>Malla FEM des d'una forma per Gmsh</translation>
+      <location filename="../../../femcommands/commands.py" line="787"/>
+      <source>Mesh From Shape by Gmsh</source>
+      <translation>Malla des de forma per Gmsh</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="783"/>
+      <location filename="../../../femcommands/commands.py" line="790"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>Crea una malla FEM des d'una forma amb el generador de malles Gmsh</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshGroup</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="830"/>
-      <source>FEM mesh group</source>
-      <translation>Grup de malla FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="831"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Crea un grup de malla FEM</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="843"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation>Malla FEM de la forma per Netgen</translation>
+      <location filename="../../../femcommands/commands.py" line="848"/>
+      <source>Mesh From Shape by Netgen</source>
+      <translation>Malla des de forma per Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="847"/>
+      <location filename="../../../femcommands/commands.py" line="852"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Crea una malla FEM d'un sòlid o cara mitjançant el generador de malles intern Netgen</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ResultShow</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="908"/>
-      <source>Show result</source>
-      <translation>Mostra el resultat</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="912"/>
-      <source>Shows and visualizes selected result data</source>
-      <translation>Mostra i visualitza les dades dels resultats seleccionats</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ResultsPurge</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="924"/>
-      <source>Purge results</source>
-      <translation>Purgar resultats</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="928"/>
-      <source>Purges all results from active analysis</source>
-      <translation>Purga tots els resultats d'anàlisis actives</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1038"/>
+      <location filename="../../../femcommands/commands.py" line="1045"/>
       <source>Solver CalculiX Standard</source>
       <translation>Solucionador estàndard CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1043"/>
+      <location filename="../../../femcommands/commands.py" line="1050"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Crea un solucionador FEM estàndard CalculiX amb eines ccx</translation>
     </message>
@@ -5761,12 +5531,12 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1095"/>
-      <source>Solver job control</source>
-      <translation>Control de treball del solucionador</translation>
+      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <source>Solver Job Control</source>
+      <translation>Control de tasques del solucionador</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1100"/>
+      <location filename="../../../femcommands/commands.py" line="1106"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Canvia els atributs del solucionador i executa els càlculs per al solucionador seleccionat</translation>
     </message>
@@ -5774,12 +5544,12 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1112"/>
+      <location filename="../../../femcommands/commands.py" line="1118"/>
       <source>Solver Elmer</source>
       <translation>Solucionador Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1114"/>
+      <location filename="../../../femcommands/commands.py" line="1120"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Crea un solucionador FEM Elmer</translation>
     </message>
@@ -5787,12 +5557,12 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1151"/>
+      <location filename="../../../femcommands/commands.py" line="1157"/>
       <source>Solver Mystran</source>
       <translation>Solucionador Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1153"/>
+      <location filename="../../../femcommands/commands.py" line="1159"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Crea un solucionador FEM Mystran</translation>
     </message>
@@ -5800,12 +5570,12 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1163"/>
-      <source>Run solver calculations</source>
-      <translation>Executa els càlculs del solucionador</translation>
+      <location filename="../../../femcommands/commands.py" line="1169"/>
+      <source>Run Solver</source>
+      <translation>Executar solucionador</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1167"/>
+      <location filename="../../../femcommands/commands.py" line="1173"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Executa els càlculs del solucionador seleccionat</translation>
     </message>
@@ -5813,12 +5583,12 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1214"/>
+      <location filename="../../../femcommands/commands.py" line="1220"/>
       <source>Solver Z88</source>
       <translation>Solucionador Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1216"/>
+      <location filename="../../../femcommands/commands.py" line="1222"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Crea un solucionador FEM Z88</translation>
     </message>
@@ -5919,32 +5689,42 @@ utilitzada pel solucionador Elmer</translation>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
-      <source>Geometry reference selector</source>
-      <translation>Selector de referència de geometria</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
       <source>Add</source>
       <translation>Afegeix</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="318"/>
-      <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation type="unfinished">Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="298"/>
+      <source>Remove</source>
+      <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="321"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
+      <source>Select geometry of type: {}{}{}</source>
+      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
+      <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
+      <translation>Feu clic i seleccioneu elements geomètrics per afegir-los a la llista.{}Es poden seleccionar els elements geomètrics següents: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="334"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{}Si no s'afegeix cap geometria a la llista, s'utilitzen totes les que queden.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="310"/>
       <source>Selection mode</source>
       <translation>Mode de selecció</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="304"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+      <source>Geometry Reference Selector</source>
+      <translation>Selector de referències geomètriques</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
       <source>Solid</source>
       <translation>Sòlid</translation>
     </message>
@@ -6034,108 +5814,383 @@ Primer, seleccioneu un tipus de resultat.</translation>
       <translation>Nodes</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="739"/>
-      <source>Empty result mesh</source>
-      <translation>Malla resultant buida</translation>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
+      <source>Result mesh is empty</source>
+      <translation>La malla de resultats és buida</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="752"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="761"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="763"/>
       <source>No result object</source>
       <translation>Cap objecte resultat</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
 Correct module found in:
 {}</source>
-      <translation type="unfinished">
+      <translation>
 
-Correct module found in:
+Mòdul correcte trobat a:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="202"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="206"/>
       <source>
 
 Should this module be loaded instead?</source>
-      <translation type="unfinished">
+      <translation>
 
-Should this module be loaded instead?</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="219"/>
-      <source>
-
-No matching module was found in the current python path.</source>
-      <translation type="unfinished">
-
-No matching module was found in the current python path.</translation>
+S'hauria de carregar aquest mòdul altrament?</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="249"/>
-      <source>VTK module conflict</source>
-      <translation type="unfinished">VTK module conflict</translation>
+      <source>
+
+No matching module was found in the current Python path.</source>
+      <translation>
+
+No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="252"/>
-      <source>This functionality is not available due to VTK python module conflict</source>
-      <translation type="unfinished">This functionality is not available due to VTK python module conflict</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationMagnetodynamic2D</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="516"/>
-      <source>Magnetodynamic2D equation</source>
-      <translation>Equació magnetodinàmica 2D</translation>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <source>VTK Python module conflict</source>
+      <translation>Conflicte de mòduls Python de VTK</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="520"/>
-      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
-      <translation>Crea una equació FEM per a forces magnetodinàmiques 2D</translation>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="253"/>
+      <source>VTK Python Module Conflict</source>
+      <translation>Conflicte de mòduls Python de VTK</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="256"/>
+      <source>This functionality is not available due to VTK Python module conflict</source>
+      <translation>Aquesta funcionalitat no està disponible a causa d'un conflicte de mòduls Python de VTK</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="56"/>
+      <source>New {}</source>
+      <translation>Nou {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="63"/>
+      <source>with {}</source>
+      <translation>amb {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="98"/>
+      <source>Add {}</source>
+      <translation>Afegeix {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="114"/>
+      <source>From {}</source>
+      <translation>De {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="123"/>
+      <source>add {}</source>
+      <translation>afegeix {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="371"/>
+      <source>{}: Data source not available</source>
+      <translation>{}: Font de dades no disponible</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="530"/>
+      <source>Data used in:</source>
+      <translation>Dades utilitzades en:</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="532"/>
+      <source>Data used from:</source>
+      <translation>Dades utilitzades de:</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="541"/>
+      <source>Add data to</source>
+      <translation>Afegeix dades a</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="546"/>
+      <source>New</source>
+      <translation>Nou</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/extract_link_view.py" line="553"/>
+      <source>Add data from</source>
+      <translation>Afegeix dades de</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="109"/>
+      <source>Data Visualizations</source>
+      <translation>Visualitzacions de dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="112"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>Diferents visualitzacions per mostrar dades de postprocessat</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_table_view.py" line="175"/>
+      <source>Export to CSV</source>
+      <translation>Exporta a CSV</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_table_view.py" line="213"/>
+      <source>Save as csv file</source>
+      <translation>Desa com a fitxer CSV</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_table_view.py" line="218"/>
+      <source>CSV file export aborted: no filename selected</source>
+      <translation>Exportació de fitxer CSV avortada: no s'ha seleccionat cap nom de fitxer</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/base_fempostextractors.py" line="87"/>
+      <source>The data table that stores the extracted data</source>
+      <translation>La taula de dades que emmagatzema les dades extretes</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/base_fempostextractors.py" line="94"/>
+      <source>The data source from which the data is extracted</source>
+      <translation>La font de dades de la qual s'extreuen les dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/base_fempostextractors.py" line="147"/>
+      <source>The field to use as X data</source>
+      <translation>El camp a utilitzar com a dades X</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/base_fempostextractors.py" line="156"/>
+      <source>Which part of the X field vector to use for the X axis</source>
+      <translation>Quina part del vector del camp X s'utilitza per a l'eix X</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/base_fempostextractors.py" line="286"/>
+      <source>The field to use as Y data</source>
+      <translation>El camp a utilitzar com a dades Y</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/base_fempostextractors.py" line="295"/>
+      <source>Which part of the Y field vector to use for the Y axis</source>
+      <translation>Quina part del vector del camp Y s'utilitza per a l'eix Y</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <source>Specify if the field shall be extracted for every available frame</source>
+      <translation>Especifica si el camp s'ha d'extreure per a cada fotograma disponible</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/post_extract1D.py" line="140"/>
+      <source>Specify for which index the data should be extracted</source>
+      <translation>Especifica per a quin índex s'han d'extreure les dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femobjects/post_extract2D.py" line="155"/>
+      <source>Specify for which point index the data should be extracted</source>
+      <translation>Especifica per a quin índex de punt s'han d'extreure les dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/base_fempostpanel.py" line="69"/>
+      <source>Edit {}</source>
+      <translation>Edita {}</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <source>Show Plot</source>
+      <translation>Mostra el gràfic</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <source>Show Data</source>
+      <translation>Mostra les dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="69"/>
+      <source>Histogram Data</source>
+      <translation>Dades de l'histograma</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="76"/>
+      <source>Histogram View Settings</source>
+      <translation>Paràmetres de vista de l'histograma</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="69"/>
+      <source>Lineplot Data</source>
+      <translation>Dades del diagrama de línies</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="76"/>
+      <source>Lineplot View Settings</source>
+      <translation>Paràmetres de vista del diagrama de línies</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
+      <source>Show Table</source>
+      <translation>Mostra la taula</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/task_post_table.py" line="64"/>
+      <source>Table Data</source>
+      <translation>Dades de la taula</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
+      <source>The name used in the plots legend</source>
+      <translation>El nom utilitzat a la llegenda dels gràfics</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="274"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="295"/>
+      <source>The color the data bin area is drawn with</source>
+      <translation>El color amb què es dibuixa l'àrea del contenidor de dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="281"/>
+      <source>The hatch pattern drawn in the bar</source>
+      <translation>El patró ombrejat dibuixat a la barra</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="288"/>
+      <source>The line width of the hatch)</source>
+      <translation>L'amplada de línia de l'ombrejat</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="304"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="416"/>
+      <source>The width of the bar, between 0 and 1 (1 being without gaps)</source>
+      <translation>L'amplada de la barra, entre 0 i 1 (1 sense espais)</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
+      <source>The style the line is drawn in</source>
+      <translation>L'estil amb què es dibuixa la línia</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="400"/>
+      <source>If the bars should show the cumulative sum left to right</source>
+      <translation>Si les barres han de mostrar la suma acumulada d'esquerra a dreta</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="407"/>
+      <source>The type of histogram plotted</source>
+      <translation>El tipus d'histograma representat</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="423"/>
+      <source>The line width of all drawn hatch patterns</source>
+      <translation>L'amplada de línia de tots els patrons d'ombrejat dibuixats</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="430"/>
+      <source>The number of bins the data is split into</source>
+      <translation>El nombre de contenidors en què es divideixen les dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
+      <source>The histogram plot title</source>
+      <translation>El títol de l'histograma</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
+      <source>The label shown for the histogram X axis</source>
+      <translation>L'etiqueta mostrada per a l'eix X de l'histograma</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
+      <source>The label shown for the histogram Y axis</source>
+      <translation>L'etiqueta mostrada per a l'eix Y de l'histograma</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
+      <source>Determines if the legend is plotted</source>
+      <translation>Determina si es representa la llegenda</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="290"/>
+      <source>The color the line and the markers are drawn with</source>
+      <translation>El color amb què es dibuixen la línia i els marcadors</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="304"/>
+      <source>The width the line is drawn with</source>
+      <translation>L'amplada amb què es dibuixa la línia</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="311"/>
+      <source>The style the data markers are drawn with</source>
+      <translation>L'estil amb què es dibuixen els marcadors de dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="318"/>
+      <source>The size the data markers are drawn in</source>
+      <translation>La mida en què es dibuixen els marcadors de dades</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="407"/>
+      <source>If be the bars should show the cumulative sum left to right</source>
+      <translation>Si les barres han de mostrar la suma acumulada d'esquerra a dreta</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_lineplot.py" line="414"/>
+      <source>The scale the axis are drawn in</source>
+      <translation>L'escala en què es dibuixen els eixos</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_table.py" line="188"/>
+      <source>The name used in the table header. Default name is used if empty</source>
+      <translation>El nom utilitzat a la capçalera de la taula. S'utilitza el nom per defecte si és buit</translation>
+    </message>
+    <message>
+      <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
+      <source>default</source>
+      <translation>per defecte</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCompEmConstraints</name>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
+      <location filename="../../Command.cpp" line="1397"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
-      <location filename="../../Command.cpp" line="1402"/>
-      <source>Electromagnetic boundary conditions</source>
+      <location filename="../../Command.cpp" line="1398"/>
+      <source>Electromagnetic Boundary Conditions</source>
       <translation>Condicions de límit electromagnètiques</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_EquationMagnetodynamic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="500"/>
-      <source>Magnetodynamic equation</source>
-      <translation>Equació magneto-dinàmica</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="504"/>
-      <source>Creates a FEM equation for magnetodynamic forces</source>
-      <translation>Crea una equació FEM per a forces magnetodinàmiques</translation>
+      <location filename="../../Command.cpp" line="1399"/>
+      <source>Electromagnetic boundary conditions</source>
+      <translation>Condicions de límit electromagnètiques</translation>
     </message>
   </context>
   <context>
     <name>TaskPostContours</name>
     <message>
       <location filename="../../TaskPostContours.ui" line="25"/>
-      <source>Vector:</source>
-      <translation>Vector:</translation>
+      <source>Vector</source>
+      <translation>Vector</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="35"/>
-      <source>Field:</source>
-      <translation>Camp:</translation>
+      <source>Field</source>
+      <translation>Camp</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="77"/>
@@ -6166,17 +6221,17 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
-      <source>Electromagnetic equations</source>
+      <location filename="../../Command.cpp" line="1541"/>
+      <source>Electromagnetic Equations</source>
       <translation>Equacions electromagnètiques</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1545"/>
+      <location filename="../../Command.cpp" line="1542"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>Equacions electromagnètiques pel solucionador Elmer</translation>
     </message>
@@ -6184,63 +6239,42 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2330"/>
+      <location filename="../../Command.cpp" line="2324"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2331"/>
-      <source>Contours filter</source>
+      <location filename="../../Command.cpp" line="2325"/>
+      <source>Contours Filter</source>
       <translation>Filtre de contorns</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2332"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Defineix/crea un filtre de contonrs que mostri contorns iso</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskPostContours</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1559"/>
-      <source>Contours filter options</source>
-      <translation>Opcions de filtres de contorns</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationDeformation</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="412"/>
-      <source>Deformation equation</source>
-      <translation>Equacions de deformació</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="416"/>
-      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
-      <translation>Crea una equació FEM per a la deformació (elasticitat no lineal)</translation>
-    </message>
-  </context>
-  <context>
     <name>BoxWidget</name>
-    <message>
-      <location filename="../../BoxWidget.ui" line="32"/>
-      <source>x</source>
-      <translation>x</translation>
-    </message>
-    <message>
-      <location filename="../../BoxWidget.ui" line="61"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../../BoxWidget.ui" line="84"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
       <source>Center</source>
       <translation>Centre</translation>
+    </message>
+    <message>
+      <location filename="../../BoxWidget.ui" line="32"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../BoxWidget.ui" line="61"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../BoxWidget.ui" line="84"/>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="124"/>
@@ -6261,27 +6295,27 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>CylinderWidget</name>
     <message>
+      <location filename="../../CylinderWidget.ui" line="20"/>
+      <source>Center</source>
+      <translation>Centre</translation>
+    </message>
+    <message>
       <location filename="../../CylinderWidget.ui" line="26"/>
       <location filename="../../CylinderWidget.ui" line="110"/>
-      <source>x</source>
-      <translation>x</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="49"/>
       <location filename="../../CylinderWidget.ui" line="133"/>
-      <source>y</source>
-      <translation>y</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="72"/>
       <location filename="../../CylinderWidget.ui" line="156"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
-    <message>
-      <location filename="../../CylinderWidget.ui" line="20"/>
-      <source>Center</source>
-      <translation>Centre</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="104"/>
@@ -6297,17 +6331,17 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1712"/>
-      <source>Mechanical equations</source>
+      <location filename="../../Command.cpp" line="1709"/>
+      <source>Mechanical Equations</source>
       <translation>Equacions mecàniques</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1713"/>
+      <location filename="../../Command.cpp" line="1710"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Equacions mecàniques pel solucionador Elmer</translation>
     </message>
@@ -6315,12 +6349,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="192"/>
-      <source>Body heat source</source>
-      <translation>Font de calor del cos</translation>
+      <location filename="../../../femcommands/commands.py" line="201"/>
+      <source>Body Heat Source</source>
+      <translation>Font de calor de cos</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="195"/>
+      <location filename="../../../femcommands/commands.py" line="204"/>
       <source>Creates a body heat source</source>
       <translation>Crea una font de calor de cos</translation>
     </message>
@@ -6328,12 +6362,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintCentrif</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="205"/>
-      <source>Centrifugal load</source>
+      <location filename="../../../femcommands/commands.py" line="214"/>
+      <source>Centrifugal Load</source>
       <translation>Càrrega centrífuga</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="206"/>
+      <location filename="../../../femcommands/commands.py" line="215"/>
       <source>Creates a centrifugal load</source>
       <translation>Crea una càrrega centrífuga</translation>
     </message>
@@ -6341,12 +6375,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintCurrentDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="219"/>
-      <source>Current density boundary condition</source>
-      <translation>Condició de límit de densitat actual</translation>
+      <location filename="../../../femcommands/commands.py" line="228"/>
+      <source>Current Density Boundary Condition</source>
+      <translation>Condició de límit de densitat de corrent</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="223"/>
+      <location filename="../../../femcommands/commands.py" line="232"/>
       <source>Creates a current density boundary condition</source>
       <translation>Crea una condició de límit de densitat acutal</translation>
     </message>
@@ -6354,12 +6388,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="252"/>
-      <source>Electrostatic potential boundary condition</source>
-      <translation>Condicions de límit del potencial electroestàtic</translation>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Electrostatic Potential Boundary Condition</source>
+      <translation>Condició de límit de potencial electrostàtic</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="256"/>
+      <location filename="../../../femcommands/commands.py" line="265"/>
       <source>Creates an electrostatic potential boundary condition</source>
       <translation>Crea una condició de límit del potencial electroestàtic</translation>
     </message>
@@ -6367,38 +6401,25 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="268"/>
-      <source>Flow velocity boundary condition</source>
+      <location filename="../../../femcommands/commands.py" line="277"/>
+      <source>Flow Velocity Boundary Condition</source>
       <translation>Condició de límit de velocitat de flux</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="271"/>
+      <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a flow velocity boundary condition</source>
       <translation>Crea una condició de límit de velocitat de flux</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintInitialFlowVelocity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="283"/>
-      <source>Initial flow velocity condition</source>
-      <translation>Condició de velocitat de flux inicial</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="287"/>
-      <source>Creates initial flow velocity condition</source>
-      <translation>Crea una condició de velocitat de flux inicial</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="299"/>
-      <source>Initial pressure condition</source>
+      <location filename="../../../femcommands/commands.py" line="308"/>
+      <source>Initial Pressure Condition</source>
       <translation>Condició de pressió inicial</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="302"/>
+      <location filename="../../../femcommands/commands.py" line="311"/>
       <source>Creates an initial pressure condition</source>
       <translation>Crea una condició de pressió inicial</translation>
     </message>
@@ -6406,12 +6427,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintMagnetization</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="314"/>
-      <source>Magnetization boundary condition</source>
+      <location filename="../../../femcommands/commands.py" line="323"/>
+      <source>Magnetization Boundary Condition</source>
       <translation>Condició de límit de magnetització</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="317"/>
+      <location filename="../../../femcommands/commands.py" line="326"/>
       <source>Creates a magnetization boundary condition</source>
       <translation>Crea una condició de límit de magnetització</translation>
     </message>
@@ -6419,12 +6440,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="327"/>
-      <source>Section print feature</source>
-      <translation>Característica de secció d'impressió</translation>
+      <location filename="../../../femcommands/commands.py" line="336"/>
+      <source>Section Print Feature</source>
+      <translation>Característica d'impressió de secció</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="330"/>
+      <location filename="../../../femcommands/commands.py" line="339"/>
       <source>Creates a section print feature</source>
       <translation>Crea una característica de secció d'impressió</translation>
     </message>
@@ -6432,12 +6453,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="340"/>
-      <source>Gravity load</source>
-      <translation>Càrrega gravitacional</translation>
+      <location filename="../../../femcommands/commands.py" line="349"/>
+      <source>Gravity Load</source>
+      <translation>Càrrega de gravetat</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="341"/>
+      <location filename="../../../femcommands/commands.py" line="350"/>
       <source>Creates a gravity load</source>
       <translation>Crea una càrrega gravitacional</translation>
     </message>
@@ -6445,12 +6466,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_ConstraintTie</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="351"/>
-      <source>Tie constraint</source>
+      <location filename="../../../femcommands/commands.py" line="360"/>
+      <source>Tie Constraint</source>
       <translation>Restricció d'enllaç</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="352"/>
+      <location filename="../../../femcommands/commands.py" line="361"/>
       <source>Creates a tie constraint</source>
       <translation>Crea una restricció d'enllaç</translation>
     </message>
@@ -6458,12 +6479,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="897"/>
-      <source>FEM mesh refinement</source>
-      <translation>Refinament de malla FEM</translation>
+      <location filename="../../../femcommands/commands.py" line="902"/>
+      <source>Mesh Refinement</source>
+      <translation>Refinament de malla</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="898"/>
+      <location filename="../../../femcommands/commands.py" line="903"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Crea un refinament de malla FEM</translation>
     </message>
@@ -6477,8 +6498,8 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
-      <source>Click Add or Remove and select geometric element(s)</source>
-      <translation>Feu clic a Afegir o Eliminar i seleccioneu els elements geomètrics</translation>
+      <source>Select geometry of type: Vertex, Edge, Face</source>
+      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6503,8 +6524,8 @@ No matching module was found in the current python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="400"/>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="448"/>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="537"/>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="106"/>
@@ -6514,8 +6535,8 @@ No matching module was found in the current python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="407"/>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="455"/>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="544"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="129"/>
@@ -6525,8 +6546,8 @@ No matching module was found in the current python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="414"/>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="462"/>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="551"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="177"/>
@@ -6555,8 +6576,8 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
-      <source>Angle:</source>
-      <translation>Angle:</translation>
+      <source>Angle</source>
+      <translation>Angle</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="531"/>
@@ -6567,17 +6588,17 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>CmdFemConstraintRigidBody</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <source>Rigid body constraint</source>
+      <location filename="../../Command.cpp" line="455"/>
+      <source>Rigid Body Constraint</source>
       <translation>Restricció de cos rígid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="456"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
       <translation>Crea una condició de cos rígid per a una entitat geomètrica</translation>
     </message>
@@ -6585,28 +6606,44 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FemGui::TaskFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
+      <source>Select geometry of type: </source>
+      <translation type="unfinished">Select geometry of type: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>
+      <source>Vertex, Edge, Face</source>
+      <translation type="unfinished">Vertex, Edge, Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="324"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="364"/>
       <source>Selection error</source>
       <translation>Error de selecció</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="275"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="354"/>
       <source>Nothing selected!</source>
       <translation>No s'ha seleccionat cap element.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="364"/>
       <source>Selected object is not a part!</source>
       <translation>L'objecte seleccionat no és una peça.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="293"/>
+      <source>External object selection is not supported</source>
+      <translation>No s'admet la selecció d'objectes externs</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="329"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
       <translation>Només es permet un tipus de selecció (vèrtex, cara o vora) per restricció!</translation>
     </message>
@@ -6614,7 +6651,7 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="741"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="748"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -6633,8 +6670,18 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
-      <source>Erase Elements by Polygon</source>
-      <translation>Eliminar elements per polígon</translation>
+      <source>Erase elements by polygon</source>
+      <translation>Esborra elements per polígon</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCreateElementSet.ui" line="56"/>
+      <source>Delete new meshes</source>
+      <translation>Suprimeix malles noves</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCreateElementSet.ui" line="77"/>
+      <source>Copy result mesh</source>
+      <translation>Copia la malla de resultats</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6642,71 +6689,61 @@ No matching module was found in the current python path.</translation>
       <translation>Recuperar</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.ui" line="56"/>
-      <source>Delete New Meshes</source>
-      <translation>Eliminar malles noves</translation>
-    </message>
-    <message>
       <location filename="../../TaskCreateElementSet.ui" line="70"/>
       <source>Copy</source>
       <translation>Copia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCreateElementSet.ui" line="77"/>
-      <source>Copy Result Mesh</source>
-      <translation>Copiar malla resultant</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCreateElementsSet</name>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="231"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="241"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="472"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="563"/>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1336"/>
+      <source>Erase Elements</source>
+      <translation>Esborra elements</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1374"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="228"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="238"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="469"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="560"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="232"/>
-      <source>Can't copy ResultMesh to ResultMesh</source>
-      <translation>No es pot copiar una malla resultant a una malla resultant</translation>
+      <location filename="../../TaskCreateElementSet.cpp" line="229"/>
+      <source>Cannot copy ResultMesh to ResultMesh</source>
+      <translation>No es pot copiar ResultMesh a ResultMesh</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="242"/>
-      <source>Mesh must be a Results mesh</source>
-      <translation>La malla ha de ser una malla resultant</translation>
+      <location filename="../../TaskCreateElementSet.cpp" line="239"/>
+      <source>Mesh must be a ResultMesh</source>
+      <translation>La malla ha de ser un ResultMesh</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="564"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="561"/>
       <source>No Data To Restore
 </source>
       <translation>No hi ha dades a recuperar
 </translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="759"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="756"/>
       <source>Erased Elements</source>
       <translation>Elements eliminats</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="760"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="757"/>
       <source>All Elements Erased - no mesh generated.</source>
       <translation>Tots els elements eliminats - no s'ha generat cap malla.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
-      <source>Erase elements</source>
-      <translation>Eliminar elements</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Creates a FEM mesh elements set</source>
       <translation>Crea un conjunt d'elements de malla FEM</translation>
     </message>
@@ -6714,7 +6751,7 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FemGui::TaskCreateElementSet</name>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="441"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="438"/>
       <source>Elements set</source>
       <translation>Conjunt d'elements</translation>
     </message>
@@ -6722,20 +6759,19 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>CmdFemDefineElementsSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
-      <source>Element set by poly</source>
-      <translation>Conjunt d'elements per polígons</translation>
+      <location filename="../../Command.cpp" line="1281"/>
+      <source>Element Set From Polygon</source>
+      <translation>Conjunt d'elements des de polígon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1284"/>
-      <location filename="../../Command.cpp" line="1286"/>
-      <source>Create Element set by Poly</source>
-      <translation>Crea un conjunt d'elements per polígons</translation>
+      <location filename="../../Command.cpp" line="1282"/>
+      <source>Creates a collection of elements selected by a polygon</source>
+      <translation>Crea una col·lecció d'elements seleccionats per un polígon</translation>
     </message>
   </context>
   <context>
@@ -6752,53 +6788,53 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
-      <source>Fineness:</source>
-      <translation>Precisió:</translation>
+      <source>Fineness</source>
+      <translation>Finor</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
-      <source>Maximum Size:</source>
-      <translation>Mida màxima:</translation>
+      <source>Maximum size</source>
+      <translation>Mida màxima</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
-      <source>Minimum Size:</source>
-      <translation>Mida mínima:</translation>
+      <source>Minimum size</source>
+      <translation>Mida mínima</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
-      <source>Second Order</source>
+      <source>Second order</source>
       <translation>Segon ordre</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="124"/>
-      <source>Growth Rate:</source>
-      <translation>Taxa de creixement:</translation>
+      <source>Growth rate</source>
+      <translation>Taxa de creixement</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="147"/>
-      <source>Curvature Safety:</source>
-      <translation>Seguretat de la curvatura:</translation>
+      <source>Curvature safety</source>
+      <translation>Seguretat de la curvatura</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="164"/>
-      <source>Segments Per Edge:</source>
-      <translation>Segments per aresta:</translation>
+      <source>Segments per edge</source>
+      <translation>Segments per aresta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="220"/>
+      <source>Time</source>
+      <translation>Temps</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="246"/>
+      <source>Netgen Version</source>
+      <translation>Versió de Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="192"/>
       <source>Netgen</source>
       <translation>Netgen</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshNetgen.ui" line="220"/>
-      <source>Time:</source>
-      <translation>Temps:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshNetgen.ui" line="246"/>
-      <source>Netgen version</source>
-      <translation>Versió de Netgen</translation>
     </message>
   </context>
   <context>
@@ -6820,124 +6856,97 @@ No matching module was found in the current python path.</translation>
       <translation>Netgen llegat</translation>
     </message>
     <message>
-      <location filename="../ui/DlgSettingsNetgen.ui" line="51"/>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
+      <source>Python path</source>
+      <translation>Ruta de Python</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
+      <source>Python executable for which Netgen Python bindings are installed.
+Leave blank to use default Python executable</source>
+      <translation>L'executable de Python pels enllaços Python Netgen està instal·lat.
+Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="110"/>
       <source>Log verbosity</source>
       <translation>Registra verbositat</translation>
     </message>
     <message>
-      <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="117"/>
       <source>Level of verbosity printed on the task panel</source>
       <translation>Nivell de redundància imprès al panell de tasques</translation>
     </message>
     <message>
-      <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="136"/>
       <source>Number of threads</source>
       <translation>Nombre de fils</translation>
     </message>
     <message>
-      <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="146"/>
       <source>Number of threads used for meshing</source>
       <translation>Nombre de fils utilitzats per mallat</translation>
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintElectricChargeDensity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="236"/>
-      <source>Electric charge density</source>
-      <translation type="unfinished">Electric charge density</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="239"/>
-      <source>Creates a electric charge density</source>
-      <translation type="unfinished">Creates a electric charge density</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_EquationStaticCurrent</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
-      <source>Static current equation</source>
-      <translation type="unfinished">Static current equation</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="533"/>
-      <source>Creates a FEM equation for static current</source>
-      <translation type="unfinished">Creates a FEM equation for static current</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1064"/>
+      <location filename="../../../femcommands/commands.py" line="1071"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Solucionador CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1069"/>
+      <location filename="../../../femcommands/commands.py" line="1076"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_PostFilterGlyph</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1226"/>
-      <source>Glyph filter</source>
-      <translation type="unfinished">Glyph filter</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1231"/>
-      <source>Post processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation type="unfinished">Post processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+      <translation>Crea un solucionador FEM CalculiX</translation>
     </message>
   </context>
   <context>
     <name>TaskPostCalculator</name>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="28"/>
-      <source>Field Name:</source>
-      <translation type="unfinished">Field Name:</translation>
+      <source>Field name</source>
+      <translation>Nom del camp</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="41"/>
       <source>Mathematical expression</source>
-      <translation type="unfinished">Mathematical expression</translation>
+      <translation>Expressió matemàtica</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="54"/>
       <source>Available fields</source>
-      <translation type="unfinished">Available fields</translation>
+      <translation>Camps disponibles</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
-      <source>Scalars:</source>
-      <translation type="unfinished">Scalars:</translation>
+      <source>Scalars</source>
+      <translation>Escalars</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
-      <source>Vectors:</source>
-      <translation type="unfinished">Vectors:</translation>
+      <source>Vectors</source>
+      <translation>Vectors</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
-      <source>Operators:</source>
-      <translation type="unfinished">Operators:</translation>
+      <source>Operators</source>
+      <translation>Operadors</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
-      <source>Replace invalid data:</source>
-      <translation type="unfinished">Replace invalid data:</translation>
+      <source>Replace invalid data</source>
+      <translation>Substitueix dades invàlides</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
       <source>Replacement value for invalid operations</source>
-      <translation type="unfinished">Replacement value for invalid operations</translation>
+      <translation>Valor de substitució per a les operacions invàlides</translation>
     </message>
   </context>
   <context>
@@ -6945,7 +6954,7 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecciona l'entrada, el filtre fill rebrà:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Sèrie:&lt;/span&gt; El primer filtre de la branca rebrà l'entrada de les branques com a entrada pròpia. El següent filtre rebrà la sortida dels primers filtres com a entrada, i així successivament.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Paral·lel:&lt;/span&gt;Tots els filtres de la branca rebran l'entrada de les branques com a entrada pròpia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -6955,12 +6964,12 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecciona l'entrada, els filtres fills rebran:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Sèrie:&lt;/span&gt; El primer filtre de la branca rebrà l'entrada de les branques com a entrada pròpia. El següent filtre rebrà la sortida dels primers filtres com a entrada, i així successivament.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Paral·lel:&lt;/span&gt;Tots els filtres de la branca rebran l'entrada de les branques com a entrada pròpia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
       <source>Serial</source>
-      <translation type="unfinished">Serial</translation>
+      <translation>Sèrie</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="59"/>
@@ -6971,17 +6980,17 @@ No matching module was found in the current python path.</translation>
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecciona com es determina la sortida de la branca:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Transmetre:&lt;/span&gt; La sortida de les branques és la mateixa que la seva entrada, independentment del que faci el filtre fill de la branca.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Afegeix:&lt;/span&gt; La sortida de les branques és una col·lecció de tots els filtres fill: afegeix les sortides fill juntes i les ofereix com a sortida de la branca.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
       <source>Passthrough</source>
-      <translation type="unfinished">Passthrough</translation>
+      <translation>Transmetre</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="82"/>
       <source>Append</source>
-      <translation type="unfinished">Append</translation>
+      <translation>Afegir</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="93"/>
@@ -6998,13 +7007,13 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
-      <source>Type of frames:</source>
-      <translation type="unfinished">Type of frames:</translation>
+      <source>Type of frames</source>
+      <translation>Tipus de marcs</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="41"/>
-      <source>Ressonance Frequencies</source>
-      <translation type="unfinished">Ressonance Frequencies</translation>
+      <source>Resonant frequencies</source>
+      <translation>Freqüències ressonants</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="84"/>
@@ -7022,11 +7031,11 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="14"/>
       <source>Solver CalculiX Control</source>
-      <translation type="unfinished">Solver CalculiX Control</translation>
+      <translation>Control del solucionador CalculiX</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="20"/>
-      <source>Working Directory</source>
+      <source>Working directory</source>
       <translation>Directori de treball</translation>
     </message>
     <message>
@@ -7042,40 +7051,40 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory</source>
-      <translation type="unfinished">Path to working directory</translation>
+      <translation>Camí el directori de treball</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="66"/>
-      <source>...</source>
-      <translation>...</translation>
+      <source>…</source>
+      <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <source>Analysis type</source>
+      <translation>Tipus d'anàlisi</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <source>Time</source>
+      <translation>Temps</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="78"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="86"/>
-      <source>Analysis Type:</source>
-      <translation type="unfinished">Analysis Type:</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="126"/>
-      <source>Time:</source>
-      <translation>Temps:</translation>
+      <translation>Paràmetres del solucionador</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="133"/>
       <source>Solver Version</source>
-      <translation type="unfinished">Solver Version</translation>
+      <translation>Versió del solucionador</translation>
     </message>
   </context>
   <context>
     <name>FemMaterialReinforcement</name>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
-      <source>FEM material reinforcement</source>
-      <translation type="unfinished">FEM material reinforcement</translation>
+      <source>FEM Material Reinforcement</source>
+      <translation>Reforç de material FEM</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
@@ -7093,8 +7102,10 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
-      <translation type="unfinished">The form of the glyph</translation>
+      <translation>La forma del glif</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
@@ -7134,8 +7145,12 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
-      <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
+      <translation>Camp vectorial a utilitzar per a orientar els glifs</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="78"/>
@@ -7145,19 +7160,21 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="111"/>
       <source>Sca&amp;le</source>
-      <translation type="unfinished">Sca&amp;le</translation>
+      <translation>Esca&amp;la</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation type="unfinished">Which data field is used to scale the glyphs</translation>
+      <translation>Camp de dades a utilitzar per a escalar els glifs</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7167,8 +7184,10 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
-      <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
+      <translation>Un multiplicador constant amb què els glifs s'escalen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="161"/>
@@ -7178,38 +7197,40 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="199"/>
       <source>Changes the scale factor by +/- 50% of the set scale factor</source>
-      <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
+      <translation>Canvia el factor d'escala de +/- 50% del factor d'escala establert</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
-      <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
+      <translation>Si les dades d'escala són un vector, aquesta propietat determinarà si el glif és escalat per la magnitud del vector o per les components individuals</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
       <source>Not a vector</source>
-      <translation type="unfinished">Not a vector</translation>
+      <translation>No és un vector</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="235"/>
       <source>By magnitude</source>
-      <translation type="unfinished">By magnitude</translation>
+      <translation>Per magnitud</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="240"/>
       <source>By components</source>
-      <translation type="unfinished">By components</translation>
+      <translation>Per components</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
       <source>Vertex Mas&amp;king</source>
-      <translation type="unfinished">Vertex Mas&amp;king</translation>
+      <translation>Emmas&amp;carat de vèrtexs</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
       <location filename="../ui/TaskPostGlyph.ui" line="349"/>
       <source>Which vertices are used as glyph locations</source>
-      <translation type="unfinished">Which vertices are used as glyph locations</translation>
+      <translation>Quins vèrtexs són utilitzats com a ubicacions dels glifs</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
@@ -7218,25 +7239,29 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="311"/>
       <source>Defines the maximal number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximal number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>Defineix el nombre màxim de vèrtexs utilitzats com a mode d'emmascarat "Mostreig uniforme"</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="298"/>
       <location filename="../ui/TaskPostGlyph.ui" line="330"/>
       <source>Define the stride for "Every Nth" masking mode</source>
-      <translation type="unfinished">Define the stride for "Every Nth" masking mode</translation>
+      <translation>Defineix el pas per al mode d'emmascarat "Cada enèsima"</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="301"/>
       <source>Stride</source>
-      <translation type="unfinished">Stride</translation>
+      <translation>Pas</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="311"/>
+      <source>Defines the maximum number of vertices used for "Uniform Sampling" masking mode</source>
+      <translation>Defineix el nombre màxim de vèrtexs utilitzats per al mode d'emmascarat "Mostreig uniforme"</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="314"/>
-      <source>Max </source>
-      <translation type="unfinished">Max </translation>
+      <source>Maximum</source>
+      <translation>Màxim</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="353"/>
@@ -7246,72 +7271,711 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="358"/>
       <source>Every Nth</source>
-      <translation type="unfinished">Every Nth</translation>
+      <translation>Cada enèsima</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="363"/>
       <source>Uniform Sampling</source>
-      <translation type="unfinished">Uniform Sampling</translation>
+      <translation>Mostreig uniforme</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="40"/>
+      <source>Bins</source>
+      <translation>Intervals</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="69"/>
+      <source>Type</source>
+      <translation>Tipus</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="94"/>
+      <source>Cumulative</source>
+      <translation>Acumulatiu</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <source>Legend</source>
+      <translation>Llegenda</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="47"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <source>Show</source>
+      <translation>Mostra</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <source>Labels</source>
+      <translation>Etiquetes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <source>Y-axis</source>
+      <translation>Eix-Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="169"/>
+      <source>X Axis</source>
+      <translation>Eix X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <source>Title</source>
+      <translation>Títol</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="192"/>
+      <source>Visuals</source>
+      <translation>Elements visuals</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="208"/>
+      <source>Hatch Line Width</source>
+      <translation>Amplada de línia de l'ombrejat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="215"/>
+      <source>Bar width</source>
+      <translation>Amplada de la barra</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="40"/>
+      <source>Grid</source>
+      <translation>Quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="84"/>
+      <source>Scale</source>
+      <translation>Escala</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="148"/>
+      <source>X-axis</source>
+      <translation>Eix-X</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2367"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2368"/>
-      <source>Calculator filter</source>
-      <translation type="unfinished">Calculator filter</translation>
+      <location filename="../../Command.cpp" line="2362"/>
+      <source>Calculator Filter</source>
+      <translation>Filtre calculadora</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2369"/>
-      <source>Create new fields from current data</source>
-      <translation type="unfinished">Create new fields from current data</translation>
+      <location filename="../../Command.cpp" line="2363"/>
+      <source>Creates a new field from current data</source>
+      <translation>Crea un camp nou a partir de les dades actuals</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2765"/>
+      <location filename="../../Command.cpp" line="2763"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2766"/>
-      <source>Pipeline branch</source>
-      <translation type="unfinished">Pipeline branch</translation>
+      <location filename="../../Command.cpp" line="2764"/>
+      <source>Pipeline Branch</source>
+      <translation>Branca de la canonada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2767"/>
+      <location filename="../../Command.cpp" line="2765"/>
       <source>Branches the pipeline into a new path</source>
-      <translation type="unfinished">Branches the pipeline into a new path</translation>
+      <translation>Ramifica la canonada a un camí nou</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostFrames</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="513"/>
+      <location filename="../../TaskPostBoxes.cpp" line="541"/>
       <source>Result Frames</source>
-      <translation type="unfinished">Result Frames</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskPostBranch</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="574"/>
-      <source>Branch behaviour</source>
-      <translation type="unfinished">Branch behaviour</translation>
+      <translation>Marcs de resultats</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostCalculator</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="2140"/>
+      <location filename="../../TaskPostBoxes.cpp" line="2173"/>
       <source>Calculator options</source>
-      <translation type="unfinished">Calculator options</translation>
+      <translation>Opcions del calculador</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneAdd</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="105"/>
+      <source>Clipping Plane on Face</source>
+      <translation>Pla de tall en cara</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="108"/>
+      <source>Adds a clipping plane on a selected face</source>
+      <translation>Afegeix un pla de tall a una cara seleccionada</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstantVacuumPermittivity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Constant Vacuum Permittivity</source>
+      <translation>Permitivitat del buit constant</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="189"/>
+      <source>Creates a constant vacuum permittivity to overwrite standard value</source>
+      <translation>Crea una permitivitat del buit constant per sobreescriure el valor estàndard</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectricChargeDensity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="245"/>
+      <source>Electric Charge Density</source>
+      <translation>Densitat de càrrega elèctrica</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="248"/>
+      <source>Creates an electric charge density</source>
+      <translation>Crea una densitat de càrrega elèctrica</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="292"/>
+      <source>Initial Flow Velocity Condition</source>
+      <translation>Condició de velocitat de flux inicial</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="296"/>
+      <source>Creates an initial flow velocity condition</source>
+      <translation>Crea una condició de velocitat de flux inicial</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementFluid1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="371"/>
+      <source>Fluid Section for 1D Flow</source>
+      <translation>Secció de fluid per a flux 1D</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="374"/>
+      <source>Creates a fluid section for 1D flow</source>
+      <translation>Crea una secció de fluid per a flux 1D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="384"/>
+      <source>Beam Cross Section</source>
+      <translation>Secció transversal de biga</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="385"/>
+      <source>Creates a beam cross section</source>
+      <translation>Crea una secció transversal de biga</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementGeometry2D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="395"/>
+      <source>Shell Plate Thickness</source>
+      <translation>Gruix de placa de closca</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="398"/>
+      <source>Creates a shell plate thickness</source>
+      <translation>Crea un gruix de placa de closca</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ElementRotation1D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="408"/>
+      <source>Beam Rotation</source>
+      <translation>Rotació de biga</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="409"/>
+      <source>Creates a beam rotation</source>
+      <translation>Crea una rotació de biga</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationDeformation</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="419"/>
+      <source>Deformation Equation</source>
+      <translation>Equació de deformació</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="423"/>
+      <source>Creates an equation for deformation (nonlinear elasticity)</source>
+      <translation>Crea una equació per a la deformació (elasticitat no lineal)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElasticity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="433"/>
+      <source>Elasticity Equation</source>
+      <translation>Equació d'elasticitat</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="436"/>
+      <source>Creates an equation for elasticity (stress)</source>
+      <translation>Crea una equació per a l'elasticitat (tensions)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectricforce</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="446"/>
+      <source>Electricforce Equation</source>
+      <translation>Equació de força elèctrica</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="449"/>
+      <source>Creates an equation for electric forces</source>
+      <translation>Crea una equació per a forces elèctriques</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationElectrostatic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="459"/>
+      <source>Electrostatic Equation</source>
+      <translation>Equació electrostàtica</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="462"/>
+      <source>Creates an equation for electrostatic</source>
+      <translation>Crea una equació per a electrostàtica</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="472"/>
+      <source>Flow Equation</source>
+      <translation>Equació de flux</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="473"/>
+      <source>Creates an equation for flow</source>
+      <translation>Crea una equació per a flux</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationFlux</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="483"/>
+      <source>Flux Equation</source>
+      <translation>Equació de flux</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="484"/>
+      <source>Creates an equation for flux</source>
+      <translation>Crea una equació per al flux</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="494"/>
+      <source>Heat Equation</source>
+      <translation>Equació de calor</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates an equation for heat</source>
+      <translation>Crea una equació per a calor</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationMagnetodynamic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="507"/>
+      <source>Magnetodynamic Equation</source>
+      <translation>Equació magnetodinàmica</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="511"/>
+      <source>Creates an equation for magnetodynamic forces</source>
+      <translation>Crea una equació per a forces magnetodinàmiques</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationMagnetodynamic2D</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="523"/>
+      <source>Magnetodynamic 2D Equation</source>
+      <translation>Equació magnetodinàmica 2D</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="527"/>
+      <source>Creates an equation for 2D magnetodynamic forces</source>
+      <translation>Crea una equació per a forces magnetodinàmiques 2D</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationStaticCurrent</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="537"/>
+      <source>Static Current Equation</source>
+      <translation>Equació de corrent estàtic</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="540"/>
+      <source>Creates an equation for static current</source>
+      <translation>Crea una equació per a corrent estàtic</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
+      <source>Fluid Material</source>
+      <translation>Material fluid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="583"/>
+      <source>Creates a fluid material</source>
+      <translation>Crea un material fluid</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialMechanicalNonlinear</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Non-Linear Mechanical Material</source>
+      <translation>Material mecànic no lineal</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="598"/>
+      <source>Creates a non-linear mechanical material</source>
+      <translation>Crea un material mecànic no lineal</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialSolid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="676"/>
+      <source>Solid Material</source>
+      <translation>Material sòlid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="678"/>
+      <source>Creates a solid material</source>
+      <translation>Crea un material sòlid</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="730"/>
+      <source>Mesh Boundary Layer</source>
+      <translation>Capa de límit de malla</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="733"/>
+      <source>Creates a mesh boundary layer</source>
+      <translation>Crea una capa de límit de malla</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClear</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="743"/>
+      <source>Clear FEM Mesh</source>
+      <translation>Neteja la malla FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="744"/>
+      <source>Clears the mesh of a FEM mesh object</source>
+      <translation>Neteja la malla d'un objecte de malla FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGroup</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="837"/>
+      <source>Mesh Group</source>
+      <translation>Grup de malla</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Creates a mesh group</source>
+      <translation>Crea un grup de malla</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultShow</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="913"/>
+      <source>Show Result</source>
+      <translation>Mostra resultat</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="917"/>
+      <source>Shows and visualizes the selected result data</source>
+      <translation>Mostra i visualitza les dades de resultat seleccionades</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ResultsPurge</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="929"/>
+      <source>Purge Results</source>
+      <translation>Purga resultats</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="933"/>
+      <source>Purges all results from the active analysis</source>
+      <translation>Purga tots els resultats de l'anàlisi actiu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostFilterGlyph</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <source>Glyph Filter</source>
+      <translation>Filtre de glifs</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1237"/>
+      <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
+      <translation>Afegeix un filtre de postprocessat que afegeix glifs als vèrtexs de la malla per a la visualització de dades de vèrtex</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskPostExtraction</name>
+    <message>
+      <location filename="../../TaskPostExtraction.ui" line="14"/>
+      <location filename="../ui/TaskPostExtraction.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostExtraction.ui" line="22"/>
+      <location filename="../ui/TaskPostExtraction.ui" line="37"/>
+      <source>Data Summary</source>
+      <translation>Resum de dades</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostExtraction.ui" line="29"/>
+      <location filename="../ui/TaskPostExtraction.ui" line="44"/>
+      <source>Show Data</source>
+      <translation>Mostra dades</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostExtraction.ui" line="62"/>
+      <source>Data used in</source>
+      <translation>Dades utilitzades en</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostExtraction.ui" line="92"/>
+      <source>Add data to</source>
+      <translation>Afegeix dades a</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostExtraction.ui" line="107"/>
+      <source>Create and add</source>
+      <translation>Crea i afegeix</translation>
+    </message>
+  </context>
+  <context>
+    <name>PostHistogramEdit</name>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <source>Outline draw style (None does not draw outlines)</source>
+      <translation>Estil de dibuix del contorn (Cap no dibuixa contorns)</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <source>None</source>
+      <translation>Cap</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <source>Width of all lines (outline and hatch)</source>
+      <translation>Amplada de totes les línies (contorn i ombrejat)</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <source>Hatch pattern</source>
+      <translation>Patró d'ombrejat</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
+      <source>Lines</source>
+      <translation>Línies</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
+      <source>Density of hatch pattern</source>
+      <translation>Densitat del patró d'ombrejat</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="112"/>
+      <source>Bars</source>
+      <translation>Barres</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <source>Legend</source>
+      <translation>Llegenda</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
+      <source>Color of all lines (bar outline and hatches)</source>
+      <translation>Color de totes les línies (contorn de barra i ombrejat)</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <source>Color of the bars in histogram</source>
+      <translation>Color de les barres a l'histograma</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="34"/>
+      <source>Marker</source>
+      <translation>Marcador</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="87"/>
+      <source>Line</source>
+      <translation>Línia</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="42"/>
+      <source>Name</source>
+      <translation>Nom</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostDisplay</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="435"/>
+      <source>Result Display Options</source>
+      <translation>Opcions de visualització de resultats</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostBranch</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="607"/>
+      <source>Branch Behaviour</source>
+      <translation>Comportament de la branca</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostClip</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="1441"/>
+      <source>Clip Region, Choose Implicit Function</source>
+      <translation>Regió de tall, tria funció implícita</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostContours</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="1592"/>
+      <source>Contours Filter Options</source>
+      <translation>Opcions del filtre de contorns</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostCut</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="1751"/>
+      <source>Function Cut, Choose Implicit Function</source>
+      <translation>Tall de funció, tria funció implícita</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostScalarClip</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="1884"/>
+      <source>Scalar Clip Options</source>
+      <translation>Opcions de clip escalar</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostWarpVector</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="2005"/>
+      <source>Warp Options</source>
+      <translation>Opcions de deformació</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostExtraction</name>
+    <message>
+      <location filename="../../TaskPostExtraction.cpp" line="50"/>
+      <source>Data and Extractions</source>
+      <translation>Dades i extraccions</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::ViewProviderFemAnalysis</name>
+    <message>
+      <location filename="../../ViewProviderAnalysis.cpp" line="162"/>
+      <source>Activate Analysis</source>
+      <translation>Activa l'anàlisi</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskObjectName</name>
+    <message>
+      <location filename="../../TaskObjectName.cpp" line="40"/>
+      <source>Name of the object</source>
+      <translation>Nom de l'objecte</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgSettingsNetgen</name>
+    <message>
+      <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
+      <source>Executable '{}' not found</source>
+      <translation>No s'ha trobat l'executable '{}'</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.axis_selection_widget</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
+      <source>Axis Reference Selector</source>
+      <translation>Seleccioneu la referència de l'eix</translation>
     </message>
   </context>
 </TS>

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <sstream>
-#endif
+
 
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>

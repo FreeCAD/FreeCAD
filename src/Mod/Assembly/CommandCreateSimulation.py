@@ -66,12 +66,10 @@ class CommandCreateSimulation:
             "Pixmap": "Assembly_CreateSimulation",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Simulation"),
             "Accel": "V",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
                 "Creates a new simulation of the current assembly",
-            )
-            + "</p>",
+            ),
             "CmdType": "ForEdit",
         }
 
@@ -90,7 +88,10 @@ class CommandCreateSimulation:
             return
 
         self.panel = TaskAssemblyCreateSimulation()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Simulation Object ###########
@@ -267,7 +268,10 @@ class ViewProviderSimulation:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateSimulation(vpDoc.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -352,7 +356,7 @@ class Motion:
     def getAssembly(self, feaPy):
         simulation = self.getSimulation(feaPy)
         if simulation is not None:
-            return simulation.getAssembly()
+            return simulation.Proxy.getAssembly(simulation)
         return None
 
 
@@ -364,7 +368,6 @@ class ViewProviderMotion:
     def attach(self, vpDoc):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
         self.app_obj = vpDoc.Object
-        self.assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
 
         self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
 
@@ -405,22 +408,19 @@ class ViewProviderMotion:
         return None
 
     def doubleClicked(self, vpDoc):
-        if self.assembly is None:
-            return False
-
-        if UtilsAssembly.activeAssembly() != self.assembly:
-            Gui.ActiveDocument.setEdit(self.assembly)
-
         self.openEditDialog()
 
     def openEditDialog(self):
+        assembly = self.getAssembly()
+
+        if assembly is None:
+            return False
+
         joint = None
         if self.app_obj.Joint is not None:
             joint = self.app_obj.Joint[0]
 
-        dialog = MotionEditDialog(
-            self.assembly, self.app_obj.MotionType, joint, self.app_obj.Formula
-        )
+        dialog = MotionEditDialog(assembly, self.app_obj.MotionType, joint, self.app_obj.Formula)
         if dialog.exec_():
             self.app_obj.MotionType = dialog.motionType
             self.app_obj.Joint = dialog.joint
@@ -437,6 +437,17 @@ class ViewProviderMotion:
         self.app_obj.Label = "{label} ({type_})".format(
             label=self.app_obj.Joint[0].Label, type_=translate("Assembly", typeStr)
         )
+
+    def getAssembly(self):
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+
+        if assembly is None:
+            return None
+
+        if UtilsAssembly.activeAssembly() != assembly:
+            Gui.ActiveDocument.setEdit(assembly)
+
+        return assembly
 
 
 class MotionEditDialog:
@@ -526,7 +537,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.",
+                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
             ),
             self.dialog,
         )

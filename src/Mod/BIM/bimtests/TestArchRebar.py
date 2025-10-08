@@ -171,3 +171,26 @@ class TestArchRebar(TestArchBase.TestArchBase):
         self.assertIsNotNone(rebar.Shape, "Rebar object should always have a Shape attribute.")
         self.assertTrue(rebar.Shape.isNull(),
                         "Rebar.Shape should be a null shape if no Base is provided.")
+
+    def test_RebarMe(self):
+        """
+        Tests the creation of an Arch Rebar
+        """
+        import Sketcher
+        self.printTestMessage('Checking Arch Rebar...\n')
+        s = Arch.makeStructure(length=2, width=3, height=5)
+        sk = self.document.addObject('Sketcher::SketchObject', 'Sketch')
+        sk.AttachmentSupport = (s, ["Face6"])
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85, 1.25, 0), FreeCAD.Vector(0.75, 1.25, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75, 1.25, 0), FreeCAD.Vector(0.75, -1.20, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75, -1.20, 0), FreeCAD.Vector(-0.85, -1.20, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85, -1.20, 0), FreeCAD.Vector(-0.85, 1.25, 0)))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        self.document.recompute()
+        r = Arch.makeRebar(s, sk, diameter=.1, amount=2)
+        self.document.recompute()
+        self.assertTrue(r, "Arch Rebar creation failed")
+        self.assertFalse(r.Shape.isNull(), "Rebar shape is null")

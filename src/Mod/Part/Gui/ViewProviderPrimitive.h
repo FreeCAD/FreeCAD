@@ -26,6 +26,7 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/Part/PartGlobal.h>
 
 
 namespace PartGui {

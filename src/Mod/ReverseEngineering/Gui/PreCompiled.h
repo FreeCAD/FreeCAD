@@ -20,20 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef REVERSE_ENGINEERING_GUI_PRECOMPILED_H
+#define REVERSE_ENGINEERING_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 4181)
-#pragma warning(disable : 4267)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4305)
-#pragma warning(disable : 4522)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -52,7 +42,5 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__

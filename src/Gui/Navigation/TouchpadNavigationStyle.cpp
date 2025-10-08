@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
-#endif
+
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -272,6 +271,13 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

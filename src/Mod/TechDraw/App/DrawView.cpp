@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 # include <sstream>
 # include <Standard_Failure.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -109,6 +107,20 @@ DrawView::DrawView():
     setScaleAttribute();
 }
 
+
+App::DocumentObjectExecReturn* DrawView::recompute()
+{
+    try {
+        return App::DocumentObject::recompute();
+    }
+    catch (Standard_Failure& e) {
+        auto ret = new App::DocumentObjectExecReturn(e.GetMessageString());
+        if (ret->Why.empty()) {
+            ret->Why = "Unknown OCC exception";
+        }
+        return ret;
+    }
+}
 
 App::DocumentObjectExecReturn *DrawView::execute()
 {

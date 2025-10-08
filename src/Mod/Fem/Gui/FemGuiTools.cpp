@@ -21,16 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoCylinder.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoRotation.h>
-#endif
+
 
 #include "FemGuiTools.h"
 
