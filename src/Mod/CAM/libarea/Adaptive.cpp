@@ -1759,7 +1759,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     tolerance = min(tolerance, 1.0);
 
     // 1/"tolerance" = number of min-size adaptive steps per stepover
-    scaleFactor = MIN_STEP_CLIPPER / tolerance / (stepOverFactor * toolDiameter);
+    scaleFactor = MIN_STEP_CLIPPER / tolerance / min(1.0, stepOverFactor * toolDiameter);
 
     current_region = 0;
     cout << "Tool Diameter: " << toolDiameter << endl;
