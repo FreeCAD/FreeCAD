@@ -52,17 +52,14 @@ QString getAutoGroupCommandStr(bool useActiveBody)
     App::GeoFeature* activeObj = nullptr;
     if (useActiveBody) {
         Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-        if (!activeObj) {
-            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
-                PARTKEY);
-        }
+        activeObj =
+            Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
     }
     if (!activeObj) {
         QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
         return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n")
             .arg(activeName);
     }
-
     return QStringLiteral("# Object created at document root.");
 }
 
