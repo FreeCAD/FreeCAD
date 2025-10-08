@@ -114,18 +114,23 @@ void QuickMeasure::tryMeasureSelection()
 
 bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 {
+    if (!Gui::getMainWindow()->isRightSideMessageVisible()) {
+        // don't measure if there's no where to show the result
+        return false;
+    }
 
-    // measure only IF
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        // we have a document
-        if (msg.Type == Gui::SelectionChanges::AddSelection
-            || msg.Type == Gui::SelectionChanges::RmvSelection
-            || msg.Type == Gui::SelectionChanges::SetSelection
-            || msg.Type == Gui::SelectionChanges::ClrSelection) {
-            // the event is about a change in selected objects
-            return true;
-        }
+    if (!doc) {
+        // no active document
+        return false;
+    }
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection
+        || msg.Type == Gui::SelectionChanges::RmvSelection
+        || msg.Type == Gui::SelectionChanges::SetSelection
+        || msg.Type == Gui::SelectionChanges::ClrSelection) {
+        // the event is about a change in selected objects
+        return true;
     }
     return false;
 }

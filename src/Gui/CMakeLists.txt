@@ -1382,6 +1382,7 @@ SET(FreeCADGui_CPP_SRCS
     resource.cpp
     Control.cpp
     SpaceballEvent.cpp
+    StatusBarLabel.cpp
     PreferencePackManager.cpp
     Thumbnail.cpp
     Utilities.cpp
@@ -1431,6 +1432,7 @@ SET(FreeCADGui_SRCS
     WaitCursor.h
     ManualAlignment.h
     StartupProcess.h
+    StatusBarLabel.h
     TransactionObject.h
     ToolHandler.h
     StyleParameters/Parser.h

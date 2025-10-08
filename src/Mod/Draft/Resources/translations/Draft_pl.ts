@@ -3143,7 +3143,7 @@ jest wyświetlany tylko podczas wykonywania poleceń</translation>
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
       <source>Current working plane: Auto</source>
-      <translation type="unfinished">Current working plane: Auto</translation>
+      <translation>Bieżąca płaszczyzna robocza: Automatycznie</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1703"/>

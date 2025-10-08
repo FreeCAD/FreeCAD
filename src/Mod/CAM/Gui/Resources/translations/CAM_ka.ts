@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="47"/>
+      <location filename="../../Command.cpp" line="45"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Area</source>
       <translation>ფართობი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Creates a feature area from the selected objects</source>
       <translation>ქმნის თვისებების ადგილს მონიშნული ობიექტებისგან</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="140"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>Area Workplane</source>
       <translation>სამუშაო ფართობი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Selects a workplane for a feature area</source>
       <translation>მონიშნავს სამუშაო მაგიდას თვისებების ალაგისთვის</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>Compound</source>
       <translation>გადაბმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Creates a compound from the selected toolpaths</source>
       <translation>შექმნის გადაბმის მონიშნული ხელსაწყოს მოძრაობის ტრაექტორიებიდან</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>From Shape</source>
       <translation>ფიგურიდან</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Creates a toolpath from a selected shape</source>
       <translation>ხელსაწყოს მოძრაობის ტრაექტორიის მონიშნული მონახაზიდან შექმნა</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Create Path Area View</source>
       <translation>ტრაექტორიის ფართის ხედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Create Path Area</source>
       <translation>ტრაექტორიის არეალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Select Workplane for Path Area</source>
       <translation>აირჩიეთ სამუშაო მაგიდა ტრაექტორიის ფართისთვის</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Create Path Compound</source>
       <translation>შედგენილი ტრაექტორიის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Create Path Shape</source>
       <translation>ტრაექტორიის მოხაზულობის შექმნა</translation>
     </message>
@@ -356,7 +356,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
       <source>ToolTip to be displayed when user hovers mouse over property</source>
-      <translation type="unfinished">ToolTip to be displayed when user hovers mouse over property</translation>
+      <translation>მინიშნება, რომელიც გამოჩნდება, როცა მომხმარებელი თაგუნას კურსორს თვისებაზე გააჩერებს</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="82"/>
@@ -545,7 +545,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>Select the body to be used to constrain the underlying path</source>
-      <translation type="unfinished">Select the body to be used to constrain the underlying path</translation>
+      <translation>აირჩიეთ სხეული, რომელიც ქვედა ტრაექტორიის შესაზღუდად უნდა იყოს გამოყენებული</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
@@ -1869,7 +1869,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
       <source>Set the geometric clearing pattern to use for the operation</source>
-      <translation type="unfinished">Set the geometric clearing pattern to use for the operation</translation>
+      <translation>გეომეტრიული გასუფთავების შაბლონის დაყენება ოპერაციისთვის</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
@@ -2692,8 +2692,8 @@ See the file save policy below on how to deal with name conflicts.</source>
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="43"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="72"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="41"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="70"/>
       <source>None</source>
       <translation>არაფერი</translation>
     </message>
@@ -2859,7 +2859,7 @@ See the file save policy below on how to deal with name conflicts.</source>
       <location filename="../preferences/Advanced.ui" line="64"/>
       <location filename="../preferences/Advanced.ui" line="83"/>
       <source>Suppress warning whenever a path selection mode is activated</source>
-      <translation type="unfinished">Suppress warning whenever a path selection mode is activated</translation>
+      <translation>გაფრთხილების გათიშვა, თუ აქტიურია ტრაექტორიის მონიშვნის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
@@ -2900,7 +2900,7 @@ See the file save policy below on how to deal with name conflicts.</source>
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="50"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="48"/>
       <source>Compound paths</source>
       <translation>შედგენილი ტრაექტორიები</translation>
     </message>
@@ -3890,60 +3890,60 @@ Default: 3 mm</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="240"/>
+      <location filename="../../../InitGui.py" line="247"/>
       <source>Project Setup</source>
       <translation>პროექტის მორგება</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="241"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>Tool Commands</source>
       <translation>ხელსაწყოს ბრძანებები</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="243"/>
+      <location filename="../../../InitGui.py" line="250"/>
       <source>New Operations</source>
       <translation>ახალი ოპერაციები</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="247"/>
-      <location filename="../../../InitGui.py" line="283"/>
+      <location filename="../../../InitGui.py" line="254"/>
+      <location filename="../../../InitGui.py" line="290"/>
       <source>Path Modification</source>
       <translation>ტრაექტორიის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Helpful Tools</source>
       <translation>საჭირო ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="253"/>
-      <location filename="../../../InitGui.py" line="268"/>
+      <location filename="../../../InitGui.py" line="260"/>
       <location filename="../../../InitGui.py" line="275"/>
       <location filename="../../../InitGui.py" line="282"/>
-      <location filename="../../../InitGui.py" line="290"/>
-      <location filename="../../../InitGui.py" line="296"/>
-      <location filename="../../../InitGui.py" line="298"/>
-      <location filename="../../../InitGui.py" line="301"/>
+      <location filename="../../../InitGui.py" line="289"/>
+      <location filename="../../../InitGui.py" line="297"/>
+      <location filename="../../../InitGui.py" line="303"/>
+      <location filename="../../../InitGui.py" line="305"/>
+      <location filename="../../../InitGui.py" line="308"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="269"/>
+      <location filename="../../../InitGui.py" line="276"/>
       <source>Path Dressup</source>
       <translation>ტრაექტორიის ზღუდარი</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="276"/>
+      <location filename="../../../InitGui.py" line="283"/>
       <source>Supplemental Commands</source>
       <translation>დამატებითი ბრძანებები</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="291"/>
+      <location filename="../../../InitGui.py" line="298"/>
       <source>Specialty Operations</source>
       <translation>სპეციალური ოპერაციები</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="302"/>
+      <location filename="../../../InitGui.py" line="309"/>
       <source>Utils</source>
       <translation>ხელსაწყოები</translation>
     </message>
@@ -4283,67 +4283,67 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="90"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="354"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="355"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation type="unfinished">Set distance which will attempts to avoid unnecessary retractions</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="96"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="231"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="232"/>
       <source>The style of motion into the toolpath</source>
       <translation>ხელსაწყოს მოძრაობის ტრაექტორიაში მოძრაობის სტილი</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="243"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="244"/>
       <source>The style of motion out of the toolpath</source>
       <translation>ხელსაწყოს მოძრაობის ტრაექტორიის გარეთ მოძრაობის სტილი</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="116"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="254"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="255"/>
       <source>Angle of the Lead-In (1..90)</source>
       <translation>შეყვანის კუთხე (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="122"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="262"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="263"/>
       <source>Angle of the Lead-Out (1..90)</source>
       <translation>გამოყვანის კუთხე (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="294"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="295"/>
       <source>Determine length of the Lead-In</source>
       <translation>შეყვანის სიგრძის დადგენა</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="134"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="303"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="304"/>
       <source>Determine length of the Lead-Out</source>
       <translation>გამოყვანის სიგრძის დადგენა</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="140"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="323"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="324"/>
       <source>Invert Lead-In direction</source>
       <translation>შეყვანის მიმართულების შებრუნება</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="146"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="330"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="331"/>
       <source>Invert Lead-Out direction</source>
       <translation>გამოყვანის მიმართულების შებრუნება</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="152"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="337"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="338"/>
       <source>Move start point</source>
       <translation>საწყისი წერტილის გადატანა</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="158"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="344"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="345"/>
       <source>Move end point</source>
       <translation>ბოლო წერტილის გადატანა</translation>
     </message>
@@ -4501,32 +4501,32 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Main/Stock.py" line="126"/>
       <source>Extra allowance from part bound box in negative X-direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative X-direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან უარყოფითი X მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="135"/>
       <source>Extra allowance from part bound box in positive X-direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive X-direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი X მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="144"/>
       <source>Extra allowance from part bound box in negative Y-direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative Y-direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან უარყოფითი Y მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="153"/>
       <source>Extra allowance from part bound box in positive Y-direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive Y-direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი Y მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="162"/>
       <source>Extra allowance from part bound box in negative Z-direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in negative Z-direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან უარყოფითი Z მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="171"/>
       <source>Extra allowance from part bound box in positive Z-direction</source>
-      <translation type="unfinished">Extra allowance from part bound box in positive Z-direction</translation>
+      <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი Z მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="241"/>
@@ -5605,6 +5605,7 @@ Use property KeepToolDown to change this</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="285"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="742"/>
       <source>Tool material</source>
       <translation>ხელსაწყოს მასალა</translation>
     </message>
@@ -5626,6 +5627,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="82"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="276"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="723"/>
       <source>Direction of spindle rotation</source>
       <translation>შპინდელის ბრუნვის მიმართულება</translation>
     </message>
@@ -6332,8 +6334,8 @@ Aborting op creation</source>
       <location filename="../../../InitGui.py" line="112"/>
       <location filename="../../../InitGui.py" line="116"/>
       <location filename="../../../InitGui.py" line="120"/>
-      <location filename="../../../InitGui.py" line="319"/>
-      <location filename="../../AppPathGui.cpp" line="91"/>
+      <location filename="../../../InitGui.py" line="326"/>
+      <location filename="../../AppPathGui.cpp" line="90"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
@@ -6349,7 +6351,7 @@ Aborting op creation</source>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="233"/>
+      <location filename="../../../InitGui.py" line="240"/>
       <source>3D Operations</source>
       <translation>3D ოპერაციები</translation>
     </message>
@@ -6480,7 +6482,7 @@ Aborting op creation</source>
       <translation>რკალი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1195"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1197"/>
       <source>Lead In/Out</source>
       <translation>შეყვანა/გამოყვანა</translation>
     </message>
@@ -6525,22 +6527,22 @@ Aborting op creation</source>
       <translation>ვერტიკალურად</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1199"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1201"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>შექმნის შესასვლელ და გამოსასვლელ მოძრაობას მონიშნული ტრაექტორიისთვის</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1212"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1214"/>
       <source>Select one toolpath object</source>
       <translation>აირჩიეთ ერთი ხელსაწყოს მოძრაობის ტრაექტორიის ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1221"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1223"/>
       <source>Select a Profile object</source>
       <translation>აირჩიეთ პროფილი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1217"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1219"/>
       <source>The selected object is not a toolpath</source>
       <translation>მონიშნული ობიექტი ხელსაწყოს მოძრაობის ტრაექტორია არაა</translation>
     </message>
@@ -6952,7 +6954,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="165"/>
       <source>Recommended Unit Schemas</source>
-      <translation type="unfinished">Recommended Unit Schemas</translation>
+      <translation>რეკომენდებული ერთეულის სქემები</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="189"/>
@@ -6962,27 +6964,27 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="197"/>
       <source>Change Unit Schema</source>
-      <translation type="unfinished">Change Unit Schema</translation>
+      <translation>ერთეულის სქემის შეცვლა</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="201"/>
       <source>Keep Current Schema</source>
-      <translation type="unfinished">Keep Current Schema</translation>
+      <translation>მიმდინარე სქემის შენარჩუნება</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="204"/>
       <source>Don&apos;t Show Again</source>
-      <translation type="unfinished">Don&apos;t Show Again</translation>
+      <translation>აღარ მაჩვენო</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="233"/>
       <source>Unit Schema Changed</source>
-      <translation type="unfinished">Unit Schema Changed</translation>
+      <translation>ერთეულის სქემა შეიცვალა</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="234"/>
       <source>Unit schema successfully changed to &apos;{}&apos;.</source>
-      <translation type="unfinished">Unit schema successfully changed to &apos;{}&apos;.</translation>
+      <translation>ერთეულის სქემა წარმატებიტ შეიცვალა &apos;{}&apos;-ზე;.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="242"/>
@@ -6992,17 +6994,17 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="243"/>
       <source>Failed to change unit schema: {}</source>
-      <translation type="unfinished">Failed to change unit schema: {}</translation>
+      <translation>ერთეულების სქემის შეცვლა ჩავარდა: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="248"/>
       <source>No Selection</source>
-      <translation type="unfinished">No Selection</translation>
+      <translation>მონიშნულის გარეშე</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="249"/>
       <source>Please select a unit schema.</source>
-      <translation type="unfinished">Please select a unit schema.</translation>
+      <translation>აირჩიეთ ერთეულის სქემა.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="347"/>
@@ -7094,7 +7096,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="105"/>
       <source>Exports the CAM job as a template to be used for other jobs</source>
-      <translation type="unfinished">Exports the CAM job as a template to be used for other jobs</translation>
+      <translation>გაიტანს CAM დავალებას სხვა დავალებებისთვის გამოყენებადი შაბლონის სახით</translation>
     </message>
   </context>
   <context>
@@ -7108,309 +7110,309 @@ Aborting op creation</source>
   <context>
     <name>CAM_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
       <source>Table of Contents</source>
       <translation>სარჩევი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Part Information</source>
       <translation>ნაწილის ინფორმაცია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
       <source>Run Summary</source>
       <translation>შეჯამების გაშვება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
       <source>Rough Stock</source>
       <translation>უხეში მასალა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>Tool Data</source>
       <translation>ხელსაწყოს მონაცემები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="62"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
       <source>Fixtures</source>
       <translation>არმატურები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Squawks</source>
       <translation>ჭრიალი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="117"/>
       <source>Job Type</source>
       <translation>დავალების ტიპი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="120"/>
       <source>Customer</source>
       <translation>შემკვეთი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Operation</source>
       <translation>ოპერაცია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="114"/>
       <source>Cycle Time</source>
       <translation>ციკლის დრო</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
       <source>Tool Number</source>
       <translation>ხელსაწყოს ნომერი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="58"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
       <source>Description</source>
       <translation>აღწერა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
       <source>Manufacturer</source>
       <translation>მწარმოებელი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
       <source>Output (G-code)</source>
       <translation>გამოტანა (G-code)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
       <source>Part Number</source>
       <translation>ნაწილის ნომერი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Surface Speed HSS</source>
       <translation>HSS ზედაპირის სიჩქარე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="66"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Inspection Notes</source>
       <translation>ინსპექციის შენიშვნები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
       <source>Tool Controller</source>
       <translation>ხელსაწყოს კონტროლერი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Feed Rate</source>
       <translation>მიწოდების სიჩქარე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Spindle Speed</source>
       <translation>შპინდელის სიჩქარე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
       <source>Tool Shape</source>
       <translation>ხელსაწყოს ფორმა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="59"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
       <source>Tool Diameter</source>
       <translation>ხელსაწყოს დიამეტრი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="65"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
       <source>Setup Report for CAM Job</source>
       <translation>ანგარიშის მორგება CAM-ის დავალებისთვის</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
       <source>Surface Speed Carbide</source>
       <translation>ზედაპირის სიჩქარე კარბიდი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="108"/>
       <source>X Size</source>
       <translation>X ზომა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="109"/>
       <source>Y Size</source>
       <translation>Y ზომა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="110"/>
       <source>Z Size</source>
       <translation>Z ზომა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="111"/>
       <source>Minimum Z</source>
       <translation>მინიმალური Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="112"/>
       <source>Maximum Z</source>
       <translation>მაქსიმალური Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="113"/>
       <source>Coolant Mode</source>
       <translation>გამაგრილებლის რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="115"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="116"/>
       <source>Sequence</source>
       <translation>მიმდევრობა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="118"/>
       <source>CAD File</source>
       <translation>CAD ფაილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="119"/>
       <source>Last Save</source>
       <translation>ბოლო შენახვა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
       <source>Material</source>
       <translation>მასალა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
       <source>Work Offsets</source>
       <translation>სამუშაოს წანაცვლებები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Order By</source>
       <translation>დალაგება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="57"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
       <source>Part Datum</source>
       <translation>ნაწილის თარიღი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="64"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>G-code File</source>
       <translation>G-code-ის ფაილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="67"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
       <source>Last Post Process Date</source>
       <translation>ბოლო პოსტპროცესის თარიღი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
       <source>Stops</source>
       <translation>გაჩერებები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
       <source>Programmer</source>
       <translation>პროგრამისტი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
       <source>Machine</source>
       <translation>მანქანა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
       <source>Postprocessor</source>
       <translation>პოსტპროცესორი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="63"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Post Processor Flags</source>
       <translation>პოსტპროცესორის პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="61"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
       <source>File Size (kB)</source>
       <translation>ფაილის ზომა (კბ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="68"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
       <source>Line Count</source>
       <translation>ხაზების რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
       <source>Note</source>
       <translation>შენიშვნა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Operator</source>
       <translation>ოპერატორი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="56"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
       <source>Date</source>
       <translation>თარიღი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="245"/>
       <source>The Job&apos;s last post-processed file is missing</source>
       <translation>დავალების ბოლო პოსტპროცესინგის ფაილი აღმოჩენილი არაა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="378"/>
       <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
       <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="376"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="390"/>
       <source>Tool number {} used by multiple tools</source>
       <translation>ხელსაწყოს ნომერი {} ერთზე მეტი ხელსაწყოს მიერ გამოიყენება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="399"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="423"/>
       <source>Toolbit Shape for TC: {} not found</source>
       <translation>ხელსაწყოს მოხაზულობა TC-სთვის: {} ვერ ვიპოვე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="419"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="448"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
       <translation>ხელსაწყოს კონტროლერს &apos;{}&apos; მიწოდების სიჩქარე არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="460"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
       <translation>ხელსაწყოს კონტროლერს &apos;{}&apos; შპინდელის სიჩქარე არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="486"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
       <translation>ხელსაწყოს კონტროლერი &apos;{}&apos; არ გამოიყენება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="335"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="349"/>
       <source>Consider Specifying the Stock Material</source>
       <translation>განიხილეთ ნედლეულის მასალის მითითება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="215"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="229"/>
       <source>The Job has not been post-processed</source>
       <translation>დავალების პოსტპროცესინგი არ მომხდარა</translation>
     </message>
@@ -7649,7 +7651,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="74"/>
       <source>This operation requires a tool controller with a probe tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a probe tool</translation>
+      <translation>ამ ოპერაციას ზონდის მქონე ხელსაწყოს კონტროლერი სჭირდება</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="117"/>
@@ -7699,7 +7701,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/chamfer.py" line="46"/>
       <source>{diameter} {cutting_edge_angle} chamfer bit, {flutes}-flute</source>
-      <translation type="unfinished">{diameter} {cutting_edge_angle} chamfer bit, {flutes}-flute</translation>
+      <translation>{diameter} {cutting_edge_angle} კუთხის ნაზოლი ბიტი, {flutes}-ბურბუშელას გამოსასვლელი ღარაკი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/custom.py" line="40"/>
@@ -7735,11 +7737,6 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/toolbit/models/slittingsaw.py" line="46"/>
       <source>{diameter} slitting saw, {blade_thickness} blade, {flutes}-flute</source>
       <translation type="unfinished">{diameter} slitting saw, {blade_thickness} blade, {flutes}-flute</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/tap.py" line="46"/>
-      <source>{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
-      <translation type="unfinished">{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/threadmill.py" line="46"/>
@@ -7901,7 +7898,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="278"/>
       <source>Missing Toolbit</source>
-      <translation type="unfinished">Missing Toolbit</translation>
+      <translation>აკლია ხელსაწყოს მჭრელი პირი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="282"/>
@@ -7911,7 +7908,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <source>Failed to load toolbit: {e}</source>
-      <translation type="unfinished">Failed to load toolbit: {e}</translation>
+      <translation>ხელსაწყოს მჭრელი პირის ჩატვირთვის შეცდომა: {e}</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="426"/>
@@ -7927,6 +7924,11 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../PathScripts/PathUtils.py" line="218"/>
       <source>Selected faces should be vertical</source>
       <translation>მონიშნული ზედაპირები ვერტიკალური უნდა იყოს</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/tap.py" line="74"/>
+      <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
+      <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
     </message>
   </context>
   <context>
@@ -8188,7 +8190,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="604"/>
       <source>Custom points are identical. No slot path will be generated</source>
-      <translation type="unfinished">Custom points are identical. No slot path will be generated</translation>
+      <translation>მომხმარებლის წერტილები იდენტურია. სლოტის ტრაექტორია არ შეიქმნება</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="613"/>
@@ -8849,7 +8851,7 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAM_DrillingTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="183"/>
+      <location filename="../../../InitGui.py" line="187"/>
       <source>Drilling Operations</source>
       <translation>ბურღვის ოპერაციები</translation>
     </message>
@@ -8893,17 +8895,9 @@ This will not delete the toolbits contained within it.</source>
     </message>
   </context>
   <context>
-    <name>Path_Tapping</name>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="158"/>
-      <source>Tapping Operation requires a Tap tool with Pitch or TPI</source>
-      <translation>შეხების ოპერატორს შეხების ხელსაწყო ესაჭიროება ტონით ან TPI-ით</translation>
-    </message>
-  </context>
-  <context>
     <name>CAM_DressupTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="191"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>Dressup Operations</source>
       <translation>ზღუდარის ოპერაციები</translation>
     </message>
@@ -9000,7 +8994,7 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAMSimulator::DlgCAMSimulator</name>
     <message>
-      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="335"/>
+      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="334"/>
       <source>%1 - New CAM Simulator</source>
       <translation>%1 - ახალი CAM სიმულატორი</translation>
     </message>
@@ -9338,7 +9332,12 @@ This will not delete the toolbits contained within it.</source>
       <translation>შიგსახრახნის საერთო სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="60"/>
+      <source>Thread pitch</source>
+      <translation>კუთხვილის ტონი</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="68"/>
       <source>Tap</source>
       <translation>შიგსახრახნი</translation>
     </message>
@@ -9494,6 +9493,24 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="81"/>
       <source>Library Properties - {current_name or self.library.label}</source>
       <translation>ბიბლიოთეკის თვისებები - {current_name or self.library.label}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="156"/>
+      <source>Tapping Operation requires a Tap tool with Pitch</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="234"/>
+      <source>Tapping Operation requires a Tap tool with non-zero Pitch</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with non-zero Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="244"/>
+      <source>Tapping Operation requires a ToolController with non-zero SpindleSpeed</source>
+      <translation type="unfinished">Tapping Operation requires a ToolController with non-zero SpindleSpeed</translation>
     </message>
   </context>
 </TS>

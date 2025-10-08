@@ -502,12 +502,12 @@
     <message>
       <location filename="../../Command.cpp" line="922"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>Preseci pomoću ravni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="923"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>Napravi presek mreže pomoću izabrane ravni</translation>
     </message>
   </context>
   <context>
@@ -525,7 +525,7 @@
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>Napravi nove segmente mreže od mreže</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location filename="../../Command.cpp" line="1298"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>Glačanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1299"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>Zagladi izabrane mreže</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Iseci sa ravni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>Iseci mrežu uklanjanjem pljosni sa jedne strane izabrane ravni</translation>
     </message>
   </context>
   <context>

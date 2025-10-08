@@ -2384,11 +2384,30 @@ void Application::runApplication()
 {
     StartupProcess::setupApplication();
 
-    QSurfaceFormat fmt;
-    fmt.setRenderableType(QSurfaceFormat::OpenGL);
-    fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
-    fmt.setOption(QSurfaceFormat::DeprecatedFunctions, true);
-    QSurfaceFormat::setDefaultFormat(fmt);
+    {
+        QSurfaceFormat defaultFormat;
+        defaultFormat.setRenderableType(QSurfaceFormat::OpenGL);
+        defaultFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+        defaultFormat.setOption(QSurfaceFormat::DeprecatedFunctions, true);
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+        // QGuiApplication::platformName() doesn't yet work at this point, so we use the env var
+        if (getenv("WAYLAND_DISPLAY")) {
+            // In some settings (at least EGL on Wayland) we get RGB565 by default.
+            // Request something better.
+            defaultFormat.setRedBufferSize(8);
+            defaultFormat.setGreenBufferSize(8);
+            defaultFormat.setBlueBufferSize(8);
+            // Qt's behavior with format requests seems opaque, underdocumented and,
+            // unfortunately, inconsistent between platforms. Requesting an alpha
+            // channel tends to steer it away from weird legacy choices like RGB565.
+            defaultFormat.setAlphaBufferSize(8);
+            // And a depth/stencil buffer is generally useful if we can have it.
+            defaultFormat.setDepthBufferSize(24);
+            defaultFormat.setStencilBufferSize(8);
+        }
+#endif
+        QSurfaceFormat::setDefaultFormat(defaultFormat);
+    }
 
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");

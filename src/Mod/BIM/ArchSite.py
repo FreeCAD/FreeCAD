@@ -606,13 +606,69 @@ class _Site(ArchIFC.IfcProduct):
             obj.setEditorMode("SunRay", ["ReadOnly", "Hidden"])
 
     def onDocumentRestored(self,obj):
-        """Method run when the document is restored. Re-adds the properties."""
+        """FreeCAD hook run after the object is restored from a file.
 
+        This method serves a dual purpose due to FreeCAD framework limitations:
+
+        1.  **Standard Role:** Restore properties on the data object (`_Site` proxy) itself by
+            calling `self.setProperties(obj)`. This ensures backward compatibility by adding any new
+            properties defined in the current FreeCAD version to an object loaded from an older
+            file.
+
+        2.  **Workaround Role:** Trigger the initialization for the associated view provider object
+            (`_ViewProviderSite`). This is necessary because: a) The view provider has no equivalent
+            `onDocumentRestored` callback. b) This hook provides a reliable point in the document
+            lifecycle where the `ViewObject` is guaranteed to be attached to the data object
+            (`obj`), which is a prerequisite for any GUI-related setup.
+
+        The core issue is that the App::FeaturePython object has a convenient onDocumentRestored
+        hook, but its Gui::ViewProviderPython counterpart does not. This forces us to use the data
+        object's hook as a trigger for initializing the view object, which is architecturally
+        unclean but necessary.
+        """
+
+        # 1. Restore properties on the data object.
         self.setProperties(obj)
-        # The UI is built before constraints are applied during a file load.
-        # We must defer the constraint restoration until after the entire
-        # loading process is complete.
+
+
+        # 2. Trigger the restoration sequence for the associated view provider.
+        # This block only runs in GUI mode.
         if FreeCAD.GuiUp and hasattr(obj, "ViewObject"):
+            # Manually ensure the view provider's properties are up-to-date.
+            #
+            # When loading a document, FreeCAD's C++ document loading mechanism restores Python
+            # proxy objects by allocating an empty instance and then calling its `loads()` method.
+            # The `__init__()` constructor is intentionally bypassed in this restoration path.
+            #
+            # As a result, any setup logic in the view provider's `__init__` (like the call to
+            # `self.setProperties()`) is never executed during a file load.
+            #
+            # The solution is to call `setProperties()` again here to ensure the view object is
+            # correctly initialized, especially for backward compatibility when a newer version of
+            # FreeCAD adds new properties.
+            try:
+                proxy = getattr(obj.ViewObject, "Proxy", None)
+                if proxy is not None and hasattr(proxy, "setProperties"):
+                    proxy.setProperties(obj.ViewObject)
+            except Exception as e:
+                # Do not break document restore if view-side initialization fails.
+                FreeCAD.Console.PrintError(f"ArchSite: proxy.setProperties failed: {e}\n")
+
+            # The Site's view provider has property constraints defined (e.g., min/max values for
+            # dates). This requires a special handling sequence during document restoration due to
+            # the way FreeCAD's GUI and data layers interact.
+            #
+            # 1. Constraints are not saved in the .FCStd file, so they must be programmatically
+            #    reapplied every time a document is loaded.
+            # 2. The Property Editor GUI builds its widgets (like spin boxes) as soon as it is
+            #    notified that a property has been added. If constraints are applied in the same
+            #    function call, a race condition occurs: the GUI may build its widget *before* the
+            #    constraints are set, resulting in an unconstrained input field.
+            #
+            # To solve this, we defer the constraint restoration. We use QTimer.singleShot(0, ...)
+            # to push the `restoreConstraints` call to the end of the Qt event queue. This
+            # guarantees that the Property Editor has fully processed the property-add signals in
+            # one event loop cycle *before* we apply the constraints in a subsequent cycle.
             from PySide import QtCore
             QtCore.QTimer.singleShot(0, lambda: obj.ViewObject.Proxy.restoreConstraints(obj.ViewObject))
 
@@ -807,6 +863,9 @@ class _ViewProviderSite:
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
         self.setProperties(vobj)
+        # Defer the constraint and default value setup until after the GUI is fully initialized.
+        from PySide import QtCore
+        QtCore.QTimer.singleShot(0, lambda: self.restoreConstraints(vobj))
 
     def setProperties(self,vobj):
         """Give the site view provider its site view provider specific properties.
@@ -856,23 +915,26 @@ class _ViewProviderSite:
             vobj.ShowHourLabels = True # Show hour labels by default
 
     def restoreConstraints(self, vobj):
-        """Re-apply non-persistent property constraints after a file load."""
+        """Re-apply non-persistent property constraints after a file load.
+
+        It also handles new objects, where their value is 0.
+        """
         pl = vobj.PropertiesList
         if "SunDateMonth" in pl:
-            saved_month = vobj.SunDateMonth
+            saved_month = vobj.SunDateMonth if vobj.SunDateMonth != 0 else 6
             vobj.SunDateMonth = (saved_month, 1, 12, 1)
         else:
             vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
 
         if "SunDateDay" in pl:
-            saved_day = vobj.SunDateDay
+            saved_day = vobj.SunDateDay if vobj.SunDateDay != 0 else 21
             vobj.SunDateDay = (saved_day, 1, 31, 1)
         else:
             # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
             vobj.SunDateDay = (21, 1, 31, 1) # Default to the 21st (solstice)
 
         if "SunTimeHour" in pl:
-            saved_hour = vobj.SunTimeHour
+            saved_hour = vobj.SunTimeHour if abs(vobj.SunTimeHour) > 1e-9 else 12.0
             vobj.SunTimeHour = (saved_hour, 0.0, 23.5, 0.5)
         else:
             # Use 23.5 to avoid issues with hour 24
@@ -1146,7 +1208,7 @@ class _ViewProviderSite:
         if prop == 'Visibility':
             if vobj.Visibility:
                 # When the site becomes visible, check if the sun elements should also be shown.
-                if vobj.ShowSunPosition:
+                if hasattr(vobj, 'ShowSunPosition') and vobj.ShowSunPosition:
                     self.sunSwitch.whichChild = coin.SO_SWITCH_ALL
             else:
                 # When the site is hidden, always hide the sun elements.
@@ -1329,8 +1391,99 @@ class _ViewProviderSite:
         return None
 
     def loads(self,state):
+        """Restore hook for view provider instances created by the loader.
+
+        During document deserialization the Python instance may be
+        allocated without calling __init__, so runtime initialization
+        (adding view properties) must be performed here. We defer the
+        actual reinitialization to the event loop to ensure the
+        ViewObject binding and the Property Editor are available.
+        """
+        # Try to obtain the `ViewObject` immediately; if not ready, the
+        # helper method `_wait_for_viewobject` will schedule retries
+        # via the event loop. This ensures view-specific properties and
+        # constraints are applied once the view object exists.
+        self._wait_for_viewobject(self._on_viewobject_ready)
 
         return None
+
+    def _migrate_legacy_solar_diagram_scale(self, vobj):
+        """Migration for legacy SolarDiagramScale values.
+
+        Historically older FreeCAD files (1.0.0 and prior) sometimes stored
+        an impractically small SolarDiagramScale (for example `1.0`) which
+        results in invisible or confusing solar diagrams in the UI. This
+        helper intentionally performs a small, best-effort normalization:
+
+        - If the `SolarDiagramScale` property exists and its saved value is
+          numeric and <= 1.0 (or effectively zero) it will be replaced with
+          the modern default of 20000.0 (20 m radius).
+        - The operation is non-destructive and best-effort: failures are
+          quietly ignored so loading does not fail.
+
+        Keep this helper small and idempotent so it can be called safely
+        during view-provider restore.
+        """
+        # Keep the migration compact and non-fatal
+        if not FreeCAD.GuiUp:
+            return
+        try:
+            if "SolarDiagramScale" in vobj.PropertiesList:
+                scale_value = getattr(vobj, "SolarDiagramScale", None)
+                if scale_value is None:
+                    return
+                try:
+                    scale_value = float(scale_value)
+                except (ValueError, TypeError):
+                    return
+                # Treat 0 or 1 as legacy values and replace them with the modern default
+                if scale_value <= 1.0 or abs(scale_value) < 1e-9:
+                    vobj.SolarDiagramScale = 20000.0
+                    FreeCAD.Console.PrintMessage(
+                        "ArchSite: migrated SolarDiagramScale property value to 20 m.\n"
+                    )
+        except Exception as e:
+            # Non-fatal: never let migration break document restore.
+            FreeCAD.Console.PrintError(f"ArchSite: Failed during legacy migration: {e}\n")
+
+    def _wait_for_viewobject(self, callback):
+        """Polls until the ViewObject is available, then executes the callback."""
+        from PySide import QtCore
+
+        # Try common ways to obtain the ViewObject
+        vobj = getattr(self, "__vobject__", None)
+        if vobj is None:
+            appobj = getattr(self, "Object", None)
+            if appobj is not None:
+                vobj = getattr(appobj, "ViewObject", None)
+
+        if vobj is None:
+            # ViewObject binding not ready yet: schedule a retry
+            QtCore.QTimer.singleShot(50, lambda: self._wait_for_viewobject(callback))
+            return
+
+        # ViewObject is ready, execute the callback
+        callback(vobj)
+
+    def _on_viewobject_ready(self, vobj):
+        """Callback executed once the ViewObject is guaranteed to be available."""
+        from PySide import QtCore
+
+        # Ensure properties exist (idempotent)
+        try:
+            self.setProperties(vobj)
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"ArchSite: Failed to set properties during restore: {e}\n")
+
+        # Perform any small migrations
+        try:
+            self._migrate_legacy_solar_diagram_scale(vobj)
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"ArchSite: Failed during legacy migration: {e}\n")
+
+        # Give the UI one more event cycle to pick up the new properties,
+        # then restore constraints and defaults.
+        QtCore.QTimer.singleShot(0, lambda: self.restoreConstraints(vobj))
 
     def updateSunPosition(self, vobj):
         """Calculates sun position and updates the sphere, path arc, and ray object."""
@@ -1341,6 +1494,25 @@ class _ViewProviderSite:
 
         obj = vobj.Object
 
+        # During document restore the view provider may be allocated without full runtime
+        # initialization (attach()/node creation). If the scenegraph nodes we need are not yet
+        # present, schedule a retry in the next event loop iteration and return. This avoids
+        # AttributeError and is harmless because updateSunPosition will be called again when the
+        # object becomes consistent, or the scheduled retry will run after attach() finishes.
+        required_attrs = [
+            'sunPathMorningNode', 'sunPathMiddayNode', 'sunPathAfternoonNode',
+            'hourMarkerCoords', 'hourLabelSep', 'sunTransform', 'sunSphere'
+        ]
+        for a in required_attrs:
+            if not hasattr(self, a):
+                try:
+                    from PySide import QtCore
+                    QtCore.QTimer.singleShot(0, lambda: self.updateSunPosition(vobj))
+                except Exception:
+                    # If Qt is unavailable or scheduling fails, just return silently.
+                    pass
+                return
+
         # Handle the visibility toggle for all elements
         self.sunPathMorningNode.removeAllChildren()
         self.sunPathMiddayNode.removeAllChildren()
@@ -1350,7 +1522,8 @@ class _ViewProviderSite:
 
         if not vobj.ShowSunPosition:
             self.sunSwitch.whichChild = -1 # Hide the Pivy sphere and path
-            if obj.SunRay and hasattr(obj.SunRay, "ViewObject"):
+            ray_object = getattr(obj, "SunRay", None)
+            if ray_object and hasattr(ray_object, "ViewObject"):
                 obj.SunRay.ViewObject.Visibility = False
             return
 
@@ -1472,13 +1645,17 @@ class _ViewProviderSite:
         self.sunTransform.translation.setValue(sun_pos_3d.x, sun_pos_3d.y, sun_pos_3d.z)
         self.sunSphere.radius = vobj.SolarDiagramScale * 0.02
 
-        try:
-            ray_object = obj.SunRay
-            if not ray_object: raise AttributeError
-            ray_object.Start = sun_pos_3d
-            ray_object.End = vobj.SolarDiagramPosition
-            ray_object.ViewObject.Visibility = True
-        except (AttributeError, ReferenceError):
+        # Safely obtain existing SunRay if present, and update it; otherwise create one
+        ray_object = getattr(obj, "SunRay", None)
+        if ray_object and hasattr(ray_object, "ViewObject"):
+            try:
+                ray_object.Start = sun_pos_3d
+                ray_object.End = vobj.SolarDiagramPosition
+                ray_object.ViewObject.Visibility = True
+            except Exception:
+                # If updating fails, fall back to creating a new ray
+                ray_object = None
+        if not ray_object:
             ray_object = Draft.make_line(sun_pos_3d, vobj.SolarDiagramPosition)
             vo = ray_object.ViewObject
             vo.LineColor = (1.0, 1.0, 0.0)
@@ -1489,7 +1666,14 @@ class _ViewProviderSite:
 
             if hasattr(obj, "addObject"):
                 obj.addObject(ray_object)
-            obj.SunRay = ray_object
+            # Store new ray on the Site object
+            try:
+                obj.SunRay = ray_object
+            except Exception as e:
+                # Ignore failures to set property on legacy objects, but log them
+                FreeCAD.Console.PrintWarning(
+                    f"ArchSite: could not assign SunRay on object {obj.Label}: {e}\n"
+                    )
 
         ray_object.recompute()
 
@@ -1507,4 +1691,3 @@ class _ViewProviderSite:
         time_string = dt_object_for_label.strftime("%B %d, %H:%M")
         ray_object.Time = time_string
         ray_object.Label = f"Sun Ray ({time_string})"
-

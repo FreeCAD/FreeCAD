@@ -58,17 +58,17 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1740"/>
+      <location filename="../../CommandCreateDims.cpp" line="1742"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1741"/>
+      <location filename="../../CommandCreateDims.cpp" line="1743"/>
       <source>Angle Dimension From 3 Points</source>
       <translation>Котирај угао помоћу 3 тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1742"/>
+      <location filename="../../CommandCreateDims.cpp" line="1744"/>
       <source>Inserts an angle dimension between 3 selected points</source>
       <translation>Направи угаону коту између 3 изабране тачке</translation>
     </message>
@@ -89,17 +89,17 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1693"/>
+      <location filename="../../CommandCreateDims.cpp" line="1695"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1694"/>
+      <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
       <translation>Котирај угао</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1695"/>
+      <location filename="../../CommandCreateDims.cpp" line="1697"/>
       <source>Inserts an angle dimension between two edges</source>
       <translation>Направи угаону коту између 2 изабране дужи</translation>
     </message>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Centerline Faces</source>
-      <translation type="unfinished">Centerline Faces</translation>
+      <translation>Oснa линијa na страницама</translation>
     </message>
   </context>
   <context>
@@ -347,17 +347,17 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1502"/>
+      <location filename="../../CommandCreateDims.cpp" line="1504"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1503"/>
+      <location filename="../../CommandCreateDims.cpp" line="1505"/>
       <source>Diameter Dimension</source>
       <translation>Кота пречника</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1504"/>
+      <location filename="../../CommandCreateDims.cpp" line="1506"/>
       <source>Inserts a diameter dimension of a circular edge or arc</source>
       <translation>Котирај пречник кружнице или кружног лука</translation>
     </message>
@@ -365,17 +365,17 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1361"/>
+      <location filename="../../CommandCreateDims.cpp" line="1363"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1362"/>
+      <location filename="../../CommandCreateDims.cpp" line="1364"/>
       <source>Dimension</source>
       <translation>Мерне јединице</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1363"/>
+      <location filename="../../CommandCreateDims.cpp" line="1365"/>
       <source>Inserts new contextual dimensions to the selection.
 Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
 Left clicking on empty space will validate the current dimension. Right clicking or pressing Esc will cancel.</source>
@@ -1475,27 +1475,27 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1835"/>
+      <location filename="../../CommandCreateDims.cpp" line="1837"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1836"/>
+      <location filename="../../CommandCreateDims.cpp" line="1838"/>
       <source>Extent Dimension</source>
       <translation>Кота распона</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1837"/>
+      <location filename="../../CommandCreateDims.cpp" line="1839"/>
       <source>Inserts a dimension showing the extent (overall length) of an object or feature</source>
       <translation>Котирај распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1903"/>
+      <location filename="../../CommandCreateDims.cpp" line="1905"/>
       <source>Horizontal extent</source>
       <translation>Хоризонтални распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1908"/>
+      <location filename="../../CommandCreateDims.cpp" line="1910"/>
       <source>Vertical extent</source>
       <translation>Вертикални распон</translation>
     </message>
@@ -1557,17 +1557,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1597"/>
+      <location filename="../../CommandCreateDims.cpp" line="1599"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1598"/>
+      <location filename="../../CommandCreateDims.cpp" line="1600"/>
       <source>Horizontal Length Dimension</source>
       <translation>Котирај хоризонтално</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1599"/>
+      <location filename="../../CommandCreateDims.cpp" line="1601"/>
       <source>Inserts a horizontal length dimension of an edge or distance between two points</source>
       <translation>Котирај хоризонтално неку ивицу или растојање између две тачке</translation>
     </message>
@@ -1575,17 +1575,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1929"/>
+      <location filename="../../CommandCreateDims.cpp" line="1931"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1930"/>
+      <location filename="../../CommandCreateDims.cpp" line="1932"/>
       <source>Horizontal Extent Dimension</source>
       <translation>Котирај хоризонзални распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1931"/>
+      <location filename="../../CommandCreateDims.cpp" line="1933"/>
       <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature.</source>
       <translation>Котирај хоризонтални распон.</translation>
     </message>
@@ -1644,17 +1644,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1550"/>
+      <location filename="../../CommandCreateDims.cpp" line="1552"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1551"/>
+      <location filename="../../CommandCreateDims.cpp" line="1553"/>
       <source>Length Dimension</source>
       <translation>Кота растојања</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1552"/>
+      <location filename="../../CommandCreateDims.cpp" line="1554"/>
       <source>Inserts a length dimension of an edge or distance between two points</source>
       <translation>Котирај дужину неке ивице или растојање између две тачке</translation>
     </message>
@@ -1798,17 +1798,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1454"/>
+      <location filename="../../CommandCreateDims.cpp" line="1456"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1455"/>
+      <location filename="../../CommandCreateDims.cpp" line="1457"/>
       <source>Radius Dimension</source>
       <translation>Кота полупречника</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1456"/>
+      <location filename="../../CommandCreateDims.cpp" line="1458"/>
       <source>Inserts a radius dimension of a circular edge or arc</source>
       <translation>Котирај пречник кружнице или кружног лука</translation>
     </message>
@@ -2080,17 +2080,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1645"/>
+      <location filename="../../CommandCreateDims.cpp" line="1647"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1646"/>
+      <location filename="../../CommandCreateDims.cpp" line="1648"/>
       <source>Vertical Length Dimension</source>
       <translation>Котирај вертикално</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1647"/>
+      <location filename="../../CommandCreateDims.cpp" line="1649"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
       <translation>Котирај вертикално неку ивицу или растојање између две тачке</translation>
     </message>
@@ -2098,17 +2098,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2054"/>
+      <location filename="../../CommandCreateDims.cpp" line="2056"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2055"/>
+      <location filename="../../CommandCreateDims.cpp" line="2057"/>
       <source>Vertical Extent Dimension</source>
       <translation>Котирај вертикални распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2056"/>
+      <location filename="../../CommandCreateDims.cpp" line="2058"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
       <translation>Котирај вертикални распон.</translation>
     </message>
@@ -2244,38 +2244,38 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Котирај распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="787"/>
-      <location filename="../../CommandCreateDims.cpp" line="1244"/>
+      <location filename="../../CommandCreateDims.cpp" line="789"/>
+      <location filename="../../CommandCreateDims.cpp" line="1246"/>
       <source>Add horizontal chain dimensions</source>
       <translation>Котирај хоризонталним редним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="792"/>
-      <location filename="../../CommandCreateDims.cpp" line="819"/>
+      <location filename="../../CommandCreateDims.cpp" line="794"/>
+      <location filename="../../CommandCreateDims.cpp" line="821"/>
       <source>Add horizontal coordinate dimensions</source>
       <translation>Котирај хоризонталним паралелним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="796"/>
-      <location filename="../../CommandCreateDims.cpp" line="800"/>
-      <location filename="../../CommandCreateDims.cpp" line="804"/>
+      <location filename="../../CommandCreateDims.cpp" line="798"/>
+      <location filename="../../CommandCreateDims.cpp" line="802"/>
+      <location filename="../../CommandCreateDims.cpp" line="806"/>
       <source>Add 3-points angle dimension</source>
       <translation>Котирај угао помоћу 3 тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="814"/>
+      <location filename="../../CommandCreateDims.cpp" line="816"/>
       <source>Add horizontal chain dimension</source>
       <translation>Котирај хоризонталним редним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="840"/>
-      <location filename="../../CommandCreateDims.cpp" line="855"/>
-      <location filename="../../CommandCreateDims.cpp" line="870"/>
+      <location filename="../../CommandCreateDims.cpp" line="842"/>
+      <location filename="../../CommandCreateDims.cpp" line="857"/>
+      <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>Add length dimension</source>
       <translation>Котирај растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1006"/>
+      <location filename="../../CommandCreateDims.cpp" line="1008"/>
       <source>Add edge length dimension</source>
       <translation>Котирај дужину ивице</translation>
     </message>
@@ -2285,149 +2285,149 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Уметни коту</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="756"/>
+      <location filename="../../CommandCreateDims.cpp" line="758"/>
       <source>Add area dimension</source>
       <translation>Котирај површину</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="767"/>
-      <location filename="../../CommandCreateDims.cpp" line="1062"/>
-      <location filename="../../CommandCreateDims.cpp" line="1163"/>
+      <location filename="../../CommandCreateDims.cpp" line="769"/>
+      <location filename="../../CommandCreateDims.cpp" line="1064"/>
+      <location filename="../../CommandCreateDims.cpp" line="1165"/>
       <source>Add distance dimension</source>
       <translation>Котирај растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="776"/>
-      <location filename="../../CommandCreateDims.cpp" line="882"/>
-      <location filename="../../CommandCreateDims.cpp" line="1143"/>
+      <location filename="../../CommandCreateDims.cpp" line="778"/>
+      <location filename="../../CommandCreateDims.cpp" line="884"/>
+      <location filename="../../CommandCreateDims.cpp" line="1145"/>
       <source>Add distanceX chamfer dimension</source>
       <translation>Котирај хоризонтално обарање ивица</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="829"/>
+      <location filename="../../CommandCreateDims.cpp" line="831"/>
       <source>Add point to line distance dimension</source>
       <translation>Котирај растојање од тачке до prave линије</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="845"/>
-      <location filename="../../CommandCreateDims.cpp" line="860"/>
-      <location filename="../../CommandCreateDims.cpp" line="898"/>
-      <location filename="../../CommandCreateDims.cpp" line="913"/>
-      <location filename="../../CommandCreateDims.cpp" line="928"/>
-      <location filename="../../CommandCreateDims.cpp" line="962"/>
-      <location filename="../../CommandCreateDims.cpp" line="996"/>
-      <location filename="../../CommandCreateDims.cpp" line="1017"/>
+      <location filename="../../CommandCreateDims.cpp" line="847"/>
+      <location filename="../../CommandCreateDims.cpp" line="862"/>
+      <location filename="../../CommandCreateDims.cpp" line="900"/>
+      <location filename="../../CommandCreateDims.cpp" line="915"/>
+      <location filename="../../CommandCreateDims.cpp" line="930"/>
+      <location filename="../../CommandCreateDims.cpp" line="964"/>
+      <location filename="../../CommandCreateDims.cpp" line="998"/>
+      <location filename="../../CommandCreateDims.cpp" line="1019"/>
       <source>Add extent dimension</source>
       <translation>Котирај распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="893"/>
+      <location filename="../../CommandCreateDims.cpp" line="895"/>
       <source>Add angle dimension</source>
       <translation>Котирај угао</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="908"/>
+      <location filename="../../CommandCreateDims.cpp" line="910"/>
       <source>Add circle to line distance dimension</source>
       <translation>Котирај растојање од prave линије до кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="923"/>
+      <location filename="../../CommandCreateDims.cpp" line="925"/>
       <source>Add ellipse to line distance dimension</source>
       <translation>Котирај растојање од prave линије до елипсе</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="947"/>
-      <location filename="../../CommandCreateDims.cpp" line="981"/>
+      <location filename="../../CommandCreateDims.cpp" line="949"/>
+      <location filename="../../CommandCreateDims.cpp" line="983"/>
       <source>Add arc length dimension</source>
       <translation>Котирај дужину лука</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="957"/>
+      <location filename="../../CommandCreateDims.cpp" line="959"/>
       <source>Add circle to circle distance dimension</source>
       <translation>Котирај растојање између две кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="991"/>
+      <location filename="../../CommandCreateDims.cpp" line="993"/>
       <source>Add ellipse to ellipse distance dimension</source>
       <translation>Котирај растојање између две елипсе</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1047"/>
+      <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>Add radius dimension</source>
       <translation>Котирај полупречник</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1051"/>
+      <location filename="../../CommandCreateDims.cpp" line="1053"/>
       <source>Add diameter dimension</source>
       <translation>Котирај пречник</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1146"/>
+      <location filename="../../CommandCreateDims.cpp" line="1148"/>
       <source>Add distanceX dimension</source>
       <translation>Котирај хоризонтално растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1153"/>
+      <location filename="../../CommandCreateDims.cpp" line="1155"/>
       <source>Add distanceY chamfer dimension</source>
       <translation>Котирај вертикално обарање ивица</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1156"/>
+      <location filename="../../CommandCreateDims.cpp" line="1158"/>
       <source>Add distanceY dimension</source>
       <translation>Котирај вертикално растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1201"/>
+      <location filename="../../CommandCreateDims.cpp" line="1203"/>
       <source>Add distanceX extent dimension</source>
       <translation>Котирај хоризонтални распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1206"/>
+      <location filename="../../CommandCreateDims.cpp" line="1208"/>
       <source>Add distanceY extent dimension</source>
       <translation>Котирај вертикални распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1248"/>
+      <location filename="../../CommandCreateDims.cpp" line="1250"/>
       <source>Add horizontal coord dimensions</source>
       <translation>Котирај хоризонталним паралелним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1255"/>
+      <location filename="../../CommandCreateDims.cpp" line="1257"/>
       <source>Add vertical chain dimensions</source>
       <translation>Котирај вертикалним редним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1259"/>
+      <location filename="../../CommandCreateDims.cpp" line="1261"/>
       <source>Add vertical coord dimensions</source>
       <translation>Котирај вертикалним паралелним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1265"/>
+      <location filename="../../CommandCreateDims.cpp" line="1267"/>
       <source>Add oblique chain dimensions</source>
       <translation>Котирај косим редним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1269"/>
+      <location filename="../../CommandCreateDims.cpp" line="1271"/>
       <source>Add oblique coord dimensions</source>
       <translation>Котирај косим паралелним котама</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1336"/>
+      <location filename="../../CommandCreateDims.cpp" line="1338"/>
       <source>Dimension</source>
       <translation>Кота</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1961"/>
+      <location filename="../../CommandCreateDims.cpp" line="1963"/>
       <source>Create Dimension DistanceX</source>
       <translation>Котирај хоризонтално растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1963"/>
+      <location filename="../../CommandCreateDims.cpp" line="1965"/>
       <source>Create Dimension DistanceY</source>
       <translation>Котирај вертикално растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2245"/>
+      <location filename="../../CommandCreateDims.cpp" line="2252"/>
       <source>Create dimension</source>
       <translation>Котирај</translation>
     </message>
@@ -3137,7 +3137,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</source>
-      <translation type="unfinished">To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</translation>
+      <translation>Ако желиш да уметнеш поглед на постојец́е објекте, пре него што покренеш ову алатку мораш их изабрати. Без избора, отвориц́е се претраживач датотека помоћу којег можеш уметнути СВГ или сликовну датотеку.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
@@ -3160,6 +3160,16 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Није изабран објекат са профилом</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1406"/>
+      <source>Select exactly one view to add to clip group</source>
+      <translation type="unfinished">Select exactly one view to add to clip group</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1473"/>
+      <source>Select exactly one view to remove from clip group</source>
+      <translation type="unfinished">Select exactly one view to remove from clip group</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1835"/>
       <source>FreeCAD could not find a page to export</source>
       <translation>FreeCAD није могао да пронађе цртеж за извоз</translation>
@@ -3169,14 +3179,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1197"/>
       <location filename="../../Command.cpp" line="1205"/>
       <location filename="../../Command.cpp" line="1217"/>
-      <location filename="../../CommandCreateDims.cpp" line="1970"/>
-      <location filename="../../CommandCreateDims.cpp" line="1986"/>
-      <location filename="../../CommandCreateDims.cpp" line="2108"/>
-      <location filename="../../CommandCreateDims.cpp" line="2160"/>
-      <location filename="../../CommandCreateDims.cpp" line="2175"/>
-      <location filename="../../CommandCreateDims.cpp" line="2322"/>
-      <location filename="../../CommandCreateDims.cpp" line="2330"/>
-      <location filename="../../CommandCreateDims.cpp" line="2339"/>
+      <location filename="../../CommandCreateDims.cpp" line="1972"/>
+      <location filename="../../CommandCreateDims.cpp" line="1988"/>
+      <location filename="../../CommandCreateDims.cpp" line="2110"/>
+      <location filename="../../CommandCreateDims.cpp" line="2162"/>
+      <location filename="../../CommandCreateDims.cpp" line="2177"/>
+      <location filename="../../CommandCreateDims.cpp" line="2329"/>
+      <location filename="../../CommandCreateDims.cpp" line="2337"/>
+      <location filename="../../CommandCreateDims.cpp" line="2346"/>
       <location filename="../../CommandDecorate.cpp" line="311"/>
       <location filename="../../CommandDecorate.cpp" line="318"/>
       <location filename="../../CommandDecorate.cpp" line="325"/>
@@ -3222,17 +3232,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandCreateDims.cpp" line="1468"/>
-      <location filename="../../CommandCreateDims.cpp" line="1516"/>
-      <location filename="../../CommandCreateDims.cpp" line="1564"/>
-      <location filename="../../CommandCreateDims.cpp" line="1612"/>
-      <location filename="../../CommandCreateDims.cpp" line="1660"/>
-      <location filename="../../CommandCreateDims.cpp" line="1707"/>
-      <location filename="../../CommandCreateDims.cpp" line="1754"/>
-      <location filename="../../CommandCreateDims.cpp" line="1801"/>
-      <location filename="../../CommandCreateDims.cpp" line="1848"/>
-      <location filename="../../CommandCreateDims.cpp" line="1944"/>
-      <location filename="../../CommandCreateDims.cpp" line="2069"/>
+      <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandCreateDims.cpp" line="1518"/>
+      <location filename="../../CommandCreateDims.cpp" line="1566"/>
+      <location filename="../../CommandCreateDims.cpp" line="1614"/>
+      <location filename="../../CommandCreateDims.cpp" line="1662"/>
+      <location filename="../../CommandCreateDims.cpp" line="1709"/>
+      <location filename="../../CommandCreateDims.cpp" line="1756"/>
+      <location filename="../../CommandCreateDims.cpp" line="1803"/>
+      <location filename="../../CommandCreateDims.cpp" line="1850"/>
+      <location filename="../../CommandCreateDims.cpp" line="1946"/>
+      <location filename="../../CommandCreateDims.cpp" line="2071"/>
       <location filename="../../CommandExtensionDims.cpp" line="310"/>
       <location filename="../../CommandExtensionDims.cpp" line="519"/>
       <location filename="../../CommandExtensionDims.cpp" line="807"/>
@@ -3299,13 +3309,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../Command.cpp" line="1191"/>
-      <location filename="../../CommandCreateDims.cpp" line="2323"/>
+      <location filename="../../CommandCreateDims.cpp" line="2330"/>
       <source>Select an object first</source>
       <translation>Прво изабери објекат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1198"/>
-      <location filename="../../CommandCreateDims.cpp" line="2331"/>
+      <location filename="../../CommandCreateDims.cpp" line="2338"/>
       <source>Too many objects selected</source>
       <translation>Превише објеката је изабрано</translation>
     </message>
@@ -3325,9 +3335,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Изабери једну групу погледа и један поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
-      <source>Select exactly one view to add to group</source>
-      <translation>Изабери поглед који желиш да додаш у групу</translation>
+      <location filename="../../Command.cpp" line="1871"/>
+      <source>Page contains a BIM view which will not be exported. Continue?</source>
+      <translation type="unfinished">Page contains a BIM view which will not be exported. Continue?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
@@ -3338,11 +3348,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1420"/>
       <source>Clip and view must be from same page</source>
       <translation>Група погледа и поглед морају бити са истог цртежа</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1473"/>
-      <source>Select exactly one view to remove from group</source>
-      <translation>Изабери поглед који желиш да уклониш из групе</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1492"/>
@@ -3390,78 +3395,73 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Изабрано се не може извести</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1871"/>
-      <source>Page contains DrawViewBIM which will not be exported. Continue?</source>
-      <translation>Цртеж садржи BIM поглед који неће бити извезен. Настави?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="1469"/>
-      <location filename="../../CommandCreateDims.cpp" line="1517"/>
-      <location filename="../../CommandCreateDims.cpp" line="1565"/>
-      <location filename="../../CommandCreateDims.cpp" line="1613"/>
-      <location filename="../../CommandCreateDims.cpp" line="1661"/>
-      <location filename="../../CommandCreateDims.cpp" line="1708"/>
-      <location filename="../../CommandCreateDims.cpp" line="1755"/>
-      <location filename="../../CommandCreateDims.cpp" line="1802"/>
-      <location filename="../../CommandCreateDims.cpp" line="1849"/>
-      <location filename="../../CommandCreateDims.cpp" line="1945"/>
-      <location filename="../../CommandCreateDims.cpp" line="2070"/>
+      <location filename="../../CommandCreateDims.cpp" line="1471"/>
+      <location filename="../../CommandCreateDims.cpp" line="1519"/>
+      <location filename="../../CommandCreateDims.cpp" line="1567"/>
+      <location filename="../../CommandCreateDims.cpp" line="1615"/>
+      <location filename="../../CommandCreateDims.cpp" line="1663"/>
+      <location filename="../../CommandCreateDims.cpp" line="1710"/>
+      <location filename="../../CommandCreateDims.cpp" line="1757"/>
+      <location filename="../../CommandCreateDims.cpp" line="1804"/>
+      <location filename="../../CommandCreateDims.cpp" line="1851"/>
+      <location filename="../../CommandCreateDims.cpp" line="1947"/>
+      <location filename="../../CommandCreateDims.cpp" line="2072"/>
       <source>Close the active task dialog and try again</source>
       <translation>Затвори дијалог активног задатка и покушај поново</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1971"/>
-      <location filename="../../CommandCreateDims.cpp" line="2161"/>
+      <location filename="../../CommandCreateDims.cpp" line="1973"/>
+      <location filename="../../CommandCreateDims.cpp" line="2163"/>
       <source>No view of a part in selection.</source>
       <translation>Није изабран поглед дела.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2013"/>
+      <location filename="../../CommandCreateDims.cpp" line="2015"/>
       <source>Cannot make 2D extent dimension from selection</source>
       <translation>На основу изабраног није могуће направити коту за 2D распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2029"/>
+      <location filename="../../CommandCreateDims.cpp" line="2031"/>
       <source>Cannot make 3D extent dimension from selection</source>
       <translation>На основу изабраног није могуће направити коту за 3Д распон</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2109"/>
+      <location filename="../../CommandCreateDims.cpp" line="2111"/>
       <source>There is no dimension in your selection</source>
       <translation>Ниси изабрао коту</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2176"/>
+      <location filename="../../CommandCreateDims.cpp" line="2178"/>
       <source>Cannot make 2D dimension from selection</source>
       <translation>На основу изабраног није могуће направити коту</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2192"/>
+      <location filename="../../CommandCreateDims.cpp" line="2194"/>
       <source>Cannot make 3D dimension from selection</source>
       <translation>На основу изабраног није могуће направити 3Д коту</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2205"/>
+      <location filename="../../CommandCreateDims.cpp" line="2207"/>
       <source>Ellipse curve warning</source>
       <translation>Упозорење за елиптичну криву</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2216"/>
+      <location filename="../../CommandCreateDims.cpp" line="2218"/>
       <source>B-spline curve warning</source>
       <translation>Упозорење за Б-Сплајн криву</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2227"/>
+      <location filename="../../CommandCreateDims.cpp" line="2229"/>
       <source>B-spline curve error</source>
       <translation>Грешка Б-Сплајн криве</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2228"/>
+      <location filename="../../CommandCreateDims.cpp" line="2230"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
       <translation>Изабрана ивица је Б-Сплајн крива тако да се не може израчунатии пречник/полупречник.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2340"/>
+      <location filename="../../CommandCreateDims.cpp" line="2347"/>
       <source>Create a page first.</source>
       <translation>Прво направи страницу.</translation>
     </message>
@@ -3477,9 +3477,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="53"/>
-      <location filename="../../CommandCreateDims.cpp" line="2012"/>
-      <location filename="../../CommandCreateDims.cpp" line="2028"/>
-      <location filename="../../CommandCreateDims.cpp" line="2191"/>
+      <location filename="../../CommandCreateDims.cpp" line="2014"/>
+      <location filename="../../CommandCreateDims.cpp" line="2030"/>
+      <location filename="../../CommandCreateDims.cpp" line="2193"/>
       <location filename="../../CommandDecorate.cpp" line="332"/>
       <location filename="../../CommandDecorate.cpp" line="338"/>
       <location filename="../../TaskDimension.cpp" line="549"/>
@@ -3494,17 +3494,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2206"/>
+      <location filename="../../CommandCreateDims.cpp" line="2208"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>Изабрана ивица је елипса. Вредност ће бити приближна. Настави?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2217"/>
+      <location filename="../../CommandCreateDims.cpp" line="2219"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>Изабрана ивица је Б-Сплајн. Вредност ће бити приближна. Настави?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1987"/>
+      <location filename="../../CommandCreateDims.cpp" line="1989"/>
       <source>Selection contains both 2D and 3D geometry</source>
       <translation>Изабрана је и 2Д и 3Д геометрија</translation>
     </message>
@@ -4280,7 +4280,7 @@ it has a weld symbol that would become broken.</source>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="379"/>
       <source>Close open dialog before deleting detail object</source>
-      <translation type="unfinished">Close open dialog before deleting detail object</translation>
+      <translation>Пре брисања Детаља мораш затворити отворени прозор</translation>
     </message>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="394"/>
@@ -4466,7 +4466,7 @@ Preparation depth, (weld size)</source>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="82"/>
-      <location filename="../../TaskWeldingSymbol.ui" line="132"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="182"/>
       <source>Symbol</source>
       <translation>Ознака шава</translation>
     </message>
@@ -4485,95 +4485,95 @@ Preparation depth, (weld size)</source>
 Висина а или ширина з шава (вредност)</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="129"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="179"/>
       <source>Pick other side symbol</source>
       <translation>Одабери доњу ознаку шава</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="139"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="171"/>
       <source>Text after other side symbol
 Number of welds × length, (gap)</source>
       <translation>Текст иза доњег симбола шава
 Број сегмената x дужина сегмената (растојање између сегмената)</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="171"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="153"/>
       <source>Remove other side symbol</source>
       <translation>Обриши доњу ознаку шава</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="174"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="156"/>
       <source>Delete</source>
       <translation>Обриши</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="181"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="163"/>
       <source>Text below arrow side symbol
 Angle, surface finish, root</source>
       <translation>Текст испод доњег симбола шава
 Угао, површинска храпавост, корен шава</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="213"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="216"/>
       <source>Flips the sides</source>
       <translation>Обрни стране</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="216"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="219"/>
       <source>Flip sides</source>
       <translation>Обрни стране</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="238"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="241"/>
       <source>Adds the &apos;Field weld&apos; symbol (flag)
 at the kink in the leader line</source>
       <translation>Додаје симбол &apos;Монтажни шав&apos; (заставица)
 на месту лома показне линије</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="242"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="245"/>
       <source>Field weld</source>
       <translation>Монтажни шав</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="249"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="252"/>
       <source>Adds the &apos;All around&apos; symbol (circle)
 at the kink in the leader line</source>
       <translation>Додаје симбол &apos;Око целе контуре&apos; (круг)
 на месту лома показне линије</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="253"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="256"/>
       <source>All around</source>
       <translation>Око целе контуре</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="274"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="277"/>
       <source>Tail text</source>
       <translation>Текст позади</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="294"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="297"/>
       <source>Symbol directory</source>
       <translation>Фасцикла са ознакама врсте шавова</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="260"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="263"/>
       <source>Offsets the lower symbol to indicate alternating welds</source>
       <translation>Помера доњу ознаку шава да назначи наизменичне испрекидане шавове</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="263"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="266"/>
       <source>Alternating</source>
       <translation>Наизменични</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="287"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="290"/>
       <source>Text at end of symbol</source>
       <translation>Текст на крају ознаке</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.ui" line="301"/>
+      <location filename="../../TaskWeldingSymbol.ui" line="304"/>
       <source>Directory path for welding symbols.
 This directory will be used for the symbol selection.</source>
       <translation>Путања према фасцикли са ознакама врсте шавова.
@@ -4675,7 +4675,7 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="212"/>
       <source>Issue progress messages while building view geometry</source>
-      <translation type="unfinished">Issue progress messages while building view geometry</translation>
+      <translation>Објави поруке о напретку током израде геометрије погледа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="215"/>
@@ -4727,7 +4727,7 @@ Each unit is approximately 0.1mm wide</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="443"/>
       <source>Show section edges</source>
-      <translation type="unfinished">Show section edges</translation>
+      <translation>Прикажи ивице пресека</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="459"/>
@@ -4739,14 +4739,14 @@ Each unit is approximately 0.1mm wide</source>
       <source>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
 For large scales, errors may occur due to excessive tiling.
 Increase the limit if necessary.</source>
-      <translation type="unfinished">Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
-For large scales, errors may occur due to excessive tiling.
-Increase the limit if necessary.</translation>
+      <translation>Ограничи број SVG сегмената величине 64×64 пиксела који ће се користити за шрафирање једне странице.
+Код великих размера, могу се јавити грешке због прекомерног постављања сегмената.
+Повец́ај ограничење ако је потребно.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
-      <translation type="unfinished">Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</translation>
+      <translation>Изабери не-конфликтну комбинацију типки на тастури јер неке комбинације типки које диктира ОС и стил-а навигације могу бити у сукобу са унапред задатим модификаторским типкама.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
@@ -4886,22 +4886,22 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="91"/>
       <source>Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</source>
-      <translation type="unfinished">Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</translation>
+      <translation>Обележи пресек на изворном погледу. У супротном, на изворном погледу нец́е бити приказана линија пресека, показне стрелице и словна ознака.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="94"/>
       <source>Show section line in source view</source>
-      <translation type="unfinished">Show section line in source view</translation>
+      <translation>Обележи пресек на изворном погледу</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="134"/>
       <source>Draws a cut line on the source view. Otherwise, only the change marks, arrows and symbols will be displayed.</source>
-      <translation type="unfinished">Draws a cut line on the source view. Otherwise, only the change marks, arrows and symbols will be displayed.</translation>
+      <translation>Прикажи на изворном погледу линије пресечних равни. У супротном, пресек ће бити обележен само са показним стрелицама и словном ознаком.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="137"/>
       <source>Include cut line in section annotation</source>
-      <translation type="unfinished">Include cut line in section annotation</translation>
+      <translation>Приликом обележавања пресека прикажи и линију пресека</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="177"/>
@@ -5014,6 +5014,17 @@ when hatching a face with a PAT pattern</source>
       <translation>Површ пресека</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="698"/>
+      <source>Shape of line end caps. The default (round) should almost
+always be the right choice.  Flat or square caps are useful
+for using drawings as a 1:1 cutting guide.
+</source>
+      <translation type="unfinished">Shape of line end caps. The default (round) should almost
+always be the right choice.  Flat or square caps are useful
+for using drawings as a 1:1 cutting guide.
+</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="768"/>
       <source>Line width group</source>
       <translation>Група ширина линија</translation>
@@ -5097,17 +5108,6 @@ when hatching a face with a PAT pattern</source>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="680"/>
       <source>Line standard</source>
       <translation>Стандард за врсте линија</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="698"/>
-      <source>Shape of line end caps. The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-for using drawings a 1:1 cutting guide.
-</source>
-      <translation>Облик крајева линија. Подразумевани (Заобљени) би требало скоро увек
-да буде прави избор. Равни или квадратни крајеви су корисни 
-ако планирате да користите цртеж као шаблон за сечење 1:1.
-</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="716"/>
@@ -5570,11 +5570,11 @@ Multiplier of &apos;Font size&apos;</source>
 ‘Separated tools’ displays individual tools for each dimension type.
 ‘Both’ enables both the unified tool and the individual tools.
 This affects only the toolbar; all tools remain available via the menu and shortcuts.</source>
-      <translation type="unfinished">Choose the type of dimensioning tools shown in the toolbar:
-‘Single tool’ provides one unified tool for all dimension types (Distance, X/Y, Angle, Radius) with others in a drop-down.
-‘Separated tools’ displays individual tools for each dimension type.
-‘Both’ enables both the unified tool and the individual tools.
-This affects only the toolbar; all tools remain available via the menu and shortcuts.</translation>
+      <translation>Изабери врсту алатки за котирање на траци са алаткама:
+„Заједничка алатка“: једна алатка за све врсте котирања. Растојање X/Y, Угао, Полупречник, Пречник...
+„Појединачне алатке“: Појединачне алатке за сваку врсту котирања.
+„Оба“: На траци са алаткама ће се налазити и заједничка и појединачне алатке за котирање.
+Ово подешавање је само за траку са алаткама. Шта год буде изабрано све алатке су увек доступне помоћу менија и пречица.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
@@ -5634,11 +5634,6 @@ This affects only the toolbar; all tools remain available via the menu and short
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="20"/>
       <source>General</source>
       <translation>Опште</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
-      <source>Drawing Update</source>
-      <translation>Ажурирање цртежа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="49"/>
@@ -5720,6 +5715,11 @@ for ProjectionGroups</source>
       <translation>Европски</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
+      <source>Page Update</source>
+      <translation type="unfinished">Page Update</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
       <source>Update with 3D (global policy)</source>
       <translation>Ажурирај са 3Д (општа пракса)</translation>
@@ -5734,7 +5734,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
       <source>Allow page override (global policy)</source>
-      <translation type="unfinished">Allow page override (global policy)</translation>
+      <translation>Дозволи замену цртежа (општа смерница)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="109"/>
@@ -5801,7 +5801,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
       <source>Starting directory for &apos;Insert Page From Template&apos; tool</source>
-      <translation type="unfinished">Starting directory for &apos;Insert Page From Template&apos; tool</translation>
+      <translation>Фасцикла са припремљеним шаблонима празних цртежа за алатку &apos;Изабери нови празни цртеж&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
@@ -5879,11 +5879,6 @@ can override the global &apos;Update with 3D&apos; parameter</source>
       <translation>Ухвати поравнање погледа</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
-      <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging in TaskDetail.</source>
-      <translation>Означи ако желиш да приликом превлачења ознака детаљног погледа ухвати најближе теме.</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
       <source>Snap detail highlights</source>
       <translation>Хватање ознаке детаљног погледа</translation>
@@ -5921,7 +5916,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="816"/>
       <source>View Defaults</source>
-      <translation type="unfinished">View Defaults</translation>
+      <translation>Унапред задана подешавања погледа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="859"/>
@@ -5934,9 +5929,14 @@ can override the global &apos;Update with 3D&apos; parameter</source>
       <translation>Хватање за</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
+      <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
+      <translation type="unfinished">Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
-      <translation type="unfinished">When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</translation>
+      <translation>Приликом превлачења погледа, он ће се поравнати ако се налази унутар овог дела величине погледа од исправног поравнања.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="961"/>
@@ -5946,12 +5946,12 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="968"/>
       <source>Highlight snapping factor</source>
-      <translation>Коефицијент хватања ознаке детаљног погледа</translation>
+      <translation>Коефицијент хватања темена</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="975"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
-      <translation type="unfinished">Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</translation>
+      <translation>Да би неко теме било ухваћено оно се мора налазити унутар зоне чији се полупречник одређује на основу овог коефицијента.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1024"/>
@@ -5969,13 +5969,13 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="47"/>
       <source>Hidden Line Removal</source>
-      <translation>Уклањање сакривених линија</translation>
+      <translation>Уклањање заклоњених линија</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="66"/>
       <source>Use an approximation to find hidden lines.
 Fast, but result is a collection of short straight lines.</source>
-      <translation>Користи апроксимацију многоугла да би нашао сакривене линије.
+      <translation>Користи апроксимацију многоугла да би нашао заклоњене ивице.
 Брзо, али резултат је скуп кратких правих линија.</translation>
     </message>
     <message>
@@ -5986,18 +5986,18 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="140"/>
       <source>Shows hard and outline edges (always shown)</source>
-      <translation type="unfinished">Shows hard and outline edges (always shown)</translation>
+      <translation>Прикажи видљиве ивице (увек се приказује)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show hard lines</source>
-      <translation type="unfinished">Show hard lines</translation>
+      <translation>Прикажи заклоњене ивице</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
       <source>Shows hidden hard and outline edges</source>
-      <translation type="unfinished">Shows hidden hard and outline edges</translation>
+      <translation>Прикажи заклоњене ивице</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
@@ -6007,7 +6007,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
       <source>Shows hidden smooth edges</source>
-      <translation>Прикажи сакривене ублажене ивице</translation>
+      <translation>Прикажи заклоњене ублажене ивице</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="257"/>
@@ -6017,7 +6017,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="287"/>
       <source>Shows hidden seam lines</source>
-      <translation>Прикажи сакривене шавне линије</translation>
+      <translation>Прикажи заклоњене шавне линије</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="314"/>
@@ -6033,7 +6033,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="341"/>
       <source>Shows hidden equal parameterization lines</source>
-      <translation>Прикажи сакривене линије са једнаком параметризацијом</translation>
+      <translation>Прикажи заклоњене линије са једнаком параметризацијом</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="368"/>
@@ -6119,17 +6119,17 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="184"/>
       <source>Default scale for views if &apos;View scale type&apos; is &apos;Custom&apos;</source>
-      <translation type="unfinished">Default scale for views if &apos;View scale type&apos; is &apos;Custom&apos;</translation>
+      <translation>Унапред задата размера за погледе ако је опција &apos;Врста размере погледа&apos; подешена као &apos;Сопствена&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="214"/>
       <source>View scale type</source>
-      <translation type="unfinished">View scale type</translation>
+      <translation>Врста размере погледа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="226"/>
       <source>Uses the original (incorrect) scaling method for SVG symbols, Spreadsheet views and Draft views as used in v1.0 and earlier. Otherwise, a more accurate method will be used.</source>
-      <translation type="unfinished">Uses the original (incorrect) scaling method for SVG symbols, Spreadsheet views and Draft views as used in v1.0 and earlier. Otherwise, a more accurate method will be used.</translation>
+      <translation>Као што је коришћено до верзије 1.0, за SVG симболе, табеларне погледе и основне погледе користи оригинални (нетачан) метод скалирања цртежа. У супротном, користиће се прецизнији метод.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
@@ -6342,7 +6342,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="181"/>
       <source>Shape scale</source>
-      <translation type="unfinished">Shape scale</translation>
+      <translation>Размера ознаке</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="213"/>
@@ -6607,12 +6607,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="162"/>
       <source>Projection strategy</source>
-      <translation type="unfinished">Projection strategy</translation>
+      <translation>Врста пресека</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="204"/>
       <source>No parallel</source>
-      <translation type="unfinished">No parallel</translation>
+      <translation>Степенасти пресек са косим равнима</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="232"/>
@@ -6642,23 +6642,23 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="395"/>
       <source>Check to update display after every property change</source>
-      <translation type="unfinished">Check to update display after every property change</translation>
+      <translation>Ажурирај приказ након сваке промене неког својства</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="405"/>
       <source>Rebuild display now. May be slow for complex models</source>
-      <translation type="unfinished">Rebuild display now. May be slow for complex models</translation>
+      <translation>Поново ажурирај приказ. Може бити споро за сложене моделе</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="187"/>
       <location filename="../../TaskComplexSection.ui" line="194"/>
       <source>Offset</source>
-      <translation>Одмак</translation>
+      <translation>Степенасти пресек</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="199"/>
       <source>Aligned</source>
-      <translation>Поравнато</translation>
+      <translation>Заротирани пресек</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="212"/>
@@ -6862,7 +6862,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
       <source>Modifiers</source>
-      <translation>Принципи</translation>
+      <translation>Модификатори</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="202"/>
@@ -7379,7 +7379,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskDimension.ui" line="291"/>
       <source>Drawing style</source>
-      <translation type="unfinished">Drawing style</translation>
+      <translation>Стил цртежа</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="302"/>
@@ -7862,7 +7862,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
       <source>To these dimensions</source>
-      <translation type="unfinished">To these dimensions</translation>
+      <translation>Ка овим котама</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="55"/>
@@ -8407,7 +8407,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="295"/>
       <source>Global 3D coordinates defining the shortest distance from the 3D origin to the section plane</source>
-      <translation type="unfinished">Global 3D coordinates defining the shortest distance from the 3D origin to the section plane</translation>
+      <translation>Глобалне 3Д координате које одређују најкраће растојање од 3Д координатног почетка до равни пресека</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="455"/>
@@ -8950,17 +8950,17 @@ using the given X/Y spacings</source>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2092"/>
+      <location filename="../../CommandCreateDims.cpp" line="2094"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2093"/>
+      <location filename="../../CommandCreateDims.cpp" line="2095"/>
       <source>Repair Dimension References</source>
       <translation>Поправи референце коте</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2094"/>
+      <location filename="../../CommandCreateDims.cpp" line="2096"/>
       <source>Repairs broken or incorrect dimension references</source>
       <translation>Поправи оштећене или нетачне референце кота</translation>
     </message>
@@ -9733,7 +9733,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="55"/>
       <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
+      <translation>Поравнај изабрани пресека ортогонално са његовим изворним погледом или неку изабрану ивицу пресека са изабраним теменом неког погледа</translation>
     </message>
   </context>
   <context>
@@ -9753,7 +9753,7 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionDims.cpp" line="212"/>
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
-      <translation type="unfinished">Inserts a repeated feature count at the beginning of the dimension</translation>
+      <translation>Ispred kotnog broja upiši broj ponavljanja istih detalja koji se kotiraju</translation>
     </message>
   </context>
   <context>
@@ -9822,12 +9822,12 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawCompDimensionTools</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1401"/>
+      <location filename="../../CommandCreateDims.cpp" line="1403"/>
       <source>Dimension</source>
       <translation>Кота</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1402"/>
+      <location filename="../../CommandCreateDims.cpp" line="1404"/>
       <source>Dimension tools</source>
       <translation>Алатке за котирање</translation>
     </message>
@@ -9835,17 +9835,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawAreaDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1787"/>
+      <location filename="../../CommandCreateDims.cpp" line="1789"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1788"/>
+      <location filename="../../CommandCreateDims.cpp" line="1790"/>
       <source>Area Annotation</source>
       <translation>Ознака површине</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1789"/>
+      <location filename="../../CommandCreateDims.cpp" line="1791"/>
       <source>Inserts an annotation showing the area of a selected face</source>
       <translation>Уметни напомену са површином изабране странице</translation>
     </message>
@@ -9947,7 +9947,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAlign.cpp" line="123"/>
       <source>Aligns the selected vertices or edges vertically to the view rotation</source>
-      <translation type="unfinished">Aligns the selected vertices or edges vertically to the view rotation</translation>
+      <translation>Изабери на погледу 2 темена или ивицу и заокрени га да он изабрани елементи буду вертикални</translation>
     </message>
   </context>
   <context>
@@ -9965,7 +9965,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAlign.cpp" line="156"/>
       <source>Aligns the selected vertices or edges horizontally to the view rotation</source>
-      <translation type="unfinished">Aligns the selected vertices or edges horizontally to the view rotation</translation>
+      <translation>Изабери на погледу 2 темена или ивицу и заокрени га да он изабрани елементи буду хоризонтални</translation>
     </message>
   </context>
   <context>
@@ -10069,7 +10069,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1905"/>
+      <location filename="../../CommandCreateDims.cpp" line="1907"/>
       <source>Insert horizontal extent dimension</source>
       <translation>Котирај хоризонтални распон</translation>
     </message>
@@ -10077,7 +10077,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1909"/>
+      <location filename="../../CommandCreateDims.cpp" line="1911"/>
       <source>Insert vertical extent dimension</source>
       <translation>Котирај вертикални распон</translation>
     </message>
@@ -10166,7 +10166,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Centerline 2 Lines</source>
-      <translation type="unfinished">Centerline 2 Lines</translation>
+      <translation>Осна линија између 2 линије</translation>
     </message>
   </context>
   <context>
@@ -10174,7 +10174,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Centerline 2 Points</source>
-      <translation type="unfinished">Centerline 2 Points</translation>
+      <translation>Осна линија између 2 тачке</translation>
     </message>
   </context>
 </TS>

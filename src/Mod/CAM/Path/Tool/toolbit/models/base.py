@@ -683,7 +683,7 @@ class ToolBit(Asset, ABC):
             # Conditional to avoid unnecessary migration warning when called
             # from onDocumentRestored.
             if value is not None and getattr(self.obj, name) != value:
-                setattr(self.obj, name, value)
+                PathUtil.setProperty(self.obj, name, value)
 
         # 2. Add additional properties that are part of the shape,
         # but not part of the schema.
@@ -708,7 +708,8 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
 
             # Set the property value
-            PathUtil.setProperty(self.obj, name, value)
+            if value is not None and getattr(self.obj, name) != value:
+                PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
 
         # 3. Ensure SpindleDirection property exists and is set
@@ -725,8 +726,12 @@ class ToolBit(Asset, ABC):
             self.obj.SpindleDirection = "Forward"  # Default value
 
         spindle_value = self._tool_bit_shape.get_parameters().get("SpindleDirection")
-        if spindle_value in ("Forward", "Reverse", "None"):
-            self.obj.SpindleDirection = spindle_value
+        if (
+            spindle_value in ("Forward", "Reverse", "None")
+            and self.obj.SpindleDirection != spindle_value
+        ):
+            # self.obj.SpindleDirection = spindle_value
+            PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
 
         # 4. Ensure Material property exists and is set
         if not hasattr(self.obj, "Material"):
@@ -740,8 +745,8 @@ class ToolBit(Asset, ABC):
             self.obj.Material = "HSS"  # Default value
 
         material_value = self._tool_bit_shape.get_parameters().get("Material")
-        if material_value in ("HSS", "Carbide"):
-            self.obj.Material = material_value
+        if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
+            PathUtil.setProperty(self.obj, "Material", material_value)
 
     def _update_visual_representation(self):
         """

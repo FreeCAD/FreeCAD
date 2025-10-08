@@ -37,7 +37,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation type="unfinished">Layers Manager</translation>
+      <translation>レイヤーマネージャー</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>

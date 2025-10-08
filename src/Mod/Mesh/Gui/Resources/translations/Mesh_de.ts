@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Evaluate Solid</source>
-      <translation>Körper auswerten</translation>
+      <translation>Auf Festkörper prüfen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
@@ -538,7 +538,7 @@
     <message>
       <location filename="../../Command.cpp" line="1649"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation>Unterteilen mit best-angenäherten Oberflächen</translation>
+      <translation>Segmentierung aus Oberflächen bester Passform</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
@@ -893,7 +893,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
       <source>Orientation</source>
-      <translation>Orientierung</translation>
+      <translation>Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="84"/>
@@ -993,7 +993,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="554"/>
       <source>Orientation</source>
-      <translation>Orientierung</translation>
+      <translation>Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="522"/>

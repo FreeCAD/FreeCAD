@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="47"/>
+      <location filename="../../Command.cpp" line="45"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Area</source>
       <translation>Surface</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Creates a feature area from the selected objects</source>
       <translation>Crée une zone d'usinage à partir d'objets sélectionnés.</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="140"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>Area Workplane</source>
       <translation>Créer une zone plane d'usinage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Selects a workplane for a feature area</source>
       <translation>Sélectionne un plan de travail pour une zone d'usinage.</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>Compound</source>
       <translation>Composés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Creates a compound from the selected toolpaths</source>
       <translation type="unfinished">Creates a compound from the selected toolpaths</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>From Shape</source>
       <translation>Créer un parcours à partir d'une forme</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Creates a toolpath from a selected shape</source>
       <translation>Créer un parcours à partir d’une forme sélectionnée</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Create Path Area View</source>
       <translation>Créer une vue de la zone du parcours</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Create Path Area</source>
       <translation>Créer une zone de parcours</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Select Workplane for Path Area</source>
       <translation>Sélectionner un plan de travail pour une zone de parcours</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Create Path Compound</source>
       <translation>Créer un composé de parcours</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Create Path Shape</source>
       <translation>Créer une forme de parcours</translation>
     </message>
@@ -714,9 +714,9 @@ Add features for processing by selecting them and then pressing &apos;Add&apos;.
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. Refine the list afterwards by enabling/disabling, removing and adding features.</source>
       <translation>Tableau des trous et des rayons calculés pour chaque trou.
 
-Ajouter des éléments pour le traitement en les sélectionnant, puis en appuyant sur « Ajouter ». Si un élément est ajouté accidentellement à la liste, il peut être supprimé à l'aide de « Supprimer » et ne sera plus traité.
+Ajouter des trous pour le traitement en les sélectionnant, puis en appuyant sur « Ajouter ». Si un trou est ajouté accidentellement à la liste, il peut être supprimé à l'aide de « Supprimer » et ne sera plus traité.
 
-La réinitialisation supprime tous les éléments de la liste et remplit la liste avec tous les trous circulaires éligibles pour l'opération à partir du modèle. Affiner ensuite la liste en activant/désactivant, supprimant et ajoutant des éléments.</translation>
+La réinitialisation supprime tous les trous de la liste et remplit la liste avec tous les trous circulaires éligibles pour l'opération à partir du modèle. Affiner ensuite la liste en activant/désactivant, supprimant et ajoutant des trous.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="36"/>
@@ -2701,8 +2701,8 @@ Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment t
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="43"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="72"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="41"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="70"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
@@ -2909,7 +2909,7 @@ Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment t
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="50"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="48"/>
       <source>Compound paths</source>
       <translation>Parcours composés</translation>
     </message>
@@ -3908,60 +3908,60 @@ Par défaut : 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="240"/>
+      <location filename="../../../InitGui.py" line="247"/>
       <source>Project Setup</source>
       <translation>Configuration du projet</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="241"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>Tool Commands</source>
       <translation>Commandes de l’outil</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="243"/>
+      <location filename="../../../InitGui.py" line="250"/>
       <source>New Operations</source>
       <translation>Nouvelles opérations</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="247"/>
-      <location filename="../../../InitGui.py" line="283"/>
+      <location filename="../../../InitGui.py" line="254"/>
+      <location filename="../../../InitGui.py" line="290"/>
       <source>Path Modification</source>
       <translation>Modifications du parcours</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Helpful Tools</source>
       <translation>Outils utiles</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="253"/>
-      <location filename="../../../InitGui.py" line="268"/>
+      <location filename="../../../InitGui.py" line="260"/>
       <location filename="../../../InitGui.py" line="275"/>
       <location filename="../../../InitGui.py" line="282"/>
-      <location filename="../../../InitGui.py" line="290"/>
-      <location filename="../../../InitGui.py" line="296"/>
-      <location filename="../../../InitGui.py" line="298"/>
-      <location filename="../../../InitGui.py" line="301"/>
+      <location filename="../../../InitGui.py" line="289"/>
+      <location filename="../../../InitGui.py" line="297"/>
+      <location filename="../../../InitGui.py" line="303"/>
+      <location filename="../../../InitGui.py" line="305"/>
+      <location filename="../../../InitGui.py" line="308"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="269"/>
+      <location filename="../../../InitGui.py" line="276"/>
       <source>Path Dressup</source>
       <translation>Finitions du parcours</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="276"/>
+      <location filename="../../../InitGui.py" line="283"/>
       <source>Supplemental Commands</source>
       <translation>Autres commandes</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="291"/>
+      <location filename="../../../InitGui.py" line="298"/>
       <source>Specialty Operations</source>
       <translation>Opérations spécialisées</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="302"/>
+      <location filename="../../../InitGui.py" line="309"/>
       <source>Utils</source>
       <translation>Utilitaires</translation>
     </message>
@@ -4301,67 +4301,67 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="90"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="354"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="355"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>Définir la distance qui tentera d'éviter les rétractions inutiles</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="96"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="231"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="232"/>
       <source>The style of motion into the toolpath</source>
       <translation type="unfinished">The style of motion into the toolpath</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="243"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="244"/>
       <source>The style of motion out of the toolpath</source>
       <translation type="unfinished">The style of motion out of the toolpath</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="116"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="254"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="255"/>
       <source>Angle of the Lead-In (1..90)</source>
       <translation type="unfinished">Angle of the Lead-In (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="122"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="262"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="263"/>
       <source>Angle of the Lead-Out (1..90)</source>
       <translation type="unfinished">Angle of the Lead-Out (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="294"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="295"/>
       <source>Determine length of the Lead-In</source>
       <translation type="unfinished">Determine length of the Lead-In</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="134"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="303"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="304"/>
       <source>Determine length of the Lead-Out</source>
       <translation type="unfinished">Determine length of the Lead-Out</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="140"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="323"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="324"/>
       <source>Invert Lead-In direction</source>
       <translation type="unfinished">Invert Lead-In direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="146"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="330"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="331"/>
       <source>Invert Lead-Out direction</source>
       <translation type="unfinished">Invert Lead-Out direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="152"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="337"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="338"/>
       <source>Move start point</source>
       <translation>Déplacer le point de départ</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="158"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="344"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="345"/>
       <source>Move end point</source>
       <translation>Déplacer le point d'arrivée</translation>
     </message>
@@ -5624,6 +5624,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="285"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="742"/>
       <source>Tool material</source>
       <translation type="unfinished">Tool material</translation>
     </message>
@@ -5645,6 +5646,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="82"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="276"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="723"/>
       <source>Direction of spindle rotation</source>
       <translation>Sens de rotation du mandrin</translation>
     </message>
@@ -6350,8 +6352,8 @@ Annulation de la création de l'opération</translation>
       <location filename="../../../InitGui.py" line="112"/>
       <location filename="../../../InitGui.py" line="116"/>
       <location filename="../../../InitGui.py" line="120"/>
-      <location filename="../../../InitGui.py" line="319"/>
-      <location filename="../../AppPathGui.cpp" line="91"/>
+      <location filename="../../../InitGui.py" line="326"/>
+      <location filename="../../AppPathGui.cpp" line="90"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
@@ -6367,7 +6369,7 @@ Annulation de la création de l'opération</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="233"/>
+      <location filename="../../../InitGui.py" line="240"/>
       <source>3D Operations</source>
       <translation>Opérations 3D</translation>
     </message>
@@ -6498,7 +6500,7 @@ Annulation de la création de l'opération</translation>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1195"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1197"/>
       <source>Lead In/Out</source>
       <translation>Entrée/sortie</translation>
     </message>
@@ -6543,22 +6545,22 @@ Annulation de la création de l'opération</translation>
       <translation>Vertical</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1199"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1201"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation type="unfinished">Creates entry and exit motions for a selected path</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1212"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1214"/>
       <source>Select one toolpath object</source>
       <translation type="unfinished">Select one toolpath object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1221"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1223"/>
       <source>Select a Profile object</source>
       <translation type="unfinished">Select a Profile object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1217"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1219"/>
       <source>The selected object is not a toolpath</source>
       <translation>L'objet sélectionné n'est pas un parcours d'outil</translation>
     </message>
@@ -7126,308 +7128,308 @@ Annulation de la création de l'opération</translation>
   <context>
     <name>CAM_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
       <source>Table of Contents</source>
       <translation>Table des matières</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Part Information</source>
       <translation>Informations sur les pièces</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
       <source>Run Summary</source>
       <translation>Résumé de l'exécution</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
       <source>Rough Stock</source>
       <translation>Brut grossier</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>Tool Data</source>
       <translation>Données de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="62"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
       <source>Fixtures</source>
       <translation>Fixations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Squawks</source>
       <translation>Avertissements</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="117"/>
       <source>Job Type</source>
       <translation>Type de tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="120"/>
       <source>Customer</source>
       <translation>Client</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Operation</source>
       <translation>Opération</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="114"/>
       <source>Cycle Time</source>
       <translation>Temps du cycle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
       <source>Tool Number</source>
       <translation>Numéro de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="58"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
       <source>Manufacturer</source>
       <translation>Fabricant</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
       <source>Output (G-code)</source>
       <translation>Sortie (G-code)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
       <source>Part Number</source>
       <translation>Numéro de la pièce</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Surface Speed HSS</source>
       <translation>Vitesse de surface HSS</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="66"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Inspection Notes</source>
       <translation>Notes d'inspection</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
       <source>Tool Controller</source>
       <translation>Contrôleur d'outils</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Feed Rate</source>
       <translation>Vitesse d'avance</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Spindle Speed</source>
       <translation>Vitesse du mandrin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
       <source>Tool Shape</source>
       <translation>Forme de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="59"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
       <source>Tool Diameter</source>
       <translation>Diamètre de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="65"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
       <source>Setup Report for CAM Job</source>
       <translation>Rapport d'installation pour la tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
       <source>Surface Speed Carbide</source>
       <translation>Carbure à grande vitesse de surface</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="108"/>
       <source>X Size</source>
       <translation>Dimension X</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="109"/>
       <source>Y Size</source>
       <translation>Dimension Y</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="110"/>
       <source>Z Size</source>
       <translation>Dimension Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="111"/>
       <source>Minimum Z</source>
       <translation>Z minimum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="112"/>
       <source>Maximum Z</source>
       <translation>Z maximum</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="113"/>
       <source>Coolant Mode</source>
       <translation>Mode de refroidissement</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="115"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="116"/>
       <source>Sequence</source>
       <translation>Séquence</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="118"/>
       <source>CAD File</source>
       <translation>Fichier de CAO</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="119"/>
       <source>Last Save</source>
       <translation>Dernière sauvegarde</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
       <source>Material</source>
       <translation>Gérer les matériaux</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
       <source>Work Offsets</source>
       <translation>Décalages du point zéro</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Order By</source>
       <translation>Trier par</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="57"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
       <source>Part Datum</source>
       <translation>Coordonnées de référence de la pièce</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="64"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>G-code File</source>
       <translation>Fichier G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="67"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
       <source>Last Post Process Date</source>
       <translation>Date du dernier post-traitement</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
       <source>Stops</source>
       <translation>Arrêts</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
       <source>Programmer</source>
       <translation>Programmeur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
       <source>Machine</source>
       <translation>Machine</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
       <source>Postprocessor</source>
       <translation>Post-processeur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="63"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Post Processor Flags</source>
       <translation>Balises du post-processeur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="61"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
       <source>File Size (kB)</source>
       <translation>Taille du fichier (ko)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="68"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
       <source>Line Count</source>
       <translation>Nombre de lignes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
       <source>Note</source>
       <translation>Note</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Operator</source>
       <translation>Opérateurs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="56"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
       <source>Date</source>
       <translation>Date</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="245"/>
       <source>The Job&apos;s last post-processed file is missing</source>
       <translation>Le dernier fichier post-traité de la tâche est manquant.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="378"/>
       <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
       <translation>L'outil {} est un vieil outil. Les vieux outils ne sont pas pris en charge par l'outil Rechercher des erreurs.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="376"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="390"/>
       <source>Tool number {} used by multiple tools</source>
       <translation>Le numéro {} de l'outil est utilisé par plusieurs outils.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="399"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="423"/>
       <source>Toolbit Shape for TC: {} not found</source>
       <translation>Forme de l'outil coupant pour le contrôleur d'outils : {} introuvable</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="419"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="448"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
       <translation>Le contrôleur d'outil "{}" n'a pas de vitesse d'avance.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="460"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
       <translation>Le contrôleur d'outil "{}" n'a pas de vitesse du mandrin.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="486"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
       <translation>Le contrôleur d'outil "{}" n'est pas utilisé.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="335"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="349"/>
       <source>Consider Specifying the Stock Material</source>
       <translation>Penser à spécifier le matériau du brut</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="215"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="229"/>
       <source>The Job has not been post-processed</source>
       <translation>La tâche n'a pas été post-traitée</translation>
     </message>
@@ -7754,11 +7756,6 @@ Annulation de la création de l'opération</translation>
       <translation type="unfinished">{diameter} slitting saw, {blade_thickness} blade, {flutes}-flute</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/models/tap.py" line="46"/>
-      <source>{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
-      <translation type="unfinished">{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Tool/toolbit/models/threadmill.py" line="46"/>
       <source>{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</source>
       <translation type="unfinished">{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</translation>
@@ -7944,6 +7941,11 @@ Cela ne supprimera pas les outils contenus dans celle-ci.</translation>
       <location filename="../../../PathScripts/PathUtils.py" line="218"/>
       <source>Selected faces should be vertical</source>
       <translation>Les faces sélectionnées doivent être verticales</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/tap.py" line="74"/>
+      <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
+      <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
     </message>
   </context>
   <context>
@@ -8866,7 +8868,7 @@ Cela ne supprimera pas les outils contenus dans celle-ci.</translation>
   <context>
     <name>CAM_DrillingTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="183"/>
+      <location filename="../../../InitGui.py" line="187"/>
       <source>Drilling Operations</source>
       <translation>Opérations de perçage</translation>
     </message>
@@ -8910,17 +8912,9 @@ Cela ne supprimera pas les outils contenus dans celle-ci.</translation>
     </message>
   </context>
   <context>
-    <name>Path_Tapping</name>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="158"/>
-      <source>Tapping Operation requires a Tap tool with Pitch or TPI</source>
-      <translation>L'opération de taraudage nécessite un outil de taraudage avec un pas ou un TPI.</translation>
-    </message>
-  </context>
-  <context>
     <name>CAM_DressupTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="191"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>Dressup Operations</source>
       <translation>Opérations de finition</translation>
     </message>
@@ -9017,7 +9011,7 @@ Cela ne supprimera pas les outils contenus dans celle-ci.</translation>
   <context>
     <name>CAMSimulator::DlgCAMSimulator</name>
     <message>
-      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="335"/>
+      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="334"/>
       <source>%1 - New CAM Simulator</source>
       <translation>%1 : simulateur CAM</translation>
     </message>
@@ -9357,7 +9351,12 @@ Grand diamètre</translation>
       <translation type="unfinished">Overall length of tap</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="60"/>
+      <source>Thread pitch</source>
+      <translation>Pas du filetage</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="68"/>
       <source>Tap</source>
       <translation>Taraud</translation>
     </message>
@@ -9513,6 +9512,24 @@ Grand diamètre</translation>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="81"/>
       <source>Library Properties - {current_name or self.library.label}</source>
       <translation type="unfinished">Library Properties - {current_name or self.library.label}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="156"/>
+      <source>Tapping Operation requires a Tap tool with Pitch</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="234"/>
+      <source>Tapping Operation requires a Tap tool with non-zero Pitch</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with non-zero Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="244"/>
+      <source>Tapping Operation requires a ToolController with non-zero SpindleSpeed</source>
+      <translation type="unfinished">Tapping Operation requires a ToolController with non-zero SpindleSpeed</translation>
     </message>
   </context>
 </TS>
