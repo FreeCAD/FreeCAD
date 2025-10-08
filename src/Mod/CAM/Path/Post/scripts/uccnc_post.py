@@ -1,4 +1,3 @@
-
 # ***************************************************************************
 # *                                                                         *
 # *   based upon linuxcnc_post.py (c) sliptonic (shopinthewoods@gmail.com)  *

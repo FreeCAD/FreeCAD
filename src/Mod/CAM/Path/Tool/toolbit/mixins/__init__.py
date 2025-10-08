@@ -1,4 +1,3 @@
-
 from .rotary import RotaryToolBitMixin
 from .cutting import CuttingToolMixin
 
