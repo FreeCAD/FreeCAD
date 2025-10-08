@@ -557,7 +557,15 @@ class _ArchReport:
         if data_rows:
             for i, cell_value in enumerate(data_rows[0]):
                 if isinstance(cell_value, FreeCAD.Units.Quantity):
-                    unit_map[i] = cell_value.getUserPreferred()[2]
+                    # TODO: Replace this with a direct API call when available. The C++ Base::Unit
+                    # class has a `getString()` method that returns the simple unit symbol (e.g.,
+                    # "mm^2"), but it is not exposed to the Python API. The most reliable workaround
+                    # is to stringify the entire Quantity (e.g., "1500.0 mm") and parse the unit
+                    # from that string.
+                    quantity_str = str(cell_value)
+                    parts = quantity_str.split(" ", 1)
+                    if len(parts) > 1:
+                        unit_map[i] = parts[1]
 
         # Create the final headers, appending units where found.
         final_headers = []
