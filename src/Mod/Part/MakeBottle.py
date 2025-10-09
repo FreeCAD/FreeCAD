@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2008 Werner Mayer LGPL
 
 

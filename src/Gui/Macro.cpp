@@ -99,7 +99,6 @@ bool MacroFile::commit()
     }
 
     QString header;
-    header += QStringLiteral("# -*- coding: utf-8 -*-\n\n");
     header += QStringLiteral("# Macro Begin: ");
     header += this->macroName;
     header += QStringLiteral(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ## @package importAirfoilDAT
 #  \ingroup DRAFT
 #  \brief Airfoil (.dat) file importer

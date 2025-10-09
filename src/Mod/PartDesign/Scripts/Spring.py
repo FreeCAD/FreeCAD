@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2011 Adrian Przekwas LGPL
 
 from __future__ import division # allows floating point division from integers
