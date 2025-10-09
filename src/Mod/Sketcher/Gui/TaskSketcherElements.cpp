@@ -210,7 +210,9 @@ public:
         , rightClicked(false)
         , label(lab)
         , sketchView(sketchView)
-    {}
+    {
+        setData(Qt::UserRole, elementnr);
+    }
 
     ~ElementItem() override
     {}
@@ -2125,3 +2127,4 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
 #include "TaskSketcherElements.moc"// For Delegate as it is QOBJECT
 #include "moc_TaskSketcherElements.cpp"
 // clang-format on
+
