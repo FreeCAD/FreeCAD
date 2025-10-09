@@ -835,7 +835,14 @@ class Component(ArchIFC.IfcProduct):
                     if o:
                         o.ViewObject.hide()
 
-    def processSubShapes(self, obj, base, placement=None):
+    def handleComponentRemoval(self, obj, subobject):
+        """
+        Default handler for when a component is removed via the Task Panel.
+        Subclasses can override this to provide special behavior.
+        """
+        removeFromComponent(obj, subobject)
+
+    def processSubShapes(self,obj,base,placement=None):
         """Add Additions and Subtractions to a base shape.
 
         If Additions exist, fuse them to the base shape. If no base is
@@ -2284,63 +2291,25 @@ class ComponentTaskPanel:
         self.update()
 
     def removeElement(self):
-        """This method is run as a callback when the user selects the remove button.
-
-        Get the object selected in the tree widget. If there is an object in
-        the document with the same Name as the selected item in the tree,
-        remove it from the object being edited, with the removeFromComponent()
-        function.
         """
-
+        This method is run as a callback when the user selects the remove button.
+        It calls a handler on the object's proxy to perform the removal.
+        """
         element_selected = self.tree.currentItem()
         if not element_selected:
             return
 
         element_to_remove = FreeCAD.ActiveDocument.getObject(str(element_selected.toolTip(0)))
-        parent_obj = self.obj
 
-        # Check for the special case of removing a wall's base
-        is_wall_base = (Draft.getType(parent_obj) == "Wall"
-                        and hasattr(parent_obj, "Base")
-                        and parent_obj.Base == element_to_remove)
-
-        if is_wall_base:
-            self._handle_wall_base_removal(parent_obj, element_to_remove)
+        # Call the polymorphic handler on the object's proxy.
+        # This is generic and works for any Arch object.
+        if hasattr(self.obj.Proxy, "handleComponentRemoval"):
+            self.obj.Proxy.handleComponentRemoval(self.obj, element_to_remove)
         else:
-            # For all other components, use the standard removal logic
-            removeFromComponent(parent_obj, element_to_remove)
+            # Fallback for older proxies that might not have the method
+            removeFromComponent(self.obj, element_to_remove)
 
         self.update()
-
-    def _handle_wall_base_removal(self, wall, base_to_remove):
-        """
-        Handles the specific logic for removing a wall's base object,
-        offering a clean debase or a warning for complex bases.
-        """
-        import Arch
-        from PySide import QtGui
-
-        if Arch.is_debasable(wall):
-            # The wall is a simple, straight-line wall. Perform a clean debase.
-            Arch.debaseWall(wall)
-        else:
-            # The wall has a complex base. Warn the user before proceeding.
-            msg_box = QtGui.QMessageBox()
-            msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
-            msg_box.setText(
-                translate("ArchComponent", "The base of this wall is not a single straight line.")
-            )
-            msg_box.setInformativeText(
-                translate("ArchComponent",
-                    "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
-                    "This operation cannot be undone. Do you want to proceed?"
-                )
-            )
-            msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
-            msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
-            if msg_box.exec_() == QtGui.QMessageBox.Yes:
-                # User confirmed, perform the simple (position-resetting) removal
-                removeFromComponent(wall, base_to_remove)
 
     def accept(self):
         """This method runs as a callback when the user selects the ok button.

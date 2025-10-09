@@ -118,25 +118,26 @@ class TestArchWall(TestArchBase.TestArchBase):
 
     def test_remove_base_from_wall_without_host(self):
         """
-        Tests that removing a wall's base using removeComponents(host=None)
-        does not crash and successfully unlinks the base.
-        This is the non-regression test for the 'list' has no attribute 'Base' bug.
-        https://github.com/FreeCAD/FreeCAD/issues/24532
+        Tests that removing a debasable wall's base using removeComponents
+        successfully unlinks the base.
         """
         self.printTestMessage("Testing removal of a wall's base component...")
 
         # 1. Arrange: Create a wall with a base
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        line = Draft.makeLine(App.Vector(0,0,0), App.Vector(2000,0,0))
+        # Ensure the base object's shape is computed, making the wall debasable.
+        line.recompute()
         wall = Arch.makeWall(line)
+        self.document.recompute() # Ensure wall is fully formed
         self.assertIsNotNone(wall.Base, "Pre-condition failed: Wall should have a base.")
+        self.assertTrue(Arch.is_debasable(wall), "Pre-condition failed: The test wall is not debasable.")
 
-        # 2. Act: Call removeComponents on the base, simulating the failing workflow
-        # Before the fix, this will raise an AttributeError.
-        # After the fix, it should complete without error.
+        # 2. Act: Call removeComponents on the base.
+        # This will trigger the is_debasable -> True -> debaseWall() path.
         Arch.removeComponents([wall.Base])
         self.document.recompute()
 
-        # 3. Assert: The base should now be None
+        # 3. Assert: The base should now be None because debaseWall was successful.
         self.assertIsNone(wall.Base, "The wall's Base property was not cleared after removal.")
 
     def test_is_debasable_with_valid_line_base(self):
@@ -167,7 +168,6 @@ class TestArchWall(TestArchBase.TestArchBase):
     def test_is_debasable_with_curved_base(self):
         """Tests that a wall based on an arc is not debasable."""
         self.printTestMessage("Checking is_debasable with curved base...")
-        # FIX: Use the correct keyword arguments 'startangle' and 'endangle'
         arc = Draft.make_circle(radius=500, startangle=0, endangle=90)
         self.document.recompute()
         wall = Arch.makeWall(arc)
@@ -213,7 +213,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.assertAlmostEqual(original_volume, wall.Shape.Volume, delta=1e-6,
                                msg="Wall volume should not change after debasing.")
 
-        # FIX: Compare individual properties of the BoundBox with a tolerance
+        # Compare individual properties of the BoundBox with a tolerance
         final_bb = wall.Shape.BoundBox
         self.assertAlmostEqual(original_bb.XMin, final_bb.XMin, delta=1e-6, msg="Bounding box XMin does not match.")
         self.assertAlmostEqual(original_bb.XMax, final_bb.XMax, delta=1e-6, msg="Bounding box XMax does not match.")
