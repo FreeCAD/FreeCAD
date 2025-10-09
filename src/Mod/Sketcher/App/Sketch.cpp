@@ -155,11 +155,11 @@ bool Sketch::analyseBlockedGeometry(const std::vector<Part::Geometry*>& internal
 
             for (auto c : constraintList) {
                 // is block driving
-                if (c->Type == Sketcher::Block && c->isDriving && c->First == geoindex) {
+                if (c->Type == Sketcher::Block && c->isActive && c->First == geoindex) {
                     blockisDriving = true;
                 }
                 // We have another driving constraint (which may be InternalAlignment)
-                if (c->Type != Sketcher::Block && c->isDriving
+                if (c->Type != Sketcher::Block && c->isActive
                     && (c->First == geoindex || c->Second == geoindex || c->Third == geoindex)) {
                     blockOnly = false;
                 }
@@ -5397,3 +5397,4 @@ void Sketch::Save(Writer&) const
 
 void Sketch::Restore(XMLReader&)
 {}
+
