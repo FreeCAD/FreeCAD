@@ -97,6 +97,7 @@ public:
         , ConstraintNbr(ConstNbr)
     {
         this->setFlags(this->flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
+        setData(Qt::UserRole, ConstNbr);
 
         updateVirtualSpaceStatus();
     }
@@ -1796,3 +1797,4 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
 
 #include "moc_TaskSketcherConstraints.cpp"
 // clang-format on
+
