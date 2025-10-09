@@ -1877,10 +1877,8 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
 
                 l->textColor = constraint->isActive
-                    ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
-                        ? drawingParameters.ExprBasedConstrDimColor
-                        : (constraint->isDriving ? drawingParameters.ConstrDimColor
-                                                 : drawingParameters.NonDrivingConstrDimColor)
+                    ? (constraint->isDriving ? drawingParameters.ConstrDimColor
+                                             : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
@@ -2104,10 +2102,6 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 
 QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
 {
-    if (!constraint->isActive) {
-        return QStringLiteral(" ");
-    }
-
     /**
      * Hide units if
      *  - user has requested it,
@@ -2154,27 +2148,51 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
             break;
     }
 
-    if (!constraintParameters.bShowDimensionalName || constraint->Name.empty()) {
-        return fixedValueStr;
+    if (constraintParameters.bShowDimensionalName && !constraint->Name.empty()) {
+        /**
+         * Create the representation string from the user defined format string
+         * Format options are:
+         * %N - the constraint name parameter
+         * %V - the value of the dimensional constraint, including any unit characters
+         */
+        auto sDimFmt {constraintParameters.sDimensionalStringFormat};
+        if (!sDimFmt.contains(QLatin1String("%V"))
+            && !sDimFmt.contains(QLatin1String("%N"))) {  // using default format "%N = %V"
+
+            fixedValueStr = QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ")
+                + fixedValueStr;
+        }
+        else {
+            sDimFmt.replace(QLatin1String("%N"), QString::fromStdString(constraint->Name));
+            sDimFmt.replace(QLatin1String("%V"), fixedValueStr);
+            fixedValueStr = sDimFmt;
+        }
     }
 
-    /**
-     * Create the representation string from the user defined format string
-     * Format options are:
-     * %N - the constraint name parameter
-     * %V - the value of the dimensional constraint, including any unit characters
-     */
-    auto sDimFmt {constraintParameters.sDimensionalStringFormat};
-    if (!sDimFmt.contains(QLatin1String("%V"))
-        && !sDimFmt.contains(QLatin1String("%N"))) {  // using default format "%N = %V"
-
-        return QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ") + valueStr;
+    int constraintIndex = -1;
+    const auto& constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
+    auto it = std::find(constrlist.begin(), constrlist.end(), constraint);
+    if (it != constrlist.end()) {
+        constraintIndex = std::distance(constrlist.begin(), it);
+        if (ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider,
+                                                                    constraintIndex)) {
+            fixedValueStr += QStringLiteral(" (fx)");
+        }
     }
 
-    sDimFmt.replace(QLatin1String("%N"), QString::fromStdString(constraint->Name));
-    sDimFmt.replace(QLatin1String("%V"), fixedValueStr);
+    if (!constraint->isDriving) {
+        fixedValueStr = QStringLiteral("(") + fixedValueStr + QStringLiteral(")");
+    }
 
-    return sDimFmt;
+    if (!constraint->isActive) {
+        QString result = QStringLiteral("\u0336");
+        for (auto c : std::as_const(fixedValueStr)) {
+            result += c + QStringLiteral("\u0336");
+        }
+        return result;
+    }
+
+    return fixedValueStr;
 }
 
 std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
@@ -2937,3 +2955,4 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     ps->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(ps);
 }
+
