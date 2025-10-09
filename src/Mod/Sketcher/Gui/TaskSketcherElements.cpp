@@ -830,6 +830,19 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
     menu.exec(event->globalPos());
 }
 
+void ElementView::mousePressEvent(QMouseEvent* event)
+{
+    // If the click is on an empty area (not on an item), it should
+    // clear the global selection.
+    if (!itemAt(event->pos())) {
+        Gui::Selection().clearSelection();
+    }
+
+    // Always call the base class implementation to ensure normal behavior
+    // like item clicks and the widget's own selection management continues to work.
+    QListWidget::mousePressEvent(event);
+}
+
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident", doPointCoincidence)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject", doPointOnObjectConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal", doHorizontalConstraint)
