@@ -1797,4 +1797,3 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
 
 #include "moc_TaskSketcherConstraints.cpp"
 // clang-format on
-
