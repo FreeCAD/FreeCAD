@@ -26,6 +26,7 @@
 # include <QString>
 # include <QCompleter>
 # include <algorithm>
+#include <memory>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -37,6 +38,8 @@
 #include <Base/Tools.h>
 
 #include "Dialogs/DlgAddProperty.h"
+#include "Application.h"
+#include "Macro.h"
 #include "ui_DlgAddProperty.h"
 #include "ViewProviderVarSet.h"
 #include "propertyeditor/PropertyItem.h"
@@ -58,7 +61,8 @@ const std::string DlgAddProperty::GroupBase = "Base";
  *   - keep the value if the name of the property is changed,
  * - support units (see #15557),
  * - support enumerations (see #15553),
- * - make OK available as soon as there is a valid property (see #17474), and
+ * - make OK available as soon as there is a valid property (see #17474),
+ * - useful Python console commands (see #23760),
  * - support expressions (see #19716).
  *
  * Especially supporting expressions in the value field makes the logic
@@ -145,20 +149,28 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
 DlgAddProperty::DlgAddProperty(QWidget* parent,
                                App::PropertyContainer* container,
                                ViewProviderVarSet* viewProvider)
-    : QDialog(parent),
-      container(container),
-      ui(new Ui_DlgAddProperty),
-      comboBoxGroup(this),
-      completerType(this),
-      editor(nullptr),
-      transactionID(0)
+    : QDialog(parent)
+    , container(container)
+    , ui(new Ui_DlgAddProperty)
+    , comboBoxGroup(this)
+    , completerType(this)
+    , editor(nullptr)
+    , transactionID(0)
 {
     ui->setupUi(this);
-
+    setupMacroRedirector();
     initializeWidgets(viewProvider);
 }
 
 DlgAddProperty::~DlgAddProperty() = default;
+
+void DlgAddProperty::setupMacroRedirector()
+{
+    setValueRedirector = std::make_unique<MacroManager::MacroRedirector>([this](MacroManager::LineType /*type*/,
+                                                                                const char* line) {
+        this->setValueCommand = line;
+    });
+}
 
 int DlgAddProperty::findLabelRow(const char* labelName, QFormLayout* layout)
 {
@@ -337,9 +349,8 @@ void DlgAddProperty::addEnumEditor(PropertyItem* propertyItem)
 
 void DlgAddProperty::addNormalEditor(PropertyItem* propertyItem)
 {
-    editor.reset(propertyItem->createEditor(this, [this]() {
-        this->valueChanged();
-    }, FrameOption::WithFrame));
+    editor.reset(propertyItem->createEditor(this, []() {},
+                                            FrameOption::WithFrame));
 }
 
 void DlgAddProperty::addEditor(PropertyItem* propertyItem)
@@ -652,11 +663,6 @@ void DlgAddProperty::setEditor(bool valueNeedsReset)
     else {
         initializeValue();
     }
-
-    if (editor) {
-        QVariant data = propertyItem->editorData(editor.get());
-        propertyItem->setData(data);
-    }
 }
 
 void DlgAddProperty::setPropertyItem(App::Property* prop, bool supportsExpressions)
@@ -801,12 +807,6 @@ void DlgAddProperty::valueChangedEnum()
     propEnum->setEnums(enumValuesVec);
 }
 
-void DlgAddProperty::valueChanged()
-{
-    QVariant data = propertyItem->editorData(editor.get());
-    propertyItem->setData(data);
-}
-
 /* We use these functions rather than the functions provided by App::Document
  * because this dialog may be opened when another transaction is in progress.
  * An example is opening a sketch.  If this dialog uses the functions provided
@@ -827,6 +827,29 @@ void DlgAddProperty::critical(const QString& title, const QString& text) {
     }
 }
 
+void DlgAddProperty::recordMacroAdd(const App::PropertyContainer* container,
+                                    const std::string& type, const std::string& name,
+                                    const std::string& group, const std::string& doc) const
+{
+    std::ostringstream command;
+    command << "App.getDocument('";
+    const App::Document* document = freecad_cast<App::Document*>(container);
+    const App::DocumentObject* object = freecad_cast<App::DocumentObject*>(container);
+    if (document) {
+        command << document->getName() << "')";
+    }
+    else if (object) {
+        command << object->getDocument()->getName() << "')." << object->getNameInDocument();
+    }
+    else {
+        FC_ERR("Cannot record macro for container of type " << container->getTypeId().getName());
+        return;
+    }
+    command << ".addProperty('" << type << "', '" << name << "', '" <<
+        group << "', '" << doc + "')";
+    Application::Instance->macroManager()->addLine(Gui::MacroManager::App, command.str().c_str());
+}
+
 App::Property* DlgAddProperty::createProperty()
 {
     std::string name = ui->lineEditName->text().toStdString();
@@ -834,9 +857,16 @@ App::Property* DlgAddProperty::createProperty()
     std::string type = ui->comboBoxType->currentText().toStdString();
     std::string doc = ui->lineEditToolTip->text().toStdString();
 
+    auto recordAddCommand = [this](MacroManager::LineType, const char* line) {
+        this->addCommand = line;
+    };
+
     try {
-        return container->addDynamicProperty(type.c_str(), name.c_str(),
-                                          group.c_str(), doc.c_str());
+        App::Property* prop = container->addDynamicProperty(type.c_str(), name.c_str(),
+                                                            group.c_str(), doc.c_str());
+        MacroManager::MacroRedirector redirector(recordAddCommand);
+        recordMacroAdd(container, type, name, group, doc);
+        return prop;
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -894,12 +924,23 @@ void DlgAddProperty::addDocumentation() {
 
 void DlgAddProperty::accept()
 {
+    if (editor) {
+        QVariant data = propertyItem->editorData(editor.get());
+        propertyItem->setData(data);
+    }
     addDocumentation();
     auto* object = freecad_cast<App::DocumentObject*>(container);
     if (object) {
         object->ExpressionEngine.execute();
     }
     closeTransaction(TransactionOption::Commit);
+
+    setValueRedirector = nullptr;
+    Application::Instance->macroManager()->addLine(MacroManager::LineType::App, addCommand.c_str());
+    Application::Instance->macroManager()->addLine(MacroManager::LineType::App,
+                                                   setValueCommand.c_str());
+    setupMacroRedirector();
+
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string type = ui->comboBoxType->currentText().toStdString();
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
