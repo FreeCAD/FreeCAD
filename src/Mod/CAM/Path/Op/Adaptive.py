@@ -140,7 +140,6 @@ def GenerateGCode(op, obj, adaptiveResults):
     depthPerOneCircle = length * math.tan(helixAngleRad)
     if obj.HelixMaxStepdown.Value != 0 and obj.HelixMaxStepdown.Value < depthPerOneCircle:
         depthPerOneCircle = obj.HelixMaxStepdown.Value
-        helixAngleRad = math.atan(depthPerOneCircle / length)
 
     stepUp = max(obj.LiftDistance.Value, 0)
 
