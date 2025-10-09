@@ -2843,7 +2843,6 @@ bool ViewProviderSketch::selectAll()
 
     return true;
 }
-}
 
 bool ViewProviderSketch::doubleClicked()
 {
