@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
 from pathlib import Path

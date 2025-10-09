@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # flake8: noqa E731
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *

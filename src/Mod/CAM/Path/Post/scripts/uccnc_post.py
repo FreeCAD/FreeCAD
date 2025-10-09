@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   based upon linuxcnc_post.py (c) sliptonic (shopinthewoods@gmail.com)  *
