@@ -2104,9 +2104,16 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 
 QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
 {
-    if (!constraint->isActive) {
-        return QStringLiteral(" ");
-    }
+    auto strikeInactive = [constraint](QString str) {
+        if (constraint->isActive) {
+            return str;
+        }
+        QString result;
+        for (auto c : std::as_const(str)) {
+            result += c + QStringLiteral("\u0336");
+        }
+        return result;
+    };
 
     /**
      * Hide units if
@@ -2133,7 +2140,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
         const QRegularExpression rxUnits {QString::fromUtf8(" \\D*$")};
         auto vStr = valueStr;
         vStr.remove(rxUnits);
-        return {vStr};
+        return strikeInactive({vStr});
     };
 
     // Get the current value string including units
@@ -2155,7 +2162,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     }
 
     if (!constraintParameters.bShowDimensionalName || constraint->Name.empty()) {
-        return fixedValueStr;
+        return strikeInactive(fixedValueStr);
     }
 
     /**
@@ -2168,13 +2175,14 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     if (!sDimFmt.contains(QLatin1String("%V"))
         && !sDimFmt.contains(QLatin1String("%N"))) {  // using default format "%N = %V"
 
-        return QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ") + valueStr;
+        return strikeInactive(QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ")
+                              + valueStr);
     }
 
     sDimFmt.replace(QLatin1String("%N"), QString::fromStdString(constraint->Name));
     sDimFmt.replace(QLatin1String("%V"), fixedValueStr);
 
-    return sDimFmt;
+    return strikeInactive(sDimFmt);
 }
 
 std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
