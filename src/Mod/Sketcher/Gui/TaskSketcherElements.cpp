@@ -210,7 +210,9 @@ public:
         , rightClicked(false)
         , label(lab)
         , sketchView(sketchView)
-    {}
+    {
+        setData(Qt::UserRole, elementnr);
+    }
 
     ~ElementItem() override
     {}

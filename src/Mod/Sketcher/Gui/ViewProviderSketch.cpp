@@ -32,6 +32,7 @@
 
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScreen>
@@ -2729,16 +2730,31 @@ bool ViewProviderSketch::selectAll()
 
     // Check if the focus is on the constraints or element list widget.
     QWidget* focusedWidget = QApplication::focusWidget();
+    auto* focusedList = qobject_cast<QListWidget*>(focusedWidget);
     bool focusOnConstraintWidget = false;
     bool focusOnElementWidget = false;
-    if (focusedWidget) {
+    if (focusedList) {
         if (focusedWidget->objectName().toStdString() == "listWidgetConstraints") {
             focusOnConstraintWidget = true;
         }
         else if (focusedWidget->objectName().toStdString() == "listWidgetElements") {
             focusOnElementWidget = true;
         }
+        else {
+            focusedList = nullptr;
+        }
     }
+
+    std::vector<int> ids;
+    if (focusedList) {
+        for (int i = 0; i < focusedList->count(); ++i) {
+            QListWidgetItem* item = focusedList->item(i);
+            if (item && !item->isHidden()) {
+                ids.push_back(item->data(Qt::UserRole).toInt());
+            }
+        }
+    }
+
     bool noWidgetSelected = !focusOnConstraintWidget && !focusOnElementWidget;
 
     Sketcher::SketchObject* sketchObject = getSketchObject();
@@ -2782,6 +2798,10 @@ bool ViewProviderSketch::selectAll()
                 GeoId = -extGeoCount;
             }
 
+            if (focusedList && std::ranges::find(ids, GeoId) == ids.end()) {
+                continue;
+            }
+
             if ((*it)->is<Part::GeomPoint>()) {
                 selectVertex(VertexId, 1);
             }
@@ -2802,8 +2822,9 @@ bool ViewProviderSketch::selectAll()
             }
         }
 
-        // get root point if they exist
-        addSelection2("RootPoint");
+        if (!focusOnElementWidget) {
+            addSelection2("RootPoint");
+        }
 
         if (hasUnselectedGeometry) {
             Base::Console().error("Select All: Not all geometry was selected");
@@ -2813,6 +2834,9 @@ bool ViewProviderSketch::selectAll()
     if (focusOnConstraintWidget || noWidgetSelected) {
         const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
         for (size_t i = 0; i < constraints.size(); ++i) {
+            if (focusedList && std::ranges::find(ids, i) == ids.end()) {
+                continue;
+            }
             addSelection2(fmt::format("Constraint{}", i + 1));
         }
     }
