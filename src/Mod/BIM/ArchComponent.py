@@ -2292,11 +2292,55 @@ class ComponentTaskPanel:
         function.
         """
 
-        it = self.tree.currentItem()
-        if it:
-            comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
-            removeFromComponent(self.obj, comp)
+        element_selected = self.tree.currentItem()
+        if not element_selected:
+            return
+
+        element_to_remove = FreeCAD.ActiveDocument.getObject(str(element_selected.toolTip(0)))
+        parent_obj = self.obj
+
+        # Check for the special case of removing a wall's base
+        is_wall_base = (Draft.getType(parent_obj) == "Wall"
+                        and hasattr(parent_obj, "Base")
+                        and parent_obj.Base == element_to_remove)
+
+        if is_wall_base:
+            self._handle_wall_base_removal(parent_obj, element_to_remove)
+        else:
+            # For all other components, use the standard removal logic
+            removeFromComponent(parent_obj, element_to_remove)
+
         self.update()
+
+    def _handle_wall_base_removal(self, wall, base_to_remove):
+        """
+        Handles the specific logic for removing a wall's base object,
+        offering a clean debase or a warning for complex bases.
+        """
+        import Arch
+        from PySide import QtGui
+
+        if Arch.is_debasable(wall):
+            # The wall is a simple, straight-line wall. Perform a clean debase.
+            Arch.debaseWall(wall)
+        else:
+            # The wall has a complex base. Warn the user before proceeding.
+            msg_box = QtGui.QMessageBox()
+            msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
+            msg_box.setText(
+                translate("ArchComponent", "The base of this wall is not a single straight line.")
+            )
+            msg_box.setInformativeText(
+                translate("ArchComponent",
+                    "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
+                    "This operation cannot be undone. Do you want to proceed?"
+                )
+            )
+            msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
+            msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
+            if msg_box.exec_() == QtGui.QMessageBox.Yes:
+                # User confirmed, perform the simple (position-resetting) removal
+                removeFromComponent(wall, base_to_remove)
 
     def accept(self):
         """This method runs as a callback when the user selects the ok button.
