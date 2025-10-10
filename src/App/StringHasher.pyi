@@ -29,8 +29,6 @@ class StringHasher(BaseClass):
 
     def getID(self, arg: Any, base64: bool = False, /) -> Any:
         """
-        getID(txt|id, base64=False) -> StringID
-
         If the input is text, return a StringID object that is unique within this hasher. This
         StringID object is reference counted. The hasher may only save hash ID's that are used.
 

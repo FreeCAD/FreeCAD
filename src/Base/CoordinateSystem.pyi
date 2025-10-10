@@ -45,8 +45,6 @@ class CoordinateSystem(PyObjectBase):
 
     def setAxes(self, axis: Union[AxisPy, Vector], xDir: Vector, /) -> None:
         """
-        setAxes(axis, xDir) -> None
-
         Set axis or Z-direction, and X-direction.
         The X-direction is determined from the orthonormal compononent of `xDir`
         with respect to `axis` direction.
@@ -59,8 +57,6 @@ class CoordinateSystem(PyObjectBase):
     @constmethod
     def displacement(self, coordSystem2: "CoordinateSystem", /) -> Placement:
         """
-        displacement(coordSystem2) -> Base.Placement
-
         Computes the placement from this to the passed coordinate system `coordSystem2`.
 
         coordSystem2 : Base.CoordinateSystem
@@ -69,8 +65,6 @@ class CoordinateSystem(PyObjectBase):
 
     def transformTo(self, vector: Vector, /) -> Vector:
         """
-        transformTo(vector) -> Base.Vector
-
         Computes the coordinates of the point in coordinates of this coordinate system.
 
         vector : Base.Vector
@@ -79,8 +73,6 @@ class CoordinateSystem(PyObjectBase):
 
     def transform(self, trans: Union[Rotation, Placement], /) -> None:
         """
-        transform(trans) -> None
-
         Applies a transformation on this coordinate system.
 
         trans : Base.Rotation, Base.Placement
@@ -89,8 +81,6 @@ class CoordinateSystem(PyObjectBase):
 
     def setPlacement(self, placement: Placement, /) -> None:
         """
-        setPlacement(placement) -> None
-
         Set placement to the coordinate system.
 
         placement : Base.Placement

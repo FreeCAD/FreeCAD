@@ -18,8 +18,6 @@ class ViewProviderGeometryObject(ViewProviderDocumentObject):
     @no_args
     def getUserDefinedMaterial() -> object:
         """
-        getUserDefinedMaterial() -> object
-
         Get a material object with the user-defined colors.
         """
         ...

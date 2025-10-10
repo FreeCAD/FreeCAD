@@ -22,15 +22,15 @@ class Command(Persistence):
 
     @constmethod
     def toGCode(self) -> str:
-        """toGCode(): returns a GCode representation of the command"""
+        """returns a GCode representation of the command"""
         ...
 
     def setFromGCode(self, gcode: str, /) -> None:
-        """setFromGCode(): sets the path from the contents of the given GCode string"""
+        """sets the path from the contents of the given GCode string"""
         ...
 
     def transform(self, placement: Placement, /) -> Command:
-        """transform(Placement): returns a copy of this command transformed by the given placement"""
+        """returns a copy of this command transformed by the given placement"""
         ...
 
     Name: str

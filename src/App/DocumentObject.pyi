@@ -78,13 +78,13 @@ class DocumentObject(ExtensionContainer):
         enum_vals: list = [],
     ) -> "DocumentObject":
         """
-        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, locked = False, enum_vals=[]) -- Add a generic property.
+        Add a generic property.
         """
         ...
 
     def removeProperty(self, string: str, /) -> None:
         """
-        removeProperty(string) -- Remove a generic property.
+        Remove a generic property.
 
         Note, you can only remove user-defined properties but not built-in ones.
         """
@@ -135,7 +135,7 @@ class DocumentObject(ExtensionContainer):
 
     def recompute(self, recursive: bool = False, /) -> None:
         """
-        recompute(recursive=False): Recomputes this object
+        Recomputes this object
         """
         ...
 
@@ -166,8 +166,6 @@ class DocumentObject(ExtensionContainer):
         depth: int = 0,
     ) -> Any:
         """
-        getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
-
         * subname(string|list|tuple): dot separated string or sequence of strings
         referencing subobject.
 
@@ -196,15 +194,13 @@ class DocumentObject(ExtensionContainer):
 
     def getSubObjectList(self, subname: str, /) -> list:
         """
-        getSubObjectList(subname)
-
         Return a list of objects referenced by a given subname including this object
         """
         ...
 
     def getSubObjects(self, reason: int = 0, /) -> list:
         """
-        getSubObjects(reason=0): Return subname reference of all sub-objects
+        Return subname reference of all sub-objects
         """
         ...
 
@@ -217,7 +213,6 @@ class DocumentObject(ExtensionContainer):
         depth: int = 0,
     ) -> Any:
         """
-        getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
         Returns the linked object if there is one, or else return itself
 
         * recursive: whether to recursively resolve the links
@@ -234,14 +229,14 @@ class DocumentObject(ExtensionContainer):
 
     def setElementVisible(self, element: str, visible: bool, /) -> int:
         """
-        setElementVisible(element,visible): Set the visibility of a child element
+        Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
         ...
 
     def isElementVisible(self, element: str, /) -> int:
         """
-        isElementVisible(element): Check if a child element is visible
+        Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
         """
         ...
@@ -288,7 +283,7 @@ class DocumentObject(ExtensionContainer):
     @constmethod
     def resolve(self, subname: str, /) -> tuple:
         """
-        resolve(subname) -- resolve the sub object
+        resolve the sub object
 
         Returns a tuple (subobj,parent,elementName,subElement), where 'subobj' is the
         last object referenced in 'subname', and 'parent' is the direct parent of
@@ -301,7 +296,7 @@ class DocumentObject(ExtensionContainer):
     @constmethod
     def resolveSubElement(self, subname: str, append: bool, type: int, /) -> tuple:
         """
-        resolveSubElement(subname,append,type) -- resolve both new and old style sub element
+        resolve both new and old style sub element
 
         subname: subname reference containing object hierarchy
         append: Whether to append object hierarchy prefix inside subname to returned element name
@@ -313,22 +308,20 @@ class DocumentObject(ExtensionContainer):
 
     def adjustRelativeLinks(self, parent: DocumentObject, recursive: bool = True, /) -> bool:
         """
-        adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies
+        auto correct potential cyclic dependencies
         """
         ...
 
     @constmethod
     def getElementMapVersion(self, property_name: str, /) -> str:
         """
-        getElementMapVersion(property_name): return element map version of a given geometry property
+        return element map version of a given geometry property
         """
         ...
 
     @constmethod
     def isAttachedToDocument(self) -> bool:
         """
-        isAttachedToDocument() -> bool
-
         Return true if the object is part of a document, false otherwise.
         """
         ...

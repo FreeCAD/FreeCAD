@@ -24,8 +24,6 @@ class AxisOrigin(BaseClass):
     @constmethod
     def getElementPicked(self, pickedPoint: Any, /) -> str:
         """
-        getElementPicked(pickedPoint) -> str
-
         Returns the picked element name.
 
         pickedPoint : coin.SoPickedPoint
@@ -35,8 +33,6 @@ class AxisOrigin(BaseClass):
     @constmethod
     def getDetailPath(self, subname: str, path: Any, /) -> Any:
         """
-        getDetailPath(subname, path) -> coin.SoDetail or None
-
         Returns Coin detail of a subelement.
         Note: Not fully implemented. Currently only returns None.
 

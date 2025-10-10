@@ -66,8 +66,6 @@ class Quantity(PyObjectBase):
     @constmethod
     def toStr(self, decimals: int = ..., /) -> str:
         """
-        toStr([decimals])
-
         Returns a string representation rounded to number of decimals. If no decimals are specified then
         the internal precision is used
         """

@@ -26,8 +26,6 @@ class Persistence(BaseClass):
     @constmethod
     def dumpContent(self, Compression: int = 3) -> bytearray:
         """
-        dumpContent(Compression=3) -> bytearray
-
         Dumps the content of the object, both the XML representation and the additional
         data files required, into a byte representation.
 
@@ -39,8 +37,6 @@ class Persistence(BaseClass):
     def restoreContent(self, obj: object, /) -> None:
         # TODO: Starting with Python 3.12, collections.abc.Buffer can be used for type hinting
         """
-        restoreContent(obj) -> None
-
         Restore the content of the object from a byte representation as stored by `dumpContent`.
         It could be restored from any Python object implementing the buffer protocol.
 

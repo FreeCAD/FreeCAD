@@ -18,8 +18,6 @@ class Command(PyObjectBase):
     @staticmethod
     def get(name: str, /) -> Optional["Command"]:
         """
-        get(name) -> Gui.Command or None
-
         Get a given command by name or None if it doesn't exist.
 
         name : str
@@ -30,8 +28,6 @@ class Command(PyObjectBase):
     @staticmethod
     def update() -> None:
         """
-        update() -> None
-
         Update active status of all commands.
         """
         ...
@@ -39,8 +35,6 @@ class Command(PyObjectBase):
     @staticmethod
     def listAll() -> List[str]:
         """
-        listAll() -> list of str
-
         Returns the name of all commands.
         """
         ...
@@ -48,8 +42,6 @@ class Command(PyObjectBase):
     @staticmethod
     def listByShortcut(string: str, useRegExp: bool = False, /) -> List[str]:
         """
-        listByShortcut(string, useRegExp=False) -> list of str
-
         Returns a list of all commands, filtered by shortcut.
         Shortcuts are converted to uppercase and spaces removed
         prior to comparison.
@@ -63,8 +55,6 @@ class Command(PyObjectBase):
 
     def run(self, item: int = 0, /) -> None:
         """
-        run(item=0) -> None
-
         Runs the given command.
 
         item : int
@@ -75,24 +65,18 @@ class Command(PyObjectBase):
     @constmethod
     def isActive(self) -> bool:
         """
-        isActive() -> bool
-
         Returns True if the command is active, False otherwise.
         """
         ...
 
     def getShortcut(self) -> str:
         """
-        getShortcut() -> str
-
         Returns string representing shortcut key accelerator for command.
         """
         ...
 
     def setShortcut(self, string: str, /) -> bool:
         """
-        setShortcut(string) -> bool
-
         Sets shortcut for given command, returns True for success.
 
         string : str
@@ -102,24 +86,18 @@ class Command(PyObjectBase):
 
     def resetShortcut(self) -> bool:
         """
-        resetShortcut() -> bool
-
         Resets shortcut for given command back to the default, returns True for success.
         """
         ...
 
     def getInfo(self) -> Dict[Any, Any]:
         """
-        getInfo() -> dict
-
         Return information about this command.
         """
         ...
 
     def getAction(self) -> List[Any]:
         """
-        getAction() -> list of QAction
-
         Return the associated QAction object.
         """
         ...
@@ -136,8 +114,6 @@ class Command(PyObjectBase):
         shortcut: str,
     ) -> str:
         """
-        createCustomCommand(macroFile, menuText, toolTip, whatsThis, statusTip, pixmap, shortcut) -> str
-
         Create a custom command for a macro. Returns name of the created command.
 
         macroFile : str
@@ -160,8 +136,6 @@ class Command(PyObjectBase):
     @staticmethod
     def removeCustomCommand(name: str, /) -> bool:
         """
-        removeCustomCommand(name) -> bool
-
         Remove the custom command if it exists.
         Given the name of a custom command, this removes that command.
         It is not an error to remove a non-existent command, the function
@@ -176,8 +150,6 @@ class Command(PyObjectBase):
     @staticmethod
     def findCustomCommand(name: str, /) -> Optional[str]:
         """
-        findCustomCommand(name) -> str or None
-
         Given the name of a macro, return the name of the custom command for that macro
         or None if there is no command matching that macro script name.
 

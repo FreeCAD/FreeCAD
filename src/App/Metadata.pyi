@@ -191,8 +191,6 @@ class Metadata(PyObjectBase):
 
     def getLastSupportedFreeCADVersion(self) -> Optional[str]:
         """
-        getLastSupportedFreeCADVersion() -> str or None
-
         Search through all content package items, and determine if a maximum supported
         version of FreeCAD is set.
         Returns None if no maximum version is set, or if *any* content item fails to
@@ -203,8 +201,6 @@ class Metadata(PyObjectBase):
 
     def getFirstSupportedFreeCADVersion(self) -> Optional[str]:
         """
-        getFirstSupportedFreeCADVersion() -> str or None
-
         Search through all content package items, and determine if a minimum supported
         version of FreeCAD is set.
         Returns 0.0 if no minimum version is set, or if *any* content item fails to
@@ -216,8 +212,6 @@ class Metadata(PyObjectBase):
 
     def supportsCurrentFreeCAD(self) -> bool:
         """
-        supportsCurrentFreeCAD() -> bool
-
         Returns False if this metadata object directly indicates that it does not
         support the current version of FreeCAD, or True if it makes no indication, or
         specifically indicates that it does support the current version. Does not
@@ -227,8 +221,6 @@ class Metadata(PyObjectBase):
 
     def getGenericMetadata(self, name: str, /) -> List[Any]:
         """
-        getGenericMetadata(name) -> list
-
         Get the list of GenericMetadata objects with key 'name'.
         Generic metadata objects are Python objects with a string 'contents' and a
         dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
@@ -238,56 +230,42 @@ class Metadata(PyObjectBase):
 
     def addContentItem(self, content_type: str, metadata: "Metadata", /) -> None:
         """
-        addContentItem(content_type,metadata)
-
         Add a new content item of type 'content_type' with metadata 'metadata'.
         """
         ...
 
     def removeContentItem(self, content_type: str, name: str, /) -> None:
         """
-        removeContentItem(content_type,name)
-
         Remove the content item of type 'content_type' with name 'name'.
         """
         ...
 
     def addMaintainer(self, name: str, email: str, /) -> None:
         """
-        addMaintainer(name, email)
-
         Add a new Maintainer.
         """
         ...
 
     def removeMaintainer(self, name: str, email: str, /) -> None:
         """
-        removeMaintainer(name, email)
-
         Remove the Maintainer.
         """
         ...
 
     def addLicense(self, short_code: str, path: str, /) -> None:
         """
-        addLicense(short_code,path)
-
         Add a new License.
         """
         ...
 
     def removeLicense(self, short_code: str, /) -> None:
         """
-        removeLicense(short_code)
-
         Remove the License.
         """
         ...
 
     def addUrl(self, url_type: str, url: str, branch: str, /) -> None:
         """
-        addUrl(url_type,url,branch)
-
         Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',
 
         'bugtracker', 'documentation', or 'webpage') If type is 'repository' you
@@ -298,32 +276,24 @@ class Metadata(PyObjectBase):
 
     def removeUrl(self, url_type: str, url: str, /) -> None:
         """
-        removeUrl(url_type,url)
-
         Remove the Url.
         """
         ...
 
     def addAuthor(self, name: str, email: str, /) -> None:
         """
-        addAuthor(name, email)
-
         Add a new Author with name 'name', and optionally email 'email'.
         """
         ...
 
     def removeAuthor(self, name: str, email: str, /) -> None:
         """
-        removeAuthor(name, email)
-
         Remove the Author.
         """
         ...
 
     def addDepend(self, name: str, kind: str, optional: bool, /) -> None:
         """
-        addDepend(name, kind, optional)
-
         Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),
 
         'internal', 'addon', or 'python').
@@ -332,8 +302,6 @@ class Metadata(PyObjectBase):
 
     def removeDepend(self, name: str, kind: str, /) -> None:
         """
-        removeDepend(name, kind)
-
         Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any
 
         matching name is removed).
@@ -342,72 +310,54 @@ class Metadata(PyObjectBase):
 
     def addConflict(self, name: str, kind: str, /) -> None:
         """
-        addConflict(name, kind)
-
         Add a new Conflict. See documentation for addDepend().
         """
         ...
 
     def removeConflict(self, name: str, kind: str, /) -> None:
         """
-        removeConflict(name, kind)
-
         Remove the Conflict. See documentation for removeDepend().
         """
         ...
 
     def addReplace(self, name: str, /) -> None:
         """
-        addReplace(name)
-
         Add a new Replace.
         """
         ...
 
     def removeReplace(self, name: str, /) -> None:
         """
-        removeReplace(name)
-
         Remove the Replace.
         """
         ...
 
     def addTag(self, tag: str, /) -> None:
         """
-        addTag(tag)
-
         Add a new Tag.
         """
         ...
 
     def removeTag(self, tag: str, /) -> None:
         """
-        removeTag(tag)
-
         Remove the Tag.
         """
         ...
 
     def addFile(self, filename: str, /) -> None:
         """
-        addFile(filename)
-
         Add a new File.
         """
         ...
 
     def removeFile(self, filename: str, /) -> None:
         """
-        removeFile(filename)
-
         Remove the File.
         """
         ...
 
     def write(self, filename: str, /) -> None:
         """
-        write(filename)
-
         Write the metadata to the given file as XML data.
         """
         ...

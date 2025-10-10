@@ -18,8 +18,6 @@ class PropertyContainer(Persistence):
 
     def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> Any:
         """
-        getPropertyByName(name, checkOwner=0) -> object or Tuple
-
         Returns the value of a named property. Note that the returned property may not
         always belong to this container (e.g. from a linked object).
 
@@ -34,8 +32,6 @@ class PropertyContainer(Persistence):
 
     def getPropertyTouchList(self, name: str, /) -> tuple:
         """
-        getPropertyTouchList(name) -> tuple
-
         Returns a list of index of touched values for list type properties.
 
         name : str
@@ -45,8 +41,6 @@ class PropertyContainer(Persistence):
 
     def getTypeOfProperty(self, name: str, /) -> list:
         """
-        getTypeOfProperty(name) -> list
-
         Returns the type of a named property. This can be a list conformed by elements in
         (Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient).
 
@@ -57,8 +51,6 @@ class PropertyContainer(Persistence):
 
     def getTypeIdOfProperty(self, name: str, /) -> str:
         """
-        getTypeIdOfProperty(name) -> str
-
         Returns the C++ class name of a named property.
 
         name : str
@@ -68,8 +60,6 @@ class PropertyContainer(Persistence):
 
     def setEditorMode(self, name: str, type: Union[int, List[str]], /) -> None:
         """
-        setEditorMode(name, type) -> None
-
         Set the behaviour of the property in the property editor.
 
         name : str
@@ -83,8 +73,6 @@ class PropertyContainer(Persistence):
 
     def getEditorMode(self, name: str, /) -> list:
         """
-        getEditorMode(name) -> list
-
         Get the behaviour of the property in the property editor.
         It returns a list of strings with the current mode. If the list is empty there are no
         special restrictions.
@@ -99,8 +87,6 @@ class PropertyContainer(Persistence):
 
     def getGroupOfProperty(self, name: str, /) -> str:
         """
-        getGroupOfProperty(name) -> str
-
         Returns the name of the group which the property belongs to in this class.
         The properties are sorted in different named groups for convenience.
 
@@ -111,8 +97,6 @@ class PropertyContainer(Persistence):
 
     def setGroupOfProperty(self, name: str, group: str, /) -> None:
         """
-        setGroupOfProperty(name, group) -> None
-
         Set the name of the group of a dynamic property.
 
         name : str
@@ -124,8 +108,6 @@ class PropertyContainer(Persistence):
 
     def setPropertyStatus(self, name: str, val: Union[int, str, List[Union[str, int]]], /) -> None:
         """
-        setPropertyStatus(name, val) -> None
-
         Set property status.
 
         name : str
@@ -138,8 +120,6 @@ class PropertyContainer(Persistence):
 
     def getPropertyStatus(self, name: str = "", /) -> list:
         """
-        getPropertyStatus(name='') -> list
-
         Get property status.
 
         name : str
@@ -149,8 +129,6 @@ class PropertyContainer(Persistence):
 
     def getDocumentationOfProperty(self, name: str, /) -> str:
         """
-        getDocumentationOfProperty(name) -> str
-
         Returns the documentation string of the property of this class.
 
         name : str
@@ -160,8 +138,6 @@ class PropertyContainer(Persistence):
 
     def setDocumentationOfProperty(self, name: str, docstring: str, /) -> None:
         """
-        setDocumentationOfProperty(name, docstring) -> None
-
         Set the documentation string of a dynamic property of this class.
 
         name : str
@@ -173,8 +149,6 @@ class PropertyContainer(Persistence):
 
     def getEnumerationsOfProperty(self, name: str, /) -> Optional[list]:
         """
-        getEnumerationsOfProperty(name) -> list or  None
-
         Return all enumeration strings of the property of this class or None if not a
         PropertyEnumeration.
 
@@ -186,8 +160,6 @@ class PropertyContainer(Persistence):
     @constmethod
     def dumpPropertyContent(self, Property: str, *, Compression: int = 3) -> bytearray:
         """
-        dumpPropertyContent(Property, Compression=3) -> bytearray
-
         Dumps the content of the property, both the XML representation and the additional
         data files required, into a byte representation.
 
@@ -200,8 +172,6 @@ class PropertyContainer(Persistence):
 
     def restorePropertyContent(self, name: str, obj: object, /) -> None:
         """
-        restorePropertyContent(name, obj) -> None
-
         Restore the content of the object from a byte representation as stored by `dumpPropertyContent`.
         It could be restored from any Python object implementing the buffer protocol.
 
@@ -215,8 +185,6 @@ class PropertyContainer(Persistence):
     @constmethod
     def renameProperty(self, oldName: str, newName: str, /) -> None:
         """
-        renameProperty(oldName, newName) -> None
-
         Rename a property.
 
         oldName : str

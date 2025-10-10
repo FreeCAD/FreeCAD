@@ -7,6 +7,10 @@ from typing import Any, Final
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
+from Part.App.TopoShape import TopoShape
+from Mesh.App.Mesh import Mesh
+from Base.Placement import Placement
+from CAM.App.Command import Command
 
 @export(
     FatherInclude="Base/BaseClassPy.h",
@@ -27,30 +31,28 @@ class PathSim(BaseClass):
     License: LGPL-2.1-or-later
     """
 
-    def BeginSimulation(self, **kwargs) -> Any:
-        """BeginSimulation(stock, resolution):
-
-        Start a simulation process on a box shape stock with given resolution"""
-        ...
-
-    def SetToolShape(self) -> Any:
-        """SetToolShape(shape):
-
-        Set the shape of the tool to be used for simulation"""
-        ...
-
-    def GetResultMesh(self) -> Any:
+    def BeginSimulation(self, stock: TopoShape, resolution: float) -> None:
         """
-        GetResultMesh():
-
-                  Return the current mesh result of the simulation."""
+        Start a simulation process on a box shape stock with given resolution
+        """
         ...
 
-    def ApplyCommand(self, **kwargs) -> Any:
+    def SetToolShape(self, tool: TopoShape, resolution: float, /) -> None:
         """
-        ApplyCommand(placement, command):
+        Set the shape of the tool to be used for simulation
+        """
+        ...
 
-                  Apply a single path command on the stock starting from placement."""
+    def GetResultMesh(self) -> tuple[Mesh, Mesh]:
+        """
+        Return the current mesh result of the simulation.
+        """
+        ...
+
+    def ApplyCommand(self, placement: Placement, command: Command) -> Placement:
+        """
+        Apply a single path command on the stock starting from placement.
+        """
         ...
 
     Tool: Final[Any]

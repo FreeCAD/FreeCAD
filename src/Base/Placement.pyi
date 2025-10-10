@@ -89,16 +89,12 @@ class Placement(PyObjectBase):
     @constmethod
     def copy(self) -> "Placement":
         """
-        copy() -> Base.Placement
-
         Returns a copy of this placement.
         """
         ...
 
     def move(self, vector: Vector, /) -> None:
         """
-        move(vector) -> None
-
         Move the placement along a vector.
 
         vector : Base.Vector
@@ -108,8 +104,6 @@ class Placement(PyObjectBase):
 
     def translate(self, vector: Vector, /) -> None:
         """
-        translate(vector) -> None
-
         Alias to move(), to be compatible with TopoShape.translate().
 
         vector : Base.Vector
@@ -126,8 +120,6 @@ class Placement(PyObjectBase):
     @overload
     def rotate(self, center: Vector, axis: Vector, angle: float, *, comp: bool = False) -> None:
         """
-        rotate(center, axis, angle, comp) -> None
-
         Rotate the current placement around center and axis with the given angle.
         This method is compatible with TopoShape.rotate() if the (optional) keyword
         argument comp is True (default=False).
@@ -149,8 +141,6 @@ class Placement(PyObjectBase):
     @constmethod
     def multiply(self, placement: "Placement", /) -> "Placement":
         """
-        multiply(placement) -> Base.Placement
-
         Right multiply this placement with another placement.
         Also available as `*` operator.
 
@@ -162,8 +152,6 @@ class Placement(PyObjectBase):
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:
         """
-        multVec(vector) -> Base.Vector
-
         Compute the transformed vector using the placement.
 
         vector : Base.Vector
@@ -174,8 +162,6 @@ class Placement(PyObjectBase):
     @constmethod
     def toMatrix(self) -> MatrixPy:
         """
-        toMatrix() -> Base.Matrix
-
         Compute the matrix representation of the placement.
         """
         ...
@@ -183,8 +169,6 @@ class Placement(PyObjectBase):
     @constmethod
     def inverse(self) -> "Placement":
         """
-        inverse() -> Base.Placement
-
         Compute the inverse placement.
         """
         ...
@@ -192,8 +176,6 @@ class Placement(PyObjectBase):
     @constmethod
     def pow(self, t: float, shorten: bool = True, /) -> "Placement":
         """
-        pow(t, shorten=True) -> Base.Placement
-
         Raise this placement to real power using ScLERP interpolation.
         Also available as `**` operator.
 
@@ -208,8 +190,6 @@ class Placement(PyObjectBase):
     @constmethod
     def sclerp(self, placement2: "Placement", t: float, shorten: bool = True, /) -> "Placement":
         """
-        sclerp(placement2, t, shorten=True) -> Base.Placement
-
         Screw Linear Interpolation (ScLERP) between this placement and `placement2`.
         Interpolation is a continuous motion along a helical path parametrized by `t`
         made of equal transforms if discretized.
@@ -229,8 +209,6 @@ class Placement(PyObjectBase):
     @constmethod
     def slerp(self, placement2: "Placement", t: float, /) -> "Placement":
         """
-        slerp(placement2, t) -> Base.Placement
-
         Spherical Linear Interpolation (SLERP) between this placement and `placement2`.
         This function performs independent interpolation of rotation and movement.
         Result of such interpolation might be not what application expects, thus this tool
@@ -246,8 +224,6 @@ class Placement(PyObjectBase):
     @constmethod
     def isIdentity(self, tol: float = 0.0, /) -> bool:
         """
-        isIdentity([tol=0.0]) -> bool
-
         Returns True if the placement has no displacement and no rotation.
         Matrix representation is the 4D identity matrix.
         tol : float
@@ -259,8 +235,6 @@ class Placement(PyObjectBase):
     @constmethod
     def isSame(self, other: "Placement", tol: float = 0.0, /) -> bool:
         """
-        isSame(Base.Placement, [tol=0.0]) -> bool
-
         Checks whether this and the given placement are the same.
         The default tolerance is set to 0.0
         """
