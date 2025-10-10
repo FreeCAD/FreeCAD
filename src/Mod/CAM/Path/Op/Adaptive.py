@@ -524,6 +524,7 @@ def Execute(op, obj):
     # hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
 
+    oldObjVisibility = oldJobVisibility = False
     if FreeCAD.GuiUp:
         # store old visibility state
         job = op.getJob(obj)
@@ -684,6 +685,7 @@ def ExecuteModelAware(op, obj):
     # hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
 
+    oldObjVisibility = oldJobVisibility = False
     if FreeCAD.GuiUp:
         # store old visibility state
         job = op.getJob(obj)
