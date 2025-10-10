@@ -64,7 +64,7 @@ class Sketch(Persistence):
         self, GeoIndex: int, PointPos: Vector, Vector: Vector, relative: bool = False, /
     ) -> None:
         """
-        moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+        Move a given point (or curve).
         to another location.
         It moves the specified point (or curve) to the given location by adding some
         temporary weak constraints and solve the sketch.

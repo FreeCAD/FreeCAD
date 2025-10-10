@@ -6,10 +6,9 @@ from typing import Any, Final
 
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
-
+from Base.Placement import Placement
 from Part.App.TopoShape import TopoShape
 from Mesh.App.Mesh import Mesh
-from Base.Placement import Placement
 from CAM.App.Command import Command
 
 @export(

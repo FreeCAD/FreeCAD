@@ -24,6 +24,7 @@ class StepShape(PyObjectBase):
     """
 
     def read(self) -> Any:
-        """method read()
-        Read a STEP file into memory and make it accessible"""
+        """
+        Read a STEP file into memory and make it accessible
+        """
         ...
