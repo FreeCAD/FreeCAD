@@ -1278,4 +1278,3 @@ void DSHBSplineController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H
-
