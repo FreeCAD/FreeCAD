@@ -1486,32 +1486,10 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-        # Build Wall if there is no obj.Base or even obj.Base is not valid
+        # Build Wall from scratchif there is no obj.Base or even obj.Base is not valid
         else:
-            if layers:
-                totalwidth = sum([abs(l) for l in layers])
-                offset = 0
-                base = []
-                for l in layers:
-                    if l > 0:
-                        l2 = length / 2 or 0.5
-                        w1 = -totalwidth / 2 + offset
-                        w2 = w1 + l
-                        v1 = Vector(-l2, w1, 0)
-                        v2 = Vector(l2, w1, 0)
-                        v3 = Vector(l2, w2, 0)
-                        v4 = Vector(-l2, w2, 0)
-                        base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
-                    offset += abs(l)
-            else:
-                l2 = length / 2 or 0.5
-                w2 = width / 2 or 0.5
-                v1 = Vector(-l2, -w2, 0)
-                v2 = Vector(l2, -w2, 0)
-                v3 = Vector(l2, w2, 0)
-                v4 = Vector(-l2, w2, 0)
-                base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
-            placement = FreeCAD.Placement()
+            base, placement = self.build_base_from_scratch(obj)
+
         if base and placement:
             normal.normalize()
             extrusion = normal.multiply(height)
@@ -1519,6 +1497,8 @@ class _Wall(ArchComponent.Component):
                 extrusion = placement.inverse().Rotation.multVec(extrusion)
             return (base, extrusion, placement)
         return None
+
+
 
     def handleComponentRemoval(self, obj, subobject):
         """
@@ -1568,6 +1548,100 @@ class _Wall(ArchComponent.Component):
             # If it's not the base (e.g., an Addition), use the default behavior
             # from the parent Component class.
             super(_Wall, self).handleComponentRemoval(obj, subobject)
+
+    def get_width(self, obj, widths=True):
+        """Returns a width and a list of widths for this wall.
+        If widths is False, only the main width is returned"""
+        import ArchSketchObject
+
+        # Set 'default' width - for filling in any item in the list == 0 or None
+        if obj.Width.Value:
+            width = obj.Width.Value
+        else:
+            width = 200  # 'Default' width value
+        if not widths:
+            return width
+
+        lwidths = []
+        if (
+            hasattr(obj, "ArchSketchData")
+            and obj.ArchSketchData
+            and Draft.getType(obj.Base) == "ArchSketch"
+        ):
+            if hasattr(obj.Base, "Proxy"):
+                if hasattr(obj.Base.Proxy, "getWidths"):
+                    lwidths = obj.Base.Proxy.getWidths(
+                        obj.Base, propSetUuid=self.ArchSkPropSetPickedUuid
+                    )
+        if not lwidths:
+            if obj.OverrideWidth:
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    lwidths = ArchSketchObject.sortSketchWidth(
+                        obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
+                    )
+                else:
+                    lwidths = obj.OverrideWidth
+            elif obj.Width:
+                lwidths = [obj.Width.Value]
+            else:
+                return None
+        return width, lwidths
+
+    def get_layers(self, obj):
+        """Returns a list of layers"""
+        layers = []
+        width = self.get_width(obj, widths=False)
+        if hasattr(obj, "Material"):
+            if obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    restwidth = width - sum(thicknesses)
+                    varwidth = 0
+                    if restwidth > 0:
+                        varwidth = [t for t in thicknesses if t == 0]
+                        if varwidth:
+                            varwidth = restwidth / len(varwidth)
+                    for t in obj.Material.Thicknesses:
+                        if t:
+                            layers.append(t)
+                        elif varwidth:
+                            layers.append(varwidth)
+        return layers
+
+    def build_base_from_scratch(self, obj):
+        """Builds a simple, origin-centered base face for a baseless wall."""
+        import Part
+
+        layers = self.get_layers(obj)
+        width = self.get_width(obj, widths=False)
+        length = obj.Length.Value
+
+        base = []
+        if layers:
+            totalwidth = sum([abs(layer) for layer in layers])
+            offset = 0
+            for layer in layers:
+                if layer > 0:
+                    l2 = length / 2 or 0.5
+                    w1 = -totalwidth / 2 + offset
+                    w2 = w1 + layer
+                    v1 = Vector(-l2, w1, 0)
+                    v2 = Vector(l2, w1, 0)
+                    v3 = Vector(l2, w2, 0)
+                    v4 = Vector(-l2, w2, 0)
+                    base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
+                offset += abs(layer)
+        else:
+            l2 = length / 2 or 0.5
+            w2 = width / 2 or 0.5
+            v1 = Vector(-l2, -w2, 0)
+            v2 = Vector(l2, -w2, 0)
+            v3 = Vector(l2, w2, 0)
+            v4 = Vector(-l2, w2, 0)
+            base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
+
+        placement = FreeCAD.Placement()
+        return base, placement
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
