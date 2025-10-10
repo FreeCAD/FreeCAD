@@ -191,7 +191,7 @@ void SoDatumLabel::drawImage()
     // 1. Create fonts and metrics
     QFont baseFont(QString::fromLatin1(name.getValue(), -1), size.getValue());
     QFont scaledFont = baseFont;
-    scaledFont.setPointSizeF(baseFont.pointSizeF() * 0.6);
+    scaledFont.setPointSizeF(baseFont.pointSizeF() * 0.7);
 
     QFontMetrics fmBase(baseFont);
     QFontMetrics fmScaled(scaledFont);
