@@ -2137,7 +2137,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
 
     auto fixedValueStr = fixValueStr(valueStr, unitStr).value_or(valueStr);
     if (!prefix.empty()) {
-        fixedValueStr.prepend(prefix);
+        fixedValue-Str.prepend(QString::fromStdString(prefix));
     }
 
     if (constraintParameters.bShowDimensionalName && !constraint->Name.empty()) {
@@ -2947,3 +2947,4 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     ps->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(ps);
 }
+
