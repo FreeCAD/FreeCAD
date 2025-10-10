@@ -261,3 +261,39 @@ class TestArchWall(TestArchBase.TestArchBase):
             delta=1e-6,
             msg="Wall should remain parametric and its volume should change with height.",
         )
+
+    def test_baseless_wall_geometry_and_placement(self):
+        """
+        Tests that a baseless wall correctly generates its shape based on its
+        own properties and is positioned by its own Placement property.
+        """
+        self.printTestMessage("Checking baseless wall geometry and placement...")
+
+        # 1. Arrange: Create a baseless wall with a non-origin placement.
+        wall = Arch.makeWall(length=2000, width=200, height=1500, name="BaselessWall")
+        wall_placement = App.Placement(App.Vector(1000, 500, 0), App.Rotation(App.Vector(0,0,1), 30))
+        wall.Placement = wall_placement
+
+        # Store initial volume for later check
+        initial_volume = wall.Length.Value * wall.Width.Value * wall.Height.Value
+
+        # 2. Act: Trigger the geometry creation.
+        self.document.recompute()
+
+        # 3. Assert
+        self.assertFalse(wall.Shape.isNull(), "Baseless wall should have a valid shape after recompute.")
+        self.assertGreater(wall.Shape.Volume, 0, "Baseless wall shape should have a positive volume.")
+        self.assertAlmostEqual(wall.Shape.Volume, initial_volume, delta=1e-6,
+                               msg="Wall volume does not match its properties.")
+
+        # The most important assertion: check if the shape is in the right place. The center of the
+        # shape's bounding box should match the placement's base vector for X/Y, and be at half the
+        # height for Z.
+        shape_center = wall.Shape.BoundBox.Center
+        placement_base = wall.Placement.Base
+        expected_center = App.Vector(placement_base.x,
+                                     placement_base.y,
+                                     wall.Height.Value / 2)
+
+        self.assertTrue(shape_center.isEqual(expected_center, 1e-5),
+                        f"Wall center {shape_center} does not match expected center {expected_center}")
