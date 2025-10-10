@@ -276,4 +276,3 @@ private:
 
 
 #endif  // SKETCHERGUI_EditModeConstraintCoinManager_H
-
