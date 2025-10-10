@@ -153,7 +153,7 @@ private:
 
     /// Return display string for constraint including hiding units if
     // requested.
-    QString getPresentationString(const Sketcher::Constraint* constraint);
+    QString getPresentationString(const Sketcher::Constraint* constraint, std::string prefix = "");
 
     /// Returns the size that Coin should display the indicated image at
     SbVec3s getDisplayedSize(const SoImage*) const;
@@ -276,3 +276,4 @@ private:
 
 
 #endif  // SKETCHERGUI_EditModeConstraintCoinManager_H
+
