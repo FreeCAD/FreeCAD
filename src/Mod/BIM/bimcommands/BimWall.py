@@ -86,6 +86,8 @@ class Arch_Wall:
         self.Width = params.get_param_arch("WallWidth")
         self.Height = params.get_param_arch("WallHeight")
         self.Offset = params.get_param_arch("WallOffset")
+        # 0 = no base, 1 = draft line, 2 = sketch
+        self.WALL_BASE = PARAMS.GetInt("WallBaseline", 0)
         self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -176,42 +178,65 @@ class Arch_Wall:
             )
 
         elif len(self.points) == 2:
-            FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
-            self.tracker.off()
+            self.create_wall()
 
-            self.doc.openTransaction(translate("Arch", "Create Wall"))
+    def create_wall(self):
+        """Create a wall from the collected points"""
+        import Draft
+        import Part
+        import Arch
+        import ArchWall
+        import DraftGeomUtils
 
-            # Some code in gui_utils.autogroup requires a wall shape to determine
-            # the target group. We therefore need to create a wall first.
-            self.addDefault()
-            wall = self.doc.Objects[-1]
-            wallGrp = wall.getParentGroup()
+        self.WALL_BASE = PARAMS.GetInt("WallBaseline", 0)
+        p0 = self.wp.get_local_coords(self.points[0])
+        p1 = self.wp.get_local_coords(self.points[1])
+        self.tracker.off()
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Wall"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.addModule("Draft")
+        if self.WALL_BASE == 0:
+            line_vector = p1.sub(p0)
+            length = line_vector.Length
+            midpoint = (p0 + p1) * 0.5
+            direction = line_vector.normalize()
+            # A wall's length is along its local X-axis. This finds the rotation
+            # to align the global X-axis with the wall's direction vector.
+            placement_rotation = FreeCAD.Rotation(FreeCAD.Vector(1,0,0), direction)
+            final_placement = FreeCAD.Placement(midpoint, placement_rotation)
 
-            if (
-                (self.JOIN_WALLS_SKETCHES or self.AUTOJOIN)
-                and self.existing
-                and self.existing[-1].getParentGroup() == wallGrp
-            ):
-                oldWall = self.existing[-1]
-                if self.JOIN_WALLS_SKETCHES and ArchWall.areSameWallTypes([wall, oldWall]):
-                    FreeCADGui.doCommand(
-                        "Arch.joinWalls([wall, doc."
-                        + oldWall.Name
-                        + "], "
-                        + "delete=True, deletebase=True)"
-                    )
-                elif self.AUTOJOIN:
-                    if wallGrp is not None:
-                        FreeCADGui.doCommand("wall.getParentGroup().removeObject(wall)")
-                    FreeCADGui.doCommand("Arch.addComponents(wall, doc." + oldWall.Name + ")")
+            wall = Arch.makeWall(length=length, width=self.Width, height=self.Height,
+                          align=self.Align)
+            wall.Placement = final_placement
 
-            self.doc.commitTransaction()
-            self.doc.recompute()
-            # gui_utils.end_all_events()  # Causes a crash on Linux.
-            self.tracker.finalize()
-            if FreeCADGui.draftToolBar.continueMode:
-                self.Activated()
+        else: # This block handles WALL_BASE == 1 (Draft line) and 2 (Sketch)
+            l = Part.LineSegment(p0, p1)
+            FreeCADGui.doCommand('import Part')
+            FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
+
+            if self.existing and self.WALL_BASE == 2: # Attempt to join sketches
+                w = Arch.joinWalls(self.existing)
+                if w:
+                    # Successfully joined existing sketches, now add the new geometry to it
+                    FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                else:
+                    # Could not join, so create a new default wall
+                    self.addDefault()
+            else:
+                # Not in sketch mode or not snapping to anything, so just create a new wall
+                self.addDefault()
+                if self.existing and self.AUTOJOIN:
+                     # If autojoin is on, add the new wall as a component to the snapped-to wall
+                     FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
+
+
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        self.tracker.finalize()
+        if FreeCADGui.draftToolBar.continueMode: # Use continueMode, not self.continueCmd
+            self.Activated()
 
     def addDefault(self):
         """Create a wall using a line segment, with all parameters as the default.
@@ -233,7 +258,7 @@ class Arch_Wall:
         FreeCADGui.doCommand(
             "trace = Part.LineSegment(FreeCAD." + str(sta) + ", FreeCAD." + str(end) + ")"
         )
-        if params.get_param_arch("WallSketches"):
+        if self.WALL_BASE == 2:
             # Use ArchSketch if SketchArch add-on is present
             try:
                 import ArchSketchObject
@@ -375,14 +400,14 @@ class Arch_Wall:
         grid.addWidget(inputOffset, 5, 1, 1, 1)
 
         # Wall "use sketches" checkbox
-        labelUseSketches = QtGui.QLabel(translate("Arch", "Use sketches"))
-        checkboxUseSketches = QtGui.QCheckBox()
-        checkboxUseSketches.setObjectName("UseSketches")
-        checkboxUseSketches.setLayoutDirection(QtCore.Qt.RightToLeft)
-        labelUseSketches.setBuddy(checkboxUseSketches)
-        checkboxUseSketches.setChecked(params.get_param_arch("WallSketches"))
-        grid.addWidget(labelUseSketches, 6, 0, 1, 1)
-        grid.addWidget(checkboxUseSketches, 6, 1, 1, 1)
+        label5 = QtGui.QLabel(translate("Arch","Baseline"))
+        value5 = QtGui.QComboBox()
+        value5.setObjectName("Baseline")
+        label5.setBuddy(value5)
+        value5.addItems([translate("Arch","No baseline"), translate("Arch","Draft line"), translate("Arch","Sketch")])
+        value5.setCurrentIndex(PARAMS.GetInt("WallBaseline",0))
+        grid.addWidget(label5,6,0,1,1)
+        grid.addWidget(value5,6,1,1,1)
 
         # Enable/disable inputOffset based on inputAlignment
         def updateOffsetState(index):
@@ -401,10 +426,7 @@ class Arch_Wall:
         inputHeight.valueChanged.connect(self.setHeight)
         comboAlignment.currentIndexChanged.connect(self.setAlign)
         inputOffset.valueChanged.connect(self.setOffset)
-        if hasattr(checkboxUseSketches, "checkStateChanged"):  # Qt version >= 6.7.0
-            checkboxUseSketches.checkStateChanged.connect(self.setUseSketch)
-        else:  # Qt version < 6.7.0
-            checkboxUseSketches.stateChanged.connect(self.setUseSketch)
+        value5.currentIndexChanged.connect(self.setBaseline)
         comboWallPresets.currentIndexChanged.connect(self.setMat)
 
         # Define the workflow of the input fields:
@@ -476,12 +498,10 @@ class Arch_Wall:
         self.Offset = d
         params.set_param_arch("WallOffset", d)
 
-    def setUseSketch(self, i):
-        """Simple callback to set if walls should based on sketches."""
+    def setBaseline(self,i):
+        """Simple callback to set the wall baseline creation mode."""
 
-        from draftutils import params
-
-        params.set_param_arch("WallSketches", bool(getattr(i, "value", i)))
+        PARAMS.SetInt("WallBaseline",i)
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
