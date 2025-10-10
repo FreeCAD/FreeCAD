@@ -19,6 +19,8 @@ from model.typedModel import (
     SequenceProtocol,
 )
 
+SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
+SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
 
 class ArgumentKind(Enum):
     PositionOnly = 0
@@ -43,6 +45,8 @@ class FunctionSignature:
     args: list[FuncArgument]
     has_keywords: bool
     docstring: str
+    annotated_text: str
+    text: str
 
     const_flag: bool = False
     static_flag: bool = False
@@ -121,6 +125,19 @@ class FunctionSignature:
                 ),
             )
 
+        # Annotated signatures (Not supported by __text_signature__)
+        returns = ast.unparse(func.returns) if func.returns else "object"
+        parameters = ast.unparse(func.args)
+        self.annotated_text = SELF_CLS_ARG.sub("(", f"{func.name}({parameters}) -> {returns}", 1)
+
+        # Not Annotated signatures (supported by __text_signature__)
+        all_args = [*args.posonlyargs, *args.args, args.vararg, *args.kwonlyargs, args.kwarg]
+        for item in all_args:
+            if item:
+                item.annotation = None
+        parameters = ast.unparse(args)
+        self.text = SELF_CLS_ARG.sub(r"($\1\2", f"{func.name}({parameters})", 1)
+
     def get_annotation_str(self, node: ast.AST | None) -> str:
         if not node:
             return "object"
@@ -194,6 +211,27 @@ class Function:
     @property
     def noargs_flag(self) -> bool:
         return any(sig.noargs_flag for sig in self.signatures)
+
+    def add_signature_docs(self, doc: Documentation) -> None:
+        if len (self.signatures) == 1:
+            docstring = [self.signatures[0].text]
+            signature = [self.signatures[0].annotated_text]
+        else:
+            docstring = [sig.text for sig in self.signatures if not sig.is_overload]
+            signature = [sig.annotated_text for sig in self.signatures if sig.is_overload]
+
+        if not docstring:
+            return
+
+        user_doc = doc.UserDocu or ""
+        marker = SIGNATURE_SEP.search(user_doc)
+        if marker:
+            user_doc = user_doc[marker.end():].strip()
+
+        docstring.append("--\n")  # mark __text_signature__
+        docstring.extend(signature)  # Include real annotated signature in user docstring
+        docstring.append(f"\n{user_doc}")  # Rest of the docstring
+        doc.UserDocu = "\n".join(docstring)
 
 
 def _extract_decorator_kwargs(decorator: ast.expr) -> dict:
@@ -420,6 +458,7 @@ def _parse_methods(class_node: ast.ClassDef) -> List[Methode]:
 
     for func in functions.values():
         doc_obj = _parse_docstring_for_documentation(func.docstring)
+        func.add_signature_docs(doc_obj)
         method_params = []
 
         signature = func.signature
