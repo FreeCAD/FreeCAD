@@ -72,8 +72,6 @@ class GroupExtension(DocumentObjectExtension):
 
     def hasObject(self, obj: Any, recursive: bool = False, /) -> bool:
         """
-        hasObject(obj, recursive=false)
-
         Checks if the group has a given object
         @param obj        the object to check for.
         @param recursive  if true check also if the obj is child of some sub group (default is false).

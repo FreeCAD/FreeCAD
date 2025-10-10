@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Any, List, Tuple
+from typing import Any, List, Tuple, TypeAlias
 
 from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 from Gui.ViewProvider import ViewProvider
 
+SoTransformDragger: TypeAlias = Any
 
 @export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
 class ViewProviderAssembly(ViewProvider):
@@ -21,17 +22,11 @@ class ViewProviderAssembly(ViewProvider):
     def isInEditMode(self) -> Any:
         """
         Return true if the assembly object is currently in edit mode.
-
-                      isInEditMode() -> bool"""
+        """
         ...
 
-    def getDragger(self) -> Any:
-        """
-        Return the assembly dragger coin object.
-
-                      getDragger() -> SoTransformDragger
-
-                      Returns: dragger coin object of the assembly"""
+    def getDragger(self) -> SoTransformDragger:
+        """Return the assembly dragger coin object."""
         ...
 
     def isolateComponents(

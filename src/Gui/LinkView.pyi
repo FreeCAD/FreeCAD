@@ -68,7 +68,7 @@ class LinkView(BaseClass):
 
     def setType(self, type: int, sublink: bool = True, /) -> None:
         """
-        setType(type, sublink=True): set the link type.
+        set the link type.
 
         type=0:  override transformation and visibility
         type=1:  override visibility
@@ -95,19 +95,18 @@ class LinkView(BaseClass):
 
     def setTransform(self, matrix: Any, /) -> None:
         """
-        setTransform(matrix): set transformation of the linked object
+        set transformation of the linked object
 
-        setTransform([matrix,...]): set transformation for the elements of the link
+        set transformation for the elements of the link
                                     array/group
 
-        setTransform({index:matrix,...}): set transformation for elements of the link
+        set transformation for elements of the link
                                           array/group by index
         """
         ...
 
     def setChildren(self, children: List[Any], vis: List[Any] = [], type: int = 0, /) -> None:
         """
-        setChildren([obj...],vis=[],type=0)
         Group a list of children objects. Note, this mode of operation is incompatible
         with link array. Calling this function will deactivate link array. And calling
         setSize() will reset all linked children.
@@ -135,11 +134,11 @@ class LinkView(BaseClass):
 
     def setLink(self, obj: Any, subname: Any = None, /) -> None:
         """
-        setLink(object): Set the link
+        Set the link
 
-        setLink(object, subname): Set the link with a sub-object reference
+        Set the link with a sub-object reference
 
-        setLink(object, [subname,...]): Set the link with a list of sub object references
+        Set the link with a list of sub object references
 
         object: The linked document object or its view object
 
@@ -152,7 +151,7 @@ class LinkView(BaseClass):
 
     def getDetailPath(self, element: Any, /) -> Tuple[Any, Any]:
         """
-        getDetailPath(element): get the 3d path an detail of an element.
+        get the 3d path an detail of an element.
 
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
         """
@@ -160,13 +159,13 @@ class LinkView(BaseClass):
 
     def getElementPicked(self, pickPoint: Any, /) -> Any:
         """
-        getElementPicked(pickPoint): get the element under a 3d pick point.
+        get the element under a 3d pick point.
         """
         ...
 
     def getBoundBox(self, vobj: Any = None, /) -> Any:
         """
-        getBoundBox(vobj=None): get the bounding box.
+        get the bounding box.
         """
         ...
 

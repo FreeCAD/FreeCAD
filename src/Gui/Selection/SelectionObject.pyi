@@ -20,7 +20,7 @@ class SelectionObject(BaseClass):
     def remove(self) -> None:
         """
         Remove this selection item from the selection.
-        remove() -> None
+        
         --
         This object becomes invalid.
         """
@@ -29,7 +29,6 @@ class SelectionObject(BaseClass):
     def isObjectTypeOf(self, type: Any, /) -> bool:
         """
         Test for a certain father class.
-        isObjectTypeOf(type) -> Bool
         """
         ...
 
