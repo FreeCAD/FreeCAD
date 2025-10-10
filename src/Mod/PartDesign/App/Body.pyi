@@ -24,7 +24,6 @@ class Body(BodyBase):
 
     def insertObject(self, feature: object, target: object, after: bool = False, /) -> None:
         """
-        insertObject(feature, target, after=False)
         Insert the feature into the body after the given feature.
 
         @param feature  The feature to insert into the body
