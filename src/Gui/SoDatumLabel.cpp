@@ -173,37 +173,109 @@ void SoDatumLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromLatin1(name.getValue(), -1), size.getValue());
-    QFontMetrics fm(font);
-    QString str = QString::fromUtf8(s[0].getString());
+    QString fullStr = QString::fromUtf8(s[0].getString());
 
-    int w = Gui::QtTools::horizontalAdvance(fm, str);
-    int h = fm.height();
+    QString prePart = fullStr;
+    QString boxedContent;  // This is now plain text
+    QString postPart;
 
-    // No Valid text
-    if (!w) {
+    int startIndex = fullStr.indexOf(QStringLiteral("["));
+    int endIndex = fullStr.indexOf(QStringLiteral("]"));
+
+    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
+        prePart = fullStr.left(startIndex);
+        boxedContent = fullStr.mid(startIndex + 1, endIndex - startIndex - 1);
+        postPart = fullStr.mid(endIndex + 1);
+    }
+
+    // 1. Create fonts and metrics
+    QFont baseFont(QString::fromLatin1(name.getValue(), -1), size.getValue());
+    QFont scaledFont = baseFont;
+    scaledFont.setPointSizeF(baseFont.pointSizeF() * 0.6);
+
+    QFontMetrics fmBase(baseFont);
+    QFontMetrics fmScaled(scaledFont);
+
+    // 2. Measure all parts using simple font metrics
+    int preWidth = Gui::QtTools::horizontalAdvance(fmBase, prePart);
+    int postWidth = Gui::QtTools::horizontalAdvance(fmBase, postPart);
+    int boxedContentWidth = Gui::QtTools::horizontalAdvance(fmScaled, boxedContent);
+    int totalBoxHeight = fmScaled.height();
+
+    // 3. Define layout parameters
+    const int mainLineHeight = fmBase.height();
+    const int boxHPadding = 2;  // Horizontal padding for the box
+
+    const int totalBoxWidth = boxedContentWidth + boxHPadding * 2;
+
+    int totalWidth = preWidth + postWidth;
+    if (!boxedContent.isEmpty()) {
+        totalWidth += totalBoxWidth;
+    }
+
+    if (totalWidth == 0) {
         this->image = SoSFImage();
         return;
     }
 
+    // 4. Create the final image
+    const int imagePadding = 2;
+    int imageWidth = totalWidth + imagePadding * 2;
+    int imageHeight = mainLineHeight + imagePadding * 2;
+
     const SbColor& t = textColor.getValue();
     QColor front;
-    front.setRgbF(t[0],t[1], t[2]);
+    front.setRgbF(t[0], t[1], t[2]);
 
-    QImage image(w * sampling.getValue(), h * sampling.getValue(), QImage::Format_ARGB32_Premultiplied);
+    QImage image(imageWidth * sampling.getValue(),
+                 imageHeight * sampling.getValue(),
+                 QImage::Format_ARGB32_Premultiplied);
     image.setDevicePixelRatio(sampling.getValue());
     image.fill(0x00000000);
 
     QPainter painter(&image);
-    if (useAntialiasing) {
-        painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // 5. Draw the elements sequentially, letting Qt handle the alignment.
+    qreal x_offset = imagePadding;
+    const qreal y_top = imagePadding;
+
+    // Draw the part before the box
+    painter.setFont(baseFont);
+    painter.setPen(front);
+    QRectF preRect(x_offset, y_top, preWidth, mainLineHeight);
+    painter.drawText(preRect, Qt::AlignLeft | Qt::AlignVCenter, prePart);
+    x_offset += preWidth;
+
+    if (!boxedContent.isEmpty()) {
+        // Calculate the box's position, centered vertically in the main line
+        qreal box_y_top = y_top + (mainLineHeight - totalBoxHeight) / 2.0;
+        QRectF boxRect(x_offset, box_y_top, totalBoxWidth, totalBoxHeight);
+
+        // Draw the border
+        QPen borderPen(front);
+        borderPen.setWidthF(2.0);
+        painter.setPen(borderPen);
+        const qreal cornerRadius = 3.0;
+        painter.drawRoundedRect(boxRect, cornerRadius, cornerRadius);
+
+        // Draw the text INSIDE the box, letting drawText handle all centering.
+        painter.setFont(scaledFont);
+        painter.setPen(front);
+        QRectF textRect = boxRect;
+        textRect.translate(0, -1.0); // adjust a bit text position
+        painter.drawText(textRect, Qt::AlignCenter, boxedContent);
+
+        x_offset += totalBoxWidth;
     }
 
+    // Draw the part after the box
+    painter.setFont(baseFont);
     painter.setPen(front);
-    painter.setFont(font);
-    painter.drawText(0, 0, w, h, Qt::AlignLeft, str);
-    painter.end();
+    QRectF postRect(x_offset, y_top, postWidth, mainLineHeight);
+    painter.drawText(postRect, Qt::AlignLeft | Qt::AlignVCenter, postPart);
 
+    painter.end();
     Gui::BitmapFactory().convert(image, this->image);
 }
 
