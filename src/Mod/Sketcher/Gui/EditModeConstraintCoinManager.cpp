@@ -905,9 +905,7 @@ Restart:
                             asciiText->datumtype = SoDatumLabel::ARCLENGTH;
                             asciiText->param1 = Constr->LabelDistance;
                             asciiText->string =
-                                SbString(std::string("◠ ")
-                                             .append(getPresentationString(Constr).toUtf8())
-                                             .c_str());
+                                SbString(getPresentationString(Constr, "◠ ").toUtf8().constData());
 
                             asciiText->pnts.setNum(3);
                             SbVec3f* verts = asciiText->pnts.startEditing();
@@ -1517,7 +1515,7 @@ Restart:
 
                     // Get display string with units hidden if so requested
                     asciiText->string =
-                        SbString(getPresentationString(Constr).toUtf8().constData());
+                        SbString(getPresentationString(Constr, "⌀").toUtf8().constData());
 
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
@@ -1600,7 +1598,7 @@ Restart:
                     }
                     else {
                         asciiText->string =
-                            SbString(getPresentationString(Constr).toUtf8().constData());
+                            SbString(getPresentationString(Constr, "R").toUtf8().constData());
                     }
 
                     asciiText->datumtype = SoDatumLabel::RADIUS;
@@ -2100,7 +2098,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
     }
 }
 
-QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
+QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint,
+                                                             std::string prefix)
 {
     /**
      * Hide units if
@@ -2137,15 +2136,8 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     auto valueStr = QString::fromStdString(constrPresValue);
 
     auto fixedValueStr = fixValueStr(valueStr, unitStr).value_or(valueStr);
-    switch (constraint->Type) {
-        case Sketcher::Diameter:
-            fixedValueStr.prepend(QChar(0x2300));
-            break;
-        case Sketcher::Radius:
-            fixedValueStr.prepend(QLatin1Char('R'));
-            break;
-        default:
-            break;
+    if (!prefix.empty()) {
+        fixedValueStr.prepend(prefix);
     }
 
     if (constraintParameters.bShowDimensionalName && !constraint->Name.empty()) {
@@ -2176,7 +2168,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
         constraintIndex = std::distance(constrlist.begin(), it);
         if (ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider,
                                                                     constraintIndex)) {
-            fixedValueStr += QStringLiteral(" (fx)");
+            fixedValueStr += QStringLiteral(" [ƒ𝑥]");
         }
     }
 
