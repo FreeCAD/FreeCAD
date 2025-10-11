@@ -10,3 +10,6 @@
 [submodule "src/Mod/AddonManager"]
 	path = src/Mod/AddonManager
 	url = https://github.com/FreeCAD/AddonManager.git
+[submodule "src/Mod/src/Mod/SearchBar"]
+	path = src/Mod/src/Mod/SearchBar
+	url = https://github.com/APEbbers/SearchBar.git
