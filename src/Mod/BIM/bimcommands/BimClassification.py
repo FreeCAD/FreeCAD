@@ -604,8 +604,7 @@ class BIM_Classification:
             # Close the form if user has pressed Enter and did not
             # select anything
             if len(self.form.treeClass.selectedItems()) < 1:
-                self.form.close()
-                return
+                return self.reject()
 
             code = self.form.treeClass.selectedItems()[0].text(0)
             pl = self.isEditing.PropertiesList
@@ -630,7 +629,6 @@ class BIM_Classification:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
         p.SetInt("BimClassificationDialogWidth", self.form.width())
         p.SetInt("BimClassificationDialogHeight", self.form.height())
-        self.form.hide()
         return self.reject()
 
     def reject(self):
