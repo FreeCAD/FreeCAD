@@ -96,3 +96,76 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.assertAlmostEqual(wall.Placement.Rotation.Angle, 0.0, delta=1e-6,
                                msg="Wall rotation should be zero for a horizontal line.")
 
+    def test_create_draft_line_baseline_wall_interactive(self):
+        """Tests the interactive creation of a wall with a Draft.Line baseline."""
+        from draftguitools import gui_trackers
+        import Draft
+
+        self.printTestMessage("Testing interactive creation of a Draft.Line based wall...")
+
+        # 1. Arrange: Set preference to "Draft line" mode
+        self.params.SetInt("WallBaseline", 1) # Corresponds to WallBaselineMode.DRAFT_LINE
+
+        cmd = Arch_Wall()
+        cmd.doc = self.document
+        cmd.wp = WorkingPlane.get_working_plane()
+        cmd.points = [FreeCAD.Vector(0,0,0), FreeCAD.Vector(2000,0,0)]
+        cmd.Align = "Center"
+        cmd.Width = 200.0
+        cmd.Height = 2500.0
+        cmd.MultiMat = None
+        cmd.existing = []
+        cmd.tracker = gui_trackers.boxTracker()
+
+        initial_object_count = len(self.document.Objects)
+
+        # 2. Act
+        cmd.create_wall()
+
+        # 3. Assert
+        self.assertEqual(len(self.document.Objects), initial_object_count + 2,
+                         "Should have created a Wall and a Draft Line.")
+
+        # The wall is created after the base, so it's the last object
+        wall = self.document.Objects[-1]
+        base = self.document.Objects[-2]
+
+        self.assertEqual(Draft.get_type(wall), "Wall")
+        self.assertEqual(Draft.get_type(base), "Wire")
+        self.assertEqual(wall.Base, base, "The wall's Base should be the newly created line.")
+
+    def test_create_sketch_baseline_wall_interactive(self):
+        """Tests the interactive creation of a wall with a Sketch baseline."""
+        from draftguitools import gui_trackers
+
+        self.printTestMessage("Testing interactive creation of a Sketch based wall...")
+
+        # 1. Arrange: Set preference to "Sketch" mode
+        self.params.SetInt("WallBaseline", 2) # Corresponds to WallBaselineMode.SKETCH
+
+        cmd = Arch_Wall()
+        cmd.doc = self.document
+        cmd.wp = WorkingPlane.get_working_plane()
+        cmd.points = [FreeCAD.Vector(0,0,0), FreeCAD.Vector(2000,0,0)]
+        cmd.Align = "Center"
+        cmd.Width = 200.0
+        cmd.Height = 2500.0
+        cmd.MultiMat = None
+        cmd.existing = []
+        cmd.tracker = gui_trackers.boxTracker()
+
+        initial_object_count = len(self.document.Objects)
+
+        # 2. Act
+        cmd.create_wall()
+
+        # 3. Assert
+        self.assertEqual(len(self.document.Objects), initial_object_count + 2,
+                         "Should have created a Wall and a Sketch.")
+
+        wall = self.document.Objects[-1]
+        base = self.document.Objects[-2]
+
+        self.assertEqual(Draft.get_type(wall), "Wall")
+        self.assertEqual(base.TypeId, "Sketcher::SketchObject")
+        self.assertEqual(wall.Base, base, "The wall's Base should be the newly created sketch.")
