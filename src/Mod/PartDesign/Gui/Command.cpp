@@ -494,7 +494,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             for (auto &sub : v.second) {
                 auto link = obj;
                 auto linkSub = parentSub;
-                parent->resolveRelativeLink(linkSub, link, sub);
+                parent->resolveRelativeLink(linkSub,link,sub);
                 if (link)
                     links[link].push_back(sub);
             }
