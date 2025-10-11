@@ -54,6 +54,7 @@
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
+#include <Mod/Part/Gui/Utils.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -151,26 +152,6 @@ Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* p
 
 /* Sketch commands =======================================================*/
 DEF_STD_CMD_A(CmdSketcherNewSketch)
-
-namespace {
-    QString getAutoGroupCommandStr(bool useActiveBody=true)
-        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
-    {
-        App::GeoFeature* activeObj =nullptr;
-	if(useActiveBody){
-       	   Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-           if (!activeObj) {
-               activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
-           }
-	}
-        if (activeObj) {
-            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
-        }
-
-        return QStringLiteral("# Object created at document root.");
-    }
-}
 
 CmdSketcherNewSketch::CmdSketcherNewSketch()
     : Command("Sketcher_NewSketch")
@@ -270,7 +251,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch on a face"));
         doCommand(Doc,"obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
-        doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+        doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,
                       "App.activeDocument().%s.MapMode = \"%s\"",
@@ -320,7 +301,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   "obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
         }
-        doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+        doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
                   "App.Rotation(%f, %f, %f, %f))",
