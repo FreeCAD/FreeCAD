@@ -1498,7 +1498,39 @@ class _Wall(ArchComponent.Component):
             return (base, extrusion, placement)
         return None
 
+    def calc_endpoints(self, obj):
+        """Returns the global start and end points of a baseless wall's centerline."""
+        # The wall's shape is centered, so its endpoints in local coordinates
+        # are at (-Length/2, 0, 0) and (+Length/2, 0, 0).
+        p1_local = FreeCAD.Vector(-obj.Length.Value / 2, 0, 0)
+        p2_local = FreeCAD.Vector(obj.Length.Value / 2, 0, 0)
 
+        # Transform these local points into global coordinates using the wall's placement.
+        p1_global = obj.Placement.multVec(p1_local)
+        p2_global = obj.Placement.multVec(p2_local)
+
+        return [p1_global, p2_global]
+
+    def set_from_endpoints(self, obj, pts):
+        """Sets the Length and Placement of a baseless wall from two global points."""
+        if len(pts) < 2:
+            return
+
+        p1 = pts[0]
+        p2 = pts[1]
+
+        # Recalculate the wall's properties based on the new endpoints
+        new_length = p1.distanceToPoint(p2)
+        new_midpoint = (p1 + p2) * 0.5
+        new_direction = (p2 - p1).normalize()
+
+        # Calculate the rotation required to align the local X-axis with the new direction
+        new_rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), new_direction)
+
+        # Apply the new properties to the wall object
+        obj.Length = new_length
+        obj.Placement.Base = new_midpoint
+        obj.Placement.Rotation = new_rotation
 
     def handleComponentRemoval(self, obj, subobject):
         """
