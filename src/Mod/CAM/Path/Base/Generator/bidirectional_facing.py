@@ -154,20 +154,14 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
                 continue
 
             # Determine cutting direction based on side and milling_direction
-            # To maintain consistent climb/conventional when alternating sides,
-            # reverse the cutting direction for top vs bottom passes
-            # Bottom passes (from min_t): climb=right-to-left, conventional=left-to-right
-            # Top passes (from max_t): climb=left-to-right, conventional=right-to-left
-            if side == 'bottom':
-                if milling_direction == "climb":
-                    p_start, p_end = end_s, start_s  # right-to-left
-                else:  # conventional
-                    p_start, p_end = start_s, end_s  # left-to-right
-            else:  # side == 'top'
-                if milling_direction == "climb":
-                    p_start, p_end = start_s, end_s  # left-to-right (reversed)
-                else:  # conventional
-                    p_start, p_end = end_s, start_s  # right-to-left (reversed)
+            # Bidirectional maintains same milling type by cutting same direction from both sides
+            # For climb: always cut right-to-left (end_s to start_s)
+            # For conventional: always cut left-to-right (start_s to end_s)
+            # This maintains consistent chip load regardless of which side (top/bottom) we're on
+            if milling_direction == "climb":
+                p_start, p_end = end_s, start_s  # right-to-left
+            else:  # conventional
+                p_start, p_end = start_s, end_s  # left-to-right
 
             # Map to XY - use copies to avoid vector mutation
             start_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))

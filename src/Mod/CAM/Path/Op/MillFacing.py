@@ -380,6 +380,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 raise ValueError(f"Unknown clearing pattern: {obj.ClearingPattern}")
             
             Path.Log.debug(f"Generated {len(base_commands)} base commands")
+            Path.Log.debug(base_commands)
             
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
@@ -629,7 +630,21 @@ class ObjectMillFacing(PathOp.ObjectOp):
             # Skip zero-length
             if curX is not None and abs(X-curX) <= 1e-12 and abs(Y-curY) <= 1e-12 and abs(Z-curZ) <= 1e-12:
                 continue
-            sanitized.append(Path.Command(cmd.Name, {"X": X, "Y": Y, "Z": Z}))
+            
+            # Preserve I, J, K parameters for arc commands (G2/G3)
+            if cmd.Name in ["G2", "G3"]:
+                arc_params = {"X": X, "Y": Y, "Z": Z}
+                if "I" in params:
+                    arc_params["I"] = params["I"]
+                if "J" in params:
+                    arc_params["J"] = params["J"]
+                if "K" in params:
+                    arc_params["K"] = params["K"]
+                if "R" in params:
+                    arc_params["R"] = params["R"]
+                sanitized.append(Path.Command(cmd.Name, arc_params))
+            else:
+                sanitized.append(Path.Command(cmd.Name, {"X": X, "Y": Y, "Z": Z}))
             curX, curY, curZ = X, Y, Z
 
         self.commandlist = sanitized
@@ -649,6 +664,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
         
         Path.Log.debug(f"Total commands in commandlist: {len(self.commandlist)}")
         Path.Log.debug("MillFacing.opExecute() completed successfully")
+        Path.Log.debug(self.commandlist)
 
 
 # Eclass
