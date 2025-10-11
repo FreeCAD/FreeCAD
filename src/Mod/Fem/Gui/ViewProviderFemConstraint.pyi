@@ -21,17 +21,17 @@ class ViewProviderFemConstraint(ViewProviderGeometryObject):
     License: LGPL-2.1-or-later
     """
 
-    def loadSymbol(self) -> Any:
-        """loadSymbol(filename) -> None
-
+    def loadSymbol(self, file_name: str, /) -> Any:
+        """
         Load constraint symbol from Open Inventor file.
         The file structure should be as follows:
         A separator containing a separator with the symbol used in
         multiple copies at points on the surface and an optional
         separator with a symbol excluded from multiple copies.
 
-        filename : str
-            Open Inventor file."""
+        file_name : str
+            Open Inventor file.
+        """
         ...
 
     SymbolNode: Final[Any]
