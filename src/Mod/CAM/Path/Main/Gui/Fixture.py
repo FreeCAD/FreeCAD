@@ -36,7 +36,7 @@ class Fixture:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Fixture Offset Number"),
         )
-        obj.Fixture = [
+        obj.Fixture = (
             "G54",
             "G55",
             "G56",
@@ -52,7 +52,7 @@ class Fixture:
             "G59.7",
             "G59.8",
             "G59.9",
-        ]
+        )
         obj.addProperty(
             "App::PropertyBool",
             "Active",
@@ -65,34 +65,17 @@ class Fixture:
         obj.Proxy = self
 
     def execute(self, obj):
-        fixlist = [
-            "G54",
-            "G55",
-            "G56",
-            "G57",
-            "G58",
-            "G59",
-            "G59.1",
-            "G59.2",
-            "G59.3",
-            "G59.4",
-            "G59.5",
-            "G59.6",
-            "G59.7",
-            "G59.8",
-            "G59.9",
-        ]
-        fixture = fixlist.index(obj.Fixture)
-        obj.Path = Path.Path(str(obj.Fixture))
-        obj.Label = "Fixture" + str(fixture)
+        obj.Label = "Fixture" + obj.Fixture
         if obj.Active:
+            commands = []
+            commands.append(Path.Command(obj.Fixture))
             job = PathUtils.findParentJob(obj)
-            c1 = Path.Command(str(obj.Fixture))
-            c2 = Path.Command("G0" + str(job.Stock.Shape.BoundBox.ZMax))
-            obj.Path = Path.Path([c1, c2])
+            z = job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value
+            commands.append(Path.Command("G0", {"Z": z}))
+            obj.Path = Path.Path(commands)
             obj.ViewObject.Visibility = True
         else:
-            obj.Path = Path.Path("(inactive operation)")
+            obj.Path = Path.Path()
             obj.ViewObject.Visibility = False
 
 
