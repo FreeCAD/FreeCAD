@@ -361,3 +361,43 @@ class TestArchWall(TestArchBase.TestArchBase):
             delta=1e-6,
             msg="Placement.Rotation was not updated correctly.",
         )
+
+    def test_wall_ending_properties(self):
+        """Tests that the EndingStart/EndingEnd properties correctly trim the wall."""
+        self.printTestMessage("Checking wall parametric endings...")
+
+        # 1. Arrange: Create a simple baseless wall
+        wall = Arch.makeWall(length=2000, width=200, height=1000)
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+        self.assertGreater(initial_volume, 0)
+
+        # 2. Arrange: Define a cutting plane at the wall's end, rotated 45 degrees
+        # The wall is centered at origin, so its end is at x=1000
+        cut_pos = App.Vector(1000, 0, 0)
+        # To define a vertical plane angled at 45 degrees, we first make it
+        # vertical (rotating it 90 degrees around the Y-axis), and then
+        # rotate it into its final angle (45 degrees around the Z-axis).
+        rot_vertical = App.Rotation(App.Vector(0, 1, 0), 90)
+        rot_angle = App.Rotation(App.Vector(0, 0, 1), 45)
+        cut_rot = rot_angle * rot_vertical
+        cutting_placement = App.Placement(cut_pos, cut_rot)
+
+        # 3. Act: Apply the cutting placement and recompute
+        wall.EndingEnd = cutting_placement
+        self.document.recompute()
+
+        # 4. Assert
+        self.assertTrue(wall.Shape.isValid(), "Wall shape became invalid after trimming.")
+        self.assertLess(wall.Shape.Volume, initial_volume,
+                        "Wall volume should decrease after being trimmed.")
+
+        # Assert that the bounding box has shrunk on the max X side
+        self.assertLess(wall.Shape.BoundBox.XMax, 1000.01,
+                        "Wall's XMax should be less than its original end position.")
+
+        # Reset the ending and check if the wall returns to its original state
+        wall.EndingEnd = App.Placement()
+        self.document.recompute()
+        self.assertAlmostEqual(wall.Shape.Volume, initial_volume, delta=1e-6,
+                               msg="Wall should return to its original volume after resetting the ending.")

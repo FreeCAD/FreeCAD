@@ -409,6 +409,29 @@ class _Wall(ArchComponent.Component):
             self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self, "ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
+        if "EndingStart" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingStart",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement, describing "
+                    "a plane that cuts the end of the wall, at start position.",
+                ),
+            )
+        if "EndingEnd" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingEnd",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement, describing "
+                    "a plane that cuts the end of the wall, at end position.",
+                ),
+            )
+
         self.connectEdges = []
 
     def dumps(self):
@@ -728,6 +751,7 @@ class _Wall(ArchComponent.Component):
             base = Part.Shape()
 
         base = self.processSubShapes(obj, base, pl)
+        base = self.process_endings(obj, base, pl)
 
         self.applyShape(obj, base, pl)
 
@@ -1675,6 +1699,65 @@ class _Wall(ArchComponent.Component):
         placement = FreeCAD.Placement()
         return base, placement
 
+    def process_endings(self, obj, base_solid, wall_placement):
+        """
+        Trims the given wall solid using the EndingStart and EndingEnd planes.
+        """
+        import Part
+
+        if base_solid.isNull():
+            return base_solid
+
+        solid_to_trim = base_solid
+        tool_size = base_solid.BoundBox.DiagonalLength * 2
+
+        # A reference point guaranteed to be on the 'keep' side of the cut
+        ref_point = wall_placement.Base
+
+        # --- Process the start ending ---
+        is_start_null = (obj.EndingStart.Base.Length < 1e-9 and obj.EndingStart.Rotation.Angle < 1e-9)
+        if not is_start_null:
+            start_plane_placement = wall_placement.multiply(obj.EndingStart)
+
+            # Create the cutting tool
+            cutting_tool_start = self._create_cutting_tool_from_plane(start_plane_placement, ref_point, tool_size)
+
+            solid_to_trim = solid_to_trim.common(cutting_tool_start)
+
+        # --- Process the end ending ---
+        is_end_null = (obj.EndingEnd.Base.Length < 1e-9 and obj.EndingEnd.Rotation.Angle < 1e-9)
+        if not is_end_null:
+            end_plane_placement = wall_placement.multiply(obj.EndingEnd)
+
+            # Create the cutting tool
+            cutting_tool_end = self._create_cutting_tool_from_plane(end_plane_placement, ref_point, tool_size)
+
+            solid_to_trim = solid_to_trim.common(cutting_tool_end)
+
+        return solid_to_trim
+
+    def _create_cutting_tool_from_plane(self, cutting_placement, ref_point, tool_size):
+        """
+        Creates a finite, solid cutting tool from a placement.
+        It uses a bounded face to ensure compatibility with boolean operations.
+        """
+        import Part
+
+        # Create the four corners of a large, bounded plane in its local XY plane.
+        p1 = FreeCAD.Vector(-tool_size / 2, -tool_size / 2, 0)
+        p2 = FreeCAD.Vector( tool_size / 2, -tool_size / 2, 0)
+        p3 = FreeCAD.Vector( tool_size / 2,  tool_size / 2, 0)
+        p4 = FreeCAD.Vector(-tool_size / 2,  tool_size / 2, 0)
+
+        # Create a bounded face and move it to the final cutting position.
+        bounded_face = Part.Face(Part.makePolygon([p1, p2, p3, p4, p1]))
+        bounded_face.Placement = cutting_placement
+
+        # Create the half-space solid from the bounded face.
+        # This produces a finite, extruded solid.
+        cutting_tool = bounded_face.makeHalfSpace(ref_point)
+
+        return cutting_tool
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.
