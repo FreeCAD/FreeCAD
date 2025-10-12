@@ -115,7 +115,9 @@ class PostProcessorConfig:
         self.output_line_numbers = False
         self.show_editor = True
         self.modal = False  # if true commands are suppressed if the same as previous line.
-        self.output_doubles = True  # if false duplicate axis values are suppressed if the same as previous line.
+        self.output_doubles = (
+            True  # if false duplicate axis values are suppressed if the same as previous line.
+        )
         self.command_space = " "
 
         # Machine params
@@ -225,6 +227,7 @@ def format_lines(lines, config):
             out.append(line)
     return "\n".join(out) + "\n"
 
+
 def export(objectslist, filename, argstring):
     job = PathUtils.findParentJob(objectslist[0])
     config = PostProcessorConfig()
@@ -245,7 +248,9 @@ def export(objectslist, filename, argstring):
     if config.output_header:
         out_lines.append("(Exported by FreeCAD)")
         out_lines.append("(Post Processor: " + __name__ + ")")
-        out_lines.append("(Output Time:" + str(now) + ")")  # remove while debugging to make deterministic
+        out_lines.append(
+            "(Output Time:" + str(now) + ")"
+        )  # remove while debugging to make deterministic
 
     # Write the preamble
     if config.output_comments:
@@ -278,13 +283,16 @@ def export(objectslist, filename, argstring):
         # do the pre_op
         if config.output_comments:
             out_lines.append("(begin operation: %s)" % obj.Label)
-            out_lines.append("(machine: %s, %s)" % (
-                myMachine,
-                config.unit_speed_format,
-            ))
+            out_lines.append(
+                "(machine: %s, %s)"
+                % (
+                    myMachine,
+                    config.unit_speed_format,
+                )
+            )
         for line in config.pre_operation.splitlines(True):
             # splitlines(True) keeps the newline, so strip it
-            out_lines.append(line.rstrip('\n\r'))
+            out_lines.append(line.rstrip("\n\r"))
 
         # actual op
         lines = parse(obj, config)
@@ -295,7 +303,7 @@ def export(objectslist, filename, argstring):
             out_lines.append("(finish operation: %s)" % obj.Label)
         for line in config.post_operation.splitlines(True):
             # splitlines(True) keeps the newline, so strip it
-            out_lines.append(line.rstrip('\n\r'))
+            out_lines.append(line.rstrip("\n\r"))
 
     # do the post_amble
     if config.output_comments:
@@ -336,10 +344,22 @@ def parse(pathobj, config):
     # the order of parameters
     # linuxcnc doesn't want K properties on XY plane  Arcs need work.
     params = [
-        "X", "Y", "Z",
-        "A", "B", "C",
-        "I", "J",
-        "F", "S", "Q", "R", "L", "H", "D", "P",
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "C",
+        "I",
+        "J",
+        "F",
+        "S",
+        "Q",
+        "R",
+        "L",
+        "H",
+        "D",
+        "P",
         # "T"  # tool changes handled directly now
     ]
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
@@ -355,13 +375,11 @@ def parse(pathobj, config):
                 out_lines.extend(child_lines)
         return out_lines
 
-
     else:  # parsing simple path
 
         # groups might contain non-path things like stock.
         if not hasattr(pathobj, "Path"):
             return []
-
 
         ##########
         # Loop over all commands
@@ -376,8 +394,8 @@ def parse(pathobj, config):
             #   G1 X1
             #   Y1  ( doesn't mention G1 again )
             if (
-                    not config.modal or  # if not modal, always output
-                    command != lastcommand  # if modal and its a new command, output
+                not config.modal  # if not modal, always output
+                or command != lastcommand  # if modal and its a new command, output
             ):
                 outstring.append(command)
 
@@ -409,10 +427,10 @@ def parse(pathobj, config):
 
                 # Tool change preamble + correct order, eg T2 *before* M6
                 if tool_num is not None:
-                    out_lines.append(f'{config.tool_change}T{int(tool_num)} M6')
+                    out_lines.append(f"{config.tool_change}T{int(tool_num)} M6")
 
                 else:
-                    raise Exception('M6 received, but tool_num was None')
+                    raise Exception("M6 received, but tool_num was None")
                 continue
 
             ##########
@@ -439,10 +457,10 @@ def parse(pathobj, config):
                             continue
 
                     elif param in [
-                            # "T",  # Tool selection (should now be handled before param loop)
-                            "H",  # Tool length offset (eg G43 H01 Z100)
-                            "D",  # Cutter radius compensation (eg G41 D02)
-                            "S",  # Spindle speed
+                        # "T",  # Tool selection (should now be handled before param loop)
+                        "H",  # Tool length offset (eg G43 H01 Z100)
+                        "D",  # Cutter radius compensation (eg G41 D02)
+                        "S",  # Spindle speed
                     ]:
                         outstring.append(param + str(int(c.Parameters[param])))
 
@@ -456,7 +474,10 @@ def parse(pathobj, config):
                         else:
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param + format(float(pos.getValueAs(config.unit_format)), precision_string)
+                                param
+                                + format(
+                                    float(pos.getValueAs(config.unit_format)), precision_string
+                                )
                             )
 
             # store the latest command
