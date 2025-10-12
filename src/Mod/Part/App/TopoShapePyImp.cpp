@@ -889,7 +889,7 @@ PyObject*  TopoShapePy::ancestorsOfType(PyObject *args) const
         auto indices = model.findAncestors(shape, shapetype);
         Py::List list;
         for(auto idx : indices)
-            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx + 1)));
+            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
