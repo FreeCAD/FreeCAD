@@ -1503,7 +1503,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 dirX = dirY.Crossed(SketchNormal);
             }
 
-            SketchXAxis = gp_Vec(dirX).Reversed();  // yields upside-down sketches less often.
+            SketchXAxis = gp_Vec(dirX);
 
             if (bThruVertex) {
                 SketchBasePoint = p;
