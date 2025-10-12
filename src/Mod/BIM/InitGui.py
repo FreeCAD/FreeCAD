@@ -170,6 +170,7 @@ class BIMWorkbench(Workbench):
             "Draft_Downgrade",
             "Arch_Add",
             "Arch_Remove",
+            "BIM_JoinTools",
         ]
         self.modify_3d = [
             "Draft_OrthoArray",
@@ -297,6 +298,19 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
         insert_at_index = self.annotationtools.index("BIM_TDPage")
         self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
+
+        class BIM_JoinTools:
+            def GetCommands(self):
+                # This method tells FreeCAD which commands belong to this group
+                return ["BIM_Join_Miter", "BIM_Join_Butt", "BIM_Join_Tee"]
+            def GetResources(self):
+                # This method defines the appearance of the main button
+                t = QT_TRANSLATE_NOOP("BIM_JoinTools", "Join tools")
+                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_Join_Miter"}
+            def IsActive(self):
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
+        FreeCADGui.addCommand("BIM_JoinTools", BIM_JoinTools())
 
         # load rebar tools (Reinforcement addon)
 

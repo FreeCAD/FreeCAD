@@ -1699,6 +1699,22 @@ class _Wall(ArchComponent.Component):
         placement = FreeCAD.Placement()
         return base, placement
 
+    def get_baseline(self, obj):
+        """
+        Returns the baseline of the wall as a Part.LineSegment in global coordinates.
+        Handles both based and baseless walls.
+        """
+        import Part
+        if hasattr(obj, "Base") and obj.Base:
+            # For based walls, return the shape of the base object.
+            # We assume it's a single line or wire for joining purposes.
+            return obj.Base.Shape
+        elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "calc_endpoints"):
+            # For baseless walls, calculate the endpoints.
+            endpoints = obj.Proxy.calc_endpoints(obj)
+            return Part.makeLine(endpoints[0], endpoints[1])
+        return None
+
     def process_endings(self, obj, base_solid, wall_placement):
         """
         Trims the given wall solid using the EndingStart and EndingEnd planes.
