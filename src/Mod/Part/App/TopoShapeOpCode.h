@@ -23,6 +23,8 @@
 #ifndef PART_TOPOSHAPE_OPCODE_H
 #define PART_TOPOSHAPE_OPCODE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 /** Definition of commonly used TopoShape operational code
  *
  * The operational code (op code) is encoded into the mapped element name to
@@ -48,7 +50,8 @@ public:
     static constexpr const char *Fuse = "FUS";
     static constexpr const char *Cut = "CUT";
     static constexpr const char *Common = "CMN";
-    static constexpr const char *Section = "SEC";
+    static constexpr const char* Section = "SEC";
+    static constexpr const char* Xor = "XOR";
     static constexpr const char *Compound = "CMP";
     static constexpr const char *Compsolid = "CSD";
     static constexpr const char *Pipe = "PIP";

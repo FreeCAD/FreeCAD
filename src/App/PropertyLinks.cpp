@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include <QDir>
 #include <QFileInfo>
 #include <boost/algorithm/string/predicate.hpp>
@@ -294,6 +291,27 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
             catch (std::exception& e) {
                 FC_ERR("Failed to update element reference of " << propertyName(prop) << ": "
                                                                 << e.what());
+            }
+        }
+    }
+}
+
+void PropertyLinkBase::updateAllElementReferences(bool reverse)
+{
+    for (auto reference : _ElementRefMap) {
+        for (auto prop : reference.second) {
+            if (prop->getContainer()) {
+                try {
+                    prop->updateElementReference(reference.first, reverse, true);
+                }
+                catch (Base::Exception& e) {
+                    e.reportException();
+                    FC_ERR("Failed to update element reference of " << propertyName(prop));
+                }
+                catch (std::exception& e) {
+                    FC_ERR("Failed to update element reference of " << propertyName(prop) << ": "
+                                                                    << e.what());
+                }
             }
         }
     }
@@ -2061,6 +2079,10 @@ void PropertyLinkSub::getLinks(std::vector<App::DocumentObject*>& objs,
 {
     if (all || _pcScope != LinkScope::Hidden) {
         if (_pcLinkSub && _pcLinkSub->isAttachedToDocument()) {
+            // we use to run this method everytime the program needed to access the sub-elements in
+            // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+            // commented out.
+            // updateElementReferences(_pcLinkSub);
             objs.push_back(_pcLinkSub);
             if (subs) {
                 *subs = getSubValues(newStyle);
@@ -3132,6 +3154,10 @@ void PropertyLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         objs.reserve(objs.size() + _lValueList.size());
         for (auto obj : _lValueList) {
             if (obj && obj->isAttachedToDocument()) {
+                // we use to run this method everytime the program needed to access the sub-elements in
+                // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+                // commented out.
+                // updateElementReferences(obj);
                 objs.push_back(obj);
             }
         }
@@ -4067,6 +4093,7 @@ void PropertyXLink::afterRestore()
     if (!testFlag(LinkRestoreLabel) || !_pcLink || !_pcLink->isAttachedToDocument()) {
         return;
     }
+
     setFlag(LinkRestoreLabel, false);
     for (size_t i = 0; i < _SubList.size(); ++i) {
         restoreLabelReference(_pcLink, _SubList[i], &_ShadowSubList[i]);
@@ -4633,6 +4660,10 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject*>& objs,
                              bool newStyle) const
 {
     if ((all || _pcScope != LinkScope::Hidden) && _pcLink && _pcLink->isAttachedToDocument()) {
+        // we use to run this method everytime the program needed to access the sub-elements in
+        // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+        // commented out.
+        // updateElementReferences(_pcLink, false);
         objs.push_back(_pcLink);
         if (subs && _SubList.size() == _ShadowSubList.size()) {
             *subs = getSubValues(newStyle);
@@ -5367,6 +5398,11 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         for (auto& l : _Links) {
             auto obj = l.getValue();
             if (obj && obj->isAttachedToDocument()) {
+                // we use to run this method everytime the program needed to access the sub-elements in
+                // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+                // commented out.
+                // updateElementReferences(obj);
+
                 auto subnames = l.getSubValues(newStyle);
                 if (subnames.empty()) {
                     subnames.emplace_back("");

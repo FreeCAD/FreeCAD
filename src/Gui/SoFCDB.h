@@ -28,6 +28,7 @@
 #include <string>
 #include <Inventor/C/basic.h>
 
+#include <FCGlobal.h>
 
 class SoNode;
 class SoGroup;

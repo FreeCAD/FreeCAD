@@ -23,6 +23,12 @@
 #ifndef __InventorAll__
 #define __InventorAll__
 
+#include <FCConfig.h>
+
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+
 // Open Inventor
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -60,16 +61,17 @@
  *
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SoFullPath.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/draggers/SoDragger.h>
 # include <QApplication>
-#endif
+
 
 #include <QTapAndHoldGesture>
+
+#include <FCConfig.h>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -860,7 +862,7 @@ const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
@@ -956,25 +958,6 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
 SbBool GestureNavigationStyle::processSoEvent_bypass(const SoEvent* const ev)
 {
     return superclass::processSoEvent(ev);
-}
-
-bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
-{
-    SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
-    rp.setRadius(viewer->getPickRadius());
-    rp.setPoint(pos);
-    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
-    SoPickedPoint* pick = rp.getPickedPoint();
-    if (pick){
-        const auto fullpath = static_cast<const SoFullPath*>(pick->getPath());
-        for(int i = 0; i < fullpath->getLength(); ++i){
-            if(fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId()))
-                return true;
-        }
-        return false;
-    } else {
-        return false;
-    }
 }
 
 bool GestureNavigationStyle::is2DViewing() const

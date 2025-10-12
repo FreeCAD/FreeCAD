@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Python.h>
 #include <vtkDoubleArray.h>
 #include <vtkPointData.h>
 #include <vtkAlgorithm.h>
 #include <vtkAlgorithmOutput.h>
 #include <vtkUnstructuredGrid.h>
-#endif
+#include <vtkInformation.h>
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
@@ -218,6 +215,17 @@ DocumentObjectExecReturn* FemPostFilter::execute()
     return StdReturn;
 }
 
+bool FemPostFilter::dataIsAvailable()
+{
+    auto algo = getFilterOutput();
+    if (!algo) {
+        return false;
+    }
+
+    vtkInformation* info = algo->GetInputInformation(0, 0);
+    return bool(info->Has(vtkDataObject::DATA_OBJECT()));
+}
+
 vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
 {
     auto active = m_pipelines[m_activePipeline];
@@ -233,12 +241,21 @@ vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
     if (!algo) {
         return nullptr;
     }
+
+    // make sure the data processing is up to date
     if (Frame.getValue() > 0) {
         algo->UpdateTimeStep(Frame.getValue());
     }
     else {
         algo->Update();
     }
+
+    // check if the algorithm has data available
+    vtkInformation* info = algo->GetInputInformation(0, 0);
+    if (!bool(info->Has(vtkDataObject::DATA_OBJECT()))) {
+        return nullptr;
+    }
+
     return vtkDataSet::SafeDownCast(algo->GetOutputDataObject(0));
 }
 
@@ -472,6 +489,10 @@ void FemPostDataAlongLineFilter::GetAxisData()
     std::vector<double> coords;
     std::vector<double> values;
 
+    if (!dataIsAvailable()) {
+        return;
+    }
+
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     if (!dset) {
@@ -597,6 +618,10 @@ short int FemPostDataAtPointFilter::mustExecute() const
 
 void FemPostDataAtPointFilter::GetPointData()
 {
+    if (!dataIsAvailable()) {
+        return;
+    }
+
     std::vector<double> values;
 
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
@@ -1463,15 +1488,24 @@ void FemPostCalculatorFilter::updateAvailableFields()
         std::string name1 = pd->GetArrayName(i);
         std::string name2 = name1;
         std::replace(name2.begin(), name2.end(), ' ', '_');
-        if (pd->GetArray(i)->GetNumberOfComponents() == 3) {
+        if (pd->GetArray(i)->GetNumberOfComponents() == 1) {
+            m_calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+        }
+        else if (pd->GetArray(i)->GetNumberOfComponents() == 3) {
             m_calculator->AddVectorVariable(name2.c_str(), name1.c_str());
-            // add components as scalar variable
+            // add vector components as scalar variable
             m_calculator->AddScalarVariable((name2 + "_X").c_str(), name1.c_str(), 0);
             m_calculator->AddScalarVariable((name2 + "_Y").c_str(), name1.c_str(), 1);
             m_calculator->AddScalarVariable((name2 + "_Z").c_str(), name1.c_str(), 2);
         }
-        else if (pd->GetArray(i)->GetNumberOfComponents() == 1) {
-            m_calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+        else if (pd->GetArray(i)->GetNumberOfComponents() == 6) {
+            // add tensor components as scalar variable
+            m_calculator->AddScalarVariable((name2 + "_XX").c_str(), name1.c_str(), 0);
+            m_calculator->AddScalarVariable((name2 + "_YY").c_str(), name1.c_str(), 1);
+            m_calculator->AddScalarVariable((name2 + "_ZZ").c_str(), name1.c_str(), 2);
+            m_calculator->AddScalarVariable((name2 + "_XY").c_str(), name1.c_str(), 3);
+            m_calculator->AddScalarVariable((name2 + "_YZ").c_str(), name1.c_str(), 4);
+            m_calculator->AddScalarVariable((name2 + "_ZX").c_str(), name1.c_str(), 5);
         }
     }
 }

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QVBoxLayout>
-#endif
+
+#include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
 #undef max
@@ -517,10 +517,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 
 Py::Object PyResource::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Resource object";
-    return Py::String(s_out.str());
+    return Py::String("Resource object");
 }
 
 /**

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom2d_BSplineCurve.hxx>
 # include <Geom2dAPI_PointsToBSpline.hxx>
 # include <Geom2dAPI_Interpolate.hxx>
@@ -35,7 +33,7 @@
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
 # include <TColStd_HArray1OfReal.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

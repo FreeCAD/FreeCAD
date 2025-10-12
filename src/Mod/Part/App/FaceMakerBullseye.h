@@ -29,6 +29,7 @@
 #include <gp_Pln.hxx>
 #include <Bnd_Box.hxx>
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {

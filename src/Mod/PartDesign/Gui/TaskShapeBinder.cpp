@@ -21,13 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <boost/core/ignore_unused.hpp>
 # include <QAction>
 # include <QMessageBox>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -58,7 +56,7 @@ using namespace Gui;
 
 TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWidget* parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
-        tr("Datum Shape Parameters"), true, parent)
+        tr("Shape Binder Parameters"), true, parent)
     , SelectionObserver(view)
     , ui(new Ui_TaskShapeBinder)
     , vp(view)

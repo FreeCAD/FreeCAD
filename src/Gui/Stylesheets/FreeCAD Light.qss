@@ -1682,6 +1682,10 @@ color: black;
 background-color: #f0f0f0;
 }
 
+/* Fix for tables inside task panels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+QSint--ActionGroup QFrame[class="content"] QTableView {
+  min-height: 300px;
+}
 
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
@@ -2779,14 +2783,6 @@ Gui--NotificationLabel {
   border-radius: 2px;
 }
 /* overlay */
-Gui--OverlayToolButton{
-  image: url(qss:images_classic/close-lightgray.png);
-}
-
-Gui--OverlayToolButton:hover {
-  image: url(qss:images_classic/close-red.png);
-}
-
 Gui--OverlayToolButton[objectName="OBTN Float"] {
   image: url(qss:images_classic/float-lightgray.png);
 }

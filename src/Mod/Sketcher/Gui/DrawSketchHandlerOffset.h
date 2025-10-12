@@ -24,6 +24,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
 #define SKETCHERGUI_DrawSketchHandlerOffset_H
 
+#include <FCConfig.h>
+
 #include <limits>
 
 #include <QApplication>
@@ -179,7 +181,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Offset parameters"));
+        return QString(tr("Offset Parameters"));
     }
 
     void activated() override
@@ -259,7 +261,7 @@ private:
         TopoDS_Shape offsetShape = mkOffset.Shape();
 
         if (offsetShape.IsNull()) {
-            throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
+            return offsetShape;
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
@@ -290,7 +292,8 @@ private:
         GeometryFacade::setConstruction(line, false);
         return line;
     }
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve)
+
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -302,39 +305,71 @@ private:
             gCircle->setRadius(circle.Radius());
             gCircle->setCenter(Base::Vector3d(cnt.X(), cnt.Y(), cnt.Z()));
 
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                Handle(Geom_Circle) hCircle = Handle(Geom_Circle)::DownCast(gCircle->handle());
+                hCircle->Reverse();
+            }
+
             GeometryFacade::setConstruction(gCircle, false);
             return gCircle;
         }
         else {
+            Handle(Geom_Circle) hCircle = new Geom_Circle(circle);
+
+            double u1 = curve.FirstParameter();
+            double u2 = curve.LastParameter();
+
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                hCircle->Reverse();  // Reverses the axis of the underlying circle
+                std::swap(u1, u2);
+                u1 = -u1;
+                u2 = -u2;
+            }
+
             auto* gArc = new Part::GeomArcOfCircle();
-            Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
-            Handle(Geom_TrimmedCurve) tCurve =
-                new Geom_TrimmedCurve(hCircle, curve.FirstParameter(), curve.LastParameter());
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, u1, u2);
             gArc->setHandle(tCurve);
+
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
         }
     }
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve)
+
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
     {
         gp_Elips ellipse = curve.Ellipse();
-        // gp_Pnt cnt = ellipse.Location();
         gp_Pnt beg = curve.Value(curve.FirstParameter());
         gp_Pnt end = curve.Value(curve.LastParameter());
 
         if (beg.SquareDistance(end) < Precision::Confusion()) {
             auto* gEllipse = new Part::GeomEllipse();
             Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
+
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                hEllipse->Reverse();
+            }
+
             gEllipse->setHandle(hEllipse);
             GeometryFacade::setConstruction(gEllipse, false);
             return gEllipse;
         }
         else {
-            Handle(Geom_Curve) hEllipse = new Geom_Ellipse(ellipse);
-            Handle(Geom_TrimmedCurve) tCurve =
-                new Geom_TrimmedCurve(hEllipse, curve.FirstParameter(), curve.LastParameter());
+            Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
+
+            double u1 = curve.FirstParameter();
+            double u2 = curve.LastParameter();
+
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                hEllipse->Reverse();  // Reverses the axis of the underlying ellipse
+                std::swap(u1, u2);
+                u1 = -u1;
+                u2 = -u2;
+            }
+
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hEllipse, u1, u2);
             auto* gArc = new Part::GeomArcOfEllipse();
             gArc->setHandle(tCurve);
+
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
         }
@@ -344,6 +379,9 @@ private:
                        std::vector<int>& listOfOffsetGeoIds)
     {
         TopoDS_Shape offsetShape = makeOffsetShape();
+        if (offsetShape.IsNull()) {
+            return;
+        }
 
         TopExp_Explorer expl(offsetShape, TopAbs_EDGE);
         int geoIdToAdd = firstCurveCreated;
@@ -356,11 +394,11 @@ private:
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             else if (curve.GetType() == GeomAbs_Circle) {
-                geometriesToAdd.push_back(curveToCircleOrArc(curve));
+                geometriesToAdd.push_back(curveToCircleOrArc(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             else if (curve.GetType() == GeomAbs_Ellipse) {
-                geometriesToAdd.push_back(curveToEllipseOrArc(curve));
+                geometriesToAdd.push_back(curveToEllipseOrArc(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             // TODO Bspline support
@@ -383,6 +421,15 @@ private:
         getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
         SketchObject* Obj = sketchgui->getSketchObject();
+
+        if (listOfOffsetGeoIds.empty()) {
+            Gui::NotifyUserError(
+                Obj,
+                QT_TRANSLATE_NOOP("Notifications", "Offset Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Offset could not be created."));
+            return;
+        }
+
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
@@ -403,6 +450,9 @@ private:
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
     {
+        if (listOfOffsetGeoIds.empty()) {
+            return;
+        }
         std::stringstream stream;
         stream << "conList = []\n";
         for (size_t i = 0; i < listOfOffsetGeoIds.size() - 1; i++) {
@@ -1127,7 +1177,7 @@ void DSHOffsetController::configureToolWidget()
 
     onViewParameters[OnViewParameter::First]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Forced);
 }
 
 template<>
@@ -1135,9 +1185,12 @@ void DSHOffsetControllerBase::adaptDrawingToOnViewParameterChange(int labelindex
 {
     switch (labelindex) {
         case OnViewParameter::First: {
-            if (value == 0.) {
-                // Do not accept 0.
+            if (value == 0. && onViewParameters[OnViewParameter::First]->hasFinishedEditing) {
+                // Do not accept 0, but only if user has finished editing the OVP.
                 unsetOnViewParameter(onViewParameters[OnViewParameter::First].get());
+
+                // reset offsetLengthSet so mouse can control the offset again
+                handler->offsetLengthSet = false;
 
                 Gui::NotifyUserError(
                     handler->sketchgui->getSketchObject(),
@@ -1196,8 +1249,29 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::First, handler->offsetLength);
             }
 
+            Base::Vector3d dimensionEndpoint;
+            if (handler->offsetLengthSet && firstParam->isSet) {
+                // if user has typed a value, calculate correct endpoint based on typed value
+                Base::Vector2d direction = handler->endpoint - handler->pointOnSourceWire;
+                if (direction.Length() > Precision::Confusion()) {
+                    direction.Normalize();
+                    Base::Vector2d correctedEndpoint =
+                        handler->pointOnSourceWire + direction * handler->offsetLength;
+                    dimensionEndpoint =
+                        Base::Vector3d(correctedEndpoint.x, correctedEndpoint.y, 0.);
+                }
+                else {
+                    dimensionEndpoint =
+                        Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+                }
+            }
+            else {
+                // use mouse pos when user hasn't typed a value
+                dimensionEndpoint = Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+            }
+
             firstParam->setPoints(
-                Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.),
+                dimensionEndpoint,
                 Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.));
         } break;
         default:
@@ -1206,14 +1280,14 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHOffsetController::doChangeDrawSketchHandlerMode()
+void DSHOffsetController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             auto& firstParam = onViewParameters[OnViewParameter::First];
 
             if (firstParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

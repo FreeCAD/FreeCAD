@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <sstream>
 
 #include <BRepBuilderAPI_MakePolygon.hxx>
@@ -31,7 +29,6 @@
 #include <Standard_Failure.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

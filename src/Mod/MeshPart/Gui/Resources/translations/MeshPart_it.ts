@@ -4,55 +4,53 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <source>Cross-sections...</source>
-      <translation>Sezioni...</translation>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Cross-Sections</source>
+      <translation type="unfinished">Cross-Sections</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
-      <source>Cross-sections</source>
-      <translation>Sezioni</translation>
+      <location filename="../../Command.cpp" line="273"/>
+      <source>Applies cross-sections to the mesh</source>
+      <translation type="unfinished">Applies cross-sections to the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Mesh</source>
       <translation>Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
-      <source>Curve on mesh...</source>
-      <translation>Curvatura sulla mesh...</translation>
+      <location filename="../../Command.cpp" line="308"/>
+      <source>Curve on Mesh</source>
+      <translation type="unfinished">Curve on Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
-      <source>Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</source>
-      <translation>Crea una curva approssimativa su di un solido.
-Questo comando funziona solo con un oggetto 'solido'.</translation>
+      <location filename="../../Command.cpp" line="309"/>
+      <source>Creates an approximated curve on top of a mesh object</source>
+      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Mesh</source>
       <translation>Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
-      <source>Create mesh from shape...</source>
-      <translation>Crea mesh da una forma...</translation>
+      <location filename="../../Command.cpp" line="57"/>
+      <source>Mesh From Shape</source>
+      <translation type="unfinished">Mesh From Shape</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Tessellate shape</source>
       <translation>Forma della tessellazione</translation>
     </message>
@@ -60,17 +58,17 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Mesh</source>
       <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="189"/>
-      <source>Create section from mesh and plane</source>
-      <translation>Sezione da mesh e piano</translation>
+      <source>Creates a section from a mesh and plane</source>
+      <translation type="unfinished">Creates a section from a mesh and plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Section</source>
       <translation>Seziona</translation>
     </message>
@@ -78,18 +76,17 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Mesh</source>
       <translation>Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <source>Trim mesh with a plane</source>
-      <translation>Rifila con un piano</translation>
+      <location filename="../../Command.cpp" line="83"/>
+      <source>Trim Mesh</source>
+      <translation type="unfinished">Trim Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trims a mesh with a plane</source>
       <translation>Rifila una mesh con un piano</translation>
     </message>
@@ -97,12 +94,12 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Trim with plane</source>
       <translation>Taglio con un piano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Section with plane</source>
       <translation>Seziona con un piano</translation>
     </message>
@@ -111,13 +108,13 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
-      <source>Cross sections</source>
-      <translation>Sezioni</translation>
+      <source>Cross Sections</source>
+      <translation type="unfinished">Cross Sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
-      <source>Guiding plane</source>
-      <translation>Piano guida</translation>
+      <source>Guiding Plane</source>
+      <translation type="unfinished">Guiding Plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -136,8 +133,13 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
-      <source>Position:</source>
-      <translation>Posizione:</translation>
+      <source>Position</source>
+      <translation>Posizione</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="109"/>
+      <source>Distance</source>
+      <translation>Distanza</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -155,11 +157,6 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
       <translation>Num. di sezioni</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.ui" line="109"/>
-      <source>Distance:</source>
-      <translation>Distanza:</translation>
-    </message>
-    <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
       <translation>Opzioni</translation>
@@ -170,7 +167,7 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
       <translation>Collega i bordi se la distanza è inferiore a</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="381"/>
       <source>Failure</source>
       <translation>Fallito</translation>
     </message>
@@ -178,51 +175,51 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Create</source>
       <translation>Crea</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Close wire</source>
       <translation>Chiudi il wire</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Clear</source>
       <translation>Pulisci</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Cancel</source>
       <translation>Annulla</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
-      <source>Wrong mesh picked</source>
-      <translation>Rilevata mesh errata</translation>
+      <location filename="../../CurveOnMesh.cpp" line="620"/>
+      <source>Wrong mesh selected</source>
+      <translation type="unfinished">Wrong mesh selected</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
-      <source>No point was picked</source>
-      <translation>Nessun punto è stato selezionato</translation>
+      <location filename="../../CurveOnMesh.cpp" line="659"/>
+      <source>No point was selected</source>
+      <translation type="unfinished">No point was selected</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
-      <source>Curve on mesh</source>
-      <translation>Curvatura sulla mesh</translation>
+      <source>Curve on Mesh</source>
+      <translation type="unfinished">Curve on Mesh</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>Premi 'Inizio', poi scegli punti sulla mesh; quando sono stati impostati abbastanza punti, fai clic con il tasto destro del mouse e scegli 'Crea'. Ripeti questo processo per creare più spline. Chiudi questo pannello per completare l'operazione.
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-Questo comando funziona solo con un oggetto 'mesh', non con una faccia o una superficie regolari. Per convertire un oggetto in una mesh utilizzare gli strumenti dell'ambiente di lavoro Mesh.</translation>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -278,11 +275,6 @@ Questo comando funziona solo con un oggetto 'mesh', non con una faccia o una sup
       <translation>Tessellazione</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="20"/>
-      <source>Meshing options</source>
-      <translation>Opzioni di mesh</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
       <translation>Standard</translation>
@@ -293,31 +285,14 @@ Questo comando funziona solo con un oggetto 'mesh', non con una faccia o una sup
       <translation>Usa il mesher standard</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="41"/>
-      <source>Surface deviation:</source>
-      <translation>Deviazione di superficie:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
       <translation>Deflessione lineare massima di una sezione mesh dalla superficie dell'oggetto</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="67"/>
-      <source>Angular deviation:</source>
-      <translation>Deviazione angolare:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
       <translation>Deviazione angolare massima di una sezione mesh alla sezione successiva</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="98"/>
-      <source>The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>La deviazione lineare massima di un segmento di mesh sarà la deviazione specificata
-della superficie moltiplicata per la lunghezza del corrente segmento di mesh (bordo)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -359,9 +334,31 @@ questa funzionalità (ad es. il formato OBJ).</translation>
       <translation>Usa il mesher Mefisto</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="20"/>
+      <source>Meshing Options</source>
+      <translation type="unfinished">Meshing Options</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="41"/>
+      <source>Surface deviation</source>
+      <translation type="unfinished">Surface deviation</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="67"/>
+      <source>Angular deviation</source>
+      <translation type="unfinished">Angular deviation</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="98"/>
+      <source>The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</source>
+      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="156"/>
-      <source>Maximum edge length:</source>
-      <translation>Lunghezza massima dello spigolo:</translation>
+      <source>Maximum edge length</source>
+      <translation type="unfinished">Maximum edge length</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -422,8 +419,18 @@ Il valore più piccolo è 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
-      <source>Mesh size grading:</source>
-      <translation>Dimensione della mesh:</translation>
+      <source>Mesh size grading</source>
+      <translation type="unfinished">Mesh size grading</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="302"/>
+      <source>Elements per edge</source>
+      <translation type="unfinished">Elements per edge</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="335"/>
+      <source>Elements per curvature radius</source>
+      <translation type="unfinished">Elements per curvature radius</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -433,22 +440,12 @@ A value in the range of 0.1-1.</source>
 Un valore nell'intervallo 0.1-1.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="302"/>
-      <source>Elements per edge:</source>
-      <translation>Numero di elementi per spigolo:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
       <translation>Se questo parametro è più grande, la mesh diventa più precisa.
 Un valore nell'intervallo tra 0.2-10.</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="335"/>
-      <source>Elements per curvature radius:</source>
-      <translation>Numero di elementi per il raggio di curvatura:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -486,32 +483,32 @@ Un valore nell'intervallo tra 0.2-10.</translation>
       <translation>Lascia il pannello aperto</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
+      <location filename="../../Tessellation.cpp" line="60"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="240"/>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="238"/>
+      <location filename="../../Tessellation.cpp" line="244"/>
       <source>No active document</source>
       <translation>Nessun documento attivo</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
-      <source>You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</source>
-      <translation>Hai selezionato un corpo senza punta.
-Impostare la punta del corpo o selezionare una forma diversa, per favore.</translation>
+      <location filename="../../Tessellation.cpp" line="277"/>
+      <source>Error: body without a tip selected.
+Either set the tip of the body or select a different shape.</source>
+      <translation>Errore: corpo senza punta selezionata.
+Impostare la punta del corpo o selezionare una forma diversa.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="285"/>
-      <source>You have selected a shape without faces.
-Select a different shape, please.</source>
-      <translation>Hai selezionato una forma senza facce.
-Seleziona una forma diversa, per favore.</translation>
+      <location filename="../../Tessellation.cpp" line="283"/>
+      <source>Error: shape without faces selected.
+Select a different shape.</source>
+      <translation type="unfinished">Error: shape without faces selected.
+Select a different shape.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="289"/>
+      <location filename="../../Tessellation.cpp" line="287"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selezionare prima una forma per il meshing.</translation>
     </message>
@@ -519,14 +516,14 @@ Seleziona una forma diversa, per favore.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Select plane</source>
       <translation>Seleziona piano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <source>Please select a plane at which you section the mesh.</source>
-      <translation>Selezionare un piano con il quale sezionare la mesh.</translation>
+      <location filename="../../Command.cpp" line="202"/>
+      <source>Select a plane to section the mesh with.</source>
+      <translation type="unfinished">Select a plane to section the mesh with.</translation>
     </message>
   </context>
   <context>
@@ -538,31 +535,31 @@ Seleziona una forma diversa, per favore.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="96"/>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Selezionare un piano con il quale rifilare la mesh.</translation>
+      <source>Select a plane to trim the mesh with.</source>
+      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="102"/>
+      <source>Trim With Plane</source>
+      <translation type="unfinished">Trim With Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
-      <source>Trim by plane</source>
-      <translation>Rifila con un piano</translation>
+      <source>Select the side to keep</source>
+      <translation type="unfinished">Select the side to keep</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Select the side you want to keep.</source>
-      <translation>Selezionare il lato da mantenere.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
       <translation>Sotto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Above</source>
       <translation>Sopra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>Split</source>
       <translation>Dividi</translation>
     </message>
@@ -570,7 +567,7 @@ Seleziona una forma diversa, per favore.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
     </message>
@@ -579,26 +576,26 @@ Seleziona una forma diversa, per favore.</translation>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap mesh</source>
-      <translation>Dispiega mesh</translation>
+      <source>Unwrap Mesh</source>
+      <translation type="unfinished">Unwrap Mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Trova una rappresentazione piatta di una mesh.</translation>
+      <source>Finds a flat representation of a mesh</source>
+      <translation type="unfinished">Finds a flat representation of a mesh</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap face</source>
-      <translation>Dispiega faccia</translation>
+      <source>Unwrap Face</source>
+      <translation type="unfinished">Unwrap Face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
-      <source>Find a flat representation of a face.</source>
-      <translation>Trova una rappresentazione piatta di una faccia.</translation>
+      <source>Finds a flat representation of a face</source>
+      <translation type="unfinished">Finds a flat representation of a face</translation>
     </message>
   </context>
 </TS>

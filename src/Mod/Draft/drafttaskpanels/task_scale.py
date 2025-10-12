@@ -85,10 +85,11 @@ class ScaleTaskPanel:
         QtCore.QObject.connect(self.lock,QtCore.SIGNAL("toggled(bool)"),self.setLock)
 
         if self.__class__.__name__ != "ScaleTaskPanelEdit":
-            self.relative = QtWidgets.QCheckBox()
-            self.relative.setText(translate("Draft", "Working plane orientation"))
-            self.relative.setChecked(params.get_param("ScaleRelative"))
-            layout.addWidget(self.relative,4,0,1,2)
+            # ScaleRelative option removed in v1.1 as it does not work properly:
+            # self.relative = QtWidgets.QCheckBox()
+            # self.relative.setText(translate("Draft", "Working plane orientation"))
+            # self.relative.setChecked(params.get_param("ScaleRelative"))
+            # layout.addWidget(self.relative,4,0,1,2)
             self.isCopy = QtWidgets.QCheckBox()
             self.isCopy.setText(translate("Draft", "Copy"))
             self.isCopy.setChecked(params.get_param("ScaleCopy"))
@@ -105,7 +106,7 @@ class ScaleTaskPanel:
             self.pickrefButton.setText(translate("Draft", "Pick From/To Points"))
             layout.addWidget(self.pickrefButton,8,0,1,2)
 
-            QtCore.QObject.connect(self.relative,QtCore.SIGNAL("toggled(bool)"),self.setRelative)
+            # QtCore.QObject.connect(self.relative,QtCore.SIGNAL("toggled(bool)"),self.setRelative)
             QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("toggled(bool)"),self.setCopy)
             QtCore.QObject.connect(self.isSubelementMode,QtCore.SIGNAL("toggled(bool)"),self.setSubelementMode)
             QtCore.QObject.connect(self.isClone,QtCore.SIGNAL("toggled(bool)"),self.setClone)
@@ -122,7 +123,9 @@ class ScaleTaskPanel:
                 self.zValue.setValue(val)
         if self.sourceCmd:
             # self.sourceCmd is always None for ScaleTaskPanelEdit
-            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(
+                self.xValue.value(), self.yValue.value(), self.zValue.value()
+            )
 
     def setLock(self, state):
         """Set the uniform scaling."""
@@ -138,7 +141,9 @@ class ScaleTaskPanel:
         """Set the relative scaling."""
         params.set_param("ScaleRelative", state)
         if self.sourceCmd:
-            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(
+                self.xValue.value(), self.yValue.value(), self.zValue.value()
+            )
 
     def setCopy(self, state):
         """Set the copy option."""
@@ -153,7 +158,9 @@ class ScaleTaskPanel:
             self.isClone.setChecked(False)
         if self.sourceCmd:
             self.sourceCmd.set_ghosts()
-            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(
+                self.xValue.value(), self.yValue.value(), self.zValue.value()
+            )
 
     def setClone(self, state):
         """Set the clone option."""

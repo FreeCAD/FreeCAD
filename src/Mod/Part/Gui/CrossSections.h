@@ -49,7 +49,7 @@ public:
     explicit CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~CrossSections() override;
     void accept() override;
-    void apply();
+    bool apply();
 
 protected:
     void changeEvent(QEvent *e) override;

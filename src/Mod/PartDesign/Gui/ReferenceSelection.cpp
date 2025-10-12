@@ -20,16 +20,14 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <QDialog>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -39,6 +37,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -60,6 +59,9 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    if (!pObj) {
+        return false;
+    }
     PartDesign::Body *body = getBody();
     App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
 
@@ -86,9 +88,14 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return false;
     }
 #endif
+    if (pObj->isDerivedFrom<Part::Part2DObject>() && Base::Tools::isNullOrEmpty(sSubName)) {
+        return type.testFlag(AllowSelection::FACE);
+    }
+
     // Handle selection of geometry elements
-    if (Base::Tools::isNullOrEmpty(sSubName))
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return type.testFlag(AllowSelection::WHOLE);
+    }
 
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
@@ -104,14 +111,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    PartDesign::Body *body;
-    if (support) {
-        body = PartDesign::Body::findBodyOf (support);
-    }
-    else {
-        body = PartDesignGui::getBody(false);
-    }
-
+    auto* body = support ? PartDesign::Body::findBodyOf(support)
+                         : PartDesignGui::getBody(false);
     return body;
 }
 
@@ -345,7 +346,7 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
         return {};
     }
 
-    if (PartDesign::Feature::isDatum(obj)) {
+    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom<Part::Part2DObject>()) {
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty()) {

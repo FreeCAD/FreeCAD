@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
@@ -35,8 +35,9 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
 
+
+#include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
@@ -374,7 +375,8 @@ App::DocumentObjectExecReturn* Extrusion::execute()
 
     try {
         ExtrusionParameters params = computeFinalParameters();
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
+        
         extrudeShape(result, Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;

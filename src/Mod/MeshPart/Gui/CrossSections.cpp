@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
 #include <sstream>
 
@@ -40,7 +38,6 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>

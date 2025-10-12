@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
@@ -70,7 +69,7 @@ class StockType:
 
 def shapeBoundBox(obj):
     Path.Log.track(type(obj))
-    if list == type(obj) and obj:
+    if isinstance(obj, list) and obj:
         bb = FreeCAD.BoundBox()
         for o in obj:
             bb.add(shapeBoundBox(o))
@@ -106,6 +105,8 @@ class Stock(object):
 
 
 class StockFromBase(Stock):
+    MinExtent = 1
+
     def __init__(self, obj, base):
         "Make stock"
         obj.addProperty(
@@ -120,7 +121,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in negative X direction",
+                "Extra allowance from part bound box in negative X-direction",
             ),
         )
         obj.addProperty(
@@ -129,7 +130,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in positive X direction",
+                "Extra allowance from part bound box in positive X-direction",
             ),
         )
         obj.addProperty(
@@ -138,7 +139,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in negative Y direction",
+                "Extra allowance from part bound box in negative Y-direction",
             ),
         )
         obj.addProperty(
@@ -147,7 +148,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in positive Y direction",
+                "Extra allowance from part bound box in positive Y-direction",
             ),
         )
         obj.addProperty(
@@ -156,7 +157,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in negative Z direction",
+                "Extra allowance from part bound box in negative Z-direction",
             ),
         )
         obj.addProperty(
@@ -165,7 +166,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in positive Z direction",
+                "Extra allowance from part bound box in positive Z-direction",
             ),
         )
 
@@ -210,6 +211,10 @@ class StockFromBase(Stock):
 
             self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
             self.width = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
+
+            if bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value <= 0:
+                Path.Log.error("Stock height can not be zero or negative\nSet ExtZneg = 1 mm")
+                obj.ExtZneg.Value = self.MinExtent
             self.height = bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value
 
             shape = Part.makeBox(self.length, self.width, self.height, self.origin)
@@ -219,7 +224,7 @@ class StockFromBase(Stock):
     def onChanged(self, obj, prop):
         if (
             prop in ["ExtXneg", "ExtXpos", "ExtYneg", "ExtYpos", "ExtZneg", "ExtZpos"]
-            and not "Restore" in obj.State
+            and "Restore" not in obj.State
         ):
             self.execute(obj)
 
@@ -272,7 +277,7 @@ class StockCreateBox(Stock):
         obj.Shape = shape
 
     def onChanged(self, obj, prop):
-        if prop in ["Length", "Width", "Height"] and not "Restore" in obj.State:
+        if prop in ["Length", "Width", "Height"] and "Restore" not in obj.State:
             self.execute(obj)
 
 
@@ -315,7 +320,7 @@ class StockCreateCylinder(Stock):
         obj.Shape = shape
 
     def onChanged(self, obj, prop):
-        if prop in ["Radius", "Height"] and not "Restore" in obj.State:
+        if prop in ["Radius", "Height"] and "Restore" not in obj.State:
             self.execute(obj)
 
 

@@ -19,11 +19,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
+#include <FCConfig.h>
 
 #if defined(FC_OS_WIN32)
 #include <sys/timeb.h>

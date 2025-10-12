@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <cassert>
 # include <QFile>
 # include <QTextStream>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -219,6 +218,8 @@ MacroManager::~MacroManager()
     this->params->Detach(this);
 }
 
+std::stack<std::function<void(MacroManager::LineType, const char*)>> MacroManager::redirectFuncs;
+
 void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
     (void)rCaller;
@@ -269,8 +270,16 @@ void MacroManager::addPendingLine(LineType type, const char* line)
 
 void MacroManager::addLine(LineType Type, const char* sLine)
 {
-    if (!sLine)
+    if (!sLine) {
         return;
+    }
+
+    std::function<void(LineType, const char*)> redirectFunc =
+        redirectFuncs.empty() ? nullptr : redirectFuncs.top();
+    if (redirectFunc) {
+        redirectFunc(Type, sLine);
+        return;
+    }
 
     if (buffer.hasPendingLines()) {
         if (buffer.addPendingLineIfComment(Type, sLine)) {

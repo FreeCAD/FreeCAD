@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoMaterial.h>
-#endif
+
 
 #include <App/PropertyStandard.h>
 

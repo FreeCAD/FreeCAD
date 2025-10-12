@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cassert>
-#endif
 
 #include "BaseClass.h"
 #include "PyObjectBase.h"

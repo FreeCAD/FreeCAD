@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <sstream>
-#endif
+
 
 #include <App/DocumentObjectPy.h>
 #include "Document.h"

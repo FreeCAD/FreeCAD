@@ -20,13 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+#include <limits>
+
 #include <boost/core/ignore_unused.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/graph/graph_concepts.hpp>
 
-#ifndef _PreComp_
-# include <limits>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
@@ -52,7 +51,6 @@
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-#endif
 
 #include <BRepTools_History.hxx>
 #include <ShapeBuild_ReShape.hxx>
@@ -102,12 +100,18 @@ static inline void getEndPoints(const TopoDS_Wire &wire, gp_Pnt &p1, gp_Pnt &p2)
     p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
 }
 
-// Originally here there was the definition of the precompiler macro assertCheck() and of the method
-// _assertCheck(), that have been replaced with the already defined precompiler macro assert().
-// See
-// https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L107
-// for reference and https://github.com/FreeCAD/FreeCAD/pull/12535/files#r1526647457 for the
-// discussion about replacing it
+/**
+ * @brief Precompiler macro to ensure a condition is true and throw an exception if it fails
+ *
+ * This macro is used to ensure that certain conditions hold true during the execution of the code.
+ * If the condition evaluates to false, it logs an error message with the file name and line number,
+ * and throws an exception unlike the standard assert which terminates the program.
+ */
+#define ENSURE(cond) \
+    do { if (!(cond)) {\
+        FC_ERR("Condition failed: " #cond);\
+        throw Base::RuntimeError("Condition failed: " #cond);\
+    } } while (0)
 
 class WireJoiner::WireJoinerP {
 public:
@@ -226,10 +230,7 @@ public:
             curve = BRep_Tool::Curve(eForInfo, firstParam, lastParam);
             type = GeomAdaptor_Curve(curve).GetType();
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(!curve.IsNull());
+            ENSURE(!curve.IsNull());
             const double halving {0.5};
             GeomLProp_CLProps prop(curve,(firstParam+lastParam)*halving,0,Precision::Confusion());
             mid = prop.Value();
@@ -478,10 +479,7 @@ public:
                 return;
             }
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(sorted.size() < vertices.size());
+            ENSURE(sorted.size() < vertices.size());
             sorted.reserve(vertices.size());
             for (int i = (int)sorted.size(); i < (int)vertices.size(); ++i) {
                 sorted.push_back(i);
@@ -869,10 +867,7 @@ public:
             TopoDS_Vertex vFirst = TopExp::FirstVertex(newEdge);
             TopoDS_Vertex vLast = TopExp::LastVertex(newEdge);
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(vLast.IsSame(vOther) || vFirst.IsSame(vOther));
+            ENSURE(vLast.IsSame(vOther) || vFirst.IsSame(vOther));
             eCurrent = newEdge;
         };
 
@@ -919,10 +914,7 @@ public:
             const gp_Pnt& pt = idx == 0 ? pstart : pend;
             vmap.query(bgi::nearest(pt, 1), std::back_inserter(ret));
 
-            // Originally here there was a call to the precompiler macro assertCheck(),
-            // which has been replaced with the precompiler macro assert()
-
-            assert(ret.size() == 1);
+            ENSURE(ret.size() == 1);
             double dist = ret[0].pt().SquareDistance(pt);
             if (dist > tol) {
                 break;
@@ -1032,10 +1024,7 @@ public:
         ShapeAnalysis_Wire analysis(wire, face, myTol);
         analysis.CheckSelfIntersectingEdge(1, points2d, points3d);
 
-        // Originally here there was a call to the precompiler macro assertCheck(), which has been
-        // replaced with the precompiler macro assert()
-
-        assert(points2d.Length() == points3d.Length());
+        ENSURE(points2d.Length() == points3d.Length());
         for (int i=1; i<=points2d.Length(); ++i) {
             params.emplace(points2d(i).ParamOnFirst(), points3d(i), info.edge);
             params.emplace(points2d(i).ParamOnSecond(), points3d(i), info.edge);
@@ -1202,10 +1191,7 @@ public:
         ShapeAnalysis_Wire analysis(wire, face, myTol);
         analysis.CheckIntersectingEdges(1, idx, points2d, points3d, errors);
 
-        // Originally here there was a call to the precompiler macro assertCheck(), which has been
-        // replaced with the precompiler macro assert()
-
-        assert(points2d.Length() == points3d.Length());
+        ENSURE(points2d.Length() == points3d.Length());
         for (int i=1; i<=points2d.Length(); ++i) {
             pushIntersection(params1, points2d(i).ParamOnFirst(), points3d(i), other.edge);
             pushIntersection(params2, points2d(i).ParamOnSecond(), points3d(i), info.edge);
@@ -1533,13 +1519,7 @@ public:
         // populate adjacent list
         for (auto& info : edges) {
             if (info.iteration == -2) {
-
-                // Originally there was the following precompiler directive around assertCheck():
-                // #if OCC_VERSION_HEX >= 0x070000
-                // The precompiler directive has been removed as the minimum OCCT version supported
-                // is 7.3.0 and the precompiler macro has been replaced with assert()
-
-                assert(BRep_Tool::IsClosed(info.shape()));
+                ENSURE(BRep_Tool::IsClosed(info.shape()));
 
                 showShape(&info, "closed");
                 if (!doTightBound) {
@@ -1695,10 +1675,7 @@ public:
 
             if (tightBound) {
 
-                // Originally here there was a call to the precompiler macro assertCheck(), which
-                // has been replaced with the precompiler macro assert()
-
-                assert(!beginInfo.wireInfo);
+                ENSURE(!beginInfo.wireInfo);
                 beginInfo.wireInfo.reset(new WireInfo());
                 beginInfo.wireInfo->vertices.emplace_back(it, true);
                 beginInfo.wireInfo->wire = wire;
@@ -1736,10 +1713,7 @@ public:
             if (auto wire = info.wireInfo.get()) {
                 boost::ignore_unused(wire);
 
-                // Originally here there was a call to the precompiler macro assertCheck(), which
-                // has been replaced with the precompiler macro assert()
-
-                assert(wire->vertices.front().edgeInfo()->wireInfo.get() == wire);
+                ENSURE(wire->vertices.front().edgeInfo()->wireInfo.get() == wire);
             }
         }
     }
@@ -1957,10 +1931,7 @@ public:
                 showShape(info.shape(vertex.start), vertex.start ? "failed" : "failed_r", iteration);
             }
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which
-            // has been replaced with the precompiler macro assert()
-
-            assert(false);
+            ENSURE(false);
             return false;
         }
         return true;
@@ -2061,11 +2032,7 @@ public:
                 showShape(*wireInfo, "exception", iteration, true);
                 showShape(info, "exception", iteration, true);
 
-                // Originally here there was a call to the precompiler macro
-                // assertCheck(), which has been replaced with the precompiler macro
-                // assert()
-
-                assert(info != &beginInfo);
+                ENSURE(info != &beginInfo);
             }
             if (info->wireInfo == wireInfo) {
                 if (!splitWire) {
@@ -2099,11 +2066,7 @@ public:
             }
             else {
 
-                // Originally here there was a call to the precompiler macro
-                // assertCheck(), which has been replaced with the precompiler
-                // macro assert()
-
-                assert(pt.SquareDistance(vertex.pt()) < myTol2);
+                ENSURE(pt.SquareDistance(vertex.pt()) < myTol2);
             }
             pt = vertex.ptOther();
             splitEdges.push_back(vertex);
@@ -2111,11 +2074,7 @@ public:
         for (int i = stackPos; i >= stackStart; --i) {
             const auto& vertex = vertexStack[stack[i].iCurrent];
 
-            // Originally here there was a call to the precompiler macro
-            // assertCheck(), which has been replaced with the precompiler macro
-            // assert()
-
-            assert(pt.SquareDistance(vertex.ptOther()) < myTol2);
+            ENSURE(pt.SquareDistance(vertex.ptOther()) < myTol2);
             pt = vertex.pt();
             // The edges in the stack are the ones to slice
             // the wire in half. We construct a new wire
@@ -2128,20 +2087,12 @@ public:
         for (int idx = idxV; idx != idxStart; ++idx) {
             auto& vertex = wireVertices[idx];
 
-            // Originally here there was a call to the precompiler macro
-            // assertCheck(), which has been replaced with the precompiler macro
-            // assert()
-
-            assert(pt.SquareDistance(vertex.pt()) < myTol2);
+            ENSURE(pt.SquareDistance(vertex.pt()) < myTol2);
             pt = vertex.ptOther();
             splitEdges.push_back(vertex);
         }
 
-        // Originally here there was a call to the precompiler macro
-        // assertCheck(), which has been replaced with the precompiler macro
-        // assert()
-
-        assert(pt.SquareDistance(pstart) < myTol2);
+        ENSURE(pt.SquareDistance(pstart) < myTol2);
         showShape(*splitWire, "swire", iteration);
     }
 
@@ -2234,10 +2185,7 @@ public:
             }
             ++idxV;
 
-            // Originally here there was a call to the precompiler macro assertCheck(),
-            // which has been replaced with the precompiler macro assert()
-
-            assert(idxV <= idxEnd);
+            ENSURE(idxV <= idxEnd);
             int idxStart = idxV;
 
             findTightBoundSplitWire(wireInfo,
@@ -2302,10 +2250,7 @@ public:
                 }
             }
 
-            // Originally here there was a call to the precompiler macro assertCheck(),
-            // which has been replaced with the precompiler macro assert()
-
-            assert(info != &beginInfo);
+            ENSURE(info != &beginInfo);
             info->wireInfo = beginInfo.wireInfo;
             checkWireInfo(*otherWire);
         }
@@ -2603,11 +2548,7 @@ public:
                 for (auto& vertex : wireInfo->vertices) {
                     auto edgeInfo = vertex.edgeInfo();
 
-                    // Originally here there was a call to the precompiler macro
-                    // assertCheck(), which has been replaced with the precompiler macro
-                    // assert()
-
-                    assert(edgeInfo->wireInfo != nullptr);
+                    ENSURE(edgeInfo->wireInfo != nullptr);
                     if (edgeInfo->wireInfo->isSame(*wireInfo)) {
                         wireInfo = edgeInfo->wireInfo;
                         break;
@@ -2620,12 +2561,8 @@ public:
                     }
                 }
 
-                // Originally here there were two calls to the precompiler macro
-                // assertCheck(), which have been replaced with the precompiler macro
-                // assert()
-
-                assert(info.wireInfo2 == wireInfo);
-                assert(info.wireInfo2 != info.wireInfo);
+                ENSURE(info.wireInfo2 == wireInfo);
+                ENSURE(info.wireInfo2 != info.wireInfo);
                 showShape(*wireInfo, "exhaust");
                 break;
             }
@@ -2642,10 +2579,7 @@ public:
 
         int idx = info.wireInfo->find(&info);
 
-        // Originally here there was a call to the precompiler macro assertCheck(), which has
-        // been replaced with the precompiler macro assert()
-
-        assert(idx > 0);
+        ENSURE(idx > 0);
         const auto& vertices = info.wireInfo->vertices;
         --idx;
         int nextIdx = idx == (int)vertices.size() - 1 ? 0 : idx + 1;

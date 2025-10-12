@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QDesktopServices>
 # include <QUrl>
-#endif
 
 #include "Command.h"
 #include "Action.h"

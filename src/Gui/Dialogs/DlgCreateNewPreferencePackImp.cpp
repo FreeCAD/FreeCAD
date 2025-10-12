@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QPushButton>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
-#endif
 
 #include "Dialogs/DlgCreateNewPreferencePackImp.h"
 #include "ui_DlgCreateNewPreferencePack.h"

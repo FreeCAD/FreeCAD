@@ -21,10 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <string>
-#endif
 
 #include <App/Document.h>
 #include <Base/Exception.h>
@@ -92,8 +89,14 @@ bool DatumElement::isOriginFeature() const
 
 Base::Vector3d DatumElement::getBasePoint() const
 {
-    Base::Placement plc = Placement.getValue();
-    return plc.getPosition();
+    Base::Vector3d pos = Placement.getValue().getPosition();
+
+    const auto* lcs = getLCS();
+    if (lcs && !lcs->isOrigin()) {
+        pos += lcs->Placement.getValue().getPosition();
+    }
+
+    return pos;
 }
 
 Base::Vector3d DatumElement::getDirection() const
@@ -102,6 +105,13 @@ Base::Vector3d DatumElement::getDirection() const
     Base::Placement plc = Placement.getValue();
     Base::Rotation rot = plc.getRotation();
     rot.multVec(dir, dir);
+
+    const auto* lcs = getLCS();
+    if (lcs && !lcs->isOrigin()) {
+        Base::Rotation lcsRot = lcs->Placement.getValue().getRotation();
+        lcsRot.multVec(dir, dir);
+    }
+
     return dir;
 }
 

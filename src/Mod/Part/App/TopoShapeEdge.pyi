@@ -32,13 +32,13 @@ class TopoShapeEdge(TopoShape):
     Returns a 2 tuple with the range of the primary parameter
     defining the curve. This is the same as would be returned by
     the FirstParameter and LastParameter properties, i.e.
-    
+
     (LastParameter,FirstParameter)
-    
+
     What the parameter is depends on what type of edge it is. For a
     Line the parameter is simply its cartesian length. Some other
     examples are shown below:
-    
+
     Type                 Parameter
     ---------------------------------------------------------------
     Circle               Angle swept by circle (or arc) in radians
@@ -50,11 +50,11 @@ class TopoShapeEdge(TopoShape):
     """
     Returns the start value of the range of the primary parameter
     defining the curve.
-    
+
     What the parameter is depends on what type of edge it is. For a
     Line the parameter is simply its cartesian length. Some other
     examples are shown below:
-    
+
     Type                 Parameter
     -----------------------------------------------------------
     Circle               Angle swept by circle (or arc) in radians
@@ -66,11 +66,11 @@ class TopoShapeEdge(TopoShape):
     """
     Returns the end value of the range of the primary parameter
     defining the curve.
-    
+
     What the parameter is depends on what type of edge it is. For a
     Line the parameter is simply its cartesian length. Some other
     examples are shown below:
-    
+
     Type                 Parameter
     -----------------------------------------------------------
     Circle               Angle swept by circle (or arc) in radians

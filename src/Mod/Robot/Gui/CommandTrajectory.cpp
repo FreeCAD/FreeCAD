@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QInputDialog>
 #include <QMessageBox>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -87,7 +85,7 @@ CmdRobotInsertWaypoint::CmdRobotInsertWaypoint()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Insert in trajectory");
+    sMenuText = QT_TR_NOOP("Insert in Trajectory");
     sToolTipText = QT_TR_NOOP("Inserts the robot tool location into the trajectory");
     sWhatsThis = "Robot_InsertWaypoint";
     sStatusTip = sToolTipText;

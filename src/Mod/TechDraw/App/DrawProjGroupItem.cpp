@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <gp_Ax2.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>

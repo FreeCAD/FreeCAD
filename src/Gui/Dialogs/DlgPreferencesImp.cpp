@@ -22,8 +22,6 @@
   *                                                                          *
   ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>
 # include <cstring>
 # include <QAbstractButton>
@@ -57,7 +55,6 @@
 # include <QSet>
 # include <QStyledItemDelegate>
 # include <QPainter>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -1722,7 +1719,6 @@ bool PreferencesSearchController::fuzzyMatch(const QString& searchText, const QS
     int targetIndex = 0;
     int consecutiveMatches = 0;
     int maxConsecutive = 0;
-    int totalMatches = 0;
     int firstMatchIndex = -1;
     int lastMatchIndex = -1;
     
@@ -1733,7 +1729,6 @@ bool PreferencesSearchController::fuzzyMatch(const QString& searchText, const QS
             }
             lastMatchIndex = targetIndex;
             searchIndex++;
-            totalMatches++;
             consecutiveMatches++;
             maxConsecutive = qMax(maxConsecutive, consecutiveMatches);
     } else {

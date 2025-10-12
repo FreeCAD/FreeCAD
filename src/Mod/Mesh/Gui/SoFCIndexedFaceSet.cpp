@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #ifndef FC_OS_WIN32
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
 #endif
+#else
+#include <windows.h>
 #endif
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <limits>
 #ifdef FC_OS_MACOSX
@@ -54,7 +55,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoCoordinate3.h>
-#endif
+
 #include <Inventor/C/glue/gl.h>
 
 #include <Gui/GLBuffer.h>

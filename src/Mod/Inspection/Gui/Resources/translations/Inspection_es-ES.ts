@@ -4,44 +4,43 @@
   <context>
     <name>CmdInspectElement</name>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="72"/>
       <source>Inspection</source>
       <translation>Inspección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>Inspección...</translation>
+      <location filename="../../Command.cpp" line="73"/>
+      <source>Inspection…</source>
+      <translation>Inspección…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>Obtener información de distancia</translation>
+      <location filename="../../Command.cpp" line="74"/>
+      <source>Inspects distance information</source>
+      <translation>Inspecciona la información de distancia</translation>
     </message>
   </context>
   <context>
     <name>CmdVisualInspection</name>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Inspection</source>
       <translation>Inspección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>Inspección visual...</translation>
+      <location filename="../../Command.cpp" line="47"/>
+      <source>Visual Inspection…</source>
+      <translation>Inspección visual…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>Inspección visual</translation>
+      <location filename="../../Command.cpp" line="48"/>
+      <source>Inspects the objects visually</source>
+      <translation>Inspecciona los objetos visualmente</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="237"/>
+      <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
       <translation>Inspección visual</translation>
     </message>
@@ -94,38 +93,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="502"/>
+      <location filename="../../ViewProviderInspection.cpp" line="499"/>
       <source>Remove annotations</source>
       <translation>Eliminar anotaciones</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="503"/>
+      <location filename="../../ViewProviderInspection.cpp" line="500"/>
       <source>Do you want to remove all annotations?</source>
       <translation>¿Desea eliminar todas las anotaciones?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="561"/>
+      <location filename="../../ViewProviderInspection.cpp" line="558"/>
       <source>Annotation</source>
       <translation>Anotación</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>Salir del modo información</translation>
+      <location filename="../../ViewProviderInspection.cpp" line="561"/>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="695"/>
+      <location filename="../../ViewProviderInspection.cpp" line="692"/>
       <source>Distance: &gt; %1</source>
       <translation>Distancia: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
+      <location filename="../../ViewProviderInspection.cpp" line="696"/>
       <source>Distance: &lt; %1</source>
       <translation>Distancia: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="719"/>
-      <location filename="../../ViewProviderInspection.cpp" line="736"/>
+      <location filename="../../ViewProviderInspection.cpp" line="716"/>
+      <location filename="../../ViewProviderInspection.cpp" line="733"/>
       <source>Distance: %1</source>
       <translation>Distancia: %1</translation>
     </message>

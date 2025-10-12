@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                 2025 Samuel Abels <knipknap@gmail.com>                  *
@@ -49,7 +48,7 @@ class CommandToolBitCreate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolBit",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "New Tool"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "New Toolbit"),
             "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Creates a new toolbit object"),
         }
 

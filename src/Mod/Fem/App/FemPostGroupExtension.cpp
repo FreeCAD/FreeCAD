@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #include "FemPostGroupExtension.h"
 #include <App/Document.h>
 
@@ -109,11 +108,8 @@ App::DocumentObject* FemPostGroupExtension::getGroupOfObject(const App::Document
 
 void FemPostGroupExtension::onExtendedUnsetupObject()
 {
-    // remove all children!
-    auto document = getExtendedObject()->getDocument();
-    for (const auto& obj : Group.getValues()) {
-        document->removeObject(obj->getNameInDocument());
-    }
+    // remove all children (if not already removed)!
+    removeObjectsFromDocument();
 }
 
 bool FemPostGroupExtension::allowObject(App::DocumentObject* obj)

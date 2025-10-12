@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeArcOfEllipse.hxx>
 # include <Geom_Ellipse.hxx>
 # include <Geom_TrimmedCurve.hxx>
-#endif
+
 
 #include "ArcOfEllipsePy.h"
 #include "ArcOfEllipsePy.cpp"

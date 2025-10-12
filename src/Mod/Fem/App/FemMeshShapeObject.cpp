@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <SMESH_Mesh.hxx>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/GeoFeaturePy.h>

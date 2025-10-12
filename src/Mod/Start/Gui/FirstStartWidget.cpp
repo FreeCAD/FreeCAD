@@ -21,9 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -31,7 +29,7 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QWidget>
-#endif
+
 
 #include "FirstStartWidget.h"
 #include "ThemeSelectorWidget.h"

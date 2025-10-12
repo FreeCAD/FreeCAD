@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cassert>
 #include <limits>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 

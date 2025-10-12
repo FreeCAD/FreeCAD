@@ -96,6 +96,7 @@ class Snapper:
         self.cursorMode = None
         self.cursorQt = None
         self.maxEdges = params.get_param("maxSnapEdges")
+        self.maxFaces = params.get_param("maxSnapFaces")
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -125,6 +126,7 @@ class Snapper:
 
         # snap keys, it's important that they are in this order for
         # saving in preferences and for properly restoring the toolbar
+        # fmt: off
         self.snaps = ['Lock',           # 0
                       'Near',           # 1 former "passive" snap
                       'Extension',      # 2
@@ -141,6 +143,7 @@ class Snapper:
                       'Dimensions',     # 13
                       'WorkingPlane'    # 14
                      ]
+        # fmt: on
 
         self.init_active_snaps()
         self.set_snap_style()
@@ -161,7 +164,11 @@ class Snapper:
 
 
     def _get_wp(self):
-        return WorkingPlane.get_working_plane()
+        # update=False is required, without it WorkingPlane.get_working_plane()
+        # is too slow for this function which gets called repeatedly when moving
+        # the mouse
+        # See: https://github.com/FreeCAD/FreeCAD/issues/24013
+        return WorkingPlane.get_working_plane(update=False)
 
 
     def init_active_snaps(self):
@@ -407,6 +414,7 @@ class Snapper:
                         face = shape
                         snaps.extend(self.snapToNearFace(face, point))
                         snaps.extend(self.snapToPerpendicularFace(face, lastpoint))
+                        snaps.extend(self.snapToIntersection(face))
                         snaps.extend(self.snapToCenterFace(face))
                 elif "Vertex" in comp:
                     # we are snapping to a vertex
@@ -1021,30 +1029,39 @@ class Snapper:
         snaps = []
         if self.isEnabled("Intersection"):
             # get the stored objects to calculate intersections
-            for o in self.lastObj:
-                obj = App.ActiveDocument.getObject(o)
-                if obj:
-                    if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
-                        if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
-                            for e in obj.Shape.Edges:
-                                # get the intersection points
-                                try:
-                                    if self.isEnabled("WorkingPlane") and hasattr(e,"Curve") and isinstance(e.Curve,(Part.Line,Part.LineSegment)) and hasattr(shape,"Curve") and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
-                                        # get apparent intersection (lines projected on WP)
-                                        p1 = self.toWP(e.Vertexes[0].Point)
-                                        p2 = self.toWP(e.Vertexes[-1].Point)
-                                        p3 = self.toWP(shape.Vertexes[0].Point)
-                                        p4 = self.toWP(shape.Vertexes[-1].Point)
-                                        pt = DraftGeomUtils.findIntersection(p1, p2, p3, p4, True, True)
-                                    else:
-                                        pt = DraftGeomUtils.findIntersection(e, shape)
-                                    if pt:
-                                        for p in pt:
-                                            snaps.append([p, 'intersection', self.toWP(p)])
-                                except Exception:
-                                    pass
-                                    # some curve types yield an error
-                                    # when trying to read their types
+            for obj_name in self.lastObj:
+                obj = App.ActiveDocument.getObject(obj_name)
+                if obj and (obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis")):
+                    if (not self.maxFaces) or (len(obj.Shape.Faces) <= self.maxFaces):
+                        for face in obj.Shape.Faces:
+                            try:
+                                pts = DraftGeomUtils.findIntersection(face, shape)
+                                for pt in pts:
+                                    snaps.append([pt, "intersection", self.toWP(pt)])
+                            except Exception:
+                                pass
+                    if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
+                        for edge in obj.Shape.Edges:
+                            try:
+                                if self.isEnabled("WorkingPlane") \
+                                        and hasattr(edge, "Curve") \
+                                        and isinstance(edge.Curve,(Part.Line,Part.LineSegment)) \
+                                        and hasattr(shape, "Curve") \
+                                        and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
+                                    # get apparent intersection (lines projected on WP)
+                                    p1 = self.toWP(edge.Vertexes[0].Point)
+                                    p2 = self.toWP(edge.Vertexes[-1].Point)
+                                    p3 = self.toWP(shape.Vertexes[0].Point)
+                                    p4 = self.toWP(shape.Vertexes[-1].Point)
+                                    pts = DraftGeomUtils.findIntersection(p1, p2, p3, p4, True, True)
+                                else:
+                                    pts = DraftGeomUtils.findIntersection(edge, shape)
+                                for pt in pts:
+                                    snaps.append([pt, "intersection", self.toWP(pt)])
+                            except Exception:
+                                pass
+                                # some curve types yield an error
+                                # when trying to read their types
         return snaps
 
 

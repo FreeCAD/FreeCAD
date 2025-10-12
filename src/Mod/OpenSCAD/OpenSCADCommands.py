@@ -98,7 +98,7 @@ class ExplodeGroup:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Explode_Group',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Explode Group'),
-                'ToolTip':  QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Removes fusion and applies placement to children, and color randomly')}
+                'ToolTip':  QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Explodes a fusion or compound and applies random colors')}
 
 class ColorCodeShape:
     "Change the Color of selected or all Shapes based on their validity"
@@ -264,7 +264,7 @@ class IncreaseToleranceFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_IncreaseToleranceFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Increase Tolerance Feature'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Creates a feature that allows increasing the tolerance')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Creates a feature to increase the tolerance')}
 
 class ExpandPlacements:
     '''This should aid interactive repair in the future
@@ -281,7 +281,7 @@ class ExpandPlacements:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ExpandPlacements',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand Placements'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expands all placements downwards in the tree view')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expands all placements downwards in the Tree View')}
 
 class ReplaceObject:
     def IsActive(self):
@@ -302,7 +302,7 @@ class ReplaceObject:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace Object'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replaces an object in the tree view. Select old, new, and parent object')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replaces an object in the Tree View')}
 
 class RemoveSubtree:
     def IsActive(self):
@@ -315,7 +315,7 @@ class RemoveSubtree:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RemoveSubtree',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree', 'Remove Objects and Children'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree', 'Removes the selected objects and all children that are not referenced from other objects')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree', 'Removes the selected objects and all children that are not referenced by other objects')}
 
 class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
@@ -528,7 +528,7 @@ class AddOpenSCADElement:
         return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',
-                            'Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
+                            'Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary')}
 
 class OpenSCADMeshBoolean:
     def IsActive(self):
@@ -543,7 +543,7 @@ class OpenSCADMeshBoolean:
         return {'Pixmap'  : 'OpenSCAD_MeshBooleans',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',
-                            'Exports objects as meshes and use OpenSCAD to perform a boolean operation')}
+                            'Performs a boolean operation using the OpenSCAD binary')}
 
 class Hull:
     def IsActive(self):

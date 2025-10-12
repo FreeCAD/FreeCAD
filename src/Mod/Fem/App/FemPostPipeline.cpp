@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cmath>
+
 #include <Python.h>
 #include <vtkAppendFilter.h>
 #include <vtkDataSetReader.h>
@@ -40,12 +38,10 @@
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkXMLMultiBlockDataReader.h>
 #include <vtkMultiBlockDataSet.h>
-#include <vtkStreamingDemandDrivenPipeline.h>
 #include <vtkFloatArray.h>
 #include <vtkStringArray.h>
 #include <vtkInformation.h>
 #include <vtkInformationVector.h>
-#endif
 
 #include <Base/Console.h>
 
@@ -61,145 +57,6 @@ using namespace Fem;
 using namespace App;
 
 
-vtkStandardNewMacro(FemFrameSourceAlgorithm);
-
-FemFrameSourceAlgorithm::FemFrameSourceAlgorithm::FemFrameSourceAlgorithm()
-{
-    // we are a source
-    SetNumberOfInputPorts(0);
-    SetNumberOfOutputPorts(1);
-}
-
-
-FemFrameSourceAlgorithm::FemFrameSourceAlgorithm::~FemFrameSourceAlgorithm()
-{}
-
-void FemFrameSourceAlgorithm::setDataObject(vtkSmartPointer<vtkDataObject> data)
-{
-    m_data = data;
-    Modified();
-    Update();
-}
-
-bool FemFrameSourceAlgorithm::isValid()
-{
-    return m_data.GetPointer() != nullptr;
-}
-
-std::vector<double> FemFrameSourceAlgorithm::getFrameValues()
-{
-
-    // check if we have frame data
-    if (!m_data || !m_data->IsA("vtkMultiBlockDataSet")) {
-        return std::vector<double>();
-    }
-
-    // we have multiple frames! let's check the amount and times
-    vtkSmartPointer<vtkMultiBlockDataSet> multiblock = vtkMultiBlockDataSet::SafeDownCast(m_data);
-
-    unsigned long nblocks = multiblock->GetNumberOfBlocks();
-    std::vector<double> tFrames(nblocks);
-
-    for (unsigned long i = 0; i < nblocks; i++) {
-
-        vtkDataObject* block = multiblock->GetBlock(i);
-        // check if the TimeValue field is available
-        if (!block->GetFieldData()->HasArray("TimeValue")) {
-            // a frame with no valid value is a undefined state
-            return std::vector<double>();
-        }
-
-        // store the time value!
-        vtkDataArray* TimeValue = block->GetFieldData()->GetArray("TimeValue");
-        if (!TimeValue->IsA("vtkFloatArray") || TimeValue->GetNumberOfTuples() < 1) {
-            // a frame with no valid value is a undefined state
-            return std::vector<double>();
-        }
-
-        tFrames[i] = vtkFloatArray::SafeDownCast(TimeValue)->GetValue(0);
-    }
-
-    return tFrames;
-}
-
-int FemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
-                                                vtkInformationVector** inVector,
-                                                vtkInformationVector* outVector)
-{
-
-    // setup default information
-    if (!this->Superclass::RequestInformation(reqInfo, inVector, outVector)) {
-        return 0;
-    }
-
-    if (!m_data) {
-        // for the no data case we would return a empty data set in RequestData.
-        return 1;
-    }
-
-    std::vector<double> frames = getFrameValues();
-
-    if (frames.empty()) {
-        // no frames, default info is sufficient
-        return 1;
-    }
-
-    double tRange[2] = {frames.front(), frames.back()};
-
-    // finally set the time info!
-    vtkInformation* info = outVector->GetInformationObject(0);
-    info->Set(vtkStreamingDemandDrivenPipeline::TIME_RANGE(), tRange, 2);
-    info->Set(vtkStreamingDemandDrivenPipeline::TIME_STEPS(), &frames[0], frames.size());
-    info->Set(CAN_HANDLE_PIECE_REQUEST(), 1);
-
-    return 1;
-}
-
-int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
-                                         vtkInformationVector**,
-                                         vtkInformationVector* outVector)
-{
-    vtkInformation* outInfo = outVector->GetInformationObject(0);
-    vtkUnstructuredGrid* output =
-        vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-    if (!output) {
-        return 0;
-    }
-
-    if (!m_data) {
-        outInfo->Set(vtkDataObject::DATA_OBJECT(), vtkUnstructuredGrid::New());
-        return 1;
-    }
-
-    if (!m_data->IsA("vtkMultiBlockDataSet")) {
-        // no multi frame data, return directly
-        outInfo->Set(vtkDataObject::DATA_OBJECT(), m_data);
-        return 1;
-    }
-
-    vtkSmartPointer<vtkMultiBlockDataSet> multiblock = vtkMultiBlockDataSet::SafeDownCast(m_data);
-    // find the block asked for (lazy implementation)
-    unsigned long idx = 0;
-    if (outInfo->Has(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP())) {
-        auto time = outInfo->Get(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP());
-        auto frames = getFrameValues();
-
-        // we have float values, so be aware of rounding errors. lets subtract the searched time and
-        // then use the smallest value
-        for (auto& frame : frames) {
-            frame = std::abs(frame - time);
-        }
-
-        auto it = std::ranges::min_element(frames);
-        idx = std::distance(frames.begin(), it);
-    }
-
-    auto block = multiblock->GetBlock(idx);
-    output->ShallowCopy(block);
-    return 1;
-}
-
 PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostPipeline, Fem::FemPostObject)
 
 FemPostPipeline::FemPostPipeline()
@@ -213,9 +70,17 @@ FemPostPipeline::FemPostPipeline()
                       App::Prop_None,
                       "The frame used to calculate the data in the pipeline processing (read only, "
                       "set via pipeline object).");
+    ADD_PROPERTY_TYPE(MergeDuplicate,
+                      (false),
+                      "Pipeline",
+                      App::Prop_None,
+                      "Remove coindent elements.");
 
     // create our source algorithm
-    m_source_algorithm = vtkSmartPointer<FemFrameSourceAlgorithm>::New();
+    m_source_algorithm = vtkSmartPointer<vtkFemFrameSourceAlgorithm>::New();
+    m_clean_filter = vtkSmartPointer<vtkCleanUnstructuredGrid>::New();
+
+    m_clean_filter->SetPointDataWeighingStrategy(vtkCleanUnstructuredGrid::AVERAGING);
     m_transform_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
 }
 
@@ -411,6 +276,19 @@ void FemPostPipeline::onChanged(const Property* prop)
     // update placement
     if (prop == &Placement) {
         // pipeline data updated!
+        updateData();
+        recomputeChildren();
+    }
+
+    if (prop == &MergeDuplicate) {
+        if (MergeDuplicate.getValue()) {
+            m_clean_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
+            m_transform_filter->SetInputConnection(m_clean_filter->GetOutputPort(0));
+        }
+        else {
+            m_transform_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
+        }
+        m_transform_filter->Update();
         updateData();
         recomputeChildren();
     }

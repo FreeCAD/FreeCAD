@@ -21,9 +21,7 @@
 
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -38,7 +36,7 @@
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -230,8 +228,10 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 
 void ViewProviderMeasureBase::finishRestoring()
 {
-    // Force measurement visibility when loading a document
-    show();
+    if (Visibility.getValue() && isSubjectVisible()) {
+        show();
+    }
+    ViewProviderDocumentObject::finishRestoring();
 }
 
 
@@ -254,6 +254,7 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
     }
+
     ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -522,6 +523,7 @@ void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObje
         return;
     }
 
+
     std::string propName = prop.getName();
     if (propName == "Visibility") {
         if (!docObj.Visibility.getValue()) {
@@ -531,7 +533,7 @@ void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObje
         else {
             // here, we don't know if we should be visible or not, so we have to check the whole
             // subject
-            setVisible(isSubjectVisible());
+            setVisible(isSubjectVisible() && Visibility.getValue());
         }
     }
 }
@@ -729,3 +731,4 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureArea, MeasureGui::ViewProviderMea
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureLength, MeasureGui::ViewProviderMeasure)
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasurePosition, MeasureGui::ViewProviderMeasure)
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureRadius, MeasureGui::ViewProviderMeasure)
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureCOM, MeasureGui::ViewProviderMeasure)

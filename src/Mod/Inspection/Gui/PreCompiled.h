@@ -20,19 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef INSPECTION_GUI_PRECOMPILED_H
+#define INSPECTION_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#endif
-
-#ifdef _PreComp_
 
 // STL
 
@@ -59,7 +51,5 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

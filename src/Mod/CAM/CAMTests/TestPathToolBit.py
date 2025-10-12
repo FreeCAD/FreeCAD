@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -62,7 +61,7 @@ class TestPathToolBit(PathTestWithAssets):
 
         # Parameters should be loaded from the shape file and set on the tool bit's object
         self.assertEqual(bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm"))
-        self.assertEqual(bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm"))
+        self.assertEqual(bullnose_bit.obj.CornerRadius, FreeCAD.Units.Quantity("1.5 mm"))
 
     def testToolBitPickle(self):
         """Test if ToolBit is picklable"""

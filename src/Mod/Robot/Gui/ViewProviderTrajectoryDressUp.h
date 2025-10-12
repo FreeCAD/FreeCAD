@@ -24,6 +24,8 @@
 #ifndef ROBOT_ViewProviderTrajectoryDressUp_H
 #define ROBOT_ViewProviderTrajectoryDressUp_H
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "ViewProviderTrajectory.h"
 
 namespace RobotGui

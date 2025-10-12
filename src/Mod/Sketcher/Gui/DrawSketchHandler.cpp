@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QGuiApplication>
 #include <QPainter>
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -760,7 +757,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
 
         if (createowncommand) {
             // Open the Command
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
         }
 
         // Iterate through constraints

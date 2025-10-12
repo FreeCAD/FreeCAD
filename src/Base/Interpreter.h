@@ -31,6 +31,8 @@
 #undef _XOPEN_SOURCE
 #endif  // (re-)defined in pyconfig.h
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower

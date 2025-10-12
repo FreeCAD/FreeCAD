@@ -41,6 +41,8 @@
 #include <App/Range.h>
 #include <Base/Unit.h>
 
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+
 #include "PropertyColumnWidths.h"
 #include "PropertyRowHeights.h"
 #include "PropertySheet.h"

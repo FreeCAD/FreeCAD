@@ -663,10 +663,12 @@ def getMesh(obj):
     me = Mesh.Mesh(meshdata)
     # get transformation matrix
     m = obj.matrix
+    # fmt: off
     mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
                          m[1], m[4], m[7], m[10],
                          m[2], m[5], m[8], m[11],
                          0, 0, 0, 1)
+    # fmt: on
     pl = FreeCAD.Placement(mat)
     return me,pl
 
@@ -733,10 +735,12 @@ def getShape(obj,objid):
             if DEBUG: print("    object ", objid, " does not contain any geometry")
     if not IFCOPENSHELL5:
         m = obj.matrix
+        # fmt: off
         mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
                              m[1], m[4], m[7], m[10],
                              m[2], m[5], m[8], m[11],
                              0, 0, 0, 1)
+        # fmt: on
         sh.Placement = FreeCAD.Placement(mat)
     # if DEBUG: print("getting Shape from ",obj)
     #print("getting shape: ",sh,sh.Solids,sh.Volume,sh.isValid(),sh.isNull())

@@ -22,7 +22,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 #include <CXX/Extensions.hxx>
 
 #include <Base/PythonTypeExt.h>

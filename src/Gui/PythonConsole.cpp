@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QClipboard>
 # include <QDockWidget>
@@ -34,7 +33,7 @@
 # include <QTextStream>
 # include <QTime>
 # include <QUrl>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Base/Color.h>

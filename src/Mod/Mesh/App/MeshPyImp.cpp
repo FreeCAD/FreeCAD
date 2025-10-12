@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
@@ -903,7 +902,13 @@ PyObject* MeshPy::setPoint(PyObject* args)
 
     PY_TRY
     {
-        getMeshObjectPtr()->setPoint(index, static_cast<Base::VectorPy*>(pnt)->value());
+        MeshObject* mesh = getMeshObjectPtr();
+        if (index >= mesh->countPoints()) {
+            Base::IndexError exc("index out of range");
+            exc.setPyException();
+            return nullptr;
+        }
+        mesh->setPoint(index, static_cast<Base::VectorPy*>(pnt)->value());
     }
     PY_CATCH;
 
@@ -935,7 +940,14 @@ PyObject* MeshPy::movePoint(PyObject* args)
         return nullptr;
     } while (false);
 
-    getMeshObjectPtr()->movePoint(index, vec);
+    MeshObject* mesh = getMeshObjectPtr();
+    if (index >= mesh->countPoints()) {
+        Base::IndexError exc("index out of range");
+        exc.setPyException();
+        return nullptr;
+    }
+
+    mesh->movePoint(index, vec);
     Py_Return;
 }
 

@@ -21,12 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Action.h>

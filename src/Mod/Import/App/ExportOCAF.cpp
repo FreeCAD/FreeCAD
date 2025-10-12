@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(__MINGW32__)
 #define WNT  // avoid conflict with GUID
 #endif
-#ifndef _PreComp_
 #include <Quantity_ColorRGBA.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
@@ -40,7 +38,7 @@
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
 #include <gp_Trsf.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

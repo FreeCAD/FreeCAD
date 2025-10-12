@@ -19,11 +19,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QContextMenuEvent>
 #include <QMenu>
-#endif
+
 
 #include <cstring>
 
@@ -474,9 +472,6 @@ void MaterialTreeWidget::saveRecents()
 
 void MaterialTreeWidget::addRecent(const QString& uuid)
 {
-    if (uuid.isEmpty()) {
-        return;
-    }
     // Ensure it is a material. New, unsaved materials will not be
     try {
         auto material = Materials::MaterialManager::getManager().getMaterial(uuid);

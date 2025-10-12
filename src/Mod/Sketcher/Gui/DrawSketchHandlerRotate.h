@@ -33,6 +33,7 @@
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
+#include "SketcherTransformationExpressionHelper.h"
 
 #include "GeometryCreationMode.h"
 #include "Utils.h"
@@ -143,9 +144,17 @@ private:
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
 
+            expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
+
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
+
+            expressionHelper.copyExpressionsToNewConstraints(sketchgui->getSketchObject(),
+                                                             listOfGeoIds,
+                                                             ShapeGeometry.size(),
+                                                             numberOfCopies,
+                                                             1);
 
             if (deleteOriginal) {
                 deleteOriginalGeos();
@@ -200,7 +209,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Rotate parameters"));
+        return QString(tr("Rotate Parameters"));
     }
 
     void activated() override
@@ -236,6 +245,8 @@ private:
     bool deleteOriginal, cloneConstraints;
     double length, startAngle, endAngle, totalAngle, individualAngle;
     int numberOfCopies;
+
+    SketcherTransformationExpressionHelper expressionHelper;
 
     void deleteOriginalGeos()
     {
@@ -596,7 +607,8 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
             if (thirdParam->isSet) {
                 double arcAngle = Base::toRadians(thirdParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()
+                    && thirdParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     return;
                 }
@@ -609,13 +621,16 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
             if (fourthParam->isSet) {
                 double arcAngle = Base::toRadians(fourthParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()
+                    && fourthParam->hasFinishedEditing) {
                     unsetOnViewParameter(fourthParam.get());
                     return;
                 }
 
-                onSketchPos.x = handler->centerPoint.x + cos((handler->startAngle + arcAngle));
-                onSketchPos.y = handler->centerPoint.y + sin((handler->startAngle + arcAngle));
+                handler->totalAngle = arcAngle;
+
+                onSketchPos.x = handler->centerPoint.x + cos(handler->startAngle + arcAngle);
+                onSketchPos.y = handler->centerPoint.y + sin(handler->startAngle + arcAngle);
             }
         } break;
         default:
@@ -679,7 +694,7 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHRotateController::doChangeDrawSketchHandlerMode()
+void DSHRotateController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -687,7 +702,7 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -695,14 +710,14 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
 
             if (thirdParam->hasFinishedEditing) {
                 handler->totalAngle = Base::toRadians(thirdParam->getValue());
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         case SelectMode::SeekThird: {
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (fourthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

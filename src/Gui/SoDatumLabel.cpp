@@ -20,8 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
+
+
+#include <FCConfig.h>
+
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # undef min
@@ -46,7 +49,6 @@
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
 # include <Inventor/misc/SoState.h>
-#endif // _PreComp_
 
 #include <Base/Tools.h>
 
@@ -286,7 +288,7 @@ private:
         }
 
         // use the shared geometry calculation for consistency
-        SoDatumLabel::DistanceGeometry geom = label->calculateDistanceGeometry(points, scale, srch);
+        SoDatumLabel::DistanceGeometry geom = label->calculateDistanceGeometry(points);
 
         std::vector<SbVec3f> corners;
         float margin = imgHeight / 4.0F;
@@ -317,21 +319,6 @@ private:
 
     std::vector<SbVec3f> computeRadiusDiameterBBox() const
     {
-        SbVec2s imgsize;
-        int nc {};
-        int srcw = 1;
-        int srch = 1;
-
-        const unsigned char * dataptr = label->image.getValue(imgsize, nc);
-        if (dataptr) {
-            srcw = imgsize[0];
-            srch = imgsize[1];
-        }
-
-        float aspectRatio =  (float) srcw / (float) srch;
-        float imgHeight = scale * (float) (srch);
-        float imgWidth  = aspectRatio * imgHeight;
-
         // get the points stored in the pnt field
         const SbVec3f *points = label->pnts.getValues(0);
         if (label->pnts.getNum() < 2) {
@@ -342,7 +329,6 @@ private:
         SoDatumLabel::DiameterGeometry geom = label->calculateDiameterGeometry(points);
 
         std::vector<SbVec3f> corners;
-        float margin = imgHeight / 4.0F;
 
         // include main points and line segment points around text
         corners.push_back(geom.p1);
@@ -682,9 +668,8 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
 void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
 {
     SbVec3f points[2] = {p1, p2};
-    float scale = 1.0f;
-    int srch = 1;
-    DistanceGeometry geom = calculateDistanceGeometry(points, scale, srch);
+
+    DistanceGeometry geom = calculateDistanceGeometry(points);
 
     // generate selectable primitive for txt label
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
@@ -1147,7 +1132,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     if (this->datumtype.getValue() == DISTANCE ||
         this->datumtype.getValue() == DISTANCEX ||
         this->datumtype.getValue() == DISTANCEY ) {
-        drawDistance(points, scale, srch, angle, textOffset);
+        drawDistance(points, angle, textOffset);
     }
     else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
         drawRadiusOrDiameter(points, angle, textOffset);
@@ -1199,9 +1184,9 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
     this->imgWidth  = aspectRatio * (float) this->imgHeight;
 }
 
-void SoDatumLabel::drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset)
+void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& textOffset)
 {
-    SoDatumLabel::DistanceGeometry geom = this->calculateDistanceGeometry(points, scale, srch);
+    SoDatumLabel::DistanceGeometry geom = this->calculateDistanceGeometry(points);
 
     angle = geom.angle;
     textOffset = geom.textOffset;
@@ -1493,7 +1478,7 @@ void SoDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
 }
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-SoDatumLabel::DistanceGeometry SoDatumLabel::calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const
+SoDatumLabel::DistanceGeometry SoDatumLabel::calculateDistanceGeometry(const SbVec3f* points) const
 {
     using std::numbers::pi;
 
@@ -1525,9 +1510,6 @@ SoDatumLabel::DistanceGeometry SoDatumLabel::calculateDistanceGeometry(const SbV
 
     geom.midpos = (p1_ + geom.p2) / 2;
 
-    float offset1 = ((length + normproj12 < 0) ? -1.F : 1.F) * srch;
-    float offset2 = ((length < 0) ? -1 : 1) * srch;
-
     // Get magnitude of angle between horizontal
     geom.angle = atan2f(geom.dir[1], geom.dir[0]);
     if (geom.angle > pi/2 + pi/12) {
@@ -1540,8 +1522,11 @@ SoDatumLabel::DistanceGeometry SoDatumLabel::calculateDistanceGeometry(const SbV
 
     geom.margin = this->imgHeight / 3.0F;
 
-    geom.perp1 = p1_ + geom.normal * (length + offset1 * scale);
-    geom.perp2 = geom.p2 + geom.normal * (length + offset2 * scale);
+    float offset1 = ((length + normproj12 < 0) ? -1.F : 1.F) * geom.margin;
+    float offset2 = ((length < 0) ? -1 : 1) * geom.margin;
+
+    geom.perp1 = p1_ + geom.normal * (length + offset1);
+    geom.perp2 = geom.p2 + geom.normal * (length + offset2);
 
     // Calculate the coordinates for the parallel datum lines
     geom.par1 = p1_ + geom.normal * length;

@@ -1,11 +1,4 @@
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(PathSimulator_LIBS
     Path
     Part
@@ -14,7 +7,7 @@ set(PathSimulator_LIBS
 )
 
 SET(Python_SRCS
-    PathSimPy.xml
+    PathSim.pyi
     PathSimPyImp.cpp
 )
 
@@ -25,16 +18,23 @@ SET(PathSimulator_SRCS
     PathSim.h
     VolSim.cpp
     VolSim.h
-    PreCompiled.cpp
     PreCompiled.h
     ${Python_SRCS}
 )
 
-generate_from_xml(PathSimPy)
+generate_from_py(PathSim)
 
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 add_library(PathSimulator SHARED ${PathSimulator_SRCS})
+target_include_directories(
+    PathSimulator
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(PathSimulator ${PathSimulator_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PathSimulator)

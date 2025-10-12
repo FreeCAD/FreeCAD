@@ -16,7 +16,7 @@ class ShapeFix_FreeBounds(PyObjectBase):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
-    
+
     def closedWires(self) -> TopoShapeCompound:
         """
         Returns compound of closed wires out of free edges

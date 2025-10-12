@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/VarSet.h>
@@ -41,18 +40,11 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
-Body::Body() {
-    ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+Body::Body()
+{
+    ADD_PROPERTY_TYPE(AllowCompound, (true), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
 
     _GroupTouched.setStatus(App::Property::Output, true);
-
-    static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-        .GetUserParameter()
-        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
-
-    auto allowCompoundDefaultValue = hGrp->GetBool("AllowCompoundDefault", false);
-
-    ADD_PROPERTY(AllowCompound, (allowCompoundDefaultValue));
 }
 
 /*

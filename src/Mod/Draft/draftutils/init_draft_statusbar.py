@@ -211,7 +211,7 @@ def init_draft_statusbar_scale():
     scale_label = scale_to_label(annotation_scale)
     scaleLabel.setText(scale_label)
     scaleLabel.setToolTip(translate("draft",
-                                    "Set the scale used by draft annotation tools"))
+                                    "Set the scale used by Draft annotation tools"))
     scale_widget.addWidget(scaleLabel)
     scale_widget.scaleLabel = scaleLabel
 

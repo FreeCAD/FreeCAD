@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QGuiApplication>
 #include <QPainter>
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -197,17 +194,14 @@ void ToolHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
     int newIconWidth = baseCursorWidth + tailWidth;
     int newIconHeight = baseCursorHeight;
 
-    QPixmap newIcon(newIconWidth, newIconHeight);
+    QPixmap newIcon(newIconWidth * pixelRatio, newIconHeight * pixelRatio);
+    newIcon.setDevicePixelRatio(pixelRatio);
     newIcon.fill(Qt::transparent);
 
     QPainter qp;
     qp.begin(&newIcon);
 
-    qp.drawPixmap(QPointF(0, 0),
-                    baseIcon.scaled(baseCursorWidth * pixelRatio,
-                                    baseCursorHeight * pixelRatio,
-                                    Qt::KeepAspectRatio,
-                                    Qt::SmoothTransformation));
+    qp.drawPixmap(QPointF(0, 0), baseIcon);
 
     // Iterate through pixmaps and them to the cursor pixmap
     qreal currentIconX = baseCursorWidth;
@@ -215,7 +209,7 @@ void ToolHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
 
     for (auto& icon : pixmaps) {
         currentIconY = baseCursorHeight - icon.height();
-        qp.drawPixmap(QPointF(currentIconX, currentIconY), icon);
+        qp.drawPixmap(QPointF(currentIconX, currentIconY) / pixelRatio, icon);
         currentIconX += icon.width();
     }
 

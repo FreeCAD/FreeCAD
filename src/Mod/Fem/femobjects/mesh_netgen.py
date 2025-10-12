@@ -517,6 +517,15 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyBool",
+                name="Glue",
+                group="Mesh Parameters",
+                doc="Glue shapes to get a conformal mesh",
+                value=True,
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyEnumeration",
                 name="Fineness",
                 group="Mesh Parameters",

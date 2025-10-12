@@ -27,16 +27,16 @@ Part.Geom2d.Line2dSegment(Point1,Point2)
 
     StartPoint: object = ...
     """Returns the start point of this line segment."""
-    
+
     EndPoint: object = ...
     """Returns the end point of this line segment."""
 
     @overload
     def __init__(self) -> None: ...
-    
+
     @overload
     def __init__(self, Line: "Line2dSegment") -> None: ...
-    
+
     @overload
     def __init__(self, Point1: object, Point2: object) -> None: ...
 

@@ -21,9 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
 #include <QApplication>
 #include <Inventor/engines/SoCalculator.h>
@@ -47,7 +45,7 @@
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoNodes.h>
-#endif
+
 
 #include <Gui/Inventor/MarkerBitmaps.h>
 

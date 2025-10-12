@@ -28,11 +28,8 @@ rather than returning a new string for each call.
 These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 
 */
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <array>
-#endif
 
 #include "Base64.h"
 

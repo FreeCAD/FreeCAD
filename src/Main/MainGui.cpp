@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -26,10 +27,6 @@
 #if defined(_MSC_VER)
 #include <windows.h>
 #include <dbghelp.h>
-#endif
-
-#ifdef _PreComp_
-#undef _PreComp_
 #endif
 
 #if HAVE_CONFIG_H
@@ -190,7 +187,7 @@ int main(int argc, char** argv)
     App::Application::Config()["ExeName"] = "FreeCAD";
     App::Application::Config()["ExeVendor"] = "FreeCAD";
     App::Application::Config()["AppDataSkipVendor"] = "true";
-    App::Application::Config()["MaintainerUrl"] = "https://www.freecad.org/wiki/Main_Page";
+    App::Application::Config()["MaintainerUrl"] = "https://freecad.org";
 
     // set the banner (for logging and console)
     App::Application::Config()["CopyrightInfo"] = sBanner;

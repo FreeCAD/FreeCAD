@@ -256,7 +256,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 name="GroupsOfNodes",
                 group="Mesh Parameters",
                 doc="For each group create not only the elements but the nodes too",
-                value=False,
+                value=True,
             )
         )
         prop.append(

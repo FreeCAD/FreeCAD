@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -216,13 +215,17 @@ class ObjectJob:
             setattr(obj, n[0], n[1])
 
         obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
-        obj.PostProcessor = postProcessors = Path.Preferences.allEnabledPostProcessors()
+        postProcessors = Path.Preferences.allEnabledPostProcessors()
+        # Add empty string as a valid enumeration option
+        if "" not in postProcessors:
+            postProcessors = [""] + postProcessors
+        obj.PostProcessor = postProcessors
         defaultPostProcessor = Path.Preferences.defaultPostProcessor()
         # Check to see if default post processor hasn't been 'lost' (This can happen when Macro dir has changed)
         if defaultPostProcessor in postProcessors:
             obj.PostProcessor = defaultPostProcessor
         else:
-            obj.PostProcessor = postProcessors[0]
+            obj.PostProcessor = ""
         obj.PostProcessorArgs = Path.Preferences.defaultPostProcessorArgs()
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
@@ -422,6 +425,9 @@ class ObjectJob:
         if getattr(obj, "Tools", None):
             Path.Log.debug("taking down tool controller")
             for tc in obj.Tools.Group:
+                if hasattr(tc.Tool, "BitBody") and tc.Tool.BitBody:
+                    tc.Tool.BitBody.removeObjectsFromDocument()
+                    doc.removeObject(tc.Tool.BitBody.Name)
                 if hasattr(tc.Tool, "Proxy"):
                     PathUtil.clearExpressionEngine(tc.Tool)
                     doc.removeObject(tc.Tool.Name)

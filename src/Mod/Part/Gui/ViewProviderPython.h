@@ -27,6 +27,8 @@
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace PartGui {
 
 class PartGuiExport ViewProviderCustom : public ViewProviderPart

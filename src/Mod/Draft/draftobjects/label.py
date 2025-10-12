@@ -36,7 +36,7 @@ import FreeCAD as App
 from FreeCAD import Units as U
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
-from draftutils.messages import _wrn
+from draftutils.messages import _log
 from draftutils.translate import translate
 
 
@@ -215,7 +215,7 @@ class Label(DraftAnnotation):
                                      "object defined in 'Target'.\n"
                                      "'Tag' and 'Material' only work "
                                      "for objects that have these properties, "
-                                     "like Arch objects.\n"
+                                     "like BIM objects.\n"
                                      "\n"
                                      "For 'Position', 'Length', and 'Area' "
                                      "these properties will be extracted "
@@ -235,12 +235,12 @@ class Label(DraftAnnotation):
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_label", vp_class="ViewProviderLabel")
 
-        if not getattr(obj, "ViewObject", None):
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        vobj = obj.ViewObject
-        if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
-            return
-        self.update_properties_0v21(obj, vobj)
+
+        if not hasattr(vobj, "FontName") or not hasattr(vobj, "FontSize"):
+            self.update_properties_0v21(obj, vobj)
 
     def loads(self, state):
         self.Type = "Label"
@@ -259,12 +259,9 @@ class Label(DraftAnnotation):
         # switched: "2D text" becomes "World" and "3D text" becomes "Screen".
         # It should be the other way around:
         vobj.DisplayMode = "World" if vobj.DisplayMode == "Screen" else "Screen"
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed view property 'TextFont' to 'FontName'"))
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed view property 'TextSize' to 'FontSize'"))
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
+        _log("v0.21, " + obj.Name + ", renamed view property 'TextFont' to 'FontName'")
+        _log("v0.21, " + obj.Name + ", renamed view property 'TextSize' to 'FontSize'")
+        _log("v0.21, " + obj.Name + ", renamed 'DisplayMode' options to 'World/Screen'")
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""

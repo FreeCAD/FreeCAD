@@ -4,11 +4,6 @@
   <context>
     <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Allgemeine Einstellungen</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
       <translation>Allgemeine OpenSCAD Einstellungen</translation>
@@ -24,11 +19,6 @@
       <translation>Der Pfad zur OpenSCAD Programmdatei</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="74"/>
-      <source>OpenSCAD import</source>
-      <translation>OpenSCAD importieren</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
       <translation>Debug Informationen in der Konsole ausgeben</translation>
@@ -37,11 +27,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>Wenn diese Option aktiviert ist, werden Merkmale sich ihre Kindobjekte in der Strukturbaum unterordnen</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="102"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>Verwenden von ViewProvider in der Strukturansicht</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
@@ -63,11 +48,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>Maximale Anzahl der Flächen für Polygone (fn)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="182"/>
-      <source>Send to OpenSCAD via:</source>
-      <translation>An OpenSCAD senden über:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
@@ -100,11 +80,6 @@
       <translation>Der Pfad zum Verzeichnis für die Übertragung von Dateien zu und von OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="261"/>
-      <source>OpenSCAD export</source>
-      <translation>OpenSCAD Export</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
       <translation>Maximale Fragmentgröße</translation>
@@ -124,6 +99,31 @@
       <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
       <translation>Minimaler Winkel für ein Fragment</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
+      <source>General</source>
+      <translation>Allgemein</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="74"/>
+      <source>OpenSCAD Import</source>
+      <translation>OpenSCAD-Import</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="102"/>
+      <source>Use ViewProviders in Tree View</source>
+      <translation>Verwende ViewProvider in der Baumansicht</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="182"/>
+      <source>Send to OpenSCAD via</source>
+      <translation>An OpenSCAD senden via</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="261"/>
+      <source>OpenSCAD Export</source>
+      <translation>OpenSCAD-Export</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -187,16 +187,6 @@
       <translation>%s kann nicht explodiert werden</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="139"/>
-      <source>Convert Edges to Faces</source>
-      <translation>Kanten in Flächen umwandeln</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="301"/>
-      <source>Please select 3 objects first</source>
-      <translation>Bitte zuerst 3 Objekte auswählen</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="333"/>
       <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Add</source>
@@ -224,22 +214,6 @@
       <translation>Aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <source>Clear code</source>
-      <translation>Code löschen</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
-      <source>Open...</source>
-      <translation>Öffnen...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
-      <source>Save...</source>
-      <translation>Speichern...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>als Netz</translation>
@@ -249,6 +223,36 @@
       <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>OpenSCAD-Element hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="139"/>
+      <source>Converts edges to faces</source>
+      <translation>Wandelt Kanten in Flächen um</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="301"/>
+      <source>Select 3 objects first</source>
+      <translation>Zuerst drei Objekte auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
+      <source>Clear Code</source>
+      <translation>Code löschen</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <source>Open…</source>
+      <translation>Öffnen…</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <source>Save…</source>
+      <translation>Speichern…</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <source>as mesh</source>
+      <translation>als Netz</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="427"/>
@@ -276,7 +280,7 @@
       <location filename="../../OpenSCADCommands.py" line="481"/>
       <location filename="../../OpenSCADCommands.py" line="485"/>
       <source>Mesh Boolean</source>
-      <translation>Boolsche Netzverknüpfung</translation>
+      <translation>Boolesche Netzverknüpfung</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="486"/>
@@ -284,12 +288,12 @@
       <translation>Minkowski-Summe</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="653"/>
+      <location filename="../../OpenSCADUtils.py" line="649"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>Die OpenSCAD-Datei enthält sowohl 2D- als auch 3D-Formen. Dies wird von diesem Importierer nicht unterstützt; alle Formen müssen dieselbe Dimensionalität besitzen.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="664"/>
+      <location filename="../../OpenSCADUtils.py" line="660"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Fehler: Formen müssen entweder alle 2D sein oder alle 3D</translation>
     </message>
@@ -315,8 +319,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
-      <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Verschmelzung entfernen, Platzierung für Kind-Objekte übernehmen und zufällig färben</translation>
+      <source>Explodes a fusion or compound and applies random colors</source>
+      <translation>Sprengt eine Vereinigung oder ein Verbundobjekt und wendet zufällige Farben an</translation>
     </message>
   </context>
   <context>
@@ -328,16 +332,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="119"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>Formen nach Gültigkeit und Typ einfärben</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Edgestofaces</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="136"/>
-      <source>Convert Edges To Faces</source>
-      <translation>Kanten zu Flächen umwandeln</translation>
+      <source>Colors shapes by validity and type</source>
+      <translation>Farben Formen nach Gültigkeit und Typ</translation>
     </message>
   </context>
   <context>
@@ -349,47 +345,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>Erstellt ein verfeinertes Formelement</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="186"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>Netz-Element spiegeln...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="189"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>Erzeuge ein gespiegeltes Netz Element</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="215"/>
-      <source>Scale Mesh Feature...</source>
-      <translation>Das Netz-Element skalieren...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="219"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation>Erzeuge eine Netz-Element Skalierung bzw. ein skaliertes Netz-Element (Create Scale Mesh Feature)</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="245"/>
-      <source>Resize Mesh Feature...</source>
-      <translation>Größe des Netz-Elements anpassen...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="249"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation>Erzeuge ein Netz-Element und passe dessen Größe an</translation>
+      <source>Creates a refined shape</source>
+      <translation>Erzeugt ein verfeinertes Netz</translation>
     </message>
   </context>
   <context>
@@ -401,8 +358,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
-      <source>Create Feature that allows increasing the tolerance</source>
-      <translation>Erstelle eine Funktion, die es ermöglicht die Toleranz zu erhöhen</translation>
+      <source>Creates a feature to increase the tolerance</source>
+      <translation>Erstellt eine Funktion zur Erhöhung der Toleranz</translation>
     </message>
   </context>
   <context>
@@ -414,8 +371,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
-      <source>Expand all placements downwards in the Tree view</source>
-      <translation>Alle Elemente in der Baumansicht nach unten vergrößern</translation>
+      <source>Expands all placements downwards in the Tree View</source>
+      <translation>Alle Platzierungen in der Baumansicht nach unten vergrößern</translation>
     </message>
   </context>
   <context>
@@ -427,47 +384,21 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
-      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>Ersetzt ein Objekt in der Baumansicht. Bitte altes, neues und übergeordnetes Objekt auswählen</translation>
+      <source>Replaces an object in the Tree View</source>
+      <translation>Ersetzt ein Objekt in der Baumansicht</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Objekte entfernen samt deren Kind-Objekten</translation>
+      <source>Remove Objects and Children</source>
+      <translation>Objekt(e) entfernen samt Kinder</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Entfernt die ausgewählten Objekte und all deren Kind-Objekte, die nicht von anderen Objekten referenziert werden</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="529"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>OpenSCAD Element hinzufügen...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="533"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Ein OpenSCAD Element hinzufügen, durch Eingabe des OpenSCAD Codes. Anschließend kann das OpenSCAD Binary ausgeführt werden</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MeshBoolean</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="544"/>
-      <source>Mesh Boolean...</source>
-      <translation>Boolsche Netzverknüpfung...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="548"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Verknüpfung auszuführen</translation>
+      <source>Removes the selected objects and all children that are not referenced by other objects</source>
+      <translation>Entfernt die ausgewählten Objekte und alle untergeordneten Objekte, auf die nicht von anderen Objekten verwiesen wird</translation>
     </message>
   </context>
   <context>
@@ -479,8 +410,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="568"/>
-      <source>Use OpenSCAD to create a hull</source>
-      <translation>OpenSCAD verwenden, um Rumpf zu erzeugen</translation>
+      <source>Creates a hull</source>
+      <translation>Erzeugt eine Hülle</translation>
     </message>
   </context>
   <context>
@@ -497,16 +428,89 @@
     </message>
   </context>
   <context>
+    <name>OpenSCAD_Edgestofaces</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="136"/>
+      <source>Convert Edges to Faces</source>
+      <translation>Kanten in Flächen umwandeln</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MirrorMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="186"/>
+      <source>Mirror Mesh Feature</source>
+      <translation>Netz-Eigenschaft spiegeln</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="189"/>
+      <source>Mirrors the mesh</source>
+      <translation>Das Netz spiegeln</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ScaleMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="215"/>
+      <source>Scale Mesh Feature</source>
+      <translation>Funktion zum Skalieren von Netzen</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="219"/>
+      <source>Scales the mesh</source>
+      <translation>Das Netz skalieren</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ResizeMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="245"/>
+      <source>Resize Mesh Feature</source>
+      <translation>Funktion zum Ändern der Größe von Netzen</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="249"/>
+      <source>Resizes the mesh</source>
+      <translation>Die Größe des Netzes ändern</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="529"/>
+      <source>Add OpenSCAD Element</source>
+      <translation>OpenSCAD-Element hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="533"/>
+      <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
+      <translation>Fügt ein OpenSCAD-Element hinzu, das auf eingegebenen OpenSCAD-Code basiert, der die OpenSCAD-Binärdatei verwendet</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="544"/>
+      <source>Mesh Boolean</source>
+      <translation>Boolesche Netzverknüpfung</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="548"/>
+      <source>Performs a boolean operation using the OpenSCAD binary</source>
+      <translation>Führt eine boolesche Verknüpfung unter Verwendung der OpenSCAD-Binärdatei aus</translation>
+    </message>
+  </context>
+  <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
       <location filename="../../OpenSCADCommands.py" line="585"/>
-      <source>Minkowski sum</source>
+      <source>Minkowski Sum</source>
       <translation>Minkowski-Summe</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="588"/>
-      <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation>Benutze OpenSCAD um eine Minkowski-Summe zu erzeugen</translation>
+      <source>Creates a Minkowski sum</source>
+      <translation>Erzeugt die Minkowski-Summe</translation>
     </message>
   </context>
 </TS>

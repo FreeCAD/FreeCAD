@@ -21,14 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
@@ -71,6 +69,9 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
 
     bool reversed = pcConstraint->Reversed.getValue();
     ui->checkBoxReverse->setChecked(reversed);
+
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Edge, Face")));
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -141,13 +142,22 @@ void TaskFemConstraintPressure::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
-        App::DocumentObject* obj = it.getObject();
 
+        App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces (edges in 2D models) can be picked"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();

@@ -21,14 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QPainter>
 # include <QPainterPath>
 # include <QStyleOptionGraphicsItem>
-#endif
 
 #include <Base/Tools2D.h>
 

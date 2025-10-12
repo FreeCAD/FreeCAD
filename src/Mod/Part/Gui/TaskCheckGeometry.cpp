@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QCheckBox>
 # include <QCoreApplication>
 # include <QHeaderView>
@@ -54,7 +52,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-#endif //_PreComp_
 
 #include <Base/Interpreter.h>
 #include <Base/TimeInfo.h>
@@ -445,11 +442,11 @@ void TaskCheckGeometryResults::goCheck()
 
         TopoDS_Shape shape = Part::Feature::getShape(
             sel.pObject,
-              Part::ShapeOption::NeedSubElement 
+              Part::ShapeOption::NeedSubElement
             | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
             sel.SubName);
-            
+
         if (shape.IsNull()) {
             ResultEntry *entry = new ResultEntry();
             entry->parent = theRoot;

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsScene>
 # include <QGraphicsSceneMouseEvent>
 # include <QList>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -55,6 +53,10 @@ TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
     App::DocumentObject *obj = getViewObject();
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
 }
+bool QGIProjGroup::autoDistributeEnabled() const
+{
+    return getDrawView() && getDrawView()->AutoDistribute.getValue();
+}
 
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
@@ -64,26 +66,35 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
        event->type() == QEvent::GraphicsSceneMouseRelease) {
 
         QGIView *qAnchor = getAnchorQItem();
-        if(qAnchor && watched == qAnchor) {
+        QGIView* qWatched = dynamic_cast<QGIView*>(watched);
+        // If AutoDistribute is enabled, catch events and move the anchor directly
+        if(qAnchor && (watched == qAnchor || (autoDistributeEnabled() && qWatched != nullptr))) {
             auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
-            switch(event->type()) {
-              case QEvent::GraphicsSceneMousePress:
-                  // TODO - Perhaps just pass the mouse event on to the anchor somehow?
-                  if (scene() && !qAnchor->isSelected()) {
-                      scene()->clearSelection();
-                      qAnchor->setSelected(true);
-                  }
-                  mousePressEvent(mEvent);
-                  break;
-              case QEvent::GraphicsSceneMouseMove:
-                  mouseMoveEvent(mEvent);
-                  break;
-              case QEvent::GraphicsSceneMouseRelease:
-                  mouseReleaseEvent(mEvent);
-                  break;
-              default:
-                  break;
+            // Disable moves on the view to prevent double drag
+            std::vector<QGraphicsItem*> modifiedChildren;
+            for (auto* child : childItems()) {
+                if (child->isSelected() && (child->flags() & QGraphicsItem::ItemIsMovable)) {
+                    child->setFlag(QGraphicsItem::ItemIsMovable, false);
+                    modifiedChildren.push_back(child);
+                }
+            }
+
+            switch (event->type()) {
+                case QEvent::GraphicsSceneMousePress:
+                    mousePressEvent(mEvent);
+                    break;
+                case QEvent::GraphicsSceneMouseMove:
+                    mouseMoveEvent(mEvent);
+                    break;
+                case QEvent::GraphicsSceneMouseRelease:
+                    mouseReleaseEvent(qWatched, mEvent);
+                    break;
+                default:
+                    break;
+            }
+            for (auto* child : modifiedChildren) {
+                child->setFlag(QGraphicsItem::ItemIsMovable, true);
             }
             return true;
         }
@@ -98,7 +109,8 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
          QGIView* gView = dynamic_cast<QGIView *>(childItem);
          if(gView) {
             TechDraw::DrawView *fView = gView->getViewObject();
-            if(fView->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+            auto dvp = freecad_cast<TechDraw::DrawViewPart*>(fView);
+            if (dvp && TechDraw::DrawView::isProjGroupItem(dvp)) {
                 auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
@@ -134,7 +146,7 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGIView *qAnchor = getAnchorQItem();
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
-        if(qAnchor->shape().contains(transPos)) {
+        if(qAnchor->shape().contains(transPos) || autoDistributeEnabled()) {
             mousePos = event->screenPos();
         }
     }
@@ -144,28 +156,29 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void QGIProjGroup::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIView *qAnchor = getAnchorQItem();
-    if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem())) {
+    if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem() || autoDistributeEnabled())) {
         if((mousePos - event->screenPos()).manhattanLength() > 5) {    //if the mouse has moved more than 5, process the mouse event
             QGIViewCollection::mouseMoveEvent(event);
         }
-
     }
     event->accept();
 }
 
 void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-     if(scene()) {
-       QGIView *qAnchor = getAnchorQItem();
+    mouseReleaseEvent(getAnchorQItem(), event);
+}
+void QGIProjGroup::mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event)
+{
+    if(scene()) {
         if((mousePos - event->screenPos()).manhattanLength() < 5) {
-            if(qAnchor && qAnchor->shape().contains(event->pos())) {
+            if(originator && originator->shape().contains(event->pos())) {
                 event->ignore();
-                qAnchor->mouseReleaseEvent(event);
+                originator->mouseReleaseEvent(event);
             }
         }
-        else if(scene() && qAnchor) {
-            // End of Drag
-            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getY()));
+        else if(scene() && originator) {
+            dragFinished();
         }
     }
     QGIViewCollection::mouseReleaseEvent(event);

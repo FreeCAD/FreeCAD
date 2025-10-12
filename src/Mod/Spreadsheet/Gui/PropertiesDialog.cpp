@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
@@ -221,12 +220,19 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 
     QPalette palette = ui->displayUnit->palette();
     try {
-        std::unique_ptr<UnitExpression> e(
+        std::unique_ptr<UnitExpression> expr(
             App::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
 
-        displayUnit = DisplayUnit(text.toUtf8().constData(), e->getUnit(), e->getScaler());
-        palette.setColor(QPalette::Text, Qt::black);
-        displayUnitOk = true;
+        if (expr) {
+            displayUnit = DisplayUnit(text.toStdString(), expr->getUnit(), expr->getScaler());
+            palette.setColor(QPalette::Text, Qt::black);
+            displayUnitOk = true;
+        }
+        else {
+            displayUnit = DisplayUnit();
+            palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+            displayUnitOk = false;
+        }
     }
     catch (...) {
         displayUnit = DisplayUnit();

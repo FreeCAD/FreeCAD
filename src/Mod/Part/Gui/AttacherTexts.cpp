@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
-#endif
+
 
 #include <Base/Console.h>
 
@@ -86,19 +84,19 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher3D", "Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.","Attachment3D mode tooltip"));
         case mmConcentric:
             return TwoStrings(qApp->translate("Attacher3D", "Concentric","Attachment3D mode caption"),
-                              qApp->translate("Attacher3D", "Align XY plane to osculating circle of an edge. Optional vertex link defines where.","Attachment3D mode tooltip"));
+                              qApp->translate("Attacher3D", "Align XY-plane to osculating circle of an edge. Optional vertex link defines where.","Attachment3D mode tooltip"));
         case mmRevolutionSection:
             return TwoStrings(qApp->translate("Attacher3D", "Revolution Section","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.","Attachment3D mode tooltip"));
         case mmThreePointsPlane:
-            return TwoStrings(qApp->translate("Attacher3D", "XY plane by 3 points","Attachment3D mode caption"),
-                              qApp->translate("Attacher3D", "Align XY plane to pass through three vertices.","Attachment3D mode tooltip"));
+            return TwoStrings(qApp->translate("Attacher3D", "XY-plane by 3 points","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Align XY-plane to pass through three vertices.","Attachment3D mode tooltip"));
         case mmThreePointsNormal:
-            return TwoStrings(qApp->translate("Attacher3D", "XZ plane by 3 points","Attachment3D mode caption"),
-                              qApp->translate("Attacher3D", "Align XZ plane to pass through 3 points; X axis will pass through two first points.","Attachment3D mode tooltip"));
+            return TwoStrings(qApp->translate("Attacher3D", "XZ-plane by 3 points","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Align XZ-plane to pass through 3 points; X axis will pass through two first points.","Attachment3D mode tooltip"));
         case mmFolding:
             return TwoStrings(qApp->translate("Attacher3D", "Folding","Attachment3D mode caption"),
-                              qApp->translate("Attacher3D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.","Attachment3D mode tooltip"));
+                              qApp->translate("Attacher3D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.","Attachment3D mode tooltip"));
         case mmInertialCS:
             return TwoStrings(qApp->translate("Attacher3D", "Inertial CS","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Inertial coordinate system, constructed on principal axes of inertia and center of mass.","Attachment3D mode tooltip"));

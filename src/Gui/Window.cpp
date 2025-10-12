@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+
 
 #include <boost/algorithm/string.hpp>
 #include <qglobal.h>

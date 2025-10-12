@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <Gui/CommandT.h>
@@ -54,7 +53,7 @@ bool ViewProviderBase::doubleClicked()
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
             Gui::Command::openCommand(Msg.c_str());
-            Gui::cmdSetEdit(base);
+            Gui::cmdSetEdit(base, Gui::Application::Instance->getUserEditMode());
         }
         catch (const Base::Exception&) {
             Gui::Command::abortCommand();
@@ -72,8 +71,24 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
         !base->Placement.testStatus(App::Property::Hidden)) {
-        PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+
+        // Handling of the edge case where some base features are outside the body
+        // that should not happen, but it was possible to do in older FreeCAD versions.
+        // This ensures that for older files it still works correctly.
+        if (!getBodyViewProvider()) {
+            ViewProviderPartExt::setupContextMenu(menu, receiver, member);
+        }
+
+        ViewProvider::setupContextMenu(menu, receiver, member);
     }
+}
+Gui::ViewProvider* ViewProviderBase::startEditing(int ModNum)
+{
+    if (!getBodyViewProvider()) {
+        return ViewProviderPartExt::startEditing(ModNum);
+    }
+
+    return ViewProvider::startEditing(ModNum);
 }
 
 bool ViewProviderBase::setEdit(int ModNum)
@@ -82,13 +97,14 @@ bool ViewProviderBase::setEdit(int ModNum)
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
         !base->Placement.testStatus(App::Property::Hidden)) {
-        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
+
+        // same as in setupContextMenu
+        if (!getBodyViewProvider()) {
+            return ViewProviderPartExt::setEdit(ModNum);
+        }
+
+        return ViewProvider::setEdit(ModNum);
     }
 
     return false;
-}
-
-void ViewProviderBase::unsetEdit(int ModNum)
-{
-    PartGui::ViewProviderPart::unsetEdit(ModNum); // clazy:exclude=skipped-base-method
 }

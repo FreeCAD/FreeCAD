@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeCircle.hxx>
 # include <Geom_Circle.hxx>
 # include <gp_Circ.hxx>
-#endif
+
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>

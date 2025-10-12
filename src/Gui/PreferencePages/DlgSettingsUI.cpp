@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPushButton>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/ParamHandler.h>
@@ -70,8 +68,8 @@ void DlgSettingsUI::saveSettings()
     ui->OverlayStyleSheets->onSave();
 
     // Tree View
+    ui->fontSizeSpinBox->onSave();
     ui->iconSizeSpinBox->onSave();
-    ui->rowSpacingSpinBox->onSave();
     ui->resizableColumnsCheckBox->onSave();
     ui->showVisibilityIconCheckBox->onSave();
     ui->hideDescriptionCheckBox->onSave();
@@ -99,8 +97,8 @@ void DlgSettingsUI::loadSettings()
     ui->ThemeAccentColor3->onRestore();
 
     // Tree View
+    ui->fontSizeSpinBox->onRestore();
     ui->iconSizeSpinBox->onRestore();
-    ui->rowSpacingSpinBox->onRestore();
     ui->resizableColumnsCheckBox->onRestore();
     ui->showVisibilityIconCheckBox->onRestore();
     ui->hideDescriptionCheckBox->onRestore();

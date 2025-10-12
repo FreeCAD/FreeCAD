@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>

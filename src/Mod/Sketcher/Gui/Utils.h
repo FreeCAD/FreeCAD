@@ -196,9 +196,10 @@ bool isSketchInEdit(Gui::Document* doc);
 
 /// Returns whether an edit mode command should be activated or not. It is only activated if the
 /// sketcher is no special state or a sketchHandler is active.
-bool isCommandActive(Gui::Document* doc, bool actsOnSelection = false);
-
-bool isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection);
+bool isCommandActive(Gui::Document* doc);
+bool isCommandNeedingConstraintActive(Gui::Document* doc);
+bool isCommandNeedingGeometryActive(Gui::Document* doc);
+bool isCommandNeedingBSplineActive(Gui::Document* doc);
 
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc);
 

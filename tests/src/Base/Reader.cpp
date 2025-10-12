@@ -2,11 +2,15 @@
 
 #include <gtest/gtest.h>
 
+#include <QString>
+
 #ifdef _MSC_VER
 #pragma warning(disable : 4996)
+#pragma warning(disable : 4305)
 #endif
 
 #include "Base/Exception.h"
+#include "Base/Persistence.h"
 #include "Base/Reader.h"
 #include <array>
 #include <filesystem>
@@ -14,7 +18,6 @@
 #include <random>
 #include <string>
 #include <xercesc/util/PlatformUtils.hpp>
-#include <QString>
 
 namespace fs = std::filesystem;
 
@@ -458,4 +461,14 @@ TEST_F(ReaderTest, validDefaults)
     EXPECT_EQ(value18, true);
     EXPECT_THROW({ xml.Reader()->getAttribute<TimesIGoToBed>("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value20, TimesIGoToBed::Late);
+}
+
+TEST_F(ReaderTest, validateXmlString)
+{
+    std::string input = "abcde";
+    std::string output = input;
+    input.push_back(char(15));
+    output.push_back('_');
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(output, result);
 }

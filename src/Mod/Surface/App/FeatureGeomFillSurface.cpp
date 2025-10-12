@@ -21,9 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRep_Tool.hxx>
@@ -47,7 +45,7 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 #include <gp_Trsf.hxx>
-#endif
+
 
 #include "FeatureGeomFillSurface.h"
 

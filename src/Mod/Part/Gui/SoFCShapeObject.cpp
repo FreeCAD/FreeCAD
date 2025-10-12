@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -40,12 +39,28 @@
 # include <Inventor/elements/SoLazyElement.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/misc/SoState.h>
-#endif
 
 #include "SoFCShapeObject.h"
 
 
 using namespace PartGui;
+
+SO_NODE_SOURCE(SoFCShape);
+
+SoFCShape::SoFCShape()
+    : coords(new SoCoordinate3)
+    , norm(new SoNormal)
+    , faceset(new SoBrepFaceSet)
+    , lineset(new SoBrepEdgeSet)
+    , nodeset(new SoBrepPointSet)
+{
+    SO_NODE_CONSTRUCTOR(SoFCShape);
+}
+
+void SoFCShape::initClass()
+{
+    SO_NODE_INIT_CLASS(SoFCShape, SoSeparator, "Separator");
+}
 
 SO_NODE_SOURCE(SoFCControlPoints)
 

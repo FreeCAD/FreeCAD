@@ -69,6 +69,7 @@ class ShapeString(gui_base.GuiCommandBase):
         task = Gui.Control.showDialog(self.ui)
         task.setDocumentName(Gui.ActiveDocument.Document.Name)
         task.setAutoCloseOnDeletedDocument(True)
+        self.ui.update_hints()
 
     def finish(self):
         try:

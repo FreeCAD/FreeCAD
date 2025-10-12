@@ -116,7 +116,8 @@ M08
 """
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = """M05 M09
+POSTAMBLE = """M05
+M09
 G17 G90 G80 G40
 M30
 """

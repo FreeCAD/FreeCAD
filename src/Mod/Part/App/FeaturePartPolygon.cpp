@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS_Wire.hxx>
-#endif
+
 
 #include "FeaturePartPolygon.h"
 

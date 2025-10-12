@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "FemConstraintContact.h"
 
@@ -29,6 +28,8 @@
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint)
+
+static const char* SurfaceBehaviors[] = {"Hard", "Linear", "Tied", nullptr};
 
 ConstraintContact::ConstraintContact()
 {
@@ -68,11 +69,12 @@ ConstraintContact::ConstraintContact()
                       "ConstraintContact",
                       App::PropertyType(App::Prop_None),
                       "Thermal contact conductance");
-    ADD_PROPERTY_TYPE(HardContact,
-                      (false),
+    ADD_PROPERTY_TYPE(SurfaceBehavior,
+                      (1),
                       "ConstraintContact",
-                      App::PropertyType(App::Prop_None),
-                      "Enable hard contact");
+                      App::Prop_None,
+                      "Surface behavior type");
+    SurfaceBehavior.setEnums(SurfaceBehaviors);
 }
 
 App::DocumentObjectExecReturn* ConstraintContact::execute()

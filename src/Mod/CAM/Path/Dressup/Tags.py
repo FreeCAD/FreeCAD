@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -642,7 +641,7 @@ class PathData:
         Path.Log.track(obj.Base.Name)
         self.obj = obj
         path = PathUtils.getPathWithPlacement(obj.Base)
-        self.wire, rapid = Path.Geom.wireForPath(path)
+        self.wire, rapid, rapid_indexes = Path.Geom.wireForPath(path)
         self.rapid = _RapidEdges(rapid)
         if self.wire:
             self.edges = self.wire.Edges

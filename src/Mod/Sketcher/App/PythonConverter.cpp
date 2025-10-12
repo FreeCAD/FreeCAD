@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/format.hpp>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Exception.h>
 #include <Mod/Sketcher/App/Constraint.h>

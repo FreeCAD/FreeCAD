@@ -3626,6 +3626,8 @@ Evolumes
 *MATERIAL, NAME=FemMaterial
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -3657,7 +3659,7 @@ FemConstraintDisplacement,1,1,0.0
 ** constraints pressure element face loads
 ** FemConstraintPressure
 *DLOAD
-** FemConstraintPressure: face load
+** CompoundFilter.Face8
 1384,P3,10.0
 1394,P2,10.0
 1397,P2,10.0

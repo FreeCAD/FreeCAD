@@ -23,6 +23,8 @@
 #ifndef PART_FeatureGeometrySet_H
 #define PART_FeatureGeometrySet_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 #include "PropertyGeometryList.h"
 

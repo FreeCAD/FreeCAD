@@ -4,40 +4,40 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="94"/>
+      <location filename="../../FirstStartWidget.cpp" line="92"/>
       <source>Done</source>
       <translation>Bitti</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="96"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
       <translation>%1 uygulamasına hoş geldiniz</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
-      <source>To get started, set your basic configuration options below.</source>
-      <translation>Başlamak için aşağıda temel yapılandırma seçeneklerinizi ayarlayın.</translation>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <source>Set your basic configuration options below.</source>
+      <translation>Aşağıda temel yapılandırma seçeneklerinizi ayarlayın.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="100"/>
-      <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation>Bu seçenekler (ve daha fazlası) daha sonra Tercihler’den değiştirilebilir.</translation>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <source>These options (and many more) can be changed later in the preferences.</source>
+      <translation>Bu seçenekler (ve daha fazlası) daha sonra tercihlerden değiştirilebilir.</translation>
     </message>
   </context>
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="211"/>
       <source>Language</source>
       <translation>Dil</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="214"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Unit System</source>
       <translation>Birim Sistemi</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="230"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="228"/>
       <source>Navigation Style</source>
       <translation>Dolaşım Tarzı</translation>
     </message>
@@ -45,118 +45,113 @@
   <context>
     <name>CmdStart</name>
     <message>
-      <location filename="../../Manipulator.cpp" line="47"/>
+      <location filename="../../Manipulator.cpp" line="45"/>
       <source>Start</source>
       <translation>Başla</translation>
     </message>
     <message>
-      <location filename="../../Manipulator.cpp" line="48"/>
+      <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
       <translation>&amp;Başlangıç Sayfası</translation>
     </message>
     <message>
-      <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start Page</source>
-      <translation>Başlangıç sayfasını görüntüler</translation>
+      <location filename="../../Manipulator.cpp" line="47"/>
+      <source>Displays the start page</source>
+      <translation>Başlangıç ​​sayfasını görüntüler</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="193"/>
-      <source>Empty file</source>
-      <translation>Boş dosya</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="194"/>
-      <source>Create a new empty FreeCAD file</source>
-      <translation>Boş bir FreeCAD dosyası oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="197"/>
+      <location filename="../../StartView.cpp" line="209"/>
       <source>Open File</source>
       <translation>Dosya Aç</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="198"/>
-      <source>Open an existing CAD file or 3D model</source>
-      <translation>Var olan bir CAD dosyası veya 3B model aç</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="201"/>
-      <source>Parametric Part</source>
-      <translation>Parametrik Parça</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="202"/>
-      <source>Create a part with the Part Design workbench</source>
-      <translation>Parça Tasarımı çalışma tezgâhı ile parça oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Assembly</source>
       <translation>Montaj</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="206"/>
-      <source>Create an assembly project</source>
-      <translation>Montaj projesi oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>2D Draft</source>
       <translation>2B Taslak</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="210"/>
-      <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Taslak çalışma tezgâhı ile 2B taslak oluştur</translation>
+      <location filename="../../StartView.cpp" line="222"/>
+      <source>Creates a 2D Draft document</source>
+      <translation>2B Taslak belgesi oluşturur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Mimari</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
-      <source>Create an architectural project</source>
-      <translation>Mimari yapı projesi oluştur</translation>
+      <location filename="../../StartView.cpp" line="205"/>
+      <source>Empty File</source>
+      <translation>Boş Dosya</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="442"/>
+      <location filename="../../StartView.cpp" line="206"/>
+      <source>Creates a new empty FreeCAD file</source>
+      <translation>Yeni, boş bir FreeCAD dosyası oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="210"/>
+      <source>Opens an existing CAD file or 3D model</source>
+      <translation>Mevcut bir CAD dosyasını veya 3B modelini açar</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="213"/>
+      <source>Parametric Body</source>
+      <translation>Parametrik Gövde</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="214"/>
+      <source>Creates a body with the Part Design workbench</source>
+      <translation>Parça Tasarım tezgahıyla bir gövde oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="218"/>
+      <source>Creates an assembly project</source>
+      <translation>Yeni bir montaj projesi oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="226"/>
+      <source>Creates an architectural project</source>
+      <translation>Mimari proje oluşturur</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>Yeni Dosya</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="443"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>Örnekler</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="444"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>Son Kullanılan Dosyalar</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="445"/>
-      <source>Custom Folder</source>
-      <translation type="unfinished">Custom Folder</translation>
+      <location filename="../../StartView.cpp" line="511"/>
+      <source>Open First Start Setup</source>
+      <translation>İlk Başlangıç ​​Kurulumunu Aç</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="448"/>
-      <source>Open first start setup</source>
-      <translation>İlk kurulumu aç</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="450"/>
-      <source>Don't show this Start page again (start with blank screen)</source>
-      <translation>Bu başlangıç sayfasını bir daha gösterme (boş bir ekranla başla)</translation>
+      <location filename="../../StartView.cpp" line="513"/>
+      <source>Do not show this Start page again (start with blank screen)</source>
+      <translation>Bu Başlangıç ​​sayfasını tekrar gösterme (boş ekranla başla)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="436"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>Başla</translation>
     </message>
@@ -184,24 +179,24 @@
       <translation>Tema</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="240"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>Daha fazla tema mı arıyorsunuz? Bunları &lt;a href="freecad:Std_AddonMgr"&gt;Eklenti Yöneticisi&lt;/a&gt;’ni kullanarak edinebilirsiniz.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="246"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Koyu</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Açık</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Klasik</translation>
@@ -217,39 +212,40 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>İçerikler</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>Yalnızca ek klasördeki FreeCAD dosyalarını göster</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Örnek klasör içeriğini göster</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
-By using ";;" to separate paths, you can add several folders here.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-By using ";;" to separate paths, you can add several folders here.</translation>
+Multiple folders can be added using ";;" to separate paths.</source>
+      <translation>Başlangıç ​​sayfasında görüntülenecek isteğe bağlı özel bir klasör.
+Dizinleri ayırmak için ";;" kullanılarak birden fazla klasör eklenebilir.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
-      <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <source>Shows example files on the start page</source>
+      <translation>Başlangıç ​​sayfasında örnek dosyaları gösterir</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="86"/>
-      <source>If the additional folder contents should include only .FCStd files</source>
-      <translation type="unfinished">If the additional folder contents should include only .FCStd files</translation>
+      <location filename="../../DlgStartPreferences.ui" line="114"/>
+      <source>The start page is closed automatically when FreeCAD launches</source>
+      <translation>FreeCAD başlatıldığında başlangıç ​​sayfası otomatik olarak kapatılır</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -257,20 +253,15 @@ By using ";;" to separate paths, you can add several folders here.</translation>
       <translation>Seçenekler</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="114"/>
-      <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
-    </message>
-    <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Yükledikten sonra başlangıç ​​sayfasını kapat</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="131"/>
+      <location filename="../../AppStartGui.cpp" line="129"/>
       <source>Start</source>
       <translation>Başla</translation>
     </message>

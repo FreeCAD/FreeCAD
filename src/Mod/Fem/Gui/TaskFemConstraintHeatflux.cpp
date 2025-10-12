@@ -23,14 +23,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
@@ -146,6 +144,9 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     if (!Objects.empty()) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
+
+    ui->lbl_references->setText(tr("Select geometry of type: ")
+                                + QString::fromUtf8("<b>%1</b>").arg(tr("Edge, Face")));
 
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
@@ -276,15 +277,23 @@ void TaskFemConstraintHeatflux::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
-        App::DocumentObject* obj = it.getObject();
 
+        App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (!subNames.empty()) {
             for (const auto& subName : subNames) {
-                if (subName.substr(0, 4) != "Face") {
-                    QMessageBox::warning(this,
-                                         tr("Selection error"),
-                                         tr("Selection must only consist of faces!"));
+                if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Selection must only consist of faces! (edges in 2D models)"));
                     return;
                 }
             }
@@ -345,10 +354,11 @@ void TaskFemConstraintHeatflux::removeFromSelection()
 
         if (!subNames.empty()) {
             for (const auto& subName : subNames) {
-                if (subName.substr(0, 4) != "Face") {
-                    QMessageBox::warning(this,
-                                         tr("Selection error"),
-                                         tr("Selection must only consist of faces!"));
+                if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Selection must only consist of faces! (edges in 2D models)"));
                     return;
                 }
             }

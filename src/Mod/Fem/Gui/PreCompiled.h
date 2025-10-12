@@ -25,13 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4290)
-#endif
-
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cmath>
@@ -56,10 +49,6 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
 #endif
 
@@ -81,6 +70,7 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QStackedWidget>
+#include <QStandardPaths>
 #include <QString>
 #include <QStringList>
 #include <QTextCharFormat>
@@ -166,7 +156,5 @@
 #include <vtkDoubleArray.h>
 #include <vtkLookupTable.h>
 #include <vtkPointData.h>
-
-#endif  //_PreComp_
 
 #endif  // FEMGUI_PRECOMPILED_H

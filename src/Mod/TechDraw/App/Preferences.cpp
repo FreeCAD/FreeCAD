@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <string>
 # include <QApplication>
 # include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -524,9 +522,13 @@ int Preferences::BreakLineStyle()
     return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
 }
 
-int Preferences::LineSpacingISO()
+
+// LineSpacingISO is stored as a double in DlgPrefsTechDrawDimensionsImp.cpp but was being accessed
+// as an int here, so the default was always returned. If we make DlgPrefsTechDrawDimensionsImp handle
+// ints, then anybody who had set a custom spacing would need to update their preference.
+float Preferences::LineSpacingISO()
 {
-    return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
+    return getPreferenceGroup("Dimensions")->GetFloat("LineSpacingFactorISO", 2);
 }
 
 std::string Preferences::currentLineDefFile()

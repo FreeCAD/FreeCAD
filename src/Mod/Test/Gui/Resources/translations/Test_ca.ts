@@ -4,19 +4,19 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="17"/>
-      <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD UnitTest</translation>
-    </message>
-    <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Test</source>
       <translation>Test</translation>
     </message>
     <message>
+      <location filename="../../UnitTest.ui" line="17"/>
+      <source>FreeCAD Unit Test</source>
+      <translation>Test unitari de FreeCAD</translation>
+    </message>
+    <message>
       <location filename="../../UnitTest.ui" line="44"/>
-      <source>Select test name:</source>
-      <translation>Seleccioni el nom del test:</translation>
+      <source>Select test name</source>
+      <translation>Seleccioni el nom del test</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -65,27 +65,27 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
-      <source>Run:</source>
-      <translation>Executa:</translation>
+      <source>Run</source>
+      <translation>Executar</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
-      <source>Failures:</source>
-      <translation>Fallades:</translation>
+      <source>Failures</source>
+      <translation>Fallades</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
-      <source>Errors:</source>
-      <translation>Errors:</translation>
+      <source>Errors</source>
+      <translation>Errors</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
-      <source>Remaining:</source>
-      <translation>Restant:</translation>
+      <source>Remaining</source>
+      <translation>Restants</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
-      <source>Failures and errors</source>
+      <source>Failures and Errors</source>
       <translation>Fallades i errors</translation>
     </message>
     <message>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="165"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="166"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,12 +118,12 @@ Feu clic a 'Comença' i s'executarà el test anteriorment produït.
 Feu doble clic a un error a la vista d'arbre per veure'n més informació, incloent-hi la traça de pila.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="179"/>
+      <location filename="../../UnitTestImp.cpp" line="177"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Sobre FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="180"/>
+      <location filename="../../UnitTestImp.cpp" line="178"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

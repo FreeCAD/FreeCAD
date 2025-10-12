@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Jean-Marie Verdun        jmverdun3@gmail.com       *
  *                                                                         *
@@ -21,21 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef CLOUD_GUI_PRECOMPILED_H
+#define CLOUD_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-#define CloudAppExport __declspec(dllimport)
-#define CloudGuiExport __declspec(dllexport)
-#else  // for Linux
-#define CloudAppExport
-#define CloudGuiExport
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -59,7 +49,5 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

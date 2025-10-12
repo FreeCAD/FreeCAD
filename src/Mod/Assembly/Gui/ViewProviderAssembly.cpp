@@ -21,9 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <QMessageBox>
 #include <QTimer>
@@ -38,9 +36,12 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoSensor.h>
-#endif
+
 
 #include <chrono>
+#include <set>
+#include <algorithm>
+#include <iterator>
 
 #include <App/Link.h>
 #include <App/Document.h>
@@ -59,6 +60,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderLink.h>
+#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewParams.h>
 
 #include <Mod/Assembly/App/AssemblyLink.h>
@@ -68,6 +71,8 @@
 #include <Mod/Assembly/App/ViewGroup.h>
 #include <Mod/Assembly/App/BomGroup.h>
 #include <Mod/PartDesign/App/Body.h>
+
+#include "TaskAssemblyMessages.h"
 
 #include "ViewProviderAssembly.h"
 #include "ViewProviderAssemblyPy.h"
@@ -111,9 +116,15 @@ ViewProviderAssembly::ViewProviderAssembly()
     , lastClickTime(0)
     , jointVisibilitiesBackup({})
     , docsToMove({})
-{}
+{
+    m_preTransactionConn = App::GetApplication().signalBeforeOpenTransaction.connect(
+        std::bind(&ViewProviderAssembly::slotAboutToOpenTransaction, this, std::placeholders::_1));
+}
 
-ViewProviderAssembly::~ViewProviderAssembly() = default;
+ViewProviderAssembly::~ViewProviderAssembly()
+{
+    m_preTransactionConn.disconnect();
+};
 
 QIcon ViewProviderAssembly::getIcon() const
 {
@@ -277,6 +288,17 @@ bool ViewProviderAssembly::setEdit(int mode)
 
         attachSelection();
 
+        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+        if (taskView) {
+            // Waiting for the solver to support reporting information.
+            // taskSolver = new TaskAssemblyMessages(this);
+            // taskView->addContextualPanel(taskSolver);
+        }
+
+        auto* assembly = getObject<AssemblyObject>();
+        connectSolverUpdate = assembly->signalSolverUpdate.connect(
+            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this));
+
         return true;
     }
     return ViewProviderPart::setEdit(mode);
@@ -304,6 +326,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
                                 "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
                                 this->getObject()->getDocument()->getName(),
                                 PARTKEY);
+
+        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+        if (taskView) {
+            // Waiting for the solver to support reporting information.
+            // taskView->removeContextualPanel(taskSolver);
+        }
+
+        connectSolverUpdate.disconnect();
+
         return;
     }
     ViewProviderPart::unsetEdit(mode);
@@ -744,7 +775,18 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
         for (auto* child : children) {
             // Recurse on children, appending the child's name to the subName prefix
             std::string newSubNamePrefix = subNamePrefix + child->getNameInDocument() + ".";
-            collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+            if (child->isDerivedFrom<App::Link>() && child->isLinkGroup()) {
+                auto* link = static_cast<App::Link*>(child);
+                std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
+                for (auto* elt : elts) {
+                    std::string eltSubNamePrefix =
+                        newSubNamePrefix + elt->getNameInDocument() + ".";
+                    collectMovableObjects(selRoot, eltSubNamePrefix, elt, onlySolids);
+                }
+            }
+            else {
+                collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+            }
         }
         return;
     }
@@ -753,7 +795,8 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
     if (onlySolids
         && !(currentObject->isDerivedFrom<App::Part>()
              || currentObject->isDerivedFrom<Part::Feature>()
-             || currentObject->isDerivedFrom<App::Link>())) {
+             || currentObject->isDerivedFrom<App::Link>()
+             || currentObject->isDerivedFrom<App::LinkElement>())) {
         return;
     }
 
@@ -771,6 +814,9 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     auto addPartsToMove = [&](const std::vector<Assembly::ObjRef>& refs) {
         for (auto& partRef : refs) {
+            if (!partRef.obj) {
+                continue;
+            }
             auto* pPlc =
                 dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
             if (pPlc) {
@@ -1059,6 +1105,13 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     Base::Placement draggerPlc = sudoThis->getDraggerPlacement();
     Base::Placement movePlc = draggerPlc * sudoThis->draggerInitPlc.inverse();
 
+    // Transform the global delta `movePlc` in case the assembly is transformed.
+    Base::Placement asmPlc =
+        App::GeoFeature::getGlobalPlacement(sudoThis->getObject<AssemblyObject>());
+    if (!asmPlc.isIdentity()) {
+        movePlc = asmPlc.inverse() * movePlc * asmPlc;
+    }
+
     for (auto& movingObj : sudoThis->docsToMove) {
         App::DocumentObject* obj = movingObj.obj;
 
@@ -1071,6 +1124,23 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // Joint components isolation
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        auto selection = Gui::Selection().getSelection();
+        if (selection.size() == 1) {
+            App::DocumentObject* obj = selection[0].pObject;
+            // A simple way to identify a joint is to check for its "JointType" property.
+            if (obj && obj->getPropertyByName("JointType")) {
+                isolateJointReferences(obj);
+                return;
+            }
+        }
+    }
+    if (msg.Type == Gui::SelectionChanges::ClrSelection
+        || msg.Type == Gui::SelectionChanges::RmvSelection) {
+        clearIsolate();
+    }
+
     if (!isInEditMode()) {
         return;
     }
@@ -1229,6 +1299,168 @@ PyObject* ViewProviderAssembly::getPyObject()
     return pyViewObject;
 }
 
+void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* current,
+                                                     std::set<App::DocumentObject*>& isolateSet,
+                                                     IsolateMode mode,
+                                                     std::set<App::DocumentObject*>& visited)
+{
+    if (!current || !visited.insert(current).second) {
+        return;  // Object is null or already processed
+    }
+
+    bool isolate = isolateSet.count(current);
+
+    if (auto* group = dynamic_cast<App::DocumentObjectGroup*>(current)) {
+        for (auto* child : group->Group.getValues()) {
+            applyIsolationRecursively(child, isolateSet, mode, visited);
+        }
+    }
+    else if (auto* part = dynamic_cast<App::Part*>(current)) {
+        // As App::Part currently don't have material override
+        // (there is in LinkStage and RealThunder said he'll try to PR later)
+        // we have to recursively apply to children of App::Parts.
+
+        // If Part is in isolateSet, then all its children should be added to isolateSet
+        if (isolate) {
+            for (auto* child : part->Group.getValues()) {
+                isolateSet.insert(child);
+            }
+        }
+        for (auto* child : part->Group.getValues()) {
+            applyIsolationRecursively(child, isolateSet, mode, visited);
+        }
+    }
+
+    auto* vp = Gui::Application::Instance->getViewProvider(current);
+    auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(vp);
+    auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp);
+    if (!vpl && !vpg) {
+        return;  // we process only geometric objects and links.
+    }
+
+    // Backup the initial values.
+    ComponentState state;
+    state.visibility = current->Visibility.getValue();
+    if (vpl) {
+        state.selectable = vpl->Selectable.getValue();
+        state.overrideMaterial = vpl->OverrideMaterial.getValue();
+        state.shapeMaterial = vpl->ShapeMaterial.getValue();
+    }
+    else {  // vpg
+        state.selectable = vpg->Selectable.getValue();
+        state.shapeMaterial = vpg->ShapeAppearance.getValue()[0];
+    }
+    stateBackup[current] = state;
+
+    if (mode == IsolateMode::Hidden) {
+        stateBackup[current] = state;
+        current->Visibility.setValue(isolate);
+        return;
+    }
+
+    if (isolate && !state.visibility) {  // force visibility for isolated objects
+        current->Visibility.setValue(true);
+    }
+
+    App::Material mat = App::Material::getDefaultAppearance();
+    float trans = mode == IsolateMode::Transparent ? 0.8 : 1.0;
+    mat.transparency = trans;
+
+    if (vpl) {
+        vpl->Selectable.setValue(isolate);
+        if (!isolate) {
+            vpl->OverrideMaterial.setValue(true);
+            vpl->ShapeMaterial.setValue(mat);
+        }
+    }
+    else if (vpg) {
+        vpg->Selectable.setValue(isolate);
+        if (!isolate) {
+            vpg->ShapeAppearance.setValue(mat);
+        }
+    }
+}
+
+void ViewProviderAssembly::isolateComponents(std::set<App::DocumentObject*>& isolateSet,
+                                             IsolateMode mode)
+{
+    if (!stateBackup.empty()) {
+        clearIsolate();
+    }
+
+    auto* assembly = getObject<AssemblyObject>();
+    if (!assembly) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> topLevelChildren = assembly->Group.getValues();
+
+    std::set<App::DocumentObject*> visited;
+    for (auto* child : topLevelChildren) {
+        applyIsolationRecursively(child, isolateSet, mode, visited);
+    }
+}
+
+void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, IsolateMode mode)
+{
+    if (!joint || isolatedJoint == joint) {
+        return;
+    }
+
+    AssemblyObject* assembly = getObject<AssemblyObject>();
+
+    App::DocumentObject* part1 = getMovingPartFromRef(assembly, joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(assembly, joint, "Reference2");
+    if (!part1 || !part2) {
+        return;
+    }
+
+    isolatedJoint = joint;
+    isolatedJointVisibilityBackup = joint->Visibility.getValue();
+    joint->Visibility.setValue(true);
+
+    std::set<App::DocumentObject*> isolateSet = {part1, part2};
+    isolateComponents(isolateSet, mode);
+}
+
+void ViewProviderAssembly::clearIsolate()
+{
+    if (isolatedJoint) {
+        isolatedJoint->Visibility.setValue(isolatedJointVisibilityBackup);
+        isolatedJoint = nullptr;
+    }
+
+    for (const auto& pair : stateBackup) {
+        App::DocumentObject* component = pair.first;
+        const ComponentState& state = pair.second;
+        if (!component || !component->isAttachedToDocument()) {
+            continue;
+        }
+
+        component->Visibility.setValue(state.visibility);
+
+        if (auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(
+                Gui::Application::Instance->getViewProvider(component))) {
+            vpl->Selectable.setValue(state.selectable);
+            vpl->ShapeMaterial.setValue(state.shapeMaterial);
+            vpl->OverrideMaterial.setValue(state.overrideMaterial);
+        }
+        else if (auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+                     Gui::Application::Instance->getViewProvider(component))) {
+            vpg->Selectable.setValue(state.selectable);
+            vpg->ShapeAppearance.setValue(state.shapeMaterial);
+        }
+    }
+
+    stateBackup.clear();
+}
+
+void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName)
+{
+    Q_UNUSED(cmdName);
+    this->clearIsolate();
+}
+
 // UTILS
 Base::Vector3d
 ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& movingObjs)
@@ -1270,4 +1502,88 @@ ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& mo
     }
 
     return center;
+}
+
+inline QString intListHelper(const std::vector<int>& ints)
+{
+    QString results;
+    if (ints.size() < 8) {  // The 8 is a bit heuristic... more than that and we shift formats
+        for (const auto i : ints) {
+            if (results.isEmpty()) {
+                results.append(QStringLiteral("%1").arg(i));
+            }
+            else {
+                results.append(QStringLiteral(", %1").arg(i));
+            }
+        }
+    }
+    else {
+        const int numToShow = 3;
+        int more = ints.size() - numToShow;
+        for (int i = 0; i < numToShow; ++i) {
+            results.append(QStringLiteral("%1, ").arg(ints[i]));
+        }
+        results.append(ViewProviderAssembly::tr("ViewProviderAssembly", "and %1 more").arg(more));
+    }
+    return results;
+}
+
+void ViewProviderAssembly::UpdateSolverInformation()
+{
+    // Updates Solver Information with the Last solver execution at AssemblyObject level
+    auto* assembly = getObject<AssemblyObject>();
+
+    int dofs = assembly->getLastDoF();
+    bool hasConflicts = assembly->getLastHasConflicts();
+    bool hasRedundancies = assembly->getLastHasRedundancies();
+    bool hasPartiallyRedundant = assembly->getLastHasPartialRedundancies();
+    bool hasMalformed = assembly->getLastHasMalformedConstraints();
+
+    if (assembly->isEmpty()) {
+        signalSetUp(QStringLiteral("empty"), tr("Empty Assembly"), QString(), QString());
+    }
+    else if (dofs < 0 || hasConflicts) {  // over-constrained
+        signalSetUp(QStringLiteral("conflicting_constraints"),
+                    tr("Over-constrained:") + QLatin1String(" "),
+                    QStringLiteral("#conflicting"),
+                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting())));
+    }
+    else if (hasMalformed) {  // malformed joints
+        signalSetUp(
+            QStringLiteral("malformed_constraints"),
+            tr("Malformed joints:") + QLatin1String(" "),
+            QStringLiteral("#malformed"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastMalformedConstraints())));
+    }
+    else if (hasRedundancies) {
+        signalSetUp(QStringLiteral("redundant_constraints"),
+                    tr("Redundant joints:") + QLatin1String(" "),
+                    QStringLiteral("#redundant"),
+                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant())));
+    }
+    else if (hasPartiallyRedundant) {
+        signalSetUp(
+            QStringLiteral("partially_redundant_constraints"),
+            tr("Partially redundant:") + QLatin1String(" "),
+            QStringLiteral("#partiallyredundant"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastPartiallyRedundant())));
+    }
+    else if (assembly->getLastSolverStatus() != 0) {
+        signalSetUp(QStringLiteral("solver_failed"),
+                    tr("Solver failed to converge"),
+                    QStringLiteral(""),
+                    QStringLiteral(""));
+    }
+    else if (dofs > 0) {
+        signalSetUp(QStringLiteral("under_constrained"),
+                    tr("Under-constrained:") + QLatin1String(" "),
+                    QStringLiteral("#dofs"),
+                    tr("%n Degrees of Freedom", "", dofs));
+    }
+    else {
+        signalSetUp(QStringLiteral("fully_constrained"),
+                    tr("Fully constrained"),
+                    QString(),
+                    QString());
+    }
 }

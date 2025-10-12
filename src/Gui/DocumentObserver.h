@@ -174,6 +174,12 @@ class GuiExport ViewProviderWeakPtrT
 {
 public:
     explicit ViewProviderWeakPtrT(ViewProviderDocumentObject*);
+
+    ViewProviderWeakPtrT(ViewProviderWeakPtrT &&);
+    ViewProviderWeakPtrT &operator=(ViewProviderWeakPtrT &&);
+
+    FC_DISABLE_COPY(ViewProviderWeakPtrT);
+
     ~ViewProviderWeakPtrT();
 
     /*!
@@ -221,12 +227,6 @@ public:
 private:
     ViewProviderDocumentObject* _get() const noexcept;
 
-public:
-    // disable
-    ViewProviderWeakPtrT(const ViewProviderWeakPtrT&) = delete;
-    ViewProviderWeakPtrT& operator=(const ViewProviderWeakPtrT&) = delete;
-
-private:
     class Private;
     std::unique_ptr<Private> d;
 };

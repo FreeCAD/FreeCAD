@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <Mod/Part/PartGlobal.h>
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 

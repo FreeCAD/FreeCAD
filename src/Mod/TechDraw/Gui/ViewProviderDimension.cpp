@@ -22,13 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QColor>
 # include <QMenu>
-#endif
+
 
 #include <QMessageBox>
 
@@ -51,6 +49,7 @@
 #include "ZVALUE.h"
 #include "TaskDimension.h"
 #include "QGIViewDimension.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderDimension.h"
 
 using namespace TechDrawGui;
@@ -187,6 +186,15 @@ void ViewProviderDimension::updateData(const App::Property* prop)
             qgiv->updateView(true);
         }
         return;
+    }
+
+    // This properties is changed when creating then on redo (or undo deletion)
+    // so does Reference3d, but using || would call fixSceneDependencies() twice
+    if (prop == &(getViewObject()->References2D)) {
+        // Ensure the QGraphicsItems hierarchy matches the DocumentObject's
+        if (ViewProviderPage* vpp = getViewProviderPage()) {
+            vpp->fixSceneDependencies();
+        }
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView

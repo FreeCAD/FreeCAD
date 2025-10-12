@@ -21,12 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
-#endif
+
 
 #include "TopoShapeMapper.h"
 #include "Geometry.h"

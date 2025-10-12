@@ -31,10 +31,10 @@
 
 #include "Points.h"
 
-#define POINTS_CT_GRID 256       // Default value for number of elements per grid
-#define POINTS_MAX_GRIDS 100000  // Default value for maximum number of grids
-#define POINTS_CT_GRID_PER_AXIS 20
-#define PONTSGRID_BBOX_EXTENSION 10.0f
+static constexpr int POINTS_CT_GRID = 256;       // Default value for number of elements per grid
+static constexpr int POINTS_MAX_GRIDS = 100000;  // Default value for maximum number of grids
+static constexpr int POINTS_CT_GRID_PER_AXIS = 20;
+static constexpr float PONTSGRID_BBOX_EXTENSION = 10.0F;
 
 
 namespace Points
@@ -203,7 +203,7 @@ public:
 protected:
     /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a
      * ulPtIndex the corresponding index in the point kernel. */
-    void AddPoint(const Base::Vector3d& rclPt, unsigned long ulPtIndex, float fEpsilon = 0.0f);
+    void AddPoint(const Base::Vector3d& rclPt, unsigned long ulPtIndex, float fEpsilon = 0.0F);
     /** Returns the grid numbers to the given point \a rclPoint. */
     void Pos(const Base::Vector3d& rclPoint,
              unsigned long& rulX,
@@ -329,11 +329,9 @@ private:
 inline Base::BoundBox3d
 PointsGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
-    double fX {}, fY {}, fZ {};
-
-    fX = _fMinX + (double(ulX) * _fGridLenX);
-    fY = _fMinY + (double(ulY) * _fGridLenY);
-    fZ = _fMinZ + (double(ulZ) * _fGridLenZ);
+    double fX = _fMinX + (double(ulX) * _fGridLenX);
+    double fY = _fMinY + (double(ulY) * _fGridLenY);
+    double fZ = _fMinZ + (double(ulZ) * _fGridLenZ);
 
     return Base::BoundBox3d(fX, fY, fZ, fX + _fGridLenX, fY + _fGridLenY, fZ + _fGridLenZ);
 }

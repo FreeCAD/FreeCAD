@@ -26,6 +26,8 @@
 #include <App/PropertyStandard.h>
 #include <Base/Axis.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "AttachExtension.h"
 
 

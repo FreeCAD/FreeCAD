@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <memory>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <Base/VectorPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

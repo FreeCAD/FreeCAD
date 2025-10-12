@@ -21,10 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include "Body.h"
@@ -70,9 +68,6 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
     }
 
     auto shape = Part::Feature::getTopoShape(BaseFeature.getValue(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
-    if (!shape.countSubShapes(TopAbs_SOLID)) {
-        shape = shape.makeElementSolid();
-    }
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape"));

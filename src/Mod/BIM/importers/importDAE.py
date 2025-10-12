@@ -32,7 +32,9 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides tools to import and export Collada (.dae) files.
 
+from dataclasses import dataclass
 import os
+import string
 from typing import Optional
 from xml.sax.saxutils import escape as sax_escape
 
@@ -76,7 +78,7 @@ def import_collada() -> bool:
     try:
         import collada
     except ImportError:
-        FreeCAD.Console.PrintError(translate("BIM", "pycollada not found, collada support is disabled.") + "\n")
+        FreeCAD.Console.PrintError("pycollada not found, collada support is disabled.\n")
         return False
     return True
 
@@ -148,66 +150,18 @@ def read(filename):
     for bound_geom in col.scene.objects('geometry'):
         prim: collada.primitive.BoundPrimitive
         for prim in bound_geom.primitives():
-            if not isinstance(prim, collada.triangleset.BoundTriangleSet):
-                # e.g. a BoundLineSet, which is not supported yet.
-                continue
-            # Get the materials and associated vertices.
-            meshes: dict[collada.scene.MaterialNode, list] = {}
-            tri: collada.triangleset.Triangle
-            for tri in prim:
-                material_node: collada.material.Material = tri.material
-                if material_node not in meshes:
-                    # Not yet in the dict, create a new entry.
-                    meshes[material_node] = []
-                if len(tri.vertices) != 3:
-                    msg = (
-                            f"Warning: triangle with {len(tri.vertices)} vertices found"
-                            f" in {bound_geom.original.name}, expected 3. Skipping this triangle."
-                    )
-                    FreeCAD.Console.PrintWarning(msg + "\n")
-                    continue
-                # tri.vertices is a numpy array.
-                meshes[material_node].append((tri.vertices * unit).tolist())
-            # Create a mesh for each material node.
-            for material_node, vertices in meshes.items():
-                mesh = Mesh.Mesh(vertices)
-                name = bound_geom.original.name
-                if not name:
-                    name = bound_geom.original.id
-                obj = doc.addObject("Mesh::Feature", name)
-                obj.Label = name
-                obj.Mesh = mesh
-                if not material_node:
-                    continue
-                if FreeCAD.GuiUp:
-                    fc_mat = FreeCAD.Material()
-                    # We do not import transparency because it is often set
-                    # wrongly (transparency mistaken for opacity).
-                    # TODO: Ask whether to import transparency.
-                    field_map = {
-                            "ambient": "AmbientColor",
-                            "diffuse": "DiffuseColor",
-                            "emission": "EmissiveColor",
-                            "specular": "SpecularColor",
-                            "shininess": "Shininess",
-                            # "transparency": "Transparency",
-                    }
-                    for col_field, fc_field in field_map.items():
-                        try:
-                            # Implementation note: using floats, so values must
-                            # be within [0, 1]. OK.
-                            setattr(fc_mat, fc_field, getattr(material_node.effect, col_field))
-                        except ValueError:
-                            # The collada value is not compatible with FreeCAD.
-                            pass
-                        except TypeError:
-                            # color is not a tuple but a texture.
-                            pass
-                    obj.ViewObject.ShapeAppearance = (fc_mat,)
+            if isinstance(prim, collada.triangleset.BoundTriangleSet):
+                _read_bound_triangle_set(doc, bound_geom, prim, unit)
+            if isinstance(prim, collada.polylist.BoundPolylist):
+                FreeCAD.Console.PrintWarning(
+                    f"Warning: triangulating polylist primitive in {_name_from_bound_geom(bound_geom)}\n",
+                )
+                _read_bound_polylist(doc, bound_geom, prim, unit)
+            # e.g. a BoundLineSet, which is not supported yet.
 
     # Print the errors that occurred during reading.
     if col.errors:
-        FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occurred:") + "\n")
+        FreeCAD.Console.PrintWarning("File was read but some errors occurred:\n")
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
     if FreeCAD.GuiUp:
@@ -427,4 +381,161 @@ def export(
     col_mesh.scenes.append(scene)
     col_mesh.scene = scene
     col_mesh.write(filename)
-    FreeCAD.Console.PrintMessage(translate("BIM", f'file "{filename}" successfully created.' + "\n"))
+    FreeCAD.Console.PrintMessage(f'file "{filename}" successfully created.\n')
+
+
+@dataclass
+class _TriangleSet:
+    """The result of the processing of BoundTriangleSet and BoundPolylist."""
+
+    # List of triangles, each triangle is a list of 3 vertices,
+    # each vertex is a list of 3 floats.
+    triangles: list[list[float]]
+
+    # The material associated to these triangles, or None.
+    material: Optional["collada.material.Material"]
+
+
+def _read_bound_triangle_set(
+        doc: FreeCAD.Document,
+        bound_geom: "collada.geometry.BoundGeometry",
+        prim: "collada.primitive.BoundPrimitive",
+        unit: float,
+) -> list[FreeCAD.DocumentObject]:
+    """
+    Read a BoundTriangleSet primitive.
+
+    Return the generated objects.
+
+    Parameters
+    ----------
+    - bound_geom is the BoundGeometry containing the primitive.
+    - prim is the BoundTriangleSet primitive to read.
+    - unit is the factor to convert from the Collada unit to mm.
+    """
+    if not isinstance(prim, collada.triangleset.BoundTriangleSet):
+        raise TypeError("Expected a BoundTriangleSet")
+    triangle_sets = _get_triangle_sets_from_triangle(prim, unit)
+    return _add_meshes_to_doc(doc, triangle_sets, _name_from_bound_geom(bound_geom))
+
+
+def _read_bound_polylist(
+        doc: FreeCAD.Document,
+        bound_geom: "collada.geometry.BoundGeometry",
+        prim: "collada.primitive.BoundPrimitive",
+        unit: float,
+) -> list[FreeCAD.DocumentObject]:
+    """
+    Read a BoundPolylist primitive.
+
+    Return the generated objects.
+
+    Parameters
+    ----------
+    - bound_geom is the BoundGeometry containing the primitive.
+    - prim is the BoundPolylist primitive to read.
+    - unit is the factor to convert from the Collada unit to mm.
+    """
+    if not isinstance(prim, collada.polylist.BoundPolylist):
+        raise TypeError("Expected a BoundPolylist")
+    triangle_sets = _get_triangle_sets_from_polylist(prim, unit)
+    return _add_meshes_to_doc(doc, triangle_sets, _name_from_bound_geom(bound_geom) + " (triangulated)")
+
+
+def _get_triangle_sets_from_triangle(
+        prim: "collada.triangleset.BoundTriangleSet",
+        unit: float,
+) -> list[_TriangleSet]:
+    """Return triangles from the given BoundTriangleSet."""
+    # Get the materials and associated triangles.
+    material_map: dict[collada.scene.MaterialNode, list] = {}
+    tri: collada.triangleset.Triangle
+    for tri in prim:
+        material_node: "collada.material.Material" = tri.material
+        if material_node not in material_map:
+            # Not yet in the dict, create a new entry.
+            material_map[material_node] = []
+        # tri.vertices is a numpy array.
+        material_map[material_node].append((tri.vertices * unit).tolist())
+    return [_TriangleSet(triangles=t, material=m) for m, t in material_map.items()]
+
+
+def _get_triangle_sets_from_polylist(
+        prim: "collada.triangleset.BoundPolylist",
+        unit: float,
+) -> list[_TriangleSet]:
+    """Return triangles from the given BoundPolylist."""
+    # Get the materials and associated triangles.
+    material_map: dict[collada.scene.MaterialNode, list] = {}
+    poly: collada.triangleset.Triangle
+    for poly in prim:
+        material_node: "collada.material.Material" = poly.material
+        if material_node not in material_map:
+            # Not yet in the dict, create a new entry.
+            material_map[material_node] = []
+        for tri in poly.triangles():
+            # tri.vertices is a numpy array.
+            material_map[material_node].append((tri.vertices * unit).tolist())
+    return [_TriangleSet(triangles=t, material=m) for m, t in material_map.items()]
+
+
+def _name_from_bound_geom(
+        bound_geom: "collada.geometry.BoundGeometry",
+) -> str:
+    """Return `name` or `id` of the original geometry."""
+    name = bound_geom.original.name
+    if not name:
+        name = bound_geom.original.id
+    return name
+
+
+def _add_meshes_to_doc(
+        doc: FreeCAD.Document,
+        triangle_sets: list[_TriangleSet],
+        name: str,
+) -> list[FreeCAD.DocumentObject]:
+    """Create a mesh object for each _TriangleSet."""
+    objects: list[FreeCAD.DocumentObject] = []
+    for triangle_set in triangle_sets:
+        mesh = Mesh.Mesh(triangle_set.triangles)
+        obj = doc.addObject("Mesh::Feature", name)
+        # Geometry name can be an ID, which often finishes with a number.
+        # In order to prevent FreeCAD from incrementing the number (because
+        # duplicate labels are not allowed by default) but adding
+        # its "001", "002", .. suffices, add "_".
+        suffix = "_" if name and (name[-1] in string.digits) else ""
+        obj.Label = name + suffix
+        # Label2 (i.e. Description) can be non-unique.
+        obj.Label2 = name
+        obj.Mesh = mesh
+        objects.append(obj)
+        if not triangle_set.material:
+            continue
+        if not FreeCAD.GuiUp:
+            # Unfortunately, material can only be treated in GUI mode.
+            continue
+        fc_mat = FreeCAD.Material()
+        # We do not import transparency because it is often set
+        # wrongly (transparency mistaken for opacity).
+        # TODO: Ask whether to import transparency.
+        field_map = {
+                "ambient": "AmbientColor",
+                "diffuse": "DiffuseColor",
+                "emission": "EmissiveColor",
+                "specular": "SpecularColor",
+                "shininess": "Shininess",
+                # "transparency": "Transparency",
+        }
+        for col_field, fc_field in field_map.items():
+            try:
+                # Implementation note: using floats, so values must
+                # be within [0, 1]. OK.
+                setattr(fc_mat, fc_field, getattr(triangle_set.material.effect, col_field))
+            except ValueError:
+                # The collada value is not compatible with FreeCAD.
+                pass
+            except TypeError:
+                # color is not a tuple but a texture.
+                pass
+        obj.ViewObject.ShapeAppearance = (fc_mat,)
+    return objects

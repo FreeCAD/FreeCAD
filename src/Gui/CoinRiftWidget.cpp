@@ -32,7 +32,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.    *
 \**************************************************************************/
 
-#include "PreCompiled.h"
+
 #include "CoinRiftWidget.h"
 
 #include <Base/Console.h>

@@ -4,351 +4,359 @@
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="240"/>
+      <location filename="../../CommandInsertRobot.cpp" line="238"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="241"/>
-      <source>Add tool</source>
-      <translation>Dodaj alat</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="239"/>
+      <source>Tool</source>
+      <translation>Alat</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="242"/>
-      <source>Add a tool shape to the robot</source>
-      <translation>Dodavanje alata za oblik za robota</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="240"/>
+      <source>Adds a tool shape to the robot</source>
+      <translation type="unfinished">Adds a tool shape to the robot</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="161"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Place robot...</source>
-      <translation>Postavi robota...</translation>
+      <location filename="../../Command.cpp" line="162"/>
+      <source>Place Robot</source>
+      <translation type="unfinished">Place Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
-      <source>Place a robot (experimental!)</source>
-      <translation>Postavite robota (experimental!)</translation>
+      <location filename="../../Command.cpp" line="163"/>
+      <source>Places a robot in the scene</source>
+      <translation type="unfinished">Places a robot in the scene</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="55"/>
+      <location filename="../../CommandTrajectory.cpp" line="53"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="56"/>
-      <source>Create trajectory</source>
-      <translation>Napravi putanju</translation>
+      <location filename="../../CommandTrajectory.cpp" line="54"/>
+      <source>Trajectory</source>
+      <translation>Putanja</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="57"/>
-      <source>Create a new empty trajectory</source>
-      <translation>Stvara novu praznu putanju</translation>
+      <location filename="../../CommandTrajectory.cpp" line="55"/>
+      <source>Creates a new empty trajectory</source>
+      <translation type="unfinished">Creates a new empty trajectory</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="360"/>
+      <location filename="../../CommandTrajectory.cpp" line="358"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="361"/>
-      <source>Edge to Trajectory...</source>
-      <translation>rub na putanji ...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="359"/>
+      <source>Edge to Trajectory</source>
+      <translation type="unfinished">Edge to Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="362"/>
-      <source>Generate a Trajectory from a set of edges</source>
-      <translation>Generirajte putanju za set rubova</translation>
+      <location filename="../../CommandTrajectory.cpp" line="360"/>
+      <source>Generates a trajectory from the selected edges</source>
+      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaCompact</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="46"/>
+      <location filename="../../CommandExport.cpp" line="44"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="47"/>
-      <source>Kuka compact subroutine...</source>
-      <translation>Kuka kompaktni potprogram ...</translation>
+      <location filename="../../CommandExport.cpp" line="45"/>
+      <source>Kuka Compact Subroutine</source>
+      <translation type="unfinished">Kuka Compact Subroutine</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="48"/>
-      <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Izvoz putanje kao kompaktni KRL potprogram.</translation>
+      <location filename="../../CommandExport.cpp" line="46"/>
+      <source>Exports the trajectory as a compact KRL subroutine</source>
+      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="121"/>
+      <location filename="../../CommandExport.cpp" line="119"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="122"/>
-      <source>Kuka full subroutine...</source>
-      <translation>Kuka puni potprogram ...</translation>
+      <location filename="../../CommandExport.cpp" line="120"/>
+      <source>Kuka Full Subroutine</source>
+      <translation type="unfinished">Kuka Full Subroutine</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="123"/>
-      <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Izvoz putanje kao pun KRL potprogram.</translation>
+      <location filename="../../CommandExport.cpp" line="121"/>
+      <source>Exports the trajectory as a full KRL subroutine</source>
+      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR125</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="192"/>
+      <location filename="../../CommandInsertRobot.cpp" line="190"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="193"/>
+      <location filename="../../CommandInsertRobot.cpp" line="191"/>
       <source>Kuka IR125</source>
       <translation>Kuka IR125</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="194"/>
-      <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Umetnite Kuka IR500 u dokument.</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="192"/>
+      <source>Inserts a Kuka IR125 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR125 robot into the scene</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR16</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="97"/>
+      <location filename="../../CommandInsertRobot.cpp" line="95"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="98"/>
+      <location filename="../../CommandInsertRobot.cpp" line="96"/>
       <source>Kuka IR16</source>
       <translation>Kuka IR16</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="99"/>
-      <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Umetnite Kuka IR500 u dokument.</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="97"/>
+      <source>Inserts a Kuka IR16 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR16 robot into the scene</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR210</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="145"/>
+      <location filename="../../CommandInsertRobot.cpp" line="143"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="146"/>
+      <location filename="../../CommandInsertRobot.cpp" line="144"/>
       <source>Kuka IR210</source>
       <translation>Kuka IR210</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="147"/>
-      <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Umetnite Kuka IR500 u dokument.</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="145"/>
+      <source>Inserts a Kuka IR210 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR210 robot into the scene</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertKukaIR500</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="46"/>
+      <location filename="../../CommandInsertRobot.cpp" line="44"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="47"/>
+      <location filename="../../CommandInsertRobot.cpp" line="45"/>
       <source>Kuka IR500</source>
       <translation>Kuka IR500</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="48"/>
-      <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Umetnite Kuka IR500 u dokument.</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="46"/>
+      <source>Inserts a Kuka IR500 into the document</source>
+      <translation type="unfinished">Inserts a Kuka IR500 into the document</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="89"/>
+      <location filename="../../CommandTrajectory.cpp" line="87"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="90"/>
-      <source>Insert in trajectory</source>
-      <translation>Umetni u putanju</translation>
+      <location filename="../../CommandTrajectory.cpp" line="88"/>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="91"/>
-      <source>Insert robot Tool location into trajectory</source>
-      <translation>Umetnite alata robota, mjesto u putanji</translation>
+      <location filename="../../CommandTrajectory.cpp" line="89"/>
+      <source>Inserts the robot tool location into the trajectory</source>
+      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertWaypointPreselect</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="158"/>
+      <location filename="../../CommandTrajectory.cpp" line="156"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="159"/>
-      <source>Insert in trajectory</source>
-      <translation>Umetni u putanju</translation>
+      <location filename="../../CommandTrajectory.cpp" line="157"/>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <source>Insert preselection position into trajectory (W)</source>
-      <translation>Umetnite "preselekcija položaj" u putanju (W)</translation>
+      <location filename="../../CommandTrajectory.cpp" line="158"/>
+      <source>Inserts the preselection position into the trajectory (W)</source>
+      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
-      <location filename="../../Command.cpp" line="112"/>
-      <source>Move to home</source>
-      <translation>Pomakni na početak (home)</translation>
+      <location filename="../../Command.cpp" line="109"/>
+      <source>Move to Home</source>
+      <translation type="unfinished">Move to Home</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <source>Moves to the home position</source>
+      <translation type="unfinished">Moves to the home position</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetDefaultOrientation</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="233"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="236"/>
-      <source>Set default orientation</source>
-      <translation>Postavi zadanu orijentaciju</translation>
+      <location filename="../../CommandTrajectory.cpp" line="234"/>
+      <source>Set Default Orientation</source>
+      <translation type="unfinished">Set Default Orientation</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="238"/>
-      <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Postavite zadano usmjerenje za naknadne naredbe za stvaranje putne točke</translation>
+      <location filename="../../CommandTrajectory.cpp" line="236"/>
+      <source>Sets the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Sets the default orientation for subsequent commands for waypoint creation</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="279"/>
+      <location filename="../../CommandTrajectory.cpp" line="277"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="280"/>
-      <source>Set default values</source>
-      <translation>Postavi zadane vrijednosti</translation>
+      <location filename="../../CommandTrajectory.cpp" line="278"/>
+      <source>Set Default Values</source>
+      <translation type="unfinished">Set Default Values</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="281"/>
-      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>Postavljanje zadanih vrijednosti za brzinu, ubrzanja i kontinuitet za naknadne naredbe stvaranja putne točke</translation>
+      <location filename="../../CommandTrajectory.cpp" line="279"/>
+      <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="51"/>
+      <location filename="../../Command.cpp" line="49"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="52"/>
-      <location filename="../../Command.cpp" line="53"/>
-      <source>Set the home position</source>
-      <translation>Postavite početni položaj</translation>
+      <location filename="../../Command.cpp" line="50"/>
+      <source>Set Home Position</source>
+      <translation type="unfinished">Set Home Position</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="51"/>
+      <source>Sets the home position</source>
+      <translation type="unfinished">Sets the home position</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
-      <source>Simulate a trajectory</source>
-      <translation>Simulirati putanju</translation>
+      <location filename="../../Command.cpp" line="211"/>
+      <source>Simulate Trajectory</source>
+      <translation type="unfinished">Simulate Trajectory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
-      <source>Run a simulation on a trajectory</source>
-      <translation>Pokrenite simulaciju na putanji</translation>
+      <location filename="../../Command.cpp" line="212"/>
+      <source>Simulates robot movement along a selected trajectory</source>
+      <translation type="unfinished">Simulates robot movement along a selected trajectory</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="483"/>
+      <location filename="../../CommandTrajectory.cpp" line="480"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Trajectory compound...</source>
-      <translation> Spoj Putanje  ...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="481"/>
+      <source>Trajectory Compound</source>
+      <translation type="unfinished">Trajectory Compound</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="485"/>
-      <source>Group and connect some trajectories to one</source>
-      <translation>Grupiraj i poveži neke putanje kao jednu</translation>
+      <location filename="../../CommandTrajectory.cpp" line="482"/>
+      <source>Groups and connects multiple trajectories into one</source>
+      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="426"/>
+      <location filename="../../CommandTrajectory.cpp" line="424"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="427"/>
-      <source>Dress-up trajectory...</source>
-      <translation>Prilagodbe putanje...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="425"/>
+      <source>Dress-Up Trajectory</source>
+      <translation type="unfinished">Dress-Up Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="429"/>
-      <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Napravite odjevni objekt koji mijenja neke značajke putanje</translation>
+      <location filename="../../CommandTrajectory.cpp" line="426"/>
+      <source>Creates a dress-up object that overrides aspects of a trajectory</source>
+      <translation type="unfinished">Creates a dress-up object that overrides aspects of a trajectory</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>Trajectory Tools</source>
+      <translation type="unfinished">Trajectory Tools</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="50"/>
+      <source>Robot Tools</source>
+      <translation type="unfinished">Robot Tools</translation>
+    </message>
+    <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>Trajectory tools</source>
-      <translation>Alati putanje</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="52"/>
-      <source>Robot tools</source>
-      <translation>Alati Robota</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="53"/>
       <source>Insert Robot</source>
       <translation>Umetni Robot</translation>
     </message>
@@ -356,135 +364,135 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="260"/>
-      <location filename="../../CommandTrajectory.cpp" line="106"/>
-      <location filename="../../CommandTrajectory.cpp" line="173"/>
-      <location filename="../../CommandTrajectory.cpp" line="192"/>
-      <location filename="../../CommandTrajectory.cpp" line="464"/>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="235"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../CommandExport.cpp" line="60"/>
+      <location filename="../../CommandExport.cpp" line="135"/>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="171"/>
+      <location filename="../../CommandTrajectory.cpp" line="190"/>
+      <location filename="../../CommandTrajectory.cpp" line="461"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="70"/>
       <source>Select one Robot to set home position</source>
       <translation>Izaberite jednog robota za postavljanje početne pozicije</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="131"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Select one Robot</source>
       <translation>Odaberite jedan Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="236"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="136"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Odaberite jedan robot i jedanu putanju objekta.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Trajectory not valid</source>
       <translation>Putanja ne vrijedi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Potrebno je najmanje dvije putne točke u putanji za simulaciju.</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="89"/>
-      <location filename="../../CommandExport.cpp" line="164"/>
+      <location filename="../../CommandExport.cpp" line="87"/>
+      <location filename="../../CommandExport.cpp" line="162"/>
       <source>KRL file</source>
       <translation>KRL datoteka</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="90"/>
-      <location filename="../../CommandExport.cpp" line="165"/>
+      <location filename="../../CommandExport.cpp" line="88"/>
+      <location filename="../../CommandExport.cpp" line="163"/>
       <source>All Files</source>
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="92"/>
-      <location filename="../../CommandExport.cpp" line="167"/>
+      <location filename="../../CommandExport.cpp" line="90"/>
+      <location filename="../../CommandExport.cpp" line="165"/>
       <source>Export program</source>
       <translation>Prijenos programa</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="261"/>
+      <location filename="../../CommandInsertRobot.cpp" line="259"/>
       <source>Select one robot and one shape or VRML object.</source>
       <translation>Odaberite jedan robot i jedan oblik ili objekt VRML.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="174"/>
-      <location filename="../../CommandTrajectory.cpp" line="193"/>
+      <location filename="../../CommandTrajectory.cpp" line="172"/>
+      <location filename="../../CommandTrajectory.cpp" line="191"/>
       <source>Select one Trajectory object.</source>
       <translation>Odaberite jednu putanju objekta.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="201"/>
+      <location filename="../../CommandTrajectory.cpp" line="199"/>
       <source>No preselection</source>
       <translation>Nema predselekcije</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="200"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
       <translation>Morate lebjeti iznad geometrije (predselekcije) s mišem kako bi koristili ovu naredbu. Pogledajte dokumentaciju za detalje.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="294"/>
+      <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Set default speed</source>
       <translation>Postavi zadanu brzinu</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="295"/>
+      <location filename="../../CommandTrajectory.cpp" line="293"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>brzina: (npr. 1 m/s ili 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="308"/>
+      <location filename="../../CommandTrajectory.cpp" line="306"/>
       <source>Set default continuity</source>
       <translation>Postavljanje zadanog kontinuiteta</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="309"/>
+      <location filename="../../CommandTrajectory.cpp" line="307"/>
       <source>continuous ?</source>
       <translation>kontinuirano?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="322"/>
+      <location filename="../../CommandTrajectory.cpp" line="320"/>
       <source>Set default acceleration</source>
       <translation>Postavljanje zadanog ubrzanja</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="323"/>
+      <location filename="../../CommandTrajectory.cpp" line="321"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>ubrzanje: (npr. 1 m/s^2 ili 3 cm/s^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="465"/>
+      <location filename="../../CommandTrajectory.cpp" line="462"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>Odaberite putanju koju želite doraditi.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
+      <location filename="../../ViewProviderTrajectory.cpp" line="142"/>
       <source>Modify</source>
       <translation>Izmjene</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>No robot files installed</source>
       <translation>Nema instaliranih robot datoteka</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
-      <source>Please visit %1 and copy the files to %2</source>
-      <translation>Molimo posjetite %1 i kopirajte datoteke u %2</translation>
+      <location filename="../../Workbench.cpp" line="72"/>
+      <source>Visit %1 and copy the files to %2</source>
+      <translation type="unfinished">Visit %1 and copy the files to %2</translation>
     </message>
   </context>
   <context>
@@ -548,14 +556,14 @@
   <context>
     <name>RobotGui::TaskEdge2TracParameter</name>
     <message>
-      <location filename="../../TaskEdge2TracParameter.cpp" line="42"/>
+      <location filename="../../TaskEdge2TracParameter.cpp" line="40"/>
       <source>TaskEdge2TracParameter</source>
       <translation>TaskEdge2TracParameter</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
-      <source>Hide / Show</source>
-      <translation>Sakrij / prikaži</translation>
+      <source>Hide/Show</source>
+      <translation type="unfinished">Hide/Show</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -569,8 +577,8 @@
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
-      <source>Sizing Value:</source>
-      <translation>Dimenzioniranje vrijednosti:</translation>
+      <source>Sizing Value</source>
+      <translation type="unfinished">Sizing Value</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
@@ -621,7 +629,7 @@
       <translation>Alat:(0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.cpp" line="41"/>
+      <location filename="../../TaskRobot6Axis.cpp" line="39"/>
       <source>TaskRobot6Axis</source>
       <translation>TaskRobot6Axis</translation>
     </message>
@@ -629,7 +637,7 @@
   <context>
     <name>RobotGui::TaskRobotControl</name>
     <message>
-      <location filename="../../TaskRobotControl.cpp" line="36"/>
+      <location filename="../../TaskRobotControl.cpp" line="35"/>
       <source>TaskRobotControl</source>
       <translation>TaskRobotControl</translation>
     </message>
@@ -747,14 +755,14 @@
   <context>
     <name>RobotGui::TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.cpp" line="35"/>
+      <location filename="../../TaskRobotMessages.cpp" line="34"/>
       <source>TaskRobotMessages</source>
       <translation>TaskRobotMessages</translation>
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
-      <source>clear</source>
-      <translation>jasno</translation>
+      <source>Clear</source>
+      <translation>Brisanje</translation>
     </message>
   </context>
   <context>
@@ -840,7 +848,7 @@
       <translation>A</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.cpp" line="39"/>
+      <location filename="../../TaskTrajectory.cpp" line="38"/>
       <source>Trajectory</source>
       <translation>Putanja</translation>
     </message>
@@ -848,19 +856,9 @@
   <context>
     <name>RobotGui::TaskTrajectoryDressUpParameter</name>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="42"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="40"/>
       <source>Dress Up Parameter</source>
       <translation>Ravni parametar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
-      <source>Speed &amp; Acceleration:</source>
-      <translation>Brzina i ubrzanje:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
-      <source>Speed:</source>
-      <translation>Brzina:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
@@ -869,72 +867,82 @@
       <translation>Koristite</translation>
     </message>
     <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
+      <source>Speed &amp; acceleration</source>
+      <translation type="unfinished">Speed &amp; acceleration</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
+      <source>Speed</source>
+      <translation>Brzina</translation>
+    </message>
+    <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
-      <source>Accel:</source>
-      <translation>Accel:</translation>
+      <source>Acceleration</source>
+      <translation type="unfinished">Acceleration</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
-      <source>Don't change Cont</source>
-      <translation>Nemojte mijenjati Cont</translation>
+      <source>Do not change continuous mode</source>
+      <translation type="unfinished">Do not change continuous mode</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
       <source>Continues</source>
       <translation>Nastavlja</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="113"/>
       <source>Discontinues</source>
       <translation>Prestaje</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
-      <source>Position and Orientation:</source>
-      <translation>Položaj i orijentacija:</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
+      <source>Position and orientation</source>
+      <translation type="unfinished">Position and orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
-      <source>Don't change Position &amp; Orientation</source>
-      <translation>Ne mijenjaj položaj i orijentaciju</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
+      <source>Do not change position &amp; orientation</source>
+      <translation type="unfinished">Do not change position &amp; orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
-      <source>Use Orientation</source>
-      <translation>Koristi orijentaciju</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
+      <source>Use orientation</source>
+      <translation type="unfinished">Use orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
-      <source>Add Position</source>
-      <translation>Dodaj položaj</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
+      <source>Add position</source>
+      <translation type="unfinished">Add position</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>
-      <source>Add Orientation</source>
-      <translation>Dodaj orijentaciju</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
+      <source>Add orientation</source>
+      <translation type="unfinished">Add orientation</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
-      <source>Insert Robots</source>
-      <translation>Umetanje Robota</translation>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>Insert Robot</source>
+      <translation>Umetni Robot</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>Export Trajectory</source>
+      <translation type="unfinished">Export Trajectory</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Robot</source>
       <translation>&amp;Robot</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="50"/>
-      <source>Export trajectory</source>
-      <translation>Izvoz putanje</translation>
     </message>
   </context>
 </TS>

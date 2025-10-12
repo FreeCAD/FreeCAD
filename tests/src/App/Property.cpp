@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2024 Werner Mayer <wmayer[at]users.sourceforge.net>      *
  *   Copyright (c) 2025 Pieter Hijma <info@pieterhijma.net>                 *
@@ -22,6 +24,8 @@
  ****************************************************************************/
 
 #include <gtest/gtest.h>
+
+#include <FCConfig.h>
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>

@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
 #include <limits>
 #include <queue>
 #include <utility>
-#endif
+
 
 #include <Base/Console.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>

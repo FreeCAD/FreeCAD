@@ -29,7 +29,7 @@ from FreeCAD import Units
 
 
 def get_analysis_types():
-    return ["thermomech"]
+    return ["thermomech", "static"]
 
 
 def get_sets_name():

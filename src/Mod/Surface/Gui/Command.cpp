@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <sstream>
@@ -31,7 +29,6 @@
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
 
 #include "Mod/Part/App/PartFeature.h"
 #include <App/Document.h>

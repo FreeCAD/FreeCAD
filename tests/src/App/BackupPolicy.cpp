@@ -394,7 +394,7 @@ TEST_F(BackupPolicyTest, TimestampReplacesDotsWithDashes)
 TEST_F(BackupPolicyTest, DISABLED_TimestampWithInvalidFormatStringThrows)
 {
     // THIS TEST IS DISABLED BECAUSE THE CURRENT CODE DOES NOT CORRECTLY HANDLE INVALID FORMAT
-    // OPERATIONS, AND CRASHES WHEN GIVEN ONE. FIXME.
+    // OPERATIONS, AND GENERATES UNEXPECTED FILENAMES WHEN GIVEN ONE. FIXME.
 
     // Arrange
     setPolicyTerms(App::BackupPolicy::Policy::TimeStamp, 1, true, "%Q-%W-%E");

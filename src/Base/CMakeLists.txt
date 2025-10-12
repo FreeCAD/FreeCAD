@@ -11,7 +11,9 @@ if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
 
-include_directories(
+target_include_directories(
+    FreeCADBase
+    PRIVATE
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -25,9 +27,11 @@ target_include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
+    ${QtCore_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
+    ${ICU_INCLUDE_DIRS}
 )
 
 if(MSVC)
@@ -35,6 +39,7 @@ if(MSVC)
         ${Boost_LIBRARIES}
         ${XercesC_LIBRARIES}
         ${ZLIB_LIBRARIES}
+        ${ICU_LIBRARIES}
         debug MSVCRTD.LIB
         debug MSVCPRTD.LIB
         optimized MSVCRT.LIB
@@ -59,6 +64,7 @@ elseif(MINGW)
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
+        ${ICU_LIBRARIES}
         Rpcrt4.lib
     )
 else(MSVC)
@@ -66,12 +72,9 @@ else(MSVC)
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
+        ${ICU_LIBRARIES}
     )
 endif(MSVC)
-
-include_directories(
-    ${QtCore_INCLUDE_DIRS}
-)
 
 if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
@@ -148,6 +151,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
     UnitsSchemas.cpp
@@ -310,7 +314,6 @@ SET(FreeCADBase_SRCS
     ${FreeCADBase_UNITAPI_SRCS}
     PyTools.c
     PyTools.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 
@@ -330,12 +333,18 @@ else()
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
+    target_precompile_headers(FreeCADBase PRIVATE
+        $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+
+if (MSVC)
+    target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADBase)
 endif()

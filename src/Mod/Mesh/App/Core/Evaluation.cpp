@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <vector>
-#endif
+
 
 #include <Base/Matrix.h>
 #include <Base/Sequencer.h>
