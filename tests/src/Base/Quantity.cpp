@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include "Base/UnitsApi.h"
 #include <QLocale>
 
 using Base::ParserError;
@@ -209,13 +210,21 @@ TEST_F(BaseQuantityLoc, psi_parse_no_space)
 
 TEST_F(BaseQuantityLoc, psi_parse_user_str)
 {
-    const auto qParsed = Quantity::parse("1 psi");
+    Base::UnitsApi::setSchema("Internal");
+    auto qParsed = Quantity::parse("1 psi");
+    auto format = qParsed.getFormat();
+    format.setPrecision(2);
+    qParsed.setFormat(format);
     EXPECT_EQ(qParsed.getUserString(), "6894.76 Pa");
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_safe_user_str)
 {
-    const auto qParsed = Quantity::parse("1 psi");
+    Base::UnitsApi::setSchema("Internal");
+    auto qParsed = Quantity::parse("1 psi");
+    auto format = qParsed.getFormat();
+    format.setPrecision(2);
+    qParsed.setFormat(format);
     EXPECT_EQ(qParsed.getSafeUserString(), "6894.76 Pa");
 }
 
