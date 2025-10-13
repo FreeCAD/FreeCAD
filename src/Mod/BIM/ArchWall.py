@@ -1705,6 +1705,7 @@ class _Wall(ArchComponent.Component):
         Handles both based and baseless walls.
         """
         import Part
+
         if hasattr(obj, "Base") and obj.Base:
             # For based walls, return the shape of the base object.
             # We assume it's a single line or wire for joining purposes.
@@ -1727,29 +1728,46 @@ class _Wall(ArchComponent.Component):
         solid_to_trim = base_solid
         tool_size = base_solid.BoundBox.DiagonalLength * 2
 
-        # A reference point guaranteed to be on the 'keep' side of the cut
-        ref_point = wall_placement.Base
-
         # --- Process the start ending ---
-        is_start_null = (obj.EndingStart.Base.Length < 1e-9 and obj.EndingStart.Rotation.Angle < 1e-9)
+        is_start_null = obj.EndingStart.Base.Length < 1e-9 and obj.EndingStart.Rotation.Angle < 1e-9
         if not is_start_null:
-            start_plane_placement = wall_placement.multiply(obj.EndingStart)
+            print("\n--- Processing Start Ending ---")
+            global_plane_placement = wall_placement.multiply(obj.EndingStart)
 
-            # Create the cutting tool
-            cutting_tool_start = self._create_cutting_tool_from_plane(start_plane_placement, ref_point, tool_size)
+            # The reference point is the wall's OTHER end, in GLOBAL coordinates.
+            ref_point = obj.Proxy.calc_endpoints(obj)[1]
+            print(f"  Ref Point (Global 'Keep' Side): {ref_point}")  # INSTRUMENTATION
 
-            solid_to_trim = solid_to_trim.common(cutting_tool_start)
+            cutting_tool_global = self._create_cutting_tool_from_plane(
+                global_plane_placement, ref_point, tool_size
+            )
+
+            cutting_tool_local = cutting_tool_global.copy()
+            cutting_tool_local.transformShape(wall_placement.inverse().toMatrix())
+
+            solid_to_trim = solid_to_trim.common(cutting_tool_local)
+            print(f"  'common' operation performed. Resulting volume: {solid_to_trim.Volume}")
 
         # --- Process the end ending ---
-        is_end_null = (obj.EndingEnd.Base.Length < 1e-9 and obj.EndingEnd.Rotation.Angle < 1e-9)
+        is_end_null = obj.EndingEnd.Base.Length < 1e-9 and obj.EndingEnd.Rotation.Angle < 1e-9
         if not is_end_null:
-            end_plane_placement = wall_placement.multiply(obj.EndingEnd)
+            print("\n--- Processing End Ending ---")
+            global_plane_placement = wall_placement.multiply(obj.EndingEnd)
 
-            # Create the cutting tool
-            cutting_tool_end = self._create_cutting_tool_from_plane(end_plane_placement, ref_point, tool_size)
+            # CORRECTED: calc_endpoints already returns global coordinates.
+            ref_point = obj.Proxy.calc_endpoints(obj)[0]  # Use the wall's start as the 'keep' point
 
-            solid_to_trim = solid_to_trim.common(cutting_tool_end)
+            cutting_tool_global = self._create_cutting_tool_from_plane(
+                global_plane_placement, ref_point, tool_size
+            )
 
+            cutting_tool_local = cutting_tool_global.copy()
+            cutting_tool_local.transformShape(wall_placement.inverse().toMatrix())
+
+            solid_to_trim = solid_to_trim.common(cutting_tool_local)
+            print(f"  'common' operation performed. Resulting volume: {solid_to_trim.Volume}")
+
+        print("--- Finished process_endings ---\n")
         return solid_to_trim
 
     def _create_cutting_tool_from_plane(self, cutting_placement, ref_point, tool_size):
@@ -1759,21 +1777,29 @@ class _Wall(ArchComponent.Component):
         """
         import Part
 
-        # Create the four corners of a large, bounded plane in its local XY plane.
-        p1 = FreeCAD.Vector(-tool_size / 2, -tool_size / 2, 0)
-        p2 = FreeCAD.Vector( tool_size / 2, -tool_size / 2, 0)
-        p3 = FreeCAD.Vector( tool_size / 2,  tool_size / 2, 0)
-        p4 = FreeCAD.Vector(-tool_size / 2,  tool_size / 2, 0)
+        print(f"--- Inside _create_cutting_tool_from_plane ---")  # INSTRUMENTATION
 
         # Create a bounded face and move it to the final cutting position.
+        p1 = FreeCAD.Vector(-tool_size / 2, -tool_size / 2, 0)
+        p2 = FreeCAD.Vector(tool_size / 2, -tool_size / 2, 0)
+        p3 = FreeCAD.Vector(tool_size / 2, tool_size / 2, 0)
+        p4 = FreeCAD.Vector(-tool_size / 2, tool_size / 2, 0)
         bounded_face = Part.Face(Part.makePolygon([p1, p2, p3, p4, p1]))
         bounded_face.Placement = cutting_placement
 
-        # Create the half-space solid from the bounded face.
-        # This produces a finite, extruded solid.
+        print(f"  Tool Face Placement (Global): {bounded_face.Placement}")  # INSTRUMENTATION
+
+        # Logic to determine extrusion direction
+        print(f"  Reference Point (Global 'Keep' Side): {ref_point}")  # INSTRUMENTATION
+
+        # Call makeHalfSpace on the bounded face. This will create a finite solid
+        # representing the "keep" volume, which is the correct tool for a .common() operation.
         cutting_tool = bounded_face.makeHalfSpace(ref_point)
+        print("  Called makeHalfSpace() on bounded face.")  # INSTRUMENTATION
+        print("---------------------------------------------")  # INSTRUMENTATION
 
         return cutting_tool
+
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.
