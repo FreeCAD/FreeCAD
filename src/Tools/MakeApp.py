@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2003 Werner Mayer LGPL
 # Create a new application module
 

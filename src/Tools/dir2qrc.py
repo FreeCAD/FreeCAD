@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2007 Juergen Riegel GPL
 
 Usage = """dir2qrc - merging all files in a directory in a qrc file
