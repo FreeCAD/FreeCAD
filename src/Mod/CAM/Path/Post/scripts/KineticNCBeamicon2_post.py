@@ -184,6 +184,7 @@ TOOLTIP_ARGS = parser.format_help()
 
 
 def get_units(use_inches):
+    ''' Determine units based on if the user passes --inches or not. '''
     if use_inches:
         units = "G20"  # G20 for US standard
         unit_speed_format = "in/min"
@@ -228,11 +229,8 @@ def export(objectslist, filename, argstring):
     Returns:
       str, gcode to be saved to disk downstream
     """
-    job = PathUtils.findParentJob(objectslist[0])
-
     args = parser.parse_args(shlex.split(argstring))
-
-    units, unit_speed_format, unit_format = get_units(args.inches)
+    units, unit_speed_format, _ = get_units(args.inches)
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -277,7 +275,7 @@ def export(objectslist, filename, argstring):
 
         # do the post_op
         if not args.no_comments:
-            out_lines.append("(finish operation: %s)" % obj.Label)
+            out_lines.append(f"(finish operation: {obj.Label})")
         for line in POST_OPERATION.splitlines(True):
             # splitlines(True) keeps the newline, so strip it
             out_lines.append(line.rstrip("\n\r"))
