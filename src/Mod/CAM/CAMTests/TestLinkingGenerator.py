@@ -16,6 +16,7 @@ import CAMTests.PathTestUtils as PathTestUtils
 import Path.Base.Generator.linking as generator
 import unittest
 
+
 class TestGetLinkingMoves(PathTestUtils.PathTestBase):
     def setUp(self):
         self.start = FreeCAD.Vector(0, 0, 0)
@@ -47,7 +48,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         )
         self.assertEqual(len(cmds), 0)
 
-
     def test_negative_retract_offset_raises(self):
         with self.assertRaises(ValueError):
             generator.get_linking_moves(
@@ -58,7 +58,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 tool_shape=self.tool,
                 retract_height_offset=-1,
             )
-
 
     def test_clearance_violation_raises(self):
         with self.assertRaises(ValueError):
@@ -97,4 +96,4 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
 
     @unittest.skip("not yet implemented")
     def test_path_generated_without_local_safe(self):
-            pass
+        pass

@@ -50,7 +50,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.materialAllowanceSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.materialAllowance, obj, "MaterialAllowance"
         )
-        if hasattr(obj, 'PassExtension'):
+        if hasattr(obj, "PassExtension"):
             self.passExtensionSpinBox = PathGuiUtil.QuantitySpinBox(
                 self.form.passExtension, obj, "PassExtension"
             )
@@ -81,11 +81,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.ClearingPattern = str(self.form.clearingPattern.currentData())
 
         # Reverse checkbox
-        if hasattr(obj, 'Reverse') and obj.Reverse != self.form.reverse.isChecked():
+        if hasattr(obj, "Reverse") and obj.Reverse != self.form.reverse.isChecked():
             obj.Reverse = self.form.reverse.isChecked()
 
         # Angle is a PropertyAngle (quantity). Compare/update by value.
-        if getattr(obj.Angle, 'Value', obj.Angle) != self.form.angle.value():
+        if getattr(obj.Angle, "Value", obj.Angle) != self.form.angle.value():
             obj.Angle = self.form.angle.value()
 
         # StepOver is an App::PropertyPercent; assign an int percentage value
@@ -95,35 +95,35 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # MaterialAllowance and PassExtension are handled by QuantitySpinBox wrappers
         self.materialAllowanceSpinBox.updateProperty()
-        if hasattr(obj, 'PassExtension'):
+        if hasattr(obj, "PassExtension"):
             self.passExtensionSpinBox.updateProperty()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
-        
+
         # Reflect current CutMode and ClearingPattern in UI
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
-        
+
         # Handle new properties that may not exist in older operations
-        if hasattr(obj, 'Reverse'):
+        if hasattr(obj, "Reverse"):
             self.form.reverse.setChecked(bool(obj.Reverse))
         else:
             self.form.reverse.setChecked(False)
-        
+
         # Angle is a quantity; set spinbox with numeric degrees
-        self.form.angle.setValue(getattr(obj.Angle, 'Value', obj.Angle))
+        self.form.angle.setValue(getattr(obj.Angle, "Value", obj.Angle))
         self.form.stepOver.setValue(obj.StepOver)
-        
+
         # Update QuantitySpinBox displays
         self.updateQuantitySpinBoxes()
 
     def updateQuantitySpinBoxes(self, index=None):
         """updateQuantitySpinBoxes() ... refresh QuantitySpinBox displays from properties"""
         self.materialAllowanceSpinBox.updateWidget()
-        if hasattr(self, 'passExtensionSpinBox'):
+        if hasattr(self, "passExtensionSpinBox"):
             self.passExtensionSpinBox.updateWidget()
 
     def getSignalsForUpdate(self, obj):
@@ -134,7 +134,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
         signals.append(self.form.materialAllowance.editingFinished)
-        if hasattr(self.form, 'passExtension'):
+        if hasattr(self.form, "passExtension"):
             signals.append(self.form.passExtension.editingFinished)
         # Qt 6 compatibility for checkbox state change
         if hasattr(self.form.reverse, "checkStateChanged"):  # Qt >= 6.7.0
@@ -143,10 +143,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             signals.append(self.form.reverse.stateChanged)
         signals.append(self.form.angle.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
-        
+
         return signals
-
-
 
 
 Command = PathOpGui.SetupOperation(
@@ -155,7 +153,9 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Face",
     QT_TRANSLATE_NOOP("CAM_MillFacing", "Mill Facing"),
-    QT_TRANSLATE_NOOP("CAM_MillFacing", "Create a Mill Facing Operation to machine the top surface of stock"),
+    QT_TRANSLATE_NOOP(
+        "CAM_MillFacing", "Create a Mill Facing Operation to machine the top surface of stock"
+    ),
     PathMillFacing.SetupProperties,
 )
 

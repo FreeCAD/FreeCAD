@@ -42,14 +42,22 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None, milling_direction="climb", reverse=False, angle_degrees=None):
+def bidirectional(
+    polygon,
+    tool_diameter,
+    stepover_percent,
+    pass_extension=None,
+    milling_direction="climb",
+    reverse=False,
+    angle_degrees=None,
+):
     """
     Generate a bidirectional clearing pattern using scanline intersection.
-    
+
     This strategy cuts back and forth across the polygon, alternating which side
     is cut to maintain consistent milling direction. Rapids between passes stay
     at cutting height for efficiency.
-    
+
     Args:
         polygon: The polygon boundary to clear
         tool_diameter: Diameter of the cutting tool
@@ -58,7 +66,7 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
         milling_direction: "climb" or "conventional"
         reverse: Reverse the alternation pattern
         angle_degrees: Angle in degrees to rotate the cutting direction
-        
+
     Returns:
         List of Path.Command objects representing the toolpath. First move is G0 to start position.
     """
@@ -66,6 +74,7 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
         pass_extension = tool_diameter * 0.5
 
     import math
+
     # Establish frame from angle (default 0° = +X primary)
     theta = float(angle_degrees) if angle_degrees is not None else 0.0
     primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)
@@ -85,7 +94,12 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
     # Compute projection bounds
     min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
     min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
-    if not (math.isfinite(min_s) and math.isfinite(max_s) and math.isfinite(min_t) and math.isfinite(max_t)):
+    if not (
+        math.isfinite(min_s)
+        and math.isfinite(max_s)
+        and math.isfinite(min_t)
+        and math.isfinite(max_t)
+    ):
         Path.Log.error("Bidirectional: non-finite projection bounds; aborting")
         return []
 
@@ -93,24 +107,24 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
     tool_radius = tool_diameter / 2.0
     engagement_amount = tool_diameter * (stepover_percent / 100.0)
     stepover = tool_diameter * (stepover_percent / 100.0)
-    
+
     # Calculate the midpoint - passes should stop here
     t_mid = (min_t + max_t) / 2.0
-    
+
     # Bottom positions: start at min_t with engagement offset, stop at midpoint
     bottom_positions = []
     t = min_t - tool_radius + engagement_amount
     while t <= t_mid:
         bottom_positions.append(t)
         t += stepover
-    
+
     # Top positions: start at max_t with engagement offset, stop at midpoint
     top_positions = []
     t = max_t + tool_radius - engagement_amount
     while t >= t_mid:
         top_positions.append(t)
         t -= stepover
-    
+
     # Interleave bottom and top positions
     # reverse controls which side starts first
     all_passes = []
@@ -119,18 +133,20 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
         if not reverse:
             # Start with bottom
             if i < len(bottom_positions):
-                all_passes.append(('bottom', bottom_positions[i]))
+                all_passes.append(("bottom", bottom_positions[i]))
             if i < len(top_positions):
-                all_passes.append(('top', top_positions[i]))
+                all_passes.append(("top", top_positions[i]))
         else:
             # Start with top
             if i < len(top_positions):
-                all_passes.append(('top', top_positions[i]))
+                all_passes.append(("top", top_positions[i]))
             if i < len(bottom_positions):
-                all_passes.append(('bottom', bottom_positions[i]))
-    
-    Path.Log.debug(f"Bidirectional: {len(all_passes)} passes generated ({len(bottom_positions)} bottom, {len(top_positions)} top)")
-    
+                all_passes.append(("bottom", bottom_positions[i]))
+
+    Path.Log.debug(
+        f"Bidirectional: {len(all_passes)} passes generated ({len(bottom_positions)} bottom, {len(top_positions)} top)"
+    )
+
     commands = []
     s_margin = pass_extension + tool_diameter
     kept_segments = 0
@@ -141,8 +157,8 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
         # If no intervals found (pass is outside polygon), skip this pass
         if not intervals:
             continue
-        
-        for (s0, s1) in intervals:
+
+        for s0, s1 in intervals:
             # Extend in primary direction
             total_extension = pass_extension + tool_radius + engagement_offset
             start_s = s0 - total_extension
@@ -164,14 +180,26 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
                 p_start, p_end = start_s, end_s  # left-to-right
 
             # Map to XY - use copies to avoid vector mutation
-            start_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
-            end_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            start_point = (
+                FreeCAD.Vector(origin)
+                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
+                .add(FreeCAD.Vector(step_vec).multiply(t))
+            )
+            end_point = (
+                FreeCAD.Vector(origin)
+                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
+                .add(FreeCAD.Vector(step_vec).multiply(t))
+            )
             start_point.z = z
             end_point.z = z
 
             # Finite check
-            if not (math.isfinite(start_point.x) and math.isfinite(start_point.y) and
-                    math.isfinite(end_point.x) and math.isfinite(end_point.y)):
+            if not (
+                math.isfinite(start_point.x)
+                and math.isfinite(start_point.y)
+                and math.isfinite(end_point.x)
+                and math.isfinite(end_point.y)
+            ):
                 continue
 
             if commands:
@@ -179,7 +207,9 @@ def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None,
                 commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
             else:
                 # First segment: emit G0 to start for op preamble replacement
-                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+                commands.append(
+                    Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
+                )
 
             commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
             kept_segments += 1

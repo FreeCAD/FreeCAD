@@ -869,10 +869,16 @@ class Compass:
     AREA = "Area"
 
     def __init__(self, spindle_direction, operation_type=None):
-        self._spindle_dir = spindle_direction if spindle_direction in (self.FORWARD, self.REVERSE, self.NONE) else self.NONE
+        self._spindle_dir = (
+            spindle_direction
+            if spindle_direction in (self.FORWARD, self.REVERSE, self.NONE)
+            else self.NONE
+        )
         self._cut_side = self.OUTSIDE
         self._cut_mode = self.CLIMB
-        self._operation_type = operation_type or self.PERIMETER  # Default to perimeter for backward compatibility
+        self._operation_type = (
+            operation_type or self.PERIMETER
+        )  # Default to perimeter for backward compatibility
         self._path_dir = self._calculate_path_dir()
 
     @property
@@ -951,21 +957,21 @@ class Compass:
     def get_step_direction(self, approach_direction):
         """
         For area operations, determine the step direction for climb/conventional milling.
-        
+
         Args:
             approach_direction: "X+", "X-", "Y+", "Y-" - the primary cutting direction
-            
+
         Returns:
             True if steps should be in positive direction, False for negative direction
         """
         if self._operation_type != self.AREA:
             raise ValueError("Step direction is only applicable for area operations")
-            
+
         if self.spindle_dir == self.NONE:
             return True  # Default to positive direction
-            
+
         spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
-        
+
         # For area operations, climb/conventional depends on relationship between
         # spindle rotation, approach direction, and step direction
         if approach_direction in ["X-", "X+"]:
@@ -988,23 +994,23 @@ class Compass:
     def get_cutting_direction(self, approach_direction, pass_index=0, pattern="zigzag"):
         """
         For area operations, determine the cutting direction for each pass.
-        
+
         Args:
             approach_direction: "X+", "X-", "Y+", "Y-" - the primary cutting direction
             pass_index: Index of the current pass (0-based)
             pattern: "zigzag", "unidirectional", "spiral"
-            
+
         Returns:
             True if cutting should be in forward direction, False for reverse
         """
         if self._operation_type != self.AREA:
             raise ValueError("Cutting direction is only applicable for area operations")
-            
+
         if self.spindle_dir == self.NONE:
             return True  # Default to forward direction
-            
+
         spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
-        
+
         # Determine base cutting direction for climb/conventional
         if approach_direction in ["X-", "X+"]:
             # Cutting along Y axis
@@ -1018,14 +1024,14 @@ class Compass:
                 base_forward = (approach_direction == "Y-") == (spindle_rotation == self.CW)
             else:  # Conventional
                 base_forward = (approach_direction == "Y-") != (spindle_rotation == self.CW)
-        
+
         # Apply pattern modifications
         if pattern == "zigzag" and pass_index % 2 == 1:
             base_forward = not base_forward
         elif pattern == "unidirectional":
             # Always same direction
             pass
-            
+
         return base_forward
 
     def report(self):

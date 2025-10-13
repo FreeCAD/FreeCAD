@@ -43,51 +43,58 @@ def analyze_rectangle(polygon, axis_preference):
     """Analyze rectangle to determine orientation and dimensions."""
     # Extract polygon geometry
     polygon_info = facing_common.extract_polygon_geometry(polygon)
-    edges = polygon_info['edges']
-    corners = polygon_info['corners']
-    
+    edges = polygon_info["edges"]
+    corners = polygon_info["corners"]
+
     # Get primary and step edges
     edge_info = facing_common.select_primary_step_edges(edges, axis_preference)
-    
+
     # Find reference corner using dot product projections
-    primary_vec = edge_info['primary_vec']
-    step_vec = edge_info['step_vec']
-    
+    primary_vec = edge_info["primary_vec"]
+    step_vec = edge_info["step_vec"]
+
     # Find the corner with minimum combined projection (the "origin" corner)
-    min_projection = float('inf')
+    min_projection = float("inf")
     reference_corner = corners[0]
-    
+
     for corner in corners:
         # Calculate projections onto both direction vectors
         primary_proj = corner.dot(primary_vec)
         step_proj = corner.dot(step_vec)
         combined_proj = primary_proj + step_proj
-        
+
         if combined_proj < min_projection:
             min_projection = combined_proj
             reference_corner = corner
-    
+
     return {
-        'primary_vec': primary_vec,
-        'step_vec': step_vec,
-        'primary_length': edge_info['primary_length'],
-        'step_length': edge_info['step_length'],
-        'reference_corner': reference_corner
+        "primary_vec": primary_vec,
+        "step_vec": step_vec,
+        "primary_length": edge_info["primary_length"],
+        "step_length": edge_info["step_length"],
+        "reference_corner": reference_corner,
     }
 
 
-def directional(polygon, tool_diameter, stepover_percent, 
-               pass_extension=None, retract_height=None, milling_direction="climb", reverse=False,
-               angle_degrees=None):
+def directional(
+    polygon,
+    tool_diameter,
+    stepover_percent,
+    pass_extension=None,
+    retract_height=None,
+    milling_direction="climb",
+    reverse=False,
+    angle_degrees=None,
+):
     """
     Generate a unidirectional clearing pattern.
-    
+
     This strategy cuts in the same direction for every pass across the polygon.
-    After each cutting pass, the tool lifts up (rapid move) and repositions to 
+    After each cutting pass, the tool lifts up (rapid move) and repositions to
     the start of the next pass. All cutting moves go in the same direction,
     which can provide more consistent surface finish but requires more air time
     due to the rapid repositioning moves between passes.
-    
+
     Args:
         polygon: The polygon boundary to clear (rectangular)
         tool_diameter: Diameter of the cutting tool
@@ -97,7 +104,7 @@ def directional(polygon, tool_diameter, stepover_percent,
         milling_direction: "climb" or "conventional" - milling direction preference
         reverse: Reverse the cutting direction for the selected pattern.
         angle_degrees: Angle in degrees to rotate the cutting direction.
-    
+
     Returns:
         List of Path.Command objects representing the toolpath. The list will begin with a G0 to the starting position.
         It is assumed that the calling function will replace the first move with an appropriate set of entry moves if needed
@@ -106,6 +113,7 @@ def directional(polygon, tool_diameter, stepover_percent,
         pass_extension = tool_diameter * 0.5  # Default to half tool diameter
 
     import math
+
     # 1) Establish frame from angle (default 0° = +X primary)
     theta = float(angle_degrees) if angle_degrees is not None else 0.0
     primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)
@@ -125,11 +133,18 @@ def directional(polygon, tool_diameter, stepover_percent,
     # 2) Compute projection bounds
     min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
     min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
-    if not (math.isfinite(min_s) and math.isfinite(max_s) and math.isfinite(min_t) and math.isfinite(max_t)):
+    if not (
+        math.isfinite(min_s)
+        and math.isfinite(max_s)
+        and math.isfinite(min_t)
+        and math.isfinite(max_t)
+    ):
         Path.Log.error("Directional: non-finite projection bounds; aborting")
         return []
     # 3) Steps along t
-    step_positions = facing_common.generate_t_values(polygon, step_vec, tool_diameter, stepover_percent, origin)
+    step_positions = facing_common.generate_t_values(
+        polygon, step_vec, tool_diameter, stepover_percent, origin
+    )
     # Reverse order if requested (top-to-bottom instead of bottom-to-top)
     if reverse:
         # Mirror positions around center to maintain proper engagement at max_t
@@ -151,11 +166,13 @@ def directional(polygon, tool_diameter, stepover_percent,
         if not intervals:
             skipped_segments += 1
             continue
-        for (s0, s1) in intervals:
+        for s0, s1 in intervals:
             # Extend in primary direction by pass_extension + tool_radius + engagement
             # This ensures the tool fully clears the polygon boundary
             tool_radius = tool_diameter / 2.0
-            engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
+            engagement_offset = facing_common.calculate_engagement_offset(
+                tool_diameter, stepover_percent
+            )
             total_extension = pass_extension + tool_radius + engagement_offset
             start_s = s0 - total_extension
             end_s = s1 + total_extension
@@ -182,14 +199,26 @@ def directional(polygon, tool_diameter, stepover_percent,
                     p_start, p_end = start_s, end_s  # left-to-right for bottom-to-top
 
             # Map to XY - use copies to avoid vector mutation
-            start_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
-            end_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            start_point = (
+                FreeCAD.Vector(origin)
+                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
+                .add(FreeCAD.Vector(step_vec).multiply(t))
+            )
+            end_point = (
+                FreeCAD.Vector(origin)
+                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
+                .add(FreeCAD.Vector(step_vec).multiply(t))
+            )
             start_point.z = z
             end_point.z = z
-            
+
             # Sanity check for absurdly large coordinates
-            if not (math.isfinite(start_point.x) and math.isfinite(start_point.y) and 
-                    math.isfinite(end_point.x) and math.isfinite(end_point.y)):
+            if not (
+                math.isfinite(start_point.x)
+                and math.isfinite(start_point.y)
+                and math.isfinite(end_point.x)
+                and math.isfinite(end_point.y)
+            ):
                 continue
             # Do NOT clamp XY after mapping; we already clipped s-range and t was selected from bbox.
 
@@ -199,11 +228,15 @@ def directional(polygon, tool_diameter, stepover_percent,
                     commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
                     commands.append(Path.Command("G0", {"Z": z}))
                 else:
-                    commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+                    commands.append(
+                        Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
+                    )
             else:
                 # First segment: emit a simple G0 to XYZ start position.
                 # The operation will replace this with its own preamble sequence.
-                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+                commands.append(
+                    Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
+                )
 
             commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
             kept_segments += 1
@@ -231,8 +264,16 @@ def directional(polygon, tool_diameter, stepover_percent,
                 p_start, p_end = end_s, start_s
             if reverse:
                 p_start, p_end = p_end, p_start
-            sp = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
-            ep = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            sp = (
+                FreeCAD.Vector(origin)
+                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
+                .add(FreeCAD.Vector(step_vec).multiply(t))
+            )
+            ep = (
+                FreeCAD.Vector(origin)
+                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
+                .add(FreeCAD.Vector(step_vec).multiply(t))
+            )
             sp.z = z
             ep.z = z
             # Minimal preamble

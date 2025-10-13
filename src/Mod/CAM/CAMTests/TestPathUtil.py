@@ -117,8 +117,6 @@ class TestPathUtil(PathTestBase):
         self.assertFalse(PathUtil.isValidBaseObject(box))
 
 
-
-
 class TestCompass(PathTestBase):
     """Test the Compass helper class for climb/conventional milling."""
 
@@ -132,31 +130,31 @@ class TestCompass(PathTestBase):
     def test_compass_initialization(self):
         """Test Compass class initialization."""
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         # Check default values
         self.assertEqual(compass.spindle_dir, self.spindle_forward)
         self.assertEqual(compass.cut_side, "Outside")
         self.assertEqual(compass.cut_mode, "Climb")
-        
+
     def test_spindle_direction_property(self):
         """Test spindle direction property handling."""
         # Test forward spindle
         compass_forward = PathOpBase.Compass(self.spindle_forward)
         self.assertEqual(compass_forward.spindle_dir, "Forward")
-        
+
         # Test reverse spindle
         compass_reverse = PathOpBase.Compass(self.spindle_reverse)
         self.assertEqual(compass_reverse.spindle_dir, "Reverse")
-        
+
         # Test none/unknown spindle
         compass_none = PathOpBase.Compass(self.spindle_none)
         self.assertEqual(compass_none.spindle_dir, "None")
-        
+
         # Test setting spindle direction
         compass = PathOpBase.Compass("Forward")
         compass.spindle_dir = "Reverse"
         self.assertEqual(compass.spindle_dir, "Reverse")
-        
+
         # Test invalid spindle direction defaults to None
         compass.spindle_dir = "Invalid"
         self.assertEqual(compass.spindle_dir, "None")
@@ -164,14 +162,14 @@ class TestCompass(PathTestBase):
     def test_cut_side_property(self):
         """Test cut side property and setter."""
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         # Test default
         self.assertEqual(compass.cut_side, "Outside")
-        
+
         # Test setting inside
         compass.cut_side = "inside"
         self.assertEqual(compass.cut_side, "Inside")
-        
+
         # Test setting outside
         compass.cut_side = "outside"
         self.assertEqual(compass.cut_side, "Outside")
@@ -179,14 +177,14 @@ class TestCompass(PathTestBase):
     def test_cut_mode_property(self):
         """Test cut mode property and setter."""
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         # Test default
         self.assertEqual(compass.cut_mode, "Climb")
-        
+
         # Test setting conventional
         compass.cut_mode = "conventional"
         self.assertEqual(compass.cut_mode, "Conventional")
-        
+
         # Test setting climb
         compass.cut_mode = "climb"
         self.assertEqual(compass.cut_mode, "Climb")
@@ -198,18 +196,18 @@ class TestCompass(PathTestBase):
         compass.cut_side = "Outside"
         compass.cut_mode = "Climb"
         self.assertEqual(compass.path_dir, "CW")
-        
+
         # Test Forward spindle, Inside cut, Climb mode -> CCW path
         compass.cut_side = "Inside"
         compass.cut_mode = "Climb"
         self.assertEqual(compass.path_dir, "CCW")
-        
+
         # Test Reverse spindle, Outside cut, Climb mode -> CCW path
         compass_reverse = PathOpBase.Compass(self.spindle_reverse)
         compass_reverse.cut_side = "Outside"
         compass_reverse.cut_mode = "Climb"
         self.assertEqual(compass_reverse.path_dir, "CCW")
-        
+
         # Test Reverse spindle, Inside cut, Climb mode -> CW path
         compass_reverse.cut_side = "Inside"
         compass_reverse.cut_mode = "Climb"
@@ -222,7 +220,7 @@ class TestCompass(PathTestBase):
         compass.cut_side = "Outside"
         compass.cut_mode = "Conventional"
         self.assertEqual(compass.path_dir, "CCW")
-        
+
         # Test Forward spindle, Inside cut, Conventional mode -> CW path
         compass.cut_side = "Inside"
         compass.cut_mode = "Conventional"
@@ -236,13 +234,13 @@ class TestCompass(PathTestBase):
     def test_expected_cut_mode_lookup(self):
         """Test the internal _expected_cut_mode lookup table."""
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         # Test lookup table entries for climb milling
         self.assertEqual(compass._expected_cut_mode("Inside", "CW", "CCW"), "Climb")
         self.assertEqual(compass._expected_cut_mode("Inside", "CCW", "CW"), "Climb")
         self.assertEqual(compass._expected_cut_mode("Outside", "CW", "CW"), "Climb")
         self.assertEqual(compass._expected_cut_mode("Outside", "CCW", "CCW"), "Climb")
-        
+
         # Test default to conventional for other combinations
         self.assertEqual(compass._expected_cut_mode("Outside", "CW", "CCW"), "Conventional")
         self.assertEqual(compass._expected_cut_mode("Inside", "CW", "CW"), "Conventional")
@@ -250,7 +248,7 @@ class TestCompass(PathTestBase):
     def test_rotation_from_spindle(self):
         """Test spindle direction to rotation mapping."""
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         self.assertEqual(compass._rotation_from_spindle("Forward"), "CW")
         self.assertEqual(compass._rotation_from_spindle("Reverse"), "CCW")
 
@@ -259,23 +257,23 @@ class TestCompass(PathTestBase):
         compass = PathOpBase.Compass(self.spindle_forward)
         compass.cut_side = "Inside"
         compass.cut_mode = "Conventional"
-        
+
         report = compass.report()
-        
+
         expected = {
             "spindle_dir": "Forward",
-            "cut_side": "Inside", 
+            "cut_side": "Inside",
             "cut_mode": "Conventional",
             "operation_type": "Perimeter",
-            "path_dir": "CW"
+            "path_dir": "CW",
         }
-        
+
         self.assertEqual(report, expected)
 
     def test_area_operation_initialization(self):
         """Test Compass class initialization for area operations."""
         compass = PathOpBase.Compass(self.spindle_forward, "Area")
-        
+
         # Check values for area operations
         self.assertEqual(compass.spindle_dir, "Forward")
         self.assertEqual(compass.operation_type, "Area")
@@ -285,15 +283,15 @@ class TestCompass(PathTestBase):
     def test_operation_type_property(self):
         """Test operation type property and setter."""
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         # Test default (perimeter for backward compatibility)
         self.assertEqual(compass.operation_type, "Perimeter")
-        
+
         # Test setting area
         compass.operation_type = "area"
         self.assertEqual(compass.operation_type, "Area")
         self.assertEqual(compass.path_dir, "N/A")
-        
+
         # Test setting back to perimeter
         compass.operation_type = "perimeter"
         self.assertEqual(compass.operation_type, "Perimeter")
@@ -303,16 +301,16 @@ class TestCompass(PathTestBase):
         """Test step direction calculation for area operations."""
         compass = PathOpBase.Compass(self.spindle_forward, "Area")
         compass.cut_mode = "Climb"
-        
+
         # Test X- approach with climb milling
         step_dir = compass.get_step_direction("X-")
         self.assertTrue(isinstance(step_dir, bool))
-        
+
         # Test conventional milling gives different result
         compass.cut_mode = "Conventional"
         step_dir_conv = compass.get_step_direction("X-")
         self.assertNotEqual(step_dir, step_dir_conv)
-        
+
         # Test with reverse spindle
         compass_reverse = PathOpBase.Compass(self.spindle_reverse, "Area")
         step_dir_reverse = compass_reverse.get_step_direction("X-")
@@ -322,12 +320,12 @@ class TestCompass(PathTestBase):
         """Test cutting direction calculation for area operations."""
         compass = PathOpBase.Compass(self.spindle_forward, "Area")
         compass.cut_mode = "Climb"
-        
+
         # Test zigzag pattern alternates direction
         cut_dir_0 = compass.get_cutting_direction("X-", 0, "zigzag")
         cut_dir_1 = compass.get_cutting_direction("X-", 1, "zigzag")
         self.assertNotEqual(cut_dir_0, cut_dir_1)
-        
+
         # Test unidirectional pattern keeps same direction
         cut_dir_uni_0 = compass.get_cutting_direction("X-", 0, "unidirectional")
         cut_dir_uni_1 = compass.get_cutting_direction("X-", 1, "unidirectional")
@@ -336,11 +334,11 @@ class TestCompass(PathTestBase):
     def test_area_operation_error_handling(self):
         """Test error handling for area operation methods on perimeter operations."""
         compass = PathOpBase.Compass(self.spindle_forward, "Perimeter")
-        
+
         # Should raise error when calling area methods on perimeter operation
         with self.assertRaises(ValueError):
             compass.get_step_direction("X-")
-            
+
         with self.assertRaises(ValueError):
             compass.get_cutting_direction("X-")
 
@@ -348,16 +346,16 @@ class TestCompass(PathTestBase):
         """Test that existing code still works (backward compatibility)."""
         # Old style initialization (no operation_type parameter)
         compass = PathOpBase.Compass(self.spindle_forward)
-        
+
         # Should default to perimeter operation
         self.assertEqual(compass.operation_type, "Perimeter")
-        
+
         # All existing functionality should work
         self.assertEqual(compass.spindle_dir, "Forward")
         self.assertEqual(compass.cut_side, "Outside")
         self.assertEqual(compass.cut_mode, "Climb")
         self.assertEqual(compass.path_dir, "CW")
-        
+
         # Report should include operation_type
         report = compass.report()
         self.assertIn("operation_type", report)
