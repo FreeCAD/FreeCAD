@@ -133,60 +133,56 @@ KineticNCBeamicon2_post.export(object,"/path/to/file.ncc","")
 ##########
 # Arguments
 
+
 def process_multiline_string(value):
     """Convert \\n to actual newlines in command-line strings"""
     return value.replace("\\n", "\n")
+
 
 parser = argparse.ArgumentParser(
     prog="linuxcnc",
     add_help=False,
 )
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument("--no-comments",
-                    action="store_true",
-                    help="suppress comment output",
-                    default=False)
-parser.add_argument("--line-numbers",
-                    action="store_true",
-                    help="prefix with line numbers",
-                    default=False)
+parser.add_argument(
+    "--no-comments", action="store_true", help="suppress comment output", default=False
+)
+parser.add_argument(
+    "--line-numbers", action="store_true", help="prefix with line numbers", default=False
+)
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument("--precision",
-                    default="3",
-                    help="number of digits of precision, default=3")
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 
-display = lambda x: x.replace('%', '%%').replace('\n', '\\n')
+display = lambda x: x.replace("%", "%%").replace("\n", "\\n")
 parser.add_argument(
     "--preamble",
     help=rf'set commands to be issued before the first command, default="{display(PREAMBLE)}"',
     type=process_multiline_string,
-    default=PREAMBLE
+    default=PREAMBLE,
 )
 parser.add_argument(
     "--postamble",
     help=rf'set commands to be issued after the last command, default="{display(POSTAMBLE)}"',
     type=process_multiline_string,
-    default=POSTAMBLE
+    default=POSTAMBLE,
 )
 parser.add_argument(
-    "--inches",
-    action="store_true",
-    help="Convert output for US imperial mode (G20)",
-    default=False
+    "--inches", action="store_true", help="Convert output for US imperial mode (G20)", default=False
 )
 parser.add_argument(
     "--modal",
     action="store_true",
     help="If true, repeated commands are suppressed (eg G1 X1 <newline> Y2 <newline> Z3)",
-    default=False
+    default=False,
 )
 parser.add_argument("--axis-modal", action="store_true", help="Output the Same Axis Value Mode")
 
 TOOLTIP_ARGS = parser.format_help()
+
 
 def get_units(use_inches):
     if use_inches:
@@ -213,7 +209,7 @@ def format_lines(lines, args):
     current_line = 100
     for line in lines:
         if args.line_numbers:
-            out.append(f'N{current_line} {line}')
+            out.append(f"N{current_line} {line}")
             current_line += 10
         else:
             out.append(line)
@@ -450,10 +446,7 @@ def parse(pathobj, args):
                         else:
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(unit_format)), precision_string
-                                )
+                                param + format(float(pos.getValueAs(unit_format)), precision_string)
                             )
 
             # store the latest command
