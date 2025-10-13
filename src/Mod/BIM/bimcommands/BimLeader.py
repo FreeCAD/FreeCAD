@@ -32,6 +32,7 @@ from draftguitools import gui_lines  # Line tool from Draft
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
+
 class BIM_Leader(gui_lines.Line):
 
     def __init__(self):
@@ -48,13 +49,12 @@ class BIM_Leader(gui_lines.Line):
         }
 
     def Activated(self):
-        super().Activated(
-            name="Leader", icon="BIM_Leader", task_title=translate("BIM", "Leader")
-        )
+        super().Activated(name="Leader", icon="BIM_Leader", task_title=translate("BIM", "Leader"))
 
     def finish(self, closed=False, cont=False):
         import DraftVecUtils
         from draftutils import params
+
         self.end_callbacks(self.call)
         self.removeTemporaryObject()
         if len(self.node) > 1:
@@ -78,5 +78,6 @@ class BIM_Leader(gui_lines.Line):
         super(gui_lines.Line, self).finish()
         if self.ui and self.ui.continueMode:
             self.Activated()
+
 
 FreeCADGui.addCommand("BIM_Leader", BIM_Leader())

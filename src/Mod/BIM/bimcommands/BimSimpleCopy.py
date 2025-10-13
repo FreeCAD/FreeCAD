@@ -36,9 +36,7 @@ class BIM_SimpleCopy:
         return {
             "Pixmap": "Tree_Part",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SimpleCopy", "Create Simple Copy"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SimpleCopy", "Creates a simple non-parametric copy"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SimpleCopy", "Creates a simple non-parametric copy"),
         }
 
     def IsActive(self):

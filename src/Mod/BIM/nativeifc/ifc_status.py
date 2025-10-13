@@ -70,17 +70,17 @@ def set_properties_editor(statuswidget):
         from PySide import QtCore, QtGui  # lazy loading
 
         mw = FreeCADGui.getMainWindow()
-        editor = mw.findChild(QtGui.QTabWidget,"propertyTab")
+        editor = mw.findChild(QtGui.QTabWidget, "propertyTab")
         if editor:
             pTabCornerWidget = QtGui.QWidget()
             pButton1 = QtGui.QToolButton(pTabCornerWidget)
             pButton1.setText("")
-            pButton1.setToolTip(translate("BIM","Add IFC property..."))
+            pButton1.setToolTip(translate("BIM", "Add IFC property..."))
             pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
             pButton1.clicked.connect(on_add_property)
             pButton2 = QtGui.QToolButton(pTabCornerWidget)
             pButton2.setText("")
-            pButton2.setToolTip(translate("BIM","Add standard IFC Property Set..."))
+            pButton2.setToolTip(translate("BIM", "Add standard IFC Property Set..."))
             pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
             pButton2.clicked.connect(on_add_pset)
             pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)
@@ -91,7 +91,7 @@ def set_properties_editor(statuswidget):
             pHLayout.insertStretch(0)
             editor.setCornerWidget(pTabCornerWidget, QtCore.Qt.BottomRightCorner)
             statuswidget.propertybuttons = pTabCornerWidget
-            QtCore.QTimer.singleShot(0,pTabCornerWidget.show)
+            QtCore.QTimer.singleShot(0, pTabCornerWidget.show)
 
 
 def on_add_property():
@@ -102,12 +102,13 @@ def on_add_property():
         return
     from PySide import QtGui  # lazy loading
     from . import ifc_psets
+
     obj = sel[0]
     psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
     psets = [p for p in psets if p]
     psets = [p for p in psets if p not in ["Base", "IFC", "Geometry"]]
     mw = FreeCADGui.getMainWindow()
-    editor = mw.findChild(QtGui.QTabWidget,"propertyTab")
+    editor = mw.findChild(QtGui.QTabWidget, "propertyTab")
     pset = None
     if editor:
         wid = editor.currentWidget()
@@ -130,21 +131,26 @@ def on_add_property():
         return
     pname = form.field_name.text()
     if pname in obj.PropertiesList:
-        print("DEBUG: property already exists",pname)
+        print("DEBUG: property already exists", pname)
         return
     pset = form.field_pset.currentText()
     if not pset:
         # TODO disable the OK button if empty
-        t = translate("BIM","No Property set provided")
-        FreeCAD.Console.PrintError(t+"\n")
+        t = translate("BIM", "No Property set provided")
+        FreeCAD.Console.PrintError(t + "\n")
     ptype = form.field_type.currentIndex()
-    ptype = ["IfcLabel", "IfcBoolean",
-             "IfcInteger", "IfcReal",
-             "IfcLengthMeasure", "IfcAreaMeasure"][ptype]
+    ptype = [
+        "IfcLabel",
+        "IfcBoolean",
+        "IfcInteger",
+        "IfcReal",
+        "IfcLengthMeasure",
+        "IfcAreaMeasure",
+    ][ptype]
     fctype = ifc_psets.get_freecad_type(ptype)
-    FreeCAD.ActiveDocument.openTransaction(translate("BIM","add property"))
+    FreeCAD.ActiveDocument.openTransaction(translate("BIM", "add property"))
     for obj in sel:
-        obj.addProperty(fctype, pname, pset, ptype+":"+pname)
+        obj.addProperty(fctype, pname, pset, ptype + ":" + pname)
         ifc_psets.edit_pset(obj, pname, force=True)
     FreeCAD.ActiveDocument.commitTransaction()
 
@@ -180,6 +186,7 @@ def on_add_pset():
     if not sel:
         return
     from . import ifc_psets
+
     obj = sel[0]
     mw = FreeCADGui.getMainWindow()
     # read standard psets
@@ -203,22 +210,22 @@ def on_add_pset():
     pset = form.field_pset.currentText()
     existing_psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
     if pset in existing_psets:
-        t = translate("BIM","Property set already exists")
-        FreeCAD.Console.PrintError(t+": "+pset+"\n")
+        t = translate("BIM", "Property set already exists")
+        FreeCAD.Console.PrintError(t + ": " + pset + "\n")
         return
-    props = [psetdefs[pset][i:i+2] for i in range(0, len(psetdefs[pset]), 2)]
+    props = [psetdefs[pset][i : i + 2] for i in range(0, len(psetdefs[pset]), 2)]
     props = [[p[0], p[1]] for p in props]
-    FreeCAD.ActiveDocument.openTransaction(translate("BIM","add property set"))
+    FreeCAD.ActiveDocument.openTransaction(translate("BIM", "add property set"))
     for obj in sel:
         existing_psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
         if pset not in existing_psets:
             ifc_psets.add_pset(obj, pset)
         for prop in props:
             if prop[0] in obj.PropertiesList:
-                t = translate("BIM","Property already exists")
-                FreeCAD.Console.PrintWarning(t+": "+obj.Label+","+prop[0]+"\n")
+                t = translate("BIM", "Property already exists")
+                FreeCAD.Console.PrintWarning(t + ": " + obj.Label + "," + prop[0] + "\n")
             else:
-                obj.addProperty(get_fcprop(prop[1]),prop[0],pset,prop[1]+":"+prop[0])
+                obj.addProperty(get_fcprop(prop[1]), prop[0], pset, prop[1] + ":" + prop[0])
     FreeCAD.ActiveDocument.commitTransaction()
 
 
@@ -239,7 +246,7 @@ def on_toggle_lock(checked=None, noconvert=False, setchecked=False):
 def on_open():
     """What happens when opening an existing document"""
 
-    pass # TODO implement
+    pass  # TODO implement
 
 
 def on_activate():
@@ -266,7 +273,7 @@ def on_activate():
 def on_new():
     """What happens when creating a new document"""
 
-    pass # TODO implement
+    pass  # TODO implement
 
 
 def set_menu(locked=False):
@@ -279,7 +286,7 @@ def set_menu(locked=False):
     wb = FreeCADGui.activeWorkbench()
     save_action = mw.findChild(QtGui.QAction, "Std_Save")
     if locked and "IFC_Save" in FreeCADGui.listCommands():
-        if not hasattr(FreeCADGui,"IFC_WBManipulator"):
+        if not hasattr(FreeCADGui, "IFC_WBManipulator"):
             FreeCADGui.IFC_WBManipulator = IFC_WBManipulator()
         # we need to void the shortcut otherwise it keeps active
         # even if the command is not shown
@@ -288,10 +295,10 @@ def set_menu(locked=False):
         FreeCADGui.addWorkbenchManipulator(FreeCADGui.IFC_WBManipulator)
         wb.reloadActive()
     else:
-        if hasattr(FreeCADGui,"IFC_saveshortcut"):
+        if hasattr(FreeCADGui, "IFC_saveshortcut"):
             save_action.setShortcut(FreeCADGui.IFC_saveshortcut)
             del FreeCADGui.IFC_saveshortcut
-        if hasattr(FreeCADGui,"IFC_WBManipulator"):
+        if hasattr(FreeCADGui, "IFC_WBManipulator"):
             FreeCADGui.removeWorkbenchManipulator(FreeCADGui.IFC_WBManipulator)
             del FreeCADGui.IFC_WBManipulator
         wb.reloadActive()
@@ -338,9 +345,7 @@ def unlock_document():
         children = [o for o in doc.Objects if not o.InList]
         project = None
         if children:
-            project = ifc_tools.create_document_object(
-                doc, filename=doc.IfcFilePath, silent=True
-            )
+            project = ifc_tools.create_document_object(doc, filename=doc.IfcFilePath, silent=True)
             project.Group = children
         props = ["IfcFilePath", "Modified", "Proxy", "Schema"]
         props += [p for p in doc.PropertiesList if doc.getGroupOfProperty(p) == "IFC"]
@@ -377,9 +382,7 @@ def lock_document():
             children = project.OutListRecursive
             rest = [o for o in doc.Objects if o not in children and o != project]
             doc.openTransaction("Lock document")
-            ifc_tools.convert_document(
-                doc, filename=project.IfcFilePath, strategy=3, silent=True
-            )
+            ifc_tools.convert_document(doc, filename=project.IfcFilePath, strategy=3, silent=True)
             ifcfile = doc.Proxy.ifcfile
             if rest:
                 # 1b some objects are outside
@@ -420,7 +423,7 @@ def lock_document():
             doc.openTransaction("Lock document")
             objs = find_toplevel(doc.Objects)
             deletelist = [o.Name for o in doc.Objects]
-            #ifc_export.export_and_convert(objs, doc)
+            # ifc_export.export_and_convert(objs, doc)
             ifc_export.direct_conversion(objs, doc)
             for n in deletelist:
                 if doc.getObject(n):
@@ -458,9 +461,9 @@ def find_toplevel(objs):
         for parent in obj.InListRecursive:
             if parent in objs:
                 # exception: The object is hosting another
-                if hasattr(parent,"Host") and parent.Host == obj:
+                if hasattr(parent, "Host") and parent.Host == obj:
                     nobjs.append(obj)
-                elif hasattr(parent,"Hosts") and obj in parent.Hosts:
+                elif hasattr(parent, "Hosts") and obj in parent.Hosts:
                     nobjs.append(obj)
                 break
         else:
@@ -486,14 +489,20 @@ def filter_out(objs):
                 # only append groups that contain exportable objects
                 nobjs.append(obj)
             else:
-                print("DEBUG: Filtering out",obj.Label)
+                print("DEBUG: Filtering out", obj.Label)
         elif obj.isDerivedFrom("App::Feature"):
-            if Draft.get_type(obj) in ("Dimension","LinearDimension","Layer","Text","DraftText"):
+            if Draft.get_type(obj) in (
+                "Dimension",
+                "LinearDimension",
+                "Layer",
+                "Text",
+                "DraftText",
+            ):
                 nobjs.append(obj)
             else:
-                print("DEBUG: Filtering out",obj.Label)
+                print("DEBUG: Filtering out", obj.Label)
         else:
-            print("DEBUG: Filtering out",obj.Label)
+            print("DEBUG: Filtering out", obj.Label)
     return nobjs
 
 
@@ -503,6 +512,7 @@ def get_lock_status():
     if not FreeCAD.GuiUp:
         return PARAMS.GetBool("SingleDoc")
     from PySide import QtGui
+
     mw = FreeCADGui.getMainWindow()
     statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
     if hasattr(statuswidget, "lock_button"):
@@ -515,12 +525,15 @@ def get_lock_status():
 # https://github.com/FreeCAD/FreeCAD/pull/10933
 class IFC_WBManipulator:
     def modifyMenuBar(self):
-        return [{"remove":"Std_Save"},
-                {"remove":"Std_SaveAs"},
-                {"insert":"IFC_Save", "menuItem":"Std_SaveCopy"},
-                {"insert":"IFC_SaveAs", "menuItem":"Std_SaveCopy"},
-               ]
+        return [
+            {"remove": "Std_Save"},
+            {"remove": "Std_SaveAs"},
+            {"insert": "IFC_Save", "menuItem": "Std_SaveCopy"},
+            {"insert": "IFC_SaveAs", "menuItem": "Std_SaveCopy"},
+        ]
+
     def modifyToolBars(self):
-        return [{"remove" : "Std_Save"},
-                {"append" : "IFC_Save", "toolBar" : "File"},
-               ]
+        return [
+            {"remove": "Std_Save"},
+            {"append": "IFC_Save", "toolBar": "File"},
+        ]

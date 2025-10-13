@@ -31,15 +31,14 @@ import FreeCADGui
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
+
 class BIM_Reorder:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Reorder",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Reorder", "Reorder Children"),
             # 'Accel': "R, D",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Reorder", "Reorders children of the selected object"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Reorder", "Reorders children of the selected object"),
         }
 
     def Activated(self):
@@ -50,8 +49,7 @@ class BIM_Reorder:
                     FreeCADGui.Control.showDialog(BIM_Reorder_TaskPanel(obj))
                     return
         FreeCAD.Console.PrintError(
-            translate("BIM", "You must choose a group object before using this command")
-            + "\n"
+            translate("BIM", "You must choose a group object before using this command") + "\n"
         )
 
 
@@ -72,8 +70,7 @@ class BIM_Reorder_TaskPanel:
 
     def accept(self):
         names = [
-            self.form.listWidget.item(i).toolTip()
-            for i in range(self.form.listWidget.count())
+            self.form.listWidget.item(i).toolTip() for i in range(self.form.listWidget.count())
         ]
         group = [FreeCAD.ActiveDocument.getObject(n) for n in names]
         FreeCAD.ActiveDocument.openTransaction("Reorder children")

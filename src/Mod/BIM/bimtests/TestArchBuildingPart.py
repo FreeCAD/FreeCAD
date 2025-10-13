@@ -27,6 +27,7 @@ import FreeCAD as App
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchBuildingPart(TestArchBase.TestArchBase):
 
     def testMakeFloorEmpty(self):
@@ -43,20 +44,20 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.assertEqual(floor.Label, "Level", "Default label is incorrect")
 
     def testFloor(self):
-        App.Console.PrintLog ('Checking Arch Floor...\n')
+        App.Console.PrintLog("Checking Arch Floor...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         floor = Arch.makeFloor([structure])
-        self.assertTrue(floor,"Arch Floor failed")
+        self.assertTrue(floor, "Arch Floor failed")
 
     def testBuilding(self):
-        App.Console.PrintLog ('Checking Arch Building...\n')
+        App.Console.PrintLog("Checking Arch Building...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         floor = Arch.makeFloor([structure])
         building = Arch.makeBuilding([floor])
         self.assertTrue(building, "Arch Building failed")
 
     def testSite(self):
-        App.Console.PrintLog('Checking Arch Site...\n')
+        App.Console.PrintLog("Checking Arch Site...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         floor = Arch.makeFloor([structure])
         building = Arch.makeBuilding([floor])
@@ -98,7 +99,9 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         # Create a mock floor object
         floor = Arch.makeFloor()
         Arch.convertFloors(floor)
-        self.assertEqual(floor.IfcType, "Building Storey", "convertFloors failed to set IfcType correctly")
+        self.assertEqual(
+            floor.IfcType, "Building Storey", "convertFloors failed to set IfcType correctly"
+        )
 
     def test_make2DDrawing(self):
         """Test the make2DDrawing function."""
