@@ -130,28 +130,52 @@ class ObjectOp(PathOp.ObjectOp):
         if prop in ["AreaParams", "PathParams", "removalshape"]:
             obj.setEditorMode(prop, 2)
 
-        if hasattr(obj, "Side") and prop == "Base" and len(obj.Base) == 1:
+        if (
+            hasattr(obj, "Side")
+            and prop == "FinalDepth"
+            and len(obj.Base) == 1
+            and getattr(self, "init", None)
+        ):
+            """Offer side only while creating new operation
+            if prop is 'Base', only 1 shape saved to 'obj.Base'
+            if prop is 'FinalDepth', all selected shapes saved to 'obj.Base'"""
+            self.init = False
+
             (base, subNames) = obj.Base[0]
-            bb = base.Shape.BoundBox  # parent boundbox
+
+            # find parent boundbox
+            # shape can be compound, so use list
+            if isinstance(base.Shape, Part.Compound):
+                bbs = [Part.Shape(shape).BoundBox for shape in base.Shape.SubShapes]
+            else:
+                bbs = [base.Shape.BoundBox]
 
             if "Face" in subNames[0]:
-                face = base.Shape.getElement(subNames[0])
-                fbb = face.BoundBox  # face boundbox
-                if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
+                faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+                shape = Part.Compound(faces)
+                fbb = shape.BoundBox
+                for bb in bbs:
+                    if bb.isInside(fbb):
+                        if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+                        break
 
             elif "Edge" in subNames[0]:
-                edges = [
-                    base.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")
-                ]
+                edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
                 wire = Part.Wire(Part.__sortEdges__(edges))
-                wbb = wire.BoundBox  # wire boundbox
-                if not wire.isClosed() or (bb.XLength == wbb.XLength and bb.YLength == wbb.YLength):
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
+                wbb = wire.BoundBox
+                for bb in bbs:
+                    if bb.isInside(wbb):
+                        if not wire.isClosed() or (
+                            bb.XLength == wbb.XLength and bb.YLength == wbb.YLength
+                        ):
+                            # for open wire always offer Outside
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+                        break
 
         self.areaOpOnChanged(obj, prop)
 
@@ -211,6 +235,7 @@ class ObjectOp(PathOp.ObjectOp):
             )
 
         self.areaOpSetDefaultValues(obj, job)
+        self.init = True  # using for offer 'Side' while creating 'Profile' operation
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... overwrite to set initial values of operation specific properties.
