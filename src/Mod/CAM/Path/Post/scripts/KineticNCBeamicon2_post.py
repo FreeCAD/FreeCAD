@@ -170,10 +170,7 @@ parser.add_argument(
     default=POSTAMBLE,
 )
 parser.add_argument(
-    "--inches",
-    action="store_true",
-    help="Convert output for US imperial mode (G20)",
-    default=False
+    "--inches", action="store_true", help="Convert output for US imperial mode (G20)", default=False
 )
 parser.add_argument(
     "--modal",
@@ -219,7 +216,7 @@ def format_lines(lines, args):
 
 
 def export(objectslist, filename, argstring):
-    '''Build a g-code string from a list of objects within a single Job. This
+    """Build a g-code string from a list of objects within a single Job. This
     doesn't actually export anything, but WrapperPost expects the function to be
     called `export`.
 
@@ -230,7 +227,7 @@ def export(objectslist, filename, argstring):
 
     Returns:
       str, gcode to be saved to disk downstream
-    '''
+    """
     job = PathUtils.findParentJob(objectslist[0])
 
     args = parser.parse_args(shlex.split(argstring))
@@ -311,9 +308,9 @@ def export(objectslist, filename, argstring):
 
 
 def parse(pathobj, args):
-    '''
+    """
     Convert a pathobj to a list of lines of g-code
-    '''
+    """
     out_lines = []  # raw, unnumbered lines
     lastcommand = None
     precision_string = "." + str(args.precision) + "f"
@@ -452,10 +449,7 @@ def parse(pathobj, args):
                         else:
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(unit_format)), precision_string
-                                )
+                                param + format(float(pos.getValueAs(unit_format)), precision_string)
                             )
 
             # store the latest command
