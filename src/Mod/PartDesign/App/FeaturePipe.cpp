@@ -413,12 +413,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             result.setShape(result.getShape().Reversed(), false);
         }
 
-        AddSubShape.setValue(result.makeElementCompound(shapes, nullptr, Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape));
-
-        if (shapes.size() > 1)
-            result.makeElementFuse(shapes);
-        else
-            result = shapes.front();
+        AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
 
         if(base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
@@ -467,9 +462,6 @@ App::DocumentObjectExecReturn *Pipe::execute()
         } else {
             return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: Invalid Boolean Type"));
-        }
-        catch(Standard_Failure&) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
 
         TopoShape solid = getSolid(boolOp);
