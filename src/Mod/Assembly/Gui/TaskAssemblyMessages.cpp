@@ -62,7 +62,8 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
         setLinkTooltip(tr(
             "The assembly has unconstrained components giving rise to those "
             "Degrees Of Freedom.\nClick to select these unconstrained components.\nNote: Currently "
-            "this selects only unconnected parts, not constrained parts that still have free DoF."
+            "this selects only unconnected parts, not constrained parts that still have free "
+            "DoF."
         ));
     }
     else if (link == QStringLiteral("#malformed")) {
