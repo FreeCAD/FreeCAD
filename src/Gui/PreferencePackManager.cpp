@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <memory>
 # include <string_view>
 # include <mutex>
-#endif
+
 
 #include <filesystem>
 #include <boost/algorithm/string.hpp>

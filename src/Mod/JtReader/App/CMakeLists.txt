@@ -16,7 +16,6 @@ set(JtReader_LIBS
 SET(JtReader_SRCS
     AppJtReader.cpp
     AppJtReaderPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
     TestJtReader.cpp
     TestJtReader.h
@@ -48,7 +47,19 @@ SOURCE_GROUP("JrJt" FILES ${JRJT_SRCS}  )
 SOURCE_GROUP("Module" FILES ${JtReader_SRCS})
 
 add_library(JtReader SHARED ${JtReader_SRCS} ${JRJT_SRCS} ${JtReader_Scripts})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(JtReader PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_link_libraries(JtReader ${JtReader_LIBS})
+
+if (MSVC)
+    target_compile_options(JtReader PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(JtReader)
 endif()

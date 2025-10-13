@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #include "Mod/Sketcher/App/ExternalGeometryFacade.h"
 

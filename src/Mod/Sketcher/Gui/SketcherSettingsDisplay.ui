@@ -125,7 +125,7 @@
   <item row="10" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
-         <string>Displays names of dimensional constraints, if they exist</string>
+         <string>Shows names of dimensional constraints, if they exist</string>
         </property>
         <property name="text">
          <string>Show dimensional constraint name with format</string>
@@ -274,10 +274,10 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
   <item row="8" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
         <property name="toolTip">
-         <string>Displays cursor position coordinates next to the cursor while editing a sketch</string>
+         <string>Shows cursor position coordinates next to the cursor while editing a sketch</string>
         </property>
         <property name="text">
-         <string>Displays coordinates next to the cursor while editing</string>
+         <string>Show coordinates next to the cursor while editing</string>
         </property>
         <property name="checked">
          <bool>true</bool>

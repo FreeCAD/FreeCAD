@@ -30,6 +30,8 @@
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <QCoreApplication>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
 namespace PartGui {

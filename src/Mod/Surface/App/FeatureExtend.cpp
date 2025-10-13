@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <limits>
+
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepLProp_SLProps.hxx>
@@ -33,8 +33,6 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <gp_Pnt.hxx>
-#include <limits>
-#endif
 
 #include <Base/Tools.h>
 

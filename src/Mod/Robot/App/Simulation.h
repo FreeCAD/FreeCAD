@@ -25,6 +25,8 @@
 
 #include <Base/Placement.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "Robot6Axis.h"
 #include "Trajectory.h"
 

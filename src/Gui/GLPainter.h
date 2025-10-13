@@ -24,10 +24,9 @@
 #ifndef GUI_GLPAINTER_H
 #define GUI_GLPAINTER_H
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
 #endif
 #ifdef FC_OS_MACOSX

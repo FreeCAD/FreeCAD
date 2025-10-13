@@ -40,6 +40,9 @@
 #endif
 
 #include <Python.h>
+
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower

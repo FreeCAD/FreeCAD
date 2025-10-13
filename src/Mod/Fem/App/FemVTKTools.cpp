@@ -21,9 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Python.h>
 #include <charconv>
 #include <cmath>
@@ -64,7 +62,6 @@
 #include <vtkXMLPUnstructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkXMLUnstructuredGridWriter.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

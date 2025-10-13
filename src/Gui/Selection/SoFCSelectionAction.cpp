@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,9 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/elements/SoComplexityElement.h>
@@ -60,7 +60,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransformation.h>
-#endif
+
 
 #include "SoFCSelectionAction.h"
 #include "SoFCSelection.h"

@@ -26,59 +26,139 @@ set(PYTHON_DIR_BASENAME python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
 
 if(PYTHON_LIBRARY MATCHES "(.*Python\\.framework).*")
     #framework
-    set(PYTHON_DIR ${CMAKE_MATCH_1}/Versions/Current/lib/${PYTHON_DIR_BASENAME})
+    set(PYTHON_DIR ${CMAKE_MATCH_1}/Versions/${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/lib/${PYTHON_DIR_BASENAME})
 else()
     #unix
     get_filename_component(PYTHON_DIR ${PYTHON_LIBRARY} PATH)
     set(PYTHON_DIR ${PYTHON_DIR}/${PYTHON_DIR_BASENAME})
 endif()
 
+message(" PYTHON_DIR is ${PYTHON_DIR} --------------------ipatch--")
+message(" PYTHON_DIR_BASENAME is ${PYTHON_DIR_BASENAME} --------------------ipatch--")
+
 install(CODE "execute_process(COMMAND
 ${CMAKE_COMMAND} -E copy_directory ${PYTHON_DIR} ${CMAKE_INSTALL_LIBDIR}/${PYTHON_DIR_BASENAME}
 )")
 
 if(HOMEBREW_PREFIX)
-    #Homebrew installs python dependencies to a site dir in prefix/libexec
-    #and installs a .pth file containing its path to the HOMEBREW_PREFIX site dir.
 
-    file(GLOB HOMEBREW_PTH_FILES "${PYTHON_DIR}/site-packages/homebrew*.pth")
+  set(MACOS_BUNDLE_CONTENTS_DIR "Contents")
+  set(MACOS_BUNDLE_RESOURCES_DIR "${MACOS_BUNDLE_CONTENTS_DIR}/Resources")
+  set(MACOS_BUNDLE_EXECUTABLES_DIR "${MACOS_BUNDLE_CONTENTS_DIR}/MacOS")
+  set(MACOS_BUNDLE_FRAMEWORKS_DIR "${MACOS_BUNDLE_CONTENTS_DIR}/Frameworks")
+  set(MACOS_BUNDLE_LIB_DIR "${MACOS_BUNDLE_CONTENTS_DIR}/lib")
 
-    foreach(PTH_FILE ${HOMEBREW_PTH_FILES})
-        file(READ ${PTH_FILE} ADDITIONAL_DIR)
+  message(" PYTHON_DIR is ${PYTHON_DIR} --------------------ipatch--")
 
-        string(STRIP "${ADDITIONAL_DIR}" ADDITIONAL_DIR)
-        string(FIND "${ADDITIONAL_DIR}" "${HOMEBREW_PREFIX}/Cellar" POSITION)
-        string(LENGTH "${ADDITIONAL_DIR}" DIR_LENGTH)
-        string(SUBSTRING "${ADDITIONAL_DIR}" ${POSITION} ${DIR_LENGTH}-${POSITION} DIR_TAIL)
-        string(REGEX MATCHALL "^([/A-Za-z0-9_.@-]+)" CLEAR_TAIL ${DIR_TAIL})
-        string(REGEX REPLACE "^${HOMEBREW_PREFIX}/Cellar/([A-Za-z0-9_]+).*$" "\\1" LIB_NAME ${CLEAR_TAIL})
-        string(REGEX REPLACE ".*libexec(.*)/site-packages" "libexec/${LIB_NAME}\\1" NEW_SITE_DIR ${CLEAR_TAIL})
+  file(GLOB HOMEBREW_PTH_FILES "${HOMEBREW_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/freecad*.pth")
 
-        install(DIRECTORY ${CLEAR_TAIL} DESTINATION ${CMAKE_INSTALL_PREFIX}/${NEW_SITE_DIR})
+  message(STATUS "HOMEBREW_PTH_FILES are ${HOMEBREW_PTH_FILES} -----------------------ipatch--")
 
-        #update the paths of the .pth files copied into the bundle
-        get_filename_component(PTH_FILENAME ${PTH_FILE} NAME)
-        install(CODE
-            "file(WRITE
-            ${CMAKE_INSTALL_LIBDIR}/${PYTHON_DIR_BASENAME}/site-packages/${PTH_FILENAME}
-            \"../../../${NEW_SITE_DIR}/site-packages\"
-            )"
-            )
-    endforeach(PTH_FILE)
+  # process each .pth file found
+  foreach(PTH_FILE ${HOMEBREW_PTH_FILES})
+    # read the .pth file into a single string
+    file(READ ${PTH_FILE} FILE_CONTENT)
+
+    # split the content by newlines into a list of lines
+    string(REPLACE "\n" ";" LINES "${FILE_CONTENT}")
+
+    # Process each line from the .pth file.
+    foreach(LINE ${LINES})
+      # Remove leading/trailing whitespace.
+      string(STRIP "${LINE}" CLEAN_LINE)
+
+      # skip empty lines or comments.
+      if(CLEAN_LINE MATCHES "^#|^$")
+        continue()
+      endif()
+
+      # handle both site.addsitedir() calls and direct paths
+      if(CLEAN_LINE MATCHES "site\\.addsitedir\\('([^']+)'\\)")
+        # Extract the path from site.addsitedir() function call
+        string(REGEX MATCH "'([^']+)'" PATH_MATCH "${CLEAN_LINE}")
+        string(REPLACE "'" "" ADDITIONAL_DIR "${PATH_MATCH}")
+      elseif(NOT CLEAN_LINE MATCHES "import site")
+        # Direct path (like the last line in your example)
+        set(ADDITIONAL_DIR "${CLEAN_LINE}")
+      else()
+        # Skip import statements
+        continue()
+      endif()
+
+      # check if extracted path is valid
+      if(ADDITIONAL_DIR AND EXISTS "${ADDITIONAL_DIR}")
+        message(STATUS "Processing directory: ${ADDITIONAL_DIR}")
+
+        # Check if the path matches the Homebrew Cellar format or other paths
+        if(ADDITIONAL_DIR MATCHES "${HOMEBREW_PREFIX}/Cellar" OR ADDITIONAL_DIR MATCHES "/usr/local/Cellar")
+
+          # Get the package name from the path for organizing in site-packages
+          # This handles paths like: /usr/local/Cellar/coin3d@4.0.3_py312/4.0.3_1/lib/python3.12/site-packages/
+          # need to extract "coin3d@4.0.3_py312" from the path
+          string(REGEX MATCH "/Cellar/([^/]+)/" PACKAGE_MATCH "${ADDITIONAL_DIR}")
+          if(PACKAGE_MATCH)
+            string(REGEX REPLACE "/Cellar/([^/]+)/" "\\1" PACKAGE_NAME "${PACKAGE_MATCH}")
+          else()
+            # Fallback - just use the directory name before version
+            get_filename_component(PARENT_DIR "${ADDITIONAL_DIR}" DIRECTORY)
+            get_filename_component(GRANDPARENT_DIR "${PARENT_DIR}" DIRECTORY)
+            get_filename_component(PACKAGE_NAME "${GRANDPARENT_DIR}" NAME)
+          endif()
+
+          message(STATUS "Package name: ${PACKAGE_NAME}")
+
+          # Define the destination in the bundle's site-packages
+          set(BUNDLE_SITE_PACKAGES_DIR "${CMAKE_INSTALL_PREFIX}/lib/python3.12/site-packages")
+
+          # Copy all contents from the source site-packages to bundle site-packages
+          # Using glob to get all directories and files in the source
+          file(GLOB PACKAGE_CONTENTS "${ADDITIONAL_DIR}/*")
+
+          foreach(CONTENT_ITEM ${PACKAGE_CONTENTS})
+            get_filename_component(ITEM_NAME "${CONTENT_ITEM}" NAME)
+
+            if(IS_DIRECTORY "${CONTENT_ITEM}")
+              # Install directory
+              install(DIRECTORY "${CONTENT_ITEM}/" 
+                DESTINATION "${BUNDLE_SITE_PACKAGES_DIR}/${ITEM_NAME}"
+                USE_SOURCE_PERMISSIONS)
+              message(STATUS "  Installing directory: ${ITEM_NAME}")
+            else()
+              # Install file
+              install(FILES "${CONTENT_ITEM}" 
+                DESTINATION "${BUNDLE_SITE_PACKAGES_DIR}")
+              message(STATUS "  Installing file: ${ITEM_NAME}")
+            endif()
+          endforeach()
+
+          message(STATUS "Copied package contents from: ${ADDITIONAL_DIR}")
+          message(STATUS "  To: ${BUNDLE_SITE_PACKAGES_DIR}")
+
+        else()
+          message(STATUS "Skipping non-Homebrew path: ${ADDITIONAL_DIR}")
+        endif()
+      else()
+        message(STATUS "Path does not exist or is invalid: ${ADDITIONAL_DIR}")
+      endif()
+
+      # Reset for next iteration
+      set(ADDITIONAL_DIR "")
+
+    endforeach(LINE)
+  endforeach(PTH_FILE)
 endif()
 
 set(QT_PLUGINS_DIR "${Qt5Core_DIR}/../../../plugins")
 execute_process(COMMAND "xcode-select" "--print-path"
-    OUTPUT_VARIABLE XCODE_PATH
-    ERROR_QUIET
-    )
+  OUTPUT_VARIABLE XCODE_PATH
+  ERROR_QUIET
+)
 string(STRIP ${XCODE_PATH} XCODE_PATH)
 
 set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/Current")
 
 # add qt assistant to bundle
 install(PROGRAMS "${Qt5Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant" DESTINATION ${CMAKE_INSTALL_PREFIX}/MacOS)
-
 
 # Ensure the actual plugin files are installed instead of symlinks.
 file(GLOB _subdirs RELATIVE "${QT_PLUGINS_DIR}" "${QT_PLUGINS_DIR}/*")
@@ -102,25 +182,20 @@ install(CODE "execute_process(COMMAND chmod -R a+w ${CMAKE_INSTALL_LIBDIR})")
 
 get_filename_component(APP_PATH ${CMAKE_INSTALL_PREFIX} PATH)
 
-file(GLOB CONFIG_ICU "${HOMEBREW_PREFIX}/opt/icu4c/lib")
-
-file(GLOB CONFIG_LLVM "${HOMEBREW_PREFIX}/opt/llvm/lib/c++")
-
-file(GLOB CONFIG_GCC "${HOMEBREW_PREFIX}/opt/gcc/lib/gcc/current")
-
-execute_process(
-    COMMAND find -L /usr/local/Cellar/nglib -name MacOS
-    OUTPUT_VARIABLE CONFIG_NGLIB)
-
 install(CODE
-    "message(STATUS \"Making bundle relocatable...\")
-    # The top-level CMakeLists.txt should prevent multiple package manager
-    # prefixes from being set, so the lib path will resolve correctly...
-    execute_process(
-        COMMAND python3
-        ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
-        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${CONFIG_ICU} ${CONFIG_LLVM} ${CONFIG_GCC} /usr/local/opt ${CONFIG_NGLIB} ${Qt5Core_DIR}/../../.. ${XCTEST_PATH}
+  "message(STATUS \"Making bundle relocatable...\")
+  # The top-level CMakeLists.txt should prevent multiple package manager
+  # prefixes from being set, so the lib path will resolve correctly...
+  execute_process(
+    COMMAND python3
+    ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
+    ${APP_PATH}
+    ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib
+    ${HOMEBREW_PREFIX}/opt
+    ${HOMEBREW_PREFIX}/opt/*/lib
+    ${Qt5Core_DIR}/../../..
+    ${XCTEST_PATH}
     )"
-)
+  )
 
 endif(FREECAD_CREATE_MAC_APP)

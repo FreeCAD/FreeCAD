@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/tokenizer.hpp>
 #include <memory>
 #include <ostream>
 #include <sstream>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
-#endif
+
 
 #include "Core/MeshIO.h"
 #include "Core/MeshKernel.h"

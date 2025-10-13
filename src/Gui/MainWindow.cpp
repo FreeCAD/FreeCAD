@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
@@ -55,7 +54,7 @@
 # include <QWhatsThis>
 # include <QWindow>
 # include <QPushButton>
-#endif
+
 
 #if defined(Q_OS_WIN)
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
@@ -104,6 +103,7 @@
 #include "ReportView.h"
 #include "SelectionView.h"
 #include "SplashScreen.h"
+#include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Tree.h"
@@ -391,7 +391,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // labels and progressbar
     d->status = new StatusBarObserver();
-    d->actionLabel = new QLabel(statusBar());
+    d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     d->sizeLabel = new DimensionWidget(statusBar());
 
@@ -402,12 +402,19 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // hint label
     d->hintLabel = new InputHintWidget(statusBar());
+    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
+    //: A context menu action used to show or hide the input hints in the status bar
+    d->hintLabel->setWindowTitle(tr("Input hints"));
+
     statusBar()->addWidget(d->hintLabel);
 
     // right side label
-    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
+    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
+    //: A context menu action used to enable or disable quick measure in the status bar
+    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
@@ -2251,6 +2258,11 @@ void MainWindow::showMessage(const QString& message, int timeout) {
 void MainWindow::setRightSideMessage(const QString& message)
 {
     d->rightSideLabel->setText(message.simplified());
+}
+
+bool MainWindow::isRightSideMessageVisible() const
+{
+    return d->rightSideLabel->isVisible();
 }
 
 void MainWindow::showStatus(int type, const QString& message)

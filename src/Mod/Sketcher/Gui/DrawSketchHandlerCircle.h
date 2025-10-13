@@ -307,7 +307,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Circle parameters"));
+        return QString(tr("Circle Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -484,7 +484,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                 == DrawSketchHandlerCircle::ConstructionMethod::Center) {
                 if (thirdParam->isSet) {
                     double radius = (handler->isDiameter ? 0.5 : 1) * thirdParam->getValue();
-                    if (radius < Precision::Confusion()) {
+                    if (radius < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
                         return;
                     }
@@ -508,7 +508,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                     onSketchPos.y = fourthParam->getValue();
                 }
 
-                if (thirdParam->isSet && fourthParam->isSet
+                if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
                     && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
                     unsetOnViewParameter(thirdParam.get());
                     unsetOnViewParameter(fourthParam.get());
@@ -526,7 +526,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
             if (sixthParam->isSet) {
                 onSketchPos.y = sixthParam->getValue();
             }
-            if (fifthParam->isSet && sixthParam->isSet
+            if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing
                 && areCollinear(handler->firstPoint, handler->secondPoint, onSketchPos)) {
                 unsetOnViewParameter(fifthParam.get());
                 unsetOnViewParameter(sixthParam.get());
@@ -624,7 +624,7 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHCircleController::doChangeDrawSketchHandlerMode()
+void DSHCircleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -632,7 +632,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -642,7 +642,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
                 && handler->constructionMethod()
                     == DrawSketchHandlerCircle::ConstructionMethod::Center) {
 
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
             else if (onViewParameters.size() > 3) {
                 auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
@@ -650,7 +650,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
                     && handler->constructionMethod()
                         == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
 
-                    handler->setState(SelectMode::SeekThird);
+                    handler->setNextState(SelectMode::SeekThird);
                 }
             }
         } break;
@@ -659,7 +659,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:
@@ -720,9 +720,7 @@ void DSHCircleController::addConstraints()
             const std::vector<Sketcher::Constraint*>& ConStr =
                 handler->sketchgui->getSketchObject()->Constraints.getValues();
             int index = static_cast<int>(ConStr.size()) - 1;
-            Base::Vector2d dir = handler->secondPoint - handler->centerPoint;
-            Base::Vector2d toPnt = handler->secondPoint + dir * 0.3;
-            handler->moveConstraint(index, toPnt);
+            handler->moveConstraint(index, prevCursorPosition);
         };
 
         // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose.

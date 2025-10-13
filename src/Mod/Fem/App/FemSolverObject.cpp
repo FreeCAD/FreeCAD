@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>

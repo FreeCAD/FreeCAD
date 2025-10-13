@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
-#endif
 
 #include "Dialogs/DlgPreferencePackManagementImp.h"
 #include "ui_DlgPreferencePackManagement.h"
@@ -45,7 +42,12 @@ DlgPreferencePackManagementImp::DlgPreferencePackManagementImp(QWidget* parent)
     , ui(new Ui_DlgPreferencePackManagement)
 {
     ui->setupUi(this);
-    connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
+    if (Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
+        connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
+    }
+    else {
+        ui->pushButtonOpenAddonManager->setDisabled(true);
+    }
     connect(this, &DlgPreferencePackManagementImp::packVisibilityChanged, this, &DlgPreferencePackManagementImp::updateTree);
     updateTree();
 }

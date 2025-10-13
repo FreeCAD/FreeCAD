@@ -19,13 +19,11 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDesktopServices>
 #include <QItemSelectionModel>
 #include <QPushButton>
 #include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>

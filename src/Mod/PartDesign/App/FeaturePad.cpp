@@ -21,14 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -38,7 +36,11 @@
 
 using namespace PartDesign;
 
-const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "UpToShape", nullptr};
+// Note, TwoLengths has been deprecated by #21794. We do not remove it from the ui
+// because the files store the enum index. So it is not possible to migrate files if the 
+// enum entry is removed (see #23612). In the distant future, when all files are reasonably
+// migrated we can drop this.
+const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "?TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::FeatureExtrude)
 
@@ -82,3 +84,4 @@ App::DocumentObjectExecReturn* Pad::execute()
 {
     return buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
 }
+

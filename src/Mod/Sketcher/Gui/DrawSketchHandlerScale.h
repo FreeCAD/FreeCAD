@@ -230,7 +230,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Scale parameters"));
+        return QString(tr("Scale Parameters"));
     }
 
     void activated() override
@@ -488,6 +488,12 @@ private:
                     newConstr->Second = secondIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
+                else if ((cstr->Type == Distance || cstr->Type == DistanceX
+                          || cstr->Type == DistanceY)
+                         && firstIndex != GeoEnum::GeoUndef && cstr->Second == GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
+                    newConstr->setValue(newConstr->getValue() * scaleFactor);
+                }
                 else if ((cstr->Type == Block || cstr->Type == Weight)
                          && firstIndex != GeoEnum::GeoUndef) {
                     newConstr->First = firstIndex;
@@ -592,7 +598,7 @@ void DSHScaleController::configureToolWidget()
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     onViewParameters[OnViewParameter::Third]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Forced);
 }
 
 template<>
@@ -669,20 +675,20 @@ void DSHScaleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHScaleController::doChangeDrawSketchHandlerMode()
+void DSHScaleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (onViewParameters[OnViewParameter::First]->isSet
                 && onViewParameters[OnViewParameter::Second]->isSet) {
 
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekThird: {
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
 
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
             break;

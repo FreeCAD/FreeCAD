@@ -25,15 +25,12 @@
 # define strdup _strdup
 #endif
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <stdexcept>
 # include <vector>
 
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-#endif
 
 // necessary for the feature despite not all are necessary for compilation
 #include <pybind11/eigen.h>

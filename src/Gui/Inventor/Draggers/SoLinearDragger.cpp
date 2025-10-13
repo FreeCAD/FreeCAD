@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cassert>
 
 #include <Inventor/SbRotation.h>
@@ -31,7 +28,6 @@
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodekits/SoSubKit.h>
-#endif
 
 #include "SoLinearDragger.h"
 

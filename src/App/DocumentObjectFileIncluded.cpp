@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include "DocumentObjectFileIncluded.h"
 
 using namespace App;

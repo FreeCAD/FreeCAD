@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,9 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <iomanip>
 #include <limits>
@@ -39,7 +37,6 @@
 #include <QTimer>
 #include <QtGlobal>
 #include <QMenu>
-#endif
 
 #include "PropertyItem.h"
 #include "PropertyView.h"

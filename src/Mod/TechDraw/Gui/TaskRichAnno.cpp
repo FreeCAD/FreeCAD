@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QDialog>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>

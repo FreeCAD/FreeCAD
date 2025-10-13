@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QSignalBlocker>
 #include <QAction>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -791,7 +789,6 @@ void TaskExtrudeParameters::updateSideUI(const SideController& s,
     // Default states for all controls for this side
     bool isLengthVisible = false;
     bool isOffsetVisible = false;
-    bool isOffsetEnabled = true;
     bool isTaperVisible = false;
     bool isFaceVisible = false;
     bool isShapeVisible = false;
@@ -806,8 +803,6 @@ void TaskExtrudeParameters::updateSideUI(const SideController& s,
         }
     }
     else if (sideMode == Mode::ThroughAll && featureType == Type::Pocket) {
-        isOffsetVisible = true;
-        isOffsetEnabled = false;  // "through all" pocket offset doesn't work
         isTaperVisible = true;
     }
     else if (sideMode == Mode::ToLast && featureType == Type::Pad) {
@@ -846,7 +841,7 @@ void TaskExtrudeParameters::updateSideUI(const SideController& s,
     const bool finalOffsetVisible = isParentVisible && isOffsetVisible;
     s.labelOffset->setVisible(finalOffsetVisible);
     s.offsetEdit->setVisible(finalOffsetVisible);
-    s.offsetEdit->setEnabled(finalOffsetVisible && isOffsetEnabled);
+    s.offsetEdit->setEnabled(finalOffsetVisible);
 
     const bool finalTaperVisible = isParentVisible && isTaperVisible;
     s.labelTaperAngle->setVisible(finalTaperVisible);
@@ -1375,7 +1370,7 @@ void TaskExtrudeParameters::setupGizmos()
         setGizmoPositions();
     });
 
-    gizmoContainer = GizmoContainer::createGizmo({
+    gizmoContainer = GizmoContainer::create({
         lengthGizmo1, lengthGizmo2,
         taperAngleGizmo1, taperAngleGizmo2
     }, vp);
@@ -1390,6 +1385,12 @@ void TaskExtrudeParameters::setGizmoPositions()
     }
 
     auto extrude = getObject<PartDesign::FeatureExtrude>();
+    if (!extrude || extrude->isError()) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    gizmoContainer->visible = true;
+
     PartDesign::TopoShape shape = extrude->getProfileShape();
     Base::Vector3d center = getMidPointFromProfile(shape);
     std::string sideType = std::string(extrude->SideType.getValueAsString());
@@ -1449,6 +1450,7 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
 
 
 

@@ -97,27 +97,33 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
+        const Gui::InputHint switchModeHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+
         return Gui::lookupHints<SelectMode>(state(),
                                             {
                                                 {.state = SelectMode::SeekFirst,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot center"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekSecond,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot radius"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekThird,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot angle"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekFourth,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot width"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                             });
     }
@@ -296,7 +302,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Arc Slot parameters"));
+        return QString(tr("Arc Slot Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -654,7 +660,7 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (thirdParam->isSet) {
                 radius = thirdParam->getValue();
-                if (radius < Precision::Confusion()) {
+                if (radius < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     return;
                 }
@@ -673,7 +679,8 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (fifthParam->isSet) {
                 double arcAngle = Base::toRadians(fifthParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()
+                    && fifthParam->hasFinishedEditing) {
                     unsetOnViewParameter(fifthParam.get());
                 }
                 else {
@@ -691,12 +698,13 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (sixthParam->isSet) {
                 double radius2 = sixthParam->getValue();
-                if ((fabs(radius2) < Precision::Confusion()
-                     && handler->constructionMethod()
-                         == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot)
-                    || (fabs(handler->radius - radius2) < Precision::Confusion()
-                        && handler->constructionMethod()
-                            == DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot)) {
+                if (((fabs(radius2) < Precision::Confusion()
+                      && handler->constructionMethod()
+                          == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot)
+                     || (fabs(handler->radius - radius2) < Precision::Confusion()
+                         && handler->constructionMethod()
+                             == DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot))
+                    && sixthParam->hasFinishedEditing) {
                     unsetOnViewParameter(sixthParam.get());
                 }
                 else {
@@ -791,7 +799,7 @@ void DSHArcSlotController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHArcSlotController::doChangeDrawSketchHandlerMode()
+void DSHArcSlotController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -799,7 +807,7 @@ void DSHArcSlotController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -807,21 +815,21 @@ void DSHArcSlotController::doChangeDrawSketchHandlerMode()
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekThird);
+                handler->setNextState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
 
             if (fifthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekFourth);
+                handler->setNextState(SelectMode::SeekFourth);
             }
         } break;
         case SelectMode::SeekFourth: {
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (sixthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

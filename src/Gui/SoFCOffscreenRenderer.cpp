@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # include <iomanip>
 # include <ios>
 # include <sstream>
@@ -35,6 +34,9 @@
 # include <QFile>
 # include <QImage>
 # include <QImageWriter>
+
+#if defined(FC_OS_WIN32)
+#include <windows.h>
 #endif
 
 #if !defined(FC_OS_MACOSX)

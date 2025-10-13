@@ -2,8 +2,11 @@
 
 #include <gtest/gtest.h>
 
+#include <QString>
+
 #ifdef _MSC_VER
 #pragma warning(disable : 4996)
+#pragma warning(disable : 4305)
 #endif
 
 #include "Base/Exception.h"
@@ -15,7 +18,6 @@
 #include <random>
 #include <string>
 #include <xercesc/util/PlatformUtils.hpp>
-#include <QString>
 
 namespace fs = std::filesystem;
 

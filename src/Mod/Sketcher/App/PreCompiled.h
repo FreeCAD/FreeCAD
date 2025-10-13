@@ -20,16 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef SKETCHER_APP_PRECOMPILED_H
+#define SKETCHER_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -111,10 +106,6 @@
 #include <gp_Pnt.hxx>
 
 #elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
-#endif  // _PreComp_
 
 #endif

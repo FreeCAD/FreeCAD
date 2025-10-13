@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <CPnts_AbscissaPoint.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
-#endif
+
 
 #include <Base/Sequencer.h>
 #include <Mod/Part/App/PartFeature.h>

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
@@ -34,13 +32,14 @@
 
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScreen>
 #include <QTextStream>
+#include <QWindow>
 
 #include <limits>
-#endif
 
 #include <fmt/format.h>
 
@@ -2729,6 +2728,35 @@ bool ViewProviderSketch::selectAll()
         return false;
     }
 
+    // Check if the focus is on the constraints or element list widget.
+    QWidget* focusedWidget = QApplication::focusWidget();
+    auto* focusedList = qobject_cast<QListWidget*>(focusedWidget);
+    bool focusOnConstraintWidget = false;
+    bool focusOnElementWidget = false;
+    if (focusedList) {
+        if (focusedWidget->objectName().toStdString() == "listWidgetConstraints") {
+            focusOnConstraintWidget = true;
+        }
+        else if (focusedWidget->objectName().toStdString() == "listWidgetElements") {
+            focusOnElementWidget = true;
+        }
+        else {
+            focusedList = nullptr;
+        }
+    }
+
+    std::vector<int> ids;
+    if (focusedList) {
+        for (int i = 0; i < focusedList->count(); ++i) {
+            QListWidgetItem* item = focusedList->item(i);
+            if (item && !item->isHidden()) {
+                ids.push_back(item->data(Qt::UserRole).toInt());
+            }
+        }
+    }
+
+    bool noWidgetSelected = !focusOnConstraintWidget && !focusOnElementWidget;
+
     Sketcher::SketchObject* sketchObject = getSketchObject();
     if (!sketchObject) {
         return false;
@@ -2736,81 +2764,82 @@ bool ViewProviderSketch::selectAll()
 
     Gui::Selection().clearSelection();
 
-    int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
-    int extGeoCount = sketchObject->getExternalGeometryCount();
+    if (focusOnElementWidget || noWidgetSelected) {
+        int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
+        int extGeoCount = sketchObject->getExternalGeometryCount();
 
-    const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
+        const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
 
-    int VertexId = -1;
-    int GeoId = 0;
+        int VertexId = -1;
+        int GeoId = 0;
 
-    for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
-         it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
-         ++it, ++GeoId) {
+        auto selectVertex = [this](int &vertexId, int numberOfVertices) {
+            for (int i = 0; i < numberOfVertices; i++) {
+                vertexId++;
+                addSelection2(fmt::format("Vertex{}", vertexId + 1));
+            }
+        };
 
-        if (GeoId >= intGeoCount) {
-            GeoId = -extGeoCount;
-        }
-
-        if ((*it)->is<Part::GeomPoint>()) {
-            VertexId++;
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
-        }
-        else if ((*it)->is<Part::GeomLineSegment>()) {
-            VertexId++; // start
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-            VertexId++; // end
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
+        auto selectEdge = [this](int GeoId) {
             if (GeoId >= 0) {
                 addSelection2(fmt::format("Edge{}", GeoId + 1));
             } else {
-                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+                addSelection2(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+            }
+        };
+
+        bool hasUnselectedGeometry = false;
+
+        for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
+             it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
+             ++it, ++GeoId) {
+
+            if (GeoId >= intGeoCount) {
+                GeoId = -extGeoCount;
+            }
+
+            if (focusedList && std::ranges::find(ids, GeoId) == ids.end()) {
+                continue;
+            }
+
+            if ((*it)->is<Part::GeomPoint>()) {
+                selectVertex(VertexId, 1);
+            }
+            else if ((*it)->is<Part::GeomLineSegment>() || (*it)->is<Part::GeomBSplineCurve>()) {
+                selectVertex(VertexId, 2); // Start + End
+                selectEdge(GeoId);
+            }
+            else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
+                selectVertex(VertexId, 1); // Center
+                selectEdge(GeoId);
+            }
+            else if ((*it)->isDerivedFrom<Part::GeomArcOfConic>()) {
+                selectVertex(VertexId, 3); // Start + End + Center
+                selectEdge(GeoId);
+            }
+            else {
+                hasUnselectedGeometry = true;
             }
         }
-        else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
-            VertexId++;
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
-            if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
-            }
+        if (!focusOnElementWidget) {
+            addSelection2("RootPoint");
         }
-        else if ((*it)->isDerivedFrom<Part::GeomCurve>()) {
-            if (auto arc = dynamic_cast<const Part::GeomArcOfCircle*>(*it)) {
-                VertexId++; // start
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
-                VertexId++; // end
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-                VertexId++; // center
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-            } else {
-                // for other curves, select available vertices
-                VertexId++;
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-            }
-
-            if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
-            }
+        if (hasUnselectedGeometry) {
+            Base::Console().error("Select All: Not all geometry was selected");
         }
     }
 
-    // select constraints too
-    const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
-    for (size_t i = 0; i < constraints.size(); ++i) {
-        addSelection2(fmt::format("Constraint{}", i + 1));
+    if (focusOnConstraintWidget || noWidgetSelected) {
+        const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
+        for (size_t i = 0; i < constraints.size(); ++i) {
+            if (focusedList && std::ranges::find(ids, i) == ids.end()) {
+                continue;
+            }
+            addSelection2(fmt::format("Constraint{}", i + 1));
+        }
     }
-
-    // get root point if they exist
-    addSelection2("RootPoint");
 
     return true;
 }
@@ -3358,7 +3387,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
-                    "ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
+                    "ref[0].isDerivedFrom(\"App::Plane\")])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                     "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
@@ -3524,7 +3553,8 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasPartiallyRedundant = getSketchObject()->getLastHasPartialRedundancies();
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
 
-    if (getSketchObject()->Geometry.getSize() == 0) {
+    if (getSketchObject()->Geometry.getSize() == 0 &&
+        getSketchObject()->ExternalGeo.getSize() <= 2) { // X- and Y-Axis
         signalSetUp(QStringLiteral("empty"), tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
@@ -3731,6 +3761,15 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     cameraSensor.attach(viewer->getCamera());
 
     blockContextMenu = false;
+
+    if (auto* window = viewer->window()->windowHandle()) {
+        screenChangeConnection = QObject::connect(window, &QWindow::screenChanged, [this](QScreen*) {
+            if (isInEditMode() && editCoinManager) {
+                editCoinManager->updateElementSizeParameters();
+                draw();
+            }
+        });
+    }
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -3746,6 +3785,8 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->setSelectionEnabled(true);
 
     blockContextMenu = false;
+
+    QObject::disconnect(screenChangeConnection);
 }
 
 void ViewProviderSketch::camSensDeleteCB(void* data, SoSensor *s)

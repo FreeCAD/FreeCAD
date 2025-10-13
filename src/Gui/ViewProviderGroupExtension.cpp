@@ -20,26 +20,70 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QMessageBox>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/GroupExtension.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
 #include "ViewProviderGroupExtension.h"
 #include "ViewProviderDocumentObject.h"
+#include "Application.h"
 #include "Command.h"
 #include "Document.h"
 #include "MainWindow.h"
 
 
 using namespace Gui;
+
+namespace {
+    // helper function to recursively delete group contents while respecting view provider onDelete methods
+    void deleteGroupContentsRecursively(App::GroupExtension* group) {
+        if (!group) {
+            return;
+        }
+        
+        std::vector<App::DocumentObject*> children = group->Group.getValues();
+        
+        for (App::DocumentObject* child : children) {
+            if (!child || !child->isAttachedToDocument() || child->isRemoving()) {
+                continue;
+            }
+            
+            // if the child is a group, recursively delete its contents first
+            if (child->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                auto* childGroup = child->getExtensionByType<App::GroupExtension>();
+                deleteGroupContentsRecursively(childGroup);
+            }
+            
+            Gui::Document* guiDoc = Application::Instance->getDocument(child->getDocument());
+            if (guiDoc) {
+                ViewProvider* vp = guiDoc->getViewProvider(child);
+                if (vp) {
+                    // give group_recursive_deletion marker to the VP to mark that the deletion
+                    // is supposed to delete all of its children
+                    std::vector<std::string> groupDeletionMarker = {"group_recursive_deletion"};
+                    bool shouldDelete = vp->onDelete(groupDeletionMarker);
+                    
+                    if (!shouldDelete) {
+                        return;
+                    }
+                }
+            }
+            
+            // if the object still exists and wasn't deleted by its view provider, delete it directly
+            if (child->isAttachedToDocument() && !child->isRemoving()) {
+                child->getDocument()->removeObject(child->getNameInDocument());
+            }
+        }
+    }
+}
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
@@ -171,24 +215,53 @@ void ViewProviderGroupExtension::extensionHide() {
     ViewProviderExtension::extensionHide();
 }
 
-bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {
+bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >&) {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    // If the group is nonempty ask the user if they want to delete its content
-    if (group->Group.getSize() > 0) {
-        QMessageBox::StandardButton choice =
-            QMessageBox::question(getMainWindow(), QObject::tr ( "Delete group content?" ),
-                QObject::tr ( "The %1 is not empty, delete its content as well?")
-                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ),
-                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
-
-        if (choice == QMessageBox::Yes) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                    , getExtendedViewProvider()->getObject()->getDocument()->getName()
-                    , getExtendedViewProvider()->getObject()->getNameInDocument());
-        }
+    
+    std::vector<App::DocumentObject*> directChildren = group->Group.getValues();
+    
+    // just delete without messagebox if group is empty
+    if (directChildren.empty()) {
+        return true;
     }
+    
+    const auto* docGroup =
+        freecad_cast<App::DocumentObjectGroup*>(getExtendedViewProvider()->getObject());
+    auto allDescendants = docGroup ? docGroup->getAllChildren() : directChildren;
+    
+    QString message;
+    if (allDescendants.size() == directChildren.size()) {
+        message = QObject::tr("The group '%1' contains %2 object(s). Do you want to delete them as well?")
+                      .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
+                      .arg(allDescendants.size());
+    } else {
+        // if we have nested groups
+        message = QObject::tr("The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?")
+                      .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
+                      .arg(directChildren.size())
+                      .arg(allDescendants.size());
+    }
+    
+    QMessageBox::StandardButton choice = QMessageBox::question(
+        getMainWindow(),
+        QObject::tr("Delete group contents recursively?"),
+        message,
+        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+        QMessageBox::No
+    );
+    
+    if (choice == QMessageBox::Cancel) {
+        // don't delete anything if user has cancelled
+        return false;
+    }
+    
+    if (choice == QMessageBox::Yes) {
+        // delete all of the children recursively and call their viewprovider method
+        deleteGroupContentsRecursively(group);
+    }
+    // if user has specified "No" then delete the group but move children to the parent or root
+    
     return true;
 }
 

@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QApplication>
 # include <QFont>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of BomGroup.xml)
 #include "BomGroupPy.h"
 #include "BomGroupPy.cpp"

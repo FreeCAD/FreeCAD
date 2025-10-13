@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfEllipse.hxx>
 # include <GC_MakeArcOfHyperbola.hxx>
@@ -30,7 +28,7 @@
 # include <Geom_Ellipse.hxx>
 # include <Geom_Hyperbola.hxx>
 # include <Geom_Parabola.hxx>
-#endif
+
 
 #include <Base/VectorPy.h>
 

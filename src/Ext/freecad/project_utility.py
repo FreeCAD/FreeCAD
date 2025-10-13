@@ -58,9 +58,10 @@ def createDocument(filename, outpath):
     if os.path.exists(guixml):
         files.extend(getFilesList(guixml))
     compress = zipfile.ZipFile(outpath, 'w', zipfile.ZIP_DEFLATED)
-    for i in files:
-        dirs = os.path.split(i)
-        compress.write(i, dirs[-1], zipfile.ZIP_DEFLATED)
+    for file in files:
+        if os.path.isfile(file):
+            path_in_archive = os.path.relpath(path=file, start=dirname)
+            compress.write(file, path_in_archive, zipfile.ZIP_DEFLATED)
     compress.close()
 
 def getFilesList(filename):

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,13 +21,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/elements/SoCacheElement.h>
 # include <Inventor/misc/SoState.h>
-#endif
+
 
 #include "SoFCSelectionContext.h"
 #include "SoFCUnifiedSelection.h"

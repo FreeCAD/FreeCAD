@@ -1,19 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_definitions(-fext-numeric-literals) #fix for gcc and qt5
 endif()
-
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${OCC_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}
-)
 
 set(Path_LIBS
     Part
@@ -55,7 +44,6 @@ SET(Python_SRCS
 SET(Mod_SRCS
     AppPath.cpp
     AppPathPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 
@@ -117,6 +105,23 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 #endif(WIN32)
 
 add_library(Path SHARED ${Path_SRCS})
+
+target_include_directories(
+    Path
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    Path
+    SYSTEM
+    PUBLIC
+    ${OCC_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
+)
 target_link_libraries(Path ${Path_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Path)
@@ -124,9 +129,9 @@ endif()
 
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Path_CPP_SRCS ${Path_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Path PreCompiled.h PreCompiled.cpp Path_CPP_SRCS)
+    target_precompile_headers(Path PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 SET_BIN_DIR(Path PathApp /Mod/CAM)

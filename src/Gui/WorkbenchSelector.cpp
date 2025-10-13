@@ -20,9 +20,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAbstractItemView>
 # include <QActionGroup>
 # include <QApplication>
@@ -32,7 +31,7 @@
 # include <QToolBar>
 # include <QLayout>
 # include <QTimer>
-#endif
+
 
 #include "Base/Tools.h"
 #include "Action.h"

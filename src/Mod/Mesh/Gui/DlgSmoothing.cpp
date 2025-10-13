@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QButtonGroup>
 #include <QDialogButtonBox>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>

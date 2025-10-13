@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DrawViewCollection.h"
 // inclusion of the generated files (generated out of DrawViewCollectionPy.xml)

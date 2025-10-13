@@ -23,8 +23,6 @@
   ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 # include <QApplication>
@@ -33,7 +31,6 @@
 # include <QMessageBox>
 # include <QString>
 # include <algorithm>
-#endif
 
 #include <App/Document.h>
 #include <Base/Parameter.h>
@@ -130,6 +127,8 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
     const auto visible = UnitsApi::isMultiUnitLength();
     ui->comboBox_FracInch->setVisible(visible);
     ui->fractionalInchLabel->setVisible(visible);
+    ui->moreThemesLabel->setEnabled(
+        Application::Instance->commandManager().getCommandByName("Std_AddonMgr") != nullptr);
 }
 
 /**

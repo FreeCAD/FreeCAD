@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
@@ -41,7 +40,7 @@
 # include <QTimer>
 # include <QToolTip>
 # include <QVBoxLayout>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -1156,7 +1155,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
     QAction* action = new QAction(tr("Show Description"), this);
     QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
-    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by by editing the 'label2' property."));
+    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by editing the 'label2' property."));
     action->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -1512,10 +1511,8 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
     }
 }
 
-std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+TreeWidget* TreeWidget::getTreeForSelection()
 {
-    std::vector<SelInfo> ret;
-
     TreeWidget* tree = instance();
     if (!tree || !tree->isSelectionAttached()) {
         for (auto pTree : Instances)
@@ -1524,13 +1521,52 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
                 break;
             }
     }
-    if (!tree)
-        return ret;
+    if (!tree) {
+        return nullptr;
+    }
 
-    if (tree->selectTimer->isActive())
+    if (tree->selectTimer->isActive()) {
         tree->onSelectTimer();
-    else
+    }
+    else {
         tree->_updateStatus(false);
+    }
+
+    return tree;
+}
+
+std::vector<Document*> TreeWidget::getSelectedDocuments()
+{
+    std::vector<Document*> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
+
+    const auto items = tree->selectedItems();
+    for (auto ti : items) {
+        if (ti->type() != DocumentType)
+            continue;
+        auto item = static_cast<DocumentItem*>(ti);
+        auto doc = item->document();
+        if (!doc || !doc->getDocument()) {
+            FC_WARN("skip invalid document");
+            continue;
+        }
+        ret.push_back(doc);
+    }
+    return ret;
+}
+
+std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+{
+    std::vector<SelInfo> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
 
     const auto items = tree->selectedItems();
     for (auto ti : items) {

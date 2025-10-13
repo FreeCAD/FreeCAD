@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
 
 #include "ViewProvider.h"
 // inclusion of the generated files (generated out of ViewProviderMeshPy.xml)

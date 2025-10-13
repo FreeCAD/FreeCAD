@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
-#endif
 
 #include <App/GroupExtension.h>
 #include <App/Document.h>
@@ -183,6 +180,9 @@ void StdCmdVarSet::activated(int iMsg)
     VarSetName = getUniqueObjectName("VarSet");
     doCommand(Doc,"App.activeDocument().addObject('App::VarSet','%s')",VarSetName.c_str());
 
+    Gui::Document* docGui = Application::Instance->activeDocument();
+    App::Document* doc = docGui->getDocument();
+
     // add the varset to a group if it is selected
     auto sels = Selection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
         ResolveMode::OldStyleElement, true);
@@ -190,11 +190,14 @@ void StdCmdVarSet::activated(int iMsg)
         App::DocumentObject* obj = sels[0].getObject();
         auto group = obj->getExtension<App::GroupExtension>();
         if (group) {
-            Gui::Document* docGui = Application::Instance->activeDocument();
-            App::Document* doc = docGui->getDocument();
             group->addObject(doc->getObject(VarSetName.c_str()));
         }
     }
+
+    // select the new varset
+    Selection().clearSelection();
+    Selection().addSelection(doc->getName(), VarSetName.c_str());
+
     commitCommand();
 
     doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", VarSetName.c_str());

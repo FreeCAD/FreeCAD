@@ -22,10 +22,9 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QVBoxLayout>
-#endif
+
 
 #include <Base/Console.h>
 #include <App/Application.h>

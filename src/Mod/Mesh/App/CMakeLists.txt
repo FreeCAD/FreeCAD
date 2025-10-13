@@ -4,17 +4,20 @@ if(WIN32)
     add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
 endif(WIN32)
 
-include_directories(
+target_include_directories(
+    Mesh
+    PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
 )
 
 target_include_directories(
     Mesh
     SYSTEM
     PUBLIC
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
     ${EIGEN3_INCLUDE_DIR}
+    ${QtConcurrent_INCLUDE_DIRS}
 )
 
 set(Mesh_LIBS
@@ -22,10 +25,6 @@ set(Mesh_LIBS
     FreeCADApp
 )
 
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
 list(APPEND Mesh_LIBS
     ${QtConcurrent_LIBRARIES}
 )
@@ -383,7 +382,6 @@ SET(Mesh_SRCS
     MeshPyImp.cpp
     MeshTexture.cpp
     MeshTexture.h
-    PreCompiled.cpp
     PreCompiled.h
     Segment.cpp
     Segment.h
@@ -399,9 +397,9 @@ if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Mesh PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions
@@ -416,6 +414,11 @@ endif ()
 
 target_sources(Mesh PRIVATE ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
+
+if (MSVC)
+    target_compile_options(Mesh PRIVATE /wd4251 /wd4275 /wd4661)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Mesh)
 endif()

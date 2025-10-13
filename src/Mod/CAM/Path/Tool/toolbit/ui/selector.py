@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -41,7 +40,7 @@ class ToolBitSelector(QtWidgets.QDialog):
 
         self.setMinimumSize(600, 400)
 
-        self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Select Tool Bit"))
+        self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Select Toolbit"))
 
         self._browser_widget = ToolBitBrowserWidget(cam_assets, compact=compact)
 

@@ -21,7 +21,6 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "ViewProviderLinearPattern.h"
 #include "TaskPatternParameters.h"

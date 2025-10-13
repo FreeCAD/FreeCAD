@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QActionEvent>
 # include <QActionGroup>
 # include <QApplication>
@@ -36,7 +32,6 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
-#endif
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -570,7 +565,7 @@ void ActionGroup::setCheckedAction(int index)
     this->setIcon(act->icon());
 
     if (!this->_isMode) {
-        this->setToolTip(act->toolTip(), act->text());
+        this->action()->setToolTip(act->toolTip());
     }
     this->setProperty("defaultAction", QVariant(index));
 }
@@ -599,7 +594,7 @@ void ActionGroup::onActivated (QAction* act)
 
         this->setIcon(act->icon());
         if (!this->_isMode) {
-            this->setToolTip(act->toolTip(), act->text());
+            this->action()->setToolTip(act->toolTip());
         }
         this->setProperty("defaultAction", QVariant(index));
         command()->invoke(index, Command::TriggerChildAction);

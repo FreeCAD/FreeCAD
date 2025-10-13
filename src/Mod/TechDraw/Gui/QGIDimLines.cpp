@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QPainterPath>
 # include <QPainterPathStroker>
-#endif
 
 #include "QGIDimLines.h"
 #include "PreferencesGui.h"

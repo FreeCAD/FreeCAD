@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include "ExtensionContainer.h"
 
 // inclusion of the generated files (generated out of ExtensionPy.pyi)

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <sstream>
-#endif
+
 
 #include "DrawParametricTemplate.h"
 // inclusion of the generated files (generated out of DrawParametricTemplateSFPy.xml)

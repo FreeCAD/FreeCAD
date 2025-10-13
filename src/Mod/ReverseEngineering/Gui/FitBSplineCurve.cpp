@@ -21,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <QMessageBox>
-#endif
+
 
 #include <Gui/CommandT.h>
 #include <Gui/WaitCursor.h>

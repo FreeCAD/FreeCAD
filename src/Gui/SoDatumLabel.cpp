@@ -20,8 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
+
+
+#include <FCConfig.h>
+
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # undef min
@@ -46,7 +49,6 @@
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
 # include <Inventor/misc/SoState.h>
-#endif // _PreComp_
 
 #include <Base/Tools.h>
 

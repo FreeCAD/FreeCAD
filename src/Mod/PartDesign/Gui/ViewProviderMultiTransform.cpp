@@ -21,7 +21,6 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "ViewProviderMultiTransform.h"
 #include "TaskMultiTransformParameters.h"

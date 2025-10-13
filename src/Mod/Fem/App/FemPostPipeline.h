@@ -30,43 +30,18 @@
 #include "FemPostFunction.h"
 #include "FemPostObject.h"
 #include "FemResultObject.h"
+#include "VTKExtensions/vtkFemFrameSourceAlgorithm.h"
 
+#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9, 3, 0)
+#include "VTKExtensions/vtkCleanUnstructuredGrid.h"
+#else
+#include <vtkCleanUnstructuredGrid.h>
+#endif
 #include <vtkSmartPointer.h>
-#include <vtkUnstructuredGridAlgorithm.h>
-
-class vtkInformation;
-class vtkInformationVector;
 
 
 namespace Fem
 {
-
-// algorithm that allows multi frame handling: if data is stored in MultiBlock dataset
-// this source enables the downstream filters to query the blocks as different time frames
-class FemFrameSourceAlgorithm: public vtkUnstructuredGridAlgorithm
-{
-public:
-    static FemFrameSourceAlgorithm* New();
-    vtkTypeMacro(FemFrameSourceAlgorithm, vtkUnstructuredGridAlgorithm);
-
-    bool isValid();
-    void setDataObject(vtkSmartPointer<vtkDataObject> data);
-    std::vector<double> getFrameValues();
-
-protected:
-    FemFrameSourceAlgorithm();
-    ~FemFrameSourceAlgorithm() override;
-
-    vtkSmartPointer<vtkDataObject> m_data;
-
-    int RequestInformation(vtkInformation* reqInfo,
-                           vtkInformationVector** inVector,
-                           vtkInformationVector* outVector) override;
-    int RequestData(vtkInformation* reqInfo,
-                    vtkInformationVector** inVector,
-                    vtkInformationVector* outVector) override;
-};
-
 
 class FemExport FemPostPipeline: public Fem::FemPostObject, public Fem::FemPostGroupExtension
 {
@@ -77,7 +52,7 @@ public:
     FemPostPipeline();
 
     App::PropertyEnumeration Frame;
-
+    App::PropertyBool MergeDuplicate;
 
     virtual vtkDataSet* getDataSet() override;
     Fem::FemPostFunctionProvider* getFunctionProvider();
@@ -136,7 +111,9 @@ protected:
 
 private:
     App::Enumeration m_frameEnum;
-    vtkSmartPointer<FemFrameSourceAlgorithm> m_source_algorithm;
+
+    vtkSmartPointer<vtkFemFrameSourceAlgorithm> m_source_algorithm;
+    vtkSmartPointer<vtkCleanUnstructuredGrid> m_clean_filter;
 
     bool m_block_property = false;
     bool m_data_updated = false;

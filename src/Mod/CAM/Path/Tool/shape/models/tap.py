@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -55,6 +54,10 @@ class ToolBitShapeTap(ToolBitShape):
             "TipAngle": (
                 FreeCAD.Qt.translate("ToolBitShape", "Tip angle"),
                 "App::PropertyAngle",
+            ),
+            "Pitch": (
+                FreeCAD.Qt.translate("ToolBitShape", "Thread pitch"),
+                "App::PropertyLength",
             ),
         }
 

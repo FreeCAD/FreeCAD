@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <cstdlib>
 #include <iterator>
 #include <limits>
-#endif
 
 #include "SphereFit.h"
 

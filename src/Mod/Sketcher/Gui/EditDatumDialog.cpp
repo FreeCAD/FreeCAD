@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 /// Qt Include Files
 #include <Inventor/sensors/SoSensor.h>
 #include <QApplication>
 #include <QDialog>
-#endif
+
 
 #include <Base/Tools.h>
 #include <Gui/Application.h>
@@ -427,7 +425,6 @@ void EditDatumDialog::performAutoScale(double newDatum)
             // Some constraints cannot be scaled so the actual datum constraint
             // might change index
             ConstrNbr = sketch->getSingleScaleDefiningConstraint();
-
 
             sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
 

@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
 # include <cmath>
 # include <sstream>
 # include <BRepGProp.hxx>
 # include <GProp_GProps.hxx>
-#endif
+
 
 # include <App/Document.h>
 # include <App/DocumentObject.h>

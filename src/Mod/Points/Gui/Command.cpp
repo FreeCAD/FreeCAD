@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <algorithm>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

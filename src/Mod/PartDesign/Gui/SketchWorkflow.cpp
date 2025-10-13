@@ -20,8 +20,6 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <boost/signals2.hpp>
@@ -29,7 +27,7 @@
 # include <string>
 # include <vector>
 # include <QMessageBox>
-#endif
+
 
 #include "SketchWorkflow.h"
 #include "DlgActiveBody.h"
@@ -504,7 +502,6 @@ public:
     SketchRequestSelection(Gui::Document* guidocument, PartDesign::Body* activeBody)
         : guidocument(guidocument)
         , activeBody(activeBody)
-        , planeFinder(guidocument->getDocument(), activeBody)
     {
     }
 
@@ -570,7 +567,6 @@ private:
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
-            vpo->setTemporaryScale(Gui::ViewParams::instance()->getDatumTemporaryScaleFactor());
             vpo->setPlaneLabelVisibility(true);
         }
     }
@@ -619,6 +615,7 @@ private:
     void findAndSelectPlane()
     {
         App::Document* appdocument = guidocument->getDocument();
+        PlaneFinder planeFinder {appdocument, activeBody};
 
         planeFinder.findBasePlanes();
         planeFinder.findDatumPlanes();
@@ -632,7 +629,7 @@ private:
             auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
 
             // skip updating planes from coordinate systems
-            if (!planeViewProvider->getRole().empty()) {
+            if (!planeViewProvider || !planeViewProvider->getRole().empty()) {
                 continue;
             }
 
@@ -649,6 +646,10 @@ private:
         auto restorePlaneVisibility = [planes]() {
             for (auto& plane : planes) {
                 auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
+                if (!planeViewProvider) {
+                    continue;
+                }
+
                 planeViewProvider->resetTemporarySize();
                 planeViewProvider->setLabelVisibility(false);
             }
@@ -754,8 +755,6 @@ private:
 private:
     Gui::Document* guidocument;
     PartDesign::Body* activeBody;
-
-    PlaneFinder planeFinder;
 };
 
 }

@@ -146,10 +146,12 @@ class Hatch(DraftObject):
                             if u.Length > 0.001:
                                 u = u.normalize()
                                 v = w.cross(u)
+                                # fmt: off
                                 mtx = App.Matrix(u.x, v.x, w.x, sta.x,
                                                  u.y, v.y, w.y, sta.y,
                                                  u.z, v.z, w.z, sta.z,
                                                  0.0, 0.0, 0.0, 1.0)
+                                # fmt: on
                                 break
                     # If no suitable straight edge was found use a default matrix:
                     if not mtx:

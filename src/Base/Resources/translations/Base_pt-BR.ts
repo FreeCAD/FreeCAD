@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="634"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+      <translation>Unidades Imperiais Eng. Civil (pés, libras, milhas por hora)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="73"/>

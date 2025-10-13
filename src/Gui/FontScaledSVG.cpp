@@ -23,8 +23,6 @@
 
 // This custom widget scales an svg according to fonts
 
-#include "PreCompiled.h"
-
 #include "FontScaledSVG.h"
 
 namespace Gui {

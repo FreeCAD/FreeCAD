@@ -26,6 +26,8 @@
 #include <App/PropertyStandard.h>
 #include <App/OriginGroupExtension.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 

@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+
 
 #include "View.h"
 #include "Application.h"

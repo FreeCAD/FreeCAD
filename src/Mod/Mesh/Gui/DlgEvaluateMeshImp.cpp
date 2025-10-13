@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDockWidget>
 #include <QMessageBox>
 #include <QPointer>
 #include <QScrollArea>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -1368,6 +1366,7 @@ DockEvaluateMeshImp::DockEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     scrollArea->setFrameShadow(QFrame::Plain);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(this);
+    scrollArea->setWindowTitle(windowTitle());
 
     // embed this dialog into a dockable widget container
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();

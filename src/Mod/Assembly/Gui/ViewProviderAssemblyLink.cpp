@@ -21,15 +21,13 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <vector>
 #include <sstream>
 #include <iostream>
-#endif
+
 
 #include <App/Link.h>
 #include <App/Document.h>

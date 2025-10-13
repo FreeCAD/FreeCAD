@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
-#endif
 
 #include <App/Document.h>
 #include <Base/Matrix.h>
@@ -53,7 +49,7 @@ using namespace Gui;
 std::string DocumentPy::representation() const
 {
     std::stringstream str;
-    str << "<GUI Document object at " << getDocumentPtr() << ">";
+    str << "<GUI Document object for " << getDocumentPtr()->getDocument()->getName() << ">";
 
     return str.str();
 }

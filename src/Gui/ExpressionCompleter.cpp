@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
 #include <QLineEdit>
 #include <QMenu>
 #include <QTextBlock>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

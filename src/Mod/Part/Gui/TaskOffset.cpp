@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <limits>
 
-#ifndef _PreComp_
-# include <limits>
-# include <QMessageBox>
-#endif
+#include <QMessageBox>
 
 #include <App/Application.h>
 #include <App/Document.h>

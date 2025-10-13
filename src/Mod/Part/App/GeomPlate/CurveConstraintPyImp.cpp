@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <GeomAdaptor_Curve.hxx>
 # include <Geom2dAdaptor_Curve.hxx>
 # include <Standard_Failure.hxx>
@@ -30,7 +30,6 @@
 # include <GeomAdaptor_HCurve.hxx>
 # include <Geom2dAdaptor_HCurve.hxx>
 # endif
-#endif
 
 #include "GeomPlate/CurveConstraintPy.h"
 #include "GeomPlate/CurveConstraintPy.cpp"

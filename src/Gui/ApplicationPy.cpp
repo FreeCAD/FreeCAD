@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QApplication>
 # include <QDir>
 # include <QPrinter>
@@ -32,7 +29,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <xercesc/util/TranscodingException.hpp>
 # include <xercesc/util/XMLString.hpp>
-#endif
 
 #include <boost/regex.hpp>
 

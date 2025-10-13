@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
@@ -42,7 +38,6 @@
 # include <QPainter>
 # include <QPointer>
 # include <QTextStream>
-#endif
 
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>
@@ -483,6 +478,15 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     QDomDocument xmlDocument;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
+    if (const auto result = xmlDocument.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing); !result) {
+        std::cerr << "Parse error in XML content at line " << result.errorLine
+                  << ", column " << result.errorColumn << ": "
+                  << qPrintable(result.errorMessage) << std::endl;
+        return;
+    }
+#else
     QString errorStr;
     int errorLine;
     int errorColumn;
@@ -494,6 +498,7 @@ void StdCmdFreezeViews::onRestoreViews()
                   << (const char*)errorStr.toLatin1() << std::endl;
         return;
     }
+#endif
 
     // get the root element
     QDomElement root = xmlDocument.documentElement();
@@ -4003,8 +4008,10 @@ void StdCmdClarifySelection::activated(int iMsg)
     } else {
         QPoint pos = QCursor::pos();
         QPoint local = widget->mapFromGlobal(pos);
-        point = SbVec2s(static_cast<short>(local.x()),
-                        static_cast<short>(widget->height() - local.y() - 1));
+
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        point = SbVec2s(static_cast<short>(local.x() * devicePixelRatio),
+                        static_cast<short>((widget->height() - local.y() - 1) * devicePixelRatio));
     }
     
     // Use ray picking to get all objects under cursor
@@ -4076,7 +4083,11 @@ void StdCmdClarifySelection::activated(int iMsg)
     
     QPoint globalPos;
     if (storedPosition.has_value()) {
-        globalPos = widget->mapToGlobal(QPoint(point[0], widget->height() - point[1] - 1));
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        int logicalHeight = static_cast<int>(widget->height());
+        QPoint localPos(static_cast<int>(point[0] / devicePixelRatio), 
+	                    logicalHeight - static_cast<int>(point[1] / devicePixelRatio) - 1);
+        globalPos = widget->mapToGlobal(localPos);
     } else {
         globalPos = QCursor::pos();
     }

@@ -436,6 +436,7 @@ def _get_param_dictionary():
             + "/Mod/TechDraw/PAT/FCPAT.pat"
 
     # Draft parameters that are not in the preferences:
+    # fmt: off
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
@@ -514,14 +515,14 @@ def _get_param_dictionary():
 
     start_val = App.Units.Quantity(100.0, App.Units.Length).Value
     param_dict["Mod/Draft/OrthoArrayLinearMode"] = {
-        "LinearModeOn": ("bool", True),
-        "AxisSelected": ("string", "X"),
-        "XInterval": ("float", start_val),
-        "YInterval": ("float", start_val),
-        "ZInterval": ("float", start_val),
-        "XNumOfElements": ("int", 2),
-        "YNumOfElements": ("int", 2),
-        "ZNumOfElements": ("int", 2)
+        "LinearModeOn":                ("bool",      True),
+        "AxisSelected":                ("string",    "X"),
+        "XInterval":                   ("float",     start_val),
+        "YInterval":                   ("float",     start_val),
+        "ZInterval":                   ("float",     start_val),
+        "XNumOfElements":              ("int",       2),
+        "YNumOfElements":              ("int",       2),
+        "ZNumOfElements":              ("int",       2)
     }
 
     # Arch parameters that are not in the preferences:
@@ -630,6 +631,7 @@ def _get_param_dictionary():
         "MarkerSize":                  ("int",       9),
         "NewDocumentCameraScale":      ("float",     100.0),
     }
+    # fmt: on
 
 
     # Preferences ui files are stored in resource files.

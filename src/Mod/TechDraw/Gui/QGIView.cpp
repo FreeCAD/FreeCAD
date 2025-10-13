@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
 # include <QTransform>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -116,6 +114,8 @@ QGIView::QGIView()
     m_lockHeight = (double) sizeLock.height();
 
     m_lock->hide();
+    m_border->hide();
+    m_label->hide();
 }
 
 void QGIView::isVisible(bool state)
@@ -197,15 +197,12 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 
     if (change == ItemSelectedHasChanged && scene()) {
-        bool thisViewIsSelected = value.toBool();
-        bool anyChildSelected = false;
-        if (!thisViewIsSelected) { // Only check children if this view is becoming unselected
-            anyChildSelected =
-                std::ranges::any_of(childItems(), [](QGraphicsItem* child) {
-                    return child->isSelected();
-                });
-        }
-        if(thisViewIsSelected || anyChildSelected || isSelected()) {
+        std::vector<Gui::SelectionObject> currentSelection = Gui::Selection().getSelectionEx();
+        bool isViewObjectSelected = Gui::Selection().isSelected(getViewObject());
+        bool hasSelectedSubElements =
+            !DrawGuiUtil::getSubsForSelectedObject(currentSelection, getViewObject()).empty();
+
+        if (isViewObjectSelected || hasSelectedSubElements) {
             m_colCurrent = getSelectColor();
             m_border->show();
             m_label->show();
@@ -228,6 +225,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
     return QGraphicsItemGroup::itemChange(change, value);
 }
+
+//! The default behaviour here only applies to views whose (X, Y) describes a position on the page.
+//! Others, like QGILeaderLine whose (X, Y) describes a position within a view's boundary and is not
+//! draggable, should override this method.
 void QGIView::dragFinished()
 {
     if (!viewObj) {
@@ -610,9 +611,7 @@ void QGIView::updateView(bool forceUpdate)
         rotateView();
     }
 
-    drawBorder(); // Draw the border then hide it so the label knows where to position itself
-    m_border->hide();
-    m_label->hide();
+    drawBorder();
 
     QGIView::draw();
 }

@@ -26,12 +26,10 @@
 #ifndef ELIDECHECKBOX_H
 #define ELIDECHECKBOX_H
 
-#ifndef _PreComp_
 #include <QCheckBox>
 #include <QPainter>
 #include <QFontMetrics>
 #include <QStyleOptionButton>
-#endif
 
 #include <FCGlobal.h>
 

@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
@@ -41,7 +39,6 @@
 # include <TopoDS_Wire.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <gp_Pln.hxx>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -167,6 +164,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
     } catch (const Base::Exception&) {
         base = Part::TopoShape(0, this->getDocument()->getStringHasher());
     }
+
+    auto hasher = getDocument()->getStringHasher();
 
     try {
         // setup the location
@@ -414,18 +413,27 @@ App::DocumentObjectExecReturn *Pipe::execute()
             result.setShape(result.getShape().Reversed(), false);
         }
 
-        //result.Move(invObjLoc);
-        AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
+        AddSubShape.setValue(result.makeElementCompound(shapes, nullptr, Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape));
 
-        if (base.isNull()) {
+        if (shapes.size() > 1)
+            result.makeElementFuse(shapes);
+        else
+            result = shapes.front();
+
+        if(base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
+            if (!isSingleSolidRuleSatisfied(result.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
+            }
+
             // store shape before refinement
             this->rawShape = result;
-            auto ts_result = refineShapeIfActive(result);
-            Shape.setValue(getSolid(ts_result));
+
+            result = refineShapeIfActive(result);
+            Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
@@ -460,11 +468,27 @@ App::DocumentObjectExecReturn *Pipe::execute()
             return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: Invalid Boolean Type"));
         }
+        catch(Standard_Failure&) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
+        }
 
+        TopoShape solid = getSolid(boolOp);
+        // lets check if the result is a solid
+        if (solid.isNull())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
+
+        // store shape before refinement
+        this->rawShape = boolOp;
+        boolOp = refineShapeIfActive(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+                                                                       "Result has multiple solids: enable 'Allow Compound' in the active body."));
+        }
+        boolOp = getSolid(boolOp);
+        Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
@@ -656,5 +680,4 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
         ProfileBased::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
-
 

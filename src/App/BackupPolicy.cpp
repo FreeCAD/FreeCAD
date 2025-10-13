@@ -21,13 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/regex.hpp>
 #include <string>
-#endif
 
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>

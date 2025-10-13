@@ -26,6 +26,7 @@
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {

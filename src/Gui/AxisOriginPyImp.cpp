@@ -20,12 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/details/SoDetail.h>
 # include <Inventor/SoFullPath.h>
-#endif
 
 #include "AxisOriginPy.h"
 #include "AxisOriginPy.cpp"

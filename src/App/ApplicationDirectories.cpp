@@ -19,17 +19,16 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <fmt/format.h>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <QCoreApplication>
-#endif
 
 #include "ApplicationDirectories.h"
+
+#include <FCConfig.h>
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <pwd.h>
@@ -41,6 +40,8 @@
 
 #include <Python.h>
 #include <QString>
+
+#include "Base/Console.h"
 
 
 using namespace App;
@@ -274,11 +275,19 @@ bool ApplicationDirectories::startSafeMode(std::map<std::string,std::string>& mC
     return false;
 }
 
+std::filesystem::path ApplicationDirectories::sanitizePath(const std::string& pathAsString)
+{
+    size_t positionOfFirstNull = pathAsString.find('\0');
+    if (positionOfFirstNull != std::string::npos) {
+        return {pathAsString.substr(0, positionOfFirstNull)};
+    }
+    return {pathAsString};
+}
 
 void ApplicationDirectories::configureResourceDirectory(const std::map<std::string,std::string>& mConfig) {
 #ifdef RESOURCEDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    fs::path path {std::string(RESOURCEDIR).c_str()};
+    // #6892: Conda may inject null characters
+    fs::path path = sanitizePath(RESOURCEDIR);
     if (path.is_absolute()) {
         _resource = path;
     } else {
@@ -291,8 +300,8 @@ void ApplicationDirectories::configureResourceDirectory(const std::map<std::stri
 
 void ApplicationDirectories::configureLibraryDirectory(const std::map<std::string,std::string>& mConfig) {
 #ifdef LIBRARYDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    fs::path path {std::string(LIBRARYDIR).c_str()};
+    // #6892: Conda may inject null characters
+    fs::path path = sanitizePath(LIBRARYDIR);
     if (path.is_absolute()) {
         _library = path;
     } else {
@@ -307,8 +316,8 @@ void ApplicationDirectories::configureLibraryDirectory(const std::map<std::strin
 void ApplicationDirectories::configureHelpDirectory(const std::map<std::string,std::string>& mConfig)
 {
 #ifdef DOCDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    fs::path path {std::string(DOCDIR).c_str()};
+    // #6892: Conda may inject null characters
+    fs::path path = sanitizePath(DOCDIR);
     if (path.is_absolute()) {
         _help = path;
     } else {
@@ -333,7 +342,8 @@ fs::path ApplicationDirectories::getUserHome()
     if (!result || error != 0) {
         throw Base::RuntimeError("Getting HOME path from system failed!");
     }
-    path = Base::FileInfo::stringToPath(result->pw_dir);
+    std::string sanitizedPath = sanitizePath(pwd.pw_dir);
+    path = Base::FileInfo::stringToPath(sanitizedPath);
 #else
     path = Base::FileInfo::stringToPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation).toStdString());
 #endif
@@ -568,8 +578,9 @@ void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths)
         } else {
             newPath = path / versionStringForPath(major, minor);
         }
+        Base::Console().message("Migrating config from %s to %s\n", Base::FileInfo::pathToString(path), Base::FileInfo::pathToString(newPath));
         if (fs::exists(newPath)) {
-            throw Base::RuntimeError("Cannot migrate config - path already exists: " + Base::FileInfo::pathToString(newPath));
+            continue;  // Ignore an existing path: not an error, just a migration that was already done
         }
         fs::create_directories(newPath);
         migrateConfig(path, newPath);

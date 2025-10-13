@@ -249,7 +249,7 @@ class lineTracker(Tracker):
         p1 = Vector(self.coords.point.getValues()[0].getValue())
         p2 = Vector(self.coords.point.getValues()[-1].getValue())
         return (p2.sub(p1)).Length
-    
+
 
 class polygonTracker(Tracker):
     """A Polygon tracker, used by the polygon tool."""
@@ -261,10 +261,12 @@ class polygonTracker(Tracker):
         self.base_angle = None
         self.line.numVertices.setValue(self.sides + 1)
         self.coords = coin.SoCoordinate3()  # this is the coordinate
+        # fmt: off
         self.coords.point.setValues(0, 50, [[0, 0, 0],
                                             [2, 0, 0],
                                             [1, 2, 0],
                                             [0, 0, 0]])
+        # fmt: on
         if face:
             m1 = coin.SoMaterial()
             m1.transparency.setValue(0.5)
@@ -278,7 +280,7 @@ class polygonTracker(Tracker):
             super().__init__(dotted, scolor, swidth,
                              [self.coords, self.line],
                              name="polygonTracker")
-    
+
     def setNumVertices(self, num):
         self.line.numVertices.setValue(num + 1)
         self.sides = num
@@ -318,11 +320,13 @@ class rectangleTracker(Tracker):
         line = coin.SoLineSet()
         line.numVertices.setValue(5)
         self.coords = coin.SoCoordinate3()  # this is the coordinate
+        # fmt: off
         self.coords.point.setValues(0, 50, [[0, 0, 0],
                                             [2, 0, 0],
                                             [2, 2, 0],
                                             [0, 2, 0],
                                             [0, 0, 0]])
+        # fmt: on
         if face:
             m1 = coin.SoMaterial()
             m1.transparency.setValue(0.5)
@@ -424,11 +428,13 @@ class dimTracker(Tracker):
         line = coin.SoLineSet()
         line.numVertices.setValue(4)
         self.coords = coin.SoCoordinate3()  # this is the coordinate
+        # fmt: off
         self.coords.point.setValues(0, 4,
                                     [[0, 0, 0],
                                      [0, 0, 0],
                                      [0, 0, 0],
                                      [0, 0, 0]])
+        # fmt: on
         super().__init__(dotted, scolor, swidth,
                          [self.coords, line], name="dimTracker")
         self.p1 = self.p2 = self.p3 = None
@@ -450,10 +456,12 @@ class dimTracker(Tracker):
         """Calculate the new points from p1 and p2."""
         import Part
         if (self.p1 is not None) and (self.p2 is not None):
+            # fmt: off
             points = [DraftVecUtils.tup(self.p1, True),
                       DraftVecUtils.tup(self.p2, True),
                       DraftVecUtils.tup(self.p1, True),
                       DraftVecUtils.tup(self.p2, True)]
+            # fmt: on
             if self.p3 is not None:
                 p1 = self.p1
                 p4 = self.p2
@@ -468,10 +476,12 @@ class dimTracker(Tracker):
                 else:
                     p2 = p1.add(proj.negative())
                     p3 = p4.add(proj.negative())
+                # fmt: off
                 points = [DraftVecUtils.tup(p1),
                           DraftVecUtils.tup(p2),
                           DraftVecUtils.tup(p3),
                           DraftVecUtils.tup(p4)]
+                # fmt: on
             self.coords.point.setValues(0, 4, points)
 
 
@@ -881,10 +891,12 @@ class ghostTracker(Tracker):
         m = self.trans.getMatrix(v)
         if m:
             m = m.getValue()
+            # fmt: off
             return FreeCAD.Matrix(m[0][0], m[0][1], m[0][2], m[0][3],
                                   m[1][0], m[1][1], m[1][2], m[1][3],
                                   m[2][0], m[2][1], m[2][2], m[2][3],
                                   m[3][0], m[3][1], m[3][2], m[3][3])
+            # fmt: on
         else:
             return FreeCAD.Matrix()
 
@@ -893,10 +905,12 @@ class ghostTracker(Tracker):
 
         The 4th column of the matrix (the position) is ignored.
         """
+        # fmt: off
         m = coin.SbMatrix(matrix.A11, matrix.A12, matrix.A13, matrix.A14,
                           matrix.A21, matrix.A22, matrix.A23, matrix.A24,
                           matrix.A31, matrix.A32, matrix.A33, matrix.A34,
                           matrix.A41, matrix.A42, matrix.A43, matrix.A44)
+        # fmt: on
         self.trans.setMatrix(m)
 
     def flip_normals(self, flip):
@@ -1019,21 +1033,25 @@ class PlaneTracker(Tracker):
         m1.transparency.setValue(0.8)
         m1.diffuseColor.setValue([0.4, 0.4, 0.6])
         c1 = coin.SoCoordinate3()
+        # fmt: off
         c1.point.setValues([[-bl, -bl, 0],
                             [bl, -bl, 0],
                             [bl, bl, 0],
                             [-bl, bl, 0]])
+        # fmt: on
         f = coin.SoIndexedFaceSet()
         f.coordIndex.setValues([0, 1, 2, 3])
         m2 = coin.SoMaterial()
         m2.transparency.setValue(0.7)
         m2.diffuseColor.setValue([0.2, 0.2, 0.3])
         c2 = coin.SoCoordinate3()
+        # fmt: off
         c2.point.setValues([[0, bl, 0], [0, 0, 0],
                             [bl, 0, 0], [-0.05*bl, 0.95*bl, 0],
                             [0, bl, 0], [0.05*bl, 0.95*bl, 0],
                             [0.95*bl, 0.05*bl, 0], [bl, 0, 0],
                             [0.95*bl, -0.05*bl, 0]])
+        # fmt: on
         l = coin.SoLineSet()
         l.numVertices.setValues([3, 3, 3])
         s = coin.SoSeparator()

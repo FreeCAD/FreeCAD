@@ -13,20 +13,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
 endif(BUILD_FEM_NETGEN)
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${SMESH_INCLUDE_DIR}
-    ${VTK_INCLUDE_DIRS}
-)
-
-link_directories(${SMESH_LIB_PATH})
-
 set(FemGui_LIBS
     Fem
     FreeCADGui
@@ -332,7 +318,6 @@ SET(FemGui_SRCS_Module
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
-    PreCompiled.cpp
     PreCompiled.h
     PropertyFemMeshItem.cpp
     PropertyFemMeshItem.h
@@ -369,12 +354,6 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_Post}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
@@ -399,7 +378,36 @@ SET(FemGuiSymbol_IV
 )
 
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(FemGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    FemGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    FemGui
+    SYSTEM
+    PUBLIC
+    ${SMESH_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIRS}
+)
+
+target_link_directories(FemGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+
+if (MSVC)
+    target_compile_definitions(FemGui PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FemGui)
 endif()

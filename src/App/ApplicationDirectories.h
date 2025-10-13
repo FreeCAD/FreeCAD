@@ -22,12 +22,17 @@
 #ifndef SRC_APP_APPLICATIONDIRECTORIES_H_
 #define SRC_APP_APPLICATIONDIRECTORIES_H_
 
+#include "FCConfig.h"
 #include "FCGlobal.h"
 
 #include <filesystem>
 #include <map>
 #include <string>
 #include <vector>
+
+#ifdef FC_OS_WIN32
+#include <QString>
+#endif
 
 namespace App {
 
@@ -227,6 +232,12 @@ namespace App {
         /// \param config The config map to search.
         /// \return The version tuple.
         static std::tuple<int, int> extractVersionFromConfigMap(const std::map<std::string,std::string> &config);
+
+        /// A utility method to remove any stray null characters from a path (Conda sometimes
+        /// injects these for unknown reasons -- see #6892 in the bug tracker).
+        /// \param pathAsString The std::string path to sanitize
+        /// \returns A path with any stray nulls removed
+        static std::filesystem::path sanitizePath(const std::string& pathAsString);
 
     private:
         std::tuple<int, int> _currentVersion;

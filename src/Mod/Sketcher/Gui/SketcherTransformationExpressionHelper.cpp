@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "SketcherTransformationExpressionHelper.h"
 
 #include <Gui/Command.h>

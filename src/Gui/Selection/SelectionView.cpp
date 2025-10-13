@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QCheckBox>
 #include <QLabel>
 #include <QLineEdit>
@@ -32,7 +31,6 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 #include <set>
-#endif
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>

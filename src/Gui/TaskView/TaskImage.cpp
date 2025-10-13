@@ -21,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDialog>
 #include <QPushButton>
 #include <QAction>
@@ -33,7 +31,6 @@
 #include <Inventor/events/SoButtonEvent.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Precision.h>

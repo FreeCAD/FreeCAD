@@ -23,6 +23,8 @@
 #ifndef PART_FACE_H
 #define PART_FACE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 

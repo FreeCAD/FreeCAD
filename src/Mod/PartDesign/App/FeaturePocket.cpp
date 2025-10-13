@@ -21,14 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <gp_Dir.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Face.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
@@ -39,7 +37,11 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "UpToShape", nullptr};
+// Note, TwoLengths has been deprecated by #21794. We do not remove it from the ui
+// because the files store the enum index. So it is not possible to migrate files if the
+// enum entry is removed (see #23612). In the distant future, when all files are reasonably
+// migrated we can drop this.
+const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "?TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -94,3 +96,4 @@ Base::Vector3d Pocket::getProfileNormal() const
     // turn around for pockets
     return res * -1;
 }
+

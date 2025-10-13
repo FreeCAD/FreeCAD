@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
 #include <sstream>
 #include <string_view>
-#endif
+
 
 #include <boost/algorithm/string.hpp>
 #include <boost/convert.hpp>

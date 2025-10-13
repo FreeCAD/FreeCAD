@@ -21,11 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDialog>
 #include <map>
-#endif
 
 #include <Base/Tools.h>
 #include <App/Document.h>

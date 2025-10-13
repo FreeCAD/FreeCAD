@@ -26,6 +26,8 @@
 #include <string>
 #include "GeometryExtension.h"
 
+#include <Mod/Part/PartGlobal.h>
+
 
 namespace Part {
 

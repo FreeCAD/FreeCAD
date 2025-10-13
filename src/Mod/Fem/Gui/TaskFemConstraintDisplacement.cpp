@@ -24,13 +24,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
@@ -163,6 +161,9 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     ui->DisplacementZFormulaCB->setChecked(bStates[8]);
     ui->FlowForceCB->setChecked(bStates[9]);
 
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
     buttonGroup->addButton(ui->btnRemove, static_cast<int>(SelectionChangeModes::refRemove));
@@ -252,8 +253,16 @@ void TaskFemConstraintDisplacement::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
+
         App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);

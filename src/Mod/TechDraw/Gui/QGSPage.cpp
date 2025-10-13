@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QDomDocument>
 #include <QFile>
@@ -30,7 +28,7 @@
 #include <QSvgGenerator>
 #include <QTemporaryFile>
 #include <QTextStream>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -140,6 +138,7 @@ bool QGSPage::itemClearsSelection(int itemTypeIn)
     const std::vector<int> ClearingTypes {
         13,  // MysteryType
         UserType::QGITemplate,
+        UserType::QGIProjGroup,
         UserType::QGIDrawingTemplate,
         UserType::QGISVGTemplate
     };

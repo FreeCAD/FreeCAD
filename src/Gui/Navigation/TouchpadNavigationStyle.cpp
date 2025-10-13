@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
-#endif
+
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"

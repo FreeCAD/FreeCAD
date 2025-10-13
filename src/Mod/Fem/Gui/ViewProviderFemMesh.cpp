@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/SbVec3f.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
@@ -44,7 +41,6 @@
 
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
-#endif
 
 #include <App/DocumentObject.h>
 #include <Base/BoundBox.h>

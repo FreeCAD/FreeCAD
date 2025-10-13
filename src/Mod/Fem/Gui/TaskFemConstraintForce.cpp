@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <TopoDS.hxx>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <App/Datums.h>
@@ -88,6 +86,9 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->lineDirection->setText(dir.isEmpty() ? QString() : dir);
     ui->checkReverse->setChecked(reversed);
 
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+
     // create a context menu for the listview of the references
     createActions(ui->listReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintForce::onReferenceDeleted);
@@ -136,8 +137,16 @@ void TaskFemConstraintForce::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
+
         App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
