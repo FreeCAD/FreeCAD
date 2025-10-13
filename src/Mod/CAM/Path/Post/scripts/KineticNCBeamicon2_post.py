@@ -114,10 +114,13 @@ class PostProcessorConfig:
         self.output_header = True
         self.output_line_numbers = False
         self.show_editor = True
-        self.modal = False  # if true commands are suppressed if the same as previous line.
-        self.output_doubles = (
-            True  # if false duplicate axis values are suppressed if the same as previous line.
-        )
+
+        # if true commands are suppressed if the same as previous line.
+        self.modal = False
+
+        # if false, duplicate axis values are suppressed if the same as previous
+        # line
+        self.output_doubles = True
         self.command_space = " "
 
         # Machine params
@@ -203,7 +206,6 @@ M09"""
             if args.modal:
                 self.modal = True
             if args.axis_modal:
-                print("here")
                 self.output_doubles = False
         except:
             return False
