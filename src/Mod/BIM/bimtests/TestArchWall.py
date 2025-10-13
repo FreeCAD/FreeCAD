@@ -271,7 +271,9 @@ class TestArchWall(TestArchBase.TestArchBase):
 
         # 1. Arrange: Create a baseless wall with a non-origin placement.
         wall = Arch.makeWall(length=2000, width=200, height=1500, name="BaselessWall")
-        wall_placement = App.Placement(App.Vector(1000, 500, 0), App.Rotation(App.Vector(0,0,1), 30))
+        wall_placement = App.Placement(
+            App.Vector(1000, 500, 0), App.Rotation(App.Vector(0, 0, 1), 30)
+        )
         wall.Placement = wall_placement
 
         # Store initial volume for later check
@@ -281,22 +283,30 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.document.recompute()
 
         # 3. Assert
-        self.assertFalse(wall.Shape.isNull(), "Baseless wall should have a valid shape after recompute.")
-        self.assertGreater(wall.Shape.Volume, 0, "Baseless wall shape should have a positive volume.")
-        self.assertAlmostEqual(wall.Shape.Volume, initial_volume, delta=1e-6,
-                               msg="Wall volume does not match its properties.")
+        self.assertFalse(
+            wall.Shape.isNull(), "Baseless wall should have a valid shape after recompute."
+        )
+        self.assertGreater(
+            wall.Shape.Volume, 0, "Baseless wall shape should have a positive volume."
+        )
+        self.assertAlmostEqual(
+            wall.Shape.Volume,
+            initial_volume,
+            delta=1e-6,
+            msg="Wall volume does not match its properties.",
+        )
 
         # The most important assertion: check if the shape is in the right place. The center of the
         # shape's bounding box should match the placement's base vector for X/Y, and be at half the
         # height for Z.
         shape_center = wall.Shape.BoundBox.Center
         placement_base = wall.Placement.Base
-        expected_center = App.Vector(placement_base.x,
-                                     placement_base.y,
-                                     wall.Height.Value / 2)
+        expected_center = App.Vector(placement_base.x, placement_base.y, wall.Height.Value / 2)
 
-        self.assertTrue(shape_center.isEqual(expected_center, 1e-5),
-                        f"Wall center {shape_center} does not match expected center {expected_center}")
+        self.assertTrue(
+            shape_center.isEqual(expected_center, 1e-5),
+            f"Wall center {shape_center} does not match expected center {expected_center}",
+        )
 
     def test_baseless_wall_stretch_api(self):
         """
@@ -306,7 +316,9 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.printTestMessage("Checking baseless wall stretch API...")
 
         # 1. Arrange: Create a baseless wall and then set its placement.
-        initial_placement = App.Placement(App.Vector(1000, 1000, 0), App.Rotation(App.Vector(0,0,1), 45))
+        initial_placement = App.Placement(
+            App.Vector(1000, 1000, 0), App.Rotation(App.Vector(0, 0, 1), 45)
+        )
         # Create wall first, then set its placement.
         wall = Arch.makeWall(length=2000)
         wall.Placement = initial_placement
@@ -332,12 +344,20 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.document.recompute()
 
         # Assert that the wall's properties have been updated correctly
-        self.assertAlmostEqual(wall.Length.Value, 4000.0, delta=1e-6, msg="Length was not updated correctly.")
+        self.assertAlmostEqual(
+            wall.Length.Value, 4000.0, delta=1e-6, msg="Length was not updated correctly."
+        )
 
         expected_center = App.Vector(2000, 0, 0)
-        self.assertTrue(wall.Placement.Base.isEqual(expected_center, 1e-6),
-                        "Placement.Base (center) was not updated correctly.")
+        self.assertTrue(
+            wall.Placement.Base.isEqual(expected_center, 1e-6),
+            "Placement.Base (center) was not updated correctly.",
+        )
 
         # Check rotation (should now be zero as the new points are on the X-axis)
-        self.assertAlmostEqual(wall.Placement.Rotation.Angle, 0.0, delta=1e-6,
-                               msg="Placement.Rotation was not updated correctly.")
+        self.assertAlmostEqual(
+            wall.Placement.Rotation.Angle,
+            0.0,
+            delta=1e-6,
+            msg="Placement.Rotation was not updated correctly.",
+        )
