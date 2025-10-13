@@ -29,6 +29,7 @@
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -453,6 +454,11 @@ bool TaskPipeParameters::accept()
     App::DocumentObject* spine = pipe->Spine.getValue();
     App::DocumentObject* auxSpine = pipe->AuxiliarySpine.getValue();
 
+    // Determine the “owner boundary” from the active Body, but make Body transparent.
+    const App::DocumentObject* pcActiveGroupObject =App::OriginGroupExtension::getBoundaryGroupOfObject(pcActiveBody);
+    auto pcActiveGroup = pcActiveGroupObject->getExtensionByType<App::OriginGroupExtension>();
+
+
     // If a spine isn't set but user entered a label then search for the appropriate document object
     QString label = ui->spineBaseEdit->text();
     if (!spine && !label.isEmpty()) {
@@ -467,16 +473,15 @@ bool TaskPipeParameters::accept()
         }
     }
 
-    if (spine && !pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
+    if (spine && !pcActiveBody->hasObject(spine) && pcActiveGroup) if(!pcActiveGroup->hasObject(spine)) {
         extReference = true;
     }
-    else if (auxSpine && !pcActiveBody->hasObject(auxSpine)
-             && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
+    else if (auxSpine && !pcActiveBody->hasObject(auxSpine) && pcActiveGroup) if(!pcActiveGroup->hasObject(auxSpine)) {
         extReference = true;
     }
     else {
         for (App::DocumentObject* obj : pipe->Sections.getValues()) {
-            if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+            if (!pcActiveBody->hasObject(obj)  && pcActiveGroup) if(!pcActiveGroup->hasObject(obj)) {
                 extReference = true;
                 break;
             }
@@ -494,7 +499,7 @@ bool TaskPipeParameters::accept()
         }
 
         if (!dlg.radioXRef->isChecked()) {
-            if (!pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
+            if (spine && !pcActiveBody->hasObject(spine) && pcActiveGroup) if(!pcActiveGroup->hasObject(spine)) {
                 pipe->Spine.setValue(
                     PartDesignGui::TaskFeaturePick::makeCopy(spine,
                                                              "",
@@ -502,8 +507,7 @@ bool TaskPipeParameters::accept()
                     pipe->Spine.getSubValues());
                 copies.push_back(pipe->Spine.getValue());
             }
-            else if (!pcActiveBody->hasObject(auxSpine)
-                     && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
+            else if (auxSpine && !pcActiveBody->hasObject(auxSpine) && pcActiveGroup) if(!pcActiveGroup->hasObject(auxSpine)) {
                 pipe->AuxiliarySpine.setValue(
                     PartDesignGui::TaskFeaturePick::makeCopy(auxSpine,
                                                              "",

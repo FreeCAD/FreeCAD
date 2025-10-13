@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *   Copyright (c)  2025 Walter Steffè  <walter.steffe.it@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,6 +63,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Datums.h>
+#include <App/GeoFeatureGroupExtension.h>
+
 #include <Base/Console.h>
 
 #include "Attacher.h"
@@ -994,7 +996,10 @@ std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const
     return objs;
 }
 
+
+
 Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& origPlacement,
+                                                         Base::Placement *groupPlacement,
                                                          bool* subChanged)
 {
     std::map<int, std::pair<std::string, std::string>> subChanges;
@@ -1059,6 +1064,7 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
             return pla;
         }
     }
+    if(objs.size()>0) if(groupPlacement) *groupPlacement= App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(objs[0]);
     return _calculateAttachedPlacement(objs, subnames, origPlacement);
 }
 

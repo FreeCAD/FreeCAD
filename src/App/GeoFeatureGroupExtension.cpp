@@ -30,6 +30,8 @@
 #include "Datums.h"
 #include "OriginGroupExtension.h"
 
+#include <cstring> // for std::strcmp
+
 
 using namespace App;
 
@@ -106,6 +108,45 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     }
 
     return nullptr;
+}
+
+
+const App::DocumentObject* GeoFeatureGroupExtension::getBoundaryGroupOfObject(const App::DocumentObject* obj)
+{
+    if (!obj) return nullptr;
+
+    // nearest GeoFeatureGroup (upstream meaning)
+    const App::DocumentObject* g =
+        obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
+            ? obj
+            : App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+
+    // Skip groups that opted out as a boundary (actsAsGroupBoundary == false)
+    while (g) {
+        auto* ext = g->getExtensionByType<App::GeoFeatureGroupExtension>();
+        if (!ext) break;                 // not a geofeature group (shouldn’t happen) → stop
+        if (ext->actsAsGroupBoundary())  // this one is a boundary → stop here
+            break;
+        // transparent group → climb to its parent group
+        g = App::GeoFeatureGroupExtension::getGroupOfObject(g);
+    }
+
+    return g; // may be nullptr (top level), or the nearest boundary group
+}
+
+
+Base::Placement GeoFeatureGroupExtension::globalGroupPlacementInBoundary(const App::DocumentObject* obj)
+{
+    Base::Placement result;
+    const App::DocumentObject* boundary = getBoundaryGroupOfObject(obj);
+    const App::DocumentObject* container = getGroupOfObject(obj);
+    while (container && container != boundary) {
+        if (auto* prop = dynamic_cast<const App::PropertyPlacement*>(container->getPropertyByName("Placement"))) {
+            result = prop->getValue() * result;
+        }
+        container = getGroupOfObject(container);
+    }
+    return result;
 }
 
 Base::Placement GeoFeatureGroupExtension::globalGroupPlacement()
@@ -244,6 +285,19 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
             }
         }
     }
+
+    if (p == &this->placement() && !this->actsAsGroupBoundary()
+        && !getExtendedObject()->isRestoring()
+        && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+
+        for (auto* obj : this->Group.getValues()) {
+            if (!obj) continue;
+
+            if (auto* prop = obj->getPropertyByName("Placement"))
+                prop->touch();
+        }
+    }
+
 
     App::GroupExtension::extensionOnChanged(p);
 }
@@ -514,13 +568,11 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj,
         return;
     }
 
-    // no cross CS link for local links.
+    // 1) Local links must not cross the nearest movable group boundary
     auto result = getScopedObjectsFromLinks(obj, LinkScope::Local);
-    auto group = obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
-        ? obj
-        : getGroupOfObject(obj);
+    auto group = GeoFeatureGroupExtension::getBoundaryGroupOfObject(obj);
     for (auto link : result) {
-        if (getGroupOfObject(link) != group) {
+        if (GeoFeatureGroupExtension::getBoundaryGroupOfObject(link) != group) {
             vec.push_back(link);
         }
     }

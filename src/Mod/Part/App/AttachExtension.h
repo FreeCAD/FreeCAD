@@ -92,6 +92,7 @@ public:
     App::PropertyEnumeration MapMode;  // see AttachEngine::eMapMode
     App::PropertyBool MapReversed;     // inverts Z and X internal axes
     App::PropertyPlacement AttachmentOffset;
+    App::PropertyPlacement RefPlacement;
 
     /**
      * @brief MapPathParameter is a parameter value for mmNormalToPath (the
@@ -143,6 +144,7 @@ protected:
                                                     const char* PropName) override;
 
     App::PropertyPlacement& getPlacement() const;
+    App::PropertyPlacement& getRefPlacement() const;
     void initBase(bool force);
 
 public:

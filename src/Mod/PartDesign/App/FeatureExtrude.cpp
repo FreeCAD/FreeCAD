@@ -35,10 +35,12 @@
 # include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FeatureExtrude.h"
 
@@ -752,7 +754,13 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
     if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace" || method == "UpToShape") {
         // Note: This will return an unlimited planar face if support is a datum plane
         TopoShape supportface = getTopoShapeSupportFace();
-        auto invObjLoc = getLocation().Inverted();
+        auto objLoc=getLocation();
+        auto invObjLoc = objLoc.Inverted();
+        Base::Placement groupPla=App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(this);
+        TopLoc_Location groupLoc=Part::Tools::fromPlacement(groupPla);
+        auto globalObjLoc=groupLoc*objLoc;
+        auto invGlobalObjLoc = globalObjLoc.Inverted();
+
         supportface.move(invObjLoc);
 
         if (!supportface.hasSubShape(TopAbs_WIRE)) {
@@ -764,11 +772,11 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
         // Find a valid shape, face or datum plane to extrude up to
         if (method == "UpToFace") {
             getUpToFaceFromLinkSub(upToShape, upToFacePropHandle);
-            upToShape.move(invObjLoc);
+            upToShape.move(invGlobalObjLoc);
         }
         else if (method == "UpToShape") {
             faceCount = getUpToShapeFromLinkSubList(upToShape, upToShapePropHandle);
-            upToShape.move(invObjLoc);
+            upToShape.move(invGlobalObjLoc);
             if (faceCount == 0) {
                 // No shape selected, use the base
                 upToShape = base;
