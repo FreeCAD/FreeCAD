@@ -47,6 +47,17 @@ import fanuc_post
 fanuc_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """G17 G54 G40 G49 G80 G90
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05
+G17 G54 G90 G80 G40
+M6 T0
+M2
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="fanuc", add_help=False)
@@ -61,11 +72,17 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
+    default=PREAMBLE,
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM6 T0\\nM2\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
+    default=POSTAMBLE,
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -112,17 +129,6 @@ PRECISION = 3
 # this global is used to pass spindle speed from the tool command into the machining command for
 # rigid tapping.
 tapSpeed = 0
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G54 G40 G49 G80 G90
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-G17 G54 G90 G80 G40
-M6 T0
-M2
-"""
 
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = """"""
