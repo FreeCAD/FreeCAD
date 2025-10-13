@@ -88,7 +88,7 @@ public:
     }
 
     App::DocumentObjectExecReturn* execute() override;
-
+    void onChanged(const App::Property* prop) override;
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
     being in an active transaction (joint creation).*/
@@ -197,6 +197,7 @@ public:
     bool isEmpty() const;
     int numberOfComponents() const;
 
+    void updateSolveStatus();
     inline int getLastDoF() const
     {
         return lastDoF;
@@ -221,21 +222,21 @@ public:
     {
         return lastSolverStatus;
     }
-    inline const std::vector<int>& getLastConflicting() const
+    inline const std::vector<App::DocumentObject*>& getLastConflicting() const
     {
-        return lastConflicting;
+        return lastConflictingJoints;
     }
-    inline const std::vector<int>& getLastRedundant() const
+    inline const std::vector<App::DocumentObject*>& getLastRedundant() const
     {
-        return lastRedundant;
+        return lastRedundantJoints;
     }
-    inline const std::vector<int>& getLastPartiallyRedundant() const
+    inline const std::vector<App::DocumentObject*>& getLastPartiallyRedundant() const
     {
-        return lastPartiallyRedundant;
+        return lastPartialRedundantJoints;
     }
-    inline const std::vector<int>& getLastMalformedConstraints() const
+    inline const std::vector<App::DocumentObject*>& getLastMalformed() const
     {
-        return lastMalformedConstraints;
+        return lastMalformedJoints;
     }
     boost::signals2::signal<void()> signalSolverUpdate;
 
@@ -258,10 +259,10 @@ private:
     bool lastHasMalformedConstraints;
     int lastSolverStatus;
 
-    std::vector<int> lastConflicting;
-    std::vector<int> lastRedundant;
-    std::vector<int> lastPartiallyRedundant;
-    std::vector<int> lastMalformedConstraints;
+    std::vector<App::DocumentObject*> lastRedundantJoints;
+    std::vector<App::DocumentObject*> lastConflictingJoints;
+    std::vector<App::DocumentObject*> lastPartialRedundantJoints;
+    std::vector<App::DocumentObject*> lastMalformedJoints;
 };
 
 }  // namespace Assembly
