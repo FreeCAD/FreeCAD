@@ -33,6 +33,8 @@
 # include <QTextBlock>
 # include <QTextCursor>
 # include <QTextDocumentFragment>
+# include <QTimer>
+# include <QGraphicsScene>
 
 #include <App/Application.h>
 #include <Gui/Command.h>
