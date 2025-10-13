@@ -2234,7 +2234,7 @@ bool GeomConic::isReversed() const
 bool GeomConic::reverseIfReversed()
 {
     Handle(Geom_Conic) hConic = Handle(Geom_Conic)::DownCast(handle());
-    if (hConic && hConic->Axis().Direction().Z() < 0.0) {
+    if (isReversed()) {
         hConic->Reverse();
         return true;
     }
@@ -2515,10 +2515,7 @@ bool GeomArcOfConic::reverseIfReversed()
 {
     Handle(Geom_TrimmedCurve) tCurve = Handle(Geom_TrimmedCurve)::DownCast(handle());
     if (tCurve) {
-        Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(tCurve->BasisCurve());
-        // For a 2D sketch, a reversed arc has its axis pointing along -Z.
-        if (conic && conic->Axis().Direction().Z() < 0.0) {
-            // Reverse() normalizes the curve's axis and its parameters.
+        if (isReversed()) {
             tCurve->Reverse();
             return true;
         }
@@ -7099,4 +7096,5 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt, bo
 }
 
 } // namespace Part
+
 
