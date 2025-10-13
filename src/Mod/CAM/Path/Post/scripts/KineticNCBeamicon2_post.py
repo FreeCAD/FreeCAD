@@ -56,9 +56,69 @@ from PathScripts import PathUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
 
+now = datetime.datetime.now()
+
+##########
+# Globals
+#
+#   never mutated, could concievably be added to args parser if we want to edit
+#   them.
+
+# write comments at top: (Exported by FreeCAD) etc
+OUTPUT_HEADER = True
+
+# if false, duplicate axis values are suppressed if the same as previous line
+#
+# in the original Kinetic code, this is only False if `args.axis_modal` is True,
+# but that arg doesn't exist, so we should probably remove `OUTPUT_DOUBLES`
+# completely, and treat it as always true.
+OUTPUT_DOUBLES = True
+
+COMMAND_SPACE = " "
+
+# Preamble text at top of g-code
+#
+#   G17: set XY plane for arcs
+#   G21: set units to mm
+#   G40: cancel cutter radius compensation
+#   G49: cancel tool length offset
+#   G80: cancel any active canned cycle
+#   G90: absolute positions
+#   M08: coolant on
+PREAMBLE = """%
+G17 G21 G40 G49 G80 G90
+M08
+"""
+
+# Postamble follows last operation
+#
+#   M05: spindle stop
+#   M09: coolant off
+#   G17: XY plane selection
+#   G90: absolute positioning
+#   G80: cancel canned cycles
+#   G40: cancel cutter radius compensation
+#   M30: program end and rewind
+POSTAMBLE = """M05 M09
+G17 G90 G80 G40
+M30
+"""
+
+# Pre operation text will be inserted before every operation
+PRE_OPERATION = ""
+
+# Post operation text will be inserted after every operation
+POST_OPERATION = ""
+
+# Tool Change commands will be inserted before a tool change
+#
+# M05: spindle stop
+# M09: coolant off
+TOOL_CHANGE = """M05
+M09"""
 
 TOOLTIP = """
-This is a postprocessor file for the Path workbench. It is used to
+This is a postprocessor file for the CAM workbench. It is used to
 take a pseudo-G-code fragment outputted by a Path object, and output
 real G-code suitable for the KineticNC/Beamicon2 Control Software for up to 4 Axis (3 plus rotary).
 
@@ -69,151 +129,79 @@ import KineticNCBeamicon2_post
 KineticNCBeamicon2_post.export(object,"/path/to/file.ncc","")
 """
 
-now = datetime.datetime.now()
+
+##########
+# Arguments
+
+def process_multiline_string(value):
+    """Convert \\n to actual newlines in command-line strings"""
+    return value.replace("\\n", "\n")
 
 parser = argparse.ArgumentParser(
     prog="linuxcnc",
     add_help=False,
 )
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
-parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
+parser.add_argument("--no-comments",
+                    action="store_true",
+                    help="suppress comment output",
+                    default=False)
+parser.add_argument("--line-numbers",
+                    action="store_true",
+                    help="prefix with line numbers",
+                    default=False)
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument("--precision",
+                    default="3",
+                    help="number of digits of precision, default=3")
+
+display = lambda x: x.replace('%', '%%').replace('\n', '\\n')
 parser.add_argument(
     "--preamble",
-    help=r'set commands to be issued before the first command, default="%%\nG17 G21 G40 G49 G80 G90\nM08\n"',
+    help=rf'set commands to be issued before the first command, default="{display(PREAMBLE)}"',
+    type=process_multiline_string,
+    default=PREAMBLE
 )
 parser.add_argument(
     "--postamble",
-    help=r'set commands to be issued after the last command, default="M05 M09\nG17 G90 G80 G40\nM30\n"',
+    help=rf'set commands to be issued after the last command, default="{display(POSTAMBLE)}"',
+    type=process_multiline_string,
+    default=POSTAMBLE
 )
 parser.add_argument(
-    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
+    "--inches",
+    action="store_true",
+    help="Convert output for US imperial mode (G20)",
+    default=False
 )
 parser.add_argument(
     "--modal",
     action="store_true",
     help="If true, repeated commands are suppressed (eg G1 X1 <newline> Y2 <newline> Z3)",
+    default=False
 )
 parser.add_argument("--axis-modal", action="store_true", help="Output the Same Axis Value Mode")
 
 TOOLTIP_ARGS = parser.format_help()
 
-
-class PostProcessorConfig:
-    """Configuration class to hold all postprocessor settings."""
-
-    def __init__(self):
-        # Customization
-        self.output_comments = True
-        self.output_header = True
-        self.output_line_numbers = False
-        self.show_editor = True
-
-        # if true commands are suppressed if the same as previous line.
-        self.modal = False
-
-        # if false, duplicate axis values are suppressed if the same as previous
-        # line
-        self.output_doubles = True
-        self.command_space = " "
-
-        # Machine params
-        self.units = "G21"  # G21 for metric, G20 for us standard
-        self.unit_speed_format = "mm/min"
-        self.unit_format = "mm"
-
-        self.precision = 3
-
-        # Preamble text at top of g-code
-        #
-        #   G17: set XY plane for arcs
-        #   G21: set units to mm
-        #   G40: cancel cutter radius compensation
-        #   G49: cancel tool length offset
-        #   G80: cancel any active canned cycle
-        #   G90: absolute positions
-        #   M08: coolant on
-        self.preamble = """%
-G17 G21 G40 G49 G80 G90
-M08
-"""
-
-        # Postamble follows last operation
-        #
-        #   M05: spindle stop
-        #   M09: coolant off
-        #   G17: XY plane selection
-        #   G90: absolute positioning
-        #   G80: cancel canned cycles
-        #   G40: cancel cutter radius compensation
-        #   M30: program end and rewind
-        self.postamble = """M05 M09
-G17 G90 G80 G40
-M30
-"""
-
-        # Pre operation text will be inserted before every operation
-        self.pre_operation = ""
-
-        # Post operation text will be inserted after every operation
-        self.post_operation = ""
-
-        # Tool Change commands will be inserted before a tool change
-        #
-        # M05: spindle stop
-        # M09: coolant off
-        self.tool_change = """M05
-M09"""
-
-        self.linenr = 100  # line number starting value (will be mutated)
-
-    def linenumber(self):
-        """Generate line number prefix if enabled."""
-        if self.output_line_numbers is True:
-            self.linenr += 10
-            return "N" + str(self.linenr) + " "
-        return ""
-
-    def process_arguments(self, argstring):
-        """Process command line arguments and update configuration."""
-        try:
-            args = parser.parse_args(shlex.split(argstring))
-            if args.no_header:
-                self.output_header = False
-            if args.no_comments:
-                self.output_comments = False
-            if args.line_numbers:
-                self.output_line_numbers = True
-            if args.no_show_editor:
-                self.show_editor = False
-            print("Show editor = %d" % self.show_editor)
-            self.precision = args.precision
-            if args.preamble is not None:
-                self.preamble = args.preamble.replace("\\n", "\n")
-            if args.postamble is not None:
-                self.postamble = args.postamble.replace("\\n", "\n")
-            if args.inches:
-                self.units = "G20"
-                self.unit_speed_format = "in/min"
-                self.unit_format = "in"
-                self.precision = 4
-            if args.modal:
-                self.modal = True
-            if args.axis_modal:
-                self.output_doubles = False
-        except:
-            return False
-
-        return True
+def get_units(use_inches):
+    if use_inches:
+        units = "G20"  # G20 for US standard
+        unit_speed_format = "in/min"
+        unit_format = "in"
+        # precision = 4  # from original, but we shouldn't override the user's precision choice
+    else:
+        units = "G21"  # G21 for metric
+        unit_speed_format = "mm/min"
+        unit_format = "mm"
+    return units, unit_speed_format, unit_format
 
 
-def format_lines(lines, config):
+def format_lines(lines, args):
     """
     Apply line numbers and join lines with newlines.
 
@@ -222,9 +210,11 @@ def format_lines(lines, config):
       - joins them with newline characters
     """
     out = []
+    current_line = 100
     for line in lines:
-        if config.output_line_numbers:
-            out.append(config.linenumber() + line)
+        if args.line_numbers:
+            out.append(f'N{current_line} {line}')
+            current_line += 10
         else:
             out.append(line)
     return "\n".join(out) + "\n"
@@ -232,9 +222,10 @@ def format_lines(lines, config):
 
 def export(objectslist, filename, argstring):
     job = PathUtils.findParentJob(objectslist[0])
-    config = PostProcessorConfig()
-    if not config.process_arguments(argstring):
-        return None
+
+    args = parser.parse_args(shlex.split(argstring))
+
+    units, unit_speed_format, unit_format = get_units(args.inches)
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -247,7 +238,7 @@ def export(objectslist, filename, argstring):
     out_lines = []  # raw, unnumbered lines
 
     # write header
-    if config.output_header:
+    if OUTPUT_HEADER:
         out_lines.append("(Exported by FreeCAD)")
         out_lines.append("(Post Processor: " + __name__ + ")")
         out_lines.append(
@@ -255,11 +246,13 @@ def export(objectslist, filename, argstring):
         )  # remove while debugging to make deterministic
 
     # Write the preamble
-    if config.output_comments:
+    if not args.no_comments:
         out_lines.append("(begin preamble)")
-    for line in config.preamble.splitlines():
+    for line in args.preamble.splitlines():
         out_lines.append(line)
-    out_lines.append(config.units)
+
+    # G20/G21
+    out_lines.append(units)
 
     # Iterate across ops
     for obj in objectslist:
@@ -267,56 +260,35 @@ def export(objectslist, filename, argstring):
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
-        myMachine = "not set"
-
-        if hasattr(job, "MachineName"):
-            myMachine = job.MachineName
-
-        if hasattr(job, "MachineUnits"):
-            if job.MachineUnits == "Metric":
-                config.units = "G21"
-                config.unit_format = "mm"
-                config.unit_speed_format = "mm/min"
-            else:
-                config.units = "G20"
-                config.unit_format = "in"
-                config.unit_speed_format = "in/min"
-
         # do the pre_op
-        if config.output_comments:
-            out_lines.append("(begin operation: %s)" % obj.Label)
-            out_lines.append(
-                "(machine: %s, %s)"
-                % (
-                    myMachine,
-                    config.unit_speed_format,
-                )
-            )
-        for line in config.pre_operation.splitlines(True):
+        if not args.no_comments:
+            out_lines.append(f"(begin operation: {obj.Label})")
+            out_lines.append(f"(machine: not set, {unit_speed_format})")
+        for line in PRE_OPERATION.splitlines(True):
             # splitlines(True) keeps the newline, so strip it
             out_lines.append(line.rstrip("\n\r"))
 
         # actual op
-        lines = parse(obj, config)
+        lines = parse(obj, args)
         out_lines.extend(lines)
 
         # do the post_op
-        if config.output_comments:
+        if not args.no_comments:
             out_lines.append("(finish operation: %s)" % obj.Label)
-        for line in config.post_operation.splitlines(True):
+        for line in POST_OPERATION.splitlines(True):
             # splitlines(True) keeps the newline, so strip it
             out_lines.append(line.rstrip("\n\r"))
 
     # do the post_amble
-    if config.output_comments:
+    if not args.no_comments:
         out_lines.append("(begin postamble)")
-    for line in config.postamble.splitlines():
+    for line in args.postamble.splitlines():
         out_lines.append(line)
 
     # Format all lines at once (add line numbers and join with newlines)
-    gcode = format_lines(out_lines, config)
+    gcode = format_lines(out_lines, args)
 
-    if FreeCAD.GuiUp and config.show_editor:
+    if FreeCAD.GuiUp and not args.no_show_editor:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
         result = dia.exec_()
@@ -337,11 +309,13 @@ def export(objectslist, filename, argstring):
     return final
 
 
-def parse(pathobj, config):
+def parse(pathobj, args):
     out_lines = []  # raw, unnumbered lines
     lastcommand = None
-    precision_string = "." + str(config.precision) + "f"
+    precision_string = "." + str(args.precision) + "f"
     currLocation = {}  # keep track for no doubles
+
+    units, unit_speed_format, unit_format = get_units(args.inches)
 
     # the order of parameters
     # linuxcnc doesn't want K properties on XY plane  Arcs need work.
@@ -368,11 +342,11 @@ def parse(pathobj, config):
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
-        if config.output_comments:
+        if not args.no_comments:
             out_lines.append("(compound: " + pathobj.Label + ")")
 
         for p in pathobj.Group:
-            child_lines = parse(p, config)
+            child_lines = parse(p, args)
             if child_lines:
                 out_lines.extend(child_lines)
         return out_lines
@@ -396,14 +370,14 @@ def parse(pathobj, config):
             #   G1 X1
             #   Y1  ( doesn't mention G1 again )
             if (
-                not config.modal  # if not modal, always output
+                not args.modal  # if not modal, always output
                 or command != lastcommand  # if modal and its a new command, output
             ):
                 outstring.append(command)
 
             # Comments
             if c.Name.startswith("("):
-                if config.output_comments:
+                if not args.no_comments:
                     out_lines.append(c.Name)  # TODO: don't modify out_lines within loop
                     # outstring.append('\n')
                     # outstring.append(c.Name)
@@ -411,7 +385,7 @@ def parse(pathobj, config):
 
             # Messages (convert to comments)
             if command == "message":
-                if config.output_comments:
+                if not args.no_comments:
                     # Get all parameters and join them into a comment
                     message = " ".join([str(v) for v in c.Parameters.values()])
                     if message:
@@ -429,7 +403,7 @@ def parse(pathobj, config):
 
                 # Tool change preamble + correct order, eg T2 *before* M6
                 if tool_num is not None:
-                    out_lines.append(f"{config.tool_change}T{int(tool_num)} M6")
+                    out_lines.append(f"{TOOL_CHANGE}T{int(tool_num)} M6")
 
                 else:
                     raise Exception("M6 received, but tool_num was None")
@@ -440,18 +414,18 @@ def parse(pathobj, config):
             for param in params:
                 if param in c.Parameters:
                     if param == "F" and (  # Feed rate
-                        currLocation[param] != c.Parameters[param] or config.output_doubles
+                        currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
                     ):
                         if c.Name not in [
                             "G0",
                             "G00",
                         ]:  # linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
-                            if speed.getValueAs(config.unit_speed_format) > 0.0:
+                            if speed.getValueAs(unit_speed_format) > 0.0:
                                 outstring.append(
                                     param
                                     + format(
-                                        float(speed.getValueAs(config.unit_speed_format)),
+                                        float(speed.getValueAs(unit_speed_format)),
                                         precision_string,
                                     )
                                 )
@@ -468,7 +442,7 @@ def parse(pathobj, config):
 
                     else:
                         if (
-                            (not config.output_doubles)
+                            (not OUTPUT_DOUBLES)
                             and (param in currLocation)
                             and (currLocation[param] == c.Parameters[param])
                         ):
@@ -478,7 +452,7 @@ def parse(pathobj, config):
                             outstring.append(
                                 param
                                 + format(
-                                    float(pos.getValueAs(config.unit_format)), precision_string
+                                    float(pos.getValueAs(unit_format)), precision_string
                                 )
                             )
 
@@ -488,7 +462,7 @@ def parse(pathobj, config):
 
             # Stitch outstring together
             if len(outstring) >= 1:
-                line = (config.command_space.join(outstring)).strip()
+                line = (COMMAND_SPACE.join(outstring)).strip()
                 out_lines.append(line)
 
         return out_lines
