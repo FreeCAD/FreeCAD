@@ -184,7 +184,7 @@ TOOLTIP_ARGS = parser.format_help()
 
 
 def get_units(use_inches):
-    ''' Determine units based on if the user passes --inches or not. '''
+    """Determine units based on if the user passes --inches or not."""
     if use_inches:
         units = "G20"  # G20 for US standard
         unit_speed_format = "in/min"
