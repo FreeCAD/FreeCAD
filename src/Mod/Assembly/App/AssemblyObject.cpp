@@ -198,7 +198,7 @@ void AssemblyObject::updateSolveStatus()
 {
     lastRedundantJoints.clear();
     lastHasRedundancies = false;
-     //+1 because there's a grounded joint to origin
+    //+1 because there's a grounded joint to origin
     lastDoF = (1 + numberOfComponents()) * 6;
 
     if (!mbdAssembly || !mbdAssembly->mbdSystem) {
@@ -226,7 +226,7 @@ void AssemblyObject::updateSolveStatus()
         if (!jm) {
             return;
         }
-        //Base::Console().warning("jm->name %s\n", jm->name);
+        // Base::Console().warning("jm->name %s\n", jm->name);
         bool isJointRedundant = false;
 
         jm->constraintsDo([&](std::shared_ptr<MbD::Constraint> con) {
@@ -239,7 +239,7 @@ void AssemblyObject::updateSolveStatus()
             if (spec.rfind("Redundant", 0) == 0) {
                 isJointRedundant = true;
             }
-            //Base::Console().warning("    - %s\n", spec);
+            // Base::Console().warning("    - %s\n", spec);
             --lastDoF;
         });
 

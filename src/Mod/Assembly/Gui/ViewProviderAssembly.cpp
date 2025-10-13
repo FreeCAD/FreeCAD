@@ -1557,11 +1557,10 @@ void ViewProviderAssembly::UpdateSolverInformation()
                     QStringLiteral("(%1)").arg(objListHelper(assembly->getLastRedundant())));
     }
     else if (hasMalformed) {  // malformed joints
-        signalSetUp(
-            QStringLiteral("malformed_constraints"),
-            tr("Malformed joints:") + QLatin1String(" "),
-            QStringLiteral("#malformed"),
-            QStringLiteral("(%1)").arg(objListHelper(assembly->getLastMalformed())));
+        signalSetUp(QStringLiteral("malformed_constraints"),
+                    tr("Malformed joints:") + QLatin1String(" "),
+                    QStringLiteral("#malformed"),
+                    QStringLiteral("(%1)").arg(objListHelper(assembly->getLastMalformed())));
     }
     // Currently the solver does not distinguish between conflicts and redundancies.
     /* else if (hasRedundancies) {

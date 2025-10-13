@@ -120,7 +120,6 @@ PyObject* AssemblyObjectPy::updateSolveStatus(PyObject* args) const
 
     this->getAssemblyObjectPtr()->updateSolveStatus();
     Py_Return;
-
 }
 
 PyObject* AssemblyObjectPy::undoSolve(PyObject* args) const
