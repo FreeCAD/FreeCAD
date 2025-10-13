@@ -370,6 +370,11 @@ class Joint:
         if not hasattr(joint, "AngleMax"):
             self.addAngleMaxProperty(joint)
 
+        joint.setPropertyStatus("Distance", "AllowNegativeValues")
+        joint.setPropertyStatus("Distance2", "AllowNegativeValues")
+        joint.setPropertyStatus("LengthMin", "AllowNegativeValues")
+        joint.setPropertyStatus("LengthMax", "AllowNegativeValues")
+
     def addAngleProperty(self, joint):
         joint.addProperty(
             "App::PropertyAngle",
