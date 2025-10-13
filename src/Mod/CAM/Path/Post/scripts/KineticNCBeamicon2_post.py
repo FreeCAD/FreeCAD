@@ -53,7 +53,6 @@ import argparse
 import datetime
 import shlex
 from PathScripts import PathUtils
-import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
 
 now = datetime.datetime.now()
@@ -171,7 +170,10 @@ parser.add_argument(
     default=POSTAMBLE,
 )
 parser.add_argument(
-    "--inches", action="store_true", help="Convert output for US imperial mode (G20)", default=False
+    "--inches",
+    action="store_true",
+    help="Convert output for US imperial mode (G20)",
+    default=False
 )
 parser.add_argument(
     "--modal",
@@ -217,6 +219,18 @@ def format_lines(lines, args):
 
 
 def export(objectslist, filename, argstring):
+    '''Build a g-code string from a list of objects within a single Job. This
+    doesn't actually export anything, but WrapperPost expects the function to be
+    called `export`.
+
+    Args:
+      objectslist: FreeCAD objects prepared by `WrapperPost`
+      filename: always "-"
+      argstring: arguments entered in the Job Task Panel
+
+    Returns:
+      str, gcode to be saved to disk downstream
+    '''
     job = PathUtils.findParentJob(objectslist[0])
 
     args = parser.parse_args(shlex.split(argstring))
@@ -252,10 +266,6 @@ def export(objectslist, filename, argstring):
 
     # Iterate across ops
     for obj in objectslist:
-
-        # fetch machine details
-        job = PathUtils.findParentJob(obj)
-
         # do the pre_op
         if not args.no_comments:
             out_lines.append(f"(begin operation: {obj.Label})")
@@ -297,15 +307,13 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    if not filename == "-":  # NOTE: WrapperPost hardcodes "-" as the filename always
-        gfile = pyopen(filename, "w")
-        gfile.write(final)
-        gfile.close()
-
     return final
 
 
 def parse(pathobj, args):
+    '''
+    Convert a pathobj to a list of lines of g-code
+    '''
     out_lines = []  # raw, unnumbered lines
     lastcommand = None
     precision_string = "." + str(args.precision) + "f"
@@ -374,9 +382,7 @@ def parse(pathobj, args):
             # Comments
             if c.Name.startswith("("):
                 if not args.no_comments:
-                    out_lines.append(c.Name)  # TODO: don't modify out_lines within loop
-                    # outstring.append('\n')
-                    # outstring.append(c.Name)
+                    out_lines.append(c.Name)
                 continue
 
             # Messages (convert to comments)
@@ -446,7 +452,10 @@ def parse(pathobj, args):
                         else:
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param + format(float(pos.getValueAs(unit_format)), precision_string)
+                                param
+                                + format(
+                                    float(pos.getValueAs(unit_format)), precision_string
+                                )
                             )
 
             # store the latest command
