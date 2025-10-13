@@ -77,6 +77,15 @@ class AssemblyObject(Part):
         ...
 
     @constmethod
+    def updateSolveStatus(self) -> Any:
+        """updateSolveStatus()
+
+        Args: None
+
+        Returns: None"""
+        ...
+
+    @constmethod
     def undoSolve(self) -> Any:
         """Undo the last solve of the assembly and return part placements to their initial position.
 

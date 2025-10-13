@@ -41,6 +41,8 @@ SET(AssemblyGui_SRCS_Module
     AppAssemblyGui.cpp
     AppAssemblyGuiPy.cpp
     PreCompiled.h
+    Commands.cpp
+    Commands.h
     TaskAssemblyMessages.cpp
     TaskAssemblyMessages.h
     ViewProviderAssembly.cpp
