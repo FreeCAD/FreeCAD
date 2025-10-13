@@ -84,6 +84,12 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
     else {
         res._parentCache = owner->shared_from_this();
     }
+
+    // this fixes some issues related to elements not having valid element maps until this is flushed
+    // i think this is because the element map is null from a bad copy (ts is missing an element map aswell?)
+    // and this call is retrieving a valid copy from the cache.
+    res.flushElementMap();
+    
     return res;
 }
 
