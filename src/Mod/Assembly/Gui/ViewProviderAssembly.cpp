@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QMenu>
+#include <QString>
 #include <vector>
 #include <sstream>
 #include <iostream>
