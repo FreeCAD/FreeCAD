@@ -37,7 +37,7 @@
 # *                                                                          *
 # *   Changes to KineticNCBeamicon2_post.py                                  *
 # *     * fix tool change ordering (T2 *before* M6)                          *
-# *     * remove globals, use PostProcessorConfig                            *
+# *     * remove globals mutation                                            *
 # *     * handle newlines + line number more elegantly                       *
 # *     * clean up `parse` and `export`                                      *
 # *     * general refactor, clean up and comments                            *
