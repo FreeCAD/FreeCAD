@@ -2247,9 +2247,9 @@ def debaseWall(wall):
         # Step 2: Determine the extrusion normal vector.
         normal = wall.Normal
         if normal.Length == 0:
-            normal = base_obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+            normal = base_obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
             if normal.Length == 0:
-                 normal = FreeCAD.Vector(0,0,1)
+                normal = FreeCAD.Vector(0, 0, 1)
 
         # Step 3: Calculate the final orientation from the geometric axes.
         # - The local Z-axis is the extrusion direction (height).

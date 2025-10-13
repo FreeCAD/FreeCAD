@@ -51,7 +51,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         Tests the interactive creation of a baseless wall by simulating the
         Arch_Wall command's internal logic.
         """
-        from draftguitools import gui_trackers # Import the tracker module
+        from draftguitools import gui_trackers  # Import the tracker module
 
         self.printTestMessage("Testing interactive creation of a baseless wall...")
 
@@ -76,25 +76,35 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         cmd.create_wall()
 
         # 4. Assert
-        self.assertEqual(len(self.document.Objects), initial_object_count + 1,
-                         "Exactly one new object should have been created.")
+        self.assertEqual(
+            len(self.document.Objects),
+            initial_object_count + 1,
+            "Exactly one new object should have been created.",
+        )
 
         wall = self.document.Objects[-1]
         self.assertEqual(Draft.get_type(wall), "Wall", "The created object is not a wall.")
 
         self.assertIsNone(wall.Base, "A baseless wall should have its Base property set to None.")
 
-        self.assertAlmostEqual(wall.Length.Value, 2000.0, delta=1e-6,
-                               msg="Wall length is incorrect.")
+        self.assertAlmostEqual(
+            wall.Length.Value, 2000.0, delta=1e-6, msg="Wall length is incorrect."
+        )
 
         # Verify the placement is correct
         expected_center = FreeCAD.Vector(2000, 1000, 0)
-        self.assertTrue(wall.Placement.Base.isEqual(expected_center, 1e-6),
-                        f"Wall center {wall.Placement.Base} does not match expected {expected_center}")
+        self.assertTrue(
+            wall.Placement.Base.isEqual(expected_center, 1e-6),
+            f"Wall center {wall.Placement.Base} does not match expected {expected_center}",
+        )
 
         # Verify the rotation is correct (aligned with global X-axis, so no rotation)
-        self.assertAlmostEqual(wall.Placement.Rotation.Angle, 0.0, delta=1e-6,
-                               msg="Wall rotation should be zero for a horizontal line.")
+        self.assertAlmostEqual(
+            wall.Placement.Rotation.Angle,
+            0.0,
+            delta=1e-6,
+            msg="Wall rotation should be zero for a horizontal line.",
+        )
 
     def test_create_draft_line_baseline_wall_interactive(self):
         """Tests the interactive creation of a wall with a Draft.Line baseline."""
@@ -104,12 +114,12 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.printTestMessage("Testing interactive creation of a Draft.Line based wall...")
 
         # 1. Arrange: Set preference to "Draft line" mode
-        self.params.SetInt("WallBaseline", 1) # Corresponds to WallBaselineMode.DRAFT_LINE
+        self.params.SetInt("WallBaseline", 1)  # Corresponds to WallBaselineMode.DRAFT_LINE
 
         cmd = Arch_Wall()
         cmd.doc = self.document
         cmd.wp = WorkingPlane.get_working_plane()
-        cmd.points = [FreeCAD.Vector(0,0,0), FreeCAD.Vector(2000,0,0)]
+        cmd.points = [FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(2000, 0, 0)]
         cmd.Align = "Center"
         cmd.Width = 200.0
         cmd.Height = 2500.0
@@ -123,8 +133,11 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         cmd.create_wall()
 
         # 3. Assert
-        self.assertEqual(len(self.document.Objects), initial_object_count + 2,
-                         "Should have created a Wall and a Draft Line.")
+        self.assertEqual(
+            len(self.document.Objects),
+            initial_object_count + 2,
+            "Should have created a Wall and a Draft Line.",
+        )
 
         # The wall is created after the base, so it's the last object
         wall = self.document.Objects[-1]
@@ -141,12 +154,12 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.printTestMessage("Testing interactive creation of a Sketch based wall...")
 
         # 1. Arrange: Set preference to "Sketch" mode
-        self.params.SetInt("WallBaseline", 2) # Corresponds to WallBaselineMode.SKETCH
+        self.params.SetInt("WallBaseline", 2)  # Corresponds to WallBaselineMode.SKETCH
 
         cmd = Arch_Wall()
         cmd.doc = self.document
         cmd.wp = WorkingPlane.get_working_plane()
-        cmd.points = [FreeCAD.Vector(0,0,0), FreeCAD.Vector(2000,0,0)]
+        cmd.points = [FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(2000, 0, 0)]
         cmd.Align = "Center"
         cmd.Width = 200.0
         cmd.Height = 2500.0
@@ -160,8 +173,11 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         cmd.create_wall()
 
         # 3. Assert
-        self.assertEqual(len(self.document.Objects), initial_object_count + 2,
-                         "Should have created a Wall and a Sketch.")
+        self.assertEqual(
+            len(self.document.Objects),
+            initial_object_count + 2,
+            "Should have created a Wall and a Sketch.",
+        )
 
         wall = self.document.Objects[-1]
         base = self.document.Objects[-2]
