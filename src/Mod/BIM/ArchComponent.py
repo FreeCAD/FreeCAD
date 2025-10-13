@@ -842,7 +842,7 @@ class Component(ArchIFC.IfcProduct):
         """
         removeFromComponent(obj, subobject)
 
-    def processSubShapes(self,obj,base,placement=None):
+    def processSubShapes(self, obj, base, placement=None):
         """Add Additions and Subtractions to a base shape.
 
         If Additions exist, fuse them to the base shape. If no base is
