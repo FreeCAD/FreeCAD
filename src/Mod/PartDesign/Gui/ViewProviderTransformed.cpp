@@ -129,6 +129,8 @@ void ViewProviderTransformed::updatePreview()
                 pcPreviewRoot->addChild(sep);
             }
         }
+    } catch (const Base::ValueError&) {
+        // no-op - ignore misconfigured objects
     } catch (const Base::Exception& e) {
         e.reportException();
     }
