@@ -44,17 +44,10 @@ class AppExport TransactionalObject: public App::ExtensionContainer
     PROPERTY_HEADER_WITH_OVERRIDE(App::TransactionalObject);
 
 public:
-    /// Construct a transactional object.
     TransactionalObject();
-
-    /// Destruct a transactional object.
     ~TransactionalObject() override;
 
-    /**
-     * @brief Check if this object is attached to a document.
-     *
-     * @return true if this object is attached to a document; otherwise false.
-     */
+    /// Check if this object is attached to a document.
     virtual bool isAttachedToDocument() const;
 
     /**

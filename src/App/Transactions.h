@@ -64,7 +64,6 @@ public:
      */
     explicit Transaction(int id = 0);
 
-    /// Deconstruct a transaction.
     ~Transaction() override;
 
     /**
@@ -75,39 +74,23 @@ public:
      */
     void apply(Document& Doc, bool forward);
 
-    /// The name of the transaction
+    /// The UTF-8 name of the transaction
     std::string Name;
 
     unsigned int getMemSize() const override;
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
 
-    /**
-     * Acquire the transaction ID of this transaction.
-     *
-     * @return the transaction ID.
-     */
+    /// Get the transaction ID of this transaction.
     int getID() const;
 
-    /**
-     * @brief Generate a new unique transaction ID.
-     *
-     * @return the new transaction ID.
-     */
+    /// Generate a new unique transaction ID.
     static int getNewID();
 
-    /**
-     * @brief Get the last transaction ID.
-     *
-     * @return the last transaction ID.
-     */
+    /// Get the last transaction ID.
     static int getLastID();
 
-    /**
-     * @brief Check if the transaction list is empty.
-     *
-     * @return true if the transaction list is empty; otherwise false.
-     */
+    /// Check if the transaction list is empty.
     bool isEmpty() const;
 
     /**
@@ -173,10 +156,8 @@ class AppExport TransactionObject: public Base::Persistence
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /// Construct a transaction object.
     TransactionObject();
 
-    /// Destruct a transaction object.
     ~TransactionObject() override;
 
     /**
@@ -223,19 +204,15 @@ public:
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
 
-    /// Give Transaction access to the internals of this class.
     friend class Transaction;
 
 protected:
     /// The status of the transaction object.
     enum Status
     {
-        /// A new object is added to the document.
-        New,
-        /// An object is removed from the document.
-        Del,
-        /// An object is changed in the document.
-        Chn
+        New, ///< A new object is added to the document.
+        Del, ///< An object is deleted from the document.
+        Chn ///< An object is changed in the document.
     } status {New};
 
     /// Struct to maintain property information.
@@ -244,6 +221,7 @@ protected:
         Base::Type propertyType;
         const Property* propertyOrig = nullptr;
     };
+
     /// A map to maintain the properties of the object.
     std::unordered_map<int64_t, PropData> _PropChangeMap;
 
@@ -259,10 +237,8 @@ class AppExport TransactionDocumentObject: public TransactionObject
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /// Construct a transaction document object.
     TransactionDocumentObject();
 
-    /// Destruct a transaction document object.
     ~TransactionDocumentObject() override;
 
     void applyNew(Document& Doc, TransactionalObject* pcObj) override;
@@ -278,10 +254,7 @@ public:
 class AppExport TransactionFactory
 {
 public:
-    /** @brief Get the singleton instance of the TransactionFactory.
-     *
-     * @return The singleton instance of the TransactionFactory.
-     */
+    /// Get the singleton instance of the TransactionFactory.
     static TransactionFactory& instance();
 
     /// Destruct the singleton instance of the TransactionFactory.
@@ -330,14 +303,9 @@ public:
         TransactionFactory::instance().addProducer(type, this);
     }
 
-    /// Destruct a transaction producer.
     ~TransactionProducer() override = default;
 
-    /**
-     * @brief Creates an instance of the specified transaction object.
-     *
-     * @return A pointer to the created transaction object.
-     */
+    /// Creates an instance of the specified transaction object.
     void* Produce() const override
     {
         return (new CLASS);

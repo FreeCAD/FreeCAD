@@ -136,24 +136,15 @@ public:
      */
     void activate(bool enable);
 
-    /**
-     * @brief Check if the locker is active.
-     *
-     * @return true if the locker is active; otherwise false.
-     */
+    /// Check if the locker is active.
     bool isActive() const
     {
         return active;
     }
 
-    /**
-     * @brief Check if transaction is being locked.
-     *
-     * @return true if the transaction is locked; otherwise false.
-     */
+    /// Check if transaction is being locked.
     static bool isLocked();
 
-    /// Give access to the internals of this class to Application.
     friend class Application;
 
 public:
