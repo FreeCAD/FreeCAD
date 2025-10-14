@@ -263,9 +263,10 @@ def removeComponents(objectsList, host=None):
                         s.remove(o)
                         h.Subtractions = s
                         o.ViewObject.show()
-                    elif o == s.Base:
-                        s.Base = None
-                        o.ViewObject.show()
+                    elif o == h.Base:
+                        h.Base = None
+                        if FreeCAD.GuiUp:
+                            o.ViewObject.show()
                 elif tp in ["SectionPlane"]:
                     a = h.Objects
                     if o in a:
