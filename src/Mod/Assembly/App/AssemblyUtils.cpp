@@ -755,7 +755,7 @@ void collectComponentsRecursively(const std::vector<App::DocumentObject*>& objec
             continue;
         }
 
-        if (auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(obj)) {
+        if (auto* asmLink = freecad_cast<Assembly::AssemblyLink*>(obj)) {
             // If the sub-assembly is rigid, treat it as a single movable part.
             // If it's flexible, we need to check its individual components.
             if (asmLink->isRigid()) {
