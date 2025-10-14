@@ -1723,7 +1723,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave along the Z axis (eg for finishing operation)",
+                "How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.",
             ),
         )
         obj.addProperty(
@@ -1832,7 +1832,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Orders cuts by region instead of depth.",
+                "Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.",
             ),
         )
         obj.addProperty(
@@ -1850,6 +1850,8 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs",
             ),
         )
+        obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
+        obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -1887,6 +1889,9 @@ class PathAdaptive(PathOp.ObjectOp):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
+
+        obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
+        obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
 
         if obj.ModelAwareExperiment:
             # Contains both geometry to machine and the applicable depths
@@ -1951,6 +1956,8 @@ class PathAdaptive(PathOp.ObjectOp):
                     "Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs",
                 ),
             )
+        obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
+        obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
 
         if not hasattr(obj, "removalshape"):
             obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
