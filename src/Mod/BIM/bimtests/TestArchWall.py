@@ -126,7 +126,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.printTestMessage("Testing removal of a wall's base component...")
 
         # 1. Arrange: Create a wall with a base
-        line = Draft.makeLine(App.Vector(0,0,0), App.Vector(2000,0,0))
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
         wall = Arch.makeWall(line)
         self.assertIsNotNone(wall.Base, "Pre-condition failed: Wall should have a base.")
 
