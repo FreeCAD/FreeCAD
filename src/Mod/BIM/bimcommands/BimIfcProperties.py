@@ -146,7 +146,7 @@ class BIM_IfcProperties:
             self.form.onlySelected.stateChanged.connect(self.onSelected)
             self.form.onlyMatches.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)  # also triggered by self.form.buttonBox.rejected
         self.form.searchField.currentIndexChanged.connect(self.update)
         self.form.searchField.editTextChanged.connect(self.update)
         self.form.comboProperty.currentIndexChanged.connect(self.addProperty)

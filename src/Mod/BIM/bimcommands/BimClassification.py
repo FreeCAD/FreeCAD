@@ -159,7 +159,7 @@ class BIM_Classification:
         self.form.buttonRename.clicked.connect(self.rename)
         self.form.search.textEdited.connect(self.updateClasses)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)  # also triggered by self.form.buttonBox.rejected
         self.form.groupMode.currentIndexChanged.connect(self.updateObjects)
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
