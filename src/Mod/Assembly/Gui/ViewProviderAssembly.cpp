@@ -1516,7 +1516,7 @@ inline QString objListHelper(const std::vector<App::DocumentObject*>& joints)
                 results.append(QStringLiteral(", "));
             }
             results.append(
-                QStringLiteral("%1").arg(QString::fromLatin1(joint->Label.getStrValue())));
+                QStringLiteral("%1").arg(QString::fromLatin1(joint->Label.getStrValue().c_str())));
         }
     }
     else {
@@ -1524,7 +1524,7 @@ inline QString objListHelper(const std::vector<App::DocumentObject*>& joints)
         int more = joints.size() - numToShow;
         for (int i = 0; i < numToShow; ++i) {
             results.append(
-                QStringLiteral("%1, ").arg(QString::fromLatin1(joints[i]->Label.getStrValue())));
+                QStringLiteral("%1, ").arg(QString::fromLatin1(joints[i]->Label.getStrValue().c_str())));
         }
         results.append(ViewProviderAssembly::tr("and %1 more").arg(more));
     }
