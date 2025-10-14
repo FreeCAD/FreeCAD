@@ -28,7 +28,6 @@
 #include <windows.h>
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -57,6 +56,5 @@
 #include <QUuid>
 #include <QVector>
 
-#endif  //_PreComp_
 
 #endif  // MATERIAL_PRECOMPILED_H

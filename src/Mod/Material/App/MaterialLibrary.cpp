@@ -19,12 +19,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QVector>
-#endif
+
 
 
 #include <App/Application.h>

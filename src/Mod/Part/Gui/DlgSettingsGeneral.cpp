@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QButtonGroup>
 # include <QRegularExpression>
 # include <QRegularExpressionValidator>
 # include <QVBoxLayout>
 # include <Interface_Static.hxx>
-#endif
+
 
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/FuzzyHelper.h>

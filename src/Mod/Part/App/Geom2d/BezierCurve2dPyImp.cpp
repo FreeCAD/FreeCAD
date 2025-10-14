@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom2d_BezierCurve.hxx>
 # include <gp_Pnt2d.hxx>
 # include <TColgp_Array1OfPnt2d.hxx>
 # include <TColStd_Array1OfReal.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 

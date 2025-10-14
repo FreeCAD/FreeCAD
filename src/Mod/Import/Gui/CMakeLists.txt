@@ -18,13 +18,19 @@ SET(ImportGui_SRCS
     ImportOCAFGui.h
     OCAFBrowser.cpp
     OCAFBrowser.h
-    PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
 )
 
 add_library(ImportGui SHARED ${ImportGui_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(ImportGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_include_directories(
     ImportGui
     PRIVATE

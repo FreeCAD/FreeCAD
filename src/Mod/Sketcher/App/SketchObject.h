@@ -384,6 +384,10 @@ public:
     int getVirtualSpace(int ConstrId, bool& isinvirtualspace) const;
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
+    /// set the visibility of this constraint
+    int setVisibility(int ConstrId, bool isVisible);
+    /// set the visibility of a group of constraints at once
+    int setVisibility(std::vector<int> constrIds, bool isVisible);
     /// move this point to a new location and solve
     int moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                        const Base::Vector3d& toPoint,

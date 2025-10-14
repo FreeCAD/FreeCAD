@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                 2025 Samuel Abels <knipknap@gmail.com>                  *
@@ -683,7 +682,7 @@ class ToolBit(Asset, ABC):
             # Conditional to avoid unnecessary migration warning when called
             # from onDocumentRestored.
             if value is not None and getattr(self.obj, name) != value:
-                setattr(self.obj, name, value)
+                PathUtil.setProperty(self.obj, name, value)
 
         # 2. Add additional properties that are part of the shape,
         # but not part of the schema.
@@ -708,8 +707,45 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
 
             # Set the property value
-            PathUtil.setProperty(self.obj, name, value)
+            if value is not None and getattr(self.obj, name) != value:
+                PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
+
+        # 3. Ensure SpindleDirection property exists and is set
+        # Maybe this could be done with a global schema or added to each
+        # shape schema?
+        if not hasattr(self.obj, "SpindleDirection"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            self.obj.SpindleDirection = ["Forward", "Reverse", "None"]
+            self.obj.SpindleDirection = "Forward"  # Default value
+
+        spindle_value = self._tool_bit_shape.get_parameters().get("SpindleDirection")
+        if (
+            spindle_value in ("Forward", "Reverse", "None")
+            and self.obj.SpindleDirection != spindle_value
+        ):
+            # self.obj.SpindleDirection = spindle_value
+            PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
+
+        # 4. Ensure Material property exists and is set
+        if not hasattr(self.obj, "Material"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Tool material"),
+            )
+            self.obj.Material = ["HSS", "Carbide"]
+            self.obj.Material = "HSS"  # Default value
+
+        material_value = self._tool_bit_shape.get_parameters().get("Material")
+        if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
+            PathUtil.setProperty(self.obj, "Material", material_value)
 
     def _update_visual_representation(self):
         """

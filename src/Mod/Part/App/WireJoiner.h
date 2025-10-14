@@ -28,6 +28,8 @@
 #include <Standard_Version.hxx>
 #include "TopoShape.h"
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part{
 
 class PartExport WireJoiner: public BRepBuilderAPI_MakeShape {

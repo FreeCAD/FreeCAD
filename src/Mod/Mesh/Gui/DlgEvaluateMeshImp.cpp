@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDockWidget>
 #include <QMessageBox>
 #include <QPointer>
 #include <QScrollArea>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>

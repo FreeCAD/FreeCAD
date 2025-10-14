@@ -46,6 +46,7 @@ public:
 
     void updateData(const App::Property* prop) override;
     bool onDelete(const std::vector<std::string>& objs) override;
+    void beforeDelete() override;
     void onSelectionChanged(const Gui::SelectionChanges& sel) override;
     void updateColorBars();
     void transformField(char* FieldName, double FieldFactor);

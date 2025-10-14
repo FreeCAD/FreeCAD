@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef INSPECTION_GUI_PRECOMPILED_H
+#define INSPECTION_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-
-#ifdef _PreComp_
 
 // STL
 
@@ -53,7 +51,5 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <ios>
 
@@ -46,8 +44,8 @@
 // Inventor
 #include <Gui/InventorAll.h>
 
-#elif defined(FC_OS_WIN32)
+#if defined(FC_OS_WIN32)
 #include <Windows.h>
-#endif  //_PreComp_
+#endif
 
 #endif  // MESHGUI_PRECOMPILED_H

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <limits>
 #include <queue>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

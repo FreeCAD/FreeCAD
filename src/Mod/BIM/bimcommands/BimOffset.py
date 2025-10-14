@@ -33,11 +33,10 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 class BIM_Offset2D:
 
     def GetResources(self):
-        return {"Pixmap":"Part_Offset2D",
-                "MenuText": QT_TRANSLATE_NOOP("Part_Offset2D", "2D Offset"),
-                "ToolTip": QT_TRANSLATE_NOOP(
-                "Part_Offset2D", "Utility to offset planar shapes"
-            ),
+        return {
+            "Pixmap": "Part_Offset2D",
+            "MenuText": QT_TRANSLATE_NOOP("Part_Offset2D", "2D Offset"),
+            "ToolTip": QT_TRANSLATE_NOOP("Part_Offset2D", "Utility to offset planar shapes"),
         }
 
     def IsActive(self):

@@ -23,8 +23,11 @@
 #ifndef SKETCHER_GeoEnum_H
 #define SKETCHER_GeoEnum_H
 
-#include <Mod/Sketcher/SketcherGlobal.h>
 #include <functional>
+
+#include <FCConfig.h>
+
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace Sketcher
 {

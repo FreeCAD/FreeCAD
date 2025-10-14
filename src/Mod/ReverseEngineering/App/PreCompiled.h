@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef REVERSE_ENGINEERING_APP_PRECOMPILED_H
+#define REVERSE_ENGINEERING_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -30,7 +30,6 @@
 #define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <map>
@@ -50,5 +49,4 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#endif  // _PreComp_
 #endif

@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <QMessageBox>
 #include <boost/algorithm/string.hpp>

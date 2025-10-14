@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsItem>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>

@@ -25,7 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
 
 // STL
 #include <algorithm>
@@ -52,7 +51,5 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
-
-#endif  //_PreComp_
 
 #endif  // POINTSGUI_PRECOMPILED_H

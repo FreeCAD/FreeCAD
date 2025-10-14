@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <sstream>
 
 # include <Precision.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

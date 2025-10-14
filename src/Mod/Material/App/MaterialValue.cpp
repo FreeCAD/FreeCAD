@@ -19,11 +19,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMetaType>
 #include <QRegularExpression>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Quantity.h>

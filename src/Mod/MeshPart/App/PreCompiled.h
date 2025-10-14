@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef MESH_PART_APP_PRECOMPILED_H
+#define MESH_PART_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -72,5 +70,4 @@
 #include <TopoDS_Shape.hxx>
 #include <gp_Pln.hxx>
 
-#endif  // _PreComp_
 #endif

@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
-
+# include <QMessageBox>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 #include <Mod/Part/App/FeaturePartCommon.h>
 #include <Mod/Part/App/FeaturePartFuse.h>
 
@@ -36,6 +35,65 @@
 
 
 using namespace PartGui;
+
+namespace {
+    // helper function for Boolean operation deletion with user confirmation
+    bool handleBooleanDeletion(const std::vector<std::string>& subNames,
+                              const QString& operationName,
+                              const QString& objectLabel,
+                              const std::vector<App::DocumentObject*>& inputObjects,
+                              const QString& inputDescription)
+    {
+        if (inputObjects.empty()) {
+            return true;
+        }
+        
+        // if we are in group deletion context it means user is deleting group that contains
+        // this boolean and they have accepted to delete all of the group objects recursively
+        // so delete everything automatically
+        bool inGroupDeletion = !subNames.empty() && subNames[0] == "group_recursive_deletion";
+        if (inGroupDeletion) {
+            for (auto obj : inputObjects) {
+                if (obj && obj->isAttachedToDocument() && !obj->isRemoving()) {
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
+                }
+            }
+            return true;
+        }
+
+        QMessageBox::StandardButton choice = QMessageBox::question(
+            Gui::getMainWindow(), 
+            QObject::tr("Delete %1 content?").arg(operationName),
+            QObject::tr("The %1 '%2' has %3. Do you want to delete them as well?")
+                .arg(operationName.toLower())
+                .arg(objectLabel)
+                .arg(inputDescription),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
+            QMessageBox::No
+        );
+            
+        if (choice == QMessageBox::Cancel) {
+            return false;
+        }
+        
+        if (choice == QMessageBox::Yes) {
+            for (auto obj : inputObjects) {
+                if (obj && obj->isAttachedToDocument() && !obj->isRemoving()) {
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
+                }
+            }
+            return true;
+        }
+
+        for (auto obj : inputObjects) {
+            if (obj) {
+                Gui::Application::Instance->showViewProvider(obj);
+            }
+        }
+        
+        return true;
+    }
+}
 
 PROPERTY_SOURCE(PartGui::ViewProviderBoolean,PartGui::ViewProviderPart)
 
@@ -140,19 +198,37 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
     }
 }
 
-bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
+bool ViewProviderBoolean::onDelete(const std::vector<std::string> &subNames)
 {
     // get the input shapes
     Part::Boolean* pBool = getObject<Part::Boolean>();
     App::DocumentObject *pBase = pBool->Base.getValue();
     App::DocumentObject *pTool = pBool->Tool.getValue();
 
-    if (pBase)
-        Gui::Application::Instance->showViewProvider(pBase);
-    if (pTool)
-        Gui::Application::Instance->showViewProvider(pTool);
+    // Prepare input objects list and description
+    std::vector<App::DocumentObject*> inputObjects;
+    if (pBase) {
+        inputObjects.push_back(pBase);
+    }
 
-    return true;
+    if (pTool) {
+        inputObjects.push_back(pTool);
+    }
+    
+    QString inputDescription;
+    if (pBase && pTool) {
+        inputDescription = QObject::tr("base and tool objects");
+    } else if (pBase) {
+        inputDescription = QObject::tr("base object");
+    } else if (pTool) {
+        inputDescription = QObject::tr("tool object");
+    }
+    
+    return handleBooleanDeletion(subNames, 
+                                QObject::tr("Boolean operation"),
+                                QString::fromUtf8(pBool->Label.getValue()),
+                                inputObjects,
+                                inputDescription);
 }
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiFuse,PartGui::ViewProviderPart)
@@ -231,18 +307,19 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
     }
 }
 
-bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &)
+bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &subNames)
 {
     // get the input shapes
     Part::MultiFuse* pBool = getObject<Part::MultiFuse>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
-    for (auto it : pShapes) {
-        if (it) {
-            Gui::Application::Instance->showViewProvider(it);
-        }
-    }
-
-    return true;
+    
+    QString inputDescription = QObject::tr("%1 input objects").arg(pShapes.size());
+    
+    return handleBooleanDeletion(subNames, 
+                                QObject::tr("Fusion"),
+                                QString::fromUtf8(pBool->Label.getValue()),
+                                pShapes,
+                                inputDescription);
 }
 
 bool ViewProviderMultiFuse::canDragObjects() const
@@ -366,18 +443,19 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
     }
 }
 
-bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &)
+bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &subNames)
 {
     // get the input shapes
     Part::MultiCommon* pBool = getObject<Part::MultiCommon>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
-    for (auto it : pShapes) {
-        if (it) {
-            Gui::Application::Instance->showViewProvider(it);
-        }
-    }
-
-    return true;
+    
+    QString inputDescription = QObject::tr("%1 input objects").arg(pShapes.size());
+    
+    return handleBooleanDeletion(subNames, 
+                                QObject::tr("Intersection"),
+                                QString::fromUtf8(pBool->Label.getValue()),
+                                pShapes,
+                                inputDescription);
 }
 
 bool ViewProviderMultiCommon::canDragObjects() const

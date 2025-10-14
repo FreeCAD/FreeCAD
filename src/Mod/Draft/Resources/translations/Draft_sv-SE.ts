@@ -3124,7 +3124,6 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1228"/>
-      <location filename="../../WorkingPlane.py" line="1229"/>
       <location filename="../../WorkingPlane.py" line="1517"/>
       <location filename="../../WorkingPlane.py" line="1518"/>
       <source>Auto</source>
@@ -3132,6 +3131,10 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
+      <source>Current working plane: Auto</source>
+      <translation>Aktuellt arbetsplan: Auto</translation>
+    </message>
+    <message>
       <location filename="../../WorkingPlane.py" line="1703"/>
       <source>Current working plane:</source>
       <translation>Nuvarande arbetsplan:</translation>
@@ -4429,7 +4432,7 @@ Den slutliga vinkeln kommer att vara basvinkeln plus detta belopp.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="187"/>
@@ -5452,7 +5455,7 @@ Den slutliga vinkeln kommer att vara basvinkeln plus detta belopp.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="448"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="198"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Platta till</translation>
     </message>
@@ -6503,7 +6506,7 @@ Om alternativet "Copy" är aktivt skapas roterade kopior.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="55"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="58"/>

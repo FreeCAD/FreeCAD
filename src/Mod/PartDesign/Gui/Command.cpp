@@ -21,9 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
@@ -32,7 +30,7 @@
 # include <TopLoc_Location.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
+
 
 #include <App/Origin.h>
 #include <App/Part.h>
@@ -460,11 +458,19 @@ void CmdPartDesignClone::activated(int iMsg)
         auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
         auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
 
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+
         // In the first step set the group link and tip of the body
         Gui::cmdAppObject(bodyObj, std::stringstream()
                           << "Group = [" << getObjectCmd(cloneObj) << "]");
         Gui::cmdAppObject(bodyObj, std::stringstream()
                           << "Tip = " << getObjectCmd(cloneObj));
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "AllowCompound = " << (allowCompound ? "True" : "False"));
 
         // In the second step set the link of the base feature
         Gui::cmdAppObject(cloneObj, std::stringstream()

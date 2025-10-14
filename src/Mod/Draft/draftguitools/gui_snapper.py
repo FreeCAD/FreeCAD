@@ -126,6 +126,7 @@ class Snapper:
 
         # snap keys, it's important that they are in this order for
         # saving in preferences and for properly restoring the toolbar
+        # fmt: off
         self.snaps = ['Lock',           # 0
                       'Near',           # 1 former "passive" snap
                       'Extension',      # 2
@@ -142,6 +143,7 @@ class Snapper:
                       'Dimensions',     # 13
                       'WorkingPlane'    # 14
                      ]
+        # fmt: on
 
         self.init_active_snaps()
         self.set_snap_style()
@@ -162,7 +164,11 @@ class Snapper:
 
 
     def _get_wp(self):
-        return WorkingPlane.get_working_plane()
+        # update=False is required, without it WorkingPlane.get_working_plane()
+        # is too slow for this function which gets called repeatedly when moving
+        # the mouse
+        # See: https://github.com/FreeCAD/FreeCAD/issues/24013
+        return WorkingPlane.get_working_plane(update=False)
 
 
     def init_active_snaps(self):

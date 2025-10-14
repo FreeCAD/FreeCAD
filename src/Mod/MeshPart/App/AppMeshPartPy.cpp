@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <TopoDS.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Converter.h>

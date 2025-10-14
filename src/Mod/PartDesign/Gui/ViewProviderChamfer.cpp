@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "TaskChamferParameters.h"
 #include "ViewProviderChamfer.h"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -68,7 +67,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         comboToPropertyMap = [
             ("cutMode", "CutMode"),
-            ("offsetPattern", "OffsetPattern"),
+            ("clearingPattern", "ClearingPattern"),
         ]
         enumTups = PathPocket.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
 
@@ -100,7 +99,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.MinTravel = self.form.minTravel.isChecked()
 
     def updateZigZagAngle(self, obj, setModel=True):
-        if obj.OffsetPattern in ["Offset"]:
+        if obj.ClearingPattern in ["Offset"]:
             self.form.zigZagAngle.setEnabled(False)
         else:
             self.form.zigZagAngle.setEnabled(True)
@@ -114,8 +113,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        if obj.OffsetPattern != str(self.form.offsetPattern.currentData()):
-            obj.OffsetPattern = str(self.form.offsetPattern.currentData())
+        if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
+            obj.ClearingPattern = str(self.form.clearingPattern.currentData())
 
         PathGuiUtil.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
@@ -162,7 +161,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.minTravel.setChecked(obj.MinTravel)
         self.updateMinTravel(obj, False)
 
-        self.selectInComboBox(obj.OffsetPattern, self.form.offsetPattern)
+        self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
@@ -176,7 +175,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals = []
 
         signals.append(self.form.cutMode.currentIndexChanged)
-        signals.append(self.form.offsetPattern.currentIndexChanged)
+        signals.append(self.form.clearingPattern.currentIndexChanged)
         signals.append(self.form.stepOverPercent.editingFinished)
         signals.append(self.form.zigZagAngle.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)

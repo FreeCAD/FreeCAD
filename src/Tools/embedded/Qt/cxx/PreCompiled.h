@@ -1,5 +1,5 @@
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef QT_CXX_PRECOMPILED_H
+#define QT_CXX_PRECOMPILED_H
 
 #ifdef FC_OS_WIN32
 // cmake generates this define

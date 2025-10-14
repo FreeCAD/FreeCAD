@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -740,6 +739,11 @@ void TaskHelixParameters::setGizmoPositions()
     }
 
     auto helix = getObject<PartDesign::Helix>();
+    if (!helix || helix->isError()) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    gizmoContainer->visible = true;
     Part::TopoShape profileShape = helix->getProfileShape();
     double reversed = propReversed->getValue()? -1.0 : 1.0;
     auto profileCentre = getMidPointFromProfile(profileShape);

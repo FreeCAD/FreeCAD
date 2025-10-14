@@ -21,11 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "TaskSketcherTool.h"
 #include <Gui/Application.h>
 #include <Gui/Document.h>

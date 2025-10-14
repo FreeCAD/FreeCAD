@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <QMessageBox>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -230,7 +228,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
             continue;
         }
 
-        modifiedPlaneViewProviders.push_back(planeViewProvider);
+        modifiedPlaneViewProviders.emplace_back(planeViewProvider);
 
         planeViewProvider->setTemporaryScale(ViewParams::instance()->getDatumTemporaryScaleFactor());
         planeViewProvider->setLabelVisibility(true);
@@ -267,7 +265,16 @@ TaskAttacher::~TaskAttacher()
     connectDelObject.disconnect();
     connectDelDocument.disconnect();
 
-    for (auto planeViewProvider : modifiedPlaneViewProviders) {
+    for (auto& vp : modifiedPlaneViewProviders) {
+        if (vp.expired()) {
+            continue;
+        }
+
+        auto planeViewProvider = vp.get<Gui::ViewProviderPlane>();
+        if (!planeViewProvider) {
+            return;
+        }
+
         planeViewProvider->resetTemporarySize();
         planeViewProvider->setLabelVisibility(false);
     }

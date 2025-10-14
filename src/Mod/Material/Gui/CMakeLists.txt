@@ -115,7 +115,6 @@ SET(MatGui_SRCS
     ModelSelect.cpp
     ModelSelect.h
     ModelSelect.ui
-    PreCompiled.cpp
     PreCompiled.h
     TextEdit.cpp
     TextEdit.h
@@ -135,12 +134,6 @@ if(BUILD_MATERIAL_EXTERNAL)
         TaskMigrateExternal.ui
     )
 endif(BUILD_MATERIAL_EXTERNAL)
-
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MatGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(MatGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
 
 SET(MatGuiIcon_SVG
     Resources/icons/list.svg
@@ -167,6 +160,12 @@ add_library(MatGui SHARED
     ${MatGuiImages}
     ${Material_Ui_Files}
 )
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(MatGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     MatGui

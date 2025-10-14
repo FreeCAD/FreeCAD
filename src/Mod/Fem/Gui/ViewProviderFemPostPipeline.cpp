@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <vtkPointData.h>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
@@ -62,6 +60,9 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
 
         updateFunctionSize();
         updateColorBars();
+    }
+    else if (prop == &pipeline->MergeDuplicate) {
+        updateVtk();
     }
 }
 
@@ -112,6 +113,16 @@ bool ViewProviderFemPostPipeline::onDelete(const std::vector<std::string>& objs)
     }
 
     return ViewProviderFemPostObject::onDelete(objs);
+}
+
+void ViewProviderFemPostPipeline::beforeDelete()
+{
+    ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+    if (analyzeView) {
+        analyzeView->removeView(this);
+    }
+
+    ViewProviderFemPostObject::beforeDelete();
 }
 
 void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)

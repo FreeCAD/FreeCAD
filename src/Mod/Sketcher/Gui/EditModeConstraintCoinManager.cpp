@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <QPainter>
 #include <QRegularExpression>
 #include <limits>
@@ -40,7 +40,6 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Converter.h>
 #include <Base/Exception.h>
@@ -104,8 +103,8 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
         SbBool* sws = editModeScenegraphNodes.constrGroup->enable.startEditing();
 
         for (size_t i = 0; i < constrlist.size(); i++) {
-            sws[i] = !(constrlist[i]->isInVirtualSpace
-                       != isshownvirtualspace);  // XOR of constraint mode and VP mode
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isshownvirtualspace)
+                && constrlist[i]->isVisible;  // XOR of constraint mode and VP mode
         }
 
 
@@ -2414,8 +2413,9 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
-        thisIcon.visible = constraint->isInVirtualSpace
-            == ViewProviderSketchCoinAttorney::isShownVirtualSpace(viewProvider);
+        thisIcon.visible = (constraint->isInVirtualSpace
+                            == ViewProviderSketchCoinAttorney::isShownVirtualSpace(viewProvider))
+            && constraint->isVisible;
 
         if (constraint->Type == Symmetric) {
             Base::Vector3d startingpoint =

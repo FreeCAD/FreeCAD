@@ -22,7 +22,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 #include <FuzzyHelper.h>
 
 using namespace Part;

@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <cmath>
 
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoShapeHints.h>
-#endif
 
 #include <App/Document.h>
 #include <Base/Parameter.h>

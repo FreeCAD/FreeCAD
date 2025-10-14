@@ -41,10 +41,6 @@
 
 // ??? is option 1 actually working?  Not used in practice?
 
-
-#include "PreCompiled.h"    // NOLINT
-
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
@@ -71,7 +67,6 @@
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
-#endif
 
 #include <App/Document.h>
 #include <Base/BoundBox.h>

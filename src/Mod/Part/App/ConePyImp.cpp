@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeConicalSurface.hxx>
 # include <Geom_ConicalSurface.hxx>
 # include <gp_Cone.hxx>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -70,17 +71,22 @@ class GuiExport PropertyEditor: public QTreeView
     // clang-format on
 
 public:
+    enum class ExpansionMode {
+        DefaultExpand,
+        AutoExpand,
+        AutoCollapse
+    };
+
     PropertyEditor(QWidget* parent = nullptr);
     ~PropertyEditor() override;
 
     /** Builds up the list view with the properties. */
     void buildUp(PropertyModel::PropertyList&& props = PropertyModel::PropertyList(),
                  bool checkDocument = false);
+    void blockCollapseAll();
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void renameProperty(const App::Property&);
-    void setAutomaticExpand(bool);
-    bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
     /*! Reset the internal state of the view. */
@@ -131,6 +137,10 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
+    void setFirstLevelExpanded(bool doExpand);
+    void expandToDefault();
+    QMenu* setupExpansionSubmenu(QWidget* parent);
+    void collapseAll();
     void setEditorMode(const QModelIndex& parent, int start, int end);
     void closeTransaction();
     void recomputeDocument(App::Document*);
@@ -148,10 +158,11 @@ private:
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
     std::unordered_set<const App::PropertyContainer*> propOwners;
-    bool autoexpand;
+    ExpansionMode expansionMode;
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    bool blockCollapse;
     bool binding;
     bool checkDocument;
     bool closingEditor;

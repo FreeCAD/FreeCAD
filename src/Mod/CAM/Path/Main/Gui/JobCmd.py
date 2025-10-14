@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -134,7 +133,7 @@ class CommandJobTemplateExport:
         foo = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Path - Job Template",
-            Path.Preferences.filePath(),
+            str(Path.Preferences.getTemplateDirectory()),
             "job_*.json",
         )[0]
         if foo:

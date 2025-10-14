@@ -790,6 +790,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.addObject("Part::Cut", "Cut")
         self.doc.Cut.Base = self.doc.Compound1
         self.doc.Cut.Tool = self.doc.Cylinder1
+        self.doc.Cut.Refine = False
         # Act
         self.doc.recompute()
         cut1 = self.doc.Cut.Shape

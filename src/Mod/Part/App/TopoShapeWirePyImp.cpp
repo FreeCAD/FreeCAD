@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Approx_Curve3d.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
@@ -42,7 +40,7 @@
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
-#endif
+
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
 #include <Base/GeometryPyCXX.h>

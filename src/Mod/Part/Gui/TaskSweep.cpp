@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
 # include <QTextStream>
@@ -35,7 +33,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

@@ -24,7 +24,6 @@ SET(PathGui_SRCS_Module
     AppPathGui.cpp
     AppPathGuiPy.cpp
     Resources/Path.qrc
-    PreCompiled.cpp
     PreCompiled.h
     DlgSettingsPathColor.ui
     DlgSettingsPathColor.cpp
@@ -59,17 +58,18 @@ SET(PathGui_SRCS
     ${PathGui_SRCS_ViewProvider}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PathGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(PathGuiIcon_SVG
     Resources/icons/CAMWorkbench.svg
 )
 
 add_library(PathGui SHARED ${PathGui_SRCS} ${PathGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(PathGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_include_directories(
     PathGui
     PRIVATE

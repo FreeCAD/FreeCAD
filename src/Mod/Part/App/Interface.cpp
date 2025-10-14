@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Interface_Static.hxx>
-#endif
+
 
 #include "Interface.h"
 

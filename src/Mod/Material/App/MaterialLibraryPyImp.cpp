@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <QMetaType>
 
 #include <Base/Quantity.h>

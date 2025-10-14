@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <Precision.hxx>
-#endif
+
 
 #include "ShapeFix/ShapeFix_RootPy.h"
 #include "ShapeFix/ShapeFix_RootPy.cpp"

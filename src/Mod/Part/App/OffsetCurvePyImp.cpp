@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_OffsetCurve.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>

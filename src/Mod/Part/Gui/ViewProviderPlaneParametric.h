@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

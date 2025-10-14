@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -36,7 +36,6 @@ import Path.Log
 import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
-import tempfile
 import Path.Dressup.Utils as PathDressup
 
 translate = FreeCAD.Qt.translate
@@ -49,6 +48,9 @@ else:
 
 
 class CAMSanity:
+    # Toggle: True = use thumbnail, False = always use fallback image
+    USE_TOOL_THUMBNAIL = False
+
     """
     This class has the functionality to harvest data from a CAM Job
     and export it in a format that is useful to the user.
@@ -102,8 +104,9 @@ class CAMSanity:
 
         path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{squawk_icon}.svg"
 
+        local_date_str = date.strftime("%c")
         squawk = {
-            "Date": str(date),
+            "Date": local_date_str,
             "Operator": operator,
             "Note": note,
             "squawkType": squawkType,
@@ -120,7 +123,9 @@ class CAMSanity:
             [obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group]
         ).items():
             bases[name] = str(count)
-        data["baseimage"] = self.image_builder.build_image(obj.Model, "baseimage")
+            data["baseimage"] = self.image_builder.build_image(
+                obj.Model, "baseimage", as_bytes=True
+            )
         data["bases"] = bases
 
         return data
@@ -146,7 +151,15 @@ class CAMSanity:
         data["FileName"] = obj.Document.FileName
         data["LastModifiedDate"] = str(obj.Document.LastModifiedDate)
         data["Customer"] = obj.Document.Company
-        data["Designer"] = obj.Document.LastModifiedBy
+        lastmod = obj.Document.LastModifiedDate
+        if lastmod:
+            try:
+                # Parse ISO 8601 string and format
+                data["LastModifiedDate"] = datetime.fromisoformat(str(lastmod)).strftime("%c")
+            except Exception:
+                data["LastModifiedDate"] = str(lastmod)
+        else:
+            data["LastModifiedDate"] = ""
         data["JobDescription"] = obj.Description
         data["JobLabel"] = obj.Label
 
@@ -170,7 +183,7 @@ class CAMSanity:
         data["fixtures"] = str(obj.Fixtures)
         data["orderBy"] = str(obj.OrderOutputBy)
 
-        data["datumImage"] = self.image_builder.build_image(obj, "datumImage")
+        data["datumImage"] = self.image_builder.build_image(obj, "datumImage", as_bytes=True)
 
         return data
 
@@ -337,7 +350,7 @@ class CAMSanity:
                 )
             )
 
-        data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage")
+        data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage", as_bytes=True)
 
         return data
 
@@ -384,34 +397,49 @@ class CAMSanity:
             tooldata["manufacturer"] = ""
             tooldata["url"] = ""
             tooldata["inspectionNotes"] = ""
-            tooldata["diameter"] = str(TC.Tool.Diameter)
+            tooldata["diameter"] = str(TC.Tool.Diameter.UserString)
             tooldata["shape"] = TC.Tool.ShapeType
 
             tooldata["partNumber"] = ""
 
-            if os.path.isfile(TC.Tool.ShapeType):
-                imagedata = TC.Tool.Proxy.get_thumbnail()
-            else:
-                imagedata = None
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
-                            TC.ToolNumber
-                        ),
-                        squawkType="WARNING",
+            # Use the toggle to determine which image to use
+            imagebytes = None
+            if self.USE_TOOL_THUMBNAIL:
+                # Try to get the thumbnail
+                thumb_bytes = None
+                if hasattr(TC.Tool, "Proxy") and hasattr(TC.Tool.Proxy, "get_thumbnail"):
+                    try:
+                        thumb_bytes = TC.Tool.Proxy.get_thumbnail()
+                    except Exception:
+                        thumb_bytes = None
+                if thumb_bytes:
+                    imagebytes = thumb_bytes
+                else:
+                    # Warn and use fallback head-on image
+                    data["squawkData"].append(
+                        self.squawk(
+                            "CAMSanity",
+                            translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
+                                TC.ToolNumber
+                            ),
+                            squawkType="WARNING",
+                        )
                     )
+                    imagebytes = self.image_builder.build_image(
+                        TC.Tool, f"T{TC.ToolNumber}", as_bytes=True, view="headon"
+                    )
+            else:
+                # Always use fallback head-on image
+                imagebytes = self.image_builder.build_image(
+                    TC.Tool, f"T{TC.ToolNumber}", as_bytes=True, view="headon"
                 )
-            tooldata["image"] = ""
+            tooldata["imagebytes"] = imagebytes
             imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
             tooldata["imagepath"] = imagepath
             Path.Log.debug(imagepath)
-            if imagedata is not None:
-                with open(imagepath, "wb") as fd:
-                    fd.write(imagedata)
-                    fd.close()
+            # No longer writing imagedata to disk; handled by imagebytes logic above
 
-            tooldata["feedrate"] = str(TC.HorizFeed)
+            tooldata["feedrate"] = str(TC.HorizFeed.UserString)
             if TC.HorizFeed.Value == 0.0:
                 data["squawkData"].append(
                     self.squawk(
@@ -423,7 +451,7 @@ class CAMSanity:
                     )
                 )
 
-            tooldata["spindlespeed"] = str(TC.SpindleSpeed)
+            tooldata["spindlespeed"] = f"{int(TC.SpindleSpeed)} rpm"
             if TC.SpindleSpeed == 0.0:
                 data["squawkData"].append(
                     self.squawk(
@@ -444,8 +472,8 @@ class CAMSanity:
                         {
                             "Operation": base_op.Label,
                             "ToolController": TC.Label,
-                            "Feed": str(TC.HorizFeed),
-                            "Speed": str(TC.SpindleSpeed),
+                            "Feed": str(TC.HorizFeed.UserString),
+                            "Speed": f"{int(TC.SpindleSpeed)} rpm",
                         }
                     )
 

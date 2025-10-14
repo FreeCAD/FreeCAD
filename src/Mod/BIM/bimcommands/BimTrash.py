@@ -47,9 +47,7 @@ class BIM_Trash:
         if FreeCADGui.Selection.getSelection():
             trash = FreeCAD.ActiveDocument.getObject("Trash")
             if not trash or not trash.isDerivedFrom("App::DocumentObjectGroup"):
-                trash = FreeCAD.ActiveDocument.addObject(
-                    "App::DocumentObjectGroup", "Trash"
-                )
+                trash = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Trash")
                 trash.Label = translate("BIM", "Trash")
             for obj in FreeCADGui.Selection.getSelection():
                 trash.addObject(obj)
@@ -68,6 +66,7 @@ class BIM_Trash:
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
+
 
 FreeCADGui.addCommand("BIM_Trash", BIM_Trash())
 

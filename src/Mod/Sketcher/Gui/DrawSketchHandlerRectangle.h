@@ -1984,7 +1984,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     double length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (fabs(length) < Precision::Confusion()) {
+                    if (fabs(length) < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                         return;
                     }
@@ -1999,7 +2000,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 }
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double width = onViewParameters[OnViewParameter::Fourth]->getValue();
-                    if (fabs(width) < Precision::Confusion()) {
+                    if (fabs(width) < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                         return;
                     }
@@ -2022,7 +2024,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (length < Precision::Confusion()) {
+                    if (length < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                         return;
                     }
@@ -2045,8 +2048,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
                 }
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                    && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing
                     && (onSketchPos - handler->center).Length() < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
@@ -2066,7 +2069,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 else {
                     if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                         double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
+                        if (thickness <= -std::min(handler->width, handler->length) / 2
+                            && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                             unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                             return;
                         }
@@ -2086,7 +2090,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     width = onViewParameters[OnViewParameter::Fifth]->getValue();
-                    if (width < Precision::Confusion()) {
+                    if (width < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                         return;
                     }
@@ -2096,7 +2101,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double angle =
                         Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(angle, std::numbers::pi) < Precision::Confusion()) {
+                    if (fmod(angle, std::numbers::pi) < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
                     }
@@ -2123,7 +2129,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 double width = dir.Length();
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     width = onViewParameters[OnViewParameter::Fifth]->getValue();
-                    if (width < Precision::Confusion()) {
+                    if (width < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                         return;
                     }
@@ -2133,7 +2140,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double c =
                         Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(c, std::numbers::pi) < Precision::Confusion()) {
+                    if (fmod(c, std::numbers::pi) < Precision::Confusion()
+                        && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
                     }
@@ -2160,7 +2168,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                    if (thickness <= -std::min(handler->width, handler->length) / 2) {
+                    if (thickness <= -std::min(handler->width, handler->length) / 2
+                        && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
                     }
@@ -2187,7 +2196,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 else {
                     if (onViewParameters[OnViewParameter::Eighth]->isSet) {
                         double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
+                        if (thickness <= -std::min(handler->width, handler->length) / 2
+                            && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
                             unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
                             return;
                         }
@@ -2210,7 +2220,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
         case SelectMode::SeekFifth: {
             if (onViewParameters[OnViewParameter::Eighth]->isSet) {
                 double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                if (thickness <= -std::min(handler->width, handler->length) / 2) {
+                if (thickness <= -std::min(handler->width, handler->length) / 2
+                    && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
                     return;
                 }

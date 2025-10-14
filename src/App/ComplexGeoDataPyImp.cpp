@@ -493,6 +493,7 @@ Py::Dict ComplexGeoDataPy::getElementReverseMap() const
             Py::List list(item);
             s.clear();
             list.append(Py::String(v.name.appendToBuffer(s)));
+            value = list;
         }
         else {
             Py::List list;

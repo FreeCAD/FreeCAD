@@ -21,13 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Base/Converter.h>
@@ -228,11 +226,11 @@ void TaskFilletParameters::setGizmoPositions()
     }
 
     auto fillet = getObject<PartDesign::Fillet>();
-    if (!fillet) {
+    if (!fillet || fillet->isError()) {
         gizmoContainer->visible = false;
         return;
     }
-    Part::TopoShape baseShape = fillet->getBaseTopoShape();
+    Part::TopoShape baseShape = fillet->getBaseTopoShape(true);
     std::vector<Part::TopoShape> shapes = fillet->getContinuousEdges(baseShape);
 
     if (shapes.size() == 0) {

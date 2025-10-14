@@ -36,6 +36,7 @@
 #include <App/PropertyContainer.h>
 
 #include "propertyeditor/PropertyItem.h"
+#include "Macro.h"
 
 namespace Gui {
 
@@ -108,8 +109,11 @@ private:
         Type
     };
 
-    DlgAddProperty(QWidget* parent, App::PropertyContainer* container,
-                         ViewProviderVarSet* viewProvider);
+    DlgAddProperty(QWidget* parent,
+                   App::PropertyContainer* container,
+                   ViewProviderVarSet* viewProvider);
+
+    void setupMacroRedirector();
 
     void initializeGroup();
 
@@ -119,6 +123,7 @@ private:
     void removeSelectionEditor();
     QVariant getEditorData() const;
     void setEditorData(const QVariant& data);
+    bool isSubLinkPropertyItem() const;
     bool isEnumPropertyItem() const;
     void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
     void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
@@ -156,6 +161,9 @@ private:
 
     void openTransaction();
     void critical(const QString& title, const QString& text);
+    void recordMacroAdd(const App::PropertyContainer* container,
+                        const std::string& type, const std::string& name,
+                        const std::string& group, const std::string& doc) const;
     App::Property* createProperty();
     void closeTransaction(TransactionOption option);
     void clearFields();
@@ -181,6 +189,10 @@ private:
     QMetaObject::Connection connComboBoxGroup;
     QMetaObject::Connection connComboBoxType;
     QMetaObject::Connection connLineEditNameTextChanged;
+
+    std::unique_ptr<MacroManager::MacroRedirector> setValueRedirector;
+    std::string addCommand;
+    std::string setValueCommand;
 };
 
 } // namespace Dialog
