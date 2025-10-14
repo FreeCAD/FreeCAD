@@ -49,12 +49,11 @@ static AssemblyObject* getActiveAssembly()
     }
 
     auto* vp = doc->getInEdit();
-    if (!vp || !vp->isDerivedFrom(ViewProviderAssembly::getClassTypeId())) {
-        return nullptr;
+    if (auto* assemblyVP = freecad_cast<ViewProviderAssembly*>(vp)) {
+        return assemblyVP->getObject<AssemblyObject>();
     }
-
-    auto* assemblyVP = static_cast<ViewProviderAssembly*>(vp);
-    return assemblyVP->getObject<AssemblyObject>();
+    
+    return nullptr;
 }
 
 void selectObjects(const std::vector<App::DocumentObject*>& objectsToSelect)
