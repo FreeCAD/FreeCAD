@@ -30,6 +30,8 @@
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 
+#include "PropertyUnits.h"
+
 // inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
@@ -269,6 +271,12 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
             if (it == statusMap.end()) {
                 if (linkProp && v == "AllowPartial") {
                     linkProp->setAllowPartial(value);
+                    continue;
+                }
+
+                auto lengthProp = freecad_cast<App::PropertyLength*>(prop);
+                if (lengthProp && v == "AllowNegativeValues") {
+                    lengthProp->enableNegative(value);
                     continue;
                 }
 
@@ -721,3 +729,4 @@ PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
     }
     PY_CATCH
 }
+
