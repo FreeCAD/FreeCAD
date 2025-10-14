@@ -780,7 +780,7 @@ void collectComponentsRecursively(
             collectComponentsRecursively(group->Group.getValues(), results);
             continue;
         }
-        else if (auto* link = dynamic_cast<App::Link*>(obj)) {
+        else if (auto* link = freecad_cast<App::Link*>(obj)) {
             obj = link->getLinkedObject();
             if (obj->isDerivedFrom<App::GeoFeature>()
                 && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
