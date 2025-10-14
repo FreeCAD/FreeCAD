@@ -2522,16 +2522,16 @@ def getRepresentation(
                     i = 0
                 key = rgbt[i]
                 mat = None
-                if getattr(obj,"Material",None):
+                if getattr(obj, "Material", None):
                     mat = obj.Material.Label
                     if hasattr(obj.Material, "Transparency"):
                         # Can obj.Material.Transparency (single material) really
                         # be different from obj.ViewObject.Transparency?
-                        key = key[:3] + (obj.Material.Transparency/100.0, )
+                        key = key[:3] + (obj.Material.Transparency / 100.0,)
                 if key in surfstyles:
                     psa = surfstyles[key]
                 else:
-                    psa = ifcbin.createIfcPresentationStyleAssignment(mat,*key)
+                    psa = ifcbin.createIfcPresentationStyleAssignment(mat, *key)
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape, [psa], None)
 
