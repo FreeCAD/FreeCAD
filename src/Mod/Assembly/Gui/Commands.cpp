@@ -52,7 +52,7 @@ static AssemblyObject* getActiveAssembly()
     if (auto* assemblyVP = freecad_cast<ViewProviderAssembly*>(vp)) {
         return assemblyVP->getObject<AssemblyObject>();
     }
-    
+
     return nullptr;
 }
 
