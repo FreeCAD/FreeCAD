@@ -63,6 +63,8 @@ The FreeCAD Contribution Process is expressed here with the following specific g
     2. all commits MUST have proper authorship, i.e. be authored by the original author and committed by the author of the PR;
     3. if changes to cherry-picked commits are necessary they SHOULD be done as follow-up commits. If it is not possible to do so, then the modified commits MUST contain a `Co-Authored-By` trailer in their commit message.
 14. A “Valid PR” is one which satisfies the above requirements.
+15. Contributions must meet existing quality standards. Raw AI output is not accepted under any circumstances. AI may be used only as an assistive tool; in all cases, the resulting content must be reviewed, validated, and justifiable by the contributor. The contributor should be able to explain design and code decisions, answer reviewers’ questions, and ensure that AI use does not waste reviewers’ time during review.
+16. The contributor provides reasonable assurance that the contribution does not infringe third-party copyrights or license terms.
 
 ## 6. Process
 
