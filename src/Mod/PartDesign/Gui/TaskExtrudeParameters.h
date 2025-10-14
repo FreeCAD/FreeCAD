@@ -162,7 +162,6 @@ protected Q_SLOTS:
 private Q_SLOTS:
     void onDirectionCBChanged(int);
     void onAlongSketchNormalChanged(bool);
-    void onDirectionToggled(bool);
     void onXDirectionEditChanged(double);
     void onYDirectionEditChanged(double);
     void onZDirectionEditChanged(double);
