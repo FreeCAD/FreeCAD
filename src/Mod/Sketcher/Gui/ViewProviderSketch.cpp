@@ -32,6 +32,7 @@
 
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScreen>
@@ -962,9 +963,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         }
     }
 
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
         getCoordsOnSketchPlane(pos, normal, x, y);
-        snapManager->snap(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
     }
     catch (const Base::ZeroDivisionError&) {
         return false;
@@ -1435,10 +1437,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
     SbLine line;
     getProjectingLine(cursorPos, viewer, line);
 
-    double x, y;
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
+        double x, y;
         getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y);
-        snapManager->snap(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
     }
     catch (const Base::ZeroDivisionError&) {
         return false;
@@ -1487,27 +1490,31 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             }
             resetPreselectPoint();
             return true;
-        case STATUS_SELECT_Constraint:
+        case STATUS_SELECT_Constraint: {
             setSketchMode(STATUS_SKETCH_DragConstraint);
             drag.DragConstraintSet = preselection.PreselectConstraintSet;
-            drag.xInit = x;
-            drag.yInit = y;
+            Base::Vector2d selectionPos = snapHandle->compute();
+            drag.xInit = selectionPos.x;
+            drag.yInit = selectionPos.y;
             resetPreselectPoint();
             return true;
+        }
         case STATUS_SKETCH_Drag: {
-            doDragStep(x, y);
+            Base::Vector2d dragPos = snapHandle->compute();
+            doDragStep(dragPos.x, dragPos.y);
             return true;
         }
         case STATUS_SKETCH_DragConstraint:
             if (!drag.DragConstraintSet.empty()) {
+                Base::Vector2d dragPos = snapHandle->compute();
                 auto idset = drag.DragConstraintSet;
                 for (int id : idset) {
-                    moveConstraint(id, Base::Vector2d(x, y));
+                    moveConstraint(id, Base::Vector2d(dragPos.x, dragPos.y));
                 }
             }
             return true;
         case STATUS_SKETCH_UseHandler:
-            sketchHandler->mouseMove(Base::Vector2d(x, y));
+            sketchHandler->mouseMove(*snapHandle);
             if (preselectChanged) {
                 editCoinManager->drawConstraintIcons();
                 sketchHandler->applyCursor();
@@ -1616,7 +1623,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
         getCoordsOnSketchPlane(
             line2.getPosition(), line2.getDirection(), drag.xInit, drag.yInit);
-        snapManager->snap(drag.xInit, drag.yInit);
+        snapManager->snap(Base::Vector2d(drag.xInit, drag.yInit), SnapType::All);
     };
 
     if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
@@ -2729,16 +2736,31 @@ bool ViewProviderSketch::selectAll()
 
     // Check if the focus is on the constraints or element list widget.
     QWidget* focusedWidget = QApplication::focusWidget();
+    auto* focusedList = qobject_cast<QListWidget*>(focusedWidget);
     bool focusOnConstraintWidget = false;
     bool focusOnElementWidget = false;
-    if (focusedWidget) {
+    if (focusedList) {
         if (focusedWidget->objectName().toStdString() == "listWidgetConstraints") {
             focusOnConstraintWidget = true;
         }
         else if (focusedWidget->objectName().toStdString() == "listWidgetElements") {
             focusOnElementWidget = true;
         }
+        else {
+            focusedList = nullptr;
+        }
     }
+
+    std::vector<int> ids;
+    if (focusedList) {
+        for (int i = 0; i < focusedList->count(); ++i) {
+            QListWidgetItem* item = focusedList->item(i);
+            if (item && !item->isHidden()) {
+                ids.push_back(item->data(Qt::UserRole).toInt());
+            }
+        }
+    }
+
     bool noWidgetSelected = !focusOnConstraintWidget && !focusOnElementWidget;
 
     Sketcher::SketchObject* sketchObject = getSketchObject();
@@ -2782,6 +2804,10 @@ bool ViewProviderSketch::selectAll()
                 GeoId = -extGeoCount;
             }
 
+            if (focusedList && std::ranges::find(ids, GeoId) == ids.end()) {
+                continue;
+            }
+
             if ((*it)->is<Part::GeomPoint>()) {
                 selectVertex(VertexId, 1);
             }
@@ -2802,8 +2828,9 @@ bool ViewProviderSketch::selectAll()
             }
         }
 
-        // get root point if they exist
-        addSelection2("RootPoint");
+        if (!focusOnElementWidget) {
+            addSelection2("RootPoint");
+        }
 
         if (hasUnselectedGeometry) {
             Base::Console().error("Select All: Not all geometry was selected");
@@ -2813,6 +2840,9 @@ bool ViewProviderSketch::selectAll()
     if (focusOnConstraintWidget || noWidgetSelected) {
         const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
         for (size_t i = 0; i < constraints.size(); ++i) {
+            if (focusedList && std::ranges::find(ids, i) == ids.end()) {
+                continue;
+            }
             addSelection2(fmt::format("Constraint{}", i + 1));
         }
     }

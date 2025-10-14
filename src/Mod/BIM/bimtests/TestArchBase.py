@@ -27,6 +27,7 @@
 import unittest
 import FreeCAD
 
+
 class TestArchBase(unittest.TestCase):
 
     def setUp(self):
@@ -54,11 +55,13 @@ class TestArchBase(unittest.TestCase):
 
     def tearDown(self):
         """Close the test document after all tests in the class are complete."""
-        if hasattr(self, 'document') and self.document:
+        if hasattr(self, "document") and self.document:
             try:
                 FreeCAD.closeDocument(self.document.Name)
             except Exception as e:
-                FreeCAD.Console.PrintError(f"Error during tearDown in {self.__class__.__name__}: {e}\n")
+                FreeCAD.Console.PrintError(
+                    f"Error during tearDown in {self.__class__.__name__}: {e}\n"
+                )
 
     def printTestMessage(self, text, prepend_text="Test ", end="\n"):
         """Write messages to the console including the line ending.
@@ -67,4 +70,3 @@ class TestArchBase(unittest.TestCase):
         passed as the prepend_text argument
         """
         FreeCAD.Console.PrintMessage(prepend_text + text + end)
-

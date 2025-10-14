@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchSchedule(TestArchBase.TestArchBase):
 
     def test_makeSchedule(self):

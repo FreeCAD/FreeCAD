@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2006 Werner Mayer LGPL
 #
 # FreeCAD RevInfo script to get the revision information from Subversion, Bazaar, and Git.

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -82,6 +83,7 @@ public:
     /** Builds up the list view with the properties. */
     void buildUp(PropertyModel::PropertyList&& props = PropertyModel::PropertyList(),
                  bool checkDocument = false);
+    void blockCollapseAll();
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void renameProperty(const App::Property&);
@@ -160,6 +162,7 @@ private:
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    bool blockCollapse;
     bool binding;
     bool checkDocument;
     bool closingEditor;

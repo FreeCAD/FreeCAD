@@ -1,4 +1,3 @@
-#  -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 LTS <SammelLothar@gmx.de> under LGPL               *
 # *   Copyright (c) 2020-2021 Schildkroet                                   *

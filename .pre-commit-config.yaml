@@ -10,6 +10,7 @@ files: |
         src/Tools|
         tests/src|
         src/Mod/Assembly|
+        src/Mod/BIM|
         src/Mod/CAM|
         src/Mod/Cloud|
         src/Mod/Fem|
@@ -50,7 +51,9 @@ exclude: |
         src/Mod/Mesh/App/TestData|
         src/Mod/Mesh/App/WildMagic4|
         src/Mod/Robot/App/kdl_cp|
-        src/Mod/Robot/Lib
+        src/Mod/Robot/Lib|
+        .*\.ts$|
+        .*\.brep$
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks

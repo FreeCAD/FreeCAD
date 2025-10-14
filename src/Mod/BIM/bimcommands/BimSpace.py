@@ -34,15 +34,18 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Space:
-
     "the Arch Space command definition"
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Space',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Space","Space"),
-                'Accel': "S, A",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
+        return {
+            "Pixmap": "Arch_Space",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Space", "Space"),
+            "Accel": "S, A",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Space", "Creates a space object from selected boundary objects"
+            ),
+        }
 
     def IsActive(self):
 
@@ -52,7 +55,8 @@ class Arch_Space:
     def Activated(self):
 
         import ArchComponent
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
+
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Space"))
         FreeCADGui.addModule("Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -63,10 +67,10 @@ class Arch_Space:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object")+"\n")
+            FreeCAD.Console.PrintMessage(translate("Arch", "Please select a base object") + "\n")
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
             FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Space")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 
-FreeCADGui.addCommand('Arch_Space', Arch_Space())
+FreeCADGui.addCommand("Arch_Space", Arch_Space())

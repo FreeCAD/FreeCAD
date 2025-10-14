@@ -1153,12 +1153,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 {
     std::swap(constr->First, constr->Second);
     std::swap(constr->FirstPos, constr->SecondPos);
-    if (constr->FirstPos == constr->SecondPos) {
-        constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-    }
-    else {
-        constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-    }
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
@@ -2116,9 +2111,10 @@ int SketchObject::toggleConstruction(int GeoId)
         // triggered by the clearselection of the UI command, this won't update the elements widget, in
         // the accumulative of actions it is judged that it is worth to trigger an update here.
 
-        auto gft = GeometryFacade::getFacade(vals[GeoId]);
+        std::unique_ptr<Part::Geometry> geo(vals[GeoId]->clone());
+        auto gft = GeometryFacade::getFacade(geo.get());
         gft->setConstruction(!gft->getConstruction());
-        this->Geometry.touch();
+        this->Geometry.set1Value(GeoId, std::move(geo));
     }
     else {
         if (GeoId > GeoEnum::RefExt) {
@@ -2126,10 +2122,10 @@ int SketchObject::toggleConstruction(int GeoId)
         }
 
         const std::vector<Part::Geometry*>& extGeos = getExternalGeometry();
-        auto geo = extGeos[-GeoId - 1];
-        auto egf = ExternalGeometryFacade::getFacade(geo);
+        std::unique_ptr<Part::Geometry> geo(extGeos[-GeoId - 1]->clone());
+        auto egf = ExternalGeometryFacade::getFacade(geo.get());
         egf->setFlag(ExternalGeometryExtension::Defining, !egf->testFlag(ExternalGeometryExtension::Defining));
-        this->ExternalGeo.touch();
+        this->ExternalGeo.set1Value(-GeoId - 1, std::move(geo));
     }
 
     solverNeedsUpdate = true;

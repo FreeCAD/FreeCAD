@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .asset import Asset
 from .manager import AssetManager
 from .uri import AssetUri
