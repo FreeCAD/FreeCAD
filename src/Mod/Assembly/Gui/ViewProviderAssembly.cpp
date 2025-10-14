@@ -1560,16 +1560,18 @@ inline QString objListHelper(const std::vector<App::DocumentObject*>& joints)
             if (!results.isEmpty()) {
                 results.append(QStringLiteral(", "));
             }
-            results.append(QStringLiteral("%1").arg(QString::fromLatin1(joint->Label.getStrValue())));
+            results.append(
+                QStringLiteral("%1").arg(QString::fromLatin1(joint->Label.getStrValue().c_str()))
+            );
         }
     }
     else {
         const int numToShow = 2;
         int more = joints.size() - numToShow;
         for (int i = 0; i < numToShow; ++i) {
-            results.append(
-                QStringLiteral("%1, ").arg(QString::fromLatin1(joints[i]->Label.getStrValue()))
-            );
+            results.append(QStringLiteral("%1, ").arg(
+                QString::fromLatin1(joints[i]->Label.getStrValue().c_str())
+            ));
         }
         results.append(ViewProviderAssembly::tr("and %1 more").arg(more));
     }
