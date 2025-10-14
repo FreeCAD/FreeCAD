@@ -728,6 +728,7 @@ void TaskExtrudeParameters::fillDirectionCombo()
     bool hasCustom = extrude->UseCustomVector.getValue();
     if (indexOfCurrent != -1 && !hasCustom) {
         ui->directionCB->setCurrentIndex(indexOfCurrent);
+        updateDirectionEdits();
         setDirectionMode(indexOfCurrent);
     }
     if (hasCustom) {
@@ -979,41 +980,46 @@ void TaskExtrudeParameters::setDirectionMode(int index)
 
     switch (index) {
 
-        case DirectionModes::Select:
+        case DirectionModes::Normal:
             ui->groupBoxDirection->hide();
-
-            ui->checkBoxAlongDirection->setEnabled(false);
-            ui->checkBoxAlongDirection->hide();
 
             extrude->UseCustomVector.setValue(false);
             ui->XDirectionEdit->setEnabled(false);
             ui->YDirectionEdit->setEnabled(false);
             ui->ZDirectionEdit->setEnabled(false);
+
+            ui->checkBoxAlongDirection->setEnabled(false);
+            ui->checkBoxAlongDirection->hide();
+
             break;
+
+        // Covered by the default option
+        // case DirectionModes::Select:
 
         case DirectionModes::Custom:
             ui->groupBoxDirection->show();
-
-            ui->checkBoxAlongDirection->setEnabled(true);
-            ui->checkBoxAlongDirection->show();
 
             extrude->UseCustomVector.setValue(true);
             ui->XDirectionEdit->setEnabled(true);
             ui->YDirectionEdit->setEnabled(true);
             ui->ZDirectionEdit->setEnabled(true);
+
+            ui->checkBoxAlongDirection->setEnabled(true);
+            ui->checkBoxAlongDirection->show();
             break;
 
-        // case DirectionModes::Normal:
         default:
-            ui->groupBoxDirection->hide();
+            ui->groupBoxDirection->show();
 
-            ui->checkBoxAlongDirection->setEnabled(false);
-            ui->checkBoxAlongDirection->hide();
+            updateDirectionEdits();
 
             extrude->UseCustomVector.setValue(false);
             ui->XDirectionEdit->setEnabled(false);
             ui->YDirectionEdit->setEnabled(false);
             ui->ZDirectionEdit->setEnabled(false);
+
+            ui->checkBoxAlongDirection->setEnabled(true);
+            ui->checkBoxAlongDirection->show();
             break;
     }
 }
