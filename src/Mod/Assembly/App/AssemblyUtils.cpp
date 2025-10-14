@@ -773,7 +773,7 @@ void collectComponentsRecursively(const std::vector<App::DocumentObject*>& objec
             }
             continue;
         }
-        else if (auto* group = dynamic_cast<App::DocumentObjectGroup*>(obj)) {
+        else if (auto* group = freecad_cast<App::DocumentObjectGroup*>(obj)) {
             collectComponentsRecursively(group->Group.getValues(), results);
             continue;
         }
