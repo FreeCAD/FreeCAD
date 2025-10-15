@@ -51,6 +51,7 @@ if App.GuiUp:
     from pivy import coin
     from PySide import QtCore
     from PySide import QtGui
+
     # from PySide import QtSvg  # for load_texture
 
 
@@ -105,9 +106,9 @@ def autogroup(obj):
     # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
-    if not hasattr(Gui,"draftToolBar"):
+    if not hasattr(Gui, "draftToolBar"):
         return
-    if not hasattr(Gui.draftToolBar,"autogroup"):
+    if not hasattr(Gui.draftToolBar, "autogroup"):
         return
     if Gui.draftToolBar.isConstructionMode():
         return
@@ -115,8 +116,8 @@ def autogroup(obj):
     # check first for objects that do autogroup themselves
     # at the moment only Arch_BuildingPart, which is an App::GeometryPython
     for par in App.ActiveDocument.findObjects(Type="App::GeometryPython"):
-        if hasattr(par.Proxy,"autogroup"):
-            if par.Proxy.autogroup(par,obj):
+        if hasattr(par.Proxy, "autogroup"):
+            if par.Proxy.autogroup(par, obj):
                 return
 
     # autogroup code
@@ -135,6 +136,7 @@ def autogroup(obj):
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools
+
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
             ifc_tools.aggregate(obj, parent)
         except:
@@ -158,13 +160,11 @@ def autogroup(obj):
             return
         matrix = parent.getSubObject(sub, retType=4)
         if matrix.hasScale() == App.ScaleType.Uniform:
-            err = translate("draft",
-                            "Unable to insert new object into "
-                            "a scaled part")
+            err = translate("draft", "Unable to insert new object into " "a scaled part")
             App.Console.PrintMessage(err)
             return
         inverse_placement = App.Placement(matrix.inverse())
-        if utils.get_type(obj) == 'Point':
+        if utils.get_type(obj) == "Point":
             point_vector = App.Vector(obj.X, obj.Y, obj.Z)
             real_point = inverse_placement.multVec(point_vector)
             obj.X = real_point.x
@@ -179,7 +179,7 @@ def autogroup(obj):
         elif utils.get_type(obj) in ["Label"]:
             obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
             obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
-        elif hasattr(obj,"Placement"):
+        elif hasattr(obj, "Placement"):
             # every object that have a placement is processed here
             obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
 
@@ -244,9 +244,9 @@ def dim_symbol(symbol=None, invert=False):
         t.translation.setValue((0, -2, 0))
         t.center.setValue((0, 2, 0))
         if invert:
-            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), -math.pi/2)
+            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), -math.pi / 2)
         else:
-            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), math.pi/2)
+            t.rotation.setValue(coin.SbVec3f((0, 0, 1)), math.pi / 2)
         c = coin.SoCone()
         c.height.setValue(4)
         marker.addChild(t)
@@ -258,8 +258,7 @@ def dim_symbol(symbol=None, invert=False):
         h = coin.SoShapeHints()
         h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
-        c.point.setValues([(-1, -2, 0), (0, 2, 0),
-                           (1, 2, 0), (0, -2, 0)])
+        c.point.setValues([(-1, -2, 0), (0, 2, 0), (1, 2, 0), (0, -2, 0)])
         f = coin.SoFaceSet()
         marker.addChild(h)
         marker.addChild(c)
@@ -359,6 +358,7 @@ def get_diffuse_color(objs):
     list of tuples
         The list will be empty if no valid object is found.
     """
+
     def _get_color(obj):
         if hasattr(obj, "ColoredElements"):
             if hasattr(obj, "Count") or hasattr(obj, "ElementCount"):
@@ -376,7 +376,9 @@ def get_diffuse_color(objs):
                     return cols
                 face_num = len(base.Shape.Faces)
                 for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
-                    if "Face" in elm: # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
+                    if (
+                        "Face" in elm
+                    ):  # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
                         if "." in elm:
                             elm0, elm1 = elm.split(".")
                             i = (int(elm0) * face_num) + int(elm1[4:]) - 1
@@ -394,9 +396,11 @@ def get_diffuse_color(objs):
                     if obj.ColoredElements is None:
                         cols += sub_cols
                     else:
-                        for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                        for elm, override in zip(
+                            obj.ColoredElements[1], obj.ViewObject.OverrideColorList
+                        ):
                             if sub.Name + ".Face" in elm:
-                                i = int(elm[(len(sub.Name) + 5):]) - 1
+                                i = int(elm[(len(sub.Name) + 5) :]) - 1
                                 sub_cols[i] = override
                         cols += sub_cols
                 return cols
@@ -420,10 +424,14 @@ def get_diffuse_color(objs):
     if not isinstance(objs, list):
         # Quick check to avoid processing a single object:
         obj = objs
-        if not hasattr(obj, "ColoredElements") \
-                and hasattr(obj.ViewObject, "DiffuseColor") \
-                and (len(obj.ViewObject.DiffuseColor) == 1 \
-                        or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
+        if (
+            not hasattr(obj, "ColoredElements")
+            and hasattr(obj.ViewObject, "DiffuseColor")
+            and (
+                len(obj.ViewObject.DiffuseColor) == 1
+                or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)
+            )
+        ):
             return obj.ViewObject.DiffuseColor
         # Create a list for further processing:
         objs = [objs]
@@ -454,7 +462,7 @@ def apply_current_style(objs):
     anno_style = utils.get_default_annotation_style()
     shape_style = utils.get_default_shape_style()
     for obj in objs:
-        if not hasattr(obj, 'ViewObject'):
+        if not hasattr(obj, "ViewObject"):
             continue
         vobj = obj.ViewObject
         props = vobj.PropertiesList
@@ -554,7 +562,7 @@ def format_object(target, origin=None, ignore_construction=False):
             val = getattr(matchrep, p)
             if isinstance(val, tuple):
                 if len(val) != len_faces:
-                    val = (val[0], )
+                    val = (val[0],)
             elif hasattr(val, "Value"):
                 val = val.Value
             try:
@@ -778,11 +786,14 @@ def load_texture(filename, size=None, gui=App.GuiUp):
                 _wrn("load_texture: " + translate("draft", "image is Null"))
 
                 if not os.path.exists(filename):
-                    raise FileNotFoundError(-1,
-                                            translate("draft", "filename does not exist "
-                                                               "on the system or "
-                                                               "in the resource file"),
-                                            filename)
+                    raise FileNotFoundError(
+                        -1,
+                        translate(
+                            "draft",
+                            "filename does not exist " "on the system or " "in the resource file",
+                        ),
+                        filename,
+                    )
 
             # This is buggy so it was de-activated.
             #
@@ -835,8 +846,7 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
-            _wrn("load_texture: {0}, {1}".format(exc.strerror,
-                                                 exc.filename))
+            _wrn("load_texture: {0}, {1}".format(exc.strerror, exc.filename))
             return None
         except Exception as exc:
             _wrn(str(exc))
@@ -902,9 +912,11 @@ def get_bbox(obj, debug=False):
         _err(translate("draft", "Wrong input: object {} not in document.").format(obj_str))
         return None
 
-    if (not hasattr(obj, "ViewObject")
-            or not obj.ViewObject
-            or not hasattr(obj.ViewObject, "RootNode")):
+    if (
+        not hasattr(obj, "ViewObject")
+        or not obj.ViewObject
+        or not hasattr(obj.ViewObject, "RootNode")
+    ):
         _err(translate("draft", "Does not have 'ViewObject.RootNode'."))
 
     # For Draft Dimensions
@@ -941,21 +953,27 @@ def end_all_events():
     if view is None:
         return
     if view.getNavigationType() in (
-            "Gui::GestureNavigationStyle", "Gui::MayaGestureNavigationStyle"
+        "Gui::GestureNavigationStyle",
+        "Gui::MayaGestureNavigationStyle",
     ):
         return
 
     class DelayEnder:
         def __init__(self):
             self.delay_is_done = False
+
         def stop(self):
             self.delay_is_done = True
+
     ender = DelayEnder()
     timer = QtCore.QTimer()
     timer.timeout.connect(ender.stop)
     timer.setSingleShot(True)
-    timer.start(100)  # 100ms (50ms is too short) timer guarantees the loop below runs at least that long
+    timer.start(
+        100
+    )  # 100ms (50ms is too short) timer guarantees the loop below runs at least that long
     while not ender.delay_is_done:
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+
 
 ## @}

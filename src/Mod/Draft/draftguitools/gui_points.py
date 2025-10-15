@@ -59,9 +59,11 @@ class Point(gui_base_original.Creator):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Point',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Point", "Point"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point")}
+        return {
+            "Pixmap": "Draft_Point",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Point", "Point"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Point", "Creates a point"),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -71,8 +73,12 @@ class Point(gui_base_original.Creator):
             self.ui.isRelative.hide()
             self.ui.continueCmd.show()
         # adding 2 callback functions
-        self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
-        self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.move)
+        self.callbackClick = self.view.addEventCallbackPivy(
+            coin.SoMouseButtonEvent.getClassTypeId(), self.click
+        )
+        self.callbackMove = self.view.addEventCallbackPivy(
+            coin.SoLocation2Event.getClassTypeId(), self.move
+        )
 
     def move(self, event_cb):
         """Execute as a callback when the pointer moves in the 3D view.
@@ -108,34 +114,40 @@ class Point(gui_base_original.Creator):
             if not self.ui.mouse:
                 return
             event = event_cb.getEvent()
-            if (event.getState() != coin.SoMouseButtonEvent.DOWN or
-                event.getButton() != event.BUTTON1):
+            if (
+                event.getState() != coin.SoMouseButtonEvent.DOWN
+                or event.getButton() != event.BUTTON1
+            ):
                 return
         if self.point:
             Gui.addModule("Draft")
             if params.get_param("UsePartPrimitives"):
                 # Insert a Part::Primitive object
-                _cmd = 'FreeCAD.ActiveDocument.'
+                _cmd = "FreeCAD.ActiveDocument."
                 _cmd += 'addObject("Part::Vertex", "Point")'
-                _cmd_list = ['point = ' + _cmd,
-                             'point.X = ' + str(self.point[0]),
-                             'point.Y = ' + str(self.point[1]),
-                             'point.Z = ' + str(self.point[2]),
-                             'Draft.autogroup(point)',
-                             'Draft.select(point)',
-                             'FreeCAD.ActiveDocument.recompute()']
+                _cmd_list = [
+                    "point = " + _cmd,
+                    "point.X = " + str(self.point[0]),
+                    "point.Y = " + str(self.point[1]),
+                    "point.Z = " + str(self.point[2]),
+                    "Draft.autogroup(point)",
+                    "Draft.select(point)",
+                    "FreeCAD.ActiveDocument.recompute()",
+                ]
                 self.commit(translate("draft", "Create Point"), _cmd_list)
             else:
                 # Insert a Draft point
-                _cmd = 'Draft.make_point'
-                _cmd += '('
-                _cmd += str(self.point[0]) + ', '
-                _cmd += str(self.point[1]) + ', '
+                _cmd = "Draft.make_point"
+                _cmd += "("
+                _cmd += str(self.point[0]) + ", "
+                _cmd += str(self.point[1]) + ", "
                 _cmd += str(self.point[2])
-                _cmd += ')'
-                _cmd_list = ['point = ' + _cmd,
-                             'Draft.autogroup(point)',
-                             'FreeCAD.ActiveDocument.recompute()']
+                _cmd += ")"
+                _cmd_list = [
+                    "point = " + _cmd,
+                    "Draft.autogroup(point)",
+                    "FreeCAD.ActiveDocument.recompute()",
+                ]
                 self.commit(translate("draft", "Create Point"), _cmd_list)
             self.finish(cont=None)
 
@@ -150,9 +162,13 @@ class Point(gui_base_original.Creator):
         """
         try:
             if self.callbackClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+                self.view.removeEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick
+                )
             if self.callbackMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+                self.view.removeEventCallbackPivy(
+                    coin.SoLocation2Event.getClassTypeId(), self.callbackMove
+                )
             if self.callbackClick or self.callbackMove:
                 # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
                 gui_utils.end_all_events()
@@ -166,12 +182,14 @@ class Point(gui_base_original.Creator):
             self.Activated()
 
     def get_hints(self):
-        return [Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)] \
-            + gui_tool_utils._get_hint_xyz_constrain() \
-            + gui_tool_utils._get_hint_mod_constrain() \
+        return (
+            [Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
             + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
-Gui.addCommand('Draft_Point', Point())
+Gui.addCommand("Draft_Point", Point())
 
 ## @}

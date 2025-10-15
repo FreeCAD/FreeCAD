@@ -78,12 +78,14 @@ def _create_frame(doc=None):
     version = App.Version()
     now = datetime.datetime.now().strftime("%Y/%m/%dT%H:%M:%S")
 
-    _text = ["Draft test file",
-             "Created: {}".format(now),
-             "\n",
-             "Version: " + ".".join(version[0:3]),
-             "Release: " + " ".join(version[3:5]),
-             "Branch: " + " ".join(version[5:])]
+    _text = [
+        "Draft test file",
+        "Created: {}".format(now),
+        "\n",
+        "Version: " + ".".join(version[0:3]),
+        "Release: " + " ".join(version[3:5]),
+        "Branch: " + " ".join(version[5:]),
+    ]
 
     record = doc.addObject("App::Annotation", "Description")
     record.LabelText = _text
@@ -104,10 +106,7 @@ def _create_frame(doc=None):
     frame.Shape = poly
 
 
-def _create_objects(doc=None,
-                    font_file=None,
-                    hatch_file=None,
-                    hatch_name=None):
+def _create_objects(doc=None, font_file=None, hatch_file=None, hatch_name=None):
     """Create the objects of the test file."""
     if not doc:
         doc = App.activeDocument()
@@ -125,9 +124,7 @@ def _create_objects(doc=None,
     # Wire
     _msg(16 * "-")
     _msg("Wire")
-    Draft.make_wire([Vector(1000, 0, 0),
-                     Vector(1500, 250, 0),
-                     Vector(1500, 500, 0)])
+    Draft.make_wire([Vector(1000, 0, 0), Vector(1500, 250, 0), Vector(1500, 500, 0)])
     _set_text(["Wire"], Vector(1000, -200, 0))
 
     # Fillet
@@ -152,9 +149,7 @@ def _create_objects(doc=None,
     # Circular arc 3 points
     _msg(16 * "-")
     _msg("Circular arc 3 points")
-    Draft.make_arc_3points([Vector(4250, 0, 0),
-                            Vector(4000, 250, 0),
-                            Vector(4250, 500, 0)])
+    Draft.make_arc_3points([Vector(4250, 0, 0), Vector(4000, 250, 0), Vector(4250, 500, 0)])
     _set_text(["Circular arc 3 points"], Vector(4000, -200, 0))
 
     # Circle
@@ -188,29 +183,32 @@ def _create_objects(doc=None,
     # BSpline
     _msg(16 * "-")
     _msg("BSpline")
-    Draft.make_bspline([Vector(9000, 0, 0),
-                        Vector(9100, 200, 0),
-                        Vector(9400, 300, 0),
-                        Vector(9500, 500, 0)])
+    Draft.make_bspline(
+        [Vector(9000, 0, 0), Vector(9100, 200, 0), Vector(9400, 300, 0), Vector(9500, 500, 0)]
+    )
     _set_text(["BSpline"], Vector(9000, -200, 0))
 
     # Cubic bezier
     _msg(16 * "-")
     _msg("Cubic bezier")
-    Draft.make_bezcurve([Vector(10000, 0, 0),
-                         Vector(10000, 500, 0),
-                         Vector(10500, 0, 0),
-                         Vector(10500, 500, 0)], degree=3)
+    Draft.make_bezcurve(
+        [Vector(10000, 0, 0), Vector(10000, 500, 0), Vector(10500, 0, 0), Vector(10500, 500, 0)],
+        degree=3,
+    )
     _set_text(["Cubic bezier"], Vector(10000, -200, 0))
 
     # N-degree bezier
     _msg(16 * "-")
     _msg("N-degree bezier")
-    Draft.make_bezcurve([Vector (11000, 0, 0),
-                         Vector (11100, 400, 0),
-                         Vector (11250, 250, 0),
-                         Vector (11400, 100, 0),
-                         Vector (11500, 500, 0)])
+    Draft.make_bezcurve(
+        [
+            Vector(11000, 0, 0),
+            Vector(11100, 400, 0),
+            Vector(11250, 250, 0),
+            Vector(11400, 100, 0),
+            Vector(11500, 500, 0),
+        ]
+    )
     _set_text(["N-degree bezier"], Vector(11000, -200, 0))
 
     # Point
@@ -239,9 +237,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Shapestring")
     try:
-        shape_string = Draft.make_shapestring("Testing",
-                                              font_file,
-                                              100)
+        shape_string = Draft.make_shapestring("Testing", font_file, 100)
         shape_string.Placement.Base = Vector(14000, 0)
     except Exception:
         _wrn("Shapestring could not be created")
@@ -259,11 +255,7 @@ def _create_objects(doc=None,
         rectangle.ViewObject.Visibility = False
     doc.recompute()
     try:
-        Draft.make_hatch(rectangle,
-                         hatch_file,
-                         hatch_name,
-                         scale=10,
-                         rotation=45)
+        Draft.make_hatch(rectangle, hatch_file, hatch_name, scale=10, rotation=45)
     except Exception:
         _wrn("Hatch could not be created")
         _wrn("Possible cause: the hatch file may not exist")
@@ -283,9 +275,9 @@ def _create_objects(doc=None,
     # Linear dimension
     _msg(16 * "-")
     _msg("Linear dimension")
-    dimension = Draft.make_linear_dimension(Vector(1500, 2000, 0),
-                                            Vector(1500, 2400, 0),
-                                            Vector(1000, 2200, 0))
+    dimension = Draft.make_linear_dimension(
+        Vector(1500, 2000, 0), Vector(1500, 2400, 0), Vector(1000, 2200, 0)
+    )
     if App.GuiUp:
         dimension.ViewObject.ArrowSizeStart = 15
         dimension.ViewObject.ArrowSizeEnd = 15
@@ -296,11 +288,9 @@ def _create_objects(doc=None,
         dimension.ViewObject.Decimals = 1
         dimension.ViewObject.ShowUnit = False
 
-    line = Draft.make_wire([Vector(1500, 2600, 0),
-                            Vector(1500, 3000, 0)])
+    line = Draft.make_wire([Vector(1500, 2600, 0), Vector(1500, 3000, 0)])
     doc.recompute()
-    dimension = Draft.make_linear_dimension_obj(line, 1, 2,
-                                              Vector(1000, 2800, 0))
+    dimension = Draft.make_linear_dimension_obj(line, 1, 2, Vector(1000, 2800, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSizeStart = 15
         dimension.ViewObject.ArrowSizeEnd = 15
@@ -322,10 +312,7 @@ def _create_objects(doc=None,
     circle.Placement.Base = Vector(2200, 2200, 0)
     circle.MakeFace = False
     doc.recompute()
-    dimension = Draft.make_radial_dimension_obj(circle,
-                                                1,
-                                                "radius",
-                                                Vector(2300, 2300, 0))
+    dimension = Draft.make_radial_dimension_obj(circle, 1, "radius", Vector(2300, 2300, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSizeStart = 15
         dimension.ViewObject.ArrowSizeEnd = 15
@@ -337,27 +324,21 @@ def _create_objects(doc=None,
     circle.Placement.Base = Vector(2200, 2800, 0)
     circle.MakeFace = False
     doc.recompute()
-    dimension = Draft.make_radial_dimension_obj(circle,
-                                                1,
-                                                "diameter",
-                                                Vector(2300, 2900, 0))
+    dimension = Draft.make_radial_dimension_obj(circle, 1, "diameter", Vector(2300, 2900, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSizeStart = 15
         dimension.ViewObject.ArrowSizeEnd = 15
         dimension.ViewObject.FontSize = 50
         dimension.ViewObject.Decimals = 1
         dimension.ViewObject.ShowUnit = False
-    _set_text(["Radius dimension",
-               "Diameter dimension"], Vector(2000, 1800, 0))
+    _set_text(["Radius dimension", "Diameter dimension"], Vector(2000, 1800, 0))
 
     # Angular dimension
     _msg(16 * "-")
     _msg("Angular dimension")
     Draft.make_line(Vector(3000, 2000, 0), Vector(3500, 2000, 0))
     Draft.make_line(Vector(3000, 2000, 0), Vector(3500, 2500, 0))
-    dimension = Draft.make_angular_dimension(Vector(3000, 2000, 0),
-                                             [0, 45],
-                                             Vector(3250, 2250, 0))
+    dimension = Draft.make_angular_dimension(Vector(3000, 2000, 0), [0, 45], Vector(3250, 2250, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSizeStart = 15
         dimension.ViewObject.ArrowSizeEnd = 15
@@ -369,10 +350,12 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Label")
     place = App.Placement(Vector(4250, 2250, 0), App.Rotation())
-    label = Draft.make_label(target_point=Vector(4000, 2000, 0),
-                             placement=place,
-                             custom_text="Example label",
-                             distance=-100)
+    label = Draft.make_label(
+        target_point=Vector(4000, 2000, 0),
+        placement=place,
+        custom_text="Example label",
+        distance=-100,
+    )
     label.Text = "Testing"
     if App.GuiUp:
         label.ViewObject.ArrowSizeStart = 15
@@ -389,14 +372,9 @@ def _create_objects(doc=None,
     if App.GuiUp:
         rectangle.ViewObject.Visibility = False
     doc.recompute()
-    Draft.make_ortho_array(rectangle,
-                           Vector(200, 0, 0),
-                           Vector(0, 150, 0),
-                           Vector(0, 0, 0),
-                           3,
-                           2,
-                           1,
-                           use_link=False)
+    Draft.make_ortho_array(
+        rectangle, Vector(200, 0, 0), Vector(0, 150, 0), Vector(0, 0, 0), 3, 2, 1, use_link=False
+    )
     _set_text(["Orthogonal array"], Vector(0, 3800, 0))
 
     # Orthogonal link array
@@ -407,46 +385,29 @@ def _create_objects(doc=None,
     if App.GuiUp:
         rectangle.ViewObject.Visibility = False
     doc.recompute()
-    Draft.make_ortho_array(rectangle,
-                           Vector(200, 0, 0),
-                           Vector(0, 150, 0),
-                           Vector(0, 0, 0),
-                           3,
-                           2,
-                           1,
-                           use_link=True)
+    Draft.make_ortho_array(
+        rectangle, Vector(200, 0, 0), Vector(0, 150, 0), Vector(0, 0, 0), 3, 2, 1, use_link=True
+    )
     _set_text(["Orthogonal link array"], Vector(1000, 3800, 0))
 
     # Polar array
     _msg(16 * "-")
     _msg("Polar array")
-    wire = Draft.make_wire([Vector(2000, 4050, 0),
-                            Vector(2000, 4000, 0),
-                            Vector(2100, 4000, 0)])
+    wire = Draft.make_wire([Vector(2000, 4050, 0), Vector(2000, 4000, 0), Vector(2100, 4000, 0)])
     if App.GuiUp:
         wire.ViewObject.Visibility = False
     doc.recompute()
-    Draft.make_polar_array(wire,
-                           4,
-                           90,
-                           Vector(2000, 4250, 0),
-                           use_link=False)
+    Draft.make_polar_array(wire, 4, 90, Vector(2000, 4250, 0), use_link=False)
     _set_text(["Polar array"], Vector(2000, 3800, 0))
 
     # Polar link array
     _msg(16 * "-")
     _msg("Polar link array")
-    wire = Draft.make_wire([Vector(3000, 4050, 0),
-                            Vector(3000, 4000, 0),
-                            Vector(3050, 4000, 0)])
+    wire = Draft.make_wire([Vector(3000, 4050, 0), Vector(3000, 4000, 0), Vector(3050, 4000, 0)])
     if App.GuiUp:
         wire.ViewObject.Visibility = False
     doc.recompute()
-    Draft.make_polar_array(wire,
-                           4,
-                           90,
-                           Vector(3000, 4250, 0),
-                           use_link=True)
+    Draft.make_polar_array(wire, 4, 90, Vector(3000, 4250, 0), use_link=True)
     _set_text(["Polar link array"], Vector(3000, 3800, 0))
 
     # Circular array
@@ -457,14 +418,9 @@ def _create_objects(doc=None,
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
     doc.recompute()
-    Draft.make_circular_array(polygon,
-                              110,
-                              100,
-                              3,
-                              1,
-                              Vector(0, 0, 1),
-                              Vector(4250, 4250, 0),
-                              use_link=False)
+    Draft.make_circular_array(
+        polygon, 110, 100, 3, 1, Vector(0, 0, 1), Vector(4250, 4250, 0), use_link=False
+    )
     _set_text(["Circular array"], Vector(4000, 3800, 0))
 
     # Circular link array
@@ -475,14 +431,9 @@ def _create_objects(doc=None,
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
     doc.recompute()
-    Draft.make_circular_array(polygon,
-                              110,
-                              100,
-                              3,
-                              1,
-                              Vector(0, 0, 1),
-                              Vector(5250, 4250, 0),
-                              use_link=True)
+    Draft.make_circular_array(
+        polygon, 110, 100, 3, 1, Vector(0, 0, 1), Vector(5250, 4250, 0), use_link=True
+    )
     _set_text(["Circular link array"], Vector(5000, 3800, 0))
 
     # Path array
@@ -492,10 +443,9 @@ def _create_objects(doc=None,
     polygon.Placement.Base = Vector(6000, 4000, 0)
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
-    spline = Draft.make_bspline([Vector(6000, 4000, 0),
-                                 Vector(6100, 4200, 0),
-                                 Vector(6400, 4300, 0),
-                                 Vector(6500, 4500, 0)])
+    spline = Draft.make_bspline(
+        [Vector(6000, 4000, 0), Vector(6100, 4200, 0), Vector(6400, 4300, 0), Vector(6500, 4500, 0)]
+    )
     doc.recompute()
     Draft.make_path_array(polygon, spline, 5, use_link=False)
     _set_text(["Path array"], Vector(6000, 3800, 0))
@@ -507,10 +457,9 @@ def _create_objects(doc=None,
     polygon.Placement.Base = Vector(7000, 4000, 0)
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
-    spline = Draft.make_bspline([Vector(7000, 4000, 0),
-                                 Vector(7100, 4200, 0),
-                                 Vector(7400, 4300, 0),
-                                 Vector(7500, 4500, 0)])
+    spline = Draft.make_bspline(
+        [Vector(7000, 4000, 0), Vector(7100, 4200, 0), Vector(7400, 4300, 0), Vector(7500, 4500, 0)]
+    )
     doc.recompute()
     Draft.make_path_array(polygon, spline, 5, use_link=True)
     _set_text(["Path link array"], Vector(7000, 3800, 0))
@@ -524,8 +473,7 @@ def _create_objects(doc=None,
     point_2 = Draft.make_point(8030, 4250, 0)
     point_3 = Draft.make_point(8470, 4250, 0)
     point_4 = Draft.make_point(8470, 4470, 0)
-    add_list, delete_list = Draft.upgrade([point_1, point_2,
-                                           point_3, point_4])
+    add_list, delete_list = Draft.upgrade([point_1, point_2, point_3, point_4])
     compound = add_list[0]
     if App.GuiUp:
         compound.ViewObject.PointSize = 5
@@ -542,8 +490,7 @@ def _create_objects(doc=None,
     point_2 = Draft.make_point(9030, 4250, 0)
     point_3 = Draft.make_point(9470, 4250, 0)
     point_4 = Draft.make_point(9470, 4470, 0)
-    add_list, delete_list = Draft.upgrade([point_1, point_2,
-                                           point_3, point_4])
+    add_list, delete_list = Draft.upgrade([point_1, point_2, point_3, point_4])
     compound = add_list[0]
     if App.GuiUp:
         compound.ViewObject.PointSize = 5
@@ -556,28 +503,21 @@ def _create_objects(doc=None,
     # Mirror
     _msg(16 * "-")
     _msg("Mirror")
-    wire = Draft.make_wire([Vector(0, 6000, 0),
-                            Vector(150, 6200, 0),
-                            Vector(500, 6000, 0)])
-    Draft.mirror(wire,
-                 Vector(0, 6250, 0),
-                 Vector(500, 6250, 0))
+    wire = Draft.make_wire([Vector(0, 6000, 0), Vector(150, 6200, 0), Vector(500, 6000, 0)])
+    Draft.mirror(wire, Vector(0, 6250, 0), Vector(500, 6250, 0))
     _set_text(["Mirror"], Vector(0, 5800, 0))
 
     # Clone
     _msg(16 * "-")
     _msg("Clone")
-    wire = Draft.make_wire([Vector(1000, 6000, 0),
-                            Vector(1150, 6200, 0),
-                            Vector(1500, 6000, 0)])
+    wire = Draft.make_wire([Vector(1000, 6000, 0), Vector(1150, 6200, 0), Vector(1500, 6000, 0)])
     Draft.make_clone(wire, Vector(0, 300, 0))
     _set_text(["Clone"], Vector(1000, 5800, 0))
 
     # Shape2DView
     _msg(16 * "-")
     _msg("Shape2DView")
-    place = App.Placement(Vector(2000, 6000, 0),
-                          App.Rotation(Vector(0, 0, 1), Vector(1, 2, 3)))
+    place = App.Placement(Vector(2000, 6000, 0), App.Rotation(Vector(0, 0, 1), Vector(1, 2, 3)))
     box = doc.addObject("Part::Box", "Box")
     box.Length = 200
     box.Width = 500
@@ -601,12 +541,14 @@ def _create_objects(doc=None,
     # Layer
     _msg(16 * "-")
     _msg("Layer")
-    layer = Draft.make_layer("Custom layer",
-                             line_color=(0.33, 0.0, 0.49),
-                             shape_color=(0.56, 0.89, 0.56),
-                             line_width=4,
-                             draw_style="Solid",
-                             transparency=50)
+    layer = Draft.make_layer(
+        "Custom layer",
+        line_color=(0.33, 0.0, 0.49),
+        shape_color=(0.56, 0.89, 0.56),
+        line_width=4,
+        draw_style="Solid",
+        transparency=50,
+    )
     box = doc.addObject("Part::Box", "Box")
     box.Length = 200
     box.Width = 500
@@ -622,9 +564,11 @@ def _create_objects(doc=None,
     doc.recompute()
 
 
-def create_test_file(font_file=App.getResourceDir()+"Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf",
-                     hatch_file=App.getResourceDir()+"Mod/TechDraw/PAT/FCPAT.pat",
-                     hatch_name="Horizontal5"):
+def create_test_file(
+    font_file=App.getResourceDir() + "Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf",
+    hatch_file=App.getResourceDir() + "Mod/TechDraw/PAT/FCPAT.pat",
+    hatch_name="Horizontal5",
+):
     """Create a complete test file of Draft objects.
 
     It draws a frame with information on the software used to create
@@ -663,6 +607,7 @@ def create_test_file(font_file=App.getResourceDir()+"Mod/TechDraw/Resources/font
         Gui.Selection.clearSelection()
 
     return doc
+
 
 ## @}
 

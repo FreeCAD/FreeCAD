@@ -39,7 +39,7 @@ from draftutils.messages import _msg
 def draw_header():
     """Draw a header for the tests."""
     _msg("")
-    _msg(78*"-")
+    _msg(78 * "-")
 
 
 def import_test(module):
@@ -56,18 +56,22 @@ def import_test(module):
 
 def no_gui(module):
     """Print a message that there is no user interface."""
-    _msg("  #-----------------------------------------------------#\n"
-         "  #    No GUI; cannot test for '{}'\n"
-         "  #-----------------------------------------------------#\n"
-         "  Automatic PASS".format(module))
+    _msg(
+        "  #-----------------------------------------------------#\n"
+        "  #    No GUI; cannot test for '{}'\n"
+        "  #-----------------------------------------------------#\n"
+        "  Automatic PASS".format(module)
+    )
 
 
 def no_test():
     """Print a message that the test is not currently implemented."""
-    _msg("  #-----------------------------------------------------#\n"
-         "  #    This test is not implemented currently\n"
-         "  #-----------------------------------------------------#\n"
-         "  Automatic PASS")
+    _msg(
+        "  #-----------------------------------------------------#\n"
+        "  #    This test is not implemented currently\n"
+        "  #-----------------------------------------------------#\n"
+        "  Automatic PASS"
+    )
 
 
 def fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
@@ -78,5 +82,6 @@ def fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
     _msg("  p5={}".format(p5))
     no_test()
     return True
+
 
 ## @}

@@ -70,4 +70,5 @@ class DraftDWG(test_base.DraftTestCaseDoc):
         obj = aux.fake_function(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+
 ## @}

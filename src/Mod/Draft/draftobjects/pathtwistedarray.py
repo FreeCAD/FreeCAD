@@ -49,7 +49,12 @@ object in the Arch Workbench.
 
 import draftgeoutils.geo_arrays as geo
 from draftutils.messages import _log
-def QT_TRANSLATE_NOOP(ctx,txt): return txt
+
+
+def QT_TRANSLATE_NOOP(ctx, txt):
+    return txt
+
+
 from draftobjects.draftlink import DraftLink
 
 ## \addtogroup draftobjects
@@ -80,73 +85,83 @@ class PathTwistedArray(DraftLink):
             properties = []
 
         if "Base" not in properties:
-            obj.addProperty("App::PropertyLink",
-                            "Base",
-                            "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."),
-                            locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "Base",
+                "Objects",
+                QT_TRANSLATE_NOOP("App::Property", "The base object that will be duplicated."),
+                locked=True,
+            )
             obj.Base = None
 
         if "PathObject" not in properties:
-            obj.addProperty("App::PropertyLink",
-                            "PathObject",
-                            "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."),
-                            locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "PathObject",
+                "Objects",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The object along which the copies will be distributed. It must contain 'Edges'.",
+                ),
+                locked=True,
+            )
             obj.PathObject = None
 
         if "Fuse" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Specifies if the copies "
-                                     "should be fused together "
-                                     "if they touch each other (slower)")
-            obj.addProperty("App::PropertyBool",
-                            "Fuse",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Specifies if the copies "
+                "should be fused together "
+                "if they touch each other (slower)",
+            )
+            obj.addProperty("App::PropertyBool", "Fuse", "Objects", _tip, locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
-            obj.addProperty("App::PropertyInteger",
-                            "Count",
-                            "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."),
-                            locked=True)
+            obj.addProperty(
+                "App::PropertyInteger",
+                "Count",
+                "Objects",
+                QT_TRANSLATE_NOOP("App::Property", "Number of copies to create."),
+                locked=True,
+            )
             obj.Count = 15
 
         if "RotationFactor" not in properties:
-            obj.addProperty("App::PropertyFloat",
-                            "RotationFactor",
-                            "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."),
-                            locked=True)
+            obj.addProperty(
+                "App::PropertyFloat",
+                "RotationFactor",
+                "Objects",
+                QT_TRANSLATE_NOOP("App::Property", "Rotation factor of the twisted array."),
+                locked=True,
+            )
             obj.RotationFactor = 0.25
 
         if self.use_link and "ExpandArray" not in properties:
-            obj.addProperty("App::PropertyBool",
-                            "ExpandArray",
-                            "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"),
-                            locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "ExpandArray",
+                "Objects",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Show the individual array elements (only for Link arrays)"
+                ),
+                locked=True,
+            )
             obj.ExpandArray = False
-            obj.setPropertyStatus('Shape', 'Transient')
+            obj.setPropertyStatus("Shape", "Transient")
 
         if not self.use_link:
             if "PlacementList" not in properties:
-                _tip = QT_TRANSLATE_NOOP("App::Property",
-                                         "The placement for each array element")
-                obj.addProperty("App::PropertyPlacementList",
-                                "PlacementList",
-                                "Objects",
-                                _tip,
-                                locked=True)
+                _tip = QT_TRANSLATE_NOOP("App::Property", "The placement for each array element")
+                obj.addProperty(
+                    "App::PropertyPlacementList", "PlacementList", "Objects", _tip, locked=True
+                )
                 obj.PlacementList = []
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
         super().linkSetup(obj)
-        obj.configLinkProperty(ElementCount='Count')
+        obj.configLinkProperty(ElementCount="Count")
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -161,13 +176,11 @@ class PathTwistedArray(DraftLink):
             _log("v1.1, " + obj.Name + ", added hidden property 'PlacementList'")
 
         self.set_properties(obj)
-        self.execute(obj) # Required to update PlacementList.
+        self.execute(obj)  # Required to update PlacementList.
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if self.props_changed_placement_only(obj) \
-                or not obj.Base \
-                or not obj.PathObject:
+        if self.props_changed_placement_only(obj) or not obj.Base or not obj.PathObject:
             self.props_changed_clear()
             return
 
@@ -178,12 +191,11 @@ class PathTwistedArray(DraftLink):
         count = obj.Count
         rot_factor = obj.RotationFactor
 
-        copy_placements, _ = geo.get_twisted_placements(path,
-                                                        count=count,
-                                                        rot_factor=rot_factor)
+        copy_placements, _ = geo.get_twisted_placements(path, count=count, rot_factor=rot_factor)
 
         self.buildShape(obj, array_placement, copy_placements)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
+
 
 ## @}

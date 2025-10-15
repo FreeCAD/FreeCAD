@@ -71,6 +71,7 @@ from copy import deepcopy
 if FreeCAD.GuiUp:
     from PySide import QtWidgets
     import FreeCADGui
+
     gui = True
     try:
         draftui = FreeCADGui.draftToolBar
@@ -82,157 +83,156 @@ else:
 
 
 svgcolors = {
-    'Pink': (255, 192, 203),
-    'Blue': (0, 0, 255),
-    'Honeydew': (240, 255, 240),
-    'Purple': (128, 0, 128),
-    'Fuchsia': (255, 0, 255),
-    'LawnGreen': (124, 252, 0),
-    'Amethyst': (153, 102, 204),
-    'Crimson': (220, 20, 60),
-    'White': (255, 255, 255),
-    'NavajoWhite': (255, 222, 173),
-    'Cornsilk': (255, 248, 220),
-    'Bisque': (255, 228, 196),
-    'PaleGreen': (152, 251, 152),
-    'Brown': (165, 42, 42),
-    'DarkTurquoise': (0, 206, 209),
-    'DarkGreen': (0, 100, 0),
-    'MediumOrchid': (186, 85, 211),
-    'Chocolate': (210, 105, 30),
-    'PapayaWhip': (255, 239, 213),
-    'Olive': (128, 128, 0),
-    'Silver': (192, 192, 192),
-    'PeachPuff': (255, 218, 185),
-    'Plum': (221, 160, 221),
-    'DarkGoldenrod': (184, 134, 11),
-    'SlateGrey': (112, 128, 144),
-    'MintCream': (245, 255, 250),
-    'CornflowerBlue': (100, 149, 237),
-    'Gold': (255, 215, 0),
-    'HotPink': (255, 105, 180),
-    'DarkBlue': (0, 0, 139),
-    'LimeGreen': (50, 205, 50),
-    'DeepSkyBlue': (0, 191, 255),
-    'DarkKhaki': (189, 183, 107),
-    'LightGrey': (211, 211, 211),
-    'Yellow': (255, 255, 0),
-    'Gainsboro': (220, 220, 220),
-    'MistyRose': (255, 228, 225),
-    'SandyBrown': (244, 164, 96),
-    'DeepPink': (255, 20, 147),
-    'Magenta': (255, 0, 255),
-    'AliceBlue': (240, 248, 255),
-    'DarkCyan': (0, 139, 139),
-    'DarkSlateGrey': (47, 79, 79),
-    'GreenYellow': (173, 255, 47),
-    'DarkOrchid': (153, 50, 204),
-    'OliveDrab': (107, 142, 35),
-    'Chartreuse': (127, 255, 0),
-    'Peru': (205, 133, 63),
-    'Orange': (255, 165, 0),
-    'Red': (255, 0, 0),
-    'Wheat': (245, 222, 179),
-    'LightCyan': (224, 255, 255),
-    'LightSeaGreen': (32, 178, 170),
-    'BlueViolet': (138, 43, 226),
-    'LightSlateGrey': (119, 136, 153),
-    'Cyan': (0, 255, 255),
-    'MediumPurple': (147, 112, 219),
-    'MidnightBlue': (25, 25, 112),
-    'FireBrick': (178, 34, 34),
-    'PaleTurquoise': (175, 238, 238),
-    'PaleGoldenrod': (238, 232, 170),
-    'Gray': (128, 128, 128),
-    'MediumSeaGreen': (60, 179, 113),
-    'Moccasin': (255, 228, 181),
-    'Ivory': (255, 255, 240),
-    'DarkSlateBlue': (72, 61, 139),
-    'Beige': (245, 245, 220),
-    'Green': (0, 128, 0),
-    'SlateBlue': (106, 90, 205),
-    'Teal': (0, 128, 128),
-    'Azure': (240, 255, 255),
-    'LightSteelBlue': (176, 196, 222),
-    'DimGrey': (105, 105, 105),
-    'Tan': (210, 180, 140),
-    'AntiqueWhite': (250, 235, 215),
-    'SkyBlue': (135, 206, 235),
-    'GhostWhite': (248, 248, 255),
-    'MediumTurquoise': (72, 209, 204),
-    'FloralWhite': (255, 250, 240),
-    'LavenderBlush': (255, 240, 245),
-    'SeaGreen': (46, 139, 87),
-    'Lavender': (230, 230, 250),
-    'BlanchedAlmond': (255, 235, 205),
-    'DarkOliveGreen': (85, 107, 47),
-    'DarkSeaGreen': (143, 188, 143),
-    'SpringGreen': (0, 255, 127),
-    'Navy': (0, 0, 128),
-    'Orchid': (218, 112, 214),
-    'SaddleBrown': (139, 69, 19),
-    'IndianRed': (205, 92, 92),
-    'Snow': (255, 250, 250),
-    'SteelBlue': (70, 130, 180),
-    'MediumSlateBlue': (123, 104, 238),
-    'Black': (0, 0, 0),
-    'LightBlue': (173, 216, 230),
-    'Turquoise': (64, 224, 208),
-    'MediumVioletRed': (199, 21, 133),
-    'DarkViolet': (148, 0, 211),
-    'DarkGray': (169, 169, 169),
-    'Salmon': (250, 128, 114),
-    'DarkMagenta': (139, 0, 139),
-    'Tomato': (255, 99, 71),
-    'WhiteSmoke': (245, 245, 245),
-    'Goldenrod': (218, 165, 32),
-    'MediumSpringGreen': (0, 250, 154),
-    'DodgerBlue': (30, 144, 255),
-    'Aqua': (0, 255, 255),
-    'ForestGreen': (34, 139, 34),
-    'LemonChiffon': (255, 250, 205),
-    'LightSlateGray': (119, 136, 153),
-    'SlateGray': (112, 128, 144),
-    'LightGray': (211, 211, 211),
-    'Indigo': (75, 0, 130),
-    'CadetBlue': (95, 158, 160),
-    'LightYellow': (255, 255, 224),
-    'DarkOrange': (255, 140, 0),
-    'PowderBlue': (176, 224, 230),
-    'RoyalBlue': (65, 105, 225),
-    'Sienna': (160, 82, 45),
-    'Thistle': (216, 191, 216),
-    'Lime': (0, 255, 0),
-    'Seashell': (255, 245, 238),
-    'DarkRed': (139, 0, 0),
-    'LightSkyBlue': (135, 206, 250),
-    'YellowGreen': (154, 205, 50),
-    'Aquamarine': (127, 255, 212),
-    'LightCoral': (240, 128, 128),
-    'DarkSlateGray': (47, 79, 79),
-    'Khaki': (240, 230, 140),
-    'DarkGrey': (169, 169, 169),
-    'BurlyWood': (222, 184, 135),
-    'LightGoldenrodYellow': (250, 250, 210),
-    'MediumBlue': (0, 0, 205),
-    'DarkSalmon': (233, 150, 122),
-    'RosyBrown': (188, 143, 143),
-    'LightSalmon': (255, 160, 122),
-    'PaleVioletRed': (219, 112, 147),
-    'Coral': (255, 127, 80),
-    'Violet': (238, 130, 238),
-    'Grey': (128, 128, 128),
-    'LightGreen': (144, 238, 144),
-    'Linen': (250, 240, 230),
-    'OrangeRed': (255, 69, 0),
-    'DimGray': (105, 105, 105),
-    'Maroon': (128, 0, 0),
-    'LightPink': (255, 182, 193),
-    'MediumAquamarine': (102, 205, 170),
-    'OldLace': (253, 245, 230)
+    "Pink": (255, 192, 203),
+    "Blue": (0, 0, 255),
+    "Honeydew": (240, 255, 240),
+    "Purple": (128, 0, 128),
+    "Fuchsia": (255, 0, 255),
+    "LawnGreen": (124, 252, 0),
+    "Amethyst": (153, 102, 204),
+    "Crimson": (220, 20, 60),
+    "White": (255, 255, 255),
+    "NavajoWhite": (255, 222, 173),
+    "Cornsilk": (255, 248, 220),
+    "Bisque": (255, 228, 196),
+    "PaleGreen": (152, 251, 152),
+    "Brown": (165, 42, 42),
+    "DarkTurquoise": (0, 206, 209),
+    "DarkGreen": (0, 100, 0),
+    "MediumOrchid": (186, 85, 211),
+    "Chocolate": (210, 105, 30),
+    "PapayaWhip": (255, 239, 213),
+    "Olive": (128, 128, 0),
+    "Silver": (192, 192, 192),
+    "PeachPuff": (255, 218, 185),
+    "Plum": (221, 160, 221),
+    "DarkGoldenrod": (184, 134, 11),
+    "SlateGrey": (112, 128, 144),
+    "MintCream": (245, 255, 250),
+    "CornflowerBlue": (100, 149, 237),
+    "Gold": (255, 215, 0),
+    "HotPink": (255, 105, 180),
+    "DarkBlue": (0, 0, 139),
+    "LimeGreen": (50, 205, 50),
+    "DeepSkyBlue": (0, 191, 255),
+    "DarkKhaki": (189, 183, 107),
+    "LightGrey": (211, 211, 211),
+    "Yellow": (255, 255, 0),
+    "Gainsboro": (220, 220, 220),
+    "MistyRose": (255, 228, 225),
+    "SandyBrown": (244, 164, 96),
+    "DeepPink": (255, 20, 147),
+    "Magenta": (255, 0, 255),
+    "AliceBlue": (240, 248, 255),
+    "DarkCyan": (0, 139, 139),
+    "DarkSlateGrey": (47, 79, 79),
+    "GreenYellow": (173, 255, 47),
+    "DarkOrchid": (153, 50, 204),
+    "OliveDrab": (107, 142, 35),
+    "Chartreuse": (127, 255, 0),
+    "Peru": (205, 133, 63),
+    "Orange": (255, 165, 0),
+    "Red": (255, 0, 0),
+    "Wheat": (245, 222, 179),
+    "LightCyan": (224, 255, 255),
+    "LightSeaGreen": (32, 178, 170),
+    "BlueViolet": (138, 43, 226),
+    "LightSlateGrey": (119, 136, 153),
+    "Cyan": (0, 255, 255),
+    "MediumPurple": (147, 112, 219),
+    "MidnightBlue": (25, 25, 112),
+    "FireBrick": (178, 34, 34),
+    "PaleTurquoise": (175, 238, 238),
+    "PaleGoldenrod": (238, 232, 170),
+    "Gray": (128, 128, 128),
+    "MediumSeaGreen": (60, 179, 113),
+    "Moccasin": (255, 228, 181),
+    "Ivory": (255, 255, 240),
+    "DarkSlateBlue": (72, 61, 139),
+    "Beige": (245, 245, 220),
+    "Green": (0, 128, 0),
+    "SlateBlue": (106, 90, 205),
+    "Teal": (0, 128, 128),
+    "Azure": (240, 255, 255),
+    "LightSteelBlue": (176, 196, 222),
+    "DimGrey": (105, 105, 105),
+    "Tan": (210, 180, 140),
+    "AntiqueWhite": (250, 235, 215),
+    "SkyBlue": (135, 206, 235),
+    "GhostWhite": (248, 248, 255),
+    "MediumTurquoise": (72, 209, 204),
+    "FloralWhite": (255, 250, 240),
+    "LavenderBlush": (255, 240, 245),
+    "SeaGreen": (46, 139, 87),
+    "Lavender": (230, 230, 250),
+    "BlanchedAlmond": (255, 235, 205),
+    "DarkOliveGreen": (85, 107, 47),
+    "DarkSeaGreen": (143, 188, 143),
+    "SpringGreen": (0, 255, 127),
+    "Navy": (0, 0, 128),
+    "Orchid": (218, 112, 214),
+    "SaddleBrown": (139, 69, 19),
+    "IndianRed": (205, 92, 92),
+    "Snow": (255, 250, 250),
+    "SteelBlue": (70, 130, 180),
+    "MediumSlateBlue": (123, 104, 238),
+    "Black": (0, 0, 0),
+    "LightBlue": (173, 216, 230),
+    "Turquoise": (64, 224, 208),
+    "MediumVioletRed": (199, 21, 133),
+    "DarkViolet": (148, 0, 211),
+    "DarkGray": (169, 169, 169),
+    "Salmon": (250, 128, 114),
+    "DarkMagenta": (139, 0, 139),
+    "Tomato": (255, 99, 71),
+    "WhiteSmoke": (245, 245, 245),
+    "Goldenrod": (218, 165, 32),
+    "MediumSpringGreen": (0, 250, 154),
+    "DodgerBlue": (30, 144, 255),
+    "Aqua": (0, 255, 255),
+    "ForestGreen": (34, 139, 34),
+    "LemonChiffon": (255, 250, 205),
+    "LightSlateGray": (119, 136, 153),
+    "SlateGray": (112, 128, 144),
+    "LightGray": (211, 211, 211),
+    "Indigo": (75, 0, 130),
+    "CadetBlue": (95, 158, 160),
+    "LightYellow": (255, 255, 224),
+    "DarkOrange": (255, 140, 0),
+    "PowderBlue": (176, 224, 230),
+    "RoyalBlue": (65, 105, 225),
+    "Sienna": (160, 82, 45),
+    "Thistle": (216, 191, 216),
+    "Lime": (0, 255, 0),
+    "Seashell": (255, 245, 238),
+    "DarkRed": (139, 0, 0),
+    "LightSkyBlue": (135, 206, 250),
+    "YellowGreen": (154, 205, 50),
+    "Aquamarine": (127, 255, 212),
+    "LightCoral": (240, 128, 128),
+    "DarkSlateGray": (47, 79, 79),
+    "Khaki": (240, 230, 140),
+    "DarkGrey": (169, 169, 169),
+    "BurlyWood": (222, 184, 135),
+    "LightGoldenrodYellow": (250, 250, 210),
+    "MediumBlue": (0, 0, 205),
+    "DarkSalmon": (233, 150, 122),
+    "RosyBrown": (188, 143, 143),
+    "LightSalmon": (255, 160, 122),
+    "PaleVioletRed": (219, 112, 147),
+    "Coral": (255, 127, 80),
+    "Violet": (238, 130, 238),
+    "Grey": (128, 128, 128),
+    "LightGreen": (144, 238, 144),
+    "Linen": (250, 240, 230),
+    "OrangeRed": (255, 69, 0),
+    "DimGray": (105, 105, 105),
+    "Maroon": (128, 0, 0),
+    "LightPink": (255, 182, 193),
+    "MediumAquamarine": (102, 205, 170),
+    "OldLace": (253, 245, 230),
 }
-svgcolorslower = \
-    dict((key.lower(), value) for (key, value) in list(svgcolors.items()))
+svgcolorslower = dict((key.lower(), value) for (key, value) in list(svgcolors.items()))
 
 
 def getcolor(color):
@@ -253,7 +253,7 @@ def getcolor(color):
         FreeCAD.Console.PrintMessage("Color defined as 'none', defaulting to black\n")
         return (0.0, 0.0, 0.0, 0.0)
     if color[0] == "#":
-        if len(color) == 7 or len(color) == 9: # Color string '#RRGGBB' or '#RRGGBBAA'
+        if len(color) == 7 or len(color) == 9:  # Color string '#RRGGBB' or '#RRGGBBAA'
             r = float(int(color[1:3], 16) / 255.0)
             g = float(int(color[3:5], 16) / 255.0)
             b = float(int(color[5:7], 16) / 255.0)
@@ -261,27 +261,29 @@ def getcolor(color):
             if len(color) == 9:
                 a = float(int(color[7:9], 16) / 255.0)
                 FreeCAD.Console.PrintMessage(f"Non standard color format #RRGGBBAA : {color}\n")
-            return (r, g, b, 1-a)
-        if len(color) == 4: # Color string '#RGB'
+            return (r, g, b, 1 - a)
+        if len(color) == 4:  # Color string '#RGB'
             # Expand the hex digits
             r = float(int(color[1], 16) * 17 / 255.0)
             g = float(int(color[2], 16) * 17 / 255.0)
             b = float(int(color[3], 16) * 17 / 255.0)
             return (r, g, b, 0.0)
-    if color.lower().startswith('rgb(') or color.lower().startswith('rgba('): # Color string 'rgb[a](0.12,0.23,0.3,0.0)'
-        cvalues = color.lstrip('rgba(').rstrip(')').replace('%', '').split(',')
+    if color.lower().startswith("rgb(") or color.lower().startswith(
+        "rgba("
+    ):  # Color string 'rgb[a](0.12,0.23,0.3,0.0)'
+        cvalues = color.lstrip("rgba(").rstrip(")").replace("%", "").split(",")
         if len(cvalues) == 3:
             a = 1.0
-            if '%' in color:
+            if "%" in color:
                 r, g, b = [int(float(cv)) / 100.0 for cv in cvalues]
             else:
                 r, g, b = [int(float(cv)) / 255.0 for cv in cvalues]
         if len(cvalues) == 4:
-            if '%' in color:
+            if "%" in color:
                 r, g, b, a = [int(float(cv)) / 100.0 for cv in cvalues]
             else:
                 r, g, b, a = [int(float(cv)) / 255.0 for cv in cvalues]
-        return (r, g, b, 1-a)
+        return (r, g, b, 1 - a)
     # Trying named color like 'MediumAquamarine'
     v = svgcolorslower.get(color.lower())
     if v:
@@ -322,7 +324,7 @@ def transformCopyShape(shape, m):
     return shape.transformGeometry(m)
 
 
-def getsize(length, mode='discard', base=1):
+def getsize(length, mode="discard", base=1):
     """Parse the length string containing number and unit.
 
     Parameters
@@ -358,74 +360,74 @@ def getsize(length, mode='discard', base=1):
     #
     # The percentage factor is arbitrarily chosen, as it should depend
     # on the viewport size or for filling patterns on the bounding box.
-    if mode == 'mm90.0':
+    if mode == "mm90.0":
         tomm = {
-            '': 25.4/90,  # default
-            'px': 25.4/90,
-            'pt': 4.0/3 * 25.4/90,
-            'pc': 15 * 25.4/90,
-            'mm': 1.0,
-            'cm': 10.0,
-            'in': 25.4,
-            'em': 15 * 2.54/90,
-            'ex': 10 * 2.54/90,
-            '%': 100
+            "": 25.4 / 90,  # default
+            "px": 25.4 / 90,
+            "pt": 4.0 / 3 * 25.4 / 90,
+            "pc": 15 * 25.4 / 90,
+            "mm": 1.0,
+            "cm": 10.0,
+            "in": 25.4,
+            "em": 15 * 2.54 / 90,
+            "ex": 10 * 2.54 / 90,
+            "%": 100,
         }
-    elif mode == 'mm96.0':
+    elif mode == "mm96.0":
         tomm = {
-            '': 25.4/96,  # default
-            'px': 25.4/96,
-            'pt': 4.0/3 * 25.4/96,
-            'pc': 15 * 25.4/96,
-            'mm': 1.0,
-            'cm': 10.0,
-            'in': 25.4,
-            'em': 15 * 2.54/96,
-            'ex': 10 * 2.54/96,
-            '%': 100
+            "": 25.4 / 96,  # default
+            "px": 25.4 / 96,
+            "pt": 4.0 / 3 * 25.4 / 96,
+            "pc": 15 * 25.4 / 96,
+            "mm": 1.0,
+            "cm": 10.0,
+            "in": 25.4,
+            "em": 15 * 2.54 / 96,
+            "ex": 10 * 2.54 / 96,
+            "%": 100,
         }
-    elif mode == 'css90.0':
+    elif mode == "css90.0":
         topx = {
-            '': 1.0,  # default
-            'px': 1.0,
-            'pt': 4.0/3,
-            'pc': 15,
-            'mm': 90.0/25.4,
-            'cm': 90.0/254.0,
-            'in': 90,
-            'em': 15,
-            'ex': 10,
-            '%': 100
+            "": 1.0,  # default
+            "px": 1.0,
+            "pt": 4.0 / 3,
+            "pc": 15,
+            "mm": 90.0 / 25.4,
+            "cm": 90.0 / 254.0,
+            "in": 90,
+            "em": 15,
+            "ex": 10,
+            "%": 100,
         }
-    elif mode == 'css96.0':
+    elif mode == "css96.0":
         topx = {
-            '': 1.0,  # default
-            'px': 1.0,
-            'pt': 4.0/3,
-            'pc': 15,
-            'mm': 96.0/25.4,
-            'cm': 96.0/254.0,
-            'in': 96,
-            'em': 15,
-            'ex': 10,
-            '%': 100
+            "": 1.0,  # default
+            "px": 1.0,
+            "pt": 4.0 / 3,
+            "pc": 15,
+            "mm": 96.0 / 25.4,
+            "cm": 96.0 / 254.0,
+            "in": 96,
+            "em": 15,
+            "ex": 10,
+            "%": 100,
         }
 
     # Extract a number from a string like '+56215.14565E+6mm'
-    _num = '([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)'
-    _unit = '(px|pt|pc|mm|cm|in|em|ex|%)?'
+    _num = "([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)"
+    _unit = "(px|pt|pc|mm|cm|in|em|ex|%)?"
     _full_num = _num + _unit
     number, exponent, unit = re.findall(_full_num, length)[0]
-    if mode == 'discard':
+    if mode == "discard":
         return float(number)
-    elif mode == 'tuple':
+    elif mode == "tuple":
         return float(number), unit
-    elif mode == 'isabsolute':
-        return unit in ('mm', 'cm', 'in', 'px', 'pt')
-    elif mode == 'mm96.0' or mode == 'mm90.0':
+    elif mode == "isabsolute":
+        return unit in ("mm", "cm", "in", "px", "pt")
+    elif mode == "mm96.0" or mode == "mm90.0":
         return float(number) * tomm[unit]
-    elif mode == 'css96.0' or mode == 'css90.0':
-        if unit != '%':
+    elif mode == "css96.0" or mode == "css90.0":
+        if unit != "%":
             return float(number) * topx[unit]
         else:
             return float(number) * base
@@ -448,8 +450,6 @@ def getrgb(color):
     g = str(hex(int(color[1] * 255)))[2:].zfill(2)
     b = str(hex(int(color[2] * 255)))[2:].zfill(2)
     return "#" + r + g + b
-
-
 
 
 class svgHandler(xml.sax.ContentHandler):
@@ -498,7 +498,6 @@ class svgHandler(xml.sax.ContentHandler):
             if self.fill:
                 v.ShapeColor = self.fill
 
-
     def __addFaceToDoc(self, named_face):
         """Create a named document object from a name/face tuple
 
@@ -530,15 +529,15 @@ class svgHandler(xml.sax.ContentHandler):
         self.count += 1
         precision = svg_precision()
 
-        _msg('processing element {0}: {1}'.format(self.count, name))
-        _msg('existing group transform: {}'.format(self.grouptransform))
-        _msg('existing group style: {}'.format(self.groupstyles))
+        _msg("processing element {0}: {1}".format(self.count, name))
+        _msg("existing group transform: {}".format(self.grouptransform))
+        _msg("existing group style: {}".format(self.groupstyles))
 
         data = {}
-        for (keyword, content) in list(attrs.items()):
+        for keyword, content in list(attrs.items()):
             # print(keyword, content)
             if keyword != "style":
-                content = content.replace(',', ' ')
+                content = content.replace(",", " ")
                 content = content.split()
             # print(keyword, content)
             data[keyword] = content
@@ -546,10 +545,10 @@ class svgHandler(xml.sax.ContentHandler):
         # If it's the first element, which is <svg>,
         # check if the file is created by Inkscape, and its version,
         # in order to consider some attributes of the SVG file.
-        if self.count == 1 and name == 'svg':
-            if 'inkscape:version' in data:
-                inks_doc_name = attrs.getValue('sodipodi:docname')
-                inks_full_ver = attrs.getValue('inkscape:version')
+        if self.count == 1 and name == "svg":
+            if "inkscape:version" in data:
+                inks_doc_name = attrs.getValue("sodipodi:docname")
+                inks_full_ver = attrs.getValue("inkscape:version")
                 inks_ver_pars = re.search("\\d+\\.\\d+", inks_full_ver)
                 if inks_ver_pars is not None:
                     inks_ver_f = float(inks_ver_pars.group(0))
@@ -561,27 +560,32 @@ class svgHandler(xml.sax.ContentHandler):
                     self.svgdpi = 90.0
                 else:
                     self.svgdpi = 96.0
-            if 'inkscape:version' not in data:
+            if "inkscape:version" not in data:
                 # exact scaling is calculated later below. Here we just want
                 # to skip the DPI dialog if a unit is specified in the viewbox
-                if "width" in data and "mm" in attrs.getValue('width'):
+                if "width" in data and "mm" in attrs.getValue("width"):
                     self.svgdpi = 96.0
-                elif "width" in data and "in" in attrs.getValue('width'):
+                elif "width" in data and "in" in attrs.getValue("width"):
                     self.svgdpi = 96.0
-                elif "width" in data and "cm" in attrs.getValue('width'):
+                elif "width" in data and "cm" in attrs.getValue("width"):
                     self.svgdpi = 96.0
                 else:
-                    _inf = ("This SVG file does not appear to have been produced "
-                            "by Inkscape. If it does not contain absolute units "
-                            "then a DPI setting will be used.")
-                    _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
-                            "will use the older standard 90 dpi.")
+                    _inf = (
+                        "This SVG file does not appear to have been produced "
+                        "by Inkscape. If it does not contain absolute units "
+                        "then a DPI setting will be used."
+                    )
+                    _qst = (
+                        "Do you wish to use 96 dpi? Choosing 'No' "
+                        "will use the older standard 90 dpi."
+                    )
                     if FreeCAD.GuiUp:
                         msgBox = QtWidgets.QMessageBox()
                         msgBox.setText(translate("ImportSVG", _inf))
                         msgBox.setInformativeText(translate("ImportSVG", _qst))
-                        msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes
-                                                  | QtWidgets.QMessageBox.No)
+                        msgBox.setStandardButtons(
+                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                        )
                         msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
                         ret = msgBox.exec_()
                         if ret == QtWidgets.QMessageBox.Yes:
@@ -591,37 +595,37 @@ class svgHandler(xml.sax.ContentHandler):
                         if ret:
                             _msg(translate("ImportSVG", _inf))
                             _msg(translate("ImportSVG", _qst))
-                            _msg("*** User specified {} "
-                                 "dpi ***".format(self.svgdpi))
+                            _msg("*** User specified {} " "dpi ***".format(self.svgdpi))
                     else:
                         self.svgdpi = 96.0
                         _msg(_inf)
                         _msg("*** Assuming {} dpi ***".format(self.svgdpi))
             if self.svgdpi == 1.0:
-                _wrn("This SVG file (" + inks_doc_name + ") "
-                     "has an unrecognised format which means "
-                     "the dpi could not be determined; "
-                     "assuming 96 dpi")
+                _wrn(
+                    "This SVG file (" + inks_doc_name + ") "
+                    "has an unrecognised format which means "
+                    "the dpi could not be determined; "
+                    "assuming 96 dpi"
+                )
                 self.svgdpi = 96.0
 
-        if 'style' in data:
-            if not data['style']:
+        if "style" in data:
+            if not data["style"]:
                 # Empty style attribute stops inheriting from parent
                 pass
             else:
-                content = data['style'].replace(' ', '')
-                content = content.split(';')
+                content = data["style"].replace(" ", "")
+                content = content.split(";")
                 for i in content:
-                    pair = i.split(':')
+                    pair = i.split(":")
                     if len(pair) > 1:
                         data[pair[0]] = pair[1]
 
-        for k in ['x', 'y', 'x1', 'y1', 'x2', 'y2',
-                  'r', 'rx', 'ry', 'cx', 'cy', 'width', 'height']:
+        for k in ["x", "y", "x1", "y1", "x2", "y2", "r", "rx", "ry", "cx", "cy", "width", "height"]:
             if k in data:
-                data[k] = getsize(data[k][0], 'css' + str(self.svgdpi))
+                data[k] = getsize(data[k][0], "css" + str(self.svgdpi))
 
-        for k in ['fill', 'stroke', 'stroke-width', 'font-size']:
+        for k in ["fill", "stroke", "stroke-width", "font-size"]:
             if k in data:
                 if isinstance(data[k], list):
                     if data[k][0].lower().startswith("rgb("):
@@ -635,60 +639,59 @@ class svgHandler(xml.sax.ContentHandler):
         self.width = None
         self.text = None
 
-        if name == 'svg':
+        if name == "svg":
             m = FreeCAD.Matrix()
             if not self.disableUnitScaling:
-                if 'width' in data \
-                        and 'height' in data \
-                        and 'viewBox' in data:
+                if "width" in data and "height" in data and "viewBox" in data:
                     if len(self.grouptransform) == 0:
-                        unitmode = 'mm' + str(self.svgdpi)
+                        unitmode = "mm" + str(self.svgdpi)
                     else:
                         # nested svg element
-                        unitmode = 'css' + str(self.svgdpi)
-                    vbw = round(getsize(data['viewBox'][2], 'discard'),precision)
-                    vbh = round(getsize(data['viewBox'][3], 'discard'), precision)
-                    abw = round(getsize(attrs.getValue('width'), unitmode), precision)
-                    abh = round(getsize(attrs.getValue('height'), unitmode), precision)
+                        unitmode = "css" + str(self.svgdpi)
+                    vbw = round(getsize(data["viewBox"][2], "discard"), precision)
+                    vbh = round(getsize(data["viewBox"][3], "discard"), precision)
+                    abw = round(getsize(attrs.getValue("width"), unitmode), precision)
+                    abh = round(getsize(attrs.getValue("height"), unitmode), precision)
                     self.viewbox = (vbw, vbh)
                     sx = abw / vbw
                     sy = abh / vbh
-                    preserve_ar = ' '.join(data.get('preserveAspectRatio', [])).lower()
-                    if preserve_ar.startswith('none'):
+                    preserve_ar = " ".join(data.get("preserveAspectRatio", [])).lower()
+                    if preserve_ar.startswith("none"):
                         m.scale(Vector(sx, sy, 1))
                         if sx != sy:
-                            _wrn('Non-uniform scaling with probably degenerating '
-                                  + 'effects on Edges. ({} vs. {}).'.format(sx, sy))
+                            _wrn(
+                                "Non-uniform scaling with probably degenerating "
+                                + "effects on Edges. ({} vs. {}).".format(sx, sy)
+                            )
 
                     else:
                         # preserve aspect ratio - svg default is 'x/y-mid meet'
-                        if preserve_ar.endswith('slice'):
+                        if preserve_ar.endswith("slice"):
                             sxy = max(sx, sy)
                         else:
                             sxy = min(sx, sy)
                         m.scale(Vector(sxy, sxy, 1))
                 elif len(self.grouptransform) == 0:
                     # fallback to current dpi
-                    m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
+                    m.scale(Vector(25.4 / self.svgdpi, 25.4 / self.svgdpi, 1))
             self.grouptransform.append(m)
-        if 'fill' in data:
-            if data['fill'] != 'none':
-                self.fill = getcolor(data['fill'])
-        if 'stroke' in data:
-            if data['stroke'] != 'none':
-                self.color = getcolor(data['stroke'])
-        if 'stroke-width' in data:
-            if data['stroke-width'] != 'none':
-                self.width = getsize(data['stroke-width'],
-                                     'css' + str(self.svgdpi))
-        if 'transform' in data:
-            m = self.getMatrix(attrs.getValue('transform'))
+        if "fill" in data:
+            if data["fill"] != "none":
+                self.fill = getcolor(data["fill"])
+        if "stroke" in data:
+            if data["stroke"] != "none":
+                self.color = getcolor(data["stroke"])
+        if "stroke-width" in data:
+            if data["stroke-width"] != "none":
+                self.width = getsize(data["stroke-width"], "css" + str(self.svgdpi))
+        if "transform" in data:
+            m = self.getMatrix(attrs.getValue("transform"))
         else:
             m = FreeCAD.Matrix()
         if name == "g" or name == "a":
             self.grouptransform.append(m)
         elif name == "freecad:used":
-            #use tag acts as g tag but has x,y attribute
+            # use tag acts as g tag but has x,y attribute
             x = data.get("x", 0)
             y = data.get("y", 0)
             if x != 0 or y != 0:
@@ -696,12 +699,12 @@ class svgHandler(xml.sax.ContentHandler):
                 xy.move(Vector(x, -y, 0))
                 m = m.multiply(xy)
             self.grouptransform.append(m)
-        elif 'transform' in data:
+        elif "transform" in data:
             self.transform = m
 
         if self.style == 0:
             if self.fill is not None:
-                self.fill  = self.fill_default
+                self.fill = self.fill_default
             self.color = self.color_default
             self.width = self.width_default
 
@@ -717,7 +720,7 @@ class svgHandler(xml.sax.ContentHandler):
                         break
                 if self.fill is None:
                     # svg fill default is Black
-                    self.fill = getcolor('Black')
+                    self.fill = getcolor("Black")
         if self.color is None:
             for groupstyle in reversed(self.groupstyles):
                 if groupstyle[1] is not None:
@@ -730,15 +733,15 @@ class svgHandler(xml.sax.ContentHandler):
                     break
 
         pathname = None
-        if 'id' in data:
-            pathname = data['id'][0]
-            _msg('name: {}'.format(pathname))
+        if "id" in data:
+            pathname = data["id"][0]
+            _msg("name: {}".format(pathname))
 
         # Process paths
         if name == "path":
             if not pathname:
                 pathname = "Path"
-            _msg('data: {}'.format(data))
+            _msg("data: {}".format(data))
 
             if "freecad:basepoint1" in data:
                 p1 = data["freecad:basepoint1"]
@@ -751,7 +754,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.applyTrans(obj)
                 self.format(obj)
                 self.lastdim = obj
-                data['d'] = []
+                data["d"] = []
 
             if "d" in data:
                 svgPath = SvgPathParser(data, pathname)
@@ -766,59 +769,43 @@ class svgHandler(xml.sax.ContentHandler):
         # Process rects
         if name == "rect":
             if not pathname:
-                pathname = 'Rectangle'
+                pathname = "Rectangle"
             edges = []
             if "x" not in data:
                 data["x"] = 0
             if "y" not in data:
                 data["y"] = 0
             # Negative values are invalid
-            _precision = 10**(-precision)
-            if ('rx' not in data or data['rx'] < _precision) \
-                    and ('ry' not in data or data['ry'] < _precision):
+            _precision = 10 ** (-precision)
+            if ("rx" not in data or data["rx"] < _precision) and (
+                "ry" not in data or data["ry"] < _precision
+            ):
                 # if True:
-                p1 = Vector(data['x'],
-                            -data['y'],
-                            0)
-                p2 = Vector(data['x'] + data['width'],
-                            -data['y'],
-                            0)
-                p3 = Vector(data['x'] + data['width'],
-                            -data['y'] - data['height'],
-                            0)
-                p4 = Vector(data['x'],
-                            -data['y'] - data['height'],
-                            0)
+                p1 = Vector(data["x"], -data["y"], 0)
+                p2 = Vector(data["x"] + data["width"], -data["y"], 0)
+                p3 = Vector(data["x"] + data["width"], -data["y"] - data["height"], 0)
+                p4 = Vector(data["x"], -data["y"] - data["height"], 0)
                 edges.append(Part.LineSegment(p1, p2).toShape())
                 edges.append(Part.LineSegment(p2, p3).toShape())
                 edges.append(Part.LineSegment(p3, p4).toShape())
                 edges.append(Part.LineSegment(p4, p1).toShape())
             else:
                 # rounded edges
-                rx = data.get('rx')
-                ry = data.get('ry') or rx
+                rx = data.get("rx")
+                ry = data.get("ry") or rx
                 rx = rx or ry
-                if rx > 2 * data['width']:
-                    rx = data['width'] / 2.0
-                if ry > 2 * data['height']:
-                    ry = data['height'] / 2.0
+                if rx > 2 * data["width"]:
+                    rx = data["width"] / 2.0
+                if ry > 2 * data["height"]:
+                    ry = data["height"] / 2.0
 
-                p1 = Vector(data['x'] + rx,
-                            -data['y'] - data['height'] + ry,
-                            0)
-                p2 = Vector(data['x'] + data['width'] - rx,
-                            -data['y'] - data['height'] + ry,
-                            0)
-                p3 = Vector(data['x'] + data['width'] - rx,
-                            -data['y'] - ry,
-                            0)
-                p4 = Vector(data['x'] + rx,
-                            -data['y'] - ry,
-                            0)
+                p1 = Vector(data["x"] + rx, -data["y"] - data["height"] + ry, 0)
+                p2 = Vector(data["x"] + data["width"] - rx, -data["y"] - data["height"] + ry, 0)
+                p3 = Vector(data["x"] + data["width"] - rx, -data["y"] - ry, 0)
+                p4 = Vector(data["x"] + rx, -data["y"] - ry, 0)
 
                 if rx < 0 or ry < 0:
-                    _wrn("Warning: 'rx' or 'ry' is negative, "
-                         "check the SVG file")
+                    _wrn("Warning: 'rx' or 'ry' is negative, " "check the SVG file")
 
                 if rx >= ry:
                     e = Part.Ellipse(Vector(), rx, ry)
@@ -836,8 +823,7 @@ class svgHandler(xml.sax.ContentHandler):
                     # rotate +90 degrees
                     m = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
                 esh = []
-                for arc, point in ((e1a, p1), (e2a, p2),
-                                   (e3a, p3), (e4a, p4)):
+                for arc, point in ((e1a, p1), (e2a, p2), (e3a, p3), (e4a, p4)):
                     m1 = FreeCAD.Matrix(m)
                     m1.move(point)
                     arc.transform(m1)
@@ -862,9 +848,9 @@ class svgHandler(xml.sax.ContentHandler):
         # Process lines
         if name == "line":
             if not pathname:
-                pathname = 'Line'
-            p1 = Vector(data['x1'], -data['y1'], 0)
-            p2 = Vector(data['x2'], -data['y2'], 0)
+                pathname = "Line"
+            p1 = Vector(data["x1"], -data["y1"], 0)
+            p2 = Vector(data["x2"], -data["y2"], 0)
             sh = Part.LineSegment(p1, p2).toShape()
             sh = self.applyTrans(sh)
             obj = self.doc.addObject("Part::Feature", pathname)
@@ -882,13 +868,13 @@ class svgHandler(xml.sax.ContentHandler):
             # but it would be more difficult to search for duplicate
             # points beforehand.
             if not pathname:
-                pathname = 'Polyline'
-            points = [float(d) for d in data['points']]
+                pathname = "Polyline"
+            points = [float(d) for d in data["points"]]
             lenpoints = len(points)
             if lenpoints >= 4 and lenpoints % 2 == 0:
                 lastvec = Vector(points[0], -points[1], 0)
                 path = []
-                if name == 'polygon':
+                if name == "polygon":
                     points = points + points[:2]  # emulate closepath
                 for svgx, svgy in zip(points[2::2], points[3::2]):
                     currentvec = Vector(svgx, -svgy, 0)
@@ -909,10 +895,10 @@ class svgHandler(xml.sax.ContentHandler):
         # Process ellipses
         if name == "ellipse":
             if not pathname:
-                pathname = 'Ellipse'
-            c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
-            rx = data['rx']
-            ry = data['ry']
+                pathname = "Ellipse"
+            c = Vector(data.get("cx", 0), -data.get("cy", 0), 0)
+            rx = data["rx"]
+            ry = data["ry"]
 
             if rx < 0 or ry < 0:
                 _wrn("Warning: 'rx' or 'ry' is negative, check the SVG file")
@@ -933,9 +919,9 @@ class svgHandler(xml.sax.ContentHandler):
         # Process circles
         if name == "circle" and "freecad:skip" not in data:
             if not pathname:
-                pathname = 'Circle'
-            c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
-            r = data['r']
+                pathname = "Circle"
+            c = Vector(data.get("cx", 0), -data.get("cy", 0), 0)
+            r = data["r"]
             sh = Part.makeCircle(r)
             if self.fill:
                 sh = Part.Wire([sh])
@@ -950,37 +936,35 @@ class svgHandler(xml.sax.ContentHandler):
         if name in ["text", "tspan"]:
             if "freecad:skip" not in data:
                 _msg("processing a text")
-                if 'x' in data:
-                    self.x = data['x']
+                if "x" in data:
+                    self.x = data["x"]
                 else:
                     self.x = 0
-                if 'y' in data:
-                    self.y = data['y']
+                if "y" in data:
+                    self.y = data["y"]
                 else:
                     self.y = 0
-                if 'font-size' in data:
-                    if data['font-size'] != 'none':
-                        self.text = getsize(data['font-size'],
-                                            'css' + str(self.svgdpi))
+                if "font-size" in data:
+                    if data["font-size"] != "none":
+                        self.text = getsize(data["font-size"], "css" + str(self.svgdpi))
                 else:
                     self.text = 1
             else:
                 if self.lastdim:
-                    _font_size = int(getsize(data['font-size']))
+                    _font_size = int(getsize(data["font-size"]))
                     self.lastdim.ViewObject.FontSize = _font_size
 
-
-
         _msg("done processing element {}".format(self.count))
+
     # startElement()
 
     def characters(self, content):
         """Read characters from the given string."""
         if self.text:
             _msg("reading characters {}".format(content))
-            obj = self.doc.addObject("App::Annotation", 'Text')
+            obj = self.doc.addObject("App::Annotation", "Text")
             # use ignore to not break import if char is not found in latin1
-            obj.LabelText = content.encode('latin1', 'ignore')
+            obj.LabelText = content.encode("latin1", "ignore")
             vec = Vector(self.x, -self.y, 0)
             if self.transform:
                 vec = self.translateVec(vec, self.transform)
@@ -1028,7 +1012,7 @@ class svgHandler(xml.sax.ContentHandler):
             for transform in self.grouptransform[::-1]:
                 sh = transformCopyShape(sh, transform)
             return sh
-        elif Draft.getType(sh) in ["Dimension","LinearDimension"]:
+        elif Draft.getType(sh) in ["Dimension", "LinearDimension"]:
             pts = []
             for p in [sh.Start, sh.End, sh.Dimline]:
                 cp = Vector(p)
@@ -1069,26 +1053,26 @@ class svgHandler(xml.sax.ContentHandler):
         Base::Matrix4D
             The translated matrix.
         """
-        _op = '(matrix|translate|scale|rotate|skewX|skewY)'
-        _val = '\\((.*?)\\)'
-        _transf = _op + '\\s*?' + _val
+        _op = "(matrix|translate|scale|rotate|skewX|skewY)"
+        _val = "\\((.*?)\\)"
+        _transf = _op + "\\s*?" + _val
         transformre = re.compile(_transf, re.DOTALL)
         m = FreeCAD.Matrix()
         for transformation, arguments in reversed(transformre.findall(tr)):
-            _args_rep = arguments.replace(',', ' ').split()
+            _args_rep = arguments.replace(",", " ").split()
             argsplit = [float(arg) for arg in _args_rep]
             # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
             # print('%s:%s %s %d' % (transformation, arguments,
             #                        argsplit, len(argsplit)))
-            if transformation == 'translate':
+            if transformation == "translate":
                 tx = argsplit[0]
                 ty = argsplit[1] if len(argsplit) > 1 else 0.0
                 m.move(Vector(tx, -ty, 0))
-            elif transformation == 'scale':
+            elif transformation == "scale":
                 sx = argsplit[0]
                 sy = argsplit[1] if len(argsplit) > 1 else sx
                 m.scale(Vector(sx, sy, 1))
-            elif transformation == 'rotate':
+            elif transformation == "rotate":
                 cx = 0
                 cy = 0
                 angle = argsplit[0]
@@ -1096,21 +1080,19 @@ class svgHandler(xml.sax.ContentHandler):
                     # Rotate around a non-origin centerpoint (note: SVG y axis is opposite FreeCAD y axis)
                     cx = argsplit[1]
                     cy = argsplit[2]
-                    m.move(Vector(-cx, cy, 0)) # Reposition for rotation
+                    m.move(Vector(-cx, cy, 0))  # Reposition for rotation
                 # Mirroring one axis is equal to changing the direction
                 # of rotation
                 m.rotateZ(math.radians(-angle))
                 if len(argsplit) >= 3:
-                    m.move(Vector(cx, -cy, 0)) # Reverse repositioning
-            elif transformation == 'skewX':
-                _m = FreeCAD.Matrix(1,
-                                    -math.tan(math.radians(argsplit[0])))
+                    m.move(Vector(cx, -cy, 0))  # Reverse repositioning
+            elif transformation == "skewX":
+                _m = FreeCAD.Matrix(1, -math.tan(math.radians(argsplit[0])))
                 m = m.multiply(_m)
-            elif transformation == 'skewY':
-                _m = FreeCAD.Matrix(1, 0, 0, 0,
-                                    -math.tan(math.radians(argsplit[0])))
+            elif transformation == "skewY":
+                _m = FreeCAD.Matrix(1, 0, 0, 0, -math.tan(math.radians(argsplit[0])))
                 m = m.multiply(_m)
-            elif transformation == 'matrix':
+            elif transformation == "matrix":
                 # transformation matrix:
                 #    FreeCAD                 SVG
                 # (+A -C +0 +E)           (A C 0 E)
@@ -1131,7 +1113,10 @@ class svgHandler(xml.sax.ContentHandler):
             # print("m = ", m)
         # print("generating transformation: ", m)
         return m
+
     # getMatrix
+
+
 # class svgHandler
 
 
@@ -1168,16 +1153,16 @@ def getContents(filename, tag, stringmode=False):
     # Replace the newline character with a string
     # so that it's easiert to parse; later on the newline character
     # will be restored
-    contents = contents.replace('\n', '_linebreak')
-    searchpat = '<' + tag + '.*?</' + tag + '>'
+    contents = contents.replace("\n", "_linebreak")
+    searchpat = "<" + tag + ".*?</" + tag + ">"
     tags = re.findall(searchpat, contents)
     for t in tags:
         tagid = re.findall(r'id="(.*?)"', t)
         if tagid:
             tagid = tagid[0]
         else:
-            tagid = 'none'
-        res = t.replace('_linebreak', '\n')
+            tagid = "none"
+        res = t.replace("_linebreak", "\n")
         result[tagid] = res
     return result
 
@@ -1206,9 +1191,9 @@ def open(filename):
     parser.setContentHandler(handler)
     parser._cont_handler.doc = doc
 
-    #preprocess file to replace use tag to it's referenced object
+    # preprocess file to replace use tag to it's referenced object
     new_svg_content = replace_use_with_reference(filename)
-    xml.sax.parseString(new_svg_content,handler)
+    xml.sax.parseString(new_svg_content, handler)
     doc.recompute()
     return doc
 
@@ -1245,9 +1230,9 @@ def insert(filename, docname):
     parser.setContentHandler(handler)
     parser._cont_handler.doc = doc
 
-    #preprocess file to replace use tag to it's referenced object
+    # preprocess file to replace use tag to it's referenced object
     new_svg_content = replace_use_with_reference(filename)
-    xml.sax.parseString(new_svg_content,handler)
+    xml.sax.parseString(new_svg_content, handler)
     doc.recompute()
 
 
@@ -1271,8 +1256,7 @@ def export(exportList, filename):
     """
     svg_export_style = params.get_param("svg_export_style")
     if svg_export_style != 0 and svg_export_style != 1:
-        _msg(translate("ImportSVG",
-                       "Unknown SVG export style, switching to Translated"))
+        _msg(translate("ImportSVG", "Unknown SVG export style, switching to Translated"))
         svg_export_style = 0
 
     tmp = []
@@ -1301,20 +1285,19 @@ def export(exportList, filename):
     # of all shapes
     bb = FreeCAD.BoundBox()
     for obj in exportList:
-        if (hasattr(obj, "Shape")
-                and obj.Shape
-                and obj.Shape.BoundBox.isValid()):
+        if hasattr(obj, "Shape") and obj.Shape and obj.Shape.BoundBox.isValid():
             bb.add(obj.Shape.BoundBox)
         else:
             # if Draft.get_type(obj) in ("Text", "LinearDimension", ...)
-            _wrn("'{}': no Shape, "
-                 "calculate manual bounding box".format(obj.Label))
+            _wrn("'{}': no Shape, " "calculate manual bounding box".format(obj.Label))
             bb.add(Draft.get_bbox(obj))
 
     if not bb.isValid():
-        _err(translate("ImportSVG",
-                       "The export list contains no object "
-                       "with a valid bounding box"))
+        _err(
+            translate(
+                "ImportSVG", "The export list contains no object " "with a valid bounding box"
+            )
+        )
         return
 
     minx = bb.XMin
@@ -1338,7 +1321,7 @@ def export(exportList, filename):
     miny += margin
 
     # Use the native Python open which was saved as `pyopen`
-    svg = pyopen(filename, 'w')
+    svg = pyopen(filename, "w")
 
     # Write header.
     # We specify the SVG width and height in FreeCAD's physical units (mm),
@@ -1346,11 +1329,11 @@ def export(exportList, filename):
     svg.write('<?xml version="1.0"?>\n')
     svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
     svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
-    svg.write('<svg')
+    svg.write("<svg")
     svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
     if svg_export_style == 0:
         # translated-style exports have the viewbox starting at X=0, Y=0
-        svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
+        svg.write(' viewBox="0 0 ' + str(sizex) + " " + str(sizey) + '"')
     else:
         # Raw-style exports have the viewbox starting at X=xmin, Y=-ymax
         # We need the negative Y here because SVG is upside down, and we
@@ -1358,7 +1341,7 @@ def export(exportList, filename):
         svg.write(' viewBox="%f %f %f %f"' % (minx, -maxy, sizex, sizey))
 
     svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
-    svg.write('>\n')
+    svg.write(">\n")
 
     # Write paths
     for ob in exportList:
@@ -1368,21 +1351,22 @@ def export(exportList, filename):
             # svg.write('<g transform="translate('
             #           + str(-minx) + ',' + str(-miny + 2*margin)
             #           + ') scale(1,-1)">\n')
-            svg.write('<g id="%s" transform="translate(%f,%f) '
-                      'scale(1,-1)">\n' % (ob.Name, -minx, maxy))
+            svg.write(
+                '<g id="%s" transform="translate(%f,%f) ' 'scale(1,-1)">\n' % (ob.Name, -minx, maxy)
+            )
         else:
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
         svg.write(Draft.get_svg(ob, override=False))
-        _label_enc = str(ob.Label.encode('utf8'))
-        _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
+        _label_enc = str(ob.Label.encode("utf8"))
+        _label = _label_enc.replace("<", "&lt;").replace(">", "&gt;")
         # replace('"', "&quot;")
-        svg.write('<title>%s</title>\n' % _label)
-        svg.write('</g>\n')
+        svg.write("<title>%s</title>\n" % _label)
+        svg.write("</g>\n")
 
     # Close the file
-    svg.write('</svg>')
+    svg.write("</svg>")
     svg.close()
     if hidden_doc is not None:
         try:
@@ -1390,14 +1374,15 @@ def export(exportList, filename):
         except:
             pass
 
+
 # function to replace use tag to it's referenced object
 def replace_use_with_reference(file_path):
-    #function that replace use tag to freecad:used
+    # function that replace use tag to freecad:used
     def register_svg_namespaces(svg_content):
         # register namespaces
         xmlns_attrs = re.findall(r'\s+xmlns(?::([a-zA-Z0-9_]+))?="([^"]+)"', svg_content)
         for prefix, uri in xmlns_attrs:
-            ns_prefix = '' if prefix is None or prefix == 'svg' else prefix
+            ns_prefix = "" if prefix is None or prefix == "svg" else prefix
             ET.register_namespace(ns_prefix, uri)
 
     def replace_use(element, tree):
@@ -1424,12 +1409,15 @@ def replace_use_with_reference(file_path):
                         new_element = ET.Element("freecad:used")
                         for attr in use.attrib:
                             # copy attribute to new one except href attribute
-                            if attr not in {"href", "{http://www.w3.org/1999/xlink}href"} and attr not in new_element.attrib:
+                            if (
+                                attr not in {"href", "{http://www.w3.org/1999/xlink}href"}
+                                and attr not in new_element.attrib
+                            ):
                                 new_element.set(attr, use.attrib[attr])
-                        ref_element=deepcopy(ref_element)
+                        ref_element = deepcopy(ref_element)
                         # change referenced symbol tag to g tag, because symbol tag will be ignored when importing.
                         if ref_element.tag.endswith("symbol"):
-                            ref_element.tag="g"
+                            ref_element.tag = "g"
                         # remove id from referenced element.(without this multiple same id problem)
                         if "id" in ref_element.attrib:
                             del ref_element.attrib["id"]
@@ -1440,10 +1428,10 @@ def replace_use_with_reference(file_path):
                         new_element.append(ref_element)
                         # replace use tag by freecad:used tag.
                         parent.append(new_element)
-                #remove use when referenced element is not found.
+                # remove use when referenced element is not found.
                 parent.remove(use)
-        #now all use tag processd
-        #remove symbol and defs tag from tree.
+        # now all use tag processd
+        # remove symbol and defs tag from tree.
         parent_map = {child: parent for parent in tree.iter() for child in parent}
         symbols = element.findall(".//{http://www.w3.org/2000/svg}symbol")
         for symbol in symbols:
@@ -1456,7 +1444,7 @@ def replace_use_with_reference(file_path):
 
     # open file and read
     svg_content = pyopen(file_path).read()
-    #register namespace before parsing
+    # register namespace before parsing
     register_svg_namespaces(svg_content)
     # parse as xml.
     tree = ET.ElementTree(ET.fromstring(svg_content))
@@ -1470,4 +1458,4 @@ def replace_use_with_reference(file_path):
     replace_use(root, tree)
 
     # return tree as xml string with namespace declaration.
-    return ET.tostring(root, encoding='unicode',xml_declaration=True)
+    return ET.tostring(root, encoding="unicode", xml_declaration=True)

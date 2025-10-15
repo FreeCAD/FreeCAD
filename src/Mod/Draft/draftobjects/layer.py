@@ -52,16 +52,11 @@ class Layer:
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
         if "Group" not in obj.PropertiesList:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The objects that are part of this layer")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The objects that are part of this layer")
             # "App::PropertyLinkListHidden" instead of "App::PropertyLinkList" has 2 advantages:
             # 1. No 'might break' warning when deleting an object nested in a layer.
             # 2. No 'out of scope' warning for objects also nested in f.e. a Std_Part.
-            obj.addProperty("App::PropertyLinkListHidden",
-                            "Group",
-                            "Layer",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyLinkListHidden", "Group", "Layer", _tip, locked=True)
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
@@ -93,7 +88,7 @@ class Layer:
             material = App.Material()  #  Material with default v0.21 properties.
             material.DiffuseColor = vobj.ShapeColor
             material.Transparency = vobj.Transparency / 100
-            vobj.ShapeAppearance = (material, )
+            vobj.ShapeAppearance = (material,)
             vobj.setPropertyStatus("ShapeColor", "Hidden")
             if hasattr(vobj, "OverrideShapeColorChildren"):  # v0.19 - v0.21
                 vobj.OverrideShapeAppearanceChildren = vobj.OverrideShapeColorChildren
@@ -213,5 +208,6 @@ def get_layer(obj):
         if utils.get_type(find) == "Layer" and obj in find.Group:
             return find
     return None
+
 
 ## @}
