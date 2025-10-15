@@ -35,6 +35,7 @@
 # include <QTextDocumentFragment>
 # include <QTimer>
 # include <QGraphicsScene>
+# include <QGraphicsView>
 
 #include <App/Application.h>
 #include <Gui/Command.h>
