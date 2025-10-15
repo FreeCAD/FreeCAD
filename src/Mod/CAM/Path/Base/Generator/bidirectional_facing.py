@@ -168,7 +168,7 @@ def bidirectional(
         total_extension = pass_extension + tool_radius + engagement_offset
         start_s = min_s - total_extension
         end_s = max_s + total_extension
-        
+
         # Determine cutting direction based on side and milling_direction
         # Bottom and top must cut in OPPOSITE directions to maintain perpendicular rapids
         # This keeps rapids outside the clearing area
@@ -213,9 +213,7 @@ def bidirectional(
             commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
         else:
             # First segment: emit G0 to start for op preamble replacement
-            commands.append(
-                Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
-            )
+            commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
 
         commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
         kept_segments += 1

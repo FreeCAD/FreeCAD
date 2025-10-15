@@ -296,7 +296,7 @@ def zigzag(
         total_extension = pass_extension + tool_radius + engagement_offset
         start_s = min_s - total_extension
         end_s = max_s + total_extension
-        
+
         # Determine direction based on pass index, milling mode, and reverse
         parity = idx % 2
 
