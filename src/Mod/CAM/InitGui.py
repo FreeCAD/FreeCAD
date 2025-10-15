@@ -131,7 +131,6 @@ class CAMWorkbench(Workbench):
             "CAM_OpActiveToggle",
         ]
         prepcmdlist = [
-            "CAM_Fixture",
             "CAM_Comment",
             "CAM_Stop",
             "CAM_Custom",
