@@ -2804,7 +2804,7 @@ bool ViewProviderSketch::selectAll()
             if (focusedList && std::ranges::find(ids, GeoId) == ids.end()) {
                 continue;
             }
-            
+
             if ((*it)->is<Part::GeomPoint>()) {
                 selectVertex(GeoId, Sketcher::PointPos::start);
             }
