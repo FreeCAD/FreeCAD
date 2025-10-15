@@ -65,9 +65,9 @@ class Quantity(PyObjectBase):
     @overload
     def toStr(self, decimals: int) -> str: ...
     @constmethod
-    def getUserPreferred(self) -> Tuple["Quantity", str]:
+    def getUserPreferred(self) -> Tuple[str, float, str]:
         """
-        Returns a quantity with the translation factor and a string with the prevered unit
+        Returns this quantity formatted with unit, the scaling factor, and the unit name as string, all using the current preferred unit
         """
         ...
 
