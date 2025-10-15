@@ -25,9 +25,19 @@
 """
 Bidirectional facing toolpath generator.
 
-This module implements the bidirectional clearing pattern that cuts back and forth
-across the polygon but alternates which side of the polygon is cut, maintaining
-consistent milling direction throughout.
+This module implements a bidirectional clearing pattern where passes alternate between
+starting from the bottom edge and the top edge of the polygon, meeting in the middle.
+Bottom passes step inward from min_t toward the center, while top passes step inward
+from max_t toward the center. Passes are interleaved (bottom, top, bottom, top, etc.)
+to minimize rapid move distances.
+
+Feed moves (cutting) are aligned with the angle_degrees argument direction. Rapid moves
+are perpendicular to the feed moves and always travel outside the clearing area along
+the polygon edges.
+
+This strategy always maintains either climb or conventional milling direction, but
+alternates which side of the polygon is cut to maintain consistent milling direction
+throughout.
 """
 
 import FreeCAD
@@ -153,66 +163,62 @@ def bidirectional(
     engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
 
     for side, t in all_passes:
-        intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
-        # If no intervals found (pass is outside polygon), skip this pass
-        if not intervals:
+        # Cut full-length passes from min_s to max_s (with extensions)
+        # This ensures all passes have the same length and endpoints align
+        total_extension = pass_extension + tool_radius + engagement_offset
+        start_s = min_s - total_extension
+        end_s = max_s + total_extension
+        
+        # Determine cutting direction based on side and milling_direction
+        # Bottom and top must cut in OPPOSITE directions to maintain perpendicular rapids
+        # This keeps rapids outside the clearing area
+        if side == "bottom":
+            if milling_direction == "climb":
+                p_start, p_end = end_s, start_s  # right-to-left from bottom
+            else:  # conventional
+                p_start, p_end = start_s, end_s  # left-to-right from bottom
+        else:  # top
+            if milling_direction == "climb":
+                p_start, p_end = start_s, end_s  # left-to-right from top (opposite)
+            else:  # conventional
+                p_start, p_end = end_s, start_s  # right-to-left from top (opposite)
+
+        # Map to XY - use copies to avoid vector mutation
+        start_point = (
+            FreeCAD.Vector(origin)
+            .add(FreeCAD.Vector(primary_vec).multiply(p_start))
+            .add(FreeCAD.Vector(step_vec).multiply(t))
+        )
+        end_point = (
+            FreeCAD.Vector(origin)
+            .add(FreeCAD.Vector(primary_vec).multiply(p_end))
+            .add(FreeCAD.Vector(step_vec).multiply(t))
+        )
+        start_point.z = z
+        end_point.z = z
+
+        # Finite check
+        if not (
+            math.isfinite(start_point.x)
+            and math.isfinite(start_point.y)
+            and math.isfinite(end_point.x)
+            and math.isfinite(end_point.y)
+        ):
             continue
 
-        for s0, s1 in intervals:
-            # Extend in primary direction
-            total_extension = pass_extension + tool_radius + engagement_offset
-            start_s = s0 - total_extension
-            end_s = s1 + total_extension
-            # Clip to safe bounds
-            start_s = max(start_s, min_s - s_margin)
-            end_s = min(end_s, max_s + s_margin)
-            if end_s <= start_s:
-                continue
-
-            # Determine cutting direction based on side and milling_direction
-            # Bidirectional maintains same milling type by cutting same direction from both sides
-            # For climb: always cut right-to-left (end_s to start_s)
-            # For conventional: always cut left-to-right (start_s to end_s)
-            # This maintains consistent chip load regardless of which side (top/bottom) we're on
-            if milling_direction == "climb":
-                p_start, p_end = end_s, start_s  # right-to-left
-            else:  # conventional
-                p_start, p_end = start_s, end_s  # left-to-right
-
-            # Map to XY - use copies to avoid vector mutation
-            start_point = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
+        if commands:
+            # Rapid perpendicular to feed direction (along step_vec)
+            # Since all passes have same s-coordinates, rapids only move in t direction
+            # Just rapid from end of last pass to start of this pass
+            commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
+        else:
+            # First segment: emit G0 to start for op preamble replacement
+            commands.append(
+                Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
             )
-            end_point = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            start_point.z = z
-            end_point.z = z
 
-            # Finite check
-            if not (
-                math.isfinite(start_point.x)
-                and math.isfinite(start_point.y)
-                and math.isfinite(end_point.x)
-                and math.isfinite(end_point.y)
-            ):
-                continue
-
-            if commands:
-                # Rapid move at cutting height (no need to retract for bidirectional)
-                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
-            else:
-                # First segment: emit G0 to start for op preamble replacement
-                commands.append(
-                    Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
-                )
-
-            commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
-            kept_segments += 1
+        commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
+        kept_segments += 1
 
     Path.Log.debug(f"Bidirectional: generated {kept_segments} segments")
     return commands

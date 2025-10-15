@@ -291,96 +291,81 @@ def zigzag(
     stepover_distance = tool_diameter * stepover_percent / 100.0
 
     for idx, t in enumerate(step_positions):
-        if idx == 0:
-            # Debug first pass
-            world_y = origin.y + t
-            Path.Log.debug(f"Zigzag: first pass t={t}, origin.y={origin.y}, world_y={world_y}")
+        # Cut full-length passes from min_s to max_s (with extensions)
+        # This ensures all passes have the same length and endpoints align
+        total_extension = pass_extension + tool_radius + engagement_offset
+        start_s = min_s - total_extension
+        end_s = max_s + total_extension
+        
+        # Determine direction based on pass index, milling mode, and reverse
+        parity = idx % 2
 
-        intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
-        # If no intervals found (pass is outside polygon), skip this pass
-        if not intervals:
+        if not reverse:
+            # Bottom-to-top
+            if milling_direction == "climb":
+                # Start right, alternate
+                if parity == 0:
+                    p_start, p_end = end_s, start_s
+                else:
+                    p_start, p_end = start_s, end_s
+            else:  # conventional
+                # Start left, alternate
+                if parity == 0:
+                    p_start, p_end = start_s, end_s
+                else:
+                    p_start, p_end = end_s, start_s
+        else:
+            # Top-to-bottom
+            if milling_direction == "climb":
+                # Start left, alternate
+                if parity == 0:
+                    p_start, p_end = start_s, end_s
+                else:
+                    p_start, p_end = end_s, start_s
+            else:  # conventional
+                # Start right, alternate
+                if parity == 0:
+                    p_start, p_end = end_s, start_s
+                else:
+                    p_start, p_end = start_s, end_s
+
+        # Map to XY - use copies to avoid vector mutation
+        start_point = (
+            FreeCAD.Vector(origin)
+            .add(FreeCAD.Vector(primary_vec).multiply(p_start))
+            .add(FreeCAD.Vector(step_vec).multiply(t))
+        )
+        end_point = (
+            FreeCAD.Vector(origin)
+            .add(FreeCAD.Vector(primary_vec).multiply(p_end))
+            .add(FreeCAD.Vector(step_vec).multiply(t))
+        )
+        start_point.z = z
+        end_point.z = z
+
+        # Sanity check for absurdly large coordinates
+        if not (
+            math.isfinite(start_point.x)
+            and math.isfinite(start_point.y)
+            and math.isfinite(end_point.x)
+            and math.isfinite(end_point.y)
+        ):
             continue
 
-        for s0, s1 in intervals:
-            # Extend in primary direction
-            total_extension = pass_extension + tool_radius + engagement_offset
-            start_s = s0 - total_extension
-            end_s = s1 + total_extension
-            # Clip to safe bounds
-            start_s = max(start_s, min_s - s_margin)
-            end_s = min(end_s, max_s + s_margin)
-            if end_s <= start_s:
-                continue
+        # Determine side: +1 if ending on right (larger s), -1 if on left
+        s_mid = (min_s + max_s) / 2.0
+        side = 1 if p_end > s_mid else -1
 
-            # Determine direction based on segment parity, milling mode, and reverse
-            parity = len(segments) % 2
-
-            if not reverse:
-                # Bottom-to-top
-                if milling_direction == "climb":
-                    # Start right, alternate
-                    if parity == 0:
-                        p_start, p_end = end_s, start_s
-                    else:
-                        p_start, p_end = start_s, end_s
-                else:  # conventional
-                    # Start left, alternate
-                    if parity == 0:
-                        p_start, p_end = start_s, end_s
-                    else:
-                        p_start, p_end = end_s, start_s
-            else:
-                # Top-to-bottom
-                if milling_direction == "climb":
-                    # Start left, alternate
-                    if parity == 0:
-                        p_start, p_end = start_s, end_s
-                    else:
-                        p_start, p_end = end_s, start_s
-                else:  # conventional
-                    # Start right, alternate
-                    if parity == 0:
-                        p_start, p_end = end_s, start_s
-                    else:
-                        p_start, p_end = start_s, end_s
-
-            # Map to XY - use copies to avoid vector mutation
-            start_point = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            end_point = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            start_point.z = z
-            end_point.z = z
-
-            # Sanity check for absurdly large coordinates
-            if not (
-                math.isfinite(start_point.x)
-                and math.isfinite(start_point.y)
-                and math.isfinite(end_point.x)
-                and math.isfinite(end_point.y)
-            ):
-                continue
-
-            # Determine side: +1 if ending on right (larger s), -1 if on left
-            s_mid = 0.5 * (s0 + s1)
-            side = 1 if p_end > s_mid else -1
-
-            segments.append(
-                {
-                    "t": t,
-                    "side": side,
-                    "start": start_point,
-                    "end": end_point,
-                    "s_start": p_start,
-                    "s_end": p_end,
-                }
-            )
+        segments.append(
+            {
+                "t": t,
+                "side": side,
+                "start": start_point,
+                "end": end_point,
+                "s_start": p_start,
+                "s_end": p_end,
+            }
+        )
 
     Path.Log.debug(f"Zigzag: collected {len(segments)} segments")
 

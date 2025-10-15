@@ -385,17 +385,18 @@ class TestPathFacingGenerator(PathTestBase):
         """Test all four combinations of reverse and milling_direction for bidirectional."""
         # Expected behavior for bidirectional (rectangle 0,0 to 20,10):
         # Bidirectional alternates between bottom and top
+        # Bottom and top cut in OPPOSITE directions to maintain perpendicular rapids
         # reverse controls which side starts first
-        # reverse=False, climb: start right, bottom (high X, low Y)
-        # reverse=False, conventional: start left, bottom (low X, low Y)
-        # reverse=True, climb: start right, top (high X, high Y)
-        # reverse=True, conventional: start left, top (low X, high Y)
+        # reverse=False, climb: start right, bottom (high X, low Y) - bottom cuts right-to-left
+        # reverse=False, conventional: start left, bottom (low X, low Y) - bottom cuts left-to-right
+        # reverse=True, climb: start left, top (low X, high Y) - top cuts left-to-right (opposite of bottom)
+        # reverse=True, conventional: start right, top (high X, high Y) - top cuts right-to-left (opposite of bottom)
 
         test_cases = [
             ("climb", False, "right", "bottom"),
-            ("climb", True, "right", "top"),
+            ("climb", True, "left", "top"),
             ("conventional", False, "left", "bottom"),
-            ("conventional", True, "left", "top"),
+            ("conventional", True, "right", "top"),
         ]
 
         for milling_dir, reverse, expected_x_side, expected_y_side in test_cases:
