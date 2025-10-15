@@ -177,6 +177,15 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                                ? App::MeasureElementType::LINESEGMENT
                                : App::MeasureElementType::CURVE;
                 }
+                case GeomAbs_Ellipse: {
+                    return App::MeasureElementType::CURVE;
+                }
+                case GeomAbs_Hyperbola: {
+                    return App::MeasureElementType::CURVE;
+                }
+                case GeomAbs_Parabola: {
+                    return App::MeasureElementType::CURVE;
+                }
                 default: { return App::MeasureElementType::INVALID; }
             }
         }
