@@ -33,7 +33,6 @@
 #include <cassert>
 #endif
 
-#include <Precision.hxx>
 #include <boost/graph/graph_concepts.hpp>
 
 #include "Constraints.h"
@@ -1505,7 +1504,7 @@ double ConstraintTangentCircumf::error()
     // When concentric, tangency is equivalent to equal radii.
     // We switch to the robust 'r1 - r2 = 0' formulation, which has a
     // constant non-zero gradient, avoiding the singularity.
-    if (d_sq < Precision::SquareConfusion()) {
+    if (d_sq < 1e-14) {
         return scale * (*r1() - *r2());
     }
 
@@ -1528,7 +1527,7 @@ double ConstraintTangentCircumf::grad(double* param)
 
         // Provide the gradient corresponding to the robust 'r1 - r2 = 0' error function.
         // This gradient is constant and non-zero, preventing the false redundancy report.
-        if (d_sq < Precision::SquareConfusion()) {
+        if (d_sq < 1e-14) {
             if (param == r1()) {
                 deriv = 1.0;
             }
