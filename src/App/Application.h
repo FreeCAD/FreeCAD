@@ -89,6 +89,7 @@ struct DocumentInitFlags {
 
 /**
  * @brief The class that represents the whole application.
+ * @ingroup ApplicationGroup
  *
  * This is a singleton class that represents the application without
  * considering any GUI functionality.  You can access it using
@@ -1078,7 +1079,10 @@ private:
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
 
-/// Get the singleton Application instance.
+/**
+ * @brief Get the singleton Application instance.
+ * @ingroup ApplicationGroup
+ */
 inline App::Application &GetApplication(){
     return *App::Application::_pcSingleton;
 }
