@@ -114,6 +114,9 @@ class ObjectCustom(PathOp.ObjectOp):
         if prop == "Source":
             self.setEditorModes(obj)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "Source"):
             obj.addProperty(

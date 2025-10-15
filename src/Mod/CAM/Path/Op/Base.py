@@ -531,6 +531,9 @@ class ObjectOp(object):
 
         self.opOnChanged(obj, prop)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def applyExpression(self, obj, prop, expr):
         """applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set"""
         if expr:
