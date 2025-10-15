@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include "kdl_cp/chainfksolverpos_recursive.hpp"
 #include "kdl_cp/chainiksolverpos_nr_jl.hpp"
 #include "kdl_cp/chainiksolvervel_pinv.hpp"
-#endif
+
 
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>

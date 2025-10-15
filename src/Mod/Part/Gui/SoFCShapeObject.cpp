@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -40,7 +39,6 @@
 # include <Inventor/elements/SoLazyElement.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/misc/SoState.h>
-#endif
 
 #include "SoFCShapeObject.h"
 

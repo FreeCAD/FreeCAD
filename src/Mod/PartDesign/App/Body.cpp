@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/VarSet.h>
@@ -43,7 +42,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
-    ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+    ADD_PROPERTY_TYPE(AllowCompound, (true), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }

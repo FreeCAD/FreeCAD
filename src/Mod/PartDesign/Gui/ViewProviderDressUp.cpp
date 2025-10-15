@@ -22,15 +22,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMenu>
 # include <QAction>
 # include <QMessageBox>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>

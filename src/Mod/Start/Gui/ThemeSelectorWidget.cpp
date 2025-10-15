@@ -21,21 +21,21 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QString>
 #include <QStyleHints>
 #include <QToolButton>
-#endif
+
 
 #include "ThemeSelectorWidget.h"
 #include <gsl/pointers>
 #include <App/Application.h>
 #include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
+
+#include <FCConfig.h>
 
 #ifdef FC_OS_MACOSX
 #include <CoreFoundation/CoreFoundation.h>
@@ -236,8 +236,13 @@ bool ThemeSelectorWidget::eventFilter(QObject* object, QEvent* event)
 void ThemeSelectorWidget::retranslateUi()
 {
     _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
-    _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using "
-                                  "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>."));
+    if (Gui::Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
+        _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using "
+                                      "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>."));
+    }
+    else {
+        _descriptionLabel->hide();
+    }
     _buttons[static_cast<int>(Theme::Dark)]->setText(tr("FreeCAD Dark", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Light)]->setText(tr("FreeCAD Light", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Classic)]->setText(tr("FreeCAD Classic", "Visual theme name"));

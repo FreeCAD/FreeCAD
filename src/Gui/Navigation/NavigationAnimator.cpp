@@ -21,7 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 #include "NavigationAnimator.h"
 #include "NavigationAnimation.h"
 #include <QEventLoop>

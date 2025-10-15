@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include "Gui/Control.h"
 #include <Mod/Fem/App/FemConstraintRigidBody.h>

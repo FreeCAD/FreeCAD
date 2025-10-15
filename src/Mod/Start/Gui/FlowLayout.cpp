@@ -21,7 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 #include <QWidget>
 #include "FlowLayout.h"
 

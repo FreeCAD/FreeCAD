@@ -21,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-
-#include "PreCompiled.h"
 #include <boost/statechart/custom_reaction.hpp>
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/state.hpp>

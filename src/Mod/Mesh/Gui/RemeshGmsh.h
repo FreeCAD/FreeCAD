@@ -23,6 +23,8 @@
 #ifndef MESHGUI_REMESHGMSH_H
 #define MESHGUI_REMESHGMSH_H
 
+#include <Mod/Mesh/MeshGlobal.h>
+
 #include <memory>
 #include <QDialog>
 #include <QProcess>

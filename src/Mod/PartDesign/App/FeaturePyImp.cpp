@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of FeaturePy.xml)
 #include "FeaturePy.h"

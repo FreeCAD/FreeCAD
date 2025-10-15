@@ -1,0 +1,27 @@
+---
+General:
+  UUID: "c7495091-4ad6-41c9-a820-454fd2d33f84"
+  Name: "POM-Homopolymer-Generic"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Description: "Polyoxymethylene (POM), also known as Acetal, is an engineering thermoplastic used in precision parts requiring high stiffness, low friction, and excellent dimensional stability. The values are average across the spectrum. If you need a more precise material definition use the more specialised POM-blend cards."
+  SourceURL: "https://www.matweb.com/search/DataSheet.aspx?MatGUID=ae460978fb0a4d7b8c3ce6bf8f4bf52b"
+Models:
+  Father:
+    UUID: "9cdda8b6-b606-4778-8f13-3934d8668e67"
+    Father: "Thermoplast"
+  LinearElastic:
+    UUID: "7b561d1d-fb9b-44f6-9da9-56a4f74d7536"
+    Density: "1420 kg/m^3"
+    PoissonRatio: "0.37"
+    UltimateTensileStrength: "63.8 MPa"
+    YieldStrength: "67.3 MPa"
+    YoungsModulus: "3050 MPa"
+  Thermal:
+    UUID: "9959d007-a970-4ea7-bae4-3eb1b8b883c7"
+    SpecificHeat: "3010 J/kg/K"
+    ThermalConductivity: "0.311 W/m/K"
+    ThermalExpansionCoefficient: "0.000104 m/m/K"
+  Costs:
+    UUID: "881df808-8726-4c2e-be38-688bb6cce466"
+    ProductURL: "https://en.wikipedia.org/wiki/Polyoxymethylene"

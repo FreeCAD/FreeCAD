@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <cstdlib>
 # include <limits>
 # include <sstream>
@@ -35,7 +33,6 @@
 # include <Geom_Line.hxx>
 # include <gp_Pln.hxx>
 # include <TopoDS_Edge.hxx>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

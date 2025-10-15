@@ -34,6 +34,8 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace PartGui {
 
 class PartGuiExport SoFCShape : public SoSeparator {

@@ -26,22 +26,9 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#pragma warning(disable : 4273)
-#endif
-
 #ifdef FC_OS_WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
 #endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -85,7 +72,5 @@
 
 // Inventor includes OpenGL
 #include <Gui/InventorAll.h>
-
-#endif  //_PreComp_
 
 #endif

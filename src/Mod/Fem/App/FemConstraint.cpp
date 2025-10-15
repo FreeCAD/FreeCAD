@@ -21,10 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <limits>
+
 #include <Adaptor3d_IsoCurve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -54,7 +52,6 @@
 #if OCC_VERSION_HEX < 0x070600
 #include <Adaptor3d_HSurface.hxx>
 #include <BRepAdaptor_HSurface.hxx>
-#endif
 #endif
 
 #include <App/Document.h>

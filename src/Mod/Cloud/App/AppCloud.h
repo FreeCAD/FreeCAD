@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Jean-Marie Verdun         jmverdun3@gmail.com      *
  *                                                                         *
@@ -26,6 +27,8 @@
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+
+#include <Mod/Cloud/CloudGlobal.h>
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>

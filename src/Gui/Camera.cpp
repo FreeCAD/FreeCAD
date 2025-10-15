@@ -21,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Camera.h"
 #include "Utilities.h"
 

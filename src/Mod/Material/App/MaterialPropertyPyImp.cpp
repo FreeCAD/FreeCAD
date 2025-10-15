@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Model.h"
 #include "PyVariants.h"
 #include "ModelPropertyPy.h"

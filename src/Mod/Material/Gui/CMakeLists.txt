@@ -8,22 +8,11 @@ if(BUILD_MATERIAL_EXTERNAL)
     add_definitions(-DBUILD_MATERIAL_EXTERNAL)
 endif(BUILD_MATERIAL_EXTERNAL)
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(MatGui_LIBS
     Materials
     FreeCADGui
 )
 
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
 list(APPEND MatGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
@@ -126,7 +115,6 @@ SET(MatGui_SRCS
     ModelSelect.cpp
     ModelSelect.h
     ModelSelect.ui
-    PreCompiled.cpp
     PreCompiled.h
     TextEdit.cpp
     TextEdit.h
@@ -147,12 +135,6 @@ if(BUILD_MATERIAL_EXTERNAL)
     )
 endif(BUILD_MATERIAL_EXTERNAL)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MatGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(MatGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(MatGuiIcon_SVG
     Resources/icons/list.svg
     Resources/icons/Material_Edit.svg
@@ -172,8 +154,40 @@ SET(Material_Ui_Files
     Resources/ui/materials-editor.ui
 )
 
-add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages} ${Material_Ui_Files})
+add_library(MatGui SHARED
+    ${MatGui_SRCS}
+    ${MatGuiIcon_SVG}
+    ${MatGuiImages}
+    ${Material_Ui_Files}
+)
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(MatGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    MatGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    MatGui
+    SYSTEM
+    PUBLIC
+    ${QtConcurrent_INCLUDE_DIRS}
+)
 target_link_libraries(MatGui ${MatGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MatGui PRIVATE /wd4251 /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MatGui)
 endif()

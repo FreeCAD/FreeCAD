@@ -23,6 +23,8 @@
 #ifndef PART_FEATUREFILLET_H
 #define PART_FEATUREFILLET_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 

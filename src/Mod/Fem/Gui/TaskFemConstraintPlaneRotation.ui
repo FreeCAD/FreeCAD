@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select a single face, click Add or Remove</string>
+    <string>Select single geometry of type: Face</string>
      </property>
     </widget>
    </item>

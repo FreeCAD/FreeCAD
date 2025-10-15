@@ -21,10 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFontDatabase>
-#endif
+
 
 #include <Base/Color.h>
 #include <Gui/PythonEditor.h>

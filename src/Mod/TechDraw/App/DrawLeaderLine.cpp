@@ -25,7 +25,6 @@
 //! X and Y axes, (0, 0) at lower left).  The first Waypoint is set to (0,0) after the displacements are calculated.
 //! The leader's X,Y position is relative to the parent's origin.  The X,Y position is unrotated and unscaled.
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <Base/Console.h>

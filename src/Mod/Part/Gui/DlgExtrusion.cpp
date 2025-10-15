@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
 # include <Precision.hxx>
@@ -31,7 +29,7 @@
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QKeyEvent>
 # include <QMessageBox>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -48,6 +46,8 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+
+#include <Mod/Part/App/Part2DObject.h>
 
 #include "ui_DlgExtrusion.h"
 #include "DlgExtrusion.h"
@@ -492,9 +492,11 @@ void DlgExtrusion::apply()
 
             this->writeParametersToFeature(*newObj, sourceObj);
 
-            Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
-            Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
-            Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
+            if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
+                Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
+                Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+                Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
+            }
 
             FCMD_OBJ_HIDE(sourceObj);
         }
@@ -792,3 +794,4 @@ void TaskExtrusion::clicked(int id)
 }
 
 #include "moc_DlgExtrusion.cpp"
+

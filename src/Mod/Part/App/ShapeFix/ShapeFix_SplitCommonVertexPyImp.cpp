@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#
+#include <Mod/Part/PartGlobal.h>
+
 #include "ShapeFix/ShapeFix_SplitCommonVertexPy.h"
 #include "ShapeFix/ShapeFix_SplitCommonVertexPy.cpp"
 #include "TopoShapePy.h"

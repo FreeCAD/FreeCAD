@@ -20,13 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
-#endif
 
 #include <App/Application.h>
 #include <Base/Quantity.h>
@@ -497,7 +493,7 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc)
     return false;
 }
 
-bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
+bool SketcherGui::isCommandActive(Gui::Document* doc)
 {
     if (isSketchInEdit(doc)) {
         auto mode =
@@ -505,29 +501,79 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
 
         if (mode == ViewProviderSketch::STATUS_NONE
             || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
-
-            if (!actsOnSelection) {
-                return true;
-            }
-            return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
+            return true;
         }
     }
 
     return false;
 }
 
-bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
+bool SketcherGui::isCommandNeedingConstraintActive(Gui::Document* doc)
 {
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
-                == ViewProviderSketch::STATUS_NONE) {
-                if (!actsOnSelection) {
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        for (const std::string& name : sel[0].getSubNames()) {
+            if (name.starts_with("Constraint")) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool SketcherGui::isCommandNeedingGeometryActive(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        for (const std::string& name : sel[0].getSubNames()) {
+            int geoId {GeoEnum::GeoUndef};
+            PointPos posId {PointPos::none};
+            getIdsFromName(name, Obj, geoId, posId);
+
+            if (geoId != GeoEnum::GeoUndef) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool SketcherGui::isCommandNeedingBSplineActive(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        for (const std::string& name : sel[0].getSubNames()) {
+
+            int geoId {GeoEnum::GeoUndef};
+            PointPos posId {PointPos::none};
+            getIdsFromName(name, Obj, geoId, posId);
+
+            if (geoId != GeoEnum::GeoUndef) {
+                const Part::Geometry* geo = Obj->getGeometry(geoId);
+
+                if (geo && geo->is<Part::GeomBSplineCurve>()) {
                     return true;
                 }
-                return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
             }
         }
     }
@@ -555,73 +601,71 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                                                     std::vector<AutoConstraint>& sug1,
                                                     std::vector<AutoConstraint>& sug2)
 {
-    if (!sug1.empty() && !sug2.empty()) {
+    if (sug1.empty() || sug2.empty()) {
+        return;
+    }
 
-        bool rmvhorvert = false;
+    bool rmvhorvert = false;
 
-        // we look for:
-        // 1. Coincident to external on both endpoints
-        // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
-        auto detectredundant =
-            [psketch](std::vector<AutoConstraint>& sug, bool& ext, bool& orig, bool& axis) {
-                ext = false;
-                orig = false;
-                axis = false;
+    // we look for:
+    // 1. Coincident to external on both endpoints
+    // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
+    auto detectredundant =
+        [psketch](std::vector<AutoConstraint>& sug, bool& ext, bool& orig, bool& axis) {
+            ext = false;
+            orig = false;
+            axis = false;
 
-                for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
-                     ++it) {
-                    if ((*it).Type == Sketcher::Coincident && !ext) {
-                        const std::map<int, Sketcher::PointPos> coincidents =
-                            psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+            for (auto& it : sug) {
+                if (it.Type == Sketcher::Coincident && !ext) {
+                    const std::map<int, Sketcher::PointPos> coincidents =
+                        psketch->getAllCoincidentPoints(it.GeoId, it.PosId);
 
-                        if (!coincidents.empty()) {
-                            // the keys are ordered, so if the first is negative, it is coincident
-                            // with external
-                            ext = coincidents.begin()->first < 0;
+                    if (!coincidents.empty()) {
+                        // the keys are ordered, so if the first is negative, it is coincident
+                        // with external
+                        ext = coincidents.begin()->first < 0;
 
-                            std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
-                            geoId1iterator = coincidents.find(-1);
+                        geoId1iterator = coincidents.find(-1);
 
-                            if (geoId1iterator != coincidents.end()) {
-                                if ((*geoId1iterator).second == Sketcher::PointPos::start) {
-                                    orig = true;
-                                }
+                        if (geoId1iterator != coincidents.end()) {
+                            if ((*geoId1iterator).second == Sketcher::PointPos::start) {
+                                orig = true;
                             }
                         }
-                        else {  // it may be that there is no constraint at all, but there is
-                                // external geometry
-                            ext = (*it).GeoId < 0;
-                            orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
-                        }
                     }
-                    else if ((*it).Type == Sketcher::PointOnObject && !axis) {
-                        axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
-                                || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
+                    else {  // it may be that there is no constraint at all, but there is
+                            // external geometry
+                        ext = it.GeoId < 0;
+                        orig = (it.GeoId == -1 && it.PosId == Sketcher::PointPos::start);
                     }
                 }
-            };
-
-        bool firstext = false, secondext = false, firstorig = false, secondorig = false,
-             firstaxis = false, secondaxis = false;
-
-        detectredundant(sug1, firstext, firstorig, firstaxis);
-        detectredundant(sug2, secondext, secondorig, secondaxis);
-
-
-        rmvhorvert =
-            ((firstext && secondext) ||    // coincident with external on both endpoints
-             (firstorig && secondaxis) ||  // coincident origin and point on object on other
-             (secondorig && firstaxis));
-
-        if (rmvhorvert) {
-            for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin();
-                 it != sug2.rend();
-                 ++it) {
-                if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
-                    sug2.erase(std::next(it).base());
-                    it = sug2.rbegin();  // erase invalidates the iterator
+                else if (it.Type == Sketcher::PointOnObject && !axis) {
+                    axis = ((it.GeoId == -1 && it.PosId == Sketcher::PointPos::none)
+                            || (it.GeoId == -2 && it.PosId == Sketcher::PointPos::none));
                 }
+            }
+        };
+
+    bool firstext = false, secondext = false, firstorig = false, secondorig = false,
+         firstaxis = false, secondaxis = false;
+
+    detectredundant(sug1, firstext, firstorig, firstaxis);
+    detectredundant(sug2, secondext, secondorig, secondaxis);
+
+
+    rmvhorvert = ((firstext && secondext) ||    // coincident with external on both endpoints
+                  (firstorig && secondaxis) ||  // coincident origin and point on object on other
+                  (secondorig && firstaxis));
+
+    if (rmvhorvert) {
+        for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it != sug2.rend();
+             ++it) {
+            if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
+                sug2.erase(std::next(it).base());
+                it = sug2.rbegin();  // erase invalidates the iterator
             }
         }
     }

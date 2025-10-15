@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMenu>
 #include <QTimer>
 #include <algorithm>
@@ -45,7 +43,6 @@
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

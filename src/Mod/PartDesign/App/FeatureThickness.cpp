@@ -24,11 +24,9 @@
 #include <string>
 #include <vector>
 
-#include "PreCompiled.h"    // NOLINT
-#ifndef _PreComp_
 # include <Precision.hxx>
 # include <TopoDS.hxx>
-#endif
+
 
 #include <Base/Exception.h>
 #include "FeatureThickness.h"

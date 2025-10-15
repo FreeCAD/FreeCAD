@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
 # include <QTimer>
@@ -37,7 +34,6 @@
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>

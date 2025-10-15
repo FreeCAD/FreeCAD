@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/CommandT.h>
 #include <Gui/Selection/Selection.h>

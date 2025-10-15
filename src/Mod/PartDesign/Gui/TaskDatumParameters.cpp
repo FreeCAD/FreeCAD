@@ -22,12 +22,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <App/Origin.h>

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-#endif
+
 
 #include "ShapeFix/ShapeFix_SplitToolPy.h"
 #include "ShapeFix/ShapeFix_SplitToolPy.cpp"

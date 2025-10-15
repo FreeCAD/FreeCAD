@@ -23,7 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Mod/Fem/App/FemConstraintInitialTemperature.h"
 #include <Gui/Control.h>

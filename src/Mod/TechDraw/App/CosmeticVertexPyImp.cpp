@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <Base/Console.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>

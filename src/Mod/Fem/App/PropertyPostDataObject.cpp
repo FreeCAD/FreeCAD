@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Python.h>
 #include <vtkCompositeDataSet.h>
 #include <vtkMultiBlockDataSet.h>
@@ -43,7 +41,7 @@
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLStructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
-#endif
+
 
 #ifdef FC_USE_VTK_PYTHON
 #include <vtkPythonUtil.h>

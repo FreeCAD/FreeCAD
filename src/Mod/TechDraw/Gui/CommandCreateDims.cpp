@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <limits>
 #include <string>
@@ -34,7 +32,6 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QPixmap>
-#endif//#ifndef _PreComp_
 
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
@@ -713,8 +710,10 @@ protected:
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
         if (selection.hasFaces()) {
-            if (selection.has1Face()) { makeCts_Faces(selAllowed); }
-            else { return false; }  // nothing else with face works
+            makeCts_Faces(selAllowed);
+            if (!selection.has1Face()) {
+                Base::Console().warning("Multiple faces are selected. Using first.\n");
+            }
         }
         else if (selection.hasPoints()) {
             if (selection.has1Point()) { selAllowed = true; }
@@ -2231,6 +2230,11 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
                 QObject::tr("Selected edge is a B-spline and a radius/diameter cannot be calculated."));
             return;
         }
+    }
+    if (geometryRefs2d == DimensionGeometry::isFace &&
+        references2d.size() > 1) {
+        Base::Console().warning("Multiple faces are selected. Using first.\n");
+        references2d.resize(1);
     }
 
     //build the dimension

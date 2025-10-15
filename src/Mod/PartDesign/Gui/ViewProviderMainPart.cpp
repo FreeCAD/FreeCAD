@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "ViewProviderMainPart.h"
 #include <Mod/PartDesign/App/FeatureMainPart.h>

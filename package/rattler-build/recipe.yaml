@@ -140,6 +140,7 @@ requirements:
     - blinker
     - calculix
     - debugpy
+    - defusedxml
     - docutils
     - gmsh
     - graphviz

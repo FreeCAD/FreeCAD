@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 // HypothesisPy.h must be included as first file to avoid compiler warning,
 // see: https://forum.freecad.org/viewtopic.php?p=633192#p633192
@@ -28,7 +27,6 @@
 
 #include <SMESH_Version.h>  // needed for SMESH_VERSION_MAJOR
 
-#ifndef _PreComp_
 #include <StdMeshers_Arithmetic1D.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
 #include <StdMeshers_CompositeSegment_1D.hxx>
@@ -63,7 +61,6 @@
 #include <StdMeshers_StartEndLength.hxx>
 #include <StdMeshers_UseExisting_1D2D.hxx>
 #include <sstream>
-#endif
 
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapePy.h>

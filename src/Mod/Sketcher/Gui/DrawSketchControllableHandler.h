@@ -27,6 +27,7 @@
 #include <type_traits>
 
 #include "DrawSketchDefaultHandler.h"
+#include "SnapManager.h"
 
 namespace SketcherGui
 {
@@ -79,8 +80,9 @@ public:
 
     /** @name functions NOT intended for specialisation or further overriding */
     //@{
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
+        Base::Vector2d onSketchPos = snapHandle.compute();
         toolWidgetManager.mouseMoved(onSketchPos);
 
         toolWidgetManager.enforceControlParameters(onSketchPos);

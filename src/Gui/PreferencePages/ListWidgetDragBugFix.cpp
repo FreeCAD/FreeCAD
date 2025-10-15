@@ -22,10 +22,9 @@
   *                                                                          *
   ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QDragMoveEvent>
-#endif
+
 
 #include "ListWidgetDragBugFix.h"
 

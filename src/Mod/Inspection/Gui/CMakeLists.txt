@@ -1,8 +1,3 @@
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(InspectionGui_LIBS
     Inspection
     FreeCADGui
@@ -26,7 +21,6 @@ SET(InspectionGui_SRCS
     ${Dialogs_SRCS}
     AppInspectionGui.cpp
     Command.cpp
-    PreCompiled.cpp
     PreCompiled.h
     ViewProviderInspection.cpp
     ViewProviderInspection.h
@@ -38,18 +32,35 @@ set(InspectionGui_Scripts
     ../InitGui.py
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${InspectionGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(InspectionGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(InspectionGuiIcon_SVG
     Resources/icons/InspectionWorkbench.svg
 )
 
-add_library(InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG})
+add_library(InspectionGui SHARED
+    ${InspectionGui_SRCS}
+    ${InspectionGui_Scripts}
+    ${InspectionGuiIcon_SVG}
+)
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(InspectionGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    InspectionGui
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(InspectionGui ${InspectionGui_LIBS})
+
+if (MSVC)
+    target_compile_options(InspectionGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(InspectionGui)
 endif()

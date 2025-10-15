@@ -20,16 +20,14 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <QDialog>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>

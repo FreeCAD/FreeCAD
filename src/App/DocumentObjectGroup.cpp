@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "FeaturePythonPyImp.h"

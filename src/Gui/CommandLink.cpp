@@ -20,12 +20,8 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
 # include <QMessageBox>
-#endif
 
 #include <App/Application.h>
 #include <App/ElementNamingUtils.h>

@@ -1,9 +1,5 @@
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
-
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#endif
+#ifndef QT_CXX_PRECOMPILED_H
+#define QT_CXX_PRECOMPILED_H
 
 #ifdef FC_OS_WIN32
 // cmake generates this define

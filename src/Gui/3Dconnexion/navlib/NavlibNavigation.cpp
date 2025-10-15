@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <PreCompiled.h>
 #include "NavlibInterface.h"
 
 #include <QMatrix4x4>

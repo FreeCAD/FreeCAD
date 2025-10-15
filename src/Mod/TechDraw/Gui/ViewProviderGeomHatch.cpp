@@ -21,12 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 #include <Gui/Application.h>

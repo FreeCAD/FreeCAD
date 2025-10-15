@@ -21,15 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QFileInfo>
 # include <QPointer>
 # include <QString>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
@@ -53,6 +51,7 @@
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Part/App/Datums.h>
+#include <Mod/Part/App/Part2DObject.h>
 
 #include "BoxSelection.h"
 #include "CrossSections.h"
@@ -1642,10 +1641,12 @@ void CmdPartOffset::activated(int iMsg)
     updateActive();
 
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
-    
-    copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
-    copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
-    copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
+
+    if (!shape->isDerivedFrom<Part::Part2DObject>()) {
+        copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
+        copyVisual(offset.c_str(), "LineColor", shape->getNameInDocument());
+        copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
+    }
 }
 
 bool CmdPartOffset::isActive()
@@ -1698,9 +1699,11 @@ void CmdPartOffset2D::activated(int iMsg)
     updateActive();
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
 
-    copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
-    copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
-    copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
+    if (!shape->isDerivedFrom<Part::Part2DObject>()) {
+        copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
+        copyVisual(offset.c_str(), "LineColor", shape->getNameInDocument());
+        copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
+    }
 }
 
 bool CmdPartOffset2D::isActive()
@@ -2462,3 +2465,4 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartDatumPoint());
     rcCmdMgr.addCommand(new CmdPartDatums());
 }
+

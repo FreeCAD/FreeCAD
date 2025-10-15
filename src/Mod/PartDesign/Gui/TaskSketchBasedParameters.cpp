@@ -22,13 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QTextStream>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -87,7 +85,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     return refStr;
 }
 
-void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile,
+void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject*,
                                                         App::DocumentObject* base)
 {
     const auto* bodyViewProvider = getViewObject<ViewProvider>()->getBodyViewProvider();
@@ -107,7 +105,7 @@ void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* pro
     }
 }
 
-void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile,
+void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject*,
                                                          App::DocumentObject* base)
 {
     if (!previouslyVisibleViewProvider) {

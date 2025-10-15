@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -36,7 +38,7 @@ class Quantity;
 /**
  * An individual schema object
  */
-class UnitsSchema
+class BaseExport UnitsSchema
 {
 public:
     explicit UnitsSchema(UnitsSchemaSpec spec);

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,9 +23,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 #if defined(FC_OS_WIN32)
 #include <windows.h>
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
@@ -31,7 +32,6 @@
 #endif
 #include <cstring>
 #include <functional>
-#endif
 
 #include "Console.h"
 #include "PyObjectBase.h"

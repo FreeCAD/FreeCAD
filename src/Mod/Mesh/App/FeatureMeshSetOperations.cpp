@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Core/Iterator.h"
 #include "Core/SetOperations.h"

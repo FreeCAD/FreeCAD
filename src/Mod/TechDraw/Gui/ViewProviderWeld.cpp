@@ -21,12 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QTextStream>
-#endif
+
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>

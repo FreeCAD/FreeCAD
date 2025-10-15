@@ -27,6 +27,8 @@
 
 #include <App/Property.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "Geometry.h"
 
 

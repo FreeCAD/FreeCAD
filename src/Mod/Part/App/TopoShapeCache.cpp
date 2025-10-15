@@ -22,7 +22,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #include "TopoShapeCache.h"
 
 using namespace Part;

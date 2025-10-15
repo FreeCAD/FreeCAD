@@ -21,10 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include "RecentFilesModel.h"
 #include <App/Application.h>
 #include <App/ProjectFile.h>

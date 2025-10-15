@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -29,7 +27,7 @@
 #include <gp_GTrsf.hxx>
 #include <gp_Trsf.hxx>
 #include <Precision.hxx>
-#endif
+
 
 #include <Base/Exception.h>
 

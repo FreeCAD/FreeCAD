@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QColorDialog>
 # include <QDebug>
 # include <QDesktopServices>
@@ -38,7 +37,7 @@
 # include <QTextBlock>
 # include <QTimer>
 # include <QToolTip>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -1606,7 +1605,6 @@ void ExpLineEdit::openFormulaDialog()
 
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
-    box->setExpressionInputSize(width(), height());
     Gui::adjustDialogPosition(box);
 }
 

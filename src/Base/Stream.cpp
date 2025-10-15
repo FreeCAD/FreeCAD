@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,15 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QBuffer>
 #include <QIODevice>
 #ifdef __GNUC__
 #include <cstdint>
-#endif
 #endif
 
 #include "Stream.h"

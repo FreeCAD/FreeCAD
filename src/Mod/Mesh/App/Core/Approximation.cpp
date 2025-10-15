@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <cstdlib>
 #include <iterator>
 #include <limits>
-#endif
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>

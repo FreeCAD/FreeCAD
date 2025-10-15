@@ -29,6 +29,8 @@
 #include <App/Expression.h>
 #include <App/Material.h>
 
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+
 #include "DisplayUnit.h"
 #include "Utils.h"
 

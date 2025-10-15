@@ -53,6 +53,7 @@ packages=(
   pyqt5-dev-tools
   pyside2-tools
   python3-dev
+  python3-defusedxml
   python3-git
   python3-markdown
   python3-matplotlib

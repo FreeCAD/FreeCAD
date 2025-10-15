@@ -22,11 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QThread>
-#endif
+
 
 #include <App/Application.h>
 #include "DlgSettingsFemGmshImp.h"
@@ -42,16 +41,15 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->fc_gmsh_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
+            &Gui::PrefFileChooser::fileNameSelected,
             this,
-            &DlgSettingsFemGmshImp::onfileNameChanged);
+            &DlgSettingsFemGmshImp::onfileNameSelected);
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
 
 void DlgSettingsFemGmshImp::saveSettings()
 {
-    ui->cb_gmsh_binary_std->onSave();
     ui->fc_gmsh_binary_path->onSave();
     ui->cb_log_verbosity->onSave();
     ui->sb_threads->onSave();
@@ -59,7 +57,6 @@ void DlgSettingsFemGmshImp::saveSettings()
 
 void DlgSettingsFemGmshImp::loadSettings()
 {
-    ui->cb_gmsh_binary_std->onRestore();
     ui->fc_gmsh_binary_path->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -84,14 +81,10 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemGmshImp::onfileNameChanged(QString FileName)
+void DlgSettingsFemGmshImp::onfileNameSelected(const QString& fileName)
 {
-    if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified executable\n'%1'\n does not exist!\n"
-                                 "Specify another file.")
-                                  .arg(FileName));
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("Gmsh"), tr("Executable '%1' not found").arg(fileName));
     }
 }
 

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include "GeomPlate/BuildPlateSurfacePy.h"
 #include "GeomPlate/BuildPlateSurfacePy.cpp"

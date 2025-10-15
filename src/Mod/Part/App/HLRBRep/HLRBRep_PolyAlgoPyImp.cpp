@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <limits>
 
 # include <gp_Ax2.hxx>
@@ -30,7 +30,6 @@
 # include <Standard_Version.hxx>
 
 # include <boost/math/special_functions/fpclassify.hpp>
-#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

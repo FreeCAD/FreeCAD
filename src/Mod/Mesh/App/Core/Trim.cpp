@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <cmath>
-#endif
+
 
 #include <Base/Sequencer.h>
 

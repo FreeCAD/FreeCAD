@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Lorenz Lechner                                     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <array>
 #include <cmath>
 #include <iostream>
@@ -29,7 +29,7 @@
 #include <numbers>
 #include <set>
 #include <vector>
-#endif
+
 
 #include <Eigen/SparseCholesky>
 

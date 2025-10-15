@@ -19,7 +19,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DrawProjGroupItem.h"
 // inclusion of the generated files (generated out of DrawProjGroupItemPy.xml)

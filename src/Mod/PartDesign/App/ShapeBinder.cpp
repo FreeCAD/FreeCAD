@@ -21,15 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
-#endif
+
 
 #include <unordered_map>
 #include <unordered_set>

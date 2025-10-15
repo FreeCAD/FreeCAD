@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <cmath>
@@ -50,7 +48,6 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
-#endif
 
 #include <QFuture>
 #include <QFutureWatcher>

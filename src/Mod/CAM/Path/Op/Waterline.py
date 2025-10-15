@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2019 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *

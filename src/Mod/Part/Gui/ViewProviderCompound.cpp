@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+# include <QMessageBox>
 
+#include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/MainWindow.h>
 #include <Mod/Part/App/FeatureCompound.h>
 
 #include "ViewProviderCompound.h"
@@ -49,14 +49,52 @@ std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
     return getObject<Part::Compound>()->Links.getValues();
 }
 
-bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
+bool ViewProviderCompound::onDelete(const std::vector<std::string> &subNames)
 {
     // get the input shapes
     Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
-    for (auto pLink : pLinks) {
-        if (pLink)
-            Gui::Application::Instance->showViewProvider(pLink);
+    
+    if (!pLinks.empty()) {
+        // check group deletion marker -> it means group called this VP to delete it's content
+        // so delete everything recursively
+        bool inGroupDeletion = !subNames.empty() && subNames[0] == "group_recursive_deletion";
+        
+        if (inGroupDeletion) {
+            for (auto pLink : pLinks) {
+                if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
+                    pLink->getDocument()->removeObject(pLink->getNameInDocument());
+                }
+            }
+            return true;
+        }
+        QMessageBox::StandardButton choice = QMessageBox::question(
+            Gui::getMainWindow(), 
+            QObject::tr("Delete compound content?"),
+            QObject::tr("The compound '%1' has %2 child objects. Do you want to delete them as well?")
+                .arg(QString::fromUtf8(pComp->Label.getValue()))
+                .arg(pLinks.size()),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
+            QMessageBox::No
+        );
+            
+        if (choice == QMessageBox::Cancel) {
+            return false;
+        }
+        
+        if (choice == QMessageBox::Yes) {
+            for (auto pLink : pLinks) {
+                if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
+                    pLink->getDocument()->removeObject(pLink->getNameInDocument());
+                }
+            }
+            return true;
+        }
+
+        for (auto pLink : pLinks) {
+            if (pLink)
+                Gui::Application::Instance->showViewProvider(pLink);
+        }
     }
 
     return true;

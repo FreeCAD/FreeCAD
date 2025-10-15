@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QString>
-#endif
+
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Placement.h>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                 2025 Samuel Abels <knipknap@gmail.com>                  *
@@ -148,6 +147,21 @@ class ToolController:
         return data
 
     def onDocumentRestored(self, obj):
+        self.ensureToolBit(obj)
+        if not obj.Tool.Proxy:
+            if hasattr(obj.Tool, "ShapeName") or hasattr(obj.Tool, "ShapeType"):
+                # Old tool file; perform migration
+                shape_name = (
+                    obj.Tool.ShapeType if hasattr(obj.Tool, "ShapeType") else obj.Tool.ShapeName
+                ).lower()
+                tool_data = {
+                    "name": obj.Tool.Label,
+                    "shape": shape_name,
+                    "shape-type": shape_name,
+                }
+                toolbit_instance = ToolBit.from_dict(tool_data)
+                toolbit_instance.onDocumentRestored(obj.Tool)
+
         obj.setEditorMode("Placement", 2)
 
     def onDelete(self, obj, arg2=None):
@@ -276,7 +290,7 @@ class ToolController:
 
 
 def Create(
-    name="TC: Default Tool",
+    name="TC: 5mm Endmill",
     tool=None,
     toolNumber=1,
     assignViewProvider=True,

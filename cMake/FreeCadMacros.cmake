@@ -18,8 +18,12 @@ MACRO (fc_copy_sources target_name outpath)
 	foreach(it ${ARGN})
 		get_filename_component(infile ${it} ABSOLUTE)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+		# Ensure parent directory exists when copying or creating symlinks
+		get_filename_component(outfile_dir "${outfile}" PATH)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
+			# Make sure destination directory exists before copy/symlink
+			COMMAND   "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
 			COMMAND   "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
 			OUTPUT   "${outfile}"
 			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
@@ -211,47 +215,6 @@ macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
 endmacro(generate_from_any)
 
 
-
-MACRO(ADD_MSVC_PRECOMPILED_HEADER TargetName PrecompiledHeader PrecompiledSource SourcesVar)
-  IF(MSVC)
-    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-    IF(MSVC_IDE)
-      SET(PrecompiledBinary "$(IntDir)\\$(TargetName).pch")
-    ELSE(MSVC_IDE)
-      SET(PrecompiledBinary ${CMAKE_CURRENT_BINARY_DIR}/${TargetName}.pch)
-    ENDIF(MSVC_IDE)
-    SET(Sources ${${SourcesVar}})
-
-    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
-                                PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-                                           OBJECT_OUTPUTS "${PrecompiledBinary}")
-    SET_SOURCE_FILES_PROPERTIES(${Sources}
-                                PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledBinary}\" /Fp\"${PrecompiledBinary}\""
-                                           OBJECT_DEPENDS "${PrecompiledBinary}")  
-    # Add precompiled header to SourcesVar
-    LIST(APPEND ${SourcesVar} ${PrecompiledSource})
-  ENDIF(MSVC)
-ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
-
-MACRO(GET_MSVC_PRECOMPILED_SOURCE PrecompiledSource SourcesVar)
-  IF(MSVC)
-    FOREACH (it ${ARGN})
-      GET_FILENAME_COMPONENT(file_ext ${it} EXT)
-      GET_FILENAME_COMPONENT(file_name ${it} NAME)
-	  STRING(COMPARE EQUAL ${it} ${PrecompiledSource} pch)
-	  IF (NOT pch)
-	    # get c++ source files
-		STRING(REGEX MATCH "^(.cpp|.cc|.cxx)$" cpp_file ${file_ext})
-		# ignore any generated source files from Qt
-		STRING(REGEX MATCH "^(moc_|qrc_|ui_)" gen_file ${file_name})
-		IF(cpp_file AND NOT gen_file)
-			LIST(APPEND ${SourcesVar} ${it})
-		ENDIF(cpp_file AND NOT gen_file)
-	  ENDIF(NOT pch)
-    ENDFOREACH (it)
-  ENDIF(MSVC)
-ENDMACRO(GET_MSVC_PRECOMPILED_SOURCE)
-
 # Macro to replace all the binary output locations.  Takes 2 optional parameters.
 # ${ARGVN} is zero based so the 3rd element is ${ARGV2}.  When the 3rd element is missing,
 # Runtime and Lib directories default to /bin and /lib.  When present, the 3rd element
@@ -364,3 +327,4 @@ function(target_compile_warn_error ProjectName)
         target_compile_options(${ProjectName} PRIVATE -Werror)
     endif()
 endfunction()
+

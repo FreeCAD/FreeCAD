@@ -21,10 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMutexLocker>
-#endif
+
 
 #include "DocumentThread.h"
 #include "DocumentProtector.h"

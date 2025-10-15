@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QApplication>
 # include <QLabel>
@@ -43,7 +42,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>

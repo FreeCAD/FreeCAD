@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "ParameterManager.h"
 #include "Parser.h"
 
@@ -30,14 +28,14 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
-#ifndef _PreComp_
 #include <QColor>
 #include <QRegularExpression>
 #include <QString>
 #include <ranges>
 #include <utility>
 #include <variant>
-#endif
+
+#include <Base/Console.h>
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 

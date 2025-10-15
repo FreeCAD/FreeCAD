@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Jean-Marie Verdun        jmverdun3@gmail.com       *
  *                                                                         *
@@ -20,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Workbench.h"
 #include <Gui/MenuManager.h>

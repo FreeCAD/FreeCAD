@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <bitset>
 #include <stack>
 #include <deque>
@@ -36,7 +33,6 @@
 #include <list>
 #include <algorithm>
 #include <filesystem>
-#endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
@@ -49,6 +45,8 @@
 
 #include <QCryptographicHash>
 #include <QCoreApplication>
+
+#include <FCConfig.h>
 
 #include <App/DocumentPy.h>
 #include <Base/Interpreter.h>

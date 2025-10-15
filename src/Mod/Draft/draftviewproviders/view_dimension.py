@@ -588,7 +588,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             unit = vobj.UnitOverride
 
         # Special representation if we use 'Building US' scheme
-        if (not unit and params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
+        doc = obj.Document
+        if (not unit and doc.UnitSystem == doc.getEnumerationsOfProperty("UnitSystem")[5]) \
+                or (unit == "arch"):
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
                 # multiple inch tokens
@@ -624,19 +626,23 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                                        spacing)
             self.p2b = self.p3 + DraftVecUtils.scaleTo(self.p2 - self.p3,
                                                        spacing)
+            # fmt: off
             self.coords.point.setValues([[self.p1.x, self.p1.y, self.p1.z],
                                          [self.p2.x, self.p2.y, self.p2.z],
                                          [self.p2a.x, self.p2a.y, self.p2a.z],
                                          [self.p2b.x, self.p2b.y, self.p2b.z],
                                          [self.p3.x, self.p3.y, self.p3.z],
                                          [self.p4.x, self.p4.y, self.p4.z]])
+            # fmt: on
             # self.line.numVertices.setValues([3, 3])
             self.line.coordIndex.setValues(0, 7, (0, 1, 2, -1, 3, 4, 5))
         else:
+            # fmt: off
             self.coords.point.setValues([[self.p1.x, self.p1.y, self.p1.z],
                                          [self.p2.x, self.p2.y, self.p2.z],
                                          [self.p3.x, self.p3.y, self.p3.z],
                                          [self.p4.x, self.p4.y, self.p4.z]])
+            # fmt: on
             # self.line.numVertices.setValue(4)
             self.line.coordIndex.setValues(0, 4, (0, 1, 2, 3))
 

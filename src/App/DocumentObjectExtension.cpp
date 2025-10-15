@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectExtensionPy.h"
 #include "DocumentObject.h"

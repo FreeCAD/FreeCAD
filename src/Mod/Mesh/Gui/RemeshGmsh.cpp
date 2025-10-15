@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QElapsedTimer>
 #include <QMessageBox>
 #include <QPointer>
 #include <QTextCursor>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

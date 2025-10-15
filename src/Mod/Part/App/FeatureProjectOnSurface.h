@@ -29,6 +29,7 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {

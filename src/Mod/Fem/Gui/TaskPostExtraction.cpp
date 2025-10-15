@@ -20,12 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-
-#endif
-
 #include <Gui/PythonWrapper.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/Fem/App/FemPostFilter.h>

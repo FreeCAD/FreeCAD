@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
-#endif
+
 #include <Gui/ViewProviderBuilder.h>
 
 #include "ViewProviderPython.h"

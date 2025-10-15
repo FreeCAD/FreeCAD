@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QGuiApplication>
@@ -31,7 +29,6 @@
 #include <QTimer>
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -36,8 +35,8 @@ class ToolBitVBit(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        cutting_edge_angle = self.get_property_str("CuttingEdgeAngle", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        cutting_edge_angle = self.get_property_str("CuttingEdgeAngle", "?", precision=3)
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate("CAM", f"{diameter} {cutting_edge_angle} v-bit, {flutes}-flute")

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
 
 #include <Base/QuantityPy.h>
 
@@ -45,6 +43,36 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     if (PyArg_ParseTuple(args, "")) {
         return 0;
+    }
+    // The first argument must be a string (the constraint type).
+    PyObject* typeObj = PyTuple_GetItem(args, 0);
+    if (!PyUnicode_Check(typeObj)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "First argument to Constraint must be a string (the constraint type)");
+        return -1;
+    }
+
+    // Validate the types of the remaining arguments.
+    // The arguments representing a GeoId or a PosId MUST be integers.
+    // Values can be numbers (float/int). We allow any PyNumber for them.
+    // The logic here is to check arguments that are passed for GeoId/PosId.
+    // Preventing garbage values if we receive a Part.LineSegment which can crash
+    // see https://github.com/FreeCAD/FreeCAD/issues/17721
+    for (int i = 1; i < PyTuple_Size(args); ++i) {
+        PyObject* current_arg = PyTuple_GetItem(args, i);  // Borrowed reference
+
+        // A simple but effective rule: if it's not a list or a bool, it must be a number for now.
+        // The most critical check is for non-numeric types being passed for an index.
+        if (Py_TYPE(current_arg)->tp_as_number == NULL && !PyBool_Check(current_arg)
+            && !PyList_Check(current_arg)) {
+            PyErr_Format(PyExc_TypeError,
+                         "Invalid argument type for Constraint. "
+                         "Expected an integer for a geometry or point index, but got type '%s' at "
+                         "argument %d.",
+                         Py_TYPE(current_arg)->tp_name,
+                         i + 1);
+            return -1;
+        }
     }
 
     PyErr_Clear();

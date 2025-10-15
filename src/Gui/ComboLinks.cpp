@@ -21,15 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "ComboLinks.h"
 
-#ifndef _PreComp_
 #include <QComboBox>
 #include <QVariant>
 #include <QString>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -85,10 +81,6 @@ namespace Gui {
     {
         App::PropertyLinkSub lnk;
         std::vector<std::string> sub = { linkSubname };
-        // Handle empty subname correctly
-        if (linkSubname.empty()) {
-            sub.clear();
-        }
         lnk.setValue(linkObj, sub);
         return addLink(lnk, itemText, userData);
     }

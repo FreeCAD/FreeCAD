@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 
 # include <QPainter>
 # include <QPainterPath>
 # include <QStyleOptionGraphicsItem>
-#endif
 
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/App/Preferences.h>

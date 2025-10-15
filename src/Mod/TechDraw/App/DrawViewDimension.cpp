@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
 #include <sstream>
 
@@ -54,7 +52,6 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

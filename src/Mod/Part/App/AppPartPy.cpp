@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -68,7 +66,7 @@
 # include <TopoDS_Shell.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+
 # include <BRepFill_Generator.hxx>
 
 #include <App/Application.h>
@@ -110,6 +108,8 @@
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
 #endif
+
+FC_LOG_LEVEL_INIT("Part")
 
 extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 
@@ -784,6 +784,7 @@ private:
             pcDoc->recompute();
         }
         else {
+            FC_WARN("Importing BREP via 'Part' is deprecated. Use 'ImportGui' instead.");
             TopoShape shape;
             shape.read(EncodedName.c_str());
 

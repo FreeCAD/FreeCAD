@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <string>
 
@@ -33,7 +31,6 @@
 # include <QPainter>
 # include <QPainterPath>
 # include <QSvgGenerator>
-#endif
 
 #include <App/Application.h>
 #include <Base/Parameter.h>

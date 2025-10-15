@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_SurfaceOfRevolution.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>

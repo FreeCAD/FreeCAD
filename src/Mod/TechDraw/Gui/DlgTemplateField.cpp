@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgTemplateField.h"
 #include "ui_DlgTemplateField.h"

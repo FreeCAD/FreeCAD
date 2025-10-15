@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QAction>
 #include <QFontMetrics>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>
@@ -367,7 +363,6 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
                 angleGizmo->setVisibility(false);
 
                 secondDistanceGizmo->setProperty(ui->chamferSize);
-                secondDistanceGizmo->setDragLength(ui->chamferSize->value().getValue());
 
                 break;
             case Part::ChamferType::twoDistances:
@@ -375,7 +370,6 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
                 angleGizmo->setVisibility(false);
 
                 secondDistanceGizmo->setProperty(ui->chamferSize2);
-                secondDistanceGizmo->setDragLength(ui->chamferSize2->value().getValue());
 
                 break;
             case Part::ChamferType::distanceAngle:
@@ -385,7 +379,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
         }
     });
 
-    gizmoContainer = GizmoContainer::createGizmo({
+    gizmoContainer = GizmoContainer::create({
         distanceGizmo, secondDistanceGizmo, angleGizmo
     }, vp);
 
@@ -401,11 +395,12 @@ void TaskChamferParameters::setGizmoPositions()
     }
 
     auto chamfer = getObject<PartDesign::Chamfer>();
-    if (!chamfer) {
+    if (!chamfer || chamfer->isError()) {
         gizmoContainer->visible = false;
         return;
     }
-    auto baseShape = chamfer->getBaseTopoShape();
+
+    PartDesign::TopoShape baseShape = chamfer->getBaseTopoShape(true);
     auto shapes = chamfer->getContinuousEdges(baseShape);
 
     if (shapes.size() == 0) {

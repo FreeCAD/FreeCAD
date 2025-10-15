@@ -26,6 +26,7 @@
 #define GUI_TASKVIEW_TaskAttacher_H
 
 #include <Gui/Selection/Selection.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -33,6 +34,8 @@
 #include <App/PropertyOverrides.h>
 
 #include <functional>
+
+#include <Mod/Part/PartGlobal.h>
 
 class Ui_TaskAttacher;
 class QLineEdit;
@@ -42,6 +45,7 @@ class Property;
 }
 
 namespace Gui {
+class ViewProviderPlane;
 class ViewProvider;
 }
 
@@ -157,6 +161,8 @@ private:
     using Connection = boost::signals2::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
+
+    std::vector<Gui::ViewProviderWeakPtrT> modifiedPlaneViewProviders;
 
     App::PropertyOverrideContext overrides;
 };

@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
-#endif
+
 
 #include "Mod/Fem/App/FemConstraintPressure.h"
 #include <Gui/Control.h>

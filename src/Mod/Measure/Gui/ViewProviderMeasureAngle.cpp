@@ -20,9 +20,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
 #include <QApplication>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
@@ -51,7 +49,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-#endif
+
 
 #include <Precision.hxx>
 #include <Geom_Curve.hxx>

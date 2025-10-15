@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Exception.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>

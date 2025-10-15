@@ -21,12 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <QFile>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

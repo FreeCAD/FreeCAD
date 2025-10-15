@@ -21,15 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFile>
 #include <QMetaObject>
 #include <QMutexLocker>
 #include <QObject>
 #include <QProcess>
 #include <QTimer>
-#endif
 
 #include "ThumbnailSource.h"
 

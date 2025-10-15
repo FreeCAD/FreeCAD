@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/Application.h>
 #include <Mod/CAM/App/FeatureArea.h>

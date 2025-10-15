@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Python.h>
 #include <cstdlib>
 #include <memory>
@@ -58,7 +55,6 @@
 
 #include <boost/assign/list_of.hpp>
 #include <boost/tokenizer.hpp>  //to simplify parsing input files we use the boost lib
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>

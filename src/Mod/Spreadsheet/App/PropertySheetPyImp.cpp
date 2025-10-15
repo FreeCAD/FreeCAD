@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "PropertySheet.h"
 // inclusion of the generated files (generated out of PropertySheetPy.xml)

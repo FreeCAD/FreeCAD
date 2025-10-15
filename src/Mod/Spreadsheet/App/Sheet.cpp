@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/tokenizer.hpp>
 #include <boost/regex.hpp>
 #include <deque>
@@ -34,7 +31,6 @@
 #include <string>
 #include <set>
 #include <vector>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

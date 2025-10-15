@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <regex>
 
 # include <QMessageBox>
 # include <QPushButton>
-#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

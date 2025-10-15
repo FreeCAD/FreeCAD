@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
 #include <Inventor/nodes/SoSeparator.h>
 
 #include <QApplication>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

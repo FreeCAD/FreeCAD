@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
@@ -49,7 +47,6 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopExp.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -1430,18 +1427,28 @@ void Hole::findClosestDesignation()
     if (oldSizeIndex >= 0 && oldSizeIndex < static_cast<int>(options.size())) {
         targetPitch = options[oldSizeIndex].pitch;
     }
-
-    // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
     size_t bestIndex = 0;
-    double bestMetric = std::numeric_limits<double>::infinity();
-
-    for (size_t i = 0; i < options.size(); ++i) {
-        double dDiff = options[i].diameter - diameter;
-        double pDiff = options[i].pitch - targetPitch;
-        double metric = std::hypot(dDiff, pDiff);
-        if (metric < bestMetric) {
-            bestMetric = metric;
-            bestIndex = i;
+    if (targetPitch == 0.0) {
+        // If pitch is unknown, prioritize the closest diameter
+        double bestDiameterDiff = std::numeric_limits<double>::infinity();
+        for (size_t i = 0; i < options.size(); ++i) {
+            double dDiff = std::abs(options[i].diameter - diameter);
+            if (dDiff < bestDiameterDiff) {
+                bestDiameterDiff = dDiff;
+                bestIndex = i;
+            }
+        }
+    } else {
+        // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
+        double bestMetric = std::numeric_limits<double>::infinity();
+        for (size_t i = 0; i < options.size(); ++i) {
+            double dDiff = options[i].diameter - diameter;
+            double pDiff = options[i].pitch - targetPitch;
+            double metric = std::hypot(dDiff, pDiff);
+            if (metric < bestMetric) {
+                bestMetric = metric;
+                bestIndex = i;
+            }
         }
     }
 
@@ -1714,7 +1721,6 @@ void Hole::onChanged(const App::Property* prop)
             if (isNotDimension) {
                 // if through all, set the depth accordingly
                 Depth.setValue(getThroughAllLength());
-                ThreadDepth.setValue(getThroughAllLength());
             }
             updateThreadDepthParam();
         }
@@ -2116,6 +2122,9 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
+        if (holes.empty()) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Finding axis failed"));
+        }
 
         TopoShape result(0);
 
@@ -2266,7 +2275,7 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
     // the middle of the face
     if (profileshape.hasSubShape(TopAbs_FACE)) {
         BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
-        
+
         if (sf.GetType() == GeomAbs_Cylinder) {
             return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
         }

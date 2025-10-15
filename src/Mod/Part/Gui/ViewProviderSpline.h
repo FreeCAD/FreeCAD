@@ -26,6 +26,8 @@
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Gui/ViewProviderExtensionPython.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace PartGui
 {
 

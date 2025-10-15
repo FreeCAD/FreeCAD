@@ -23,10 +23,18 @@
 #ifndef PROPERTYSHEET_H
 #define PROPERTYSHEET_H
 
+#ifdef _MSC_VER
+#ifdef PropertySheet
+#undef PropertySheet  // Microsoft's #define conflicts with the use below
+#endif
+#endif
+
 #include <map>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
 #include "Cell.h"
 

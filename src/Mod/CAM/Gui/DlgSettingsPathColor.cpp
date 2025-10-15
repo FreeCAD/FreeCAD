@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgSettingsPathColor.h"
 #include "ui_DlgSettingsPathColor.h"

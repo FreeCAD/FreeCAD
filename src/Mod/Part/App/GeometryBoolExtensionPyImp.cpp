@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "GeometryBoolExtensionPy.h"
 #include "GeometryBoolExtensionPy.cpp"

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <memory>
 
 #include <QApplication>
@@ -29,7 +29,6 @@
 #include <QMessageBox>
 
 #include <Inventor/SbString.h>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -65,6 +64,7 @@
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
 #include "DrawSketchHandlerSymmetry.h"
+#include "SnapManager.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
@@ -83,7 +83,7 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select elements from a single sketch."));
         return {};
     }
@@ -239,7 +239,7 @@ void CmdSketcherCopyClipboard::activated(int iMsg)
 
 bool CmdSketcherCopyClipboard::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -279,7 +279,7 @@ void CmdSketcherCut::activated(int iMsg)
 
 bool CmdSketcherCut::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -328,7 +328,7 @@ void CmdSketcherPaste::activated(int iMsg)
 
 bool CmdSketcherPaste::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -412,7 +412,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -456,7 +456,7 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
 
 bool CmdSketcherSelectOrigin::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -497,7 +497,7 @@ void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 
 bool CmdSketcherSelectVerticalAxis::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -538,7 +538,7 @@ void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 
 bool CmdSketcherSelectHorizontalAxis::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -596,7 +596,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectRedundantConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -651,7 +651,7 @@ void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectMalformedConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -707,7 +707,7 @@ void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectPartiallyRedundantConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -764,7 +764,7 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectConflictingConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -885,7 +885,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingConstraintActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -974,7 +974,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
 bool CmdSketcherSelectElementsWithDoFs::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1089,7 +1089,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
 bool CmdSketcherRestoreInternalAlignmentGeometry::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1124,7 +1124,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
 bool CmdSketcherSymmetry::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1212,9 +1212,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -1438,7 +1439,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     // Ask the user if they want to clone or to simple copy
     /*
     int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric
-    constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
+    Constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
     constraints by geometric constraints?"), QMessageBox::Yes, QMessageBox::No,
     QMessageBox::Cancel);
     // use an equality constraint
@@ -1502,7 +1503,7 @@ void CmdSketcherCopy::activate()
 
 bool CmdSketcherCopy::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1552,7 +1553,7 @@ void CmdSketcherClone::activate()
 
 bool CmdSketcherClone::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 class CmdSketcherMove: public SketcherCopy
@@ -1599,7 +1600,7 @@ void CmdSketcherMove::activate()
 
 bool CmdSketcherMove::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1710,7 +1711,7 @@ void CmdSketcherCompCopy::languageChange()
 
 bool CmdSketcherCompCopy::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1790,9 +1791,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -2059,7 +2061,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
 bool CmdSketcherRectangularArray::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2087,7 +2089,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
     int ret = QMessageBox::question(
         Gui::getMainWindow(),
-        QObject::tr("Delete all geometry"),
+        QObject::tr("Delete All Geometry"),
         QObject::tr("Delete all geometry and constraints?"),
         QMessageBox::Yes,
         QMessageBox::Cancel);
@@ -2124,7 +2126,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
 bool CmdSketcherDeleteAllGeometry::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2151,7 +2153,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
     int ret = QMessageBox::question(
         Gui::getMainWindow(),
-        QObject::tr("Delete all constraints"),
+        QObject::tr("Delete All Constraints"),
         QObject::tr("Delete all the constraints in the sketch?"),
         QMessageBox::Yes,
         QMessageBox::Cancel);
@@ -2190,7 +2192,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
 bool CmdSketcherDeleteAllConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2311,7 +2313,7 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
 
 bool CmdSketcherRemoveAxesAlignment::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 
@@ -2324,7 +2326,7 @@ CmdSketcherOffset::CmdSketcherOffset()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Offset");
-    sToolTipText = QT_TR_NOOP("Offsets the selected geometry: positive values offset outward, negative values inward");
+    sToolTipText = QT_TR_NOOP("Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward");
     sWhatsThis = "Sketcher_Offset";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Offset";
@@ -2394,7 +2396,7 @@ void CmdSketcherOffset::activated(int iMsg)
 
 bool CmdSketcherOffset::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Rotate tool =====================================================================
@@ -2428,7 +2430,7 @@ void CmdSketcherRotate::activated(int iMsg)
 
 bool CmdSketcherRotate::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Scale tool =====================================================================
@@ -2462,7 +2464,7 @@ void CmdSketcherScale::activated(int iMsg)
 
 bool CmdSketcherScale::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Translate / rectangular pattern tool =======================================================
@@ -2496,7 +2498,7 @@ void CmdSketcherTranslate::activated(int iMsg)
 
 bool CmdSketcherTranslate::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 void CreateSketcherCommandsConstraintAccel()
@@ -2533,14 +2535,11 @@ void CreateSketcherCommandsConstraintAccel()
 }
 // clang-format on
 
-void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scaleFactor)
+void SketcherGui::centerScale(double scaleFactor)
 {
-    std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
-    std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
-
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    auto scaler = DrawSketchHandlerScale::make_centerScale(allGeoIds, scaleFactor, false);
+    auto scaler = DrawSketchHandlerScale::make_centerScaleAll(vp, scaleFactor, false);
     scaler->setSketchGui(vp);
     scaler->executeCommands();
 

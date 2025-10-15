@@ -37,9 +37,7 @@ class BIM_Welcome:
         return {
             "Pixmap": "BIM_Welcome.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Welcome", "BIM Welcome Screen"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Welcome", "Shows the BIM workbench welcome screen"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Welcome", "Shows the BIM workbench welcome screen"),
         }
 
     def Activated(self):
@@ -54,9 +52,7 @@ class BIM_Welcome:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.form.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center()
         )
 
         # show dialog and run setup dialog afterwards if OK was pressed
@@ -65,9 +61,7 @@ class BIM_Welcome:
             FreeCADGui.runCommand("BIM_Setup")
 
         # remove first time flag
-        PARAMS.SetBool(
-            "FirstTime", False
-        )
+        PARAMS.SetBool("FirstTime", False)
 
     def handleLink(self, link):
         from PySide import QtCore, QtGui

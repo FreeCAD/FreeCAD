@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -54,7 +52,7 @@
 # include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

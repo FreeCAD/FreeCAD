@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #include <SMESH_Version.h>
 
-#ifndef _PreComp_
 #include <Python.h>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
@@ -31,7 +29,6 @@
 #ifdef FCWithNetgen
 #include <NETGENPlugin_Hypothesis.hxx>
 #include <NETGENPlugin_Mesher.hxx>
-#endif
 #endif
 
 #include <App/DocumentObjectPy.h>

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Utils.h"
 #include "Workbench.h"
@@ -141,11 +140,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     visual->setCommand("Visual Helpers");
     addSketcherWorkbenchVisual(*visual);
 
-    Gui::ToolBarItem* edittools =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    edittools->setCommand("Sketcher Edit Tools");
-    addSketcherWorkbenchEditTools(*edittools);
-
     return root;
 }
 
@@ -196,6 +190,9 @@ void Workbench::activated()
     if (isSketchInEdit(doc)) {
         Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
                                                      Gui::ToolBarManager::State::ForceAvailable);
+
+        Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
+                                                     Gui::ToolBarManager::State::ForceHidden);
     }
 }
 
@@ -641,17 +638,6 @@ inline void SketcherAddWorkbenchVisual<Gui::ToolBarItem>(Gui::ToolBarItem& visua
            << "Sketcher_SwitchVirtualSpace";
 }
 
-template<typename T>
-inline void SketcherAddWorkbenchEditTools(T& virtualspedittoolsace);
-
-template<>
-inline void SketcherAddWorkbenchEditTools<Gui::ToolBarItem>(Gui::ToolBarItem& edittools)
-{
-    edittools << "Sketcher_Grid"
-              << "Sketcher_Snap"
-              << "Sketcher_RenderingOrder";
-}
-
 void addSketcherWorkbenchSketchActions(Gui::MenuItem& sketch)
 {
     SketcherAddWorkbenchSketchActions(sketch);
@@ -720,11 +706,6 @@ void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline)
 void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual)
 {
     SketcherAddWorkbenchVisual(visual);
-}
-
-void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools)
-{
-    SketcherAddWorkbenchEditTools(edittools);
 }
 
 } /* namespace SketcherGui */

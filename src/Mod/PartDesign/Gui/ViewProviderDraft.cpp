@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "TaskDraftParameters.h"
 #include "ViewProviderDraft.h"

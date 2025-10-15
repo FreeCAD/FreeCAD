@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,12 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cinttypes>
 #include <iomanip>
 #include <boost/algorithm/string.hpp>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>

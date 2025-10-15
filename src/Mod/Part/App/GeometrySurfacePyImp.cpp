@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeShell.hxx>
 # include <Geom_BSplineSurface.hxx>
@@ -40,7 +38,7 @@
 # include <ShapeAnalysis_Surface.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

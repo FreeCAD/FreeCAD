@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
@@ -33,7 +31,6 @@
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
-#endif // _PreComp_
 
 #include <App/Application.h>
 #include <App/Document.h>

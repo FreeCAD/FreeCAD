@@ -25,6 +25,7 @@
 
 #include "PartFeature.h"
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {

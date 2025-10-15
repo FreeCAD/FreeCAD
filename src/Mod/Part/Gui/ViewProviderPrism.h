@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERPRISM_H
 #define PARTGUI_VIEWPROVIDERPRISM_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

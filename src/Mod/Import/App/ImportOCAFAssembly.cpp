@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(__MINGW32__)
 #define WNT  // avoid conflict with GUID
 #endif
-#ifndef _PreComp_
 #include <Quantity_Color.hxx>
 #include <Standard_Version.hxx>
 #include <TDF_ChildIterator.hxx>
@@ -38,7 +36,7 @@
 #include <XCAFDoc_Location.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
 #include <sstream>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

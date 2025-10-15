@@ -1,0 +1,64 @@
+name: Fetch Crowdin Translations
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+
+jobs:
+  update-crowdin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          fetch-depth: 0
+
+      - name: Install Qt ≥ 6.8
+        uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
+        with:
+          aqtversion: "==3.1.*"
+          version: "6.8.3"
+          host: "linux"
+          target: "desktop"
+          arch: "linux_gcc_64"
+
+      - name: Setup Python & dependencies
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: "3.x"
+      - name: Install Python packages
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pyside6
+
+      - name: Gather translations from crowdin
+        run: |
+          ./updatecrowdin.py build
+          while ./updatecrowdin.py build-status | grep -q "status: inProgress"; do sleep 10; done
+          ./updatecrowdin.py download
+          ./updatecrowdin.py install
+        working-directory: ./src/Tools
+        env:
+          CROWDIN_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
+          CROWDIN_PROJECT_ID: freecad
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add -A
+          git commit -m "Update translations from Crowdin" || echo "No changes to commit"
+
+      - name: Push changes to a new branch
+        run: |
+          git branch update-crowdin-translations
+          git push origin update-crowdin-translations --force
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
+        with:
+          branch: update-crowdin-translations
+          title: "Update translations from Crowdin"
+          body: "Automatic Crowdin update."
+          labels: "translations, automated"

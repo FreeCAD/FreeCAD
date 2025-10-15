@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/DocumentObject.h>
 #include <App/Link.h>
@@ -33,6 +32,7 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 EXTENSION_PROPERTY_SOURCE(TechDrawGui::ViewProviderPageExtension, Gui::ViewProviderExtension)
 
@@ -123,7 +123,8 @@ void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
 //this code used to live in ViewProviderPage
 void ViewProviderPageExtension::dropObject(App::DocumentObject* obj)
 {
-    if (obj->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+    auto dvp = freecad_cast<TechDraw::DrawViewPart*>(obj);
+    if (dvp && DrawView::isProjGroupItem(dvp)) {
         //DPGI can not be dropped onto the Page if it belongs to DPG
         auto* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(obj);
         if (dpgi->getPGroup()) {

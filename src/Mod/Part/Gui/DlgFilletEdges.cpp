@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>
 # include <climits>
 # include <sstream>
@@ -44,7 +42,6 @@
 
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

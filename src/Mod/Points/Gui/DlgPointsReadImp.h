@@ -23,6 +23,8 @@
 #ifndef POINTSGUI_DLGREADPOINTS_H
 #define POINTSGUI_DLGREADPOINTS_H
 
+#include <FCGlobal.h>
+
 #include <QDialog>
 #include <memory>
 

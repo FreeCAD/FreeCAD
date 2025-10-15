@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <Geom_Curve.hxx>
 # include <TopExp_Explorer.hxx>
@@ -38,7 +36,7 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSphere.h>
 # include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>

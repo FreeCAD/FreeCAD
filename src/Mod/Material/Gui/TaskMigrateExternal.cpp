@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <QFlags>
 
 #include <Base/Console.h>

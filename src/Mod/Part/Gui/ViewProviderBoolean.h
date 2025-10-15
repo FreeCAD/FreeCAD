@@ -24,6 +24,8 @@
 #ifndef PARTGUI_ViewProviderBoolean_H
 #define PARTGUI_ViewProviderBoolean_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProvider.h"
 
 

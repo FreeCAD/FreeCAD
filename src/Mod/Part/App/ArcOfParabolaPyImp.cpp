@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeArcOfParabola.hxx>
 # include <Geom_Parabola.hxx>
 # include <Geom_TrimmedCurve.hxx>
-#endif
+
 
 #include "ArcOfParabolaPy.h"
 #include "ArcOfParabolaPy.cpp"

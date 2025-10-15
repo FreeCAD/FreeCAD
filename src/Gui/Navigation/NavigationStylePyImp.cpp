@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -18,8 +19,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-#include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of NavigationStylePy.pyi)
 #include "Navigation/NavigationStylePy.h"

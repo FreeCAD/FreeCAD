@@ -21,11 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <sstream>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

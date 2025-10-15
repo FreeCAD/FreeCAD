@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMenu>
 #include <QString>
 #include <sstream>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

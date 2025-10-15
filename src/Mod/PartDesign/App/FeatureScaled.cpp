@@ -21,12 +21,10 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <Precision.hxx>
-#endif
+
 
 #include "FeatureScaled.h"
 #include "FeatureAddSub.h"

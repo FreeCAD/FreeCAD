@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QActionGroup>
 # include <QCoreApplication>
@@ -29,7 +28,7 @@
 # include <QFile>
 # include <QLayout>
 # include <QTextStream>
-#endif
+
 
 #include <functional>
 #include <Base/Interpreter.h>

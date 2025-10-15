@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <map>
 #include <queue>
-#endif
+
 
 #include <boost/math/special_functions/fpclassify.hpp>
 

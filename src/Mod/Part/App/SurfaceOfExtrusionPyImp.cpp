@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_Curve.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>

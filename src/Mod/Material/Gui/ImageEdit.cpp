@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QBuffer>
 #include <QFile>
 #include <QMenu>
@@ -30,7 +28,7 @@
 #include <QString>
 #include <QSvgRenderer>
 #include <QTextStream>
-#endif
+
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>

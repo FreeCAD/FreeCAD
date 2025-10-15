@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <sstream>
 # include <QCoreApplication>
 # include <Inventor/fields/SoMFString.h>
@@ -32,7 +31,7 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include "SoFCColorLegend.h"
 #include "ViewProvider.h"

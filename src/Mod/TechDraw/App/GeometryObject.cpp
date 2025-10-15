@@ -23,9 +23,7 @@
 //! a class to the projection of shapes, removal/identifying hidden lines and
 //! converting the output for OCC HLR into the BaseGeom intermediate representation.
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -60,7 +58,6 @@
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
-#endif// #ifndef _PreComp_
 
 #include <algorithm>
 #include <chrono>

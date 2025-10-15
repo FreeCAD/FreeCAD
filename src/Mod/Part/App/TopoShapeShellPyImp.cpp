@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepGProp.hxx>
@@ -32,7 +30,7 @@
 # include <TopoDS_Shell.hxx>
 # include <ShapeAnalysis_Shell.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>

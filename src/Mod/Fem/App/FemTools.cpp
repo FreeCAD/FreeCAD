@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QStandardPaths>
 #include <QStringList>
 
@@ -45,7 +43,6 @@
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Vec.hxx>
-#endif
 
 #include <App/Application.h>
 #include <Mod/Part/App/PartFeature.h>

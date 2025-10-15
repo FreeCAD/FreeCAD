@@ -25,6 +25,8 @@
 
 #include <App/PropertyStandard.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PrimitiveFeature.h"
 
 

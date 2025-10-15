@@ -21,13 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QApplication>
 #include <QEvent>
-#endif
+
 
 #include "ui_SketcherToolDefaultWidget.h"
 #include <Gui/Application.h>

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
@@ -68,7 +65,6 @@
 # include <Inventor/nodes/SoShapeHints.h>
 
 # include <boost/algorithm/string/predicate.hpp>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -191,6 +187,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
+    faceset->setViewProvider(this);
     faceset->ref();
     norm = new SoNormal;
     norm->ref();
@@ -198,8 +195,10 @@ ViewProviderPartExt::ViewProviderPartExt()
     normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     normb->ref();
     lineset = new SoBrepEdgeSet();
+    lineset->setViewProvider(this);
     lineset->ref();
     nodeset = new SoBrepPointSet();
+    nodeset->setViewProvider(this);
     nodeset->ref();
 
     pcFaceBind = new SoMaterialBinding();
@@ -447,9 +446,9 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // normal viewing with edges and points
     pcNormalRoot->addChild(pcPointsRoot);
-    pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
+    pcNormalRoot->addChild(wireframe);
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
@@ -683,17 +682,19 @@ std::map<std::string,Base::Color> ViewProviderPartExt::getElementColors(const ch
             auto color = ShapeAppearance.getDiffuseColor();
             color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
-            for(int i=0;i<size;++i) {
-                if (ShapeAppearance.getDiffuseColor(i) != color) {
-                    ret[std::string(element, 4) + std::to_string(i + 1)] =
-                        ShapeAppearance.getDiffuseColor(i);
+            for (int i = 0; i < size; ++i) {
+                Base::Color faceColor = ShapeAppearance.getDiffuseColor(i);
+                faceColor.setTransparency(ShapeAppearance.getTransparency(i));
+                if (faceColor != color) {
+                    ret[std::string(element, 4) + std::to_string(i + 1)] = faceColor;
                 }
-                singleColor = singleColor
-                    && ShapeAppearance.getDiffuseColor(0) == ShapeAppearance.getDiffuseColor(i);
+                Base::Color firstFaceColor = ShapeAppearance.getDiffuseColor(0);
+                firstFaceColor.setTransparency(ShapeAppearance.getTransparency(0));
+                singleColor = singleColor && (faceColor == firstFaceColor);
             }
-            if(size && singleColor) {
+            if (size > 0 && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.setTransparency(Base::fromPercent(0.0F));
+                color.setTransparency(ShapeAppearance.getTransparency(0));
                 ret.clear();
             }
             ret["Face"] = color;
@@ -1400,3 +1401,6 @@ void ViewProviderPartExt::handleChangedPropertyName(Base::XMLReader& reader,
         Gui::ViewProviderGeometryObject::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
+
+

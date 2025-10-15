@@ -6,33 +6,33 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Stilredigerare för anteckningar</translation>
+      <translation>Redigerare för anteckningsstilar</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation>Döper om den valda stilen</translation>
+      <translation>Byter namn på den valda stilen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
       <source>Rename</source>
-      <translation>Döp om</translation>
+      <translation>Byt namn</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation>Tar bort den valda stilen</translation>
+      <translation>Raderar den valda stilen</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
       <source>New</source>
-      <translation>Ny</translation>
+      <translation>Nytt</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="36"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <source>Delete</source>
-      <translation>Radera</translation>
+      <translation>Ta bort</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
       <source>Select All</source>
-      <translation>Markera allt</translation>
+      <translation>Välj alla</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
@@ -78,7 +78,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="214"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>Teckensnitt som används för texter och måttsättning</translation>
+      <translation>Det teckensnitt som ska användas för texter och mått</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="217"/>
@@ -95,45 +95,45 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="332"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="342"/>
       <source>The width of the lines</source>
-      <translation>Radernas bredd</translation>
+      <translation>Linjernas bredd</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> bildpunkter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="510"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>The color of lines and arrows</source>
-      <translation>Radernas och pilarnas färger</translation>
+      <translation>Färgen på linjer och pilar</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="513"/>
       <source>Line and arrow color</source>
-      <translation>Linje- och pilfärg</translation>
+      <translation>Färg på linjer och pilar</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="602"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="612"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation>Avståndet målsättningslinjen förlängs</translation>
+      <translation>Det avstånd som dimensionslinjen är extra förlängd</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="605"/>
       <source>Dimension line overshoot</source>
-      <translation>Överskjut på måttsättningslinje</translation>
+      <translation>Överskridande av dimensionslinje</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="625"/>
       <source>Extension line length</source>
-      <translation>Längd av förlängningslinje</translation>
+      <translation>Längd på förlängningsledning</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="642"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="652"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Avståndet dimensionslinjerna förlängs bortom dimensionslinjen</translation>
+      <translation>Det avstånd som förlängningslinjerna är extra förlängda utöver dimensionslinjen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
@@ -144,13 +144,13 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="273"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation>Radmellanrummet för text och etiketter med flera rader (relativt till typsnittsstorlek)</translation>
+      <translation>Radavståndet för flerradiga texter och etiketter (i förhållande till teckenstorleken)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="280"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="290"/>
       <source>The color of texts, dimension texts and label texts</source>
-      <translation>Färg av text, dimensionstext och etikettext</translation>
+      <translation>Färgen på texter, mått- och etikettexter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="283"/>
@@ -166,7 +166,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>En multipel som påverkar storleken på texter och markörer</translation>
+      <translation>En multiplikatorfaktor som påverkar storleken på texter och markörer</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -186,18 +186,18 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Scale multiplier</source>
-      <translation>Skala multiplikator</translation>
+      <translation>Multiplikator för skala</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>The type of the starting arrows or markers to use for dimensions and labels</source>
-      <translation>Typ av startpilar eller markörer att använda för mått och etiketter</translation>
+      <translation>Typ av startpilar eller markörer som ska användas för mått och etiketter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Typ av startpil</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="403"/>
@@ -209,39 +209,39 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
       <source>The size of the starting arrows or markers in system units</source>
-      <translation type="unfinished">The size of the starting arrows or markers in system units</translation>
+      <translation>Storleken på startpilarna eller startmarkörerna i systemenheter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Startpilens storlek</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="453"/>
       <source>The type of the ending arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of the ending arrows or markers to use for dimensions and labels</translation>
+      <translation>Typ av ändpilar eller markörer som ska användas för mått och etiketter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Typ av slutpil</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>The size of the ending arrows or markers in system units</source>
-      <translation type="unfinished">The size of the ending arrows or markers in system units</translation>
+      <translation>Storleken på de avslutande pilarna eller markörerna i systemenheter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Storlek på ändpilen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="536"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Om den är markerad kommer enheten att visas bredvid måttvärdet</translation>
+      <translation>Om den är markerad visas enheten bredvid dimensionsvärdet</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
@@ -252,29 +252,29 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="559"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="569"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Ange en giltig längdenhet som mm, m, in, ft, för att tvinga fram dimensionsvärdet i denna enhet</translation>
+      <translation>Ange en giltig längdenhet, t.ex. mm, m, in, ft, för att tvinga fram visning av dimensionsvärdet i denna enhet</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="562"/>
       <source>Unit override</source>
-      <translation>Åsidosätt enhet</translation>
+      <translation>Åsidosättande av enhet</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="576"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="586"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation>Antalet decimaler som ska visas för dimensionsvärden</translation>
+      <translation>Antal decimaler som ska visas för dimensionsvärden</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="596"/>
       <source>Dimension Details</source>
-      <translation type="unfinished">Dimension Details</translation>
+      <translation>Dimensionsdetaljer</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="662"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="672"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation>Avståndet mellan dimensionstexten och dimensionslinjen</translation>
+      <translation>Avståndet mellan måttsättningstexten och måttsättningslinjen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="665"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Annotations</source>
-      <translation>Annoteringar</translation>
+      <translation>Anteckningar</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="208"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="266"/>
       <source>Line spacing factor</source>
-      <translation>Mellanrumsfaktor till linjer</translation>
+      <translation>Linjeavståndsfaktor</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="300"/>
@@ -305,7 +305,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>Displays the dimension line</source>
-      <translation type="unfinished">Displays the dimension line</translation>
+      <translation>Visar dimensionslinjen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="309"/>
@@ -339,7 +339,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="393"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>Tick</source>
-      <translation>Bock</translation>
+      <translation>Kryssa</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="398"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="546"/>
       <source>Shows the unit next to the dimension value</source>
-      <translation type="unfinished">Shows the unit next to the dimension value</translation>
+      <translation>Visar enheten bredvid dimensionsvärdet</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="579"/>
@@ -360,7 +360,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="645"/>
       <source>Extension line overshoot</source>
-      <translation>Överskjut på förlängningslinje</translation>
+      <translation>Överskridande av förlängningslinje</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="622"/>
@@ -374,13 +374,13 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>Cirkulär array</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
       <source>Distance from one layer of objects to the next layer of objects</source>
-      <translation type="unfinished">Distance from one layer of objects to the next layer of objects</translation>
+      <translation>Avstånd från ett lager av objekt till nästa lager av objekt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="37"/>
@@ -392,7 +392,7 @@
       <location filename="../ui/TaskPanel_CircularArray.ui" line="68"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>Avstånd från ett element i en ring i matrisen till nästa element i samma ring.
+      <translation>Avståndet från ett element i en ring i matrisen till nästa element i samma ring.
 Det kan inte vara noll.</translation>
     </message>
     <message>
@@ -404,22 +404,22 @@ Det kan inte vara noll.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="110"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="120"/>
       <source>The number of symmetry lines in the circular array</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array</translation>
+      <translation>Antalet symmetrilinjer i den cirkulära matrisen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
       <source>Center of Rotation</source>
-      <translation type="unfinished">Center of Rotation</translation>
+      <translation>Rotationscentrum</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="209"/>
       <source>Resets the coordinates of the center of rotation</source>
-      <translation type="unfinished">Resets the coordinates of the center of rotation</translation>
+      <translation>Återställer koordinaterna för rotationscentrum</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="212"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Återställ punkt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="113"/>
@@ -431,20 +431,20 @@ Det kan inte vara noll.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="93"/>
       <source>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of concentric circles to create, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>Antal koncentriska cirklar som ska skapas, inklusive en kopia av originalobjektet.
+Det måste vara minst 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="86"/>
       <source>Number of concentric circles</source>
-      <translation type="unfinished">Number of concentric circles</translation>
+      <translation>Antal koncentriska cirklar</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="135"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation>Koordinaterna för den punkt genom vilken rotationsaxeln passerar.
-Ändra själva riktningen på axeln i egenskapsredigeraren.</translation>
+      <translation>Koordinaterna för den punkt som rotationsaxeln passerar genom.
+Ändra riktningen på själva axeln i egenskapsredigeraren.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="147"/>
@@ -465,25 +465,25 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="224"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Om markerad, så kommer de resulterande objekten i matrisen att slås samman om de rör varandra.
-Detta fungerar bara om "Länkmatris" är avstängd.</translation>
+      <translation>Om detta är markerat kommer de resulterande objekten i matrisen att smälta samman om de rör vid varandra.
+Detta fungerar endast om "Link array" är avaktiverat.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
       <source>Fuse</source>
-      <translation>Förena</translation>
+      <translation>Säkring</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Om markerad, så kommer det resulterande objektet att vara en "Länkmatris" istället för en vanlig matris.
-En Länkmatris är effektivare när du skapar flera kopior, men den kan inte slås ihop.</translation>
+      <translation>Om kryssrutan är markerad kommer det resulterande objektet att vara en "Link array" istället för en vanlig array.
+En Link-array är mer effektiv när du skapar flera kopior, men den kan inte smältas samman.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="239"/>
       <source>Link array</source>
-      <translation>Länkmatris</translation>
+      <translation>Länk array</translation>
     </message>
   </context>
   <context>
@@ -492,7 +492,7 @@ En Länkmatris är effektivare när du skapar flera kopior, men den kan inte sl�
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="79"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation>Antal element i arrayen i den angivna riktningen, inklusive en kopia av det ursprungliga objektet.
+      <translation>Antal element i matrisen i den angivna riktningen, inklusive en kopia av originalobjektet.
 Antalet måste vara minst 1 i varje riktning.</translation>
     </message>
     <message>
@@ -534,19 +534,19 @@ Antalet måste vara minst 1 i varje riktning.</translation>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Avståndet mellan elementen i Z-riktning.
-Normalt är endast Z-värdet nödvändigt; de andra två värdena kan ge en extra förskjutning i sina respektive riktningar.
-Negativa värden kommer att resultera i kopior producerade i negativ riktning.</translation>
+      <translation>Avståndet mellan elementen i Z-riktningen.
+Normalt är endast Z-värdet nödvändigt; de andra två värdena kan ge en ytterligare förskjutning i sina respektive riktningar.
+Negativa värden resulterar i kopior som produceras i den negativa riktningen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal Array</source>
-      <translation type="unfinished">Orthogonal Array</translation>
+      <translation>Ortogonal array</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="32"/>
       <source>Toggles between orthogonal and linear mode</source>
-      <translation type="unfinished">Toggles between orthogonal and linear mode</translation>
+      <translation>Växlar mellan ortogonalt och linjärt läge</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="35"/>
@@ -576,47 +576,47 @@ Negativa värden kommer att resultera i kopior producerade i negativ riktning.</
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="156"/>
       <source>Currently selected axis</source>
-      <translation type="unfinished">Currently selected axis</translation>
+      <translation>Aktuell vald axel</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
       <source>Distance between the elements in the X-direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the X-direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Avståndet mellan elementen i X-riktningen.
+Normalt är endast X-värdet nödvändigt; de andra två värdena kan ge en ytterligare förskjutning i sina respektive riktningar.
+Negativa värden resulterar i kopior som produceras i den negativa riktningen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
       <source>X Intervals</source>
-      <translation>X-intervall</translation>
+      <translation>X-intervaller</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="246"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="337"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
       <source>Resets the distances</source>
-      <translation>Återställ avstånden</translation>
+      <translation>Återställer avstånden</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
       <source>Distance between the elements in the Y-direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Y-direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Avståndet mellan elementen i Y-riktningen.
+Normalt är endast Y-värdet nödvändigt; de andra två värdena kan ge en ytterligare förskjutning i sina respektive riktningar.
+Negativa värden resulterar i kopior som produceras i den negativa riktningen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="264"/>
       <source>Y Intervals</source>
-      <translation>Y-intervall</translation>
+      <translation>Y-intervaller</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="355"/>
       <source>Z Intervals</source>
-      <translation>Z-intervall</translation>
+      <translation>Z-intervaller</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="431"/>
@@ -627,25 +627,25 @@ Negative values will result in copies produced in the negative direction.</trans
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="443"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Om markerad, så kommer de resulterande objekten i matrisen att slås samman om de rör varandra.
-Detta fungerar bara om "Länkmatris" är avstängd.</translation>
+      <translation>Om detta är markerat kommer de resulterande objekten i matrisen att smälta samman om de rör vid varandra.
+Detta fungerar endast om "Link array" är avaktiverat.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="447"/>
       <source>Fuse</source>
-      <translation>Förena</translation>
+      <translation>Säkring</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="454"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Om markerad, så kommer det resulterande objektet att vara en "Länkmatris" istället för en vanlig matris.
-En Länkmatris är effektivare när du skapar flera kopior, men den kan inte slås ihop.</translation>
+      <translation>Om kryssrutan är markerad kommer det resulterande objektet att vara en "Link array" istället för en vanlig array.
+En Link-array är mer effektiv när du skapar flera kopior, men den kan inte smältas samman.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="458"/>
       <source>Link array</source>
-      <translation>Länkmatris</translation>
+      <translation>Länk array</translation>
     </message>
   </context>
   <context>
@@ -653,7 +653,7 @@ En Länkmatris är effektivare när du skapar flera kopior, men den kan inte sl�
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar Array</source>
-      <translation type="unfinished">Polar Array</translation>
+      <translation>Polär array</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="34"/>
@@ -661,7 +661,7 @@ En Länkmatris är effektivare när du skapar flera kopior, men den kan inte sl�
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation>Svepvinkel på den polära fördelningen.
+      <translation>Polfördelningens svepande vinkel.
 En negativ vinkel ger ett polärt mönster i motsatt riktning.
 Det maximala absoluta värdet är 360 grader.</translation>
     </message>
@@ -675,7 +675,7 @@ Det maximala absoluta värdet är 360 grader.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="78"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Antal element i matrisen, inklusive en kopia av originalobjektet.
+      <translation>Antal element i matrisen, inklusive en kopia av det ursprungliga objektet.
 Det måste vara minst 2.</translation>
     </message>
     <message>
@@ -687,23 +687,23 @@ Det måste vara minst 2.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation>Koordinaterna för den punkt genom vilken rotationsaxeln passerar.
-Ändra själva riktningen på axeln i egenskapsredigeraren.</translation>
+      <translation>Koordinaterna för den punkt som rotationsaxeln passerar genom.
+Ändra riktningen på själva axeln i egenskapsredigeraren.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="101"/>
       <source>Center of Rotation</source>
-      <translation type="unfinished">Center of Rotation</translation>
+      <translation>Rotationscentrum</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="171"/>
       <source>Resets the coordinates of the center of rotation</source>
-      <translation type="unfinished">Resets the coordinates of the center of rotation</translation>
+      <translation>Återställer koordinaterna för rotationscentrum</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="174"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Återställ punkt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="109"/>
@@ -724,25 +724,25 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="186"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Om markerad, så kommer de resulterande objekten i matrisen att slås samman om de rör varandra.
-Detta fungerar bara om "Länkmatris" är avstängd.</translation>
+      <translation>Om detta är markerat kommer de resulterande objekten i matrisen att smälta samman om de rör vid varandra.
+Detta fungerar endast om "Link array" är avaktiverat.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
       <source>Fuse</source>
-      <translation>Förena</translation>
+      <translation>Säkring</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="197"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Om markerad, så kommer det resulterande objektet att vara en "Länkmatris" istället för en vanlig matris.
-En Länkmatris är effektivare när du skapar flera kopior, men den kan inte slås ihop.</translation>
+      <translation>Om kryssrutan är markerad kommer det resulterande objektet att vara en "Link array" istället för en vanlig array.
+En Link-array är mer effektiv när du skapar flera kopior, men den kan inte smältas samman.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="201"/>
       <source>Link array</source>
-      <translation>Länkmatris</translation>
+      <translation>Länk array</translation>
     </message>
   </context>
   <context>
@@ -787,24 +787,24 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="143"/>
       <source>Text to be made into ShapeString</source>
-      <translation>Text som ska göras till textform</translation>
+      <translation>Text som ska göras om till ShapeString</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="41"/>
       <location filename="../ui/TaskShapeString.ui" line="58"/>
       <location filename="../ui/TaskShapeString.ui" line="75"/>
       <source>Enter coordinates or pick a point with the mouse</source>
-      <translation type="unfinished">Enter coordinates or pick a point with the mouse</translation>
+      <translation>Ange koordinater eller välj en punkt med musen</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="96"/>
       <source>Resets the picked point</source>
-      <translation type="unfinished">Resets the picked point</translation>
+      <translation>Återställer den valda punkten</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="102"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Återställ punkt</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="109"/>
@@ -824,7 +824,7 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="150"/>
       <source>Font file</source>
-      <translation>Teckensnittsfil</translation>
+      <translation>Typsnittsfil</translation>
     </message>
   </context>
   <context>
@@ -832,12 +832,12 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="33"/>
       <source>Top (XY)</source>
-      <translation>Topp (XY)</translation>
+      <translation>Överst (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="43"/>
       <source>Front (XZ)</source>
-      <translation>Fram (XZ)</translation>
+      <translation>Framsida (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="53"/>
@@ -847,32 +847,32 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="60"/>
       <source>Sets the working plane facing the current view</source>
-      <translation>Ställer in arbetsplanet som vetter mot den aktuella vyn</translation>
+      <translation>Ställer in arbetsplanet mot den aktuella vyn</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
       <source>Working Plane Setup</source>
-      <translation type="unfinished">Working Plane Setup</translation>
+      <translation>Uppställning av arbetsplanet</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Choose an option below. Or define a working plane by selecting 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</source>
-      <translation type="unfinished">Choose an option below. Or define a working plane by selecting 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</translation>
+      <translation>Välj ett alternativ nedan. Eller definiera ett arbetsplan genom att välja 3 hörn, 1 eller flera former eller en proxy för arbetsplanet och bekräfta sedan med ett klick i 3D-vyn.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="30"/>
       <source>Sets the working plane to the XY-plane (ground plane)</source>
-      <translation type="unfinished">Sets the working plane to the XY-plane (ground plane)</translation>
+      <translation>Ställer in arbetsplanet till XY-planet (markplanet)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="40"/>
       <source>Sets the working plane to the XZ-plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ-plane (front plane)</translation>
+      <translation>Ställer in bearbetningsplanet till XZ-planet (främre planet)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="50"/>
       <source>Sets the working plane to the YZ-plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ-plane (side plane)</translation>
+      <translation>Ställer in bearbetningsplanet till YZ-planet (sidoplanet)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="63"/>
@@ -883,25 +883,26 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="70"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation>Arbetsplanet anpassas till den aktuella vyn varje gång ett kommando startas</translation>
+      <translation>Arbetsplanet kommer att anpassas till den aktuella
+vy varje gång ett kommando startas</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="77"/>
       <source>Automatic</source>
-      <translation>Automatisk</translation>
+      <translation>Automatiskt</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="86"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="93"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>En valfri förskjutning att ge till arbetsplanet
-ovanför dess basläge. Använd detta tillsammans med en
+      <translation>En valfri förskjutning för att ge arbetsplanet
+ovanför dess basposition. Använd detta tillsammans med en
 av knapparna ovan</translation>
     </message>
     <message>
@@ -909,21 +910,21 @@ av knapparna ovan</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation>Om detta markeras kommer arbetsplanet att vara
-centrerad på den aktuella vyn när du trycker på en
-av knapparna ovan</translation>
+      <translation>Om detta väljs kommer arbetsplanet att centreras
+centreras på den aktuella vyn när du trycker på en av
+av knapparna ovanför</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="110"/>
       <source>Center plane on view</source>
-      <translation>Centrera arbetsplan i vyn</translation>
+      <translation>Mittplan på bild</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="117"/>
       <source>Centers the working plane on the current view when pressing one
 of the buttons above</source>
-      <translation type="unfinished">Centers the working plane on the current view when pressing one
-of the buttons above</translation>
+      <translation>Centrerar arbetsplanet på den aktuella vyn när du trycker på en av
+av knapparna ovan</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="133"/>
@@ -942,46 +943,46 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="148"/>
       <source>Move Working Plane</source>
-      <translation type="unfinished">Move Working Plane</translation>
+      <translation>Flytta arbetsplanet</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="157"/>
       <location filename="../ui/TaskSelectPlane.ui" line="167"/>
       <source>The color of the grid</source>
-      <translation>Rutnätets färg</translation>
+      <translation>Färgen på rutnätet</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="160"/>
       <source>Grid color</source>
-      <translation>Färg på rutnät</translation>
+      <translation>Rutnätsfärg</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="174"/>
       <location filename="../ui/TaskSelectPlane.ui" line="184"/>
       <source>The distance between grid lines</source>
-      <translation>Avståndet mellan rutnätslinjer</translation>
+      <translation>Avståndet mellan rutnätslinjerna</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="194"/>
       <location filename="../ui/TaskSelectPlane.ui" line="204"/>
       <source>The number of squares between major grid lines</source>
-      <translation>Antalet kvadrater mellan stora rutnätslinjer</translation>
+      <translation>Antalet rutor mellan huvudlinjerna i rutnätet</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="197"/>
       <source>Major lines every</source>
-      <translation>Stora linjer per</translation>
+      <translation>Stora linjer varje</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="207"/>
       <location filename="../ui/TaskSelectPlane.ui" line="227"/>
       <source> squares</source>
-      <translation> kvadrater</translation>
+      <translation> rutor</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="217"/>
       <source>Grid size</source>
-      <translation>Storlek på rutnät</translation>
+      <translation>Rutnätets storlek</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="240"/>
@@ -992,12 +993,12 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="265"/>
       <source>Center View</source>
-      <translation type="unfinished">Center View</translation>
+      <translation>Centrumvy</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="287"/>
       <source>Resets the working plane to its next position</source>
-      <translation>Återställer arbetsplanet till sin nästa position</translation>
+      <translation>Återställer arbetsplanet till dess nästa position</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="290"/>
@@ -1013,12 +1014,12 @@ flyttas till mitten av vyn.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="214"/>
       <location filename="../ui/TaskSelectPlane.ui" line="224"/>
       <source>The number of squares in the X- and Y-direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X- and Y-direction of the grid</translation>
+      <translation>Antalet rutor i rutnätets X- och Y-riktning</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="243"/>
       <source>Snapping radius</source>
-      <translation>Fästradie</translation>
+      <translation>Snapping-radie</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="262"/>
@@ -1028,7 +1029,7 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="274"/>
       <source>Resets the working plane to its previous position</source>
-      <translation>Återställer arbetsplanet till sin tidigare position</translation>
+      <translation>Återställer bearbetningsplanet till dess tidigare position</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="277"/>
@@ -1038,7 +1039,7 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation>Ladda förval</translation>
+      <translation>Läs in förinställning</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
@@ -1048,32 +1049,32 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
       <source>Ambient shape color</source>
-      <translation>Formens omgivningsfärg</translation>
+      <translation>Färg på omgivande form</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
       <source>Emissive shape color</source>
-      <translation>Formens strålningsfärg</translation>
+      <translation>Emissiv form färg</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
       <source>Specular shape color</source>
-      <translation>Formens speglingsfärg</translation>
+      <translation>Speculär form färg</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
       <source>Shape transparency</source>
-      <translation>Formens genomskinlighet</translation>
+      <translation>Genomskinlig form</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
       <source>Shape shininess</source>
-      <translation>Formens glans</translation>
+      <translation>Formens glansighet</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
       <source>Other</source>
-      <translation>Övrigt</translation>
+      <translation>Annat</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
@@ -1092,7 +1093,7 @@ flyttas till mitten av vyn.</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
       <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> bildpunkter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
@@ -1142,12 +1143,12 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
       <source>Fill the values below from a stored style preset</source>
-      <translation>Fyll värdena nedan från en lagrad stilförinställning</translation>
+      <translation>Fyll i värdena nedan från en lagrad förinställd stil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation>Punktfärg</translation>
+      <translation>Punktens färg</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
@@ -1162,28 +1163,28 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="69"/>
       <source>Shape color</source>
-      <translation>Formfärg</translation>
+      <translation>Form färg</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="667"/>
       <source>Annotations</source>
-      <translation>Annoteringar</translation>
+      <translation>Anteckningar</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
       <source>Extension line length</source>
-      <translation>Längd av förlängningslinje</translation>
+      <translation>Längd på förlängningsledning</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
       <source>Extension line overshoot</source>
-      <translation>Överskjut på förlängningslinje</translation>
+      <translation>Överskridande av förlängningslinje</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="624"/>
       <source>Text spacing</source>
-      <translation>Textavstånd</translation>
+      <translation>Avstånd mellan texter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="372"/>
@@ -1204,7 +1205,7 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
       <source>Annotation</source>
-      <translation>Annotering</translation>
+      <translation>Anteckning</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
@@ -1214,19 +1215,19 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
       <source>Line spacing factor</source>
-      <translation>Mellanrumsfaktor till linjer</translation>
+      <translation>Linjeavståndsfaktor</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation>Multiplikatorn för annoteringsskalan är inversen av den skala som anges i widgeten
-Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translation>
+      <translation>Multiplikatorn för anteckningsskalan är inversen av den skala som anges i widgeten
+Anteckningsskala. Om skalan är 1:100 är multiplikatorn 100.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Typ av startpil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1244,7 +1245,7 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
       <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Tick</source>
-      <translation>Bock</translation>
+      <translation>Kryssa</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
@@ -1256,42 +1257,42 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
       <location filename="../ui/TaskPanel_SetStyle.ui" line="442"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="497"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Startpilens storlek</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Typ av slutpil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Storlek på ändpilen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
-      <translation>Enheten att använda för dimensioner. Lämna tomt för att använda den aktuella FreeCAD-enheten.</translation>
+      <translation>Åsidosättande av enhet för dimensioner. Lämna tomt om du vill använda den aktuella FreeCAD-enheten.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
       <source>Dimension line overshoot</source>
-      <translation>Överskjut på måttsättningslinje</translation>
+      <translation>Överskridande av dimensionslinje</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="577"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation>Avståndet dimensionslinjen förlängs förbi förlängningslinjerna</translation>
+      <translation>Det avstånd som dimensionslinjen sträcker sig förbi förlängningslinjerna</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="379"/>
       <source>The color for texts, dimension texts and label texts</source>
-      <translation>Färgen på texter, dimensionstexter och etikettexter</translation>
+      <translation>Färgen för texter, dimensionstexter och etikettexter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
@@ -1301,7 +1302,7 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
       <source>The font for texts, dimensions and labels</source>
-      <translation>Typsnitt för texter, dimensioner och etiketter</translation>
+      <translation>Teckensnitt för texter, mått och etiketter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
@@ -1311,22 +1312,22 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
       <source>The height for texts, dimension texts and label texts</source>
-      <translation>Höjden på texter, dimensionstexter och etikettexter</translation>
+      <translation>Höjden för texter, mått- och etikettexter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation>Radmellanrummet för text och etiketter med flera rader (relativt till typsnittsstorlek)</translation>
+      <translation>Radavståndet för flerradiga texter och etiketter (i förhållande till teckenstorleken)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <source>Scale multiplier</source>
-      <translation>Skala multiplikator</translation>
+      <translation>Multiplikator för skala</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
       <source>Line and arrow color</source>
-      <translation>Linje- och pilfärg</translation>
+      <translation>Färg på linjer och pilar</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
@@ -1336,12 +1337,12 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Saves the current style as a preset</source>
-      <translation type="unfinished">Saves the current style as a preset</translation>
+      <translation>Sparar den aktuella stilen som en förinställning</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
       <source>Shape Appearance</source>
-      <translation type="unfinished">Shape Appearance</translation>
+      <translation>Formutseende</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
@@ -1351,7 +1352,7 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="546"/>
       <source>Adds a unit symbol to dimension texts</source>
-      <translation type="unfinished">Adds a unit symbol to dimension texts</translation>
+      <translation>Lägger till en enhetssymbol i dimensionstexter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="594"/>
@@ -1359,27 +1360,30 @@ Widgeten Annoteringsskala. Om skalan är 1:100 är multiplikatorn 100.</translat
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</source>
-      <translation>Längden av förlängningslinjer. Använd 0 för hela förlängningslinjer. Ett negativt värde ställer in mellanrummet mellan ändarna av förlängningslinjerna och de mätta punkterna. Ett positivt värde ställer in den maximala längden av förlängningslinjerna. Används bara till raka dimensioner.</translation>
+      <translation>Längden på förlängningslinjerna. Använd 0 för fullständiga förlängningslinjer. Ett negativt värde
+definierar avståndet mellan förlängningslinjernas ändar och de uppmätta punkterna.
+Ett positivt värde definierar den maximala längden på förlängningslinjerna. Används endast
+för linjära mått.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="614"/>
       <source>The length of extension lines above the dimension line</source>
-      <translation>Längden av förlängningslinjer över dimensionslinjen</translation>
+      <translation>Längden på förlängningslinjerna ovanför dimensionslinjen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="631"/>
       <source>The space between the dimension line and the dimension text</source>
-      <translation>Avståndet mellan måttsättningsraden och måttsättningstexten</translation>
+      <translation>Utrymmet mellan måttslinjen och måttangivelsen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="650"/>
       <source>Apply the above style to selected object(s)</source>
-      <translation>Verkställ ovan stil på valda föremål</translation>
+      <translation>Tillämpa ovanstående stil på valda objekt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="664"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
-      <translation>Verkställ ovan still på alla anteckningar (text, dimensioner och etiketter)</translation>
+      <translation>Tillämpa ovanstående stil på alla anteckningar (texter, mått och etiketter)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
@@ -1389,17 +1393,17 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
       <source>Unit override</source>
-      <translation>Åsidosätt enhet</translation>
+      <translation>Åsidosättande av enhet</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
       <source>Selected</source>
-      <translation>Markerad</translation>
+      <translation>Vald</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
       <source>Hatch</source>
-      <translation>Kläcka</translation>
+      <translation>Skraffering</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
@@ -1424,21 +1428,21 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="81"/>
       <source>Align to face</source>
-      <translation type="unfinished">Align to face</translation>
+      <translation>Rikta in mot framsidan</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="88"/>
       <source>Aligns the pattern with the base object.
 Otherwise, the pattern aligns with the global coordinate system.
 This setting modifies the Translate property.</source>
-      <translation type="unfinished">Aligns the pattern with the base object.
-Otherwise, the pattern aligns with the global coordinate system.
-This setting modifies the Translate property.</translation>
+      <translation>Riktar in mönstret med basobjektet.
+I annat fall riktas mönstret in efter det globala koordinatsystemet.
+Denna inställning ändrar egenskapen Translate.</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>
       <source>Pattern files (*.pat *.PAT)</source>
-      <translation>Mönster-filer (*.pat *.PAT)</translation>
+      <translation>Mönsterfiler (*.pat *.PAT)</translation>
     </message>
   </context>
   <context>
@@ -1459,8 +1463,8 @@ This setting modifies the Translate property.</translation>
       <location filename="../ui/preferences-draft.ui" line="39"/>
       <source>The number of decimals used in internal coordinate operations (for example 3 = 0.001).
 Values between 6 and 8 are usually considered the best trade-off.</source>
-      <translation>Antalet decimaler som används i interna koordinatåtgärder (till exempel 3 = 0,001).
-Värden mellan 6 och 8 ses ofta som lagom.</translation>
+      <translation>Antalet decimaler som används i interna koordinatoperationer (t.ex. 3 = 0,001).
+Värden mellan 6 och 8 anses vanligtvis vara den bästa kompromissen.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="73"/>
@@ -1468,7 +1472,10 @@ Värden mellan 6 och 8 ses ofta som lagom.</translation>
 will automatically align with the current view whenever a command is started.
 Additionally it will align to preselected planar faces, or when points on planar
 faces are picked during commands.</source>
-      <translation>Standardarbetsplan för nya vyer. Om ställt till "Automatisk" så kommer arbetsplanet automatiskt passas in med den nuvarande vyn när ett kommando startas. Den kommer även passas mot förvalda planytor, eller när punkter på planytor väljs när kommandon används.</translation>
+      <translation>Standardarbetsplanet för nya vyer. Om inställningen är "Automatisk" kommer arbetsplanet
+automatiskt i linje med den aktuella vyn när ett kommando startas.
+Dessutom kommer det att riktas in mot förvalda plana ytor, eller när punkter på plana
+ytor väljs under kommandon.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
@@ -1490,19 +1497,19 @@ faces are picked during commands.</source>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
       <translation>Om markerad visas en widget som anger den aktuella
-planets orientering visas när man plockar punkter</translation>
+planets orientering visas när man väljer punkter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="129"/>
       <source>If checked, the layers drop-down list also includes groups.
 Objects can then automatically be added to groups as well.</source>
-      <translation>Om märkt så innehåller lagerlistan även grupper.
-Föremål kan då även läggas till i grupper automatiskt.</translation>
+      <translation>Om markeringen är ikryssad innehåller rullgardinslistan för lager även grupper.
+Objekt kan sedan automatiskt läggas till i grupper också.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="133"/>
       <source>Include groups in layer list</source>
-      <translation>Inkludera grupper i lagerlista</translation>
+      <translation>Inkludera grupper i lagerlistan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="188"/>
@@ -1527,25 +1534,25 @@ Modifieringskommandon för Draft.</translation>
       <location filename="../ui/preferences-draft.ui" line="222"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
 Only for the splitFaces and makeShell options.</source>
-      <translation>Om markerat kommer Draft Downgrade och Draft Upgrade att behålla ansiktsfärgerna.
+      <translation>Om markerat kommer Draft Downgrade och Draft Upgrade att behålla ytfärgerna.
 Endast för alternativen splitFaces och makeShell.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="226"/>
       <source>Keep face colors during downgrade/upgrade</source>
-      <translation>Behåll ytors färger under nedgradering/uppgradering</translation>
+      <translation>Behåll ytfärgerna under nedgradering/uppgradering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="239"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face names.
 Only for the splitFaces and makeShell options.</source>
-      <translation>Om markerat kommer Draft Downgrade och Draft Upgrade att behålla ansiktsnamnen.
+      <translation>Om markerat kommer Draft Downgrade och Draft Upgrade att behålla ytnamnen.
 Endast för alternativen splitFaces och makeShell.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="243"/>
       <source>Keep face names during downgrade/upgrade</source>
-      <translation>Behåll ytors namn under nedgradering/uppgradering</translation>
+      <translation>Behåll namn under nedgradering/uppgradering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="263"/>
@@ -1554,7 +1561,7 @@ manually in any of the coordinate fields. Setting this to 0 disables the delay.
 If a delay of 1 is set, after entering a numeric value, the mouse will not
 update the field anymore during one second, to avoid moving the mouse
 accidentally and modifying the entered value.</source>
-      <translation>Detta är en fördröjning under vilken musen är inaktiv, efter att du har matat in siffror
+      <translation>Detta är en fördröjning under vilken musen är inaktiv efter att man har matat in siffror
 manuellt i något av koordinatfälten. Om du ställer in detta på 0 inaktiveras fördröjningen.
 Om en fördröjning på 1 anges, efter att ett numeriskt värde har angetts, kommer musen inte
 fältet inte längre under en sekund, för att undvika att musen flyttas av misstag
@@ -1563,7 +1570,7 @@ musen av misstag och ändra det inmatade värdet.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="328"/>
       <source>Edit node pick radius</source>
-      <translation>Redigera radie för nodplock</translation>
+      <translation>Redigera radie för nodväljare</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="335"/>
@@ -1603,22 +1610,22 @@ musen av misstag och ändra det inmatade värdet.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
       <source>Show working plane orientation</source>
-      <translation type="unfinished">Show working plane orientation</translation>
+      <translation>Visa arbetsplanets orientering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
       <source>Command Options</source>
-      <translation type="unfinished">Command Options</translation>
+      <translation>Kommandoalternativ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report View when using Draft commands</source>
-      <translation type="unfinished">If checked, instructions are displayed in the Report View when using Draft commands</translation>
+      <translation>Om markerad visas instruktioner i rapportvyn när du använder Draft-kommandon</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
       <source>Show prompts in the Report View</source>
-      <translation type="unfinished">Show prompts in the Report View</translation>
+      <translation>Visa anvisningar i rapportvyn</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="171"/>
@@ -1630,7 +1637,7 @@ Detta gör det möjligt att ange en riktning och sedan skriva in ett avstånd.</
     <message>
       <location filename="../ui/preferences-draft.ui" line="175"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation>Ställ in fokus på Längd istället för X-koordinat</translation>
+      <translation>Ställ in fokus på längd istället för X-koordinat</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="191"/>
@@ -1640,7 +1647,7 @@ Detta gör det möjligt att ange en riktning och sedan skriva in ett avstånd.</
     <message>
       <location filename="../ui/preferences-draft.ui" line="296"/>
       <source>Maximum number of editable objects</source>
-      <translation type="unfinished">Maximum number of editable objects</translation>
+      <translation>Maximalt antal redigerbara objekt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="402"/>
@@ -1650,22 +1657,22 @@ Detta gör det möjligt att ange en riktning och sedan skriva in ett avstånd.</
     <message>
       <location filename="../ui/preferences-draft.ui" line="415"/>
       <source>Construction geometry color</source>
-      <translation>Färg på konstruktionsgeometri</translation>
+      <translation>Konstruktionsgeometri färg</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="321"/>
       <source>Draft classic style</source>
-      <translation>Klassisk Draft-stil</translation>
+      <translation>Släppning till klassisk stil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="326"/>
       <source>Bitsnpieces style</source>
-      <translation>Sortimentstil</translation>
+      <translation>Bitsnpieces stil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual</source>
-      <translation>Utseende</translation>
+      <translation>Visuell</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="20"/>
@@ -1675,17 +1682,17 @@ Detta gör det möjligt att ange en riktning och sedan skriva in ett avstånd.</
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>SVG pattern size</source>
-      <translation>SVG mönsterstorlek</translation>
+      <translation>Storlek på SVG-mönster</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="39"/>
       <source>The default size for SVG patterns. A higher value results in a denser pattern.</source>
-      <translation>Standardstorlek för SVG-mönster. Ett högre värde ger tätare mönster.</translation>
+      <translation>Standardstorleken för SVG-mönster. Ett högre värde resulterar i ett tätare mönster.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="65"/>
       <source>Additional SVG pattern location</source>
-      <translation>Plats för extra SVG-mönster</translation>
+      <translation>Ytterligare plats för SVG-mönster</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="75"/>
@@ -1697,29 +1704,29 @@ mönsterdefinitioner som ska läggas till standardmönstren</translation>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="92"/>
       <source>Drawing View Line Definitions</source>
-      <translation type="unfinished">Drawing View Line Definitions</translation>
+      <translation>Ritningsvy Linjedefinitioner</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
       <source>Dashed line definition</source>
-      <translation>Definition för streckad linje</translation>
+      <translation>Streckad linje definition</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="111"/>
       <location filename="../ui/preferences-draftvisual.ui" line="147"/>
       <location filename="../ui/preferences-draftvisual.ui" line="176"/>
       <source>An SVG linestyle definition</source>
-      <translation>En SVG-definition för linjestil</translation>
+      <translation>En definition av SVG-linjestil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="134"/>
       <source>Dashdot line definition</source>
-      <translation>Definition för streck-punktslinje</translation>
+      <translation>Definition av Dashdot-linje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="163"/>
       <source>Dotted line definition</source>
-      <translation>Definition för punktlinje</translation>
+      <translation>Definition av streckad linje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="291"/>
@@ -1751,48 +1758,48 @@ mönsterdefinitioner som ska läggas till standardmönstren</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="266"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Typ av startpil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="279"/>
       <source>The default symbol displayed at the start of dimension lines</source>
-      <translation type="unfinished">The default symbol displayed at the start of dimension lines</translation>
+      <translation>Standardsymbolen som visas i början av dimensionsraderna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="314"/>
       <location filename="../ui/preferences-drafttexts.ui" line="402"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="322"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Startpilens storlek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
       <source>The default starting arrow size</source>
-      <translation type="unfinished">The default starting arrow size</translation>
+      <translation>Standardstorlek för startpilen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="354"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Typ av slutpil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="367"/>
       <source>The default symbol displayed at the end of dimension lines</source>
-      <translation type="unfinished">The default symbol displayed at the end of dimension lines</translation>
+      <translation>Standardsymbolen som visas i slutet av dimensionsraderna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Storlek på ändpilen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="417"/>
       <source>The default ending arrow size</source>
-      <translation type="unfinished">The default ending arrow size</translation>
+      <translation>Standardstorleken på den avslutande pilen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="531"/>
@@ -1802,24 +1809,24 @@ mönsterdefinitioner som ska läggas till standardmönstren</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="589"/>
       <source>Dimension Details</source>
-      <translation type="unfinished">Dimension Details</translation>
+      <translation>Dimension Detaljer</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="669"/>
       <source>Extension line overshoot</source>
-      <translation>Överskjut på förlängningslinje</translation>
+      <translation>Överskridande av förlängningslinje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="595"/>
       <source>Dimension line overshoot</source>
-      <translation>Överskjut på måttsättningslinje</translation>
+      <translation>Överskridande av dimensionslinje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="39"/>
       <source>The default annotation scale multiplier. This is the inverse of the scale set
 in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation type="unfinished">The default annotation scale multiplier. This is the inverse of the scale set
-in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</translation>
+      <translation>Standardmultiplikatorn för anteckningsskalan. Detta är inversen av den skala som ställs in
+i widgeten Släppningsskala. Om skalan är 1:100 är multiplikatorn 100.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="72"/>
@@ -1829,12 +1836,12 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
       <source>The default height for texts, dimension texts and label texts</source>
-      <translation>Standardhöjden på text, dimensionstext och etikettext</translation>
+      <translation>Standardhöjd för texter, mått- och etikettexter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source>Line spacing factor</source>
-      <translation>Mellanrumsfaktor till linjer</translation>
+      <translation>Linjeavståndsfaktor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="156"/>
@@ -1844,17 +1851,17 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Scale multiplier</source>
-      <translation>Skala multiplikator</translation>
+      <translation>Multiplikator för skala</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
       <source>Texts and Dimensions</source>
-      <translation>Texter och mått</translation>
+      <translation>Texter och dimensioner</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
       <source>Annotations</source>
-      <translation>Annoteringar</translation>
+      <translation>Anteckningar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="78"/>
@@ -1874,7 +1881,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="182"/>
       <source>The default color for texts, dimension texts and label texts</source>
-      <translation>Standardfärgen på text, dimensionstext och etikettext</translation>
+      <translation>Standardfärgen för texter, dimensionstexter och etikettexter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="211"/>
@@ -1894,13 +1901,13 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
       <source>The default line width</source>
-      <translation>Standardlinjebredd</translation>
+      <translation>Standard linjebredd</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="338"/>
       <location filename="../ui/preferences-drafttexts.ui" line="240"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> bildpunkter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="289"/>
@@ -1924,7 +1931,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
       <location filename="../ui/preferences-drafttexts.ui" line="304"/>
       <location filename="../ui/preferences-drafttexts.ui" line="392"/>
       <source>Tick</source>
-      <translation>Bock</translation>
+      <translation>Kryssa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
@@ -1935,12 +1942,12 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="442"/>
       <source>Line and arrow color</source>
-      <translation>Linje- och pilfärg</translation>
+      <translation>Färg på linjer och pilar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="449"/>
       <source>The default color for lines and arrows</source>
-      <translation>Standardfärg for linjer och pilar</translation>
+      <translation>Standardfärg för linjer och pilar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="472"/>
@@ -1950,7 +1957,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="478"/>
       <source>If checked, a unit symbol is added to dimension texts by default</source>
-      <translation>Om märkt så kommer en enhetssymbol som standard läggas till i dimensionstext</translation>
+      <translation>Om den är markerad läggs en enhetssymbol till i måttangivelser som standard</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="481"/>
@@ -1960,7 +1967,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="497"/>
       <source>Unit override</source>
-      <translation>Åsidosätt enhet</translation>
+      <translation>Åsidosättande av enhet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="510"/>
@@ -1972,22 +1979,22 @@ eller cm, lämna tomt för att använda den aktuella enheten som definieras i Fr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="538"/>
       <source>The default number of decimal places for dimension texts</source>
-      <translation>Standardantal av decimalpunkter i dimensionstext</translation>
+      <translation>Standardantalet decimaler för dimensionstexter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="573"/>
       <source>The optional string inserted between the feet and inches values in dimensions</source>
-      <translation>Den valfria texten som sätts mellan fot och tumvärdena i dimensioner</translation>
+      <translation>Den valfria strängen som infogas mellan värdena feet och inches i dimensionerna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="608"/>
       <source>The default distance the dimension line is extended past the extension lines</source>
-      <translation>Standardavståndet dimensionslinjen förlängs bortom förlängningslinjerna</translation>
+      <translation>Standardavståndet Dimensionslinjen är förlängd förbi förlängningslinjerna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="637"/>
       <source>Extension line length</source>
-      <translation>Längd av förlängningslinje</translation>
+      <translation>Längd på förlängningsledning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="644"/>
@@ -2013,7 +2020,7 @@ används för linjära mått.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="698"/>
       <source>Text spacing</source>
-      <translation>Textavstånd</translation>
+      <translation>Avstånd mellan texter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="560"/>
@@ -2055,24 +2062,24 @@ En enhet i SVG-filen kommer att tolkas som en millimeter.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="101"/>
       <source>Add wires for invalid faces</source>
-      <translation>Lägg till kablar för ogiltiga ansikten</translation>
+      <translation>Lägg till kablar för ogiltiga ytor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method for importing SVG object colors</source>
-      <translation type="unfinished">Method for importing SVG object colors</translation>
+      <translation>Metod för att importera SVG-objektfärger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="97"/>
       <source>If face generation results in a degenerated face,
 a raw wire from the original shape is added</source>
-      <translation type="unfinished">If face generation results in a degenerated face,
-a raw wire from the original shape is added</translation>
+      <translation>Om ytgenerering resulterar i en degenererad yta,
+läggs en rå tråd från den ursprungliga formen till</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="117"/>
       <source>Check to cut shapes according to the even/odd SVG fill rule</source>
-      <translation type="unfinished">Check to cut shapes according to the even/odd SVG fill rule</translation>
+      <translation>Kontroll för att skära ut former enligt regeln för jämn/olik SVG-fyllning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
@@ -2099,7 +2106,7 @@ a raw wire from the original shape is added</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="212"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation>Formatet för SVG fil att skriva när du exporterar en skiss</translation>
+      <translation>Typ av SVG-fil som ska skrivas när en skiss exporteras</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="225"/>
@@ -2114,17 +2121,17 @@ a raw wire from the original shape is added</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation>Alla vita linjer visas i svart i SVG för bättre läsbarhet mot vita bakgrunder</translation>
+      <translation>Alla vita linjer kommer att visas i svart i SVG:en för bättre läsbarhet mot vita bakgrunder</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="245"/>
       <source>Convert white line color to black</source>
-      <translation type="unfinished">Convert white line color to black</translation>
+      <translation>Konvertera vit linjefärg till svart</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="265"/>
       <source>Maximum segment length for discretized arcs</source>
-      <translation type="unfinished">Maximum segment length for discretized arcs</translation>
+      <translation>Maximal segmentlängd för diskretiserade bågar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="288"/>
@@ -2144,12 +2151,12 @@ Detta värde är den maximala segmentlängden.</translation>
       <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import Options</source>
-      <translation>Importalternativ</translation>
+      <translation>Importera alternativ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Imports the areas (3D faces) too</source>
-      <translation type="unfinished">Imports the areas (3D faces) too</translation>
+      <translation>Importerar även områdena (3D-ytor)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -2164,7 +2171,7 @@ Detta värde är den maximala segmentlängden.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="92"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Tillåt FreeCAD att automatiskt hämta och uppdatera DXF-biblioteken</translation>
+      <translation>Tillåt FreeCAD att automatiskt ladda ner och uppdatera DXF-biblioteken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="279"/>
@@ -2174,7 +2181,7 @@ Detta värde är den maximala segmentlängden.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="586"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
+      <translation>Alla objekt som innehåller ytor kommer att exporteras som 3D-polyfacemeshes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="636"/>
@@ -2204,63 +2211,63 @@ Detta värde är den maximala segmentlängden.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="512"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Exportering av ellipser stöds inte fullt ut. Använd detta för att exportera som polylinjer istället.</translation>
+      <translation>Ellipsexport har dåligt stöd. Använd detta för att exportera dem som polylinjer istället.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="515"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation>Behandla ellipser och spline som polylinjer</translation>
+      <translation>Behandla ellipser och splines som polylinjer</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>If checked, this preferences dialog will be shown each time you import or export
 a DXF file.</source>
-      <translation type="unfinished">If checked, this preferences dialog will be shown each time you import or export
-a DXF file.</translation>
+      <translation>Om den är markerad visas den här inställningsdialogen varje gång du importerar eller exporterar
+en DXF-fil.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="30"/>
       <source>Show the importer dialog when importing a file</source>
-      <translation type="unfinished">Show the importer dialog when importing a file</translation>
+      <translation>Visa importörens dialogruta när du importerar en fil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="46"/>
       <source>Use the legacy Python importer. This importer is more feature-complete but slower and requires an external library.</source>
-      <translation type="unfinished">Use the legacy Python importer. This importer is more feature-complete but slower and requires an external library.</translation>
+      <translation>Använd den äldre Python-importören. Denna importör har fler funktioner men är långsammare och kräver ett externt bibliotek.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy importer</source>
-      <translation type="unfinished">Use legacy importer</translation>
+      <translation>Använd äldre importör</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="62"/>
       <source>Use the legacy Python exporter. This exporter is more feature-complete but slower and requires an external library.</source>
-      <translation type="unfinished">Use the legacy Python exporter. This exporter is more feature-complete but slower and requires an external library.</translation>
+      <translation>Använd den äldre Python-exportören. Denna exportör har fler funktioner men är långsammare och kräver ett externt bibliotek.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Use legacy exporter</source>
-      <translation type="unfinished">Use legacy exporter</translation>
+      <translation>Använd äldre exportör</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="81"/>
       <source>Automatic Update (Legacy Only)</source>
-      <translation type="unfinished">Automatic Update (Legacy Only)</translation>
+      <translation>Automatisk uppdatering (endast äldre versioner)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="87"/>
       <source>If checked, FreeCAD is allowed to download and update the Python libraries
 required by the legacy importer. This can also be done manually by installing
 the 'dxf_library' addon from the Addon Manager.</source>
-      <translation type="unfinished">If checked, FreeCAD is allowed to download and update the Python libraries
-required by the legacy importer. This can also be done manually by installing
-the 'dxf_library' addon from the Addon Manager.</translation>
+      <translation>Om det är markerat får FreeCAD ladda ner och uppdatera Python-biblioteken som
+som krävs av den äldre importören. Detta kan också göras manuellt genom att installera
+tillägget "dxf_library" från Tilläggshanterare.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="108"/>
       <source>Import As</source>
-      <translation type="unfinished">Import As</translation>
+      <translation>Importera som</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="117"/>
@@ -2268,15 +2275,15 @@ the 'dxf_library' addon from the Addon Manager.</translation>
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench. </source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench. </translation>
+      <translation>Skapar helt parametriska Draft-objekt. Blockdefinitioner importeras som återanvändbara
+återanvändbara objekt (Part Compounds) och instanser blir `App::Link`-objekt,
+bibehåller blockstrukturen. Bäst för fullständig integration med Draft
+arbetsbänk. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="123"/>
       <source>Editable Draft objects (highest fidelity, slowest)</source>
-      <translation type="unfinished">Editable Draft objects (highest fidelity, slowest)</translation>
+      <translation>Redigerbara Draft-objekt (högsta kvalitet, långsammast)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="132"/>
@@ -2292,53 +2299,53 @@ workbench. </translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing and Part workbench integration.</translation>
+      <translation>Skapar parametriska Part-objekt (t.ex. Part::Line, Part::Circle). Block
+importeras som återanvändbara objekt (Part Compounds) och instanser blir
+blir `App::Link`-objekt, vilket bibehåller blockstrukturen. Bäst för
+skriptbaserad efterbearbetning och integration med Part-arbetsbänken.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="151"/>
       <source>Editable Part primitives (high fidelity, slower)</source>
-      <translation type="unfinished">Editable Part primitives (high fidelity, slower)</translation>
+      <translation>Redigerbara partprimitiver (hög trohet, långsammare)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="170"/>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation type="unfinished">Creates a non-parametric shape for each DXF entity. Block definitions are
-imported as reusable objects (Part Compounds) and instances become `App::Link`
-objects, maintaining the block structure. Good for referencing and measuring.</translation>
+      <translation>Skapar en icke-parametrisk form för varje DXF-entitet. Blockdefinitioner importeras
+importeras som återanvändbara objekt (Part Compounds) och instanser blir `App::Link`-objekt
+objekt, vilket bibehåller blockstrukturen. Bra för referenstagning och mätning.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
       <source>Individual Part shapes (balanced, recommended)</source>
-      <translation type="unfinished">Individual Part shapes (balanced, recommended)</translation>
+      <translation>Individuella delformer (balanserade, rekommenderade)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="197"/>
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for importing and viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for importing and viewing very large files with maximum performance.</translation>
+      <translation>Sammanfogar all geometri per lager till en enda, icke-redigerbar form. Block
+strukturer bevaras inte, utan deras geometri blir en del av skiktets
+form. Bäst för att importera och visa mycket stora filer med maximal prestanda.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
       <source>Fused Part shapes (lowest fidelity, fastest)</source>
-      <translation type="unfinished">Fused Part shapes (lowest fidelity, fastest)</translation>
+      <translation>Fused Part shapes (lägst trohet, snabbast)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="224"/>
       <source>Import Settings</source>
-      <translation type="unfinished">Import Settings</translation>
+      <translation>Importinställningar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="232"/>
       <source>Global scaling factor</source>
-      <translation type="unfinished">Global scaling factor</translation>
+      <translation>Global skalningsfaktor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="252"/>
@@ -2346,20 +2353,20 @@ shape. Best for importing and viewing very large files with maximum performance.
 between the DXF file's unit and millimeters. Example: for files in
 millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4,
 in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import. The factor is the conversion
-between the DXF file's unit and millimeters. Example: for files in
-millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4,
-in feet: 304.8</translation>
+      <translation>Skalfaktor som ska tillämpas på DXF-filer vid import. Faktorn är omvandlingen mellan
+mellan DXF-filens enhet och millimeter. Exempel: för filer i
+millimeter: 1, i centimeter: 10, i meter: 1000, i tum: 25.4,
+i fot: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="288"/>
       <source>If checked, text, mtext, and dimension entities will be imported as Draft objects</source>
-      <translation type="unfinished">If checked, text, mtext, and dimension entities will be imported as Draft objects</translation>
+      <translation>Om den är markerad importeras text-, mtext- och dimensionsenheter som Draft-objekt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="304"/>
       <source>If checked, point entities will be imported</source>
-      <translation type="unfinished">If checked, point entities will be imported</translation>
+      <translation>Om markerad, kommer punktenheter att importeras</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="307"/>
@@ -2370,37 +2377,37 @@ in feet: 304.8</translation>
       <location filename="../ui/preferences-dxf.ui" line="323"/>
       <source>If checked, entities from the paper space will also be imported. By default,
 only model space is imported</source>
-      <translation type="unfinished">If checked, entities from the paper space will also be imported. By default,
-only model space is imported</translation>
+      <translation>Om den är markerad kommer även enheter från pappersutrymmet att importeras. Som standard importeras
+importeras endast modellutrymme</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="327"/>
       <source>Paper space objects</source>
-      <translation type="unfinished">Paper space objects</translation>
+      <translation>Objekt för pappersutrymme</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="340"/>
       <source>If checked, anonymous blocks (whose names begin with *) will also be imported.
 These are often used for hatches and dimensions</source>
-      <translation type="unfinished">If checked, anonymous blocks (whose names begin with *) will also be imported.
-These are often used for hatches and dimensions</translation>
+      <translation>Om detta är markerat kommer även anonyma block (vars namn börjar med *) att importeras.
+Dessa används ofta för luckor och mått</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="344"/>
       <source>Anonymous blocks (*-blocks)</source>
-      <translation type="unfinished">Anonymous blocks (*-blocks)</translation>
+      <translation>Anonyma block (*-block)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="360"/>
       <source>If checked, the boundaries of hatch objects will be imported as closed wires.
 (Legacy importer only)</source>
-      <translation type="unfinished">If checked, the boundaries of hatch objects will be imported as closed wires.
-(Legacy importer only)</translation>
+      <translation>Om markerad kommer gränserna för skrafferingsobjekt att importeras som slutna ledningar.
+(Endast äldre importör)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="364"/>
       <source>Hatch boundaries</source>
-      <translation type="unfinished">Hatch boundaries</translation>
+      <translation>Skrafferingsgränser</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="379"/>
@@ -2411,67 +2418,67 @@ These are often used for hatches and dimensions</translation>
       <location filename="../ui/preferences-dxf.ui" line="388"/>
       <source>If checked, colors will be set as specified in the DXF file whenever
 possible. Otherwise, default FreeCAD colors are applied</source>
-      <translation type="unfinished">If checked, colors will be set as specified in the DXF file whenever
-possible. Otherwise, default FreeCAD colors are applied</translation>
+      <translation>Om den är markerad kommer färgerna att ställas in enligt specifikationerna i DXF-filen när
+möjligt. Annars tillämpas standard FreeCAD-färger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="411"/>
       <source>If checked, imported texts will get the standard Draft text size, instead of
 the size defined in the DXF document. (Legacy importer only)</source>
-      <translation type="unfinished">If checked, imported texts will get the standard Draft text size, instead of
-the size defined in the DXF document. (Legacy importer only)</translation>
+      <translation>Om markerad kommer importerade texter att få standard Draft textstorlek, istället för
+den storlek som definieras i DXF-dokumentet. (Endast Legacy-importör)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="430"/>
       <source>Advanced processing</source>
-      <translation type="unfinished">Advanced processing</translation>
+      <translation>Avancerad bearbetning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>If checked, the legacy importer will attempt to join coincident geometric
 objects into wires. This can be slow for large files. (Legacy importer only)</source>
-      <translation type="unfinished">If checked, the legacy importer will attempt to join coincident geometric
-objects into wires. This can be slow for large files. (Legacy importer only)</translation>
+      <translation>Om den är markerad kommer legacy-importören att försöka sammanfoga sammanfallande geometriska
+objekt till ledningar. Detta kan vara långsamt för stora filer. (Endast äldre importör)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="462"/>
       <source>If checked, polylines that have a width property will be rendered as faces
 representing that width. (Legacy importer only)</source>
-      <translation type="unfinished">If checked, polylines that have a width property will be rendered as faces
-representing that width. (Legacy importer only)</translation>
+      <translation>Om markerad kommer polylinjer som har en breddegenskap att återges som ytor
+som representerar den bredden. (Endast äldre importör)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="482"/>
       <source>If checked, the legacy importer will attempt to create Sketcher objects
 instead of Draft or Part objects. This overrides the 'Import As' setting</source>
-      <translation type="unfinished">If checked, the legacy importer will attempt to create Sketcher objects
-instead of Draft or Part objects. This overrides the 'Import As' setting</translation>
+      <translation>Om den är markerad kommer legacy-importören att försöka skapa Sketcher-objekt
+istället för Draft- eller Part-objekt. Detta åsidosätter inställningen "Importera som</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
       <source>Create sketches</source>
-      <translation type="unfinished">Create sketches</translation>
+      <translation>Skapa skisser</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
       <location filename="../ui/preferences-svg.ui" line="191"/>
       <source>Export Options</source>
-      <translation type="unfinished">Export Options</translation>
+      <translation>Exportalternativ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="544"/>
       <source>Maximum spline segment</source>
-      <translation type="unfinished">Maximum spline segment</translation>
+      <translation>Maximalt splinesegment</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="554"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
+      <translation>Maximal längd för varje polylinjesegment. '0' behandlar hela splinen som ett rakt segment.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="589"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation>Exportera 3D-föremål som polyface-nät</translation>
+      <translation>Exportera 3D-objekt som polyface-mesh</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="606"/>
@@ -2488,24 +2495,24 @@ Detta kan misslyckas för post DXF R12-mallar.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation>De exporterade objekten kommer att projiceras med avseende på den aktuella vyriktningen</translation>
+      <translation>Exporterade objekt kommer att projiceras för att återspegla den aktuella visningsriktningen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="425"/>
       <location filename="../ui/preferences-draftsnap.ui" line="460"/>
       <location filename="../ui/preferences-draftsnap.ui" line="498"/>
       <source>Shift</source>
-      <translation>Shift</translation>
+      <translation>Skift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="377"/>
       <source>Always snap</source>
-      <translation>Fäst alltid</translation>
+      <translation>Snäpp alltid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
       <source>Grid and Snapping</source>
-      <translation type="unfinished">Grid and Snapping</translation>
+      <translation>Rutnät och snäppning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
@@ -2517,25 +2524,25 @@ hörnet av rutnätet. Gäller endast om "Visa rutnätets kant" är aktiverat.</t
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
       <source>Major lines every</source>
-      <translation>Stora linjer per</translation>
+      <translation>Stora linjer varje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="145"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation>Antalet kvadrater mellan stora rutnätslinjer.
+      <translation>Antalet rutor mellan de större rutnätslinjerna.
 Stora rutnätslinjer är tjockare än små rutnätslinjer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="149"/>
       <location filename="../ui/preferences-draftsnap.ui" line="223"/>
       <source> squares</source>
-      <translation> kvadrater</translation>
+      <translation> rutor</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="298"/>
       <source>Snapping and Modifier Keys</source>
-      <translation type="unfinished">Snapping and Modifier Keys</translation>
+      <translation>Snapping och modifieringstangenter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="396"/>
@@ -2586,7 +2593,7 @@ Använd Draft ToggleGrid för att ändra detta för den aktiva vyn.</translation
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="188"/>
       <source>The distance between grid lines</source>
-      <translation>Avståndet mellan rutnätslinjer</translation>
+      <translation>Avståndet mellan rutnätslinjerna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
@@ -2613,29 +2620,31 @@ Använd Draft ToggleGrid för att ändra detta för den aktiva vyn.</translation
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
       <source>Show the grid during commands</source>
-      <translation>Visa rutnätet när kommandon används</translation>
+      <translation>Visa rutnätet under kommandon</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="69"/>
       <source>If checked, an additional border is displayed around the grid,
 showing the main square size in the bottom left corner</source>
-      <translation>Om märkt så kommer en extra ram synas runt rutnätet, som visar huvudkvadraternas storlek i den nedre vänstra sidan</translation>
+      <translation>Om den är markerad visas en extra kant runt rutnätet,
+visar huvudrutans storlek i det nedre vänstra hörnet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="73"/>
       <source>Show grid border</source>
-      <translation>Visa rutnätsgräns</translation>
+      <translation>Visa rutnätets kant</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="96"/>
       <source>Show human figure</source>
-      <translation>Visa människofigur</translation>
+      <translation>Visa mänsklig figur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="112"/>
       <source>If checked, the two main axes of the grid are colored red, green or blue
 if they match the X, Y or Z axis of the global coordinate system</source>
-      <translation>Om märkt så kommer de två huvudaxlarna i rutnätet färgas rött, grönt eller blått om de matchar X, Y eller Z-axlarna i det globala koordinatsystemet</translation>
+      <translation>Om markerad, färgas rutnätets två huvudaxlar röda, gröna eller blå
+om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="116"/>
@@ -2645,22 +2654,22 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="181"/>
       <source>Grid spacing</source>
-      <translation>Rutnätsavstånd</translation>
+      <translation>Cellavstånd i rutnät</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="213"/>
       <source>Grid size</source>
-      <translation>Storlek på rutnät</translation>
+      <translation>Rutnätets storlek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="220"/>
       <source>The number of squares in the X- and Y-direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X- and Y-direction of the grid</translation>
+      <translation>Antalet rutor i rutnätets X- och Y-riktning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="242"/>
       <source>Grid transparency</source>
-      <translation>Rutnätstransparens</translation>
+      <translation>Transparens i rutnätet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="252"/>
@@ -2670,22 +2679,22 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="268"/>
       <source>Grid color</source>
-      <translation>Färg på rutnät</translation>
+      <translation>Rutnätsfärg</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="450"/>
       <source>The constrain modifier key</source>
-      <translation type="unfinished">The constrain modifier key</translation>
+      <translation>Modifieringsknappen för begränsning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="304"/>
       <source>Snap symbol style</source>
-      <translation>Stil på symboler för fästning</translation>
+      <translation>Snap symbol stil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="256"/>
       <source>Mouse delay</source>
-      <translation>Musfördröjning</translation>
+      <translation>Fördröjning av mus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="270"/>
@@ -2695,17 +2704,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="311"/>
       <source>The style for snap symbols</source>
-      <translation>Stilen på symboler för fästning</translation>
+      <translation>Stilen för snäppsymboler</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="347"/>
       <source>Snap symbol color</source>
-      <translation>Färg på symboler för fästning</translation>
+      <translation>Snap symbol färg</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="354"/>
       <source>The color for snap symbols</source>
-      <translation>Färgen på symboler för fästning</translation>
+      <translation>Färgen för snapsymboler</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="374"/>
@@ -2715,12 +2724,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="275"/>
       <source>The color of the grid</source>
-      <translation>Rutnätets färg</translation>
+      <translation>Färgen på rutnätet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="249"/>
       <source>The overall transparency of the grid</source>
-      <translation>Rutnätets övergripande transparens</translation>
+      <translation>Den övergripande transparensen i nätet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
@@ -2730,23 +2739,23 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation>Detta är metoden FreeCAD kommer använda för att omvandla DWG-filer till DXF. Om "Automatisk" väljs så kommer FreeCAD försöka hitta en av de följande omvandlarna i samma ordning som de visas här. Om FreeCAD inte lyckas finna någon så kan du behöva välja en specifik omvandlare och ställa in dess plats här under. Välj "dwg2dxf" om du använder LibreDWG, "ODAFileConverter" om du använder ODA-filomvandlaren, eller "dwg2dwg" om du använder proffsversionen av QCAD.</translation>
+      <translation>Detta är den metod som FreeCAD kommer att använda för att konvertera DWG-filer till DXF. Om "Automatisk" väljs, kommer FreeCAD att försöka hitta en av följande omvandlare i samma ordning som de visas här. Om FreeCAD inte kan hitta någon, kan du behöva välja en specifik omvandlare och ange dess sökväg här under. Välj verktyget "dwg2dxf" om du använder LibreDWG, "ODAFileConverter" om du använder ODA-filkonverteraren eller verktyget "dwg2dwg" om du använder pro-versionen av QCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="89"/>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
-      <translation>Automatisk</translation>
+      <translation>Automatiskt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
       <source>DWG Conversion</source>
-      <translation type="unfinished">DWG Conversion</translation>
+      <translation>DWG-konvertering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Conversion method</source>
-      <translation type="unfinished">Conversion method</translation>
+      <translation>Metod för konvertering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
@@ -2756,7 +2765,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="61"/>
       <source>ODA Converter</source>
-      <translation>ODA-konverterare</translation>
+      <translation>ODA-omvandlare</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="66"/>
@@ -2766,17 +2775,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation>Genväg till filkonverteraren</translation>
+      <translation>Sökväg till filkonverterare</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation>Vägen till ditt program för omvandling av DWG-filer</translation>
+      <translation>Sökvägen till din körbara DWG-filkonverterare</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Notera:&lt;/span&gt;DXF-inställningar gäller även DWG-filer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Observera:&lt;/span&gt; DXF-alternativ gäller även för DWG-filer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -2801,7 +2810,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="375"/>
       <source>O</source>
-      <translation>O</translation>
+      <translation>A</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="266"/>
@@ -2831,7 +2840,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="234"/>
       <source>Subelement mode</source>
-      <translation>Underelementläge</translation>
+      <translation>Läge för underelement</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="247"/>
@@ -2856,17 +2865,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="586"/>
       <source>Increase radius</source>
-      <translation>Öka radie</translation>
+      <translation>Öka radien</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="618"/>
       <source>Decrease radius</source>
-      <translation>Minska radie</translation>
+      <translation>Minska radien</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="215"/>
       <source>E</source>
-      <translation>E</translation>
+      <translation>Ö</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="503"/>
@@ -2901,7 +2910,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="20"/>
       <source>In-Command Shortcuts</source>
-      <translation type="unfinished">In-Command Shortcuts</translation>
+      <translation>Genvägar i kommandot</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="87"/>
@@ -2926,7 +2935,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="458"/>
       <source>Cycle snap</source>
-      <translation>Växla fästningsläge</translation>
+      <translation>Snäppning av cykeln</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="490"/>
@@ -2991,92 +3000,92 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="781"/>
       <source>UI Options</source>
-      <translation type="unfinished">UI Options</translation>
+      <translation>Alternativ för användargränssnitt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="787"/>
       <source>If checked, the Draft Snap toolbar will only be visible during commands</source>
-      <translation type="unfinished">If checked, the Draft Snap toolbar will only be visible during commands</translation>
+      <translation>Om den är markerad kommer verktygsfältet Draft Snap endast att vara synligt under kommandon</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="790"/>
       <source>Only show the Draft Snap toolbar during commands</source>
-      <translation type="unfinished">Only show the Draft Snap toolbar during commands</translation>
+      <translation>Visa bara verktygsfältet Draft Snap under kommandon</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>If checked, the Draft Snap Widget is displayed in the Draft Status Bar</source>
-      <translation type="unfinished">If checked, the Draft Snap Widget is displayed in the Draft Status Bar</translation>
+      <translation>Om den är markerad visas widgeten Släppningssnäpp i statusfältet för släppning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="809"/>
       <source>Show the Draft Snap Widget in the Draft Workbench</source>
-      <translation type="unfinished">Show the Draft Snap Widget in the Draft Workbench</translation>
+      <translation>Visa widgeten Draft Snap i arbetsbänken Draft Workbench</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="825"/>
       <source>If checked, the Draft Scale Widget is displayed in the Draft Status Bar</source>
-      <translation type="unfinished">If checked, the Draft Scale Widget is displayed in the Draft Status Bar</translation>
+      <translation>Om den är markerad visas widgeten Släppningsskala i statusfältet för släppning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="828"/>
       <source>Show the Draft Scale Widget in the Draft Workbench</source>
-      <translation type="unfinished">Show the Draft Scale Widget in the Draft Workbench</translation>
+      <translation>Visa widgeten Draft Scale i Draft Workbench</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="549"/>
+      <location filename="../../DraftGui.py" line="554"/>
       <source>Relative</source>
       <translation>Relativ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Global</source>
       <translation>Global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="568"/>
-      <location filename="../../DraftGui.py" line="840"/>
+      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="864"/>
       <source>Continue</source>
       <translation>Fortsätt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
-      <translation type="unfinished">If checked, the command will not finish until pressing the command button again</translation>
+      <translation>Om markerad, kommer kommandot inte att avslutas förrän kommandoknappen trycks in igen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
-      <translation type="unfinished">If checked, the next dimension will be placed in a chain with the previously placed Dimension</translation>
+      <translation>Om markerad kommer nästa dimension att placeras i en kedja med den tidigare placerade dimensionen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="581"/>
+      <location filename="../../DraftGui.py" line="586"/>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>Set Working Plane</source>
-      <translation>Ange arbetsplan</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="587"/>
-      <source>Select Edge</source>
-      <translation type="unfinished">Select Edge</translation>
+      <translation>Ställ in arbetsplanet</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="592"/>
+      <source>Select Edge</source>
+      <translation>Välj kant</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="597"/>
       <location filename="../../draftguitools/gui_move.py" line="200"/>
       <location filename="../../draftguitools/gui_rotate.py" line="267"/>
-      <location filename="../../draftguitools/gui_scale.py" line="209"/>
+      <location filename="../../draftguitools/gui_scale.py" line="211"/>
       <source>Copy</source>
       <translation>Kopiera</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>Wipe</source>
       <translation>Rensa</translation>
     </message>
@@ -3085,12 +3094,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../../draftmake/make_sketch.py" line="116"/>
       <location filename="../../draftmake/make_sketch.py" line="133"/>
       <source>All shapes must be coplanar</source>
-      <translation type="unfinished">All shapes must be coplanar</translation>
+      <translation>Alla former måste vara koplanära</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="891"/>
       <source>Selected shapes must define a plane</source>
-      <translation type="unfinished">Selected shapes must define a plane</translation>
+      <translation>Valda former måste definiera ett plan</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="976"/>
@@ -3104,7 +3113,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../../WorkingPlane.py" line="1561"/>
       <location filename="../../WorkingPlane.py" line="1562"/>
       <source>Front</source>
-      <translation>Front</translation>
+      <translation>Framsida</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1005"/>
@@ -3115,7 +3124,6 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1228"/>
-      <location filename="../../WorkingPlane.py" line="1229"/>
       <location filename="../../WorkingPlane.py" line="1517"/>
       <location filename="../../WorkingPlane.py" line="1518"/>
       <source>Auto</source>
@@ -3123,6 +3131,10 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
+      <source>Current working plane: Auto</source>
+      <translation>Aktuellt arbetsplan: Auto</translation>
+    </message>
+    <message>
       <location filename="../../WorkingPlane.py" line="1703"/>
       <source>Current working plane:</source>
       <translation>Nuvarande arbetsplan:</translation>
@@ -3131,7 +3143,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../../WorkingPlane.py" line="1298"/>
       <location filename="../../WorkingPlane.py" line="1327"/>
       <source>Selected shapes do not define a plane</source>
-      <translation>De valda formerna definierar inte ett plan</translation>
+      <translation>Valda former definierar inte ett plan</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1660"/>
@@ -3154,320 +3166,320 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Position:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="500"/>
-      <location filename="../../DraftGui.py" line="528"/>
-      <location filename="../../DraftGui.py" line="1478"/>
-      <location filename="../../DraftGui.py" line="1493"/>
+      <location filename="../../DraftGui.py" line="505"/>
+      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="1502"/>
+      <location filename="../../DraftGui.py" line="1517"/>
       <location filename="../../draftguitools/gui_groups.py" line="254"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>active command:</source>
       <translation>aktivt kommando:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Active Draft command</source>
-      <translation>Aktivt utkastkommando</translation>
+      <translation>Aktivt släppningskommando</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>X coordinate of the point</source>
-      <translation type="unfinished">X coordinate of the point</translation>
+      <translation>X-koordinat för punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
+      <location filename="../../DraftGui.py" line="536"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="539"/>
+      <location filename="../../DraftGui.py" line="544"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="546"/>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="551"/>
+      <location filename="../../DraftGui.py" line="847"/>
       <source>Radius</source>
       <translation>Radie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="597"/>
+      <location filename="../../DraftGui.py" line="602"/>
       <source>Creates the text object and finishes the command</source>
-      <translation type="unfinished">Creates the text object and finishes the command</translation>
+      <translation>Skapar textobjektet och avslutar kommandot</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="619"/>
+      <location filename="../../DraftGui.py" line="624"/>
       <source>Changes the default style for new objects</source>
-      <translation type="unfinished">Changes the default style for new objects</translation>
+      <translation>Ändrar standardstil för nya objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="620"/>
+      <location filename="../../DraftGui.py" line="625"/>
       <source>Toggles construction mode</source>
-      <translation type="unfinished">Toggles construction mode</translation>
+      <translation>Växlar byggläge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="778"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <source>Label Type</source>
-      <translation type="unfinished">Label Type</translation>
+      <translation>Etiketttyp</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="824"/>
+      <location filename="../../DraftGui.py" line="848"/>
       <source>Radius of Circle</source>
       <translation>Cirkelns radie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="552"/>
+      <location filename="../../DraftGui.py" line="557"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Koordinater i förhållande till den sista punkten eller till koordinatsystemets ursprung
 om det är den första punkten som ska ställas in</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="534"/>
+      <location filename="../../DraftGui.py" line="539"/>
       <source>Y coordinate of the point</source>
-      <translation type="unfinished">Y coordinate of the point</translation>
+      <translation>Y-koordinat för punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="535"/>
+      <location filename="../../DraftGui.py" line="540"/>
       <source>Z coordinate of the point</source>
-      <translation type="unfinished">Z coordinate of the point</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="536"/>
-      <source>Enter Point</source>
-      <translation type="unfinished">Enter Point</translation>
+      <translation>Z-koordinat för punkten</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="541"/>
+      <source>Enter Point</source>
+      <translation>Ange punkt</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="546"/>
       <source>Length of the current segment</source>
-      <translation type="unfinished">Length of the current segment</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="542"/>
-      <source>Angle of the current segment</source>
-      <translation type="unfinished">Angle of the current segment</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="545"/>
-      <source>Locks the current angle</source>
-      <translation type="unfinished">Locks the current angle</translation>
+      <translation>Längd på det aktuella segmentet</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="547"/>
+      <source>Angle of the current segment</source>
+      <translation>Vinkel för aktuellt segment</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="550"/>
+      <source>Locks the current angle</source>
+      <translation>Låser den aktuella vinkeln</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="552"/>
       <source>Radius of the circle</source>
       <translation>Cirkelns radie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="557"/>
+      <location filename="../../DraftGui.py" line="562"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Koordinater i förhållande till det globala koordinatsystemet.
 Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="564"/>
+      <location filename="../../DraftGui.py" line="569"/>
       <source>Finish</source>
-      <translation>Gör klart</translation>
+      <translation>Slutför</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Avslutar den aktuella ritnings- eller redigeringsoperationen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1675"/>
+      <location filename="../../DraftGui.py" line="1699"/>
       <source>Modify Objects</source>
-      <translation type="unfinished">Modify Objects</translation>
+      <translation>Modifiera objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1829"/>
+      <location filename="../../DraftGui.py" line="1853"/>
       <source>Facebinder Elements</source>
-      <translation type="unfinished">Facebinder Elements</translation>
+      <translation>Ytbindarelement</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Om markerad, kommer en OCC-liknande offset att utföras istället för den klassiska offset</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>OCC-style offset</source>
       <translation>Offset i OCC-stil</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Undo</source>
       <translation>Ångra</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="593"/>
+      <location filename="../../DraftGui.py" line="598"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Om markerat kommer objekt att kopieras istället för att flyttas</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Undo the last segment</source>
       <translation>Ångra det sista segmentet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
+      <location filename="../../DraftGui.py" line="543"/>
       <source>Enter a point with given coordinates</source>
       <translation>Ange en punkt med givna koordinater</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="559"/>
+      <location filename="../../DraftGui.py" line="564"/>
       <source>Make face</source>
       <translation>Skapa yta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="562"/>
+      <location filename="../../DraftGui.py" line="567"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Om markerad kommer objektet att fyllas med en yta.
 Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Chained mode</source>
       <translation>Kedjat läge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <source>Finishes and closes the current line</source>
       <translation>Avslutar och stänger den aktuella raden</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Raderar de befintliga segmenten av denna linje och börjar om från den sista punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Omorienterar bearbetningsplanet på det sista segmentet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="588"/>
+      <location filename="../../DraftGui.py" line="593"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Väljer en befintlig kant som ska mätas med detta mått</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="589"/>
+      <location filename="../../DraftGui.py" line="594"/>
       <source>Sides</source>
       <translation>Sidor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="590"/>
+      <location filename="../../DraftGui.py" line="595"/>
       <source>Number of sides</source>
       <translation>Antal sidor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="594"/>
+      <location filename="../../DraftGui.py" line="599"/>
       <source>Modify subelements</source>
       <translation>Modifiera underelement</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="595"/>
+      <location filename="../../DraftGui.py" line="600"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Om markerad, kommer underelement att ändras istället för hela objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="621"/>
-      <location filename="../../DraftGui.py" line="1481"/>
-      <location filename="../../DraftGui.py" line="1496"/>
+      <location filename="../../DraftGui.py" line="626"/>
+      <location filename="../../DraftGui.py" line="1505"/>
+      <location filename="../../DraftGui.py" line="1520"/>
       <source>Autogroup off</source>
       <translation>Autogruppen av</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="707"/>
+      <location filename="../../DraftGui.py" line="731"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
-      <translation>Linje</translation>
+      <translation>Rad</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="715"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="733"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="738"/>
+      <location filename="../../DraftGui.py" line="762"/>
       <source>Arc</source>
-      <translation>Cirkelbåge</translation>
+      <translation>Båge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="743"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <location filename="../../draftguitools/gui_rotate.py" line="269"/>
       <source>Rotate</source>
       <translation>Rotera</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="747"/>
+      <location filename="../../DraftGui.py" line="771"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="800"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <location filename="../../draftguitools/gui_offset.py" line="242"/>
       <location filename="../../draftguitools/gui_offset.py" line="259"/>
       <location filename="../../draftguitools/gui_offset.py" line="324"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
-      <location filename="../../DraftGui.py" line="816"/>
+      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="840"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Distance</source>
-      <translation>Distans</translation>
+      <translation>Avstånd</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="800"/>
-      <location filename="../../DraftGui.py" line="817"/>
+      <location filename="../../DraftGui.py" line="824"/>
+      <location filename="../../DraftGui.py" line="841"/>
       <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Offset distance</source>
       <translation>Offset-avstånd</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="813"/>
+      <location filename="../../DraftGui.py" line="837"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
-      <location filename="../../DraftGui.py" line="890"/>
-      <location filename="../../DraftGui.py" line="891"/>
-      <location filename="../../DraftGui.py" line="893"/>
-      <location filename="../../DraftGui.py" line="894"/>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="913"/>
+      <location filename="../../DraftGui.py" line="914"/>
+      <location filename="../../DraftGui.py" line="915"/>
+      <location filename="../../DraftGui.py" line="917"/>
+      <location filename="../../DraftGui.py" line="918"/>
+      <location filename="../../DraftGui.py" line="919"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
@@ -3475,12 +3487,12 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
       <translation>Lokal {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="897"/>
-      <location filename="../../DraftGui.py" line="898"/>
-      <location filename="../../DraftGui.py" line="899"/>
-      <location filename="../../DraftGui.py" line="901"/>
-      <location filename="../../DraftGui.py" line="902"/>
-      <location filename="../../DraftGui.py" line="903"/>
+      <location filename="../../DraftGui.py" line="921"/>
+      <location filename="../../DraftGui.py" line="922"/>
+      <location filename="../../DraftGui.py" line="923"/>
+      <location filename="../../DraftGui.py" line="925"/>
+      <location filename="../../DraftGui.py" line="926"/>
+      <location filename="../../DraftGui.py" line="927"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="116"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="117"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
@@ -3488,29 +3500,29 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
       <translation>Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1489"/>
+      <location filename="../../DraftGui.py" line="1513"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Gruppera automatiskt:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1826"/>
+      <location filename="../../DraftGui.py" line="1850"/>
       <source>Faces</source>
       <translation>Ytor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1827"/>
+      <location filename="../../DraftGui.py" line="1851"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1828"/>
+      <location filename="../../DraftGui.py" line="1852"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Släppning</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="288"/>
@@ -3520,14 +3532,14 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
       <location filename="../../importDWG.py" line="385"/>
       <location filename="../../importDWG.py" line="396"/>
       <source>Converting:</source>
-      <translation>Konverterar:</translation>
+      <translation>Konvertering:</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="292"/>
       <location filename="../../importDWG.py" line="311"/>
       <location filename="../../importDWG.py" line="329"/>
       <source>Conversion successful</source>
-      <translation>Konverteringen lyckades</translation>
+      <translation>Konverteringen framgångsrik</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="297"/>
@@ -3554,9 +3566,9 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
 Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit → Preferences → Import/Export → DWG
-For more information see:
+      <translation>Ingen lämplig extern DWG-omvandlare har hittats.
+Ställ in en manuellt under menyn Redigera → Inställningar → Import/Export → DWG
+För mer information se:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -3564,8 +3576,8 @@ https://wiki.freecad.org/Import_Export_Preferences</translation>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation>Fel under DWG-konvertering.
-Prova att flytta DWG-filen till en sökväg utan mellanslag och icke-engelska tecken,
+      <translation>Fel under konvertering av DWG.
+Försök flytta DWG-filen till en katalogväg utan mellanslag och icke-engelska tecken,
 eller försök spara till en lägre DWG-version.</translation>
     </message>
     <message>
@@ -3588,18 +3600,18 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="153"/>
       <source>Set Custom Scale</source>
-      <translation type="unfinished">Set Custom Scale</translation>
+      <translation>Ställ in anpassad skala</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="189"/>
       <source>Draft Scale Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation type="unfinished">Draft Scale Widget</translation>
+      <translation>Widget för släppningsskala</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by Draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by Draft annotation tools</translation>
+      <translation>Ställ in den skala som används av Drafts anteckningsverktyg</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="251"/>
@@ -3610,7 +3622,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation>Ställ in anpassad annoteringsskala i formatet x:x, x=x</translation>
+      <translation>Ställ in anpassad anteckningsskala i formatet x:x, x=x</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/cut.py" line="57"/>
@@ -3662,7 +3674,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="843"/>
       <source>unable to load texture</source>
-      <translation>kan inte ladda textur</translation>
+      <translation>kan inte läsa in textur</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="908"/>
@@ -3723,12 +3735,12 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="1095"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
-      <translation>Denna funktion kommer att vara föråldrad i {}. Vänligen använd '{}'.</translation>
+      <translation>Denna funktion kommer att vara föråldrad i {}. Använd '{}'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1097"/>
       <source>This function will be deprecated. Please use '{}'.</source>
-      <translation>Denna funktion kommer att försvinna. Vänligen använd '{}'.</translation>
+      <translation>Denna funktion kommer att försvinna. Använd '{}'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="625"/>
@@ -3743,7 +3755,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="875"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation>%s delar bas med %d andra objekt. Vänligen kontrollera om du vill ändra detta.</translation>
+      <translation>%s delar bas med %d andra objekt. Kontrollera om du vill ändra detta.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1018"/>
@@ -3770,7 +3782,7 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftguitools/gui_labels.py" line="196"/>
       <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick text position</source>
-      <translation>Välj textplacering</translation>
+      <translation>Välj textposition</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="121"/>
@@ -3778,12 +3790,12 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftguitools/gui_lines.py" line="87"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="66"/>
       <source>Pick first point</source>
-      <translation>Välj första punkt</translation>
+      <translation>Välj första punkten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="487"/>
       <source>Edges do not intersect!</source>
-      <translation type="unfinished">Edges do not intersect!</translation>
+      <translation>Kanterna korsar inte varandra!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="174"/>
@@ -3798,17 +3810,17 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="305"/>
       <source>%1 pick next point, snap to first point to close</source>
-      <translation type="unfinished">%1 pick next point, snap to first point to close</translation>
+      <translation>%1 väljer nästa punkt, snäpp till första punkten för att stänga</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="311"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>%1 välj nästa punkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="362"/>
       <source>Unable to create a wire from the selected objects</source>
-      <translation type="unfinished">Unable to create a wire from the selected objects</translation>
+      <translation>Det går inte att skapa en kabel från de valda objekten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="395"/>
@@ -3836,17 +3848,17 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="64"/>
       <source>Select an object to join</source>
-      <translation>Välj ett objekt att gå med i</translation>
+      <translation>Välj ett objekt att foga</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="88"/>
       <source>Join Lines</source>
-      <translation type="unfinished">Join Lines</translation>
+      <translation>Sammanfoga linjer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="91"/>
       <source>Only Draft lines and wires can be joined</source>
-      <translation type="unfinished">Only Draft lines and wires can be joined</translation>
+      <translation>Endast dragna linjer och kablar kan sammanfogas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="101"/>
@@ -3859,7 +3871,7 @@ eller försök spara till en lägre DWG-version.</translation>
       <translation>Välj placeringspunkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="596"/>
+      <location filename="../../DraftGui.py" line="601"/>
       <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
       <translation>Skapa text</translation>
@@ -3867,7 +3879,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="67"/>
       <source>Select an object to convert</source>
-      <translation type="unfinished">Select an object to convert</translation>
+      <translation>Välj ett objekt som ska konverteras</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="100"/>
@@ -3877,17 +3889,17 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
-      <translation>Konvertera till utkast</translation>
+      <translation>Konvertera till släppning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
       <source>Convert Draft/Sketch</source>
-      <translation>Konvertera utkast/skiss</translation>
+      <translation>Konvertera släppning/skiss</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="73"/>
       <source>Select an object to move</source>
-      <translation>Välj ett objekt att flytta</translation>
+      <translation>Välj ett objekt som ska flyttas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="89"/>
@@ -3958,22 +3970,22 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="73"/>
       <source>%1 constrain</source>
-      <translation type="unfinished">%1 constrain</translation>
+      <translation>%1 cpåfrestning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="80"/>
       <source>%1 snap</source>
-      <translation type="unfinished">%1 snap</translation>
+      <translation>%1 slur</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="94"/>
       <source>%1/%2/%3 switch constraint</source>
-      <translation type="unfinished">%1/%2/%3 switch constraint</translation>
+      <translation>%1/%2/%3 shäxans begränsning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="103"/>
       <source>%1 toggle relative</source>
-      <translation type="unfinished">%1 toggle relative</translation>
+      <translation>%1 växla relativ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="112"/>
@@ -3995,7 +4007,7 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="478"/>
       <location filename="../../draftguitools/gui_polygons.py" line="310"/>
       <source>%1 pick radius</source>
-      <translation>%1 välja radie</translation>
+      <translation>%1 välj radie</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="486"/>
@@ -4030,18 +4042,18 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="482"/>
       <source>%1 pick start angle</source>
-      <translation type="unfinished">%1 pick start angle</translation>
+      <translation>%1 välj startvinkel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="529"/>
       <location filename="../../draftguitools/gui_arcs.py" line="574"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Båge från 3 punkter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="599"/>
       <source>Create Arc From 3 Points</source>
-      <translation type="unfinished">Create Arc From 3 Points</translation>
+      <translation>Skapa båge från 3 punkter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="639"/>
@@ -4049,23 +4061,23 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftguitools/gui_lines.py" line="296"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="210"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 välj första punkten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="643"/>
       <location filename="../../draftguitools/gui_lines.py" line="300"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 välj andra punkten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="647"/>
       <source>%1 pick third point</source>
-      <translation type="unfinished">%1 pick third point</translation>
+      <translation>%1 välj tredje punkten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="110"/>
       <source>Select an object to edit</source>
-      <translation>Välj ett objekt att redigera</translation>
+      <translation>Välj ett objekt som ska redigeras</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="291"/>
@@ -4075,12 +4087,12 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="485"/>
       <source>Edit Node</source>
-      <translation type="unfinished">Edit Node</translation>
+      <translation>Redigera nod</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="803"/>
       <source>Too many objects selected, maximum number set to:</source>
-      <translation type="unfinished">Too many objects selected, maximum number set to:</translation>
+      <translation>För många objekt valda, maximalt antal satt till:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="540"/>
@@ -4095,17 +4107,17 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="67"/>
       <source>Annotation Style Editor</source>
-      <translation type="unfinished">Annotation Style Editor</translation>
+      <translation>Redigerare för anteckningsstil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="215"/>
       <source>New Style</source>
-      <translation type="unfinished">New Style</translation>
+      <translation>Ny stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="216"/>
       <source>Style name</source>
-      <translation>Namn på stil</translation>
+      <translation>Stilnamn</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="222"/>
@@ -4137,22 +4149,22 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="257"/>
       <source>This style is used by some objects in this document. Proceed?</source>
-      <translation type="unfinished">This style is used by some objects in this document. Proceed?</translation>
+      <translation>Den här stilen används av vissa objekt i det här dokumentet. Fortsätt?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="282"/>
       <source>Rename Style</source>
-      <translation type="unfinished">Rename Style</translation>
+      <translation>Byt namn på stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="283"/>
       <source>New name</source>
-      <translation type="unfinished">New name</translation>
+      <translation>Nytt Namn</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="305"/>
       <source>Open Styles File</source>
-      <translation type="unfinished">Open Styles File</translation>
+      <translation>Öppna Styles-fil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="307"/>
@@ -4162,7 +4174,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="325"/>
       <source>Save Styles File</source>
-      <translation type="unfinished">Save Styles File</translation>
+      <translation>Spara Styles-fil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="327"/>
@@ -4189,17 +4201,17 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftguitools/gui_points.py" line="169"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="211"/>
       <source>%1 pick point</source>
-      <translation type="unfinished">%1 pick point</translation>
+      <translation>%1 pickpunkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="74"/>
       <source>Select an object to rotate</source>
-      <translation>Välj ett objekt att rotera</translation>
+      <translation>Välj ett objekt som ska roteras</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="90"/>
       <source>Pick rotation center</source>
-      <translation>Välj rotationscentrum</translation>
+      <translation>Välj rotationscenter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="185"/>
@@ -4211,15 +4223,15 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="186"/>
       <location filename="../../draftguitools/gui_rotate.py" line="293"/>
       <source>The base angle to start the rotation from</source>
-      <translation type="unfinished">The base angle to start the rotation from</translation>
+      <translation>Basvinkeln för att starta rotationen från</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="199"/>
       <location filename="../../draftguitools/gui_rotate.py" line="306"/>
       <source>The amount of rotation to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>Den mängd rotation som ska utföras.
+Den slutliga vinkeln kommer att vara basvinkeln plus detta belopp.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="191"/>
@@ -4242,17 +4254,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="94"/>
       <source>Add to New Group</source>
-      <translation type="unfinished">Add to New Group</translation>
+      <translation>Lägg till i ny grupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="134"/>
       <source>Add to Group</source>
-      <translation type="unfinished">Add to Group</translation>
+      <translation>Lägg till i grupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="198"/>
       <source>No new selection. Select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. Select non-empty groups or objects inside groups.</translation>
+      <translation>Inget ny markering. Välj icke-tomma grupper eller objekt inom grupper.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="260"/>
@@ -4265,7 +4277,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_groups.py" line="294"/>
       <location filename="../../draftguitools/gui_layers.py" line="149"/>
       <source>Layer name</source>
-      <translation type="unfinished">Layer name</translation>
+      <translation>Namn på lager</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="296"/>
@@ -4282,7 +4294,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="347"/>
       <source>Add to Construction Group</source>
-      <translation type="unfinished">Add to Construction Group</translation>
+      <translation>Lägg till i konstruktionsgrupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="399"/>
@@ -4292,7 +4304,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="400"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Gruppnamn</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="402"/>
@@ -4309,7 +4321,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_groups.py" line="90"/>
       <location filename="../../draftguitools/gui_groups.py" line="117"/>
       <source>Ungroup</source>
-      <translation>Avgruppera</translation>
+      <translation>Ta bort grupperingen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="408"/>
@@ -4324,17 +4336,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="83"/>
       <source>Radius of the fillet</source>
-      <translation type="unfinished">Radius of the fillet</translation>
+      <translation>Radie på avrundningen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="116"/>
       <source>Enter radius</source>
-      <translation type="unfinished">Enter radius</translation>
+      <translation>Ange radius</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="171"/>
       <source>Create Fillet</source>
-      <translation type="unfinished">Create Fillet</translation>
+      <translation>Skapa filé</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="154"/>
@@ -4364,42 +4376,42 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="118"/>
       <source>This object is not supported</source>
-      <translation type="unfinished">This object is not supported</translation>
+      <translation>Detta objekt stöds inte</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="135"/>
       <source>Only a single face can be extruded</source>
-      <translation type="unfinished">Only a single face can be extruded</translation>
+      <translation>Endast en enda yta kan strängpressas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="154"/>
       <source>Trimex does not support this object type</source>
-      <translation type="unfinished">Trimex does not support this object type</translation>
+      <translation>Trimex stöder inte denna objekttyp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="509"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported</translation>
+      <translation>Det går inte att trimma dessa objekt, endast Draft wires och arcs stöds</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="531"/>
       <source>These objects do not intersect</source>
-      <translation type="unfinished">These objects do not intersect</translation>
+      <translation>Dessa objekt korsar inte varandra</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="534"/>
       <source>Too many intersection points</source>
-      <translation type="unfinished">Too many intersection points</translation>
+      <translation>För många korsningspunkter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time</source>
-      <translation type="unfinished">Offset only works on one object at a time</translation>
+      <translation>Offset fungerar bara på ett objekt åt gången</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="123"/>
       <source>Offset of Bézier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bézier curves is currently not supported</translation>
+      <translation>Offset av Bézier-kurvor stöds för närvarande inte</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
@@ -4420,12 +4432,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="187"/>
       <source>Create B-Spline</source>
-      <translation type="unfinished">Create B-Spline</translation>
+      <translation>Skapa B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="66"/>
@@ -4436,119 +4448,119 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="93"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="648"/>
       <source>This object does not support possible coincident points</source>
-      <translation type="unfinished">This object does not support possible coincident points</translation>
+      <translation>Detta objekt stöder inte eventuella sammanfallande punkter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="110"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="665"/>
       <source>Delete Point</source>
-      <translation type="unfinished">Delete Point</translation>
+      <translation>Radera punkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="115"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="673"/>
       <source>Add Point</source>
-      <translation type="unfinished">Add Point</translation>
+      <translation>Lägg till punkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="125"/>
       <source>Open Wire</source>
-      <translation type="unfinished">Open Wire</translation>
+      <translation>Öppen tråd</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="128"/>
       <source>Close Wire</source>
-      <translation type="unfinished">Close Wire</translation>
+      <translation>Stäng kabeln</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="133"/>
       <source>Reverse Wire</source>
-      <translation type="unfinished">Reverse Wire</translation>
+      <translation>Omvänd kabel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="177"/>
       <source>Active object must have more than 2 points or nodes</source>
-      <translation type="unfinished">Active object must have more than 2 points or nodes</translation>
+      <translation>Aktivt objekt måste ha mer än 2 punkter eller noder</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="200"/>
       <source>Open Spline</source>
-      <translation type="unfinished">Open Spline</translation>
+      <translation>Öppen spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="203"/>
       <source>Close Spline</source>
-      <translation type="unfinished">Close Spline</translation>
+      <translation>Stäng Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="206"/>
       <source>Reverse Spline</source>
-      <translation type="unfinished">Reverse Spline</translation>
+      <translation>Omvänd spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="371"/>
       <source>Move Arc</source>
-      <translation type="unfinished">Move Arc</translation>
+      <translation>Flytta bågen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="375"/>
       <source>Set First Angle</source>
-      <translation type="unfinished">Set First Angle</translation>
+      <translation>Ställ in första vinkeln</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="379"/>
       <source>Set Last Angle</source>
-      <translation type="unfinished">Set Last Angle</translation>
+      <translation>Ställ in senaste vinkeln</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="383"/>
       <source>Set Radius</source>
-      <translation type="unfinished">Set Radius</translation>
+      <translation>Ställ in radie</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="408"/>
       <source>Invert Arc</source>
-      <translation type="unfinished">Invert Arc</translation>
+      <translation>Inverterad båge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="666"/>
       <source>Make Sharp</source>
-      <translation type="unfinished">Make Sharp</translation>
+      <translation>Gör skarpt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="667"/>
       <source>Make Tangent</source>
-      <translation type="unfinished">Make Tangent</translation>
+      <translation>Gör tangent</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="668"/>
       <source>Make Symmetric</source>
-      <translation type="unfinished">Make Symmetric</translation>
+      <translation>Gör symmetrisk</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="675"/>
       <source>Reverse Curve</source>
-      <translation type="unfinished">Reverse Curve</translation>
+      <translation>Omvänd kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="681"/>
       <source>Open Curve</source>
-      <translation type="unfinished">Open Curve</translation>
+      <translation>Öppen kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="684"/>
       <source>Close Curve</source>
-      <translation type="unfinished">Close Curve</translation>
+      <translation>Stäng kurvan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="798"/>
       <source>Selection is not a knot</source>
-      <translation type="unfinished">Selection is not a knot</translation>
+      <translation>Markeringen är inte en knut</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="825"/>
       <source>Endpoint of Bézier curve cannot be smoothed</source>
-      <translation type="unfinished">Endpoint of Bézier curve cannot be smoothed</translation>
+      <translation>Bézier-kurvans ändpunkt kan inte jämnas ut</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="886"/>
@@ -4558,18 +4570,18 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
       <source>Bézier Curve</source>
-      <translation type="unfinished">Bézier Curve</translation>
+      <translation>Bézier-kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="215"/>
       <location filename="../../draftguitools/gui_beziers.py" line="464"/>
       <source>Create Bézier Curve</source>
-      <translation type="unfinished">Create Bézier Curve</translation>
+      <translation>Skapa Bézier-kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="267"/>
       <source>Cubic Bézier Curve</source>
-      <translation type="unfinished">Cubic Bézier Curve</translation>
+      <translation>Kubisk Bézier-kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="387"/>
@@ -4580,12 +4592,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="482"/>
       <source>%1 click and drag to define first point and knot</source>
-      <translation type="unfinished">%1 click and drag to define first point and knot</translation>
+      <translation>%1 cslicka och dra för att definiera första punkten och knuten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="486"/>
       <source>%1 click and drag to define next point and knot</source>
-      <translation type="unfinished">%1 click and drag to define next point and knot</translation>
+      <translation>%1 cslicka och dra för att definiera nästa punkt och knut</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="67"/>
@@ -4608,7 +4620,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_ellipses.py" line="218"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="214"/>
       <source>%1 pick opposite point</source>
-      <translation type="unfinished">%1 pick opposite point</translation>
+      <translation>%1 välj motsatt punkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="70"/>
@@ -4618,7 +4630,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="83"/>
       <source>Select an object to scale</source>
-      <translation>Välj ett objekt att skala</translation>
+      <translation>Välj ett objekt som ska skalas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="100"/>
@@ -4626,22 +4638,22 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Välj baspunkt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="154"/>
+      <location filename="../../draftguitools/gui_scale.py" line="155"/>
       <source>Pick reference distance from base point</source>
       <translation>Välj referensavstånd från baspunkten</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="199"/>
+      <location filename="../../draftguitools/gui_scale.py" line="200"/>
       <source>Zero scale factor not allowed</source>
       <translation>Skalfaktor noll är inte tillåten</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="211"/>
+      <location filename="../../draftguitools/gui_scale.py" line="213"/>
       <source>Scale</source>
       <translation>Skala</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="244"/>
+      <location filename="../../draftguitools/gui_scale.py" line="246"/>
       <source>Pick new distance from base point</source>
       <translation>Välj nytt avstånd från baspunkten</translation>
     </message>
@@ -4661,7 +4673,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="477"/>
       <source>Edge too short!</source>
-      <translation>Kant för kort!</translation>
+      <translation>Kanten är för kort!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="75"/>
@@ -4671,17 +4683,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="127"/>
       <source>Pick first point of selection rectangle</source>
-      <translation>Välj den första punkten i urvalsrektangeln</translation>
+      <translation>Välj den första punkten i markeringsrektangeln</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="162"/>
       <source>Pick the opposite point of the selection rectangle</source>
-      <translation type="unfinished">Pick the opposite point of the selection rectangle</translation>
+      <translation>Välj den motsatta punkten i markeringsrektangeln</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="456"/>
       <source>Turning a rectangle into a wire</source>
-      <translation type="unfinished">Turning a rectangle into a wire</translation>
+      <translation>Förvandla en rektangel till en tråd</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="171"/>
@@ -4737,17 +4749,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="81"/>
       <source>Select an object to clone</source>
-      <translation>Välj ett objekt att klona</translation>
+      <translation>Välj ett objekt som ska klonas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="94"/>
       <source>Cannot clone objects without a shape, aborting</source>
-      <translation type="unfinished">Cannot clone objects without a shape, aborting</translation>
+      <translation>Kan inte klona objekt utan form, vilket avbryter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone objects without a shape, skipping them</source>
-      <translation type="unfinished">Cannot clone objects without a shape, skipping them</translation>
+      <translation>Kan inte klona objekt utan form, utan hoppar över dem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="68"/>
@@ -4783,7 +4795,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="51"/>
       <source>Heal</source>
-      <translation>Läk</translation>
+      <translation>Läka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="86"/>
@@ -4803,12 +4815,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
       <source>Polar Array</source>
-      <translation type="unfinished">Polar Array</translation>
+      <translation>Polär matris</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="172"/>
       <source>Number of elements must be at least 2</source>
-      <translation type="unfinished">Number of elements must be at least 2</translation>
+      <translation>Antalet element måste vara minst 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="176"/>
@@ -4823,7 +4835,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="231"/>
       <source>Create Polar Array</source>
-      <translation type="unfinished">Create Polar Array</translation>
+      <translation>Skapa Polar Array</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="304"/>
@@ -4856,28 +4868,28 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <source>Orthogonal Array</source>
-      <translation type="unfinished">Orthogonal Array</translation>
+      <translation>Ortogonal matris</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="218"/>
       <source>Number of elements must be at least 1</source>
-      <translation type="unfinished">Number of elements must be at least 1</translation>
+      <translation>Antalet element måste vara minst 1</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
       <source>In linear mode, at least 1 axis must be selected</source>
-      <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
+      <translation>I linjärt läge måste minst 1 axel väljas</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="304"/>
       <source>Create Orthogonal Array</source>
-      <translation type="unfinished">Create Orthogonal Array</translation>
+      <translation>Skapa ortogonal matris</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="380"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="278"/>
       <source>Create link array:</source>
-      <translation type="unfinished">Create link array:</translation>
+      <translation>Skapa länkuppsättning:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="398"/>
@@ -4912,7 +4924,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="427"/>
       <source>Switch to Ortho Mode</source>
-      <translation type="unfinished">Switch to Ortho Mode</translation>
+      <translation>Växla till Ortho-läge</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="444"/>
@@ -4945,7 +4957,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="521"/>
       <source>Interval</source>
-      <translation type="unfinished">Interval</translation>
+      <translation>Intervall</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="54"/>
@@ -4970,31 +4982,31 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>Cirkulär matris</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="175"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="214"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="160"/>
       <source>At least 1 element must be selected</source>
-      <translation type="unfinished">At least 1 element must be selected</translation>
+      <translation>Minst 1 element måste väljas</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="179"/>
       <source>Number of layers must be at least 2</source>
-      <translation type="unfinished">Number of layers must be at least 2</translation>
+      <translation>Antalet lager måste vara minst 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="186"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="225"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="167"/>
       <source>Selection is not suitable for array</source>
-      <translation type="unfinished">Selection is not suitable for array</translation>
+      <translation>Markeringen är inte lämpligt för array</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="197"/>
       <source>Tangential distance cannot be 0</source>
-      <translation type="unfinished">Tangential distance cannot be 0</translation>
+      <translation>Det tangentiella avståndet kan inte vara 0</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
@@ -5004,7 +5016,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="257"/>
       <source>Create Circular Array</source>
-      <translation type="unfinished">Create Circular Array</translation>
+      <translation>Skapa cirkulär matris</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
@@ -5019,7 +5031,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="337"/>
       <source>Number of concentric circles:</source>
-      <translation type="unfinished">Number of concentric circles:</translation>
+      <translation>Antal koncentriska cirklar:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="338"/>
@@ -5027,162 +5039,96 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Symmetriparameter:</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="121"/>
-      <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
-      <translation>lagt till egenskaperna 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' och 'ScaleToSize'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shapestring.py" line="123"/>
-      <source>changed 'Tracking' property type</source>
-      <translation>ändrat egenskapstypen "Tracking</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shapestring.py" line="144"/>
+      <location filename="../../draftobjects/shapestring.py" line="147"/>
       <source>Font file not found</source>
       <translation>Fontfilen hittades inte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="147"/>
+      <location filename="../../draftobjects/shapestring.py" line="151"/>
       <source>Specified font file is not a file</source>
       <translation>Angiven teckensnittsfil är inte en fil</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="150"/>
+      <location filename="../../draftobjects/shapestring.py" line="155"/>
       <source>Specified font type is not supported</source>
       <translation>Angiven teckensnittstyp stöds inte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="204"/>
+      <location filename="../../draftobjects/shapestring.py" line="211"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation>ShapeString: sned vinkel måste ligga inom intervallet -80 till +80 grader</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="216"/>
+      <location filename="../../draftobjects/shapestring.py" line="223"/>
       <source>ShapeString: string has no wires</source>
       <translation>ShapeString: strängen har inga trådar</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="249"/>
+      <location filename="../../draftobjects/shapestring.py" line="255"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation>ShapeString: skapandet av ett ansikte misslyckades för en karaktär</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="82"/>
-      <source>added view property 'ScaleMultiplier'</source>
-      <translation>tillagd vyegenskap 'ScaleMultiplier'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
-      <source>added view property 'AnnotationStyle'</source>
-      <translation>tillagd vyegenskap 'AnnotationStyle'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="120"/>
-      <location filename="../../draftobjects/wire.py" line="132"/>
-      <source>migrated view properties</source>
-      <translation type="unfinished">migrated view properties</translation>
+      <translation>ShapeString: skapandet av en yta misslyckades för ett tecken</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="442"/>
       <source>, path object does not have 'Edges'.</source>
-      <translation type="unfinished">, path object does not have 'Edges'.</translation>
+      <translation>har banobjektet inte några "kanter".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="581"/>
-      <source>migrated 'PathObj' property to 'PathObject'</source>
-      <translation>migrerade 'PathObj'-egenskapen till 'PathObject'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="583"/>
-      <source>migrated 'PathSubs' property to 'PathSubelements'</source>
-      <translation>migrerade 'PathSubs' egenskap till 'PathSubelements'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="585"/>
-      <source>migrated 'Xlate' property to 'ExtraTranslation'</source>
-      <translation>migrerade 'Xlate'-egenskapen till 'ExtraTranslation'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="587"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="160"/>
-      <location filename="../../draftobjects/pointarray.py" line="162"/>
-      <source>added 'Fuse' property</source>
-      <translation>egenskapen "Fuse" har lagts till</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="657"/>
+      <location filename="../../draftobjects/patharray.py" line="666"/>
       <source>Start Offset too large for path length. Using 0 instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using 0 instead.</translation>
+      <translation>Start Offset för stor för banans längd. Använd 0 istället.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="667"/>
+      <location filename="../../draftobjects/patharray.py" line="676"/>
       <source>End Offset too large for path length minus Start Offset. Using 0 instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using 0 instead.</translation>
+      <translation>Slutoffset för stort för banlängd minus startoffset. Använd 0 istället.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="792"/>
+      <location filename="../../draftobjects/patharray.py" line="801"/>
       <source>Length of tangent vector is 0. Copy not aligned.</source>
-      <translation type="unfinished">Length of tangent vector is 0. Copy not aligned.</translation>
+      <translation>Tangentvektorns längd är 0. Kopian är inte justerad.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="809"/>
-      <location filename="../../draftobjects/patharray.py" line="831"/>
+      <location filename="../../draftobjects/patharray.py" line="818"/>
+      <location filename="../../draftobjects/patharray.py" line="840"/>
       <source>Length of normal vector is 0. Using a default axis instead.</source>
-      <translation type="unfinished">Length of normal vector is 0. Using a default axis instead.</translation>
+      <translation>Normalvektorns längd är 0. Använd en standardaxel istället.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="76"/>
-      <location filename="../../draftobjects/patharray.py" line="593"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="162"/>
-      <location filename="../../draftobjects/pointarray.py" line="164"/>
-      <source>added hidden property 'PlacementList'</source>
-      <translation>lagt till dold egenskap 'PlacementList'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="589"/>
-      <source>moved 'Count' property to 'Spacing' subsection</source>
-      <translation>flyttade egenskapen "Count" till underavsnittet "Spacing</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="591"/>
-      <source>added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties</source>
-      <translation>lagt till egenskaperna "ReversePath", "SpacingMode", "SpacingUnit", "UseSpacingPattern" och "SpacingPattern</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="681"/>
+      <location filename="../../draftobjects/patharray.py" line="690"/>
       <source>Spacing unit of 0 is not allowed, using default</source>
       <translation>Avståndsenheten 0 är inte tillåten och används som standard</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="759"/>
+      <location filename="../../draftobjects/patharray.py" line="768"/>
       <source>Operation would generate too many objects. Aborting</source>
       <translation>Operationen skulle generera för många objekt. Avbryter</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="815"/>
-      <location filename="../../draftobjects/patharray.py" line="837"/>
+      <location filename="../../draftobjects/patharray.py" line="824"/>
+      <location filename="../../draftobjects/patharray.py" line="846"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Tangent- och normalvektorer är parallella. Normal ersatt av en standardaxel.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="827"/>
+      <location filename="../../draftobjects/patharray.py" line="836"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Kan inte beräkna normalvektor. Använd standardnormalen istället.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="843"/>
+      <location filename="../../draftobjects/patharray.py" line="852"/>
       <source>AlignMode {} is not implemented</source>
       <translation>AlignMode {} är inte implementerad</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="93"/>
       <source>No shape found</source>
-      <translation>Ingen form hittad</translation>
+      <translation>Ingen form hittades</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="100"/>
       <source>All shapes must be planar</source>
-      <translation type="unfinished">All shapes must be planar</translation>
+      <translation>Alla former måste vara plana</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="87"/>
@@ -5193,12 +5139,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="88"/>
       <source>Wrong input: must be a list or tuple of 3 points exactly.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of 3 points exactly.</translation>
+      <translation>Fel inmatning: måste vara en lista eller tupel med exakt 3 punkter.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="93"/>
       <source>Wrong input: must be list or tuple of 3 points exactly.</source>
-      <translation type="unfinished">Wrong input: must be list or tuple of 3 points exactly.</translation>
+      <translation>Fel inmatning: måste vara en lista eller tupel av 3 punkter exakt.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="110"/>
@@ -5352,7 +5298,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_label.py" line="285"/>
       <location filename="../../draftmake/make_label.py" line="289"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation>Fel inmatning: måste vara en sträng, "Horizontal", "Vertical" eller "Custom".</translation>
+      <translation>Fel inmatning: måste vara en sträng, "Horisontell", "Vertikal" eller "Anpassad".</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="301"/>
@@ -5362,7 +5308,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="335"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation>Riktningen är inte "Custom"; poäng kommer inte att användas.</translation>
+      <translation>Riktningen är inte "Custom"; punkter kommer inte att användas.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="365"/>
@@ -5409,7 +5355,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="368"/>
       <source>Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring.</translation>
+      <translation>Fel inmatning: objektet har inte minst 1 element i 'Vertexes' att använda för mätning.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="374"/>
@@ -5473,7 +5419,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_layer.py" line="65"/>
       <source>Layers</source>
-      <translation>Lager</translation>
+      <translation>Sikt</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="150"/>
@@ -5509,7 +5455,7 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="448"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="198"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="199"/>
       <source>Flatten</source>
       <translation>Platta till</translation>
     </message>
@@ -5551,12 +5497,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="421"/>
       <source>Found several faces: splitting them</source>
-      <translation>Hittade flera ansikten: dela upp dem</translation>
+      <translation>Hittade flera ytor: delar upp dem</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="426"/>
       <source>Found several faces: subtracting them from the first one</source>
-      <translation>Hittade flera ansikten: subtrahera dem från det första</translation>
+      <translation>Hittade flera ytor: subtrahera dem från det första</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="442"/>
@@ -5566,7 +5512,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="432"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation>Hittade 1 ansikte: extrahera dess ledningar</translation>
+      <translation>Hittade 1 yta: extrahera dess ledningar</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="438"/>
@@ -5611,17 +5557,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="563"/>
       <source>Found object with several coplanar faces: refining them</source>
-      <translation>Hittat föremål med flera koplanära ytor: förädling av dem</translation>
+      <translation>Hittade objekt med flera koplanära ytor: förädlar dem</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="582"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation>Hittade 1 stängt skissobjekt: skapa ett ansikte från det</translation>
+      <translation>Hittade 1 stängt skissobjekt: skapar en yta från det</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="587"/>
       <source>Found closed wires: creating faces</source>
-      <translation>Hittade slutna ledningar: skapa ansikten</translation>
+      <translation>Hittade slutna ledningar: skapar ytor</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="593"/>
@@ -5632,7 +5578,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftfunctions/upgrade.py" line="597"/>
       <location filename="../../draftfunctions/upgrade.py" line="627"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation>Hittade flera icke behandlingsbara föremål: skapar förening</translation>
+      <translation>Hittade flera icke-behandlingsbara objekt: skapar förening</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="631"/>
@@ -5648,7 +5594,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftfunctions/upgrade.py" line="571"/>
       <location filename="../../draftfunctions/upgrade.py" line="615"/>
       <source>Found 1 non-parametric object: replacing it with a Draft object</source>
-      <translation type="unfinished">Found 1 non-parametric object: replacing it with a Draft object</translation>
+      <translation>Hittade 1 icke-parametriskt objekt: ersätter det med ett Draft-objekt</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="621"/>
@@ -5661,81 +5607,54 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="202"/>
-      <source>added view property 'TextColor'</source>
-      <translation>lagt till vyegenskapen 'TextColor'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="204"/>
-      <location filename="../../draftobjects/label.py" line="267"/>
-      <location filename="../../draftobjects/text.py" line="99"/>
-      <source>renamed 'DisplayMode' options to 'World/Screen'</source>
-      <translation>bytt namn på "DisplayMode"-alternativ till "World/Screen</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/label.py" line="263"/>
-      <source>renamed view property 'TextFont' to 'FontName'</source>
-      <translation>omdirigerad vyegenskap 'TextFont' till 'FontName'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/label.py" line="265"/>
-      <source>renamed view property 'TextSize' to 'FontSize'</source>
-      <translation>omdöpte vyegenskapen 'TextSize' till 'FontSize'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/label.py" line="330"/>
+      <location filename="../../draftobjects/label.py" line="327"/>
       <source>No Target</source>
       <translation>Inget mål</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="411"/>
+      <location filename="../../draftobjects/label.py" line="408"/>
       <source>Invalid label type</source>
       <translation>Ogiltig etikettyp</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="426"/>
+      <location filename="../../draftobjects/label.py" line="423"/>
       <source>Tag not available for object</source>
       <translation>Taggen är inte tillgänglig för objektet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="433"/>
+      <location filename="../../draftobjects/label.py" line="430"/>
       <source>Material not available for object</source>
       <translation>Materialet är inte tillgängligt för objektet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="442"/>
+      <location filename="../../draftobjects/label.py" line="439"/>
       <source>Position not available for (sub)object</source>
       <translation>Position ej tillgänglig för (sub)objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="458"/>
+      <location filename="../../draftobjects/label.py" line="455"/>
       <source>Length not available for (sub)object</source>
       <translation>Längd ej tillgänglig för (sub)objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="472"/>
+      <location filename="../../draftobjects/label.py" line="469"/>
       <source>Area not available for (sub)object</source>
       <translation>Område ej tillgängligt för (under)objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="485"/>
+      <location filename="../../draftobjects/label.py" line="482"/>
       <source>Volume not available for (sub)object</source>
       <translation>Volym ej tillgänglig för (under)objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="74"/>
-      <source>added property 'Count'</source>
-      <translation>tillagd egenskap 'Count'</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="68"/>
       <source>Opening Multiple Links</source>
-      <translation type="unfinished">Opening Multiple Links</translation>
+      <translation>Öppna flera länkar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="74"/>
       <source>Multiple links found</source>
-      <translation type="unfinished">Multiple links found</translation>
+      <translation>Flera länkar hittades</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="80"/>
@@ -5750,7 +5669,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="117"/>
       <source>Opening hyperlink</source>
-      <translation>Öppnar hyperlänk</translation>
+      <translation>Öppna hyperlänk</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="155"/>
@@ -5765,26 +5684,6 @@ of existing objects in all opened documents?</source>
 för befintliga objekt i alla öppnade dokument?</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="158"/>
-      <source>added 'ExtraPlacement' property</source>
-      <translation>lagt till egenskapen "ExtraPlacement</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pointarray.py" line="160"/>
-      <source>migrated 'PointList' property to 'PointObject'</source>
-      <translation>migrerade egenskapen 'PointList' till 'PointObject'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/layer.py" line="76"/>
-      <source>changed 'Group' property type</source>
-      <translation>ändrat egenskapstypen "Grupp</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/layer.py" line="102"/>
-      <source>updated view properties</source>
-      <translation>uppdaterad vy fastigheter</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
       <translation>Skissen är för komplex för att redigeras: det föreslås att du använder standardredigeraren för Sketcher</translation>
@@ -5797,12 +5696,12 @@ för befintliga objekt i alla öppnade dokument?</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="113"/>
       <source>Remove From Layer</source>
-      <translation type="unfinished">Remove From Layer</translation>
+      <translation>Ta bort från lagret</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="117"/>
       <source>Add to New Layer</source>
-      <translation type="unfinished">Add to New Layer</translation>
+      <translation>Lägg till i nytt lager</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="135"/>
@@ -5825,137 +5724,132 @@ för befintliga objekt i alla öppnade dokument?</translation>
       <translation>Skikten förändras</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="75"/>
-      <source>added 'ForceCompound' property</source>
-      <translation>lagt till egenskapen 'ForceCompound'</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
       <source>Flip Dimension</source>
-      <translation type="unfinished">Flip Dimension</translation>
+      <translation>Vänd dimension</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Växla rutnät</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="60"/>
       <source>Change Slope</source>
-      <translation type="unfinished">Change Slope</translation>
+      <translation>Ändra lutning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="102"/>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <source>Select exactly 2 objects, the base object and the path object, before calling this command</source>
-      <translation type="unfinished">Select exactly 2 objects, the base object and the path object, before calling this command</translation>
+      <translation>Välj exakt 2 objekt, basobjektet och sökvägsobjektet, innan du anropar detta kommando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="147"/>
       <source>Create Path Array</source>
-      <translation type="unfinished">Create Path Array</translation>
+      <translation>Skapa Path Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
       <source>Create Path Twisted Array</source>
-      <translation type="unfinished">Create Path Twisted Array</translation>
+      <translation>Skapa sökväg Twisted Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
       <source>Select exactly 2 objects, the base object and the point object, before calling this command</source>
-      <translation type="unfinished">Select exactly 2 objects, the base object and the point object, before calling this command</translation>
+      <translation>Välj exakt 2 objekt, basobjektet och punktobjektet, innan du anropar detta kommando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="113"/>
       <source>Create Point Array</source>
-      <translation type="unfinished">Create Point Array</translation>
+      <translation>Skapa punktmatris</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="59"/>
       <source>Click anywhere on a line to split it</source>
-      <translation type="unfinished">Click anywhere on a line to split it</translation>
+      <translation>Klicka var som helst på en rad för att dela den</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="101"/>
       <source>Split Line</source>
-      <translation type="unfinished">Split Line</translation>
+      <translation>Delad Rad</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
       <source>No active Draft toolbar</source>
-      <translation type="unfinished">No active Draft toolbar</translation>
+      <translation>Inget aktivt verktygsfält för släppning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
       <source>Construction Mode</source>
-      <translation type="unfinished">Construction Mode</translation>
+      <translation>Konstruktionsläge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="129"/>
       <source>Toggle Display Mode</source>
-      <translation type="unfinished">Toggle Display Mode</translation>
+      <translation>Växla visningsläge</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>2 edges are needed</source>
-      <translation type="unfinished">2 edges are needed</translation>
+      <translation>2 kanter behövs</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
       <source>Edges are not connected or radius is too large</source>
-      <translation type="unfinished">Edges are not connected or radius is too large</translation>
+      <translation>Kanterna är inte anslutna eller radien är för stor</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build facebinder</source>
-      <translation type="unfinished">Unable to build facebinder</translation>
+      <translation>Det går inte att bygga ytbindare</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for facebinder</source>
-      <translation type="unfinished">No valid faces for facebinder</translation>
+      <translation>Inga giltiga ytor för ytbindare</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build facebinder, resuming with sew disabled</source>
-      <translation type="unfinished">Unable to build facebinder, resuming with sew disabled</translation>
+      <translation>Det går inte att bygga ytbindare, återupptar med sew inaktiverad</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of facebinder to planar faces failed</translation>
+      <translation>Konvertering av plana B-spline-ytor i ytbindare till plana ytor misslyckades</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="512"/>
       <source>Activate Layer</source>
-      <translation type="unfinished">Activate Layer</translation>
+      <translation>Aktivera lager</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="518"/>
       <source>Reassign Properties of Layer</source>
-      <translation type="unfinished">Reassign Properties of Layer</translation>
+      <translation>Omfördela egenskaper för lager</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="524"/>
       <source>Select Layer Contents</source>
-      <translation type="unfinished">Select Layer Contents</translation>
+      <translation>Välj lagerinnehåll</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="566"/>
       <location filename="../../draftviewproviders/view_layer.py" line="588"/>
       <source>Add New Layer</source>
-      <translation type="unfinished">Add New Layer</translation>
+      <translation>Lägg till nytt lager</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="572"/>
       <source>Reassign Properties of All Layers</source>
-      <translation type="unfinished">Reassign Properties of All Layers</translation>
+      <translation>Tilldela egenskaper för alla lager på nytt</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="578"/>
       <location filename="../../draftviewproviders/view_layer.py" line="604"/>
       <source>Merge Layer Duplicates</source>
-      <translation type="unfinished">Merge Layer Duplicates</translation>
+      <translation>Sammanfoga lagerduplikat</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="153"/>
@@ -5967,39 +5861,34 @@ Please either allow FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either allow FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit → Preferences → Import-Export → DXF → Enable downloads
-Or download these libraries manually, as explained on
+      <translation>DXF-import/export-biblioteken som FreeCAD behöver för att hantera
+dXF-formatet hittades inte på detta system.
+Tillåt antingen FreeCAD att ladda ner dessa bibliotek:
+  1 - Läs in arbetsbänken Draft
+  2 - Menyn Redigera → Inställningar → Import och export → DXF → Aktivera nedladdningar
+Eller ladda ner dessa bibliotek manuellt, som förklaras på
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+För att aktivera FreeCAD för att ladda ner dessa bibliotek, svara Ja.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="104"/>
       <source>PAT file not found</source>
-      <translation type="unfinished">PAT file not found</translation>
+      <translation>PAT-filen hittades inte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="108"/>
       <source>Specified PAT file is not a file</source>
-      <translation type="unfinished">Specified PAT file is not a file</translation>
+      <translation>Angiven PAT-fil är inte en fil</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="112"/>
       <source>Specified file type is not supported</source>
-      <translation type="unfinished">Specified file type is not supported</translation>
+      <translation>Angiven filtyp stöds inte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="116"/>
       <source>Pattern not found in PAT file</source>
-      <translation type="unfinished">Pattern not found in PAT file</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/text.py" line="113"/>
-      <source>removed view properties</source>
-      <translation type="unfinished">removed view properties</translation>
+      <translation>Mönster hittades inte i PAT-filen</translation>
     </message>
   </context>
   <context>
@@ -6007,22 +5896,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft Creation</source>
-      <translation type="unfinished">Draft Creation</translation>
+      <translation>Skapande av släppning</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft Annotation</source>
-      <translation type="unfinished">Draft Annotation</translation>
+      <translation>Släppningsanteckning</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft Modification</source>
-      <translation type="unfinished">Draft Modification</translation>
+      <translation>Släppningsändring</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft Utility</source>
-      <translation type="unfinished">Draft Utility</translation>
+      <translation>Draft Utility</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
@@ -6037,7 +5926,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="123"/>
       <source>&amp;Annotation</source>
-      <translation>&amp;Annotering</translation>
+      <translation>&amp;Anteckning</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="126"/>
@@ -6052,17 +5941,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
       <source>Arc Tools</source>
-      <translation type="unfinished">Arc Tools</translation>
+      <translation>Arc Tools</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
       <source>Bézier Tools</source>
-      <translation type="unfinished">Bézier Tools</translation>
+      <translation>Bézier Tools</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="89"/>
       <source>Array Tools</source>
-      <translation type="unfinished">Array Tools</translation>
+      <translation>Array Tools</translation>
     </message>
   </context>
   <context>
@@ -6070,12 +5959,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="83"/>
       <source>Fillet</source>
-      <translation>Avrundning</translation>
+      <translation>Filé</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="94"/>
       <source>Delete original objects</source>
-      <translation>Ta bort ursprungliga objekt</translation>
+      <translation>Ta bort originalobjekt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="100"/>
@@ -6090,7 +5979,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="438"/>
       <source>Name of this new style</source>
-      <translation type="unfinished">Name of this new style</translation>
+      <translation>Namn på denna nya stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="445"/>
@@ -6105,7 +5994,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="466"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation>Fel: json-modulen hittades inte. Det går inte att ladda stil</translation>
+      <translation>Fel: json-modulen hittades inte. Det går inte att läsa in stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="485"/>
@@ -6140,17 +6029,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="54"/>
       <source>X-factor</source>
-      <translation type="unfinished">X-factor</translation>
+      <translation>X-faktor</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="62"/>
       <source>Y-factor</source>
-      <translation type="unfinished">Y-factor</translation>
+      <translation>Y-faktor</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="70"/>
       <source>Z-factor</source>
-      <translation type="unfinished">Z-factor</translation>
+      <translation>Z-faktor</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="78"/>
@@ -6158,32 +6047,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>Enhetlig skalning</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_scale.py" line="89"/>
-      <source>Working plane orientation</source>
-      <translation>Arbetsplanets orientering</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_scale.py" line="93"/>
+      <location filename="../../drafttaskpanels/task_scale.py" line="94"/>
       <source>Copy</source>
       <translation>Kopiera</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_scale.py" line="97"/>
+      <location filename="../../drafttaskpanels/task_scale.py" line="98"/>
       <source>Modify subelements</source>
       <translation>Modifiera underelement</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_scale.py" line="105"/>
+      <location filename="../../drafttaskpanels/task_scale.py" line="106"/>
       <source>Pick From/To Points</source>
-      <translation type="unfinished">Pick From/To Points</translation>
+      <translation>Välj från/till punkter</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_scale.py" line="195"/>
+      <location filename="../../drafttaskpanels/task_scale.py" line="202"/>
       <source>Edit Scale</source>
-      <translation type="unfinished">Edit Scale</translation>
+      <translation>Redigera skala</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_scale.py" line="101"/>
+      <location filename="../../drafttaskpanels/task_scale.py" line="102"/>
       <source>Create a clone</source>
       <translation>Skapa en klon</translation>
     </message>
@@ -6209,7 +6093,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="366"/>
-      <location filename="../../draftobjects/label.py" line="335"/>
+      <location filename="../../draftobjects/label.py" line="332"/>
       <source>Name</source>
       <translation>Namn</translation>
     </message>
@@ -6221,7 +6105,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="368"/>
       <source>Draw Style</source>
-      <translation type="unfinished">Draw Style</translation>
+      <translation>Ritstil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="369"/>
@@ -6231,17 +6115,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="370"/>
       <source>Face Color</source>
-      <translation type="unfinished">Face Color</translation>
+      <translation>Ytfärg</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="372"/>
       <source>Line Print Color</source>
-      <translation type="unfinished">Line Print Color</translation>
+      <translation>Linjetryck Färg</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="371"/>
       <source>Transparency</source>
-      <translation>Transparens</translation>
+      <translation>Genomskinlighet</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="393"/>
@@ -6249,69 +6133,69 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>Nytt lager</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="334"/>
+      <location filename="../../draftobjects/label.py" line="331"/>
       <source>Custom</source>
       <translation>Anpassad</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="336"/>
+      <location filename="../../draftobjects/label.py" line="333"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="337"/>
+      <location filename="../../draftobjects/label.py" line="334"/>
       <source>Position</source>
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="338"/>
+      <location filename="../../draftobjects/label.py" line="335"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="339"/>
+      <location filename="../../draftobjects/label.py" line="336"/>
       <source>Area</source>
-      <translation>Area</translation>
+      <translation>Område</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="340"/>
+      <location filename="../../draftobjects/label.py" line="337"/>
       <source>Volume</source>
       <translation>Volym</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="341"/>
+      <location filename="../../draftobjects/label.py" line="338"/>
       <source>Tag</source>
       <translation>Tagg</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="342"/>
+      <location filename="../../draftobjects/label.py" line="339"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="343"/>
+      <location filename="../../draftobjects/label.py" line="340"/>
       <source>Label + Position</source>
-      <translation>Etikett + position</translation>
+      <translation>Etikett + Position</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="344"/>
+      <location filename="../../draftobjects/label.py" line="341"/>
       <source>Label + Length</source>
-      <translation>Etikett + längd</translation>
+      <translation>Etikett + Längd</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="345"/>
+      <location filename="../../draftobjects/label.py" line="342"/>
       <source>Label + Area</source>
-      <translation>Etikett + område</translation>
+      <translation>Etikett + Område</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="346"/>
+      <location filename="../../draftobjects/label.py" line="343"/>
       <source>Label + Volume</source>
       <translation>Etikett + volym</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="350"/>
+      <location filename="../../draftobjects/label.py" line="347"/>
       <source>Label + Material</source>
-      <translation>Etikett + material</translation>
+      <translation>Etikett + Material</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="101"/>
@@ -6321,26 +6205,26 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="53"/>
       <source>Choose a base object before using this command</source>
-      <translation type="unfinished">Choose a base object before using this command</translation>
+      <translation>Välj ett basobjekt innan du använder detta kommando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction.</source>
-      <translation type="unfinished">Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction.</translation>
+      <translation>Offset-riktningen är inte definierad. Flytta musen på endera sidan av objektet först för att ange en riktning.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="232"/>
       <source>Point object does not have a discrete point, it cannot be used for an array</source>
-      <translation type="unfinished">Point object does not have a discrete point, it cannot be used for an array</translation>
+      <translation>Point-objektet har ingen diskret punkt, det kan inte användas för en array</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="136"/>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
-      <translation type="unfinished">Download of DXF libraries failed.
-Please install the DXF Library addon manually
-from menu Tools → Addon Manager</translation>
+      <translation>Nedladdning av DXF-bibliotek misslyckades.
+Installera tillägget DXF Library manuellt
+från menyn Verktyg → Tilläggshanterare</translation>
     </message>
   </context>
   <context>
@@ -6353,7 +6237,7 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
-      <translation>exporteringen lyckades</translation>
+      <translation>framgångsrikt exporterad</translation>
     </message>
   </context>
   <context>
@@ -6374,7 +6258,7 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../importSVG.py" line="1315"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation>Exportlistan innehåller inget objekt med giltig avgränsande box</translation>
+      <translation>Exportlistan innehåller inget objekt med giltig avgränsningsruta</translation>
     </message>
   </context>
   <context>
@@ -6387,7 +6271,7 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="66"/>
       <source>Creates a label, optionally attached to a selected object or subelement</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement</translation>
+      <translation>Skapar en etikett, eventuellt kopplad till ett valt objekt eller underelement</translation>
     </message>
   </context>
   <context>
@@ -6395,12 +6279,12 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="63"/>
       <source>Line</source>
-      <translation>Linje</translation>
+      <translation>Rad</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Creates a 2-point line</source>
-      <translation type="unfinished">Creates a 2-point line</translation>
+      <translation>Skapar en 2-punktslinje</translation>
     </message>
   </context>
   <context>
@@ -6413,7 +6297,7 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="341"/>
       <source>Creates a polyline</source>
-      <translation type="unfinished">Creates a polyline</translation>
+      <translation>Skapar en polylinje</translation>
     </message>
   </context>
   <context>
@@ -6421,12 +6305,12 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="40"/>
       <source>Hatch</source>
-      <translation>Skraffera</translation>
+      <translation>Skraffering</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="44"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation>Skapar luckor på ytorna på ett markerat objekt</translation>
+      <translation>Skapar skraffering på ytorna på ett markerat objekt</translation>
     </message>
   </context>
   <context>
@@ -6434,14 +6318,14 @@ from menu Tools → Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="54"/>
       <source>Join</source>
-      <translation>Förena</translation>
+      <translation>Sammanfoga</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="57"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end.</translation>
+      <translation>Sammanfogar de markerade linjerna eller polylinjerna till ett enda objekt.
+Linjerna måste ha en gemensam punkt i början eller i slutet.</translation>
     </message>
   </context>
   <context>
@@ -6454,7 +6338,7 @@ The lines must share a common point at the start or at the end.</translation>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation</source>
-      <translation type="unfinished">Creates a multi-line annotation</translation>
+      <translation>Skapar en annotation med flera rader</translation>
     </message>
   </context>
   <context>
@@ -6468,8 +6352,8 @@ The lines must share a common point at the start or at the end.</translation>
       <location filename="../../draftguitools/gui_move.py" line="58"/>
       <source>Moves the selected objects.
 If the "Copy" option is active, it creates displaced copies.</source>
-      <translation type="unfinished">Moves the selected objects.
-If the "Copy" option is active, it creates displaced copies.</translation>
+      <translation>Flyttar de markerade objekten.
+Om alternativet "Copy" är aktivt skapas förskjutna kopior.</translation>
     </message>
   </context>
   <context>
@@ -6477,12 +6361,12 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="63"/>
       <source>Arc</source>
-      <translation>Cirkelbåge</translation>
+      <translation>Båge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Creates a circular arc from a center point and a radius</source>
-      <translation type="unfinished">Creates a circular arc from a center point and a radius</translation>
+      <translation>Skapar en cirkelbåge från en mittpunkt och en radie</translation>
     </message>
   </context>
   <context>
@@ -6495,7 +6379,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="268"/>
       <source>Edits the active object</source>
-      <translation type="unfinished">Edits the active object</translation>
+      <translation>Redigerar det aktiva objektet</translation>
     </message>
   </context>
   <context>
@@ -6508,7 +6392,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="66"/>
       <source>Creates a point</source>
-      <translation type="unfinished">Creates a point</translation>
+      <translation>Skapar en punkt</translation>
     </message>
   </context>
   <context>
@@ -6522,8 +6406,8 @@ If the "Copy" option is active, it creates displaced copies.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="60"/>
       <source>Rotates the selected objects.
 If the "Copy" option is active, it will create rotated copies.</source>
-      <translation type="unfinished">Rotates the selected objects.
-If the "Copy" option is active, it will create rotated copies.</translation>
+      <translation>Roterar de markerade objekten.
+Om alternativet "Copy" är aktivt skapas roterade kopior.</translation>
     </message>
   </context>
   <context>
@@ -6531,12 +6415,12 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="69"/>
       <source>Fillet</source>
-      <translation>Avrundning</translation>
+      <translation>Filé</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="72"/>
       <source>Creates a fillet between 2 selected edges</source>
-      <translation type="unfinished">Creates a fillet between 2 selected edges</translation>
+      <translation>Skapar en avrundning mellan 2 valda kanter</translation>
     </message>
   </context>
   <context>
@@ -6549,7 +6433,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon…)</source>
-      <translation type="unfinished">Creates a regular polygon (triangle, square, pentagon…)</translation>
+      <translation>Skapar en regelbunden polygon (triangel, kvadrat, femhörning...)</translation>
     </message>
   </context>
   <context>
@@ -6562,7 +6446,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="54"/>
       <source>Splits the selected line or polyline at a specified point</source>
-      <translation type="unfinished">Splits the selected line or polyline at a specified point</translation>
+      <translation>Delar den valda linjen eller polylinjen vid en angiven punkt</translation>
     </message>
   </context>
   <context>
@@ -6575,7 +6459,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="80"/>
       <source>Trims or extends the selected object, or extrudes single faces</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces</translation>
+      <translation>Trimmar eller förlänger det markerade objektet, eller extruderar enstaka ytor</translation>
     </message>
   </context>
   <context>
@@ -6588,7 +6472,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc)</source>
-      <translation type="unfinished">Creates a circle (full circular arc)</translation>
+      <translation>Skapar en cirkel (full cirkelbåge)</translation>
     </message>
   </context>
   <context>
@@ -6601,7 +6485,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Creates an ellipse</source>
-      <translation type="unfinished">Creates an ellipse</translation>
+      <translation>Skapar en ellips</translation>
     </message>
   </context>
   <context>
@@ -6609,12 +6493,12 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation type="unfinished">Facebinder</translation>
+      <translation>Ytbindare</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="63"/>
       <source>Creates a facebinder from the selected faces</source>
-      <translation type="unfinished">Creates a facebinder from the selected faces</translation>
+      <translation>Skapar en ytbindare från de valda ytorna</translation>
     </message>
   </context>
   <context>
@@ -6622,12 +6506,12 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="55"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="58"/>
       <source>Creates copies of the selected object in an orthogonal pattern</source>
-      <translation type="unfinished">Creates copies of the selected object in an orthogonal pattern</translation>
+      <translation>Skapar kopior av det markerade objektet i ett ortogonalt mönster</translation>
     </message>
   </context>
   <context>
@@ -6640,7 +6524,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="70"/>
       <source>Scales the selected objects from a base point</source>
-      <translation type="unfinished">Scales the selected objects from a base point</translation>
+      <translation>Skalar de valda objekten från en baspunkt</translation>
     </message>
   </context>
   <context>
@@ -6663,12 +6547,12 @@ Objekt som läggs till i detta lager kan dela samma visuella egenskaper.</transl
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="87"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Storlek</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="90"/>
       <source>Creates a linear dimension for a straight edge, a circular edge, or 2 picked points, or an angular dimension for 2 straight edges</source>
-      <translation type="unfinished">Creates a linear dimension for a straight edge, a circular edge, or 2 picked points, or an angular dimension for 2 straight edges</translation>
+      <translation>Skapar en linjär dimension för en rak kant, en cirkulär kant eller 2 utvalda punkter, eller en vinkeldimension för 2 raka kanter</translation>
     </message>
   </context>
   <context>
@@ -6681,7 +6565,7 @@ Objekt som läggs till i detta lager kan dela samma visuella egenskaper.</transl
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="67"/>
       <source>Stretches the selected objects</source>
-      <translation type="unfinished">Stretches the selected objects</translation>
+      <translation>Stretchar de valda objekten</translation>
     </message>
   </context>
   <context>
@@ -6694,7 +6578,7 @@ Objekt som läggs till i detta lager kan dela samma visuella egenskaper.</transl
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle</source>
-      <translation type="unfinished">Creates a 2-point rectangle</translation>
+      <translation>Skapar en 2-punkts rektangel</translation>
     </message>
   </context>
   <context>
@@ -6707,7 +6591,7 @@ Objekt som läggs till i detta lager kan dela samma visuella egenskaper.</transl
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by 2 points</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by 2 points</translation>
+      <translation>Speglar de valda objekten längs en linje som definieras av 2 punkter</translation>
     </message>
   </context>
   <context>
@@ -6715,12 +6599,12 @@ Objekt som läggs till i detta lager kan dela samma visuella egenskaper.</transl
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="71"/>
       <source>Clone</source>
-      <translation>Klon</translation>
+      <translation>Klona</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="74"/>
       <source>Creates a clone of the selected objects</source>
-      <translation type="unfinished">Creates a clone of the selected objects</translation>
+      <translation>Skapar en klon av de markerade objekten</translation>
     </message>
   </context>
   <context>
@@ -6747,14 +6631,14 @@ konvertera slutna kanter till fyllda ytor och parametriska polygoner, och samman
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offsets the selected object.
 It can also create an offset copy of the original object.</source>
-      <translation type="unfinished">Offsets the selected object.
-It can also create an offset copy of the original object.</translation>
+      <translation>Förskjuter det markerade objektet.
+Det kan också skapa en förskjutningskopia av originalobjektet.</translation>
     </message>
   </context>
   <context>
@@ -6762,16 +6646,16 @@ It can also create an offset copy of the original object.</translation>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="58"/>
       <source>Heal</source>
-      <translation>Läk</translation>
+      <translation>Läka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="61"/>
       <source>Heals faulty Draft objects saved with an earlier version of FreeCAD.
 If an object is selected it tries to heal only that object,
 otherwise it tries to heal all objects in the active document.</source>
-      <translation type="unfinished">Heals faulty Draft objects saved with an earlier version of FreeCAD.
-If an object is selected it tries to heal only that object,
-otherwise it tries to heal all objects in the active document.</translation>
+      <translation>Läker felaktiga Draft-objekt som sparats med en tidigare version av FreeCAD.
+Om ett objekt är markerat försöker den bara läka det objektet,
+annars försöker den läka alla objekt i det aktiva dokumentet.</translation>
     </message>
   </context>
   <context>
@@ -6786,20 +6670,20 @@ otherwise it tries to heal all objects in the active document.</translation>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be downgraded several times in a row.
 For example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be downgraded several times in a row.
-For example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.</translation>
+      <translation>Nedgraderar de valda objekten till enklare former.
+Resultatet av operationen beror på typen av objekt, som kan nedgraderas flera gånger i rad.
+Till exempel dekonstrueras en 3D-solid till separata ytor, trådar och sedan kanter. Ytor kan också subtraheras.</translation>
     </message>
   </context>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../draftobjects/text.py" line="56"/>
+      <location filename="../../draftobjects/text.py" line="55"/>
       <source>The placement of the base point of the first line</source>
       <translation>Placeringen av baspunkten för den första linjen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="69"/>
+      <location filename="../../draftobjects/text.py" line="68"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
       <translation>Den text som visas av detta objekt.
@@ -6818,7 +6702,7 @@ Det är en lista med strängar; varje element i listan kommer att visas på en e
     <message>
       <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
-      <translation>Texthöjd</translation>
+      <translation>Höjd på texten</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="68"/>
@@ -6853,12 +6737,12 @@ Det är en lista med strängar; varje element i listan kommer att visas på en e
     <message>
       <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
-      <translation>Fyll bokstäver med ansikten</translation>
+      <translation>Fyll bokstäver med ytor</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation>Fuse faces om ansikten överlappar varandra, vanligtvis inte nödvändigt (kan vara mycket långsamt)</translation>
+      <translation>Fuse faces om ytor överlappar varandra, vanligtvis inte nödvändigt (kan vara mycket långsamt)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="51"/>
@@ -6868,7 +6752,7 @@ Det är en lista med strängar; varje element i listan kommer att visas på en e
     <message>
       <location filename="../../draftobjects/hatch.py" line="54"/>
       <source>The PAT file used by this object</source>
-      <translation>Filen PAT som används av detta objekt</translation>
+      <translation>PAT-filen som används av detta objekt</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="57"/>
@@ -6888,27 +6772,27 @@ Det är en lista med strängar; varje element i listan kommer att visas på en e
     <message>
       <location filename="../../draftobjects/hatch.py" line="66"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation>Om inställningen är False appliceras skrafferingen som den är på ytorna, utan översättning (detta kan ge fel resultat för ytor som inte är XY)</translation>
+      <translation>Om inställningen är False appliceras skrafferingen som den är på ytorna, utan translateras (detta kan ge fel resultat för ytor som inte är XY)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="52"/>
+      <location filename="../../draftobjects/clone.py" line="51"/>
       <source>The objects included in this clone</source>
       <translation>De objekt som ingår i denna klon</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="55"/>
+      <location filename="../../draftobjects/clone.py" line="54"/>
       <source>The scale factor of this clone</source>
       <translation>Skalfaktorn för denna klon</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="61"/>
+      <location filename="../../draftobjects/clone.py" line="60"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
       <translation>Om Clones innehåller flera objekt,
 ange True för fusion eller False för förening</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="64"/>
+      <location filename="../../draftobjects/clone.py" line="63"/>
       <source>Always create a compound</source>
       <translation>Skapa alltid en förening</translation>
     </message>
@@ -6943,12 +6827,12 @@ ange True för fusion eller False för förening</translation>
       <location filename="../../draftobjects/circle.py" line="62"/>
       <location filename="../../draftobjects/polygon.py" line="72"/>
       <location filename="../../draftobjects/rectangle.py" line="67"/>
-      <location filename="../../draftobjects/wire.py" line="95"/>
+      <location filename="../../draftobjects/wire.py" line="94"/>
       <source>The area of this object</source>
       <translation>Området för detta objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="61"/>
+      <location filename="../../draftobjects/layer.py" line="60"/>
       <source>The objects that are part of this layer</source>
       <translation>De objekt som ingår i detta lager</translation>
     </message>
@@ -6970,50 +6854,50 @@ ange True för fusion eller False för förening</translation>
     <message>
       <location filename="../../draftobjects/polygon.py" line="60"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
-      <location filename="../../draftobjects/wire.py" line="79"/>
+      <location filename="../../draftobjects/wire.py" line="78"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Radie som ska användas för att falsa hörnen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
-      <location filename="../../draftobjects/wire.py" line="83"/>
+      <location filename="../../draftobjects/wire.py" line="82"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Storlek på den avfasning som ska göras i hörnen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="87"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
       <translation>Det basobjekt som ska dupliceras.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="225"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="95"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="94"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>Det objekt längs vilket kopiorna kommer att distribueras. Det måste innehålla "Edges".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="115"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
       <source>Number of copies to create.</source>
-      <translation>Antalet kopior att skapa.</translation>
+      <translation>Antal kopior som ska skapas.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="123"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="122"/>
       <source>Rotation factor of the twisted array.</source>
       <translation>Rotationsfaktor för den vridna matrisen.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="368"/>
+      <location filename="../../draftobjects/array.py" line="367"/>
       <location filename="../../draftobjects/patharray.py" line="262"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="131"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="130"/>
       <location filename="../../draftobjects/pointarray.py" line="116"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Visa de enskilda arrayelementen (endast för Link-arrayer)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="154"/>
+      <location filename="../../draftobjects/array.py" line="153"/>
       <location filename="../../draftobjects/patharray.py" line="274"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="140"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="139"/>
       <location filename="../../draftobjects/pointarray.py" line="127"/>
       <source>The placement for each array element</source>
       <translation>Placeringen för varje arrayelement</translation>
@@ -7114,21 +6998,21 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>Den typ av information som visas av denna etikett.
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like BIM objects.
+Om "Custom" väljs kommer innehållet i "Custom Text" att användas.
+För andra typer beräknas strängen automatiskt från det objekt som definieras i "Target".
+"Tag" och "Material" fungerar endast för objekt som har dessa egenskaper, t.ex. BIM-objekt.
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+För 'Position', 'Längd' och 'Area' kommer dessa egenskaper att extraheras från huvudobjektet i 'Target',
+eller från underelementet 'VertexN', 'EdgeN' respektive 'FaceN', om det är specificerat.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="85"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation>Allmän skalningsfaktor som påverkar annoteringen på ett konsekvent sätt
+      <translation>Allmän skalningsfaktor som påverkar anteckningar på ett konsekvent sätt
 eftersom den skalar texten och eventuella linjedekorationer i samma proportion,
 i samma proportion.</translation>
     </message>
@@ -7142,7 +7026,7 @@ När du använder en sparad stil blir vissa av vyegenskaperna skrivskyddade;
 de kan endast redigeras genom att ändra stilen med hjälp av verktyget "Annotation style editor".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="100"/>
+      <location filename="../../draftobjects/array.py" line="99"/>
       <location filename="../../draftobjects/patharray.py" line="216"/>
       <source>The base object that will be duplicated</source>
       <translation>Basobjektet som kommer att dupliceras</translation>
@@ -7159,18 +7043,18 @@ Lämna denna egenskap tom för att skapa kopior längs hela "Path Object".</tran
     <message>
       <location filename="../../draftobjects/patharray.py" line="303"/>
       <source>Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Tvinga fram användning av "Vertical Vector" som lokal Z-riktning vid användning av "Original" eller "Tangent" inriktningsläge</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="353"/>
       <source>Number of copies to create</source>
-      <translation>Antal kopior att skapa</translation>
+      <translation>Antal kopior som ska skapas</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="285"/>
       <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
-      <translation>Ytterligare översättning som kommer att tillämpas på varje kopia.
+      <translation>Ytterligare translatering som kommer att tillämpas på varje kopia.
 Detta är användbart för att justera för skillnaden mellan formens centrum och formens referenspunkt.</translation>
     </message>
     <message>
@@ -7247,112 +7131,112 @@ Otherwise the copies will have the same orientation as the original Base object.
 Annars kommer kopiorna att ha samma orientering som det ursprungliga Base-objektet.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="116"/>
+      <location filename="../../draftobjects/array.py" line="115"/>
       <source>The type of array to create.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circles around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circles around the base object.</translation>
+      <translation>Den typ av matris som ska skapas.
+- Ortho: placerar kopiorna i riktning mot de globala X-, Y- och Z-axlarna.
+- Polar: placerar kopiorna längs en cirkelbåge, upp till en angiven vinkel och med en viss orientering som definieras av ett centrum och en axel.
+- Circular: placerar kopiorna i koncentriska cirklar runt basobjektet.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="128"/>
+      <location filename="../../draftobjects/array.py" line="127"/>
       <location filename="../../draftobjects/patharray.py" line="253"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="104"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="103"/>
       <location filename="../../draftobjects/pointarray.py" line="88"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>Anger om kopiorna ska smältas samman om de rör vid varandra (långsammare)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="168"/>
+      <location filename="../../draftobjects/array.py" line="167"/>
       <source>Number of copies in X-direction</source>
-      <translation type="unfinished">Number of copies in X-direction</translation>
+      <translation>Antal kopior i X-riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="178"/>
+      <location filename="../../draftobjects/array.py" line="177"/>
       <source>Number of copies in Y-direction</source>
-      <translation type="unfinished">Number of copies in Y-direction</translation>
+      <translation>Antal kopior i Y-riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="188"/>
+      <location filename="../../draftobjects/array.py" line="187"/>
       <source>Number of copies in Z-direction</source>
-      <translation type="unfinished">Number of copies in Z-direction</translation>
+      <translation>Antal kopior i Z-riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="199"/>
+      <location filename="../../draftobjects/array.py" line="198"/>
       <source>Distance and orientation of intervals in X-direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X-direction</translation>
+      <translation>Avstånd och orientering av intervall i X-riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="210"/>
+      <location filename="../../draftobjects/array.py" line="209"/>
       <source>Distance and orientation of intervals in Y-direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y-direction</translation>
+      <translation>Avstånd och orientering av intervall i Y-riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="221"/>
+      <location filename="../../draftobjects/array.py" line="220"/>
       <source>Distance and orientation of intervals in Z-direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z-direction</translation>
+      <translation>Avstånd och orientering av intervall i Z-riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="237"/>
+      <location filename="../../draftobjects/array.py" line="236"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
       <translation>Den axelriktning runt vilken elementen i en polar eller cirkulär matris kommer att skapas</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="249"/>
+      <location filename="../../draftobjects/array.py" line="248"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
       <translation>Mittpunkt för polära och cirkulära matriser.
 'Axis' passerar genom denna punkt.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="269"/>
+      <location filename="../../draftobjects/array.py" line="268"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation>Axelobjektet som åsidosätter värdet för "Axis" och "Center", t.ex. en datumlinje.
+      <translation>Det axelobjekt som åsidosätter värdet för "Axel" och "Centrum", t.ex. en referenspunktslinje.
 Dess placering, position och rotation kommer att användas när man skapar polära och cirkulära matriser.
-Lämna denna egenskap tom för att kunna ställa in 'Axis' och 'Center' manuellt.</translation>
+Lämna denna egenskap tom för att kunna ställa in 'Axel' och 'Centrum' manuellt.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="283"/>
+      <location filename="../../draftobjects/array.py" line="282"/>
       <source>Number of copies in the polar direction</source>
       <translation>Antal kopior i den polära riktningen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="294"/>
+      <location filename="../../draftobjects/array.py" line="293"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
       <translation>Avstånd och orientering av intervall i "axelns" riktning</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="304"/>
+      <location filename="../../draftobjects/array.py" line="303"/>
       <source>Angle to cover with copies</source>
       <translation>Vinkel till omslag med kopior</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="318"/>
+      <location filename="../../draftobjects/array.py" line="317"/>
       <source>Distance between concentric circles</source>
-      <translation type="unfinished">Distance between concentric circles</translation>
+      <translation>Avstånd mellan koncentriska cirklar</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="329"/>
+      <location filename="../../draftobjects/array.py" line="328"/>
       <source>Distance between copies in the same circle</source>
-      <translation type="unfinished">Distance between copies in the same circle</translation>
+      <translation>Avstånd mellan kopior i samma cirkel</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="340"/>
+      <location filename="../../draftobjects/array.py" line="339"/>
       <source>Number of concentric circle. The 'Base' object counts as one circle.</source>
-      <translation type="unfinished">Number of concentric circle. The 'Base' object counts as one circle.</translation>
+      <translation>Antal koncentriska cirklar. Objektet "Base" räknas som en cirkel.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="352"/>
+      <location filename="../../draftobjects/array.py" line="351"/>
       <source>A parameter that determines how many symmetry planes the circular array will have</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have</translation>
+      <translation>En parameter som bestämmer hur många symmetriplan den cirkulära matrisen ska ha</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="142"/>
+      <location filename="../../draftobjects/array.py" line="141"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
       <translation>Totalt antal element i matrisen.
@@ -7398,7 +7282,7 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på punkterna i "Point O
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="81"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation>Index för de ansikten som ska projiceras i läget Individual Faces</translation>
+      <translation>Index för de ytor som ska projiceras i läget Individuella ytor</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="86"/>
@@ -7493,17 +7377,17 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på punkterna i "Point O
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
       <source>X Location</source>
-      <translation>X-placering</translation>
+      <translation>X Plats</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="48"/>
       <source>Y Location</source>
-      <translation>Y-placering</translation>
+      <translation>Y Plats</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="51"/>
       <source>Z Location</source>
-      <translation>Z-placering</translation>
+      <translation>Z Plats</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="45"/>
@@ -7547,7 +7431,7 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på punkterna i "Point O
     <message>
       <location filename="../../draftobjects/fillet.py" line="68"/>
       <source>The length of this line.</source>
-      <translation>Längden på denna linje.</translation>
+      <translation>Längden på denna rad.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="77"/>
@@ -7555,17 +7439,17 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på punkterna i "Point O
       <translation>Radie som ska användas för att avrunda hörnet.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="135"/>
+      <location filename="../../draftobjects/dimension.py" line="134"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>Den normala riktningen för dimensionens text</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="148"/>
+      <location filename="../../draftobjects/dimension.py" line="147"/>
       <source>The object measured by this dimension</source>
-      <translation type="unfinished">The object measured by this dimension</translation>
+      <translation>Objektet som mäts med denna dimension</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="166"/>
+      <location filename="../../draftobjects/dimension.py" line="165"/>
       <source>The object, and specific subelements of it,
 that this dimension is measuring.
 
@@ -7573,16 +7457,16 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension is measuring.
+      <translation>Objektet, och specifika delelement av det,
+som denna dimension mäter.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Det finns flera olika möjligheter:
+- Ett objekt och en av dess kanter.
+- Ett objekt och två av dess hörn.
+- Ett bågobjekt och dess kant.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="190"/>
+      <location filename="../../draftobjects/dimension.py" line="189"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7601,7 +7485,7 @@ som visar den uppmätta radien eller diametern.
 som visar den uppmätta vinkeln.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="237"/>
+      <location filename="../../draftobjects/dimension.py" line="234"/>
       <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7612,7 +7496,7 @@ Om det är en radiedimension blir det bågens mittpunkt.
 Om det är ett diameterdimensioner kommer det att vara en punkt som ligger på bågen.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="252"/>
+      <location filename="../../draftobjects/dimension.py" line="249"/>
       <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7623,14 +7507,14 @@ Om det är en dimension för radie eller diameter
 kommer det att vara en punkt som ligger på bågen.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="265"/>
+      <location filename="../../draftobjects/dimension.py" line="262"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation>Riktningen för måttslinjen.
 Om detta förblir '(0,0,0)', kommer riktningen att beräknas automatiskt.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="283"/>
+      <location filename="../../draftobjects/dimension.py" line="280"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7647,28 +7531,28 @@ Om den "Länkade geometrin" är en båge eller cirkel, är detta "Avstånd
 radien eller diametern, beroende på egenskapen 'Diameter'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="295"/>
+      <location filename="../../draftobjects/dimension.py" line="292"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
       <translation>Vid mätning av cirkelbågar avgör den om värdet för radie eller diameter ska visas
 radien eller diameterns värde</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="531"/>
+      <location filename="../../draftobjects/dimension.py" line="528"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Startvinkel för måttslinjen (cirkelbåge).
 Cirkelbågen ritas moturs.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="543"/>
+      <location filename="../../draftobjects/dimension.py" line="540"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Slutvinkel för måttslinjen (cirkelbåge).
 Cirkelbågen ritas moturs.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="559"/>
+      <location filename="../../draftobjects/dimension.py" line="556"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -7679,7 +7563,7 @@ Detta är normalt den punkt där två linjesegment, eller deras förlängningar
 korsar varandra, vilket resulterar i den uppmätta "vinkeln" mellan dem.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="574"/>
+      <location filename="../../draftobjects/dimension.py" line="571"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -7692,12 +7576,12 @@ egenskaperna "First Angle" och "Last Angle".</translation>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation>Längden på rektangeln</translation>
+      <translation>Längd på rektangeln</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation>Höjden på rektangeln</translation>
+      <translation>Rektangelns höjd</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
@@ -7737,7 +7621,7 @@ egenskaperna "First Angle" och "Last Angle".</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="62"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation>Arean av ansiktena på denna Facebinder</translation>
+      <translation>Arean av ytorna på denna vägglist</translation>
     </message>
     <message>
       <location filename="../../draftobjects/block.py" line="44"/>
@@ -7745,47 +7629,47 @@ egenskaperna "First Angle" och "Last Angle".</translation>
       <translation>Komponenterna i detta block</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="51"/>
+      <location filename="../../draftobjects/wire.py" line="50"/>
       <source>The vertices of the wire</source>
       <translation>Ledningens hörnpunkter</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="55"/>
+      <location filename="../../draftobjects/wire.py" line="54"/>
       <source>If the wire is closed or not</source>
       <translation>Om kabeln är sluten eller inte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="59"/>
+      <location filename="../../draftobjects/wire.py" line="58"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
       <translation>Basobjektet är kabeln, som består av 2 objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="63"/>
+      <location filename="../../draftobjects/wire.py" line="62"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
       <translation>Verktygsobjektet är tråden, den är formad av 2 objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="67"/>
+      <location filename="../../draftobjects/wire.py" line="66"/>
       <source>The start point of this line</source>
       <translation>Startpunkten för denna linje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="71"/>
+      <location filename="../../draftobjects/wire.py" line="70"/>
       <source>The end point of this line</source>
       <translation>Slutpunkten för denna linje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="75"/>
+      <location filename="../../draftobjects/wire.py" line="74"/>
       <source>The length of this line</source>
       <translation>Längden på denna linje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="87"/>
+      <location filename="../../draftobjects/wire.py" line="86"/>
       <source>Create a face if this object is closed</source>
-      <translation>Skapa ett ansikte om detta objekt är stängt</translation>
+      <translation>Skapa en yta om detta objekt är stängt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="91"/>
+      <location filename="../../draftobjects/wire.py" line="90"/>
       <source>The number of subdivisions of each edge</source>
       <translation>Antalet underavdelningar för varje kant</translation>
     </message>
@@ -7802,7 +7686,7 @@ egenskaperna "First Angle" och "Last Angle".</translation>
     <message>
       <location filename="../../draftobjects/bspline.py" line="54"/>
       <source>Create a face if this B-spline is closed</source>
-      <translation type="unfinished">Create a face if this B-spline is closed</translation>
+      <translation>Skapa en yta om denna B-spline är sluten</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="73"/>
@@ -7833,7 +7717,7 @@ egenskaperna "First Angle" och "Last Angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="58"/>
       <source>Vertical alignment</source>
-      <translation>Vertikal justering</translation>
+      <translation>Vertikal anpassning</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="70"/>
@@ -7914,7 +7798,7 @@ egenskaperna "First Angle" och "Last Angle".</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="150"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation>Teckningsstilen för de objekt som finns i detta lager</translation>
+      <translation>Ritstilen för de objekt som finns i detta lager</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="162"/>
@@ -8037,7 +7921,7 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftviewproviders/view_rectangle.py" line="41"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
-      <translation>Definierar en texturbild (åsidosätter kläckningsmönster)</translation>
+      <translation>Definierar en texturbild (åsidosätter skrafferingsmönster)</translation>
     </message>
   </context>
   <context>
@@ -8058,7 +7942,7 @@ bortom dimensionslinjen</translation>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Släppning</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="205"/>
@@ -8066,7 +7950,7 @@ bortom dimensionslinjen</translation>
       <location filename="../../InitGui.py" line="207"/>
       <location filename="../../InitGui.py" line="208"/>
       <source>Import-Export</source>
-      <translation>Importera/Exportera</translation>
+      <translation>Import och export</translation>
     </message>
   </context>
   <context>
@@ -8074,12 +7958,12 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
       <source>Annotation Styles</source>
-      <translation type="unfinished">Annotation Styles</translation>
+      <translation>Stilar för anteckningar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
       <source>Opens an editor to manage or create annotation styles</source>
-      <translation type="unfinished">Opens an editor to manage or create annotation styles</translation>
+      <translation>Öppnar en redigerare för att hantera eller skapa anteckningsstilar</translation>
     </message>
   </context>
   <context>
@@ -8087,12 +7971,12 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="507"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Båge från 3 punkter</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="510"/>
       <source>Creates a circular arc from 3 points</source>
-      <translation type="unfinished">Creates a circular arc from 3 points</translation>
+      <translation>Skapar en cirkelbåge från 3 punkter</translation>
     </message>
   </context>
   <context>
@@ -8100,12 +7984,12 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="664"/>
       <source>Arc Tools</source>
-      <translation type="unfinished">Arc Tools</translation>
+      <translation>Arc-verktyg</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="667"/>
       <source>Tools to create various types of circular arcs</source>
-      <translation type="unfinished">Tools to create various types of circular arcs</translation>
+      <translation>Verktyg för att skapa olika typer av cirkelbågar</translation>
     </message>
   </context>
   <context>
@@ -8113,12 +7997,12 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="66"/>
       <source>Array Tools</source>
-      <translation type="unfinished">Array Tools</translation>
+      <translation>Verktyg för matriser</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="69"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation type="unfinished">Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</translation>
+      <translation>Verktyg för att skapa olika typer av matriser, inklusive rektangulära, polära, cirkulära, ban- och punktmatriser</translation>
     </message>
   </context>
   <context>
@@ -8126,12 +8010,12 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="66"/>
       <source>Bézier Curve</source>
-      <translation type="unfinished">Bézier Curve</translation>
+      <translation>Bézier-kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="69"/>
       <source>Creates an n-degree Bézier curve. The more points, the higher the degree.</source>
-      <translation type="unfinished">Creates an n-degree Bézier curve. The more points, the higher the degree.</translation>
+      <translation>Skapar en n-gradig Bézier-kurva. Ju fler punkter, desto högre grad.</translation>
     </message>
   </context>
   <context>
@@ -8139,14 +8023,14 @@ bortom dimensionslinjen</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="254"/>
       <source>Cubic Bézier Curve</source>
-      <translation type="unfinished">Cubic Bézier Curve</translation>
+      <translation>Kubisk Bézier-kurva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="257"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
 Control points and properties of each knot can be edited after creation.</source>
-      <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
-Control points and properties of each knot can be edited after creation.</translation>
+      <translation>Skapar en Bézier-kurva bestående av segment av 2:a graden (kvadratisk) och 3:e graden (kubisk). Genom att klicka och dra kan du definiera segmenten.
+Kontrollpunkter och egenskaper för varje knut kan redigeras efter skapandet.</translation>
     </message>
   </context>
   <context>
@@ -8154,12 +8038,12 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="499"/>
       <source>Bézier Tools</source>
-      <translation type="unfinished">Bézier Tools</translation>
+      <translation>Bézier-verktyg</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="502"/>
       <source>Tools to create various types of Bézier curves</source>
-      <translation type="unfinished">Tools to create various types of Bézier curves</translation>
+      <translation>Verktyg för att skapa olika typer av Bézier-kurvor</translation>
     </message>
   </context>
   <context>
@@ -8167,12 +8051,12 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="55"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>Cirkulär matris</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="58"/>
       <source>Creates copies of the selected object in a radial pattern with 1 or more circular layers</source>
-      <translation type="unfinished">Creates copies of the selected object in a radial pattern with 1 or more circular layers</translation>
+      <translation>Skapar kopior av det markerade objektet i ett radiellt mönster med 1 eller flera cirkulära lager</translation>
     </message>
   </context>
   <context>
@@ -8180,14 +8064,14 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="62"/>
       <source>Flip Dimension</source>
-      <translation type="unfinished">Flip Dimension</translation>
+      <translation>Vänd dimension</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
       <source>Flips the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flips the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Vänder normalriktningen för de valda dimensionerna (linjär, radiell, vinkel).
+Om andra objekt har valts ignoreras de.</translation>
     </message>
   </context>
   <context>
@@ -8195,16 +8079,16 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Släppning till skiss</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Converts bidirectionally between Draft objects and sketches.
 Multiple selected Draft objects are converted into a single sketch.
 However, a single sketch with disconnected traces is converted into several individual Draft objects.</source>
-      <translation type="unfinished">Converts bidirectionally between Draft objects and sketches.
-Multiple selected Draft objects are converted into a single sketch.
-However, a single sketch with disconnected traces is converted into several individual Draft objects.</translation>
+      <translation>Konverterar dubbelriktat mellan Draft-objekt och skisser.
+Flera markerade Draft-objekt konverteras till en enda skiss.
+En enda skiss med avskurna spår konverteras dock till flera enskilda Draft-objekt.</translation>
     </message>
   </context>
   <context>
@@ -8212,25 +8096,25 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="60"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Växla rutnät</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
       <source>Toggles the visibility of the Draft grid</source>
-      <translation type="unfinished">Toggles the visibility of the Draft grid</translation>
+      <translation>Växlar synligheten för Draft-rutnätet</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="73"/>
-      <source>Add to Group…</source>
-      <translation type="unfinished">Add to Group…</translation>
+      <source>Add to Group</source>
+      <translation>Lägg till i grupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="76"/>
       <source>Adds selected objects to a group, or removes them from any group</source>
-      <translation type="unfinished">Adds selected objects to a group, or removes them from any group</translation>
+      <translation>Lägger till markerade objekt i en grupp eller tar bort dem från en grupp</translation>
     </message>
   </context>
   <context>
@@ -8238,12 +8122,12 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="169"/>
       <source>Select Group</source>
-      <translation type="unfinished">Select Group</translation>
+      <translation>Välj grupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="172"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.</translation>
+      <translation>Väljer innehållet i valda grupper. För valda objekt som inte ingår i en grupp väljs innehållet i den grupp de ingår i.</translation>
     </message>
   </context>
   <context>
@@ -8251,12 +8135,12 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="213"/>
       <source>Auto-Group</source>
-      <translation type="unfinished">Auto-Group</translation>
+      <translation>Automatisk grupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="216"/>
       <source>Adds new Draft and BIM objects to the selected layer or group</source>
-      <translation type="unfinished">Adds new Draft and BIM objects to the selected layer or group</translation>
+      <translation>Lägger till nya Draft- och BIM-objekt till det valda lagret eller den valda gruppen</translation>
     </message>
   </context>
   <context>
@@ -8264,16 +8148,16 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="337"/>
       <source>Add to Construction Group</source>
-      <translation type="unfinished">Add to Construction Group</translation>
+      <translation>Lägg till i konstruktionsgrupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="340"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 The construction group is created if it does not exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-The construction group is created if it does not exist.</translation>
+      <translation>Lägger till de markerade objekten i konstruktionsgruppen,
+och ändrar deras utseende till konstruktionsstilen.
+Konstruktionsgruppen skapas om den inte redan finns.</translation>
     </message>
   </context>
   <context>
@@ -8281,12 +8165,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="391"/>
       <source>New Named Group</source>
-      <translation type="unfinished">New Named Group</translation>
+      <translation>Ny namngiven grupp</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="394"/>
       <source>Adds a group with a given name</source>
-      <translation type="unfinished">Adds a group with a given name</translation>
+      <translation>Lägger till en grupp med ett givet namn</translation>
     </message>
   </context>
   <context>
@@ -8294,12 +8178,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="58"/>
       <source>Open Links</source>
-      <translation type="unfinished">Open Links</translation>
+      <translation>Öppna länkar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="60"/>
       <source>Opens linked documents</source>
-      <translation type="unfinished">Opens linked documents</translation>
+      <translation>Öppnar länkade dokument</translation>
     </message>
   </context>
   <context>
@@ -8307,12 +8191,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="96"/>
       <source>Add to Layer</source>
-      <translation type="unfinished">Add to Layer</translation>
+      <translation>Lägg till i lager</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="99"/>
       <source>Adds selected objects to a layer, or removes them from any layer</source>
-      <translation type="unfinished">Adds selected objects to a layer, or removes them from any layer</translation>
+      <translation>Lägger till markerade objekt till ett lager eller tar bort dem från ett lager</translation>
     </message>
   </context>
   <context>
@@ -8320,12 +8204,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="182"/>
       <source>Manage Layers</source>
-      <translation type="unfinished">Manage Layers</translation>
+      <translation>Hantera lager</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="185"/>
       <source>Allows to modify the layers</source>
-      <translation type="unfinished">Allows to modify the layers</translation>
+      <translation>Gör det möjligt att ändra lagren</translation>
     </message>
   </context>
   <context>
@@ -8333,7 +8217,7 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="66"/>
       <source>Set Slope</source>
-      <translation type="unfinished">Set Slope</translation>
+      <translation>Ställ in lutning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="69"/>
@@ -8342,11 +8226,11 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn on the XY-plane.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Ställer in lutningen på den valda linjen genom att ändra värdet på Z-värdet för en av dess punkter.
+Om en polylinje är markerad kommer den att tillämpa lutningstransformationen på vart och ett av dess segment.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn on the XY-plane.</translation>
+Lutningen ändrar alltid Z-värdet, och därför fungerar detta kommando bara bra för
+raka draglinjer som ritas i XY-planet.</translation>
     </message>
   </context>
   <context>
@@ -8354,12 +8238,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="73"/>
       <source>Path Array</source>
-      <translation type="unfinished">Path Array</translation>
+      <translation>Sökväg Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path</translation>
+      <translation>Skapar kopior av det markerade objektet längs en markerad bana</translation>
     </message>
   </context>
   <context>
@@ -8372,7 +8256,7 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="170"/>
       <source>Creates linked copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates linked copies of the selected object along a selected path</translation>
+      <translation>Skapar länkade kopior av det valda objektet längs en vald bana</translation>
     </message>
   </context>
   <context>
@@ -8385,7 +8269,7 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="69"/>
       <source>Creates twisted copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates twisted copies of the selected object along a selected path</translation>
+      <translation>Skapar vridna kopior av det valda objektet längs en vald bana</translation>
     </message>
   </context>
   <context>
@@ -8398,7 +8282,7 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="124"/>
       <source>Creates twisted linked copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates twisted linked copies of the selected object along a selected path</translation>
+      <translation>Skapar vridna länkade kopior av det valda objektet längs en vald bana</translation>
     </message>
   </context>
   <context>
@@ -8406,12 +8290,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Working Plane Proxy</source>
-      <translation type="unfinished">Working Plane Proxy</translation>
+      <translation>Proxy för arbetsplan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="49"/>
       <source>Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects</translation>
+      <translation>Skapar ett proxyobjekt från det aktuella arbetsplanet som gör det möjligt att återställa kamerapositionen och synligheten för objekt</translation>
     </message>
   </context>
   <context>
@@ -8419,12 +8303,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="67"/>
       <source>Point Array</source>
-      <translation type="unfinished">Point Array</translation>
+      <translation>Punkt Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
       <source>Creates copies of the selected object at the points of a point object</source>
-      <translation type="unfinished">Creates copies of the selected object at the points of a point object</translation>
+      <translation>Skapar kopior av det markerade objektet vid punkterna i ett punktobjekt</translation>
     </message>
   </context>
   <context>
@@ -8437,7 +8321,7 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="135"/>
       <source>Creates linked copies of the selected object at the points of a point object</source>
-      <translation type="unfinished">Creates linked copies of the selected object at the points of a point object</translation>
+      <translation>Skapar länkade kopior av det valda objektet vid punkterna i ett punktobjekt</translation>
     </message>
   </context>
   <context>
@@ -8445,12 +8329,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="55"/>
       <source>Polar Array</source>
-      <translation type="unfinished">Polar Array</translation>
+      <translation>Polär matris</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="58"/>
       <source>Creates copies of the selected object in a polar pattern</source>
-      <translation type="unfinished">Creates copies of the selected object in a polar pattern</translation>
+      <translation>Skapar kopior av det markerade objektet i ett polärt mönster</translation>
     </message>
   </context>
   <context>
@@ -8458,12 +8342,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="59"/>
       <source>Working Plane</source>
-      <translation type="unfinished">Working Plane</translation>
+      <translation>Arbetsplan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="62"/>
       <source>Defines the working plane from 3 vertices, 1 or more shapes, or an object</source>
-      <translation type="unfinished">Defines the working plane from 3 vertices, 1 or more shapes, or an object</translation>
+      <translation>Definierar arbetsplanet från 3 hörn, 1 eller flera former eller ett objekt</translation>
     </message>
   </context>
   <context>
@@ -8471,12 +8355,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="63"/>
       <source>Set Style</source>
-      <translation type="unfinished">Set Style</translation>
+      <translation>Ställ in stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="67"/>
       <source>Sets the default style and can apply the style to objects</source>
-      <translation type="unfinished">Sets the default style and can apply the style to objects</translation>
+      <translation>Ställer in standardstilen och kan tillämpa stilen på objekt</translation>
     </message>
   </context>
   <context>
@@ -8484,14 +8368,14 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="59"/>
       <source>Shape 2D View</source>
-      <translation type="unfinished">Shape 2D View</translation>
+      <translation>Forma 2D-vy</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="62"/>
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY-plane.
-The initial projection direction is the opposite of the current active view direction.</translation>
+      <translation>Skapar en 2D-projektion av de valda objekten på XY-planet.
+Den initiala projektionsriktningen är den motsatta till den aktuella aktiva vyriktningen.</translation>
     </message>
   </context>
   <context>
@@ -8499,12 +8383,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="60"/>
       <source>Shape From Text</source>
-      <translation type="unfinished">Shape From Text</translation>
+      <translation>Form från text</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="63"/>
       <source>Creates a shape from a text string and a specified font</source>
-      <translation type="unfinished">Creates a shape from a text string and a specified font</translation>
+      <translation>Skapar en form från en textsträng och ett angivet teckensnitt</translation>
     </message>
   </context>
   <context>
@@ -8512,12 +8396,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="66"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Snäpplås</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="67"/>
       <source>Enables or disables snapping globally</source>
-      <translation type="unfinished">Enables or disables snapping globally</translation>
+      <translation>Aktiverar eller avaktiverar snapping globalt</translation>
     </message>
   </context>
   <context>
@@ -8525,12 +8409,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="82"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Snap Mittpunkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="83"/>
       <source>Snaps to the midpoint of edges</source>
-      <translation type="unfinished">Snaps to the midpoint of edges</translation>
+      <translation>Snäpper fast i mittpunkten av kanterna</translation>
     </message>
   </context>
   <context>
@@ -8538,12 +8422,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="96"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Snäpp vinkelrätt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="97"/>
       <source>Snaps to the perpendicular points on faces and edges</source>
-      <translation type="unfinished">Snaps to the perpendicular points on faces and edges</translation>
+      <translation>Snäpper till de vinkelräta punkterna på ytor och kanter</translation>
     </message>
   </context>
   <context>
@@ -8556,7 +8440,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="111"/>
       <source>Snaps to the intersections of grid lines</source>
-      <translation type="unfinished">Snaps to the intersections of grid lines</translation>
+      <translation>Snäpper till skärningspunkterna mellan rutnätslinjerna</translation>
     </message>
   </context>
   <context>
@@ -8564,12 +8448,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="124"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Snap korsning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="125"/>
       <source>Snaps to the intersection of 2 edges, and the intersection of a face and an edge</source>
-      <translation type="unfinished">Snaps to the intersection of 2 edges, and the intersection of a face and an edge</translation>
+      <translation>Snäpper till skärningspunkten mellan 2 kanter och skärningspunkten mellan en yta och en kant</translation>
     </message>
   </context>
   <context>
@@ -8577,12 +8461,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="138"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Snap Parallell</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="139"/>
       <source>Snaps to an imaginary line parallel to straight edges</source>
-      <translation type="unfinished">Snaps to an imaginary line parallel to straight edges</translation>
+      <translation>Snäpper fast vid en tänkt linje parallellt med raka kanter</translation>
     </message>
   </context>
   <context>
@@ -8590,12 +8474,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="152"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Snäpp slutpunkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="153"/>
       <source>Snaps to the endpoints of edges</source>
-      <translation type="unfinished">Snaps to the endpoints of edges</translation>
+      <translation>Snäpper till ändpunkterna på kanterna</translation>
     </message>
   </context>
   <context>
@@ -8603,12 +8487,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Snäppvinkel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°</source>
-      <translation type="unfinished">Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°</translation>
+      <translation>Snäpper fast i de speciella kardinalpunkterna på cirkulära kanter, vid multiplar av 30° och 45°</translation>
     </message>
   </context>
   <context>
@@ -8621,7 +8505,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="181"/>
       <source>Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</source>
-      <translation type="unfinished">Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</translation>
+      <translation>Snäpper till mittpunkten för ytor och cirkulära kanter, och till placeringspunkten för arbetsplansproxyer och byggnadsdelar</translation>
     </message>
   </context>
   <context>
@@ -8629,12 +8513,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="194"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Snäppförlängning</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="195"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges</source>
-      <translation type="unfinished">Snaps to an imaginary line that extends beyond the endpoints of straight edges</translation>
+      <translation>Snäpper till en imaginär linje som sträcker sig bortom ändpunkterna för raka kanter</translation>
     </message>
   </context>
   <context>
@@ -8642,12 +8526,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="208"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Snabbt nära</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="209"/>
       <source>Snaps to the nearest point on faces and edges</source>
-      <translation type="unfinished">Snaps to the nearest point on faces and edges</translation>
+      <translation>Snäpper till närmaste punkt på ytor och kanter</translation>
     </message>
   </context>
   <context>
@@ -8660,7 +8544,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="223"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°</source>
-      <translation type="unfinished">Snaps to imaginary lines that cross the previous point at multiples of 45°</translation>
+      <translation>Snäpper till imaginära linjer som korsar den föregående punkten i multiplar av 45°</translation>
     </message>
   </context>
   <context>
@@ -8673,7 +8557,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="237"/>
       <source>Snaps to special points defined by the object</source>
-      <translation type="unfinished">Snaps to special points defined by the object</translation>
+      <translation>Snäpper till speciella punkter som definieras av objektet</translation>
     </message>
   </context>
   <context>
@@ -8681,12 +8565,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="250"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Snäppdimensioner</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="251"/>
       <source>Shows temporary X and Y dimensions</source>
-      <translation type="unfinished">Shows temporary X and Y dimensions</translation>
+      <translation>Visar tillfälliga X- och Y-mått</translation>
     </message>
   </context>
   <context>
@@ -8694,12 +8578,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="264"/>
       <source>Snap Working Plane</source>
-      <translation type="unfinished">Snap Working Plane</translation>
+      <translation>Snap arbetsplan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="265"/>
       <source>Projects snap points onto the current working plane</source>
-      <translation type="unfinished">Projects snap points onto the current working plane</translation>
+      <translation>Projicerar snap-punkter på det aktuella arbetsplanet</translation>
     </message>
   </context>
   <context>
@@ -8707,12 +8591,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="278"/>
       <source>Show Snap Toolbar</source>
-      <translation type="unfinished">Show Snap Toolbar</translation>
+      <translation>Visa Snap-verktygsfältet</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="279"/>
       <source>Shows the snap toolbar if it is hidden</source>
-      <translation type="unfinished">Shows the snap toolbar if it is hidden</translation>
+      <translation>Visar snapverktygsfältet om det är dolt</translation>
     </message>
   </context>
   <context>
@@ -8720,12 +8604,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="60"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline</source>
-      <translation type="unfinished">Creates a multiple-point B-spline</translation>
+      <translation>Skapar en B-spline med flera punkter</translation>
     </message>
   </context>
   <context>
@@ -8733,12 +8617,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="47"/>
       <source>Apply Current Style</source>
-      <translation type="unfinished">Apply Current Style</translation>
+      <translation>Tillämpa aktuell stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="51"/>
       <source>Applies the current style to the selected objects and groups</source>
-      <translation type="unfinished">Applies the current style to the selected objects and groups</translation>
+      <translation>Tillämpar den aktuella stilen på de markerade objekten och grupperna</translation>
     </message>
   </context>
   <context>
@@ -8746,12 +8630,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="62"/>
       <source>Highlight Subelements</source>
-      <translation type="unfinished">Highlight Subelements</translation>
+      <translation>Markera underelement</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
-      <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
+      <translation>Markerar underelementen i de markerade objekten för att kunna flytta, rotera och skala dem</translation>
     </message>
   </context>
   <context>
@@ -8759,12 +8643,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="99"/>
       <source>Toggle Construction Mode</source>
-      <translation type="unfinished">Toggle Construction Mode</translation>
+      <translation>Växla byggläge</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the construction mode</source>
-      <translation type="unfinished">Toggles the construction mode</translation>
+      <translation>Växlar konstruktionsläge</translation>
     </message>
   </context>
   <context>
@@ -8772,12 +8656,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="136"/>
       <source>Toggle Wireframe</source>
-      <translation type="unfinished">Toggle Wireframe</translation>
+      <translation>Växla trådram</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="138"/>
       <source>Switches the view style of the selected objects from Flat Lines to Wireframe and back</source>
-      <translation type="unfinished">Switches the view style of the selected objects from Flat Lines to Wireframe and back</translation>
+      <translation>Växlar visningsstilen för de markerade objekten från platta linjer till trådram och tillbaka</translation>
     </message>
   </context>
   <context>
@@ -8785,12 +8669,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="64"/>
       <source>Convert Wire/B-Spline</source>
-      <translation type="unfinished">Convert Wire/B-Spline</translation>
+      <translation>Konvertera tråd/B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts the selected polyline to a B-spline, or the selected B-spline to a polyline</source>
-      <translation type="unfinished">Converts the selected polyline to a B-spline, or the selected B-spline to a polyline</translation>
+      <translation>Konverterar den markerade polylinjen till en B-spline, eller den markerade B-splinen till en polylinje</translation>
     </message>
   </context>
   <context>
@@ -8798,12 +8682,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="14"/>
       <source>DXF Import</source>
-      <translation type="unfinished">DXF Import</translation>
+      <translation>DXF-import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="20"/>
       <source>Import As</source>
-      <translation type="unfinished">Import As</translation>
+      <translation>Importera som</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="26"/>
@@ -8811,15 +8695,15 @@ The initial projection direction is the opposite of the current active view dire
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench.</translation>
+      <translation>Skapar helt parametriska Draft-objekt. Blockdefinitioner importeras som återanvändbara
+återanvändbara objekt (Part Compounds) och instanser blir `App::Link`-objekt,
+bibehåller blockstrukturen. Bäst för fullständig integration med Draft
+arbetsbänk.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="32"/>
       <source>Editable Draft objects</source>
-      <translation type="unfinished">Editable Draft objects</translation>
+      <translation>Redigerbara Draft-objekt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="39"/>
@@ -8827,48 +8711,48 @@ workbench.</translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing.</translation>
+      <translation>Skapar parametriska Part-objekt (t.ex. Part::Line, Part::Circle). Block
+importeras som återanvändbara objekt (Part Compounds) och instanser blir
+blir `App::Link`-objekt, vilket bibehåller blockstrukturen. Bäst för
+skriptbaserad efterbearbetning.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="45"/>
       <source>Editable Part primitives</source>
-      <translation type="unfinished">Editable Part primitives</translation>
+      <translation>Redigerbara primitiver för delar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="52"/>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation type="unfinished">Creates a non-parametric shape for each DXF entity. Block definitions are
-imported as reusable objects (Part Compounds) and instances become `App::Link`
-objects, maintaining the block structure. Good for referencing and measuring.</translation>
+      <translation>Skapar en icke-parametrisk form för varje DXF-entitet. Blockdefinitioner importeras
+importeras som återanvändbara objekt (Part Compounds) och instanser blir `App::Link`-objekt
+objekt, vilket bibehåller blockstrukturen. Bra för referenstagning och mätning.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>
       <source>Individual Part shapes (recommended)</source>
-      <translation type="unfinished">Individual Part shapes (recommended)</translation>
+      <translation>Individuell utformning av delar (rekommenderas)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="64"/>
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for viewing very large files with maximum performance.</translation>
+      <translation>Sammanfogar all geometri per lager till en enda, icke redigerbar form. Block
+strukturer bevaras inte, utan deras geometri blir en del av skiktets
+form. Bäst för visning av mycket stora filer med maximal prestanda.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="69"/>
       <source>Fused Part shapes (fastest)</source>
-      <translation type="unfinished">Fused Part shapes (fastest)</translation>
+      <translation>Smälta delformer (snabbast)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="100"/>
       <source>File summary</source>
-      <translation type="unfinished">File summary</translation>
+      <translation>Sammanfattning av filen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
@@ -8878,7 +8762,7 @@ shape. Best for viewing very large files with maximum performance.</translation>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Visa inte denna dialog igen</translation>
     </message>
   </context>
 </TS>

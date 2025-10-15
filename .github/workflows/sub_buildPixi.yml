@@ -75,7 +75,7 @@ jobs:
 
     steps:
     - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
       with:
         egress-policy: audit
 
@@ -116,7 +116,7 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@fef5c9568ca6c4ff7707bf840ab0692ba3f08293 # v0.9.0
+    - uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa # v0.9.1
       with:
         pixi-version: v0.48.1
         cache: false
@@ -124,7 +124,7 @@ jobs:
     - name: Restore Compiler Cache
       id: cache-restore
       if: always()
-      uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -209,7 +209,7 @@ jobs:
     - name: Save Compiler Cache
       id: cache-save
       if: always()
-      uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}

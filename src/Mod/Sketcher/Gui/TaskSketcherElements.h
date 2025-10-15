@@ -68,6 +68,7 @@ public:
 
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
 protected Q_SLOTS:
     // Constraints

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "TaskFilletParameters.h"
 #include "ViewProviderFillet.h"

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
@@ -50,7 +48,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Datums.h>

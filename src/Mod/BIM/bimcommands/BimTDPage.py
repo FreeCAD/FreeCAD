@@ -41,7 +41,7 @@ class BIM_TDPage:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),
-            'Accel': "T, P",
+            "Accel": "T, P",
         }
 
     def IsActive(self):
@@ -52,9 +52,9 @@ class BIM_TDPage:
         from PySide import QtGui
         import TechDraw
 
-        templatedir = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/BIM"
-        ).GetString("TDTemplateDir", "")
+        templatedir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetString(
+            "TDTemplateDir", ""
+        )
         if not templatedir:
             templatedir = None
         filename, _ = QtGui.QFileDialog.getOpenFileName(
@@ -68,9 +68,7 @@ class BIM_TDPage:
             FreeCAD.ActiveDocument.openTransaction("Create page")
             page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
             page.Label = name
-            template = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawSVGTemplate", "Template"
-            )
+            template = FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
             template.Template = filename
             template.Label = translate("BIM", "Template")
             page.Template = template

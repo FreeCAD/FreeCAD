@@ -19,15 +19,13 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QList>
 #include <QMetaType>
 #include <QRegularExpression>
 #include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>

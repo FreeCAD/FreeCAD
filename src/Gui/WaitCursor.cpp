@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
 # include <QProgressDialog>
@@ -31,7 +29,6 @@
 # ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
-#endif
 
 #include "WaitCursor.h"
 

@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

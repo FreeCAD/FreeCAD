@@ -21,11 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "DrawViewAnnotation.h"
 #include "Preferences.h"
 

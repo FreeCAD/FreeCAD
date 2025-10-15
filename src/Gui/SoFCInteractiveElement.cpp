@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/elements/SoOverrideElement.h>
-#endif
+
 
 #include "SoFCInteractiveElement.h"
 

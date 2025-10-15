@@ -24,6 +24,8 @@
 #ifndef ROBOT_ViewProviderTrajectoryCompound_H
 #define ROBOT_ViewProviderTrajectoryCompound_H
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "ViewProviderTrajectory.h"
 
 namespace RobotGui

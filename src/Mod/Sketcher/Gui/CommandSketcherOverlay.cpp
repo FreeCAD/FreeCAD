@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/SbString.h>
 #include <QApplication>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -82,7 +79,7 @@ void CmdSketcherBSplineDegree::activated(int iMsg)
 
 bool CmdSketcherBSplineDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // Show/Hide B-spline polygon
@@ -111,7 +108,7 @@ void CmdSketcherBSplinePolygon::activated(int iMsg)
 
 bool CmdSketcherBSplinePolygon::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // Show/Hide B-spline comb
@@ -140,7 +137,7 @@ void CmdSketcherBSplineComb::activated(int iMsg)
 
 bool CmdSketcherBSplineComb::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 //
@@ -169,7 +166,7 @@ void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherBSplineKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 //
@@ -198,7 +195,7 @@ void CmdSketcherBSplinePoleWeight::activated(int iMsg)
 
 bool CmdSketcherBSplinePoleWeight::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // Composite drop down menu for show/hide BSpline information layer
@@ -344,7 +341,7 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*
 
 bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 //

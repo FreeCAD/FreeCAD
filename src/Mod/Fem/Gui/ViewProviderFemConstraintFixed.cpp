@@ -21,11 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Gui/Control.h"
 #include <Mod/Fem/App/FemConstraintFixed.h>
 

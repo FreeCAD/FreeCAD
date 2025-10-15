@@ -45,8 +45,6 @@
 **
 ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QApplication>
@@ -64,7 +62,6 @@
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPixmap>
 #include <QtGui/QShowEvent>
-#endif
 
 #include <Gui/FileDialog.h>
 

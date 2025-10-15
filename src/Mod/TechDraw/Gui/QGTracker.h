@@ -68,8 +68,7 @@ public:
     };
 
     explicit QGTracker(QGSPage* scene = nullptr, TrackerMode m = TrackerMode::None);
-    ~QGTracker() override;
-
+    ~QGTracker() override = default;
 
     enum {Type = UserType::QGTracker};
 
@@ -113,14 +112,10 @@ protected:
     double getTrackerWeight();
 
 private:
-    QGraphicsPathItem* m_track;
-    QPointF m_segBegin;
-    QPointF m_segEnd;
     std::vector<QPointF> m_points;
     bool m_sleep;
     QGIView* m_qgParent;
     TrackerMode m_trackerMode;
-    QPen m_trackPen;
     QPen m_tailPen;
     QPointF m_lastClick;
 };

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DrawWeldSymbol.h"
 // inclusion of the generated files (generated out of DrawWeldSymbolPy.xml)

@@ -53,14 +53,11 @@
 // We thus solve for 5 unknown parameters.
 // Thus for the solution to succeed the initial axis direction should be reasonable.
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <cstdlib>
 #include <iterator>
 #include <limits>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Converter.h>

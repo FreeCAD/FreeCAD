@@ -19,7 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Mod/Material/App/ModelUuids.h>
 

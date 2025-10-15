@@ -39,8 +39,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftVecUtils
 
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 from draftobjects.draftlink import DraftLink
 
@@ -71,9 +70,9 @@ class Array(DraftLink):
             return
 
         if not hasattr(obj, "Count"):
-            _wrn("v0.21, " + obj.Label + ", " + translate("draft", "added property 'Count'"))
+            _log("v0.21, " + obj.Name + ", added property 'Count'")
         if not hasattr(obj, "PlacementList"):
-            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+            _log("v1.1, " + obj.Name + ", added hidden property 'PlacementList'")
 
         self.set_general_properties(obj)
         self.execute(obj) # Required to update Count and/or PlacementList.

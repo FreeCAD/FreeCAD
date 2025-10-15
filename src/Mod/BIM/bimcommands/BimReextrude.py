@@ -133,9 +133,7 @@ class BIM_Reextrude:
                             + parent.Label
                             + "'s reference to this object has been updated\n"
                         )
-                    elif isinstance(getattr(parent, prop), list) and (
-                        obj in getattr(parent, prop)
-                    ):
+                    elif isinstance(getattr(parent, prop), list) and (obj in getattr(parent, prop)):
                         if (prop == "Group") and hasattr(parent, "addObject"):
                             parent.addObject(newobj)
                         else:

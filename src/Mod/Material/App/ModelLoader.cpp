@@ -19,12 +19,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QString>
-#endif
 
 #include <App/Application.h>
 #include <Base/FileInfo.h>

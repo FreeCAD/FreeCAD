@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # flake8: noqa import
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
@@ -81,6 +80,7 @@ from CAMTests.TestPathToolShapeIcon import (
 from CAMTests.TestPathToolBitSerializer import (
     TestCamoticsToolBitSerializer,
     TestFCTBSerializer,
+    TestYamlToolBitSerializer,
 )
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolLibrarySerializer import (

@@ -19,7 +19,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
+#include <Mod/Measure/MeasureGlobal.h>
 
 #include <App/PropertyGeo.h>
 #include <Base/PlacementPy.h>

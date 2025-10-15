@@ -11,17 +11,17 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tool Shape Selection</string>
+   <string>Toolbit Shape Selection</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
    <item>
     <layout class="QVBoxLayout" name="gridLayout">
      <item>
-      <widget class="QToolBox" name="toolBox">
-       <property name="currentIndex">
-        <number>1</number>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="widgetResizable">
+        <bool>true</bool>
        </property>
-       <widget class="QWidget" name="standardTools">
+       <widget class="QWidget" name="toolsContainer">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -30,22 +30,6 @@
           <height>487</height>
          </rect>
         </property>
-        <attribute name="label">
-         <string>Standard tools</string>
-        </attribute>
-       </widget>
-       <widget class="QWidget" name="customTools">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>880</width>
-          <height>487</height>
-         </rect>
-        </property>
-        <attribute name="label">
-         <string>My tools</string>
-        </attribute>
        </widget>
       </widget>
      </item>

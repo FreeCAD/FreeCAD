@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QLocale>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/tokenizer.hpp>
 #include <iomanip>
 #include <sstream>
-#endif
+
 
 #include <App/ExpressionParser.h>
 #include <Base/Console.h>

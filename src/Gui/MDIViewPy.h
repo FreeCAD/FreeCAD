@@ -29,6 +29,8 @@
 #include <QPointer>
 #include <FCGlobal.h>
 
+#include "MDIView.h"
+
 namespace Gui {
 class MDIView;
 

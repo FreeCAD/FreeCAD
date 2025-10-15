@@ -36,9 +36,7 @@ class BIM_Common:
         return {
             "Pixmap": "Part_Common",
             "MenuText": QT_TRANSLATE_NOOP("Part_Common", "Intersection"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Part_Common", "Creates an intersection of two shapes"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Part_Common", "Creates an intersection of two shapes"),
         }
 
     def IsActive(self):

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/math/special_functions/fpclassify.hpp>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Mod/Points/App/Points.h>

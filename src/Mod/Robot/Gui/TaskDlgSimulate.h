@@ -26,6 +26,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryObject.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "TaskRobot6Axis.h"
 #include "TaskRobotControl.h"

@@ -19,13 +19,11 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QClipboard>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QTreeView>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>

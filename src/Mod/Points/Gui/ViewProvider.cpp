@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <limits>
 
@@ -35,7 +33,6 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
-#endif
 
 #include <App/Document.h>
 #include <Base/Vector3D.h>

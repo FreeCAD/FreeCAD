@@ -22,7 +22,6 @@
 
 
 // clang-format off
-#include "PreCompiled.h"
 #include "ViewProviderPython.h"
 // clang-format on
 

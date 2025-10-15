@@ -27,6 +27,7 @@ import Arch
 import Draft
 from bimtests import TestArchBase
 
+
 class TestArchFence(TestArchBase.TestArchBase):
 
     def test_makeFence(self):

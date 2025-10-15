@@ -39,6 +39,7 @@
 #include "AutoConstraint.h"
 #include "DrawSketchHandler.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 #include "Utils.h"
 
@@ -177,6 +178,25 @@ protected:
         return Mode == state;
     }
 
+    void setNextState(std::optional<SelectModeT> nextState)
+    {
+        nextMode = nextState;
+    }
+
+    std::optional<SelectModeT> getNextState()
+    {
+        return nextMode;
+    }
+
+    void applyNextState()
+    {
+        if (nextMode) {
+            auto next = std::move(*nextMode);
+            nextMode = std::nullopt;
+            setState(next);
+        }
+    }
+
     bool isFirstState() const
     {
         return Mode == (static_cast<SelectModeT>(0));
@@ -192,10 +212,9 @@ protected:
         return static_cast<SelectModeT>(0);
     }
 
-    SelectModeT getNextMode() const
+    SelectModeT computeNextMode() const
     {
         auto modeint = static_cast<int>(state());
-
 
         if (modeint < maxMode) {
             auto newmode = static_cast<SelectModeT>(modeint + 1);
@@ -208,11 +227,12 @@ protected:
 
     void moveToNextMode()
     {
-        setState(getNextMode());
+        setState(computeNextMode());
     }
 
     void reset()
     {
+        nextMode = std::nullopt;
         if (Mode != static_cast<SelectModeT>(0)) {
             setState(static_cast<SelectModeT>(0));
         }
@@ -225,6 +245,7 @@ protected:
 
 private:
     SelectModeT Mode;
+    std::optional<SelectModeT> nextMode;
     static const constexpr int maxMode = static_cast<int>(SelectModeT::End);
 };
 
@@ -405,9 +426,9 @@ public:
      * overridden/specialised instead.
      */
     //@{
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        updateDataAndDrawToPosition(onSketchPos);
+        updateDataAndDrawToPosition(snapHandle.compute());
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override

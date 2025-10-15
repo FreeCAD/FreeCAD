@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

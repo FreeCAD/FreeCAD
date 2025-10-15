@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -51,7 +50,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
         comboToPropertyMap = [
             ("cutMode", "CutMode"),
-            ("offsetPattern", "OffsetPattern"),
+            ("clearingPattern", "ClearingPattern"),
             ("boundaryShape", "BoundaryShape"),
         ]
 

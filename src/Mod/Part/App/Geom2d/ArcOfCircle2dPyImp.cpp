@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GCE2d_MakeArcOfCircle.hxx>
 # include <Geom2d_Circle.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <gp_Circ2d.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 

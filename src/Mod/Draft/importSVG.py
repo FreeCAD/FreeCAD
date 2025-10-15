@@ -454,7 +454,7 @@ def getrgb(color):
 
 class svgHandler(xml.sax.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
-    
+
     def __init__(self):
         super().__init__()
         """Retrieve Draft parameters and initialize."""
@@ -497,8 +497,8 @@ class svgHandler(xml.sax.ContentHandler):
                 v.LineWidth = self.width
             if self.fill:
                 v.ShapeColor = self.fill
-     
-     
+
+
     def __addFaceToDoc(self, named_face):
         """Create a named document object from a name/face tuple
 
@@ -510,7 +510,7 @@ class svgHandler(xml.sax.ContentHandler):
         name, face = named_face
         if not face:
             return
-        
+
         face = self.applyTrans(face)
         obj = self.doc.addObject("Part::Feature", name)
         obj.Shape = face
@@ -603,7 +603,7 @@ class svgHandler(xml.sax.ContentHandler):
                      "the dpi could not be determined; "
                      "assuming 96 dpi")
                 self.svgdpi = 96.0
-            
+
         if 'style' in data:
             if not data['style']:
                 # Empty style attribute stops inheriting from parent
@@ -659,7 +659,7 @@ class svgHandler(xml.sax.ContentHandler):
                         if sx != sy:
                             _wrn('Non-uniform scaling with probably degenerating '
                                   + 'effects on Edges. ({} vs. {}).'.format(sx, sy))
-    
+
                     else:
                         # preserve aspect ratio - svg default is 'x/y-mid meet'
                         if preserve_ar.endswith('slice'):
@@ -752,7 +752,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.format(obj)
                 self.lastdim = obj
                 data['d'] = []
-                
+
             if "d" in data:
                 svgPath = SvgPathParser(data, pathname)
                 svgPath.parse()
@@ -762,7 +762,7 @@ class svgHandler(xml.sax.ContentHandler):
                 shapes = svgPath.getShapeList()
                 for named_shape in shapes:
                     self.__addFaceToDoc(named_shape)
-        
+
         # Process rects
         if name == "rect":
             if not pathname:
@@ -1119,10 +1119,12 @@ class svgHandler(xml.sax.ContentHandler):
                 # (+0 -0 +0 +1)           (0 0 0 1)
                 #
                 # Put the first two rows of the matrix
+                # fmt: off
                 _m = FreeCAD.Matrix(argsplit[0], -argsplit[2],
                                     0, argsplit[4],
                                     -argsplit[1], argsplit[3],
                                     0, -argsplit[5])
+                # fmt: on
                 m = m.multiply(_m)
             # else:
             #    print('SKIPPED %s' % transformation)
@@ -1402,7 +1404,7 @@ def replace_use_with_reference(file_path):
         while True:
             uses = element.findall(".//{http://www.w3.org/2000/svg}use")
             if uses == []:
-                break   
+                break
             # create parent map
             parent_map = {child: parent for parent in tree.iter() for child in parent}
             for use in uses:
@@ -1436,7 +1438,7 @@ def replace_use_with_reference(file_path):
                             if "id" in child.attrib:
                                 del child.attrib["id"]
                         new_element.append(ref_element)
-                        # replace use tag by freecad:used tag. 
+                        # replace use tag by freecad:used tag.
                         parent.append(new_element)
                 #remove use when referenced element is not found.
                 parent.remove(use)
@@ -1466,6 +1468,6 @@ def replace_use_with_reference(file_path):
         id_map[elem.attrib["id"]] = elem
 
     replace_use(root, tree)
-    
+
     # return tree as xml string with namespace declaration.
     return ET.tostring(root, encoding='unicode',xml_declaration=True)

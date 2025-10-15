@@ -20,11 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(__MINGW32__)
 #define WNT  // avoid conflict with GUID
 #endif
-#ifndef _PreComp_
 #include <Interface_Static.hxx>
 #include <Quantity_ColorRGBA.hxx>
 #include <Standard_Failure.hxx>
@@ -38,7 +36,7 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_GraphNode.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
-#endif
+
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>

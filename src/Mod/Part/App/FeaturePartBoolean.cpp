@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 # include <memory>
 
 # include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
-#endif
 
 #include <App/Application.h>
 #include <Base/Exception.h>
@@ -62,7 +61,7 @@ bool getRefineModelParameter()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetBool("RefineModel", false);
+    return hGrp->GetBool("RefineModel", true);
 }
 
 }

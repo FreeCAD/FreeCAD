@@ -20,9 +20,8 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QApplication>
 # include <QBoxLayout>
@@ -42,7 +41,7 @@
 # include <QToolTip>
 # include <QTreeView>
 # include <QScrollBar>
-#endif
+
 
 #include <QPainterPath>
 #include <QPropertyAnimation>

@@ -26,11 +26,9 @@
 #ifndef ELIDELABEL_H
 #define ELIDELABEL_H
 
-#ifndef _PreComp_
 #include <QLabel>
 #include <QPainter>
 #include <QFontMetrics>
-#endif
 
 #include <FCGlobal.h>
 

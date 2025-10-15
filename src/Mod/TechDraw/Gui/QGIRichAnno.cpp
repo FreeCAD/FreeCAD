@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 
 # include <QDialog>
@@ -33,7 +31,6 @@
 # include <QTextBlock>
 # include <QTextCursor>
 # include <QTextDocumentFragment>
-#endif
 
 #include <App/Application.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>

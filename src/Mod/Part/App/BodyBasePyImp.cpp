@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "BodyBase.h"
 // inclusion of the generated files (generated out of ItemPy.xml)

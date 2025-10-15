@@ -26,6 +26,8 @@
 #include "FaceMaker.h"
 #include <list>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part
 {
 

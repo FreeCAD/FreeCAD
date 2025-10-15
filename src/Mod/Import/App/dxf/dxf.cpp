@@ -3,7 +3,6 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#include "PreCompiled.h"
 
 #include <cmath>
 #include <fstream>

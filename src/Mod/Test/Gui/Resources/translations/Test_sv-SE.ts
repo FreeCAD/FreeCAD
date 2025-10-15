@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD enhetstest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>Välj testnamn</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>Misslyckanden</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>Återstående</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>Misslyckanden och fel</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>
@@ -102,34 +102,34 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="165"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>Help</source>
       <translation>Hjälp</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="166"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Ange namnet på ett anropsbart objekt, som returnerar ett TestCase.
-Klicka på 'Start', för att köra testet.
+      <translation>Ange namnet på ett anropsbart objekt som, när det anropas, kommer att returnera ett TestCase.
+Klicka på "start" och det test som skapats kommer att köras.
 
-Dubbelklicka på ett fel i trädvyn för att se mer information om det, inklusive anropsstacken.</translation>
+Dubbelklicka på ett fel i trädvyn för att se mer information om det, inklusive stackspårningen.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="179"/>
+      <location filename="../../UnitTestImp.cpp" line="177"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Om FreeCAD EnhetsTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="180"/>
+      <location filename="../../UnitTestImp.cpp" line="178"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Copyright (c) Werner Mayer
+      <translation>Upphovsrätt (c) Werner Mayer
 
-FreeCAD UnitTest är en del av FreeCAD och stödjer utveckling av enhets tester för egna moduler.</translation>
+FreeCAD UnitTest är en del av FreeCAD och stöder skrivning av enhetstester för egna moduler.</translation>
     </message>
   </context>
 </TS>

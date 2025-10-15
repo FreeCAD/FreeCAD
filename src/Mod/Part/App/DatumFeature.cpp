@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DatumFeature.h"
 #include "OCCError.h"

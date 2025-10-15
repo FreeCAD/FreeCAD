@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -28,7 +27,7 @@ from .asset import Asset
 
 class AssetSerializer(ABC):
     for_class: Type[Asset]
-    extensions: Tuple[str] = tuple()
+    extensions: Tuple[str, ...] = tuple()
     mime_type: str
     can_import: bool = True
     can_export: bool = True

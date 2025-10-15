@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
-#endif
+
 
 #include <BRepBndLib.hxx>
 #include <BRepCheck_Analyzer.hxx>

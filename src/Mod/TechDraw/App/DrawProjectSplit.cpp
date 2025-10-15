@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <algorithm>
 # include <limits>
 # include <sstream>
@@ -43,7 +41,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
+
 #include <BOPAlgo_Builder.hxx>
 
 #include <Base/Console.h>

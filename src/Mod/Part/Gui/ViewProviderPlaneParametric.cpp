@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderPlaneParametric.h"
 #include <Mod/Part/App/FeatureFace.h>

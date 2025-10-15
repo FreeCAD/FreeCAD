@@ -21,9 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QRectF>
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
@@ -31,7 +29,7 @@
 #include <gp_Vec.hxx>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -1210,4 +1208,26 @@ void DrawProjGroup::handleChangedPropertyType(Base::XMLReader& reader, const cha
         spacingYProperty.Restore(reader);
         spacingY.setValue(spacingYProperty.getValue());
     }
+}
+
+void DrawProjGroup::unsetupObject()
+{
+    if (getDocument() && !getDocument()->isAnyRestoring()) {
+
+        std::vector<std::string> childNamesToDelete;
+        for (App::DocumentObject* child : Views.getValues()) {
+            if (child) {
+                const char* name = child->getNameInDocument();
+                if (name) {
+                    childNamesToDelete.push_back(name);
+                }
+            }
+        }
+
+        for (const std::string& childName : childNamesToDelete) {
+            getDocument()->removeObject(childName.c_str());
+        }
+    }
+
+    DrawViewCollection::unsetupObject();
 }

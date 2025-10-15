@@ -22,11 +22,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
-#endif
+
 
 #include "ViewProviderProjectOnSurface.h"
 #include "DlgProjectionOnSurface.h"

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
@@ -119,7 +116,7 @@ PyObject* DocumentPy::removeProperty(PyObject* args)
 std::string DocumentPy::representation() const
 {
     std::stringstream str;
-    str << "<Document object at " << getDocumentPtr() << ">";
+    str << "<Document '" << getDocumentPtr()->getName() << "' (" << getDocumentPtr()->Label.getValue() << ") >";
 
     return str.str();
 }

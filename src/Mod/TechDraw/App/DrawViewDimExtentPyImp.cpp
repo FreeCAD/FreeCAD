@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DrawViewDimExtent.h"
 // inclusion of the generated files (generated out of DrawViewDimExtentPy.xml)

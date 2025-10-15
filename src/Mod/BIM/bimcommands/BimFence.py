@@ -37,9 +37,13 @@ class Arch_Fence:
     "the Arch Fence command definition"
 
     def GetResources(self):
-        return {'Pixmap': 'Arch_Fence',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Fence", "Fence"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Fence", "Creates a fence object from a selected section, post and path")}
+        return {
+            "Pixmap": "Arch_Fence",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Fence", "Fence"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Fence", "Creates a fence object from a selected section, post and path"
+            ),
+        }
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -47,10 +51,16 @@ class Arch_Fence:
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) != 3:
-            FreeCAD.Console.PrintError(translate('Arch Fence selection','Select a section, post and path in exactly this order to build a fence.')+"\n")
+            FreeCAD.Console.PrintError(
+                translate(
+                    "Arch Fence selection",
+                    "Select a section, post and path in exactly this order to build a fence.",
+                )
+                + "\n"
+            )
             return
         doc = FreeCAD.ActiveDocument
-        doc.openTransaction(translate("Arch","Create Fence"))
+        doc.openTransaction(translate("Arch", "Create Fence"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("section = FreeCADGui.Selection.getSelection()[0]")
         FreeCADGui.doCommand("post = FreeCADGui.Selection.getSelection()[1]")
@@ -59,4 +69,5 @@ class Arch_Fence:
         doc.commitTransaction()
         doc.recompute()
 
-FreeCADGui.addCommand('Arch_Fence', Arch_Fence())
+
+FreeCADGui.addCommand("Arch_Fence", Arch_Fence())

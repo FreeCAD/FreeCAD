@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_CompSolid.hxx>
-#endif
+
 
 #include "OCCError.h"
 #include "PartPyCXX.h"

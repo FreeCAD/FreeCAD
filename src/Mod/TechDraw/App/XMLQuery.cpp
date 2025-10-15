@@ -21,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QDomDocument>
-#endif
+
 
 #include "DrawUtil.h"
 #include "XMLQuery.h"

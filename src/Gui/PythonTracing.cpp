@@ -21,12 +21,11 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QApplication>
 #include <QKeyEvent>
 #include <QGuiApplication>
-#endif
+
 
 #include <chrono>
 

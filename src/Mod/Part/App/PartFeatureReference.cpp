@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <gp_Ax1.hxx>
 # include <gp_Trsf.hxx>
-#endif
+
 
 #include <Base/Placement.h>
 #include <Base/Rotation.h>

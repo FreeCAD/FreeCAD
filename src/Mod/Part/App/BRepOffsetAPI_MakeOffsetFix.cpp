@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -40,7 +38,7 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopTools_ListOfShape.hxx>
 # include <TopTools_MapOfShape.hxx>
-#endif
+
 
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 

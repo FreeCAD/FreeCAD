@@ -39,6 +39,8 @@
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSwitch.h>
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 #else
@@ -510,7 +512,7 @@ private:
     static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
-    void createStandardCursors(double);
+    void createStandardCursors();
 
 private:
     NaviCube* naviCube;

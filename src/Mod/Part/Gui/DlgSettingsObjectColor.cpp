@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgSettingsObjectColor.h"
 #include "ui_DlgSettingsObjectColor.h"

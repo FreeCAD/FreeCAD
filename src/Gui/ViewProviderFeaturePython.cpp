@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <sstream>
 # include <QApplication>
 # include <QEvent>
@@ -31,7 +30,7 @@
 # include <QPixmap>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoDetail.h>
-#endif
+
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
@@ -757,6 +756,32 @@ void ViewProviderFeaturePythonImp::finishRestoring()
     }catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.reportException();
+    }
+}
+
+void ViewProviderFeaturePythonImp::beforeDelete()
+{
+    _FC_PY_CALL_CHECK(beforeDelete, return);
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (has__object__) {
+            Base::pyCall(py_beforeDelete.ptr());
+        }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Base::pyCall(py_beforeDelete.ptr(), args.ptr());
+        }
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+        }
+        else {
+            Base::PyException e;
+            e.reportException();
+        }
     }
 }
 

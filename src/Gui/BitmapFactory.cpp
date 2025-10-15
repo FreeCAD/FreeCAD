@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QBitmap>
 # include <QDir>
@@ -36,7 +33,6 @@
 # include <QString>
 # include <QSvgRenderer>
 # include <QStyleOption>
-#endif
 
 #include <string>
 #include <Inventor/fields/SoSFImage.h>

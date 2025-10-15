@@ -105,11 +105,9 @@ def show_psets(obj):
             pname = re.sub(r"[^0-9a-zA-Z]+", "", pname)
             if pname[0].isdigit():
                 pname = "_" + pname
-            ttip = (
-                ptype + ":" + oname
-            )  # setting IfcType:PropName as a tooltip to desambiguate
-            #while pname in obj.PropertiesList:
-                # print("DEBUG: property", pname, "(", value, ") already exists in", obj.Label)
+            ttip = ptype + ":" + oname  # setting IfcType:PropName as a tooltip to desambiguate
+            # while pname in obj.PropertiesList:
+            # print("DEBUG: property", pname, "(", value, ") already exists in", obj.Label)
             #    pname += "_"
             ftype = None
             if ptype in [
@@ -157,12 +155,13 @@ def show_psets(obj):
                 ftype = "App::PropertyString"
             # print("DEBUG: setting",pname, ptype, value)
             if ftype:
-                if pname in obj.PropertiesList \
-                and obj.getGroupOfProperty(pname) == gname:
+                if pname in obj.PropertiesList and obj.getGroupOfProperty(pname) == gname:
                     if obj.getTypeOfProperty(pname) == ftype:
                         pass
-                    if ftype == "App::PropertyString" \
-                    and obj.getTypeOfProperty(pname) == "App::PropertyStringList":
+                    if (
+                        ftype == "App::PropertyString"
+                        and obj.getTypeOfProperty(pname) == "App::PropertyStringList"
+                    ):
                         value = [value]
                 else:
                     print(pname, gname, obj.PropertiesList)
@@ -258,7 +257,7 @@ def edit_pset(obj, prop, value=None, force=False, ifcfile=None, element=None):
         elif value.Unit.Type == "Length":
             value = value.getValueAs("mm").Value * ifc_tools.get_scale(ifcfile)
         else:
-            print("DEBUG: unhandled quantity type:",value, value.Unit.Type)
+            print("DEBUG: unhandled quantity type:", value, value.Unit.Type)
             return False
     if value == value_exist:
         return False
@@ -286,9 +285,7 @@ def edit_pset(obj, prop, value=None, force=False, ifcfile=None, element=None):
     # TODO the property type is automatically determined by ifcopenhell
     # https://docs.ifcopenshell.org/autoapi/ifcopenshell/api/pset/edit_pset/index.html
     # and is therefore wrong for Quantity types. Research a way to overcome that
-    ifc_tools.api_run(
-        "pset.edit_pset", ifcfile, pset=ifcpset, properties={target_prop: value}
-    )
+    ifc_tools.api_run("pset.edit_pset", ifcfile, pset=ifcpset, properties={target_prop: value})
     # TODO manage quantities
     return True
 
@@ -311,9 +308,7 @@ def add_pset(obj, psetname):
     ifcfile = ifc_tools.get_ifcfile(obj)
     element = ifc_tools.get_ifc_element(obj)
     if ifcfile and element:
-        pset = ifc_tools.api_run(
-            "pset.add_pset", ifcfile, product=element, name=psetname
-        )
+        pset = ifc_tools.api_run("pset.add_pset", ifcfile, product=element, name=psetname)
         return pset
 
 
@@ -349,6 +344,7 @@ def read_properties_conversion():
     """Reads the properties conversion table"""
 
     import csv
+
     csvfile = os.path.join(
         FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "properties_conversion.csv"
     )
@@ -365,6 +361,7 @@ def remove_property(obj, prop):
     """Removes a custom property"""
 
     from . import ifc_tools
+
     ifcfile = ifc_tools.get_ifcfile(obj)
     if not ifcfile:
         return
@@ -376,11 +373,13 @@ def remove_property(obj, prop):
         if prop in props:
             pset = get_pset(psetname, element)
             if pset:
-                FreeCAD.Console.PrintMessage(translate("BIM","Removing property")+": "+prop)
+                FreeCAD.Console.PrintMessage(translate("BIM", "Removing property") + ": " + prop)
                 ifc_tools.api_run("pset.edit_pset", ifcfile, pset=pset, properties={prop: None})
                 if len(props) == 1:
                     # delete the pset too
-                    FreeCAD.Console.PrintMessage(translate("BIM","Removing property set")+": "+psetname)
+                    FreeCAD.Console.PrintMessage(
+                        translate("BIM", "Removing property set") + ": " + psetname
+                    )
                     ifc_tools.api_run("pset.remove_pset", ifcfile, product=element, pset=pset)
 
 

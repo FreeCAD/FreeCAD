@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -36,7 +35,7 @@ import FreeCAD as App
 from FreeCAD import Units as U
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
-from draftutils.messages import _wrn
+from draftutils.messages import _log
 from draftutils.translate import translate
 
 
@@ -259,12 +258,9 @@ class Label(DraftAnnotation):
         # switched: "2D text" becomes "World" and "3D text" becomes "Screen".
         # It should be the other way around:
         vobj.DisplayMode = "World" if vobj.DisplayMode == "Screen" else "Screen"
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed view property 'TextFont' to 'FontName'"))
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed view property 'TextSize' to 'FontSize'"))
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
+        _log("v0.21, " + obj.Name + ", renamed view property 'TextFont' to 'FontName'")
+        _log("v0.21, " + obj.Name + ", renamed view property 'TextSize' to 'FontSize'")
+        _log("v0.21, " + obj.Name + ", renamed 'DisplayMode' options to 'World/Screen'")
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""

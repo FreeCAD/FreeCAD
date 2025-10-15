@@ -25,10 +25,6 @@
 #ifndef FREECAD_TOPOSHAPECACHE_H
 #define FREECAD_TOPOSHAPECACHE_H
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Iterator.hxx>
@@ -38,9 +34,10 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <utility>
-#endif
 
 #include <App/ElementMap.h>
+
+#include <Mod/Part/PartGlobal.h>
 
 #include "TopoShape.h"
 

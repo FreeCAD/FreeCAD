@@ -1,15 +1,7 @@
 include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
     SYSTEM
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_py(Body)
 generate_from_py(Feature)
@@ -114,7 +106,6 @@ SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})
 SET(Module_SRCS
     AppPartDesign.cpp
     AppPartDesignPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Measure.cpp
     Measure.h
@@ -141,15 +132,30 @@ SET(PartDesign_SRCS
 )
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
+target_include_directories(
+    PartDesign
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_link_directories(PartDesign PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
+
+if (MSVC)
+    target_compile_options(PartDesign PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartDesign)
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PartDesign_CPP_SRCS ${PartDesign_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PartDesign PreCompiled.h PreCompiled.cpp PartDesign_CPP_SRCS)
+    target_precompile_headers(PartDesign PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 SET_BIN_DIR(PartDesign _PartDesign /Mod/PartDesign)

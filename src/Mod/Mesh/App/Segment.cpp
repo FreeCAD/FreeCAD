@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <sstream>
-#endif
+
 
 #include "Mesh.h"
 #include "MeshPy.h"

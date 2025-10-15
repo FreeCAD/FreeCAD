@@ -20,8 +20,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
@@ -31,7 +29,7 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
-#endif
+
 
 #include <array>
 

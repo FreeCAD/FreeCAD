@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,10 +23,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #ifdef FC_OS_WIN32
 #include <xercesc/sax/SAXParseException.hpp>
 #endif
@@ -32,7 +32,6 @@
 #include <sstream>
 #include <string>
 #include <utility>
-#endif
 
 #ifdef FC_OS_LINUX
 #include <unistd.h>

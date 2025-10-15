@@ -22,9 +22,7 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <BRepLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
@@ -37,7 +35,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include "ProjectionAlgos.h"
 #include "TechDrawExport.h"

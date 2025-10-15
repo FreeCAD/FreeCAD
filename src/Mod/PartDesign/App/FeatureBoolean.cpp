@@ -21,13 +21,11 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Mod/Part/App/modelRefine.h>
@@ -179,6 +177,12 @@ void Boolean::updatePreviewShape()
     }
 
     if (strcmp(Type.getValueAsString(), "Fuse") == 0) {
+        // if there are no other shapes to fuse just return itself
+        if (Group.getValues().empty()) {
+            PreviewShape.setValue(Shape.getShape());
+            return;
+        }
+
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {

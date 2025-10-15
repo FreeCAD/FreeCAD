@@ -22,8 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -56,7 +54,7 @@
 #include <XCAFDoc_Location.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
 #include <XCAFDoc_ShapeMapTool.hxx>
-#endif
+
 
 #include "OCAFBrowser.h"
 #include <Gui/MainWindow.h>

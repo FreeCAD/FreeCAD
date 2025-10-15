@@ -22,10 +22,6 @@
 
 #include <gtest/gtest.h>
 
-#include <Mod/Material/App/PreCompiled.h>
-#ifndef _PreComp_
-#endif
-
 #include <QLocale>
 #include <QMetaType>
 #include <QString>

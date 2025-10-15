@@ -20,13 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <QColorDialog>
 #include <sstream>
-#endif
+
 
 #include <App/ElementNamingUtils.h>
 #include <App/Document.h>
@@ -173,7 +172,7 @@ public:
             }
             auto color = v.second;
             QColor c;
-            c.setRgbF(color.r, color.g, color.b, 1.0 - color.a);
+            c.setRgbF(color.r, color.g, color.b, color.a);
             px.fill(c);
             auto item = new QListWidgetItem(
                 QIcon(px),
@@ -636,3 +635,4 @@ bool TaskElementColors::reject()
 }
 
 #include "moc_TaskElementColors.cpp"
+

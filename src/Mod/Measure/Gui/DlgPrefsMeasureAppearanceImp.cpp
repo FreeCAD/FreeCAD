@@ -19,7 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgPrefsMeasureAppearanceImp.h"
 #include "ui_DlgPrefsMeasureAppearanceImp.h"

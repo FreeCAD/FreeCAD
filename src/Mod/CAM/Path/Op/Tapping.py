@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Schildkroet                                        *
@@ -147,13 +146,11 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         Path.Log.track()
         machine = PathMachineState.MachineState()
 
-        if not hasattr(obj.ToolController.Tool, "Pitch") or not hasattr(
-            obj.ToolController.Tool, "TPI"
-        ):
+        if not hasattr(obj.ToolController.Tool, "Pitch"):
             Path.Log.error(
                 translate(
                     "Path_Tapping",
-                    "Tapping Operation requires a Tap tool with Pitch or TPI",
+                    "Tapping Operation requires a Tap tool with Pitch",
                 )
             )
             return
@@ -192,7 +189,6 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
         # iterate the edgelist and generate gcode
         for edge in edgelist:
-
             Path.Log.debug(edge)
 
             # move to hole location
@@ -222,11 +218,40 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             repeat = 1  # technical debt:  Add a repeat property for user control
 
             # Get attribute from obj.tool, assign default and set to bool for passing to generate
-            isRightHand = getattr(obj.ToolController.Tool, "Rotation", "Right Hand") == "Right Hand"
+            isRightHand = (
+                getattr(obj.ToolController.Tool, "SpindleDirection", "Forward") == "Forward"
+            )
+
+            # Get pitch in mm as a float (no unit string)
+            pitch = getattr(obj.ToolController.Tool, "Pitch", None)
+            if pitch is None or pitch == 0:
+                Path.Log.error(
+                    translate(
+                        "Path_Tapping",
+                        "Tapping Operation requires a Tap tool with non-zero Pitch",
+                    )
+                )
+                continue
+
+            spindle_speed = getattr(obj.ToolController, "SpindleSpeed", None)
+            if spindle_speed is None or spindle_speed == 0:
+                Path.Log.error(
+                    translate(
+                        "Path_Tapping",
+                        "Tapping Operation requires a ToolController with non-zero SpindleSpeed",
+                    )
+                )
+                continue
 
             try:
                 tappingcommands = tapping.generate(
-                    edge, dwelltime, repeat, obj.RetractHeight.Value, isRightHand
+                    edge,
+                    dwelltime,
+                    repeat,
+                    obj.RetractHeight.Value,
+                    isRightHand,
+                    pitch,
+                    spindle_speed,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored

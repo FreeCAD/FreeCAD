@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 set(Import_LIBS
     Part
     ${OCC_OCAF_LIBRARIES}
@@ -29,11 +23,10 @@ SET(Import_SRCS
     ReaderIges.h
     ReaderStep.cpp
     ReaderStep.h
-    StepShapePy.xml
+    StepShape.pyi
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Tools.cpp
     Tools.h
@@ -76,11 +69,29 @@ SET(SCL_Resources
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 
-generate_from_xml(StepShapePy)
-generate_from_py_(StepShapePy)
+generate_from_py(StepShape)
 
 add_library(Import SHARED ${Import_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Import PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    Import
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 target_link_libraries(Import ${Import_LIBS})
+
+if (MSVC)
+    target_compile_options(Import PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Import)
 endif()

@@ -25,6 +25,8 @@
 
 #include <Gui/TaskView/TaskWatcher.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "TaskRobot6Axis.h"
 #include "TaskRobotControl.h"
 

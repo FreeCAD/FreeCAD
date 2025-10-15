@@ -25,6 +25,8 @@
 
 #include <App/GeoFeature.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PropertyTopoShape.h"
 
 

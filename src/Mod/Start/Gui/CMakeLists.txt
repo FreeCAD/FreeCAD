@@ -21,10 +21,6 @@
 #  *                                                                          *
 #  ***************************************************************************/
 
-include_directories(
-        ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(StartGui_LIBS
         Start
         FreeCADGui
@@ -61,7 +57,6 @@ SET(StartGui_SRCS
         Manipulator.h
         NewFileButton.cpp
         NewFileButton.h
-        PreCompiled.cpp
         PreCompiled.h
         StartView.cpp
         StartView.h
@@ -80,13 +75,6 @@ SET(StartGuiThumbnail_PNG
         Resources/thumbnails/Theme_thumbnail_light.png
         )
 
-# TODO: Evaluate PCH use with Qt6/QtQuick/Qml
-if (FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif (FREECAD_USE_PCH)
-
 # Add CoreFoundation to StartGui_LIBS on macOS
 if (APPLE)
     find_library(COREFOUNDATION_LIBRARY CoreFoundation)
@@ -97,7 +85,25 @@ if (APPLE)
     endif()
 endif()
 
-add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
+add_library(StartGui SHARED
+    ${StartGui_SRCS}
+    ${StartGuiIcon_SVG}
+    ${StartGuiThumbnail_PNG}
+)
+
+# TODO: Evaluate PCH use with Qt6/QtQuick/Qml
+if(FREECAD_USE_PCH)
+    target_precompile_headers(StartGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    StartGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
 target_link_libraries(StartGui ${StartGui_LIBS})
 if (FREECAD_WARN_ERROR)

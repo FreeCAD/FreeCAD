@@ -21,14 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Precision.hxx>
-#endif
+
 
 #include <Base/Tools.h>
 #include "Gui/Control.h"

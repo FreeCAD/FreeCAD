@@ -23,11 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Mod/Fem/App/FemConstraintHeatflux.h"
 #include <Gui/Control.h>
 

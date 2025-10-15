@@ -83,6 +83,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                /*tp_watched */
 #endif
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                /*tp_versions_used */
+#endif
 };
 
 template<class FeaturePyT>

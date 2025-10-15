@@ -4,7 +4,9 @@ if(WIN32)
     add_definitions(-DFCAppPoints)
 endif(WIN32)
 
-include_directories(
+target_include_directories(
+    Points
+    PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -14,6 +16,7 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${EIGEN3_INCLUDE_DIR}
+    ${QtConcurrent_INCLUDE_DIRS}
 )
 
 if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
@@ -28,25 +31,17 @@ endif()
 
 set(Points_LIBS
     FreeCADApp
-)
-
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
-list(APPEND Points_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-generate_from_xml(PointsPy)
-generate_from_py_(PointsPy)
+generate_from_py(Points)
 
 SET(Points_SRCS
     AppPoints.cpp
     AppPointsPy.cpp
     Points.cpp
     Points.h
-    PointsPy.xml
+    Points.pyi
     PointsPyImp.cpp
     PointsAlgos.cpp
     PointsAlgos.h
@@ -54,7 +49,6 @@ SET(Points_SRCS
     PointsFeature.h
     PointsGrid.cpp
     PointsGrid.h
-    PreCompiled.cpp
     PreCompiled.h
     Properties.cpp
     Properties.h
@@ -70,15 +64,15 @@ set(Points_Scripts
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Points_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Points PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Points PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(Points PRIVATE ${Points_SRCS} ${Points_Scripts})
 
 if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
-    link_directories(${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
+    target_link_directories(Points PUBLIC ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
 endif()
 
 target_link_libraries(Points E57Format ${Points_LIBS})

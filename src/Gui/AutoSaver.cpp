@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QApplication>
 # include <QFile>
 # include <QDir>
 # include <QRunnable>
 # include <QTextStream>
 # include <QThreadPool>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

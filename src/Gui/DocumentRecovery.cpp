@@ -24,9 +24,7 @@
 // write a property to file only when it has been modified
 // implement xml meta file
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <boost/interprocess/sync/file_lock.hpp>
 # include <QApplication>
 # include <QCloseEvent>
@@ -43,9 +41,11 @@
 # include <QSet>
 # include <QTextStream>
 # include <QTreeWidgetItem>
+# include <QXmlStreamReader>
 # include <QVector>
 # include <sstream>
-#endif
+
+#include <FCConfig.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -149,8 +149,9 @@ public:
         Unknown = 0, /*!< The file is not available */
         Created = 1, /*!< The file was created but not processed so far*/
         Overage = 2, /*!< The recovery file is older than the actual project file */
-        Success = 3, /*!< The file could be recovered */
-        Failure = 4, /*!< The file could not be recovered */
+        Corrupted = 3, /*!< The original file is corrupted */
+        Success = 4, /*!< The file could be recovered */
+        Failure = 5 /*!< The file could not be recovered */
     };
     struct Info {
         QString projectFile;
@@ -187,13 +188,19 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
     for (QList<QFileInfo>::const_iterator it = dirs.begin(); it != dirs.end(); ++it) {
         DocumentRecoveryPrivate::Info info = d_ptr->getRecoveryInfo(*it);
 
-        if (info.status == DocumentRecoveryPrivate::Created) {
+        if (info.status == DocumentRecoveryPrivate::Created ||
+            info.status == DocumentRecoveryPrivate::Corrupted) {
             d_ptr->recoveryInfo << info;
 
             auto item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
             item->setText(0, info.label);
             item->setToolTip(0, info.tooltip);
-            item->setText(1, tr("Not yet recovered"));
+            if (info.status == DocumentRecoveryPrivate::Corrupted) {
+                item->setText(1, tr("Original file corrupted"));
+                item->setForeground(1, QColor(170,0,0));  // TODO: Don't hardcode colors
+            } else {
+                item->setText(1, tr("Not yet recovered"));
+            }
             item->setToolTip(1, info.projectFile);
             d_ptr->ui.treeWidget->addTopLevelItem(item);
         }
@@ -369,6 +376,9 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
         case Overage:
             str << "  <Status>Deprecated</Status>\n";
             break;
+        case Corrupted:
+            str << "  <Status>Corrupted</Status>\n";
+            break;
         case Success:
             str << "  <Status>Success</Status>\n";
             break;
@@ -385,6 +395,7 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
         file.close();
     }
 }
+
 
 DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFileInfo& fi) const
 {
@@ -426,6 +437,8 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
             QString status = cfg[QStringLiteral("Status")];
             if (status == QLatin1String("Deprecated"))
                 info.status = DocumentRecoveryPrivate::Overage;
+            if (status == QLatin1String("Corrupted"))
+                info.status = DocumentRecoveryPrivate::Corrupted;
             else if (status == QLatin1String("Success"))
                 info.status = DocumentRecoveryPrivate::Success;
             else if (status == QLatin1String("Failure"))
@@ -435,14 +448,21 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
         if (info.status == DocumentRecoveryPrivate::Created) {
             // compare the modification dates
             QFileInfo fileInfo(info.fileName);
-            if (!info.fileName.isEmpty() && isValidProject(fileInfo)) {
-                QDateTime dateRecv = QFileInfo(file).lastModified();
-                QDateTime dateProj = fileInfo.lastModified();
-                if (dateRecv < dateProj) {
-                    info.status = DocumentRecoveryPrivate::Overage;
+            if (!info.fileName.isEmpty()) {
+                if  (isValidProject(fileInfo)) {
+                    QDateTime dateRecv = QFileInfo(file).lastModified();
+                    QDateTime dateProj = fileInfo.lastModified();
+                    if (dateRecv < dateProj) {
+                        info.status = DocumentRecoveryPrivate::Overage;
+                        writeRecoveryInfo(info);
+                        qWarning() << "Ignore recovery file " << file.toUtf8()
+                                   << " because it is older than the project file"
+                                   << info.fileName.toUtf8() << "\n";
+                    }
+                } else {
+                    info.status = DocumentRecoveryPrivate::Corrupted;
                     writeRecoveryInfo(info);
-                    qWarning() << "Ignore recovery file " << file.toUtf8()
-                        << " because it is older than the project file" << info.fileName.toUtf8() << "\n";
+                    qWarning() << "Original project file is corrupted: " << info.fileName << "\n";
                 }
             }
         }
@@ -451,9 +471,86 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
     return info;
 }
 
+
+/// Rough check to see if the ZIP data is valid. No CRC calculation, just a fast iteration over the
+/// contents to see if it seems basically OK.
+bool zipDataIsValid(const QString& zipData)
+{
+    try {
+        zipios::ZipFile zf(zipData.toStdString());
+        auto entries = zf.entries();
+        int n = 0;
+        for (auto it = entries.begin(); it != entries.end(); ++it) {
+            auto s = zf.getInputStream(*it);
+            if (!s || !(*s)) {
+                return false;
+            }
+            ++n;
+        }
+        if (n == 0) {
+            return false;
+        }
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+static zipios::ConstEntryPointer findEntry(zipios::ZipFile& zf, const std::string &name) {
+    auto entries = zf.entries();
+    for (auto it = entries.begin(); it != entries.end(); ++it)
+        if ((*it)->getName() == name) return *it;
+    return {};
+}
+
+bool xmlFilesAreValid(const QString& fcstdFile)
+{
+    try {
+        zipios::ZipFile zf(fcstdFile.toStdString());
+        auto doc = findEntry(zf, "Document.xml");
+        if (!doc) {
+            return false;
+        }
+        {
+            auto s = zf.getInputStream(doc);
+            QByteArray bytes;
+            bytes.resize(0);
+            std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
+            QXmlStreamReader xr(QByteArray(tmp.data(), int(tmp.size())));
+            while (!xr.atEnd()) xr.readNext();
+            if (xr.hasError()) {
+                return false;
+            }
+        }
+
+        // GuiDocument.xml is optional, but if it's present it must be well-formed
+        if (auto gui = findEntry(zf, "GuiDocument.xml")) {
+            auto s = zf.getInputStream(gui);
+            std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
+            QXmlStreamReader xr(QByteArray(tmp.data(), int(tmp.size())));
+            while (!xr.atEnd()) xr.readNext();
+            if (xr.hasError()) {
+                return false;
+            }
+        }
+
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
 bool DocumentRecoveryPrivate::isValidProject(const QFileInfo& fi) const
 {
     if (!fi.exists()) {
+        return false;
+    }
+
+    if (!zipDataIsValid(fi.fileName())) {
+        return false;
+    }
+
+    if (!xmlFilesAreValid(fi.fileName())) {
         return false;
     }
 
@@ -469,6 +566,11 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
     if (!file.open(QFile::ReadOnly))
         return cfg;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
+    if (!domDocument.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing)) {
+        return cfg;
+    }
+#else
     QString errorStr;
     int errorLine;
     int errorColumn;
@@ -477,6 +579,7 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
                                 &errorColumn)) {
         return cfg;
     }
+#endif
 
     QDomElement root = domDocument.documentElement();
     if (root.tagName() != QLatin1String("AutoRecovery")) {

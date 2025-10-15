@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QImage>
 #include <QImageReader>
 
@@ -31,7 +29,6 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTexture2.h>
-#endif
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 

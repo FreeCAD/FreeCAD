@@ -23,6 +23,8 @@
 #ifndef PART_FEATUREPARTSPLINE_H
 #define PART_FEATUREPARTSPLINE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 

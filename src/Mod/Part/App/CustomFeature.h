@@ -24,6 +24,8 @@
 #ifndef PART_CUSTOMFEATURE_H
 #define PART_CUSTOMFEATURE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include <Mod/Part/App/PartFeature.h>
 
 namespace Part

@@ -34,9 +34,7 @@
 // everything else is mostly providing services to other objects, such as the
 // actual drawing routines in Gui
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -63,7 +61,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/BoundBox.h>

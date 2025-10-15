@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,7 +21,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Mod/Part/App/TopoShapePy.h>

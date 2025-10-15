@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Python.h>
 #include <SMDSAbs_ElementType.hxx>
 #include <SMDS_MeshElement.hxx>
@@ -35,7 +33,7 @@
 #include <TopoDS_Shape.hxx>
 #include <algorithm>
 #include <stdexcept>
-#endif
+
 
 #include "Mod/Fem/App/FemMesh.h"
 #include <Base/PlacementPy.h>

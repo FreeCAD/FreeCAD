@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <sstream>
 # include <Inventor/SoDB.h>
 # include <Inventor/SoFullPath.h>
@@ -32,7 +31,7 @@
 # include <Inventor/nodes/SoTransform.h>
 # include <QFile>
 # include <QFileInfo>
-#endif
+
 
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>

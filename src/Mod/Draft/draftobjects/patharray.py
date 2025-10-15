@@ -67,7 +67,7 @@ import FreeCAD as App
 import DraftVecUtils
 import lazy_loader.lazy_loader as lz
 
-from draftutils.messages import _wrn, _err
+from draftutils.messages import _err, _log, _wrn
 from draftutils.translate import translate
 def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.base import DraftObject
@@ -578,19 +578,25 @@ class PathArray(DraftLink):
             return
 
         if hasattr(obj, "PathObj"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathObj' property to 'PathObject'"))
+            _log("v0.19, " + obj.Name + ", migrated 'PathObj' property to 'PathObject'")
         if hasattr(obj, "PathSubs"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathSubs' property to 'PathSubelements'"))
+            _log("v0.19, " + obj.Name + ", migrated 'PathSubs' property to 'PathSubelements'")
         if hasattr(obj, "Xlate"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
+            _log("v0.19, " + obj.Name + ", migrated 'Xlate' property to 'ExtraTranslation'")
         if not hasattr(obj, "Fuse"):
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+            _log("v1.0, " + obj.Name + ", added 'Fuse' property")
         if obj.getGroupOfProperty("Count") != "Spacing":
-            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "moved 'Count' property to 'Spacing' subsection"))
+            _log("v1.1, " + obj.Name + ", moved 'Count' property to 'Spacing' subsection")
         if not hasattr(obj, "ReversePath"):
-            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties"))
+            _log(
+                "v1.1, "
+                + obj.Name
+                + ", "
+                + "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' "
+                + "and 'SpacingPattern' properties"
+            )
         if not hasattr(obj, "PlacementList"):
-            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+            _log("v1.1, " + obj.Name + ", added hidden property 'PlacementList'")
 
         self.set_properties(obj)
         obj.setGroupOfProperty("Count", "Spacing")
@@ -647,7 +653,10 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         totalDist += e.Length
         ends.append(totalDist)
 
-    if startOffset > (totalDist - 1e-6):
+    # if align is True the length of the path cannot be zero:
+    minLength = 1e-6 if align else -1e-12
+
+    if startOffset > (totalDist - minLength):
         if startOffset != 0:
             _wrn(
                 translate(
@@ -657,7 +666,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             )
         startOffset = 0
 
-    if endOffset > (totalDist - startOffset - 1e-6):
+    if endOffset > (totalDist - startOffset - minLength):
         if endOffset != 0:
             _wrn(
                 translate(

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -19,8 +21,6 @@
  *   Fifth Floor, Boston, MA  02110-1301, USA                              *
  *                                                                         *
  ***************************************************************************/
-
-#include "PreCompiled.h"
 
 #include "Type.h"
 #include "BindingManager.h"

@@ -19,10 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
-#endif
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -111,6 +109,9 @@ PyMOD_INIT_FUNC(MeasureGui)
     //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
+
+    // Create a QuickMeasure instance
+    new MeasureGui::QuickMeasure(QApplication::instance());
 
     PyMOD_Return(mod);
 }

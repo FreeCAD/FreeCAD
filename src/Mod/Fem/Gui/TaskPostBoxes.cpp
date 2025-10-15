@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -34,7 +31,6 @@
 #include <QMessageBox>
 #include <QMetaMethod>
 #include <QToolTip>
-#endif
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -263,7 +259,7 @@ void TaskPostWidget::updateEnumerationList(App::PropertyEnumeration& prop, QComb
     box->setCurrentIndex(index);
 }
 
-void TaskPostWidget::handlePropertyChange(const App::DocumentObject& obj, const App::Property& prop)
+void TaskPostWidget::handlePropertyChange(const App::DocumentObject&, const App::Property& prop)
 {
     if (auto postobj = m_object.get<Fem::FemPostObject>()) {
         if (&prop == &postobj->Data) {

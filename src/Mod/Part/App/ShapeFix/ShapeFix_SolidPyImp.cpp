@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
 # include <Message_ProgressRange.hxx>
-#endif
 
 #include "ShapeFix/ShapeFix_SolidPy.h"
 #include "ShapeFix/ShapeFix_SolidPy.cpp"

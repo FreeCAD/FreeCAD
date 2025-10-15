@@ -33,17 +33,20 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
-
 class Arch_CurtainWall:
-
     "the Arch Curtain Wall command definition"
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_CurtainWall',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CurtainWall","Curtain Wall"),
-                'Accel': "C, W",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CurtainWall","Creates a curtain wall object from selected line or from scratch")}
+        return {
+            "Pixmap": "Arch_CurtainWall",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_CurtainWall", "Curtain Wall"),
+            "Accel": "C, W",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_CurtainWall",
+                "Creates a curtain wall object from selected line or from scratch",
+            ),
+        }
 
     def IsActive(self):
 
@@ -55,14 +58,20 @@ class Arch_CurtainWall:
         self.doc = FreeCAD.ActiveDocument
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) > 1:
-            FreeCAD.Console.PrintError(translate("Arch","Select only one base object or none")+"\n")
+            FreeCAD.Console.PrintError(
+                translate("Arch", "Select only one base object or none") + "\n"
+            )
         elif len(sel) == 1:
             # build on selection
             FreeCADGui.Control.closeDialog()
-            self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
+            self.doc.openTransaction(translate("Arch", "Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name+")")
+            FreeCADGui.doCommand(
+                "obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument."
+                + FreeCADGui.Selection.getSelection()[0].Name
+                + ")"
+            )
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             self.doc.commitTransaction()
             self.doc.recompute()
@@ -71,12 +80,12 @@ class Arch_CurtainWall:
             FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             self.points = []
             import WorkingPlane
+
             WorkingPlane.get_working_plane()
-            if hasattr(FreeCADGui,"Snapper"):
+            if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.getPoint(callback=self.getPoint)
 
-    def getPoint(self,point=None,obj=None):
-
+    def getPoint(self, point=None, obj=None):
         """Callback for clicks during interactive mode"""
 
         if point is None:
@@ -86,20 +95,25 @@ class Arch_CurtainWall:
             return
         self.points.append(point)
         if len(self.points) == 1:
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
+            FreeCADGui.Snapper.getPoint(last=self.points[0], callback=self.getPoint)
         elif len(self.points) == 2:
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             FreeCADGui.Control.closeDialog()
-            self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
+            self.doc.openTransaction(translate("Arch", "Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
+            FreeCADGui.doCommand(
+                "base = Draft.makeLine(FreeCAD."
+                + str(self.points[0])
+                + ",FreeCAD."
+                + str(self.points[1])
+                + ")"
+            )
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             self.doc.commitTransaction()
             self.doc.recompute()
 
 
-
-FreeCADGui.addCommand('Arch_CurtainWall', Arch_CurtainWall())
+FreeCADGui.addCommand("Arch_CurtainWall", Arch_CurtainWall())

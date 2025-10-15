@@ -22,11 +22,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Precision.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>

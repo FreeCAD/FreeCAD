@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QCoreApplication>
 # include <QEventLoop>
-#endif
+
+#include <FCConfig.h>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

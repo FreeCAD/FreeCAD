@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -26,10 +27,6 @@
 #if defined(_MSC_VER)
 #include <windows.h>
 #include <dbghelp.h>
-#endif
-
-#ifdef _PreComp_
-#undef _PreComp_
 #endif
 
 #if HAVE_CONFIG_H

@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <GC_MakeArcOfCircle.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
@@ -33,7 +32,7 @@
 #include <QSignalMapper>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Part.h>

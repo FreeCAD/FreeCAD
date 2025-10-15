@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
-#ifndef _PreComp_
+
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX < 0x070600
 #include <BRepAdaptor_HCurve.hxx>
@@ -49,7 +49,7 @@
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#endif
+
 #include <regex>
 
 #include <App/Link.h>

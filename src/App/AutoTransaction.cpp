@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Interpreter.h>
 
@@ -132,10 +131,12 @@ void AutoTransaction::setEnable(bool enable)
 
 int Application::setActiveTransaction(const char* name, bool persist)
 {
+
     if (!name || !name[0]) {
         name = "Command";
     }
-
+    
+    this->signalBeforeOpenTransaction(name);
     if (_activeTransactionGuard > 0 && getActiveTransaction()) {
         if (_activeTransactionTmpName) {
             FC_LOG("transaction rename to '" << name << "'");

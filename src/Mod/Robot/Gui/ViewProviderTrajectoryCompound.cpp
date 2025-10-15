@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/Control.h>
 #include <Mod/Robot/App/TrajectoryCompound.h>

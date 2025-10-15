@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,12 +21,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRep_Builder.hxx>
 #include <Precision.hxx>
 #include <TopoDS_Compound.hxx>
-#endif
+
 
 #include <Base/Console.h>  // for FC_LOG_LEVEL_INIT
 #include <Base/Placement.h>

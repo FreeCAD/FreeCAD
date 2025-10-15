@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <gp_Pln.hxx>
@@ -30,7 +28,7 @@
 # include <Standard_Failure.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-#endif
+
 
 #include "App/Datums.h"
 #include <App/Document.h>

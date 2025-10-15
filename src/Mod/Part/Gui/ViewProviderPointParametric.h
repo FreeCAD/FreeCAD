@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERPOINTPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERPOINTPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

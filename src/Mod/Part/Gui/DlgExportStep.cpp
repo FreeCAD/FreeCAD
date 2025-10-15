@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QCheckBox>
 # include <QDialogButtonBox>
 # include <QRegularExpression>
 # include <QRegularExpressionValidator>
 # include <QVBoxLayout>
 # include <Interface_Static.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Parameter.h>

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <Mod/Part/PartGlobal.h>

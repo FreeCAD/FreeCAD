@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <Mod/Mesh/App/Core/MeshIO.h>

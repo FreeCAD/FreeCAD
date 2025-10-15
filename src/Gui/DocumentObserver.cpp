@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
-#endif
 
 #include <functional>
 
@@ -349,6 +344,10 @@ ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj)
   : d(new Private(obj))
 {
 }
+
+ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderWeakPtrT&&) = default;
+
+ViewProviderWeakPtrT& ViewProviderWeakPtrT::operator=(ViewProviderWeakPtrT&&) = default;
 
 ViewProviderWeakPtrT::~ViewProviderWeakPtrT() = default;
 

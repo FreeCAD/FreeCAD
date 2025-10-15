@@ -22,8 +22,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -43,7 +41,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
 #include <sstream>
-#endif
+
 
 #include "FeatureProjectOnSurface.h"
 #include <Base/Exception.h>

@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/algorithm/string/predicate.hpp>
 #include <QByteArray>
 #include <QFileInfo>
@@ -30,7 +28,7 @@
 #include <QTimeZone>
 #include <QThreadPool>
 #include <QUrl>
-#endif
+
 
 #include "DisplayedFilesModel.h"
 

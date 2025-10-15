@@ -191,7 +191,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Symmetry parameters"));
+        return QString(tr("Symmetry Parameters"));
     }
 
     void activated() override
@@ -274,7 +274,7 @@ void DSHSymmetryController::configureToolWidget()
                                                              "Delete original geometries (U)"));
         toolWidget->setCheckboxLabel(WCheckbox::SecondBox,
                                      QApplication::translate("TaskSketcherTool_c2_symmetry",
-                                                             "Create Symmetry Constraints (J)"));
+                                                             "Create symmetry constraints (J)"));
     }
 }
 

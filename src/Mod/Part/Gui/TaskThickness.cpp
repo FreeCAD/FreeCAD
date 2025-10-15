@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <QMessageBox>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -326,7 +323,7 @@ void ThicknessWidget::setupGizmos()
         delete linearGizmo;
         return;
     }
-    gizmoContainer = Gui::GizmoContainer::createGizmo({linearGizmo}, vp);
+    gizmoContainer = Gui::GizmoContainer::create({linearGizmo}, vp);
 
     setGizmoPositions();
 }

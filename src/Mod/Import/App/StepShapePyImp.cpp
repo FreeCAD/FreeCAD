@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 // clang-format off
 // inclusion of the generated files (generated out of StepShapePy.xml)

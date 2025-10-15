@@ -21,10 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include <Base/Interpreter.h>
 

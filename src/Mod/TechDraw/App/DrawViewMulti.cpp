@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <gp_Ax2.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <Base/Console.h>
 

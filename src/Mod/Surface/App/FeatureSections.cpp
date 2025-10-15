@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <GeomFill_NSections.hxx>
@@ -31,7 +31,7 @@
 #include <Standard_Version.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS.hxx>
-#endif
+
 
 #include "FeatureSections.h"
 

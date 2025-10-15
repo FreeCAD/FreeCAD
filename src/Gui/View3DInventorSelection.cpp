@@ -20,13 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/details/SoDetail.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include "Application.h"
 #include "Document.h"

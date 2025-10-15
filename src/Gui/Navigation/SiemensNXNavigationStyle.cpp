@@ -21,11 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
-#endif
 
 #include <boost/statechart/custom_reaction.hpp>
 #include <boost/statechart/state_machine.hpp>

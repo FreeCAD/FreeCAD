@@ -20,8 +20,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include <App/PropertyContainer.h>
 #include <App/Application.h>
 #include <App/Document.h>

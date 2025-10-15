@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <Base/Tools.h>
 
@@ -324,11 +323,15 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     // object can be in only one group, and only one geofeaturegroup, however, it can be in both at
     // the same time)
     for (auto o : obj->getInList()) {
-        if (o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
-            return o;
+        Extension* ext = o->getExtension(GroupExtension::getExtensionClassTypeId(), false, true);
+        if (!ext) {
+            ext = o->getExtension(GroupExtensionPython::getExtensionClassTypeId(), false, true);
         }
-        if (o->hasExtension(App::GroupExtensionPython::getExtensionClassTypeId(), false)) {
-            return o;
+        if (ext) {
+            auto grp = static_cast<GroupExtension*>(ext)->Group.getValues();
+            if (std::find(grp.begin(), grp.end(), obj) != grp.end()) {
+                return o;
+            }
         }
     }
 
@@ -365,11 +368,14 @@ void GroupExtension::extensionOnChanged(const Property* p)
                 // an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if (in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)
-                        && in != getExtendedObject()) {
-                        error = true;
-                        corrected.erase(std::remove(corrected.begin(), corrected.end(), obj),
-                                        corrected.end());
+                    auto ext = in->getExtension(GroupExtension::getExtensionClassTypeId(), false, true);
+                    if (ext && (in != getExtendedObject())) {
+                        auto grp = static_cast<GroupExtension*>(ext)->Group.getValues();
+                        if (std::find(grp.begin(), grp.end(), obj) != grp.end()) {
+                            error = true;
+                            corrected.erase(std::remove(corrected.begin(), corrected.end(), obj),
+                                            corrected.end());
+                        }
                     }
                 }
             }

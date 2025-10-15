@@ -1,4 +1,3 @@
-#include "PreCompiled.h"
 
 #include "MeasureBase.h"
 

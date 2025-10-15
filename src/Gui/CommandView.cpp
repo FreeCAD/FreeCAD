@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QDialog>
 # include <QDomDocument>
@@ -41,12 +38,12 @@
 # include <QPainter>
 # include <QPointer>
 # include <QTextStream>
-#endif
 
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
@@ -73,6 +70,7 @@
 #include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
+#include "Selection/SelectionView.h"
 #include "SelectionObject.h"
 #include "SoFCOffscreenRenderer.h"
 #include "TextureMapping.h"
@@ -480,6 +478,15 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     QDomDocument xmlDocument;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
+    if (const auto result = xmlDocument.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing); !result) {
+        std::cerr << "Parse error in XML content at line " << result.errorLine
+                  << ", column " << result.errorColumn << ": "
+                  << qPrintable(result.errorMessage) << std::endl;
+        return;
+    }
+#else
     QString errorStr;
     int errorLine;
     int errorColumn;
@@ -491,6 +498,7 @@ void StdCmdFreezeViews::onRestoreViews()
                   << (const char*)errorStr.toLatin1() << std::endl;
         return;
     }
+#endif
 
     // get the root element
     QDomElement root = xmlDocument.documentElement();
@@ -3954,6 +3962,147 @@ bool StdCmdAlignToSelection::isActive()
 }
 
 //===========================================================================
+// Std_ClarifySelection
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdClarifySelection)
+
+StdCmdClarifySelection::StdCmdClarifySelection()
+  : Command("Std_ClarifySelection")
+{
+    sGroup        = "View";
+    sMenuText     = QT_TR_NOOP("Clarify Selection");
+    sToolTipText = QT_TR_NOOP("Displays a context menu at the mouse cursor to select overlapping "
+                              "or obstructed geometry in the 3D view.\n");
+    sWhatsThis    = "Std_ClarifySelection";
+    sStatusTip    = sToolTipText;
+    sAccel        = "G, G";
+    eType         = NoTransaction | AlterSelection;
+}
+
+void StdCmdClarifySelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    // Get the active view 
+    auto view3d = freecad_cast<View3DInventor*>(Application::Instance->activeView());
+    if (!view3d) {
+        return;
+    }
+
+    auto viewer = view3d->getViewer();
+    if (!viewer) {
+        return;
+    }
+
+    QWidget* widget = viewer->getGLWidget();
+    if (!widget) {
+        return;
+    }
+
+    // check if we have a stored right-click position (context menu) or should use current cursor position (keyboard shortcut)
+    SbVec2s point;
+    auto& storedPosition = viewer->navigationStyle()->getRightClickPosition();
+    if (storedPosition.has_value()) {
+        point = storedPosition.value();
+    } else {
+        QPoint pos = QCursor::pos();
+        QPoint local = widget->mapFromGlobal(pos);
+
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        point = SbVec2s(static_cast<short>(local.x() * devicePixelRatio),
+                        static_cast<short>((widget->height() - local.y() - 1) * devicePixelRatio));
+    }
+    
+    // Use ray picking to get all objects under cursor
+    SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
+    pickAction.setPoint(point);
+
+    constexpr double defaultMultiplier = 5.0F;
+    double clarifyRadiusMultiplier = App::GetApplication()
+                                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+            ->GetFloat("ClarifySelectionRadiusMultiplier", defaultMultiplier);
+
+    pickAction.setRadius(viewer->getPickRadius() * clarifyRadiusMultiplier);
+    pickAction.setPickAll(static_cast<SbBool>(true));  // Get all objects under cursor
+    pickAction.apply(viewer->getSoRenderManager()->getSceneGraph());
+    
+    const SoPickedPointList& pplist = pickAction.getPickedPointList();
+    if (pplist.getLength() == 0) {
+        return;
+    }
+    
+    // Convert picked points to PickData list
+    std::vector<PickData> selections;
+    
+    for (int i = 0; i < pplist.getLength(); ++i) {
+        SoPickedPoint* pp = pplist[i];
+        if (!pp || !pp->getPath()) {
+            continue;
+        }
+            
+        ViewProvider* vp = viewer->getViewProviderByPath(pp->getPath());
+        if (!vp) {
+            continue;
+        }
+            
+        // Cast to ViewProviderDocumentObject to get the object
+        auto vpDoc = freecad_cast<Gui::ViewProviderDocumentObject*>(vp);
+        if (!vpDoc) {
+            continue;
+        }
+            
+        App::DocumentObject* obj = vpDoc->getObject();
+        if (!obj) {
+            continue;
+        }
+
+        // Get element information - handle sub-objects like Assembly parts
+        std::string elementName = vp->getElement(pp->getDetail());
+        std::string subName;
+        
+        // Try to get more detailed sub-object information
+        bool hasSubObject = false;
+        if (vp->getElementPicked(pp, subName)) {
+            hasSubObject = true;
+        }
+        
+        // Create PickData with selection information
+        PickData pickData {.obj = obj,
+                           .element = elementName,
+                           .docName = obj->getDocument()->getName(),
+                           .objName = obj->getNameInDocument(),
+                           .subName = hasSubObject ? subName : elementName};
+        
+        selections.push_back(pickData);
+    }
+    
+    if (selections.empty()) {
+        return;
+    }
+    
+    QPoint globalPos;
+    if (storedPosition.has_value()) {
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        int logicalHeight = static_cast<int>(widget->height());
+        QPoint localPos(static_cast<int>(point[0] / devicePixelRatio), 
+	                    logicalHeight - static_cast<int>(point[1] / devicePixelRatio) - 1);
+        globalPos = widget->mapToGlobal(localPos);
+    } else {
+        globalPos = QCursor::pos();
+    }
+
+    // Use SelectionMenu to display and handle the pick menu
+    SelectionMenu contextMenu(widget);
+    contextMenu.doPick(selections, globalPos);
+}
+
+bool StdCmdClarifySelection::isActive()
+{
+    return qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()) != nullptr;
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3985,6 +4134,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdRecallWorkingView());
     rcCmdMgr.addCommand(new StdCmdViewGroup());
     rcCmdMgr.addCommand(new StdCmdAlignToSelection());
+    rcCmdMgr.addCommand(new StdCmdClarifySelection());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());

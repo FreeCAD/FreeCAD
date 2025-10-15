@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QtConcurrentMap>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
-#endif
+
 
 #include <Base/Converter.h>
 #include <Base/Matrix.h>

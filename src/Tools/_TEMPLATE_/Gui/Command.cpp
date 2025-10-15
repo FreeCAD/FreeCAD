@@ -20,11 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>

@@ -20,8 +20,6 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <boost/signals2.hpp>
@@ -29,7 +27,7 @@
 # include <string>
 # include <vector>
 # include <QMessageBox>
-#endif
+
 
 #include "SketchWorkflow.h"
 #include "DlgActiveBody.h"
@@ -55,6 +53,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/ViewParams.h>
+#include <Gui/ViewProviderPlane.h>
 #include <Gui/Selection/SelectionFilter.h>
 
 using namespace PartDesignGui;
@@ -567,7 +567,6 @@ private:
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
-            vpo->setTemporaryScale(3.0);  // NOLINT
             vpo->setPlaneLabelVisibility(true);
         }
     }
@@ -584,14 +583,14 @@ private:
 
         PartDesign::Body* partDesignBody = activeBody;
         auto onAccept = [partDesignBody, sketch]() {
-            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+            resetOriginVisibility(partDesignBody);
 
             Gui::Selection().clearSelection();
 
             PartDesignGui::setEdit(sketch, partDesignBody);
         };
         auto onReject = [partDesignBody]() {
-            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+            resetOriginVisibility(partDesignBody);
         };
 
         Gui::Selection().clearSelection();
@@ -616,7 +615,8 @@ private:
     void findAndSelectPlane()
     {
         App::Document* appdocument = guidocument->getDocument();
-        PlaneFinder planeFinder{appdocument, activeBody};
+        PlaneFinder planeFinder {appdocument, activeBody};
+
         planeFinder.findBasePlanes();
         planeFinder.findDatumPlanes();
         planeFinder.findShapeBinderPlanes();
@@ -625,14 +625,39 @@ private:
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status = planeFinder.getStatus();
         unsigned validPlaneCount = planeFinder.countValidPlanes();
 
+        for (auto& plane : planes) {
+            auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
+
+            // skip updating planes from coordinate systems
+            if (!planeViewProvider || !planeViewProvider->getRole().empty()) {
+                continue;
+            }
+
+            planeViewProvider->setLabelVisibility(true);
+            planeViewProvider->setTemporaryScale(Gui::ViewParams::instance()->getDatumTemporaryScaleFactor());
+        }
+
         //
         // Lambda definitions
         //
         App::Document* documentOfBody = appdocument;
         PartDesign::Body* partDesignBody = activeBody;
 
+        auto restorePlaneVisibility = [planes]() {
+            for (auto& plane : planes) {
+                auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
+                if (!planeViewProvider) {
+                    continue;
+                }
+
+                planeViewProvider->resetTemporarySize();
+                planeViewProvider->setLabelVisibility(false);
+            }
+        };
+
         // Determines if user made a valid selection in dialog
-        auto acceptFunction = [](const std::vector<App::DocumentObject*>& features) -> bool {
+        auto acceptFunction = [restorePlaneVisibility](const std::vector<App::DocumentObject*>& features) -> bool {
+            restorePlaneVisibility();
             return !features.empty();
         };
 
@@ -643,7 +668,8 @@ private:
 
         // Called by dialog for "Cancel", or "OK" if accepter returns false
         std::string docname = documentOfBody->getName();
-        auto rejectFunction = [docname]() {
+        auto rejectFunction = [docname, restorePlaneVisibility]() {
+            restorePlaneVisibility();
             Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
             if (document)
                 document->abortCommand();

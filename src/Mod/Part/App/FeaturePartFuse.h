@@ -23,6 +23,8 @@
 #ifndef PART_FEATUREPARTFUSE_H
 #define PART_FEATUREPARTFUSE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "FeaturePartBoolean.h"
 
 

@@ -21,15 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QApplication>
 #include <QEvent>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#endif
+
 
 #include "ViewProviderSketch.h"
 

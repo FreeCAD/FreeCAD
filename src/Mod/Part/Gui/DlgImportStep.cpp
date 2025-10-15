@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QDialogButtonBox>
-#endif
+
 
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>

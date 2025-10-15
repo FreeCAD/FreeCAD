@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom2d_Conic.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 

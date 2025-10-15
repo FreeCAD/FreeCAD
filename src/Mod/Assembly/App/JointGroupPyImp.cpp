@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of JointGroup.xml)
 #include "JointGroupPy.h"
 #include "JointGroupPy.cpp"

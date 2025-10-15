@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <Precision.hxx>
 # include <TopExp.hxx>
@@ -29,7 +27,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include "FeatureChamfer.h"
 #include "TopoShapeOpCode.h"

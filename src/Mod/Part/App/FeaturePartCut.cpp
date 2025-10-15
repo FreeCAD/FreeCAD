@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-#endif
+
 
 #include "FeaturePartCut.h"
 #include "TopoShapeOpCode.h"

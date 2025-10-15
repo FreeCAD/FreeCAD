@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/DocumentObjectPy.h>
 #include <Base/PlacementPy.h>

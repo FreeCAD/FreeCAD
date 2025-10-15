@@ -20,12 +20,7 @@
  *                                                                            *
  ******************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <limits>
-#endif
 
 #include <App/DocumentObject.h>
 #include <App/Document.h>

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom2d_Parabola.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 

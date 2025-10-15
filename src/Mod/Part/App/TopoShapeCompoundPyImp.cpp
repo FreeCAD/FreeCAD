@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "TopoShape.h"
 
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
@@ -33,7 +31,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-#endif
+
 
 #include "OCCError.h"
 #include <Base/GeometryPyCXX.h>

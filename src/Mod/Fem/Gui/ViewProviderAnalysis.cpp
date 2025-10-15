@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/nodes/SoSeparator.h>
 #include <QAction>
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTextStream>
-#endif
+
 
 #include <App/Document.h>
 #include <App/MaterialObject.h>

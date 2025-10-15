@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <QFile>
-#endif
+
 
 #include <App/Document.h>
 #include <App/InventorObject.h>

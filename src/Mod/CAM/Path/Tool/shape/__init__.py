@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # This package aggregates tool bit shape classes.
 
 # Import the base class and all concrete shape classes
@@ -10,7 +9,7 @@ from .models.custom import ToolBitShapeCustom
 from .models.dovetail import ToolBitShapeDovetail
 from .models.drill import ToolBitShapeDrill
 from .models.endmill import ToolBitShapeEndmill
-from .models.fillet import ToolBitShapeFillet
+from .models.radius import ToolBitShapeRadius
 from .models.probe import ToolBitShapeProbe
 from .models.reamer import ToolBitShapeReamer
 from .models.slittingsaw import ToolBitShapeSlittingSaw
@@ -36,7 +35,7 @@ __all__ = [
     "ToolBitShapeDovetail",
     "ToolBitShapeDrill",
     "ToolBitShapeEndmill",
-    "ToolBitShapeFillet",
+    "ToolBitShapeRadius",
     "ToolBitShapeProbe",
     "ToolBitShapeReamer",
     "ToolBitShapeSlittingSaw",

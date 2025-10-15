@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <iomanip>
 #include <ios>
@@ -39,7 +37,6 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/sensors/SoIdleSensor.h>
-#endif
 
 #include <boost/range/adaptors.hpp>
 

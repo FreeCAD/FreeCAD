@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
@@ -37,7 +37,7 @@
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

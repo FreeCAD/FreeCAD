@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom2d_OffsetCurve.hxx>
-#endif
+
 
 #include "Geom2d/OffsetCurve2dPy.h"
 #include "Geom2d/OffsetCurve2dPy.cpp"

@@ -21,7 +21,6 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "ViewProviderScaled.h"
 #include "TaskScaledParameters.h"

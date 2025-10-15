@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,9 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QString>
 # include <Inventor/SoFullPath.h>
 # include <Inventor/SoPickedPoint.h>
@@ -38,7 +38,7 @@
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/misc/SoState.h>
-#endif
+
 
 #include <Base/UnitsApi.h>
 

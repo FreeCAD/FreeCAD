@@ -24,7 +24,7 @@
 #define GUI_ViewProviderVarSet_H
 
 #include "ViewProviderDocumentObject.h"
-#include "Dialogs/DlgAddPropertyVarSet.h"
+#include "Dialogs/DlgAddProperty.h"
 
 namespace Gui {
 
@@ -44,7 +44,7 @@ public:
     void onFinished(int);
 
 private:
-    std::unique_ptr<Dialog::DlgAddPropertyVarSet> dialog;
+    std::unique_ptr<Dialog::DlgAddProperty> dialog;
 };
 
 } // namespace Gui

@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <QCursor>
 #include <QTimer>
 #include <Inventor/nodes/SoCamera.h>
-#endif
 
 #include <Base/Tools.h>
 

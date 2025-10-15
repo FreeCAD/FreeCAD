@@ -32,7 +32,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Drawing Update</string>
+      <string>Page Update</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -907,7 +907,7 @@ for ProjectionGroups</string>
         <item row="2" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SnapHighlights">
           <property name="toolTip">
-           <string>Check this box if you want detail view highlights to snap to the nearest vertex when dragging in TaskDetail.</string>
+           <string>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</string>
           </property>
           <property name="text">
            <string>Snap detail highlights</string>

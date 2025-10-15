@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Approx_Curve3d.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -106,7 +104,6 @@
 # include <cmath>
 # include <ctime>
 # include <limits>
-#endif //_PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -6420,10 +6417,10 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
             if (!geo1->isDerivedFrom<GeomTrimmedCurve>() || !geo2->isDerivedFrom<GeomTrimmedCurve>()) {
                 return nullptr;// not a GeomTrimmedCurve and no coincident point.
             }
-        
+
             auto* tcurve1 = static_cast<const GeomTrimmedCurve*>(geo1);
             auto* tcurve2 = static_cast<const GeomTrimmedCurve*>(geo2);
-        
+
             try {
                 if (!tcurve1->intersectBasisCurves(tcurve2, points)) {
                     return nullptr;
@@ -6437,9 +6434,9 @@ GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2
                         "a coincident constraint between the vertices of the "
                         "curves you are intending to fillet."))
             }
-        
+
             int res = selectIntersection(points, interpoints, refPnt1, refPnt2);
-        
+
             if (res != 0) {
                 return nullptr;
             }

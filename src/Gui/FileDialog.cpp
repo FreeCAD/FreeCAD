@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QButtonGroup>
 # include <QCompleter>
@@ -40,7 +39,7 @@
 # include <QStandardPaths>
 # include <QStyle>
 # include <QUrl>
-#endif
+
 
 #include <Base/Parameter.h>
 #include <App/Application.h>

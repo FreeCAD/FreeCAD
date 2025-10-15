@@ -21,13 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QGroupBox>
 # include <QLabel>
 # include <QScreen>
-#endif // #ifndef _PreComp_
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>

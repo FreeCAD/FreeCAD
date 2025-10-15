@@ -22,11 +22,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <Standard_Version.hxx>
-#endif
+
 
 #include "DatumPoint.h"
 

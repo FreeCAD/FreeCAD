@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of BomObject.xml)
 #include "BomObjectPy.h"
 #include "BomObjectPy.cpp"

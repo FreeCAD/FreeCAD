@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -38,7 +36,6 @@
 # include <TopExp_Explorer.hxx>
 # include <QtGlobal>
 # include <TopExp.hxx>
-#endif
 
 #include "FaceMakerBullseye.h"
 #include "FaceMakerCheese.h"

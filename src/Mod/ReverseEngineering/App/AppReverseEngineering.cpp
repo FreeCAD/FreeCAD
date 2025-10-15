@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Geom_BSplineSurface.hxx>
 #include <TColgp_Array1OfPnt.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Converter.h>

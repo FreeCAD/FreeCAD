@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -290,8 +289,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         # disable path sorting for offset and zigzag-offset paths
         if (
-            hasattr(obj, "OffsetPattern")
-            and obj.OffsetPattern in ["ZigZagOffset", "Offset"]
+            hasattr(obj, "ClearingPattern")
+            and obj.ClearingPattern in ["ZigZagOffset", "Offset"]
             and hasattr(obj, "MinTravel")
             and not obj.MinTravel
         ):

@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <sstream>
 #include <QStyledItemDelegate>
 #include <QTreeWidgetItem>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -386,14 +383,16 @@ void DlgPropertyLink::init(const App::DocumentObjectT& prop, bool tryFilter)
 
     // Try to select items corresponding to the current links inside the
     // property
-    ui->treeWidget->blockSignals(true);
-    for (auto& link : oldLinks) {
-        onSelectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
-                                                 link.getDocumentName(),
-                                                 link.getObjectName(),
-                                                 link.getSubName()));
+    {
+        QSignalBlocker blockTree(ui->treeWidget);
+        QSignalBlocker blockSelectionModel(ui->treeWidget->selectionModel());
+        for (auto& link : oldLinks) {
+            onSelectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
+                                                     link.getDocumentName(),
+                                                     link.getObjectName(),
+                                                     link.getSubName()));
+        }
     }
-    ui->treeWidget->blockSignals(false);
 
     // For link list type property, try to auto filter type
     if (tryFilter && isLinkList) {

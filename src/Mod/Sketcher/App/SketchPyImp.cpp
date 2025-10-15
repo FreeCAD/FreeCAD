@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/GeometryCurvePy.h>

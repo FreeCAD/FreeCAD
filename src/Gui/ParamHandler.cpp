@@ -19,9 +19,6 @@
   *                                                                          *
   ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "ParamHandler.h"
 

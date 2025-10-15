@@ -26,6 +26,7 @@
 #include <bitset>
 #include "Geometry.h"
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {

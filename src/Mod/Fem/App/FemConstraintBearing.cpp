@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <TopoDS.hxx>
-#endif
+
 
 #include <Mod/Part/App/PartFeature.h>
 

@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef TEMPLATE_GUI_PRECOMPILED_H
+#define TEMPLATE_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -34,8 +34,6 @@
 #define _TEMPLATE_AppExport
 #define _TEMPLATE_GuiExport
 #endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -62,7 +60,5 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

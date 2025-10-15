@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Precision.hxx>
-#endif
+
 
 #include <Mod/PartDesign/App/FeaturePocket.h>
 

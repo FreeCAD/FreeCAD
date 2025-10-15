@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -22,9 +24,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <iostream>
 #include <memory>
@@ -40,11 +39,12 @@
 #include <sstream>
 #include <string>
 #include <utility>
-#endif
 
 #include <QFileInfo>
 #include <QLockFile>
 #include <QDir>
+
+#include <FCConfig.h>
 
 #ifdef FC_OS_LINUX
 #include <unistd.h>

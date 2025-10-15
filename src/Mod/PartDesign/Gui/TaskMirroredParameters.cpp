@@ -21,11 +21,9 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -129,25 +127,32 @@ void TaskMirroredParameters::updateUI()
 
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
-
-        auto pcMirrored = getObject<PartDesign::Mirrored>();
-
-        std::vector<std::string> mirrorPlanes;
-        App::DocumentObject* selObj = nullptr;
-        getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-        if (!selObj) {
-            return;
-        }
-
-        if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Plane>()) {
-            setupTransaction();
-            pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
-            recomputeFeature();
-            updateUI();
-        }
-        exitSelectionMode();
+    // Handle selection ONLY when in reference selection mode
+    if (selectionMode == SelectionMode::None || msg.Type != Gui::SelectionChanges::AddSelection) {
+        return;
     }
+
+    if (originalSelected(msg)) {
+        exitSelectionMode();
+        return;
+    }
+
+    auto pcMirrored = getObject<PartDesign::Mirrored>();
+
+    std::vector<std::string> mirrorPlanes;
+    App::DocumentObject* selObj = nullptr;
+    getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+    if (!selObj) {
+        return;
+    }
+
+    if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Plane>()) {
+        setupTransaction();
+        pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
+        recomputeFeature();
+        updateUI();
+    }
+    exitSelectionMode();
 }
 
 void TaskMirroredParameters::onPlaneChanged(int /*num*/)

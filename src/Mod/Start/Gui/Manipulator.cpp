@@ -21,12 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QCoreApplication>
 #include <QCoreApplication>
 #include <QLayout>
-#endif
+
 
 #include "Manipulator.h"
 #include "StartView.h"

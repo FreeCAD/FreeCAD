@@ -108,22 +108,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>OpenSCAD-Import</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>Verwende ViewProvider in der Baumansicht</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>An OpenSCAD senden via</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>OpenSCAD-Export</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -227,32 +227,32 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Wandelt Kanten in Flächen um</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Zuerst drei Objekte auswählen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Code löschen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Öffnen…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Speichern…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>als Netz</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="427"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="119"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Farben Formen nach Gültigkeit und Typ</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>Erzeugt ein verfeinertes Netz</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Erstellt eine Funktion zur Erhöhung der Toleranz</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>Alle Platzierungen in der Baumansicht nach unten vergrößern</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>Ersetzt ein Objekt in der Baumansicht</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>Objekt(e) entfernen samt Kinder</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>Entfernt die ausgewählten Objekte und alle untergeordneten Objekte, auf die nicht von anderen Objekten verwiesen wird</translation>
     </message>
   </context>
   <context>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>Erzeugt eine Hülle</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="136"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Kanten in Flächen umwandeln</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="189"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>Das Netz spiegeln</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="215"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>Funktion zum Skalieren von Netzen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="219"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>Das Netz skalieren</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>Funktion zum Ändern der Größe von Netzen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="249"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>Die Größe des Netzes ändern</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Minkowski-Summe</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>Erzeugt die Minkowski-Summe</translation>
     </message>
   </context>
 </TS>

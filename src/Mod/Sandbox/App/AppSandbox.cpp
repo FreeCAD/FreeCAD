@@ -21,10 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Python.h>
-#endif
+
 
 #include <Base/Console.h>
 #include <App/DocumentPy.h>

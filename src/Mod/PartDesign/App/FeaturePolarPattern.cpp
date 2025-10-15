@@ -20,17 +20,14 @@
  *                                                                            *
  ******************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
+
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Ax2.hxx>
 # include <BRepAdaptor_Curve.hxx>
-#endif
 
 #include "DatumLine.h"
 #include <Base/Axis.h>
@@ -323,13 +320,13 @@ void PolarPattern::updateSpacings()
     if (spacings.size() == targetCount) {
         return;
     }
-    else if (spacings.size() < targetCount) {
+    if (spacings.size() < targetCount) {
         spacings.reserve(targetCount);
         while (spacings.size() < targetCount) {
             spacings.push_back(-1.0);
         }
     }
-    else if ((int)spacings.size() > targetCount) {
+    else {
         spacings.resize(targetCount);
     }
 

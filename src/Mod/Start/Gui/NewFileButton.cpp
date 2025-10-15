@@ -21,16 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QLabel>
 #include <QFont>
 #include <QIcon>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QString>
-#endif
 
 #include "NewFileButton.h"
 #include <algorithm>

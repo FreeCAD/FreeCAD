@@ -608,7 +608,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  page={}".format(page.TypeId))
         template = self.doc.addObject("TechDraw::DrawSVGTemplate")
         template.Template = App.getResourceDir() \
-                            + "Mod/TechDraw/Templates/A3_Landscape_blank.svg"
+                            + "Mod/TechDraw/Templates/ISO/A3_Landscape_blank.svg"
         page.Template = template
         _msg("  template={}".format(template.TypeId))
         view = self.doc.addObject("TechDraw::DrawViewDraft")

@@ -35,6 +35,7 @@
 #include <QMetaObject>
 
 #include <Base/Placement.h>
+#include <Gui/DocumentObserver.h>
 
 #include <FCGlobal.h>
 
@@ -50,6 +51,7 @@ class SoLinearDraggerContainer;
 class SoRotationDragger;
 class SoRotationDraggerContainer;
 class View3DInventorViewer;
+class ViewProviderDragger;
 
 struct GizmoPlacement
 {
@@ -96,6 +98,8 @@ public:
     SoInteractionKit* initDragger() override;
     void uninitDragger() override;
 
+    void updateColorTheme();
+
     // Returns the position and rotation of the base of the dragger
     GizmoPlacement getDraggerPlacement() override;
     void setDraggerPlacement(const SbVec3f& pos, const SbVec3f& dir) override;
@@ -131,6 +135,8 @@ public:
 
     SoInteractionKit* initDragger() override;
     void uninitDragger() override;
+
+    void updateColorTheme();
 
     // Distance between the linear gizmo base and rotation gizmo
     double sepDistance = 0;
@@ -190,6 +196,8 @@ public:
 
     SoInteractionKit* initDragger() override;
 
+    void updateColorTheme();
+
     void setRadius(float radius);
     void flipArrow();
 
@@ -229,20 +237,16 @@ public:
 
     // Checks if the gizmos are enabled in the preferences
     static bool isEnabled();
-    template <typename T>
-    static inline std::unique_ptr<GizmoContainer> createGizmo(std::initializer_list<Gui::Gizmo*> gizmos, T vp)
-    {
-        auto ptr = std::make_unique<GizmoContainer>();
-        ptr->addGizmos(gizmos);
-        vp->setGizmoContainer(ptr.get());
-
-        return ptr;
-    }
+    static std::unique_ptr<GizmoContainer> create(
+        std::initializer_list<Gui::Gizmo*> gizmos,
+        ViewProviderDragger* vp
+    );
 
 private:
     std::vector<Gizmo*> gizmos;
     SoFieldSensor cameraSensor;
     SoFieldSensor cameraPositionSensor;
+    WeakPtrT<ViewProviderDragger> viewProvider;
 
     void addGizmo(Gizmo* gizmo);
 

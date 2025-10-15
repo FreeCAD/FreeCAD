@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QHeaderView>
 #include <QInputDialog>
 #include <QMenu>
 #include <QMessageBox>
 #include <QToolBar>
 #include <QToolButton>
-#endif
 
 #include "Dialogs/DlgToolbarsImp.h"
 #include "Dialogs/DlgKeyboardImp.h"

@@ -22,8 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of AssemblyLink.xml)
 #include "AssemblyLinkPy.h"
 #include "AssemblyLinkPy.cpp"

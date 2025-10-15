@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 
@@ -34,7 +31,6 @@
 # include <QPainter>
 # include <QPainterPath>
 # include <QSvgGenerator>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2015 Kirill Gavrilov <kirill.gavrilov@opencascade.com>  *
  *                                                                         *
@@ -20,11 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-#endif
+
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"

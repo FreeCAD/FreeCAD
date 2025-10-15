@@ -251,6 +251,8 @@ public:
     boost::signals2::signal<void (const Document&)> signalRedoDocument;
     /// signal on application wide redo
     boost::signals2::signal<void ()> signalRedo;
+    /// signal before open active transaction
+    boost::signals2::signal<void (const std::string&)> signalBeforeOpenTransaction;
     /// signal before close/abort active transaction
     boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
     /// signal after close/abort active transaction

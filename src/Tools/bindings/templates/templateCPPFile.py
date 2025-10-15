@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2006 Juergen Riegel
 
 import template
@@ -37,5 +36,4 @@ Template = """
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 """

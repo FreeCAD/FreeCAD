@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <limits>
@@ -30,7 +28,6 @@
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRep_Builder.hxx>
 #include <TopoDS_Compound.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

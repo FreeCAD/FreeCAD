@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QString>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QObject>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -52,7 +50,7 @@ bool ViewProviderPart::doubleClicked()
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
         Gui::Command::openCommand(text.toUtf8());
-        Gui::cmdSetEdit(pcObject);
+        Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
         return true;
     }
     catch (const Base::Exception& e) {
@@ -109,25 +107,6 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
             }
         }
     }
-}
-
-void ViewProviderPart::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
-{
-    ViewProviderPartExt::setEditViewer(viewer, ModNum);
-
-    if (gizmoContainer) {
-        gizmoContainer->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
-
-        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject())
-            * getObjectPlacement().inverse();
-        gizmoContainer->attachViewer(viewer, originPlacement);
-    }
-}
-
-void ViewProviderPart::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
-{
-    assert(gizmoContainer);
-    this->gizmoContainer = gizmoContainer;
 }
 
 // ----------------------------------------------------------------------------

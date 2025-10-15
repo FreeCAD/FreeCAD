@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
 
 #include "Sheet.h"
 #include "Utils.h"

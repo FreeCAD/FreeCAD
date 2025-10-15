@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <fcntl.h>
 # include <sstream>
 # include <Quantity_Color.hxx>
@@ -38,7 +36,7 @@
 # include <Transfer_TransientProcess.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
-#endif
+
 
 #include <StepElement_AnalysisItemWithinRepresentation.hxx>
 #include <StepVisual_AnnotationCurveOccurrence.hxx>
@@ -51,6 +49,7 @@
 #include "ShapeMapHasher.h"
 #include "PartFeature.h"
 
+FC_LOG_LEVEL_INIT("Part")
 
 namespace Part {
 bool ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col);
@@ -67,6 +66,8 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     STEPControl_Reader aReader;
     TopoDS_Shape aShape;
     Base::FileInfo fi(Name);
+
+    FC_WARN("Importing STEP via 'Part' is deprecated. Use 'ImportGui' instead.");
 
     if (!fi.exists()) {
         std::stringstream str;

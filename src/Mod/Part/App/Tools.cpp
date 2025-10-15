@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -65,7 +63,6 @@
 # include <Adaptor3d_HCurveOnSurface.hxx>
 # include <GeomAdaptor_HCurve.hxx>
 # endif
-#endif
 
 #include <Base/Exception.h>
 #include <Base/Vector3D.h>

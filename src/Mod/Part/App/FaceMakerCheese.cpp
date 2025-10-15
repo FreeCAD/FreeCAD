@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
@@ -43,7 +41,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QtGlobal>
-#endif
+
 
 #include "FaceMakerCheese.h"
 

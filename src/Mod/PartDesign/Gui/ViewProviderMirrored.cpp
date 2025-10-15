@@ -21,7 +21,6 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "ViewProviderMirrored.h"
 #include "TaskMirroredParameters.h"

@@ -24,6 +24,8 @@
 #ifndef MESHGUI_DLG_EVALUATE_SETTINGS_H
 #define MESHGUI_DLG_EVALUATE_SETTINGS_H
 
+#include <FCGlobal.h>
+
 #include <QDialog>
 
 namespace MeshGui

@@ -148,6 +148,7 @@ AssemblyExport JointGroup* getJointGroup(const App::Part* part);
 // getters to get from properties
 AssemblyExport void setJointActivated(const App::DocumentObject* joint, bool val);
 AssemblyExport bool getJointActivated(const App::DocumentObject* joint);
+AssemblyExport double getJointAngle(const App::DocumentObject* joint);
 AssemblyExport double getJointDistance(const App::DocumentObject* joint);
 AssemblyExport double getJointDistance2(const App::DocumentObject* joint);
 AssemblyExport JointType getJointType(const App::DocumentObject* joint);
@@ -174,6 +175,7 @@ AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* a
 AssemblyExport std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop);
 AssemblyExport std::vector<std::string> getSubAsList(const App::DocumentObject* joint,
                                                      const char* propName);
+AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
 
 }  // namespace Assembly
 

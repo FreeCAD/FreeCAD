@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QCheckBox>
 # include <QCoreApplication>
 # include <QHeaderView>
@@ -54,7 +52,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-#endif //_PreComp_
 
 #include <Base/Interpreter.h>
 #include <Base/TimeInfo.h>

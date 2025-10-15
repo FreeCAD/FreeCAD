@@ -21,7 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include "SoFCColorBarNotifier.h"
 #include "SoFCColorBar.h"

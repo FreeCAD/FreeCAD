@@ -24,6 +24,9 @@
 #define PART_FEATURECOMPOUND_H
 
 #include <App/PropertyLinks.h>
+
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 

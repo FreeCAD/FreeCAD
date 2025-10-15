@@ -22,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QLineEdit>
 #include <QPainter>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>

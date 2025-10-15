@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 ///***************************************************************************
 // *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
 // *                                                                         *
@@ -20,7 +22,6 @@
 // *                                                                         *
 // ***************************************************************************/
 
-#include "PreCompiled.h"
 
 // clang-format off
 #include "Blending/BlendCurvePy.h"

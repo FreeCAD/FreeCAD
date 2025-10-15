@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 
 # include <cmath>
 # include <limits>
@@ -42,7 +39,6 @@
 # include <QRegularExpression>
 # include <QTreeWidget>
 # include <QComboBox>
-#endif
 
 #include <Base/Tools.h>
 #include <App/Application.h>

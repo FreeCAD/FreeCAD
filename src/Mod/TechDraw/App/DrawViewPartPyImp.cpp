@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Vector3D.h>

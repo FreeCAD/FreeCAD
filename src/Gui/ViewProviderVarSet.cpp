@@ -20,10 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <memory>
-#endif
+
 
 #include <App/VarSet.h>
 
@@ -44,7 +43,7 @@ ViewProviderVarSet::ViewProviderVarSet()
 bool ViewProviderVarSet::doubleClicked()
 {
     if (!dialog) {
-        dialog = std::make_unique<DlgAddPropertyVarSet>(getMainWindow(), this);
+        dialog = std::make_unique<DlgAddProperty>(getMainWindow(), this);
     }
 
     // Do not use exec() here because it blocks and prevents command Std_VarSet

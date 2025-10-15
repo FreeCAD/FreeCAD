@@ -20,12 +20,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDebug>
 #include <QTextStream>
 #include <memory>
-#endif
+
 
 #include <Base/Tools.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>

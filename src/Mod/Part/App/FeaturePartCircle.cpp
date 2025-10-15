@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <gp_Circ.hxx>
 # include <TopoDS_Edge.hxx>
-#endif
+
 
 #include <Base/Tools.h>
 

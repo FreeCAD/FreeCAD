@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <TopoDS.hxx>
 # include <TopoDS_Shell.hxx>
-#endif
+
 
 #include "ShapeFix/ShapeFix_FaceConnectPy.h"
 #include "ShapeFix/ShapeFix_FaceConnectPy.cpp"

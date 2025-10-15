@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "PropertyColumnWidths.h"
 // inclusion of the generated files (generated out of PropertyColumnWidthsPy.xml)

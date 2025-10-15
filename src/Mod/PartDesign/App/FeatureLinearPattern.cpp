@@ -20,10 +20,8 @@
  *                                                                            *
  ******************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
+
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Dir.hxx>
@@ -31,7 +29,6 @@
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
 
 #include <App/Datums.h>
 #include <Base/Axis.h>
@@ -248,17 +245,20 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
 
 gp_Vec LinearPattern::calculateOffsetVector(LinearPatternDirection dir) const
 {
-    const auto& occurrencesProp =
-        (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
+    bool firstDir = dir == LinearPatternDirection::First;
+    const auto& occurrencesProp = firstDir ? Occurrences : Occurrences2;
     int occurrences = occurrencesProp.getValue();
     if (occurrences <= 1) {
         return gp_Vec();  // Return zero vector if no transformation is needed
     }
 
-    const auto& dirProp = (dir == LinearPatternDirection::First) ? Direction : Direction2;
-    const auto& reversedProp = (dir == LinearPatternDirection::First) ? Reversed : Reversed2;
-    const auto& modeProp = (dir == LinearPatternDirection::First) ? Mode : Mode2;
-    const auto& lengthProp = (dir == LinearPatternDirection::First) ? Length : Length2;
+    const auto& dirProp = firstDir ? Direction : Direction2;
+    if (!dirProp.getValue()) {
+        return gp_Vec();
+    }
+    const auto& reversedProp = firstDir ? Reversed : Reversed2;
+    const auto& modeProp = firstDir ? Mode : Mode2;
+    const auto& lengthProp = firstDir ? Length : Length2;
 
     double distance = lengthProp.getValue();
     if (distance < Precision::Confusion()) {
@@ -393,6 +393,10 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
     }
+    else if (auto* plane = freecad_cast<App::Plane*>(refObject)) {
+        Base::Vector3d d = plane->getDirection();
+        dir = gp_Dir(d.x, d.y, d.z);
+    }
     else if (auto* line = freecad_cast<App::Line*>(refObject)) {
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
@@ -464,13 +468,13 @@ void LinearPattern::updateSpacings(LinearPatternDirection dir)
     if (spacings.size() == targetCount) {
         return;
     }
-    else if (spacings.size() < targetCount) {
+    if (spacings.size() < targetCount) {
         spacings.reserve(targetCount);
         while (spacings.size() < targetCount) {
             spacings.push_back(-1.0);
         }
     }
-    else if ((int)spacings.size() > targetCount) {
+    else {
         spacings.resize(targetCount);
     }
 
@@ -551,4 +555,5 @@ void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
 }
 
 }
+
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,15 +23,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
 #include <cstring>
 #include <Python.h>
-#endif
 
 #include <frameobject.h>
 

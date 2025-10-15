@@ -119,6 +119,7 @@ Requires:       hicolor-icon-theme
 
 Requires:       fmt
 
+Requires:       python3-defusedxml
 Requires:       python3-pivy
 Requires:       python3-matplotlib
 Requires:       python3-collada

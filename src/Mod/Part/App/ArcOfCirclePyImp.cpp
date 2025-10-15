@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeArcOfCircle.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_TrimmedCurve.hxx>
-#endif
+
 
 #include <Base/VectorPy.h>
 

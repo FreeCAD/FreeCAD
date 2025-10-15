@@ -23,12 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <sstream>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintInitialTemperature.h>

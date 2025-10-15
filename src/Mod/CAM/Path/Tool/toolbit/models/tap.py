@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -24,6 +23,7 @@ import Path
 from ...shape import ToolBitShapeTap
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
+from ..util import is_imperial_pitch
 
 
 class ToolBitTap(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
@@ -36,10 +36,37 @@ class ToolBitTap(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_edge_length = self.get_property_str("CuttingEdgeLength", "?")
+        cutting_edge_length = self.get_property_str("CuttingEdgeLength", "?", precision=3)
+        pitch_raw = self.get_property("Pitch")
+
+        spindle_direction = self.get_property_str("SpindleDirection", "Forward")
+        if spindle_direction == "Forward":
+            rotation = "Right Hand"
+        elif spindle_direction == "Reverse":
+            rotation = "Left Hand"
+        else:
+            rotation = spindle_direction
+
+        if isinstance(pitch_raw, FreeCAD.Units.Quantity):
+            pitch_mm = pitch_raw.getValueAs("mm")
+        else:
+            pitch_mm = FreeCAD.Units.Quantity(str(pitch_raw)).getValueAs("mm")
+
+        if pitch_raw:
+            try:
+                if is_imperial_pitch(pitch_raw):
+                    tpi = round(25.4 / pitch_mm, 2)
+                    pitch = f"{int(tpi) if tpi == int(tpi) else tpi} TPI"
+                else:
+                    pitch = f"{pitch_mm} mm"
+            except Exception:
+                pitch = str(pitch_raw)
+        else:
+            pitch = "?"
 
         return FreeCAD.Qt.translate(
-            "CAM", f"{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge"
+            "CAM",
+            f"{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge",
         )

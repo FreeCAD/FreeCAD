@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
  *   Copyright (c) 2014-2015 Balázs Bámer                                  *
@@ -21,8 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <sstream>
@@ -31,7 +31,6 @@
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
 
 #include "Mod/Part/App/PartFeature.h"
 #include <App/Document.h>

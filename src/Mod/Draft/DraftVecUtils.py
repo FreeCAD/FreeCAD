@@ -58,7 +58,7 @@ def precision():
 
     This function is deprecated since it is a doublette of
     Draft.precision()
-       
+
     Returns
     -------
     int
@@ -492,9 +492,11 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
     ys = y * s
     zs = z * s
 
+    # fmt: off
     m = FreeCAD.Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
                        xyt + zs,    c + y*y*t,  yzt - xs,   0,
                        xzt - ys,    yzt + xs,   c + z*z*t,  0)
+    # fmt: on
 
     return m.multiply(u)
 
@@ -787,10 +789,12 @@ def getPlaneRotation(u, v, _ = None):
     w.normalize()
     v = w.cross(u)
 
+    # fmt: off
     m = FreeCAD.Matrix(u.x, v.x, w.x, 0,
                        u.y, v.y, w.y, 0,
                        u.z, v.z, w.z, 0,
                        0.0, 0.0, 0.0, 1.0)
+    # fmt: on
     return m
 
 
@@ -817,7 +821,7 @@ def removeDoubles(vlist, precision=None):
     precision : int | None
                 mathematical precision - if None use configured draft
                 precision
-               
+
     Returns
     -------
     list of Base::Vector3

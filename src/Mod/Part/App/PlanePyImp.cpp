@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <gp_Ax1.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx>
@@ -29,7 +27,7 @@
 # include <GC_MakePlane.hxx>
 # include <Geom_Plane.hxx>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

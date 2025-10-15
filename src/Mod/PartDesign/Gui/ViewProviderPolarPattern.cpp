@@ -20,7 +20,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderPolarPattern.h"
 #include "TaskPatternParameters.h"

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include "VRMLObject.h"
 #include "Document.h"
 #include "DocumentObjectPy.h"

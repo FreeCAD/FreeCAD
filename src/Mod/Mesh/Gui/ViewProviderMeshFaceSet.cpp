@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 
 #include <Inventor/nodes/SoBaseColor.h>
@@ -30,7 +28,6 @@
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Selection/Selection.h>

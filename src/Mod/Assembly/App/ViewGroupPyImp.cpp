@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of ViewGroup.xml)
 #include "ViewGroupPy.h"
 #include "ViewGroupPy.cpp"

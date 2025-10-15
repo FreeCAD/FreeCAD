@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <string>
 # include <QApplication>
 # include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Material.h>

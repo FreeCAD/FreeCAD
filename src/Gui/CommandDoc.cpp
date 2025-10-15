@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 # include <QCheckBox>
@@ -31,7 +28,6 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTreeWidgetItem>
-#endif
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -1607,7 +1603,7 @@ void StdCmdPlacement::activated(int iMsg)
 bool StdCmdPlacement::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    return (sel.size() == 1 && ! sel.front()->isFreezed());
+    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj){return obj->isFreezed();}));
 }
 
 //===========================================================================

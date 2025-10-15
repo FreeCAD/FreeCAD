@@ -19,7 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Exceptions.h"
 #include "MaterialFilter.h"

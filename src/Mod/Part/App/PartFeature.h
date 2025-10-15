@@ -31,6 +31,8 @@
 
 #include <TopoDS_Face.hxx>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PropertyTopoShape.h"
 
 

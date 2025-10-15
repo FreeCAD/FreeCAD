@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,12 +21,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 // From Boost 1.75 on the geometry component requires C++14
 #define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
-#ifndef _PreComp_
 #include <limits>
 
 #include <boost/geometry.hpp>
@@ -67,7 +66,6 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

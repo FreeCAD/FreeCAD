@@ -27,13 +27,11 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeArcOfCircle.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Pln.hxx>
-#endif
+
 
 #include "BSplineCurveBiArcs.h"
 #include "Geometry.h"

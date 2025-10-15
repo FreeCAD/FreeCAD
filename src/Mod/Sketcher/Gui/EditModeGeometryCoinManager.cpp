@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <memory>
 
 #include <Inventor/SbVec3f.h>
@@ -31,7 +31,6 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif  // #ifndef _PreComp_
 
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SmSwitchboard.h>

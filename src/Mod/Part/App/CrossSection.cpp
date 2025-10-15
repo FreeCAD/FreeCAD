@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>
 # include <BRepAdaptor_Surface.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
@@ -41,7 +39,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
-#endif
+
 
 #include "CrossSection.h"
 #include "TopoShapeOpCode.h"

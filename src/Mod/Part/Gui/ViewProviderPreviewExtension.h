@@ -32,19 +32,18 @@
 #include <QtCore>
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFMatrix.h>
 
 #include <App/PropertyStandard.h>
 #include <Gui/ViewProvider.h>
 
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
-#include <Inventor/fields/SoSFMatrix.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace PartGui {
 
@@ -60,15 +59,13 @@ public:
     SoPreviewShape();
     static void initClass();
 
-    void notify(SoNotList* nl) override;
-
     SoSFColor color;
     SoSFFloat transparency;
     SoSFFloat lineWidth;
     SoSFMatrix transform;
 
 private:
-    SoTransform* pcTransform;
+    SoMatrixTransform* pcTransform;
 };
 
 class PartGuiExport ViewProviderPreviewExtension : public Gui::ViewProviderExtension {

@@ -25,6 +25,9 @@
 #define PART_FEATUREPARTBOOLEAN_H
 
 #include <App/PropertyLinks.h>
+
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 class FCBRepAlgoAPI_BooleanOperation;

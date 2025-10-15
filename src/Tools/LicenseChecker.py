@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2013 Werner Mayer LGPL
 #
 # Utility to search for source, header and Python files with a missing license text

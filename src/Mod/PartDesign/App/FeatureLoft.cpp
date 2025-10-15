@@ -20,16 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-// NOLINTNEXTLINE(CppUnusedIncludeDirective)
-#include "PreCompiled.h"    // NOLINT(misc-include-cleaner)
-#ifndef _PreComp_
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <boost/core/ignore_unused.hpp>
 

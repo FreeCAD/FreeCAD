@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <sstream>
 
 # include <BRepAdaptor_Curve.hxx>
@@ -51,7 +49,6 @@
 # include <Standard_Failure.hxx>
 # include <Standard_NullValue.hxx>
 # include <TopoDS.hxx>
-#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

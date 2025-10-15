@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,11 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #ifdef FC_OS_LINUX
 #include <unistd.h>
-#endif
 #endif
 
 #include <Base/Builder3D.h>

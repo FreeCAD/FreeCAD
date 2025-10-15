@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

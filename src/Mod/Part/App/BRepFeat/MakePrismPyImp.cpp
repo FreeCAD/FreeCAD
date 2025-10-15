@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-#endif
+
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>

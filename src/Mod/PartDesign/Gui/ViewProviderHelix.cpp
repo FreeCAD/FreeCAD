@@ -21,12 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
-#endif
+
 
 #include <Mod/PartDesign/App/FeatureHelix.h>
 #include <Gui/BitmapFactory.h>

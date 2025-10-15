@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
-
 #ifndef ROBOT_GLOBAL_H
 #define ROBOT_GLOBAL_H
 
+#include <FCGlobal.h>
 
 // Robot
 #ifndef RobotExport

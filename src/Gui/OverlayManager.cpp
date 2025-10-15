@@ -20,9 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <limits>
 # include <QAction>
 # include <QApplication>
@@ -40,7 +37,6 @@
 # include <QTimerEvent>
 # include <QToolTip>
 # include <QScrollBar>
-#endif
 
 #include <QPainterPath>
 #include <QPropertyAnimation>

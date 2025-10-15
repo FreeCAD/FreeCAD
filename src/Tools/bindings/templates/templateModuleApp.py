@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2007 Juergen Riegel
 
 from . import template, templateModuleAppMain, templateModuleAppFeature

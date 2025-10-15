@@ -26,9 +26,7 @@
  * for FreeCAD project https://www.freecad.org/
  ********************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <algorithm>
 # include <iostream>
 # include <QApplication>
@@ -46,7 +44,7 @@
 # include <QRegularExpression>
 # include <QSettings>
 # include <QTextList>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -587,28 +585,42 @@ void MRichTextEdit::fontChanged(const QFont &font) {
       }
 }
 
-void MRichTextEdit::fgColorChanged(const QColor &color) {
-    QSize iconSize(16, 16);
-    QIcon fgIcon = f_fgcolor->icon();
-    QPixmap fgPix = fgIcon.pixmap(iconSize, QIcon::Mode::Normal, QIcon::State::On);
-    QPixmap filler(iconSize);
-    if (color.isValid() ) {
-        filler.fill(color);
-        filler.setMask(fgPix.createMaskFromColor(Qt::transparent, Qt::MaskInColor) );
-        f_fgcolor->setIcon(filler);
+void updateColorButtonIcon(QToolButton* button, const QColor& color)
+{
+    if (!button) {
+        return;
+    }
+
+    QIcon icon = button->icon();
+    QList<QSize> availableSizes = icon.availableSizes();
+    if (availableSizes.isEmpty()) {
+        return;
+    }
+
+    // Use the largest available size for the best quality
+    QSize actualIconSize = availableSizes.last();
+    QPixmap originalPixmap = icon.pixmap(actualIconSize);
+
+    // Create a new pixmap to be filled with the color
+    QPixmap coloredPixmap(originalPixmap.size());
+    coloredPixmap.setDevicePixelRatio(originalPixmap.devicePixelRatio());
+
+    if (color.isValid()) {
+        coloredPixmap.fill(color);
+        // Apply the original icon's transparency mask to the colored pixmap
+        coloredPixmap.setMask(originalPixmap.mask());
+        button->setIcon(QIcon(coloredPixmap));
     }
 }
 
-void MRichTextEdit::bgColorChanged(const QColor &color) {
-    QSize iconSize(16, 16);
-    QIcon bgIcon = f_bgcolor->icon();
-    QPixmap bgPix = bgIcon.pixmap(iconSize, QIcon::Mode::Normal, QIcon::State::On);
-    QPixmap filler(iconSize);
-    if (color.isValid() ) {
-        filler.fill(color);
-        filler.setMask(bgPix.createMaskFromColor(Qt::transparent, Qt::MaskOutColor) );
-        f_bgcolor->setIcon(filler);
-    }
+void MRichTextEdit::fgColorChanged(const QColor& color)
+{
+    updateColorButtonIcon(f_fgcolor, color);
+}
+
+void MRichTextEdit::bgColorChanged(const QColor& color)
+{
+    updateColorButtonIcon(f_bgcolor, color);
 }
 
 void MRichTextEdit::slotCurrentCharFormatChanged(const QTextCharFormat &format) {

@@ -36,8 +36,7 @@ class BIM_Project:
         return {
             "Pixmap": "BIM_Project",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Project", "Project"),
-            "ToolTip": QT_TRANSLATE_NOOP("BIM_Project",
-                                         "Creates an empty NativeIFC project"),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Project", "Creates an empty NativeIFC project"),
         }
 
     def IsActive(self):
@@ -46,6 +45,7 @@ class BIM_Project:
 
     def Activated(self):
         from nativeifc import ifc_tools
+
         project = ifc_tools.create_document(FreeCAD.ActiveDocument)
         project.Modified = True
         FreeCAD.ActiveDocument.recompute()

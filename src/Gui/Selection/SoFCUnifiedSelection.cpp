@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,9 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # include <Inventor/SoFullPath.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoCallbackAction.h>
@@ -59,7 +59,7 @@
 # include <Inventor/nodes/SoNormalBinding.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/threads/SbStorage.h>
-#endif
+
 
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
@@ -367,20 +367,51 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             App::Document* doc = App::GetApplication().getDocument(preselectAction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(preselectAction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
-            SoDetail* detail = vp->getDetail(preselectAction->SelChange.pSubName);
+            
+            // use getDetailPath() like selection does, instead of just getDetail()
+            SoDetail* detail = nullptr;
+            detailPath->truncate(0);
+            auto subName = preselectAction->SelChange.pSubName;
+            
+            SoFullPath* pathToHighlight = nullptr;
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()) &&
+                (useNewSelection.getValue() || vp->useNewSelectionModel()) && vp->isSelectable()) {
+                
+                // get proper detail path for sub-objects (like Assembly parts)
+                if (!subName || !subName[0] || vp->getDetailPath(subName, detailPath, true, detail)) {
+                    if (detailPath->getLength()) {
+                        pathToHighlight = detailPath;
+                    } else {
+                        // fallback to ViewProvider root if no specific path
+                        pathToHighlight = static_cast<SoFullPath*>(new SoPath(2));
+                        pathToHighlight->ref();
+                        pathToHighlight->append(vp->getRoot());
+                    }
+                }
+            } else {
+                detail = vp->getDetail(subName);
+                pathToHighlight = static_cast<SoFullPath*>(new SoPath(2));
+                pathToHighlight->ref();
+                pathToHighlight->append(vp->getRoot());
+            }
 
-            SoHighlightElementAction highlightAction;
-            highlightAction.setHighlighted(true);
-            highlightAction.setColor(this->colorHighlight.getValue());
-            highlightAction.setElement(detail);
-            highlightAction.apply(vp->getRoot());
+            if (pathToHighlight) {
+                SoHighlightElementAction highlightAction;
+                highlightAction.setHighlighted(true);
+                highlightAction.setColor(this->colorHighlight.getValue());
+                highlightAction.setElement(detail);
+                highlightAction.apply(pathToHighlight);
+                
+                currentHighlightPath = static_cast<SoFullPath*>(pathToHighlight->copy());
+                currentHighlightPath->ref();
+                
+                // clean up temporary path if we created one
+                if (pathToHighlight != detailPath) {
+                    pathToHighlight->unref();
+                }
+            }
+            
             delete detail;
-
-            SoSearchAction sa;
-            sa.setNode(vp->getRoot());
-            sa.apply(vp->getRoot());
-            currentHighlightPath = static_cast<SoFullPath*>(sa.getPath()->copy());
-            currentHighlightPath->ref();
         }
 
         if (useNewSelection.getValue())
@@ -1350,7 +1381,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
         auto &packer = ShapeColorNode->shapeColorPacker;
         auto &trans = ShapeColorNode->transOverride;
         auto &color = ShapeColorNode->colorOverride;
-        if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+        if(!SoOverrideElement::getTransparencyOverride(state)) {
             SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
             SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
         }
@@ -1431,7 +1462,7 @@ bool SoFCSelectionRoot::checkColorOverride(SoState *state) {
             auto &packer = ShapeColorNode->shapeColorPacker;
             auto &trans = ShapeColorNode->transOverride;
             auto &color = ShapeColorNode->colorOverride;
-            if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+            if(!SoOverrideElement::getTransparencyOverride(state)) {
                 SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
                 SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
             }
@@ -1861,3 +1892,4 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction * action)
             action->extendBy(bbox);
     }
 }
+

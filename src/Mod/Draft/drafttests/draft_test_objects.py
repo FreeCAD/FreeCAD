@@ -452,7 +452,7 @@ def _create_objects(doc=None,
     # Circular array
     _msg(16 * "-")
     _msg("Circular array")
-    polygon = Draft.make_polygon(5, 30)
+    polygon = Draft.make_polygon(3, 30)
     polygon.Placement.Base = Vector(4250, 4250, 0)
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
@@ -463,14 +463,14 @@ def _create_objects(doc=None,
                               3,
                               1,
                               Vector(0, 0, 1),
-                              Vector(0, 0, 0),
+                              Vector(4250, 4250, 0),
                               use_link=False)
     _set_text(["Circular array"], Vector(4000, 3800, 0))
 
     # Circular link array
     _msg(16 * "-")
     _msg("Circular link array")
-    polygon = Draft.make_polygon(6, 30)
+    polygon = Draft.make_polygon(4, 30)
     polygon.Placement.Base = Vector(5250, 4250, 0)
     if App.GuiUp:
         polygon.ViewObject.Visibility = False
@@ -481,7 +481,7 @@ def _create_objects(doc=None,
                               3,
                               1,
                               Vector(0, 0, 1),
-                              Vector(0, 0, 0),
+                              Vector(5250, 4250, 0),
                               use_link=True)
     _set_text(["Circular link array"], Vector(5000, 3800, 0))
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -36,9 +35,9 @@ class ToolBitBallend(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?")
+        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"{diameter} {flutes}-flute ballend, {cutting_edge_height} cutting edge"

@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPixmapCache>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
-#endif
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -563,13 +559,13 @@ QString InputField::getUnitText()
 
 int InputField::getPrecision() const
 {
-    return this->actQuantity.getFormat().precision;
+    return this->actQuantity.getFormat().getPrecision();
 }
 
 void InputField::setPrecision(const int precision)
 {
     Base::QuantityFormat format = actQuantity.getFormat();
-    format.precision = precision;
+    format.setPrecision(precision);
     actQuantity.setFormat(format);
     updateText(actQuantity);
 }

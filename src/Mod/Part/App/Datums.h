@@ -25,6 +25,8 @@
 
 #include <App/Datums.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "AttachExtension.h"
 
 namespace Part

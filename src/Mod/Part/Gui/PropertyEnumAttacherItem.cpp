@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <cmath>
-#endif // _PreComp_
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>

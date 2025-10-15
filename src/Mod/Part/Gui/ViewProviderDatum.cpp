@@ -20,12 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>

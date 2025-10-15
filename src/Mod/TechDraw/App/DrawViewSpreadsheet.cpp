@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <iomanip>
 #include <sstream>
 #include <boost_regex.hpp>
-#endif
+
 
 #include <App/Property.h>
 #include <Base/Console.h>
@@ -259,12 +257,16 @@ std::string DrawViewSpreadsheet::getSheetImage()
          col != validColNames.end(); ++col) {
         // create a group for each column
         result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << std::endl;
+        float naturalColumnWidth = 0.0;
         for (std::vector<int>::const_iterator row = validRowNumbers.begin();
              row != validRowNumbers.end(); ++row) {
             // get cell size
             std::stringstream srow;
             srow << (*row);
             App::CellAddress address((*col) + srow.str());
+            if (naturalColumnWidth == 0.0) {
+                naturalColumnWidth = sheet->getColumnWidth(address.col());
+            }
             cellwidth = sheet->getColumnWidth(address.col());
             cellheight = sheet->getRowHeight(address.row());
             celltext = "";
@@ -372,7 +374,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
         }
         result << "  </g>" << std::endl;
         rowoffset = 0.0;
-        coloffset += cellwidth;
+        coloffset += naturalColumnWidth;
     }
 
     // close the containing group

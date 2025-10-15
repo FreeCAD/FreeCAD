@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   (c) 2009, 2010                                                        *
 # *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *

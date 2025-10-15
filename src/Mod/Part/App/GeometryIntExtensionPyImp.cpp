@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "GeometryIntExtensionPy.h"
 #include "GeometryIntExtensionPy.cpp"

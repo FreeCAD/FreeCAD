@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDir>
 #include <QFileInfo>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

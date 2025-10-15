@@ -22,14 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 
+
 class ifc_object:
     """NativeIFC class placeholder"""
+
     def __init__(self):
         pass
+
     def onDocumentRestored(self, obj):
         obj.Type = [obj.IfcType]
         obj.Type = obj.IfcType
+
     def dumps(self):
         return None
+
     def loads(self, state):
         return None

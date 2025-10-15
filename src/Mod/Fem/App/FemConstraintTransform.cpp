@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Tools.h>
 #include <Mod/Part/App/PartFeature.h>

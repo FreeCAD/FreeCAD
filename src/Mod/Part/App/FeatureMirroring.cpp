@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_Transform.hxx>
 # include <BRep_Tool.hxx>
 # include <gp_Ax2.hxx>
@@ -36,7 +34,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
-#endif
+
 
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>

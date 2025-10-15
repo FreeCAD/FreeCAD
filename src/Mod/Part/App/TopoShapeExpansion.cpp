@@ -22,11 +22,12 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <limits>
+
+#ifndef _Standard_Version_HeaderFile
+# include <Standard_Version.hxx>
+#endif
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -82,9 +83,9 @@
 
 #include <utility>
 
-#endif
-
 #include <OSD_Parallel.hxx>
+
+#include <FCConfig.h>
 
 #include "modelRefine.h"
 #include "CrossSection.h"
@@ -2696,8 +2697,15 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
     if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
         if (!intersection) {
             // simply recursively process the children, independently
-            expandCompound(shape, shapesToProcess);
-            outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
+            for(TopoDS_Iterator it(shape.getShape()); it.More() ; it.Next()) {
+                shapesToReturn.push_back(TopoShape(it.Value()).makeElementOffset2D(offset,
+                                                                                   joinType,
+                                                                                   fill,
+                                                                                   allowOpenResult,
+                                                                                   intersection,
+                                                                                   op));
+                outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
+            }
         }
         else {
             // collect non-compounds from this compound for collective offset. Process other shapes
@@ -5314,7 +5322,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     return TopoShape {};
 }
 
-bool TopoShape::isLinearEdge(Base::Vector3d* dir, Base::Vector3d* base) const
+bool TopoShape::isLinearEdge() const
 {
     if (isNull() || getShape().ShapeType() != TopAbs_EDGE) {
         return false;

@@ -70,7 +70,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToGroup",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group…"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds selected objects to a group, or removes them from any group")}
 
     def Activated(self):

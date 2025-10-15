@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFileInfo>
-#endif
+
 
 #include <App/DocumentObjectPy.h>
 #include <Gui/BitmapFactory.h>

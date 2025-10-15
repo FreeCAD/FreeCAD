@@ -36,9 +36,7 @@ class BIM_Convert:
         return {
             "Pixmap": "Arch_Component",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Convert", "Convert to BIM"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Convert", "Converts any object to a BIM component"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Convert", "Converts any object to a BIM component"),
         }
 
     def IsActive(self):
@@ -55,6 +53,7 @@ class BIM_Convert_TaskPanel:
 
     def __init__(self, objs):
         from PySide import QtGui
+
         self.types = [
             "Wall",
             "Structure",

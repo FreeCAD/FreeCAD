@@ -20,9 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
@@ -34,7 +31,6 @@
 # include <Inventor/nodes/SoIndexedPointSet.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/SoFullPath.h>
-#endif
 
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "SoFCSelection.h"

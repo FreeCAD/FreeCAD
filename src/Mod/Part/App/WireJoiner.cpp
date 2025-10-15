@@ -20,13 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+#include <limits>
+
 #include <boost/core/ignore_unused.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/graph/graph_concepts.hpp>
 
-#ifndef _PreComp_
-# include <limits>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
@@ -52,7 +51,6 @@
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-#endif
 
 #include <BRepTools_History.hxx>
 #include <ShapeBuild_ReShape.hxx>

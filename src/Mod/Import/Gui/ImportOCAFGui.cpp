@@ -23,8 +23,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include "ImportOCAFGui.h"
 #include <Gui/Application.h>
 #include <Gui/ViewProviderLink.h>

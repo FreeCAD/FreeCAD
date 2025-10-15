@@ -26,10 +26,6 @@
 //! and its placement.
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <boost_regex.hpp>
 
 #include <BRep_Builder.hxx>

@@ -21,11 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Mod/Fem/App/FemConstraintSpring.h"
 #include <Gui/Control.h>
 

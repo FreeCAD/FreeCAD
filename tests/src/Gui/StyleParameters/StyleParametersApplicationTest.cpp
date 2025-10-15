@@ -23,6 +23,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QString>
+
 #include "src/App/InitApplication.h"
 
 #include <Gui/Application.h>

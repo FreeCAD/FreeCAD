@@ -24,6 +24,7 @@
 #ifndef GUI_MACRO_H
 #define GUI_MACRO_H
 
+#include <stack>
 #include <tuple>
 #include <QString>
 #include <QStringList>
@@ -121,6 +122,46 @@ public:
         Cmt,  /**< The line is handled as a comment */
     };
 
+    /**  Redirect the macro output temporarily.
+     *
+     * This is a RAII class to redirect the macro output to a function.
+     * Initializing an instance with a redirect function, ensures that
+     * MacroManager::addLine() calls are redirected by means of the redirect
+     * function.  More than one instances can be used, overriding earlier
+     * instances and their redirect functions.
+     *
+     * @code
+     * void myRedirectFunc1(MacroManager::LineType type, const char* line)
+     * { // do something with the line }
+     *
+     * void myRedirectFunc2(MacroManager::LineType type, const char* line)
+     * { // do something else with the line }
+     *
+     * {
+     *   MacroRedirector redirect(myRedirectFunc1);
+     *   // all macro output will go to myRedirectFunc1
+     *   {
+     *     MacroRedirector redirect2(myRedirectFunc2);
+     *     // all macro output will go to myRedirectFunc2
+     *   }
+     *   // all macro output will go to myRedirectFunc1
+     * }
+     * // normal macro output is restored
+     * @endcode
+     */
+    class MacroRedirector
+    {
+    public:
+        explicit MacroRedirector(const std::function<void(LineType, const char*)>& func)
+        {
+            MacroManager::redirectFuncs.push(func);
+        }
+
+        ~MacroRedirector() {
+            MacroManager::redirectFuncs.pop();
+        }
+    };
+
     /** Opens a new Macro recording session
      * Starts a session with the type and the name of the macro.
      * All user interactions will be recorded as long as the commit() or cancel() isn't called.
@@ -139,7 +180,15 @@ public:
     bool isOpen() const {
         return macroFile.isOpen();
     }
-    /// insert a new line in the macro
+
+    /** Insert a new line in the macro.
+     *
+     * The line is added to the macro unless the output is redirected.
+     * @see MacroRedirector.
+     *
+     * @param Type The type of the line
+     * @param sLine The line to add
+     */
     void addLine(LineType Type, const char* sLine);
     /// insert a new pending line in the macro
     void addPendingLine(LineType type, const char* line);
@@ -174,6 +223,7 @@ private:
     mutable PythonConsole* pyConsole{nullptr};       // link to the python console
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
+    static std::stack<std::function<void(LineType, const char*)>> redirectFuncs;
 
     friend struct ApplicationP;
 };

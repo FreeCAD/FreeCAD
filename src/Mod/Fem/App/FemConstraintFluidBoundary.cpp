@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Precision.hxx>
-#endif
+
 
 #include <Base/Console.h>
 

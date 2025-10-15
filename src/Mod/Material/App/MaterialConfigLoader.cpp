@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QString>
@@ -30,7 +28,7 @@
 #include <QUuid>
 #include <memory>
 #include <fstream>
-#endif
+
 
 
 #include <App/Application.h>

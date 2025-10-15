@@ -21,14 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <boost/random.hpp>
-    #include <boost/uuid/uuid_io.hpp>
-    #include <boost/uuid/uuid_generators.hpp>
-    #include <boost/thread/mutex.hpp>
-    #include <boost/thread/lock_guard.hpp>
-#endif
+#include <boost/random.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/lock_guard.hpp>
 
 #include <Base/Reader.h>
 #include <Base/Writer.h>

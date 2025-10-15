@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <TopoDS.hxx>
-#endif
+
 
 #include "ShapeFix/ShapeFix_WireVertexPy.h"
 #include "ShapeFix/ShapeFix_WireVertexPy.cpp"

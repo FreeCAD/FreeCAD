@@ -23,14 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
 #include <QTextStream>
 #include <QMessageBox>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Gui/ActionFunction.h>

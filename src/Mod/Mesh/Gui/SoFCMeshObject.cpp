@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <algorithm>
 #include <limits>
 #ifdef FC_OS_WIN32
@@ -48,7 +48,6 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/misc/SoState.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

@@ -76,8 +76,7 @@ private:
     void showMainWindow();
     void activateWorkbench();
     void checkParameters();
-    void runWelcomeScreen();
-    void migrateToCurrentVersion();
+    void checkVersionMigration() const;
 
 private:
     bool loadFromPythonModule = false;

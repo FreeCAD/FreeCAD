@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
-#endif
+
 
 #include "Algorithm.h"
 #include "Approximation.h"

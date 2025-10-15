@@ -21,7 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #include "FileCardView.h"
 
 #include <App/Application.h>

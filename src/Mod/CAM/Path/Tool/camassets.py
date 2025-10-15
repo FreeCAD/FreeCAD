@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -26,6 +25,12 @@ import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, AssetUri, Asset, FileStore
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -131,13 +136,13 @@ def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: 
 
 def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
-    Copies an example shape to the given store if it is currently empty.
+    Ensures the toolbitshape directory structure exists without adding any files.
     """
-    builtin_shape_path = Preferences.getBuiltinShapePath()
+    from pathlib import Path
 
-    if asset_manager.is_empty("toolbitshape", store=store_name):
-        path = builtin_shape_path / "endmill.fcstd"
-        asset_manager.add_file("toolbitshape", path, store=store_name, asset_id="example")
+    # Get the shape directory path and ensure it exists
+    shape_path = Preferences.getAssetPath() / "Tools" / "Shape"
+    shape_path.mkdir(parents=True, exist_ok=True)
 
 
 def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
@@ -151,12 +156,22 @@ def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
 
 def _on_asset_path_changed(group, key, value):
     Path.Log.info(f"CAM asset directory changed in preferences: {group} {key} {value}")
-    user_asset_store.set_dir(Preferences.getAssetPath())
+    user_asset_store.set_dir(value)
     ensure_assets_initialized(cam_assets)
 
 
 # Set up the local CAM asset storage.
 asset_mapping = {
+    "toolbitlibrary": "Tools/Library/{asset_id}.fctl",
+    "toolbit": "Tools/Bit/{asset_id}.fctb",
+    "toolbitshape": "Tools/Shape/{asset_id}.fcstd",
+    "toolbitshapesvg": "Tools/Shape/{asset_id}",  # Asset ID has ".svg" included
+    "toolbitshapepng": "Tools/Shape/{asset_id}",  # Asset ID has ".png" included
+    "machine": "Machine/{asset_id}.fcm",
+}
+
+# Separate mapping for builtin assets (maintains original structure)
+builtin_asset_mapping = {
     "toolbitlibrary": "Library/{asset_id}.fctl",
     "toolbit": "Bit/{asset_id}.fctb",
     "toolbitshape": "Shape/{asset_id}.fcstd",
@@ -174,7 +189,7 @@ user_asset_store = FileStore(
 builtin_asset_store = FileStore(
     name="builtin",
     base_dir=Preferences.getBuiltinAssetPath(),
-    mapping=asset_mapping,
+    mapping=builtin_asset_mapping,
 )
 
 

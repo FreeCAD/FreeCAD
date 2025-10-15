@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <QPushButton>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <gp_Circ.hxx>
@@ -31,7 +30,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopExp_Explorer.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

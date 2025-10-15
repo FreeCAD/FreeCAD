@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
@@ -190,7 +188,7 @@ void TaskRevolutionParameters::setupDialog()
 void TaskRevolutionParameters::translateModeList(int index)
 {
     ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Dimension"));
+    ui->changeMode->addItem(tr("Angle"));
     if (!isGroove) {
         ui->changeMode->addItem(tr("To last"));
     }
@@ -199,7 +197,7 @@ void TaskRevolutionParameters::translateModeList(int index)
     }
     ui->changeMode->addItem(tr("To first"));
     ui->changeMode->addItem(tr("Up to face"));
-    ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->addItem(tr("Two angles"));
     ui->changeMode->setCurrentIndex(index);
 }
 
@@ -296,7 +294,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     bool isReversedEnabled = false;
     bool isFaceEditEnabled = false;
 
-    if (mode == PartDesign::Revolution::RevolMethod::Dimension) {
+    if (mode == PartDesign::Revolution::RevolMethod::Angle) {
         isRevolveAngleVisible = true;
         ui->revolveAngle->selectNumber();
         QMetaObject::invokeMethod(ui->revolveAngle, "setFocus", Qt::QueuedConnection);
@@ -322,7 +320,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
             ui->buttonFace->setChecked(true);
         }
     }
-    else if (mode == PartDesign::Revolution::RevolMethod::TwoDimensions) {
+    else if (mode == PartDesign::Revolution::RevolMethod::TwoAngles) {
         isRevolveAngleVisible = true;
         isRevolveAngle2Visible = true;
         isReversedEnabled = true;
@@ -626,7 +624,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
                                                   : &(getObject<PartDesign::Revolution>()->Type);
 
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
-    case PartDesign::Revolution::RevolMethod::Dimension:
+    case PartDesign::Revolution::RevolMethod::Angle:
         propEnum->setValue("Angle");
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
@@ -638,7 +636,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
     case PartDesign::Revolution::RevolMethod::ToFace:
         propEnum->setValue("UpToFace");
         break;
-    case PartDesign::Revolution::RevolMethod::TwoDimensions:
+    case PartDesign::Revolution::RevolMethod::TwoAngles:
         propEnum->setValue("TwoAngles");
         break;
     }
@@ -739,7 +737,7 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
     rotationGizmo = new Gui::RadialGizmo(ui->revolveAngle);
     rotationGizmo2 = new Gui::RadialGizmo(ui->revolveAngle2);
 
-    gizmoContainer = GizmoContainer::createGizmo({rotationGizmo, rotationGizmo2}, vp);
+    gizmoContainer = GizmoContainer::create({rotationGizmo, rotationGizmo2}, vp);
     rotationGizmo->flipArrow();
     rotationGizmo2->flipArrow();
 
@@ -762,19 +760,28 @@ void TaskRevolutionParameters::setGizmoPositions()
 
     if (isGroove) {
         auto groove = getObject<PartDesign::Groove>();
+        if (!groove || groove->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
         Part::TopoShape profile = groove->getProfileShape();
-        
+
         profile.getCenterOfGravity(profileCog);
         basePos = groove->Base.getValue();
         axisDir = groove->Axis.getValue();
     } else {
         auto revolution = getObject<PartDesign::Revolution>();
+        if (!revolution || revolution->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
         Part::TopoShape profile = revolution->getProfileShape();
-        
+
         profile.getCenterOfGravity(profileCog);
         basePos = revolution->Base.getValue();
         axisDir = revolution->Axis.getValue();
     }
+    gizmoContainer->visible = true;
 
     auto diff = profileCog - basePos;
     axisDir.Normalize();
@@ -802,12 +809,12 @@ void TaskRevolutionParameters::setGizmoVisibility()
     auto type = static_cast<PartDesign::Revolution::RevolMethod>(ui->changeMode->currentIndex());
 
     switch (type) {
-        case PartDesign::Revolution::RevolMethod::Dimension:
+        case PartDesign::Revolution::RevolMethod::Angle:
             gizmoContainer->visible = true;
             rotationGizmo->setVisibility(true);
             rotationGizmo2->setVisibility(false);
             break;
-        case PartDesign::Revolution::RevolMethod::TwoDimensions:
+        case PartDesign::Revolution::RevolMethod::TwoAngles:
             gizmoContainer->visible = true;
             rotationGizmo->setVisibility(true);
             rotationGizmo2->setVisibility(true);

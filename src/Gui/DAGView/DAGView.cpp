@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
@@ -20,12 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
 #include <memory>
-#endif
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>

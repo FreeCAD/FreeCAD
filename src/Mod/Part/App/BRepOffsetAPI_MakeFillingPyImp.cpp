@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <memory>
 # include <BRepOffsetAPI_MakeFilling.hxx>
 # include <GeomAbs_Shape.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
+
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>

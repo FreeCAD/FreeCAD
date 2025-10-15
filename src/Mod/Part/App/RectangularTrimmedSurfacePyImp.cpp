@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_RectangularTrimmedSurface.hxx>
-#endif
+
 
 #include "OCCError.h"
 

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoAntiSquish.h>
@@ -31,7 +29,7 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
-#endif
+
 
 #include <Base/Console.h>
 #include <Gui/Selection/SoFCSelection.h>

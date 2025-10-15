@@ -20,25 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef REVERSE_ENGINEERING_APP_PRECOMPILED_H
+#define REVERSE_ENGINEERING_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 4181)
-#pragma warning(disable : 4267)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4305)
-#pragma warning(disable : 4522)
-#endif
 
 // pcl headers include <boost/bind.hpp> instead of <boost/bind/bind.hpp>
 #ifndef BOOST_BIND_GLOBAL_PLACEHOLDERS
 #define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <map>
@@ -58,5 +49,4 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#endif  // _PreComp_
 #endif

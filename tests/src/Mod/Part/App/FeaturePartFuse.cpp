@@ -240,7 +240,7 @@ TEST_F(FeaturePartFuseTest, testRefine)
     // Arrange
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[1]);
-
+    _fuse->Refine.setValue(false);
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();

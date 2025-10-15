@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QCoreApplication>
 #include <QMenu>
 #include <QMessageBox>
-#endif
+
 
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>

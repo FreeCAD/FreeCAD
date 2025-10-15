@@ -23,6 +23,8 @@
 #ifndef MESHGUI_SELECTION_H
 #define MESHGUI_SELECTION_H
 
+#include <Mod/Mesh/MeshGlobal.h>
+
 #include <vector>
 #include <QWidget>
 

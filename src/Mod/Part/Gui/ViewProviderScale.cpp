@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "ViewProviderScale.h"
 #include <Mod/Part/App/FeatureScale.h>

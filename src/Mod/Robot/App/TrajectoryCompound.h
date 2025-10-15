@@ -25,6 +25,8 @@
 
 #include <App/PropertyLinks.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "TrajectoryObject.h"
 
 

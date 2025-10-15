@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QTreeWidget>
-#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

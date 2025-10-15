@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-#endif
+
 
 #include <Base/VectorPy.h>
 
