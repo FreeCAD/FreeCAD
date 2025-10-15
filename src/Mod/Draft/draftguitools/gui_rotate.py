@@ -52,10 +52,15 @@ class Rotate(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Rotate",
-                "Accel": "R, O",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotate"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotates the selected objects.\nIf the \"Copy\" option is active, it will create rotated copies.")}
+        return {
+            "Pixmap": "Draft_Rotate",
+            "Accel": "R, O",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotate"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Rotate",
+                'Rotates the selected objects.\nIf the "Copy" option is active, it will create rotated copies.',
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -79,7 +84,7 @@ class Rotate(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selection = Gui.Selection.getSelectionEx("", 0)
-        Gui.doCommand("selection = FreeCADGui.Selection.getSelectionEx(\"\", 0)")
+        Gui.doCommand('selection = FreeCADGui.Selection.getSelectionEx("", 0)')
         self.step = 0
         self.center = None
         self.point = None
@@ -106,9 +111,11 @@ class Rotate(gui_base_original.Modifier):
             pass
         elif arg["Type"] == "SoLocation2Event":
             self.handle_mouse_move_event(arg)
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+        elif (
+            arg["Type"] == "SoMouseButtonEvent"
+            and arg["State"] == "DOWN"
+            and arg["Button"] == "BUTTON1"
+        ):
             self.handle_mouse_click_event(arg)
 
     def _get_angle(self):
@@ -134,11 +141,7 @@ class Rotate(gui_base_original.Modifier):
             # Project self.point on a plane that is parallel to the wp and that
             # passes through self.center.
             self.point = geometry.project_point_on_plane(
-                self.point,
-                self.center,
-                self.wp.axis,
-                direction=None,
-                force_projection=True
+                self.point, self.center, self.wp.axis, direction=None, force_projection=True
             )
         if self.extendedCopy:
             if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
@@ -183,7 +186,9 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
-        self.ui.radiusValue.setToolTip(translate("draft", "The base angle to start the rotation from"))
+        self.ui.radiusValue.setToolTip(
+            translate("draft", "The base angle to start the rotation from")
+        )
         self.arctrack.setCenter(self.center)
         for ghost in self.ghosts:
             ghost.center(self.center)
@@ -196,7 +201,12 @@ class Rotate(gui_base_original.Modifier):
         """Set the starting point of the rotation."""
         self.firstangle = self._get_angle()
         self.ui.labelRadius.setText(translate("draft", "Rotation"))
-        self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation to perform.\nThe final angle will be the base angle plus this amount."))
+        self.ui.radiusValue.setToolTip(
+            translate(
+                "draft",
+                "The amount of rotation to perform.\nThe final angle will be the base angle plus this amount.",
+            )
+        )
         self.arctrack.on()
         self.arctrack.setStartPoint(self.point)
         for ghost in self.ghosts:
@@ -208,8 +218,10 @@ class Rotate(gui_base_original.Modifier):
         """Set the rotation angle."""
         self.angle = self._get_angle()
         if self.angle != 0:
-            self.rotate(self.ui.isCopy.isChecked()
-                        or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+            self.rotate(
+                self.ui.isCopy.isChecked()
+                or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
+            )
         if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
             self.extendedCopy = True
         else:
@@ -225,7 +237,9 @@ class Rotate(gui_base_original.Modifier):
             if not self.ghosts:
                 _err(translate("draft", "No valid subelements selected"))
         else:
-            objs, places, _ = utils._modifiers_process_selection(self.selection, copy, add_movable_children=(not copy))
+            objs, places, _ = utils._modifiers_process_selection(
+                self.selection, copy, add_movable_children=(not copy)
+            )
             self.ghosts = [trackers.ghostTracker(objs, parent_places=places)]
         if self.center:
             for ghost in self.ghosts:
@@ -234,6 +248,7 @@ class Rotate(gui_base_original.Modifier):
     def get_subelement_ghosts(self, selection, copy):
         """Get ghost for the subelements (vertices, edges)."""
         import Part
+
         ghosts = []
         for sel in selection:
             for sub in sel.SubElementNames if sel.SubElementNames else [""]:
@@ -290,7 +305,9 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusUi()
         self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
-        self.ui.radiusValue.setToolTip(translate("draft", "The base angle to start the rotation from"))
+        self.ui.radiusValue.setToolTip(
+            translate("draft", "The base angle to start the rotation from")
+        )
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.step = 1
         _toolmsg(translate("draft", "Pick base angle"))
@@ -303,7 +320,12 @@ class Rotate(gui_base_original.Modifier):
         """
         if self.step == 1:
             self.ui.labelRadius.setText(translate("draft", "Rotation"))
-            self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation to perform.\nThe final angle will be the base angle plus this amount."))
+            self.ui.radiusValue.setToolTip(
+                translate(
+                    "draft",
+                    "The amount of rotation to perform.\nThe final angle will be the base angle plus this amount.",
+                )
+            )
             self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
             self.firstangle = math.radians(rad)
             self.arctrack.setStartAngle(self.firstangle)
@@ -318,6 +340,6 @@ class Rotate(gui_base_original.Modifier):
             self.finish(cont=None)
 
 
-Gui.addCommand('Draft_Rotate', Rotate())
+Gui.addCommand("Draft_Rotate", Rotate())
 
 ## @}

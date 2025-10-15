@@ -1,24 +1,24 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2021 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2021 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 
 """This module contains FreeCAD commands for the Draft workbench"""
@@ -36,37 +36,69 @@ from draftutils.translate import translate
 
 class Hatch(DraftObject):
 
-
-    def __init__(self,obj):
+    def __init__(self, obj):
 
         obj.Proxy = self
         self.Type = "Hatch"
         self.setProperties(obj)
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         pl = obj.PropertiesList
         if not "Base" in pl:
-            obj.addProperty("App::PropertyLink","Base","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The base object used by this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "Base",
+                "Hatch",
+                QT_TRANSLATE_NOOP("App::Property", "The base object used by this object"),
+                locked=True,
+            )
         if not "File" in pl:
-            obj.addProperty("App::PropertyFile","File","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The PAT file used by this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyFile",
+                "File",
+                "Hatch",
+                QT_TRANSLATE_NOOP("App::Property", "The PAT file used by this object"),
+                locked=True,
+            )
         if not "Pattern" in pl:
-            obj.addProperty("App::PropertyString","Pattern","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern name used by this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyString",
+                "Pattern",
+                "Hatch",
+                QT_TRANSLATE_NOOP("App::Property", "The pattern name used by this object"),
+                locked=True,
+            )
         if not "Scale" in pl:
-            obj.addProperty("App::PropertyFloat","Scale","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern scale used by this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyFloat",
+                "Scale",
+                "Hatch",
+                QT_TRANSLATE_NOOP("App::Property", "The pattern scale used by this object"),
+                locked=True,
+            )
         if not "Rotation" in pl:
-            obj.addProperty("App::PropertyAngle","Rotation","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern rotation used by this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyAngle",
+                "Rotation",
+                "Hatch",
+                QT_TRANSLATE_NOOP("App::Property", "The pattern rotation used by this object"),
+                locked=True,
+            )
         if not "Translate" in pl:
-            obj.addProperty("App::PropertyBool","Translate","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)"), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "Translate",
+                "Hatch",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)",
+                ),
+                locked=True,
+            )
             obj.Translate = True
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
         self.setProperties(obj)
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(
@@ -79,15 +111,17 @@ class Hatch(DraftObject):
     def loads(self, state):
         self.Type = "Hatch"
 
-    def execute(self,obj):
+    def execute(self, obj):
 
-        if self.props_changed_placement_only(obj) \
-                or not obj.Base \
-                or not obj.File \
-                or not obj.Pattern \
-                or not obj.Scale \
-                or not obj.Base.isDerivedFrom("Part::Feature") \
-                or not obj.Base.Shape.Faces:
+        if (
+            self.props_changed_placement_only(obj)
+            or not obj.Base
+            or not obj.File
+            or not obj.Pattern
+            or not obj.Scale
+            or not obj.Base.isDerivedFrom("Part::Feature")
+            or not obj.Base.Shape.Faces
+        ):
             self.props_changed_clear()
             return
 
@@ -131,7 +165,7 @@ class Hatch(DraftObject):
 
         shapes = []
         for face in obj.Base.Shape.Faces:
-            if face.findPlane(): # Only planar faces.
+            if face.findPlane():  # Only planar faces.
                 face = face.copy()
                 if obj.Translate:
                     mtx = None
@@ -183,8 +217,7 @@ class Hatch(DraftObject):
 
         self.props_changed_store(prop)
 
-    def getPatterns(self,filename):
-
+    def getPatterns(self, filename):
         """returns a list of pattern names found in a PAT file"""
         patterns = []
         if os.path.exists(filename):

@@ -40,33 +40,29 @@ from draftutils import params
 class ViewProviderWorkingPlaneProxy:
     """A View Provider for working plane proxies"""
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         # ViewData: 0,1,2: position; 3,4,5,6: rotation; 7: near dist; 8: far dist, 9:aspect ratio;
         # 10: focal dist; 11: height (ortho) or height angle (persp); 12: ortho (0) or persp (1)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The display length of this section plane")
-        vobj.addProperty("App::PropertyLength", "DisplaySize",
-                         "Draft", _tip,
-                         locked=True)
+        vobj.addProperty("App::PropertyLength", "DisplaySize", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The size of the arrows of this section plane")
-        vobj.addProperty("App::PropertyLength", "ArrowSize",
-                         "Draft", _tip,
-                         locked=True)
+        vobj.addProperty("App::PropertyLength", "ArrowSize", "Draft", _tip, locked=True)
 
-        vobj.addProperty("App::PropertyPercent","Transparency","Base","",locked=True)
+        vobj.addProperty("App::PropertyPercent", "Transparency", "Base", "", locked=True)
 
-        vobj.addProperty("App::PropertyFloat","LineWidth","Base","",locked=True)
+        vobj.addProperty("App::PropertyFloat", "LineWidth", "Base", "", locked=True)
 
-        vobj.addProperty("App::PropertyColor","LineColor","Base","",locked=True)
+        vobj.addProperty("App::PropertyColor", "LineColor", "Base", "", locked=True)
 
-        vobj.addProperty("App::PropertyFloatList","ViewData","Base","",locked=True)
+        vobj.addProperty("App::PropertyFloatList", "ViewData", "Base", "", locked=True)
 
-        vobj.addProperty("App::PropertyBool","RestoreView","Base","",locked=True)
+        vobj.addProperty("App::PropertyBool", "RestoreView", "Base", "", locked=True)
 
-        vobj.addProperty("App::PropertyMap","VisibilityMap","Base","",locked=True)
+        vobj.addProperty("App::PropertyMap", "VisibilityMap", "Base", "", locked=True)
 
-        vobj.addProperty("App::PropertyBool","RestoreState","Base","",locked=True)
+        vobj.addProperty("App::PropertyBool", "RestoreState", "Base", "", locked=True)
 
         vobj.DisplaySize = 100
         vobj.ArrowSize = 5
@@ -84,56 +80,63 @@ class ViewProviderWorkingPlaneProxy:
     def claimChildren(self):
         return []
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
         Gui.runCommand("Draft_SelectPlane")
         return True
 
-    def setupContextMenu(self,vobj,menu):
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Camera Position",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
+    def setupContextMenu(self, vobj, menu):
+        action1 = QtGui.QAction(
+            QtGui.QIcon(":/icons/Draft_SelectPlane.svg"), "Save Camera Position", menu
+        )
+        QtCore.QObject.connect(action1, QtCore.SIGNAL("triggered()"), self.writeCamera)
         menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Visibility of Objects",menu)
-        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeState)
+        action2 = QtGui.QAction(
+            QtGui.QIcon(":/icons/Draft_SelectPlane.svg"), "Save Visibility of Objects", menu
+        )
+        QtCore.QObject.connect(action2, QtCore.SIGNAL("triggered()"), self.writeState)
         menu.addAction(action2)
 
     def writeCamera(self):
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             n = Gui.ActiveDocument.ActiveView.getCameraNode()
-            App.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing camera position")+"\n")
+            App.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft", "Writing camera position") + "\n")
             cdata = list(n.position.getValue().getValue())
             cdata.extend(list(n.orientation.getValue().getValue()))
             cdata.append(n.nearDistance.getValue())
             cdata.append(n.farDistance.getValue())
             cdata.append(n.aspectRatio.getValue())
             cdata.append(n.focalDistance.getValue())
-            if isinstance(n,coin.SoOrthographicCamera):
+            if isinstance(n, coin.SoOrthographicCamera):
                 cdata.append(n.height.getValue())
-                cdata.append(0.0) # orthograhic camera
-            elif isinstance(n,coin.SoPerspectiveCamera):
+                cdata.append(0.0)  # orthograhic camera
+            elif isinstance(n, coin.SoPerspectiveCamera):
                 cdata.append(n.heightAngle.getValue())
-                cdata.append(1.0) # perspective camera
+                cdata.append(1.0)  # perspective camera
             self.Object.ViewObject.ViewData = cdata
 
     def writeState(self):
-        if hasattr(self,"Object"):
-            App.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft","Writing objects shown/hidden state")+"\n")
+        if hasattr(self, "Object"):
+            App.Console.PrintMessage(
+                QT_TRANSLATE_NOOP("Draft", "Writing objects shown/hidden state") + "\n"
+            )
             vis = {}
             for o in App.ActiveDocument.Objects:
                 if o.ViewObject:
                     vis[o.Name] = str(o.ViewObject.Visibility)
             self.Object.ViewObject.VisibilityMap = vis
 
-    def attach(self,vobj):
+    def attach(self, vobj):
         self.clip = None
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
         self.fcoords = coin.SoCoordinate3()
         fs = coin.SoIndexedFaceSet()
-        fs.coordIndex.setValues(0,7,[0,1,2,-1,0,2,3])
+        fs.coordIndex.setValues(0, 7, [0, 1, 2, -1, 0, 2, 3])
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
-        import PartGui # Required for "SoBrepEdgeSet" (because a WorkingPlaneProxy is not a Part::FeaturePython object).
+        import PartGui  # Required for "SoBrepEdgeSet" (because a WorkingPlaneProxy is not a Part::FeaturePython object).
+
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         # fmt: off
         ls.coordIndex.setValues(
@@ -162,77 +165,77 @@ class ViewProviderWorkingPlaneProxy:
         psep.addChild(ls)
         sep.addChild(fsep)
         sep.addChild(psep)
-        vobj.addDisplayMode(sep,"Default")
-        self.onChanged(vobj,"DisplaySize")
-        self.onChanged(vobj,"LineColor")
-        self.onChanged(vobj,"Transparency")
+        vobj.addDisplayMode(sep, "Default")
+        self.onChanged(vobj, "DisplaySize")
+        self.onChanged(vobj, "LineColor")
+        self.onChanged(vobj, "Transparency")
         self.Object = vobj.Object
 
-    def getDisplayModes(self,vobj):
+    def getDisplayModes(self, vobj):
         return ["Default"]
 
     def getDefaultDisplayMode(self):
         return "Default"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         return mode
 
-    def updateData(self,obj,prop):
+    def updateData(self, obj, prop):
         if prop in ["Placement"]:
-            self.onChanged(obj.ViewObject,"DisplaySize")
+            self.onChanged(obj.ViewObject, "DisplaySize")
         return
 
-    def onChanged(self,vobj,prop):
+    def onChanged(self, vobj, prop):
         if prop == "LineColor":
             l = vobj.LineColor
-            self.mat1.diffuseColor.setValue([l[0],l[1],l[2]])
-            self.mat2.diffuseColor.setValue([l[0],l[1],l[2]])
+            self.mat1.diffuseColor.setValue([l[0], l[1], l[2]])
+            self.mat2.diffuseColor.setValue([l[0], l[1], l[2]])
 
         elif prop == "Transparency":
-            if hasattr(vobj,"Transparency"):
-                self.mat2.transparency.setValue(vobj.Transparency/100.0)
+            if hasattr(vobj, "Transparency"):
+                self.mat2.transparency.setValue(vobj.Transparency / 100.0)
 
-        elif prop in ["DisplaySize","ArrowSize"]:
-            if hasattr(vobj,"DisplaySize"):
-                l = vobj.DisplaySize.Value/2
+        elif prop in ["DisplaySize", "ArrowSize"]:
+            if hasattr(vobj, "DisplaySize"):
+                l = vobj.DisplaySize.Value / 2
             else:
                 l = 1
             verts = []
             fverts = []
             l1 = 0.1
-            if hasattr(vobj,"ArrowSize"):
+            if hasattr(vobj, "ArrowSize"):
                 l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
-            l2 = l1/3
+            l2 = l1 / 3
             pl = App.Placement(vobj.Object.Placement)
-            fverts.append(pl.multVec(App.Vector(-l,-l,0)))
-            fverts.append(pl.multVec(App.Vector(l,-l,0)))
-            fverts.append(pl.multVec(App.Vector(l,l,0)))
-            fverts.append(pl.multVec(App.Vector(-l,l,0)))
+            fverts.append(pl.multVec(App.Vector(-l, -l, 0)))
+            fverts.append(pl.multVec(App.Vector(l, -l, 0)))
+            fverts.append(pl.multVec(App.Vector(l, l, 0)))
+            fverts.append(pl.multVec(App.Vector(-l, l, 0)))
 
-            verts.append(pl.multVec(App.Vector(0,0,0)))
-            verts.append(pl.multVec(App.Vector(l-l1,0,0)))
-            verts.append(pl.multVec(App.Vector(l-l1,l2,0)))
-            verts.append(pl.multVec(App.Vector(l,0,0)))
-            verts.append(pl.multVec(App.Vector(l-l1,-l2,0)))
-            verts.append(pl.multVec(App.Vector(l-l1,l2,0)))
+            verts.append(pl.multVec(App.Vector(0, 0, 0)))
+            verts.append(pl.multVec(App.Vector(l - l1, 0, 0)))
+            verts.append(pl.multVec(App.Vector(l - l1, l2, 0)))
+            verts.append(pl.multVec(App.Vector(l, 0, 0)))
+            verts.append(pl.multVec(App.Vector(l - l1, -l2, 0)))
+            verts.append(pl.multVec(App.Vector(l - l1, l2, 0)))
 
-            verts.append(pl.multVec(App.Vector(0,0,0)))
-            verts.append(pl.multVec(App.Vector(0,l-l1,0)))
-            verts.append(pl.multVec(App.Vector(-l2,l-l1,0)))
-            verts.append(pl.multVec(App.Vector(0,l,0)))
-            verts.append(pl.multVec(App.Vector(l2,l-l1,0)))
-            verts.append(pl.multVec(App.Vector(-l2,l-l1,0)))
+            verts.append(pl.multVec(App.Vector(0, 0, 0)))
+            verts.append(pl.multVec(App.Vector(0, l - l1, 0)))
+            verts.append(pl.multVec(App.Vector(-l2, l - l1, 0)))
+            verts.append(pl.multVec(App.Vector(0, l, 0)))
+            verts.append(pl.multVec(App.Vector(l2, l - l1, 0)))
+            verts.append(pl.multVec(App.Vector(-l2, l - l1, 0)))
 
-            verts.append(pl.multVec(App.Vector(0,0,0)))
-            verts.append(pl.multVec(App.Vector(0,0,l-l1)))
-            verts.append(pl.multVec(App.Vector(-l2,0,l-l1)))
-            verts.append(pl.multVec(App.Vector(0,0,l)))
-            verts.append(pl.multVec(App.Vector(l2,0,l-l1)))
-            verts.append(pl.multVec(App.Vector(-l2,0,l-l1)))
-            verts.append(pl.multVec(App.Vector(0,-l2,l-l1)))
-            verts.append(pl.multVec(App.Vector(0,0,l)))
-            verts.append(pl.multVec(App.Vector(0,l2,l-l1)))
-            verts.append(pl.multVec(App.Vector(0,-l2,l-l1)))
+            verts.append(pl.multVec(App.Vector(0, 0, 0)))
+            verts.append(pl.multVec(App.Vector(0, 0, l - l1)))
+            verts.append(pl.multVec(App.Vector(-l2, 0, l - l1)))
+            verts.append(pl.multVec(App.Vector(0, 0, l)))
+            verts.append(pl.multVec(App.Vector(l2, 0, l - l1)))
+            verts.append(pl.multVec(App.Vector(-l2, 0, l - l1)))
+            verts.append(pl.multVec(App.Vector(0, -l2, l - l1)))
+            verts.append(pl.multVec(App.Vector(0, 0, l)))
+            verts.append(pl.multVec(App.Vector(0, l2, l - l1)))
+            verts.append(pl.multVec(App.Vector(0, -l2, l - l1)))
 
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
@@ -244,7 +247,8 @@ class ViewProviderWorkingPlaneProxy:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
+
 
 ## @}

@@ -58,10 +58,15 @@ class Offset(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Offset',
-                'Accel': "O, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Offset", "Offset"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", "Offsets the selected object.\nIt can also create an offset copy of the original object.")}
+        return {
+            "Pixmap": "Draft_Offset",
+            "Accel": "O, S",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Offset", "Offset"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Offset",
+                "Offsets the selected object.\nIt can also create an offset copy of the original object.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -74,12 +79,9 @@ class Offset(gui_base_original.Modifier):
             if not Gui.Selection.getSelection():
                 self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to offset"))
-                self.call = self.view.addEventCallback(
-                    "SoEvent",
-                    gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
             elif len(Gui.Selection.getSelection()) > 1:
-                _wrn(translate("draft", "Offset only works "
-                                        "on one object at a time"))
+                _wrn(translate("draft", "Offset only works " "on one object at a time"))
             else:
                 self.proceed()
 
@@ -119,8 +121,7 @@ class Offset(gui_base_original.Modifier):
                 self.ghost = trackers.bsplineTracker(points=self.sel.Points)
                 self.mode = "BSpline"
             elif utils.getType(self.sel) == "BezCurve":
-                _wrn(translate("draft", "Offset of Bézier curves "
-                                        "is currently not supported"))
+                _wrn(translate("draft", "Offset of Bézier curves " "is currently not supported"))
                 self.finish()
                 return
             else:
@@ -165,29 +166,26 @@ class Offset(gui_base_original.Modifier):
             pass
         elif arg["Type"] == "SoLocation2Event":
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
-            if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
-                    and self.constrainSeg):
-                dist = DraftGeomUtils.findPerpendicular(self.point,
-                                                        self.shape,
-                                                        self.constrainSeg[1])
+            if (
+                gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
+                and self.constrainSeg
+            ):
+                dist = DraftGeomUtils.findPerpendicular(
+                    self.point, self.shape, self.constrainSeg[1]
+                )
             else:
-                dist = DraftGeomUtils.findPerpendicular(self.point,
-                                                        self.shape.Edges)
+                dist = DraftGeomUtils.findPerpendicular(self.point, self.shape.Edges)
             if dist:
                 self.ghost.on()
                 if self.mode == "Wire":
                     d = dist[0].negative()
-                    v1 = DraftGeomUtils.getTangent(self.shape.Edges[0],
-                                                   self.point)
-                    v2 = DraftGeomUtils.getTangent(self.shape.Edges[dist[1]],
-                                                   self.point)
+                    v1 = DraftGeomUtils.getTangent(self.shape.Edges[0], self.point)
+                    v2 = DraftGeomUtils.getTangent(self.shape.Edges[dist[1]], self.point)
                     a = -DraftVecUtils.angle(v1, v2, self.wp.axis)
                     self.dvec = DraftVecUtils.rotate(d, a, self.wp.axis)
                     occmode = self.ui.occOffset.isChecked()
                     params.set_param("Offset_OCC", occmode)
-                    _wire = DraftGeomUtils.offsetWire(self.shape,
-                                                      self.dvec,
-                                                      occ=occmode)
+                    _wire = DraftGeomUtils.offsetWire(self.shape, self.dvec, occ=occmode)
                     self.ghost.update(_wire, forceclosed=occmode)
                 elif self.mode == "BSpline":
                     d = dist[0].negative()
@@ -225,39 +223,37 @@ class Offset(gui_base_original.Modifier):
                 copymode = False
                 occmode = self.ui.occOffset.isChecked()
                 params.set_param("Offset_OCC", occmode)
-                if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
-                        or self.ui.isCopy.isChecked()):
+                if (
+                    gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
+                    or self.ui.isCopy.isChecked()
+                ):
                     copymode = True
                 Gui.addModule("Draft")
                 if self.npts:
-                    _cmd = 'Draft.offset'
-                    _cmd += '('
-                    _cmd += 'FreeCAD.ActiveDocument.'
-                    _cmd += self.sel.Name + ', '
-                    _cmd += DraftVecUtils.toString(self.npts) + ', '
-                    _cmd += 'copy=' + str(copymode)
-                    _cmd += ')'
-                    _cmd_list = ['offst = ' + _cmd,
-                                 'FreeCAD.ActiveDocument.recompute()']
-                    self.commit(translate("draft", "Offset"),
-                                _cmd_list)
+                    _cmd = "Draft.offset"
+                    _cmd += "("
+                    _cmd += "FreeCAD.ActiveDocument."
+                    _cmd += self.sel.Name + ", "
+                    _cmd += DraftVecUtils.toString(self.npts) + ", "
+                    _cmd += "copy=" + str(copymode)
+                    _cmd += ")"
+                    _cmd_list = ["offst = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+                    self.commit(translate("draft", "Offset"), _cmd_list)
                 elif self.dvec:
                     if isinstance(self.dvec, float):
                         delta = str(self.dvec)
                     else:
                         delta = DraftVecUtils.toString(self.dvec)
-                    _cmd = 'Draft.offset'
-                    _cmd += '('
-                    _cmd += 'FreeCAD.ActiveDocument.'
-                    _cmd += self.sel.Name + ', '
-                    _cmd += delta + ', '
-                    _cmd += 'copy=' + str(copymode) + ', '
-                    _cmd += 'occ=' + str(occmode)
-                    _cmd += ')'
-                    _cmd_list = ['offst = ' + _cmd,
-                                 'FreeCAD.ActiveDocument.recompute()']
-                    self.commit(translate("draft", "Offset"),
-                                _cmd_list)
+                    _cmd = "Draft.offset"
+                    _cmd += "("
+                    _cmd += "FreeCAD.ActiveDocument."
+                    _cmd += self.sel.Name + ", "
+                    _cmd += delta + ", "
+                    _cmd += "copy=" + str(copymode) + ", "
+                    _cmd += "occ=" + str(occmode)
+                    _cmd += ")"
+                    _cmd_list = ["offst = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+                    self.commit(translate("draft", "Offset"), _cmd_list)
                 if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     self.extendedCopy = True
                 else:
@@ -298,7 +294,7 @@ class Offset(gui_base_original.Modifier):
                 new_points = []
                 for old_point, new_point in zip(self.sel.Points, self.npts):
                     diff_direction = new_point.sub(old_point).normalize()
-                    new_points.append(old_point.add(diff_direction*rad))
+                    new_points.append(old_point.add(diff_direction * rad))
                 delta = DraftVecUtils.toString(new_points)
             else:
                 self.dvec.normalize()
@@ -311,24 +307,26 @@ class Offset(gui_base_original.Modifier):
             if self.ui.isCopy.isChecked():
                 copymode = True
             Gui.addModule("Draft")
-            _cmd = 'Draft.offset'
-            _cmd += '('
-            _cmd += 'FreeCAD.ActiveDocument.'
-            _cmd += self.sel.Name + ', '
-            _cmd += delta + ', '
-            _cmd += 'copy=' + str(copymode) + ', '
-            _cmd += 'occ=' + str(occmode)
-            _cmd += ')'
-            _cmd_list = ['offst = ' + _cmd,
-                         'FreeCAD.ActiveDocument.recompute()']
-            self.commit(translate("draft", "Offset"),
-                        _cmd_list)
+            _cmd = "Draft.offset"
+            _cmd += "("
+            _cmd += "FreeCAD.ActiveDocument."
+            _cmd += self.sel.Name + ", "
+            _cmd += delta + ", "
+            _cmd += "copy=" + str(copymode) + ", "
+            _cmd += "occ=" + str(occmode)
+            _cmd += ")"
+            _cmd_list = ["offst = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+            self.commit(translate("draft", "Offset"), _cmd_list)
             self.finish()
         else:
-            _err(translate("Draft",
-                           "Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction."))
+            _err(
+                translate(
+                    "Draft",
+                    "Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction.",
+                )
+            )
 
 
-Gui.addCommand('Draft_Offset', Offset())
+Gui.addCommand("Draft_Offset", Offset())
 
 ## @}
