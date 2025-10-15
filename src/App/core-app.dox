@@ -4,16 +4,90 @@
  * @brief The part of FreeCAD that works without GUI (console or server mode)
  *
  * @details It contains the App namespace and defines core concepts such as
- * @ref DocumentGroup "Document", @ref DocumentObjectGroup "Document Object",
- * @ref PropertyFramework "Property Framework", @ref ExpressionFramework
- * "Expression Framework", and the @ref ExtensionFramework "Extension
- * Framework".
+ * @ref ApplicationGroup "Application", @ref DocumentGroup "Document", @ref
+ * DocumentObjectGroup "DocumentObject", @ref PropertyFramework "Property
+ * Framework", @ref ExpressionFramework "Expression Framework", and the @ref
+ * ExtensionFramework "Extension Framework".
  *
  * The largest difference between the functionality in @ref BASE "Base"
  * compared to %App is that %App introduces the notion of properties, both used
  * in @ref App::Document "Document" and @ref App::DocumentObject
  * "DocumentObject".  In addition, %App has a representation of the running
  * @ref App::Application "Application".
+ */
+
+/**
+ * @defgroup ApplicationGroup Application
+ * @ingroup APP
+ * @brief The class that represents the running FreeCAD application.
+ *
+ * The App::Application class is a singleton class that represents the running
+ * FreeCAD application.  It can be obtained by App::GetApplication().  It
+ * manages the opened documents and provides various forms of functionality
+ * that are briefly discussed below.
+ *
+ * @section SecApplicationInitialization Initialization and Configuration
+ *
+ * On application start, the FreeCAD type system is initialized and the command
+ * line arguments are processed, possible opening FreeCAD files or executing
+ * FreeCAD macros.  The internal configuration that contains various paths is
+ * set up and after that the `user.cfg` and `system.cfg` file are parsed and
+ * made available by @ref App::Application::GetUserParameter()
+ * "GetUserParameter()" and @ref App::Application::GetSystemParameter()
+ * "GetSystemParameter()".
+ *
+ * FreeCAD obtains various resources from different paths that can be accessed
+ * by means of functions such as @ref App::Application::GetHomePath()
+ * "GetHomePath" or the more generic function @ref
+ * App::Application::directories "directories()" that provides an @ref
+ * App::ApplicationDirectories "ApplicationDirectories" class.
+ *
+ * @section SecApplicationDocuments Document management
+ *
+ * An important role is managing FreeCAD documents.  The application class
+ * allows opening and closing documents, creating unique and valid names and
+ * labels for the files, and setting or opening a file as the active file.
+ *
+ * Moreover, there is support for special files such as temporary files that
+ * may or may not be hidden in the tree or partially loaded files where not all
+ * objects are loaded.
+ *
+ * FreeCAD has a wide range of file formats that it can import and export.  It
+ * is possible to install a file type filter together with a module name that
+ * then becomes responsible for importing or exporting the file types of the
+ * filter.  An example of a filter is @c "STEP with colors (*.step *.STEP *.stp
+ * *.STP)" and the file types that will be associated with this filter are
+ * represented by the extensions and will be @c "step" and @c "stp" (matching
+ * is case-insensitive).
+ *
+ * @section SecApplicationTransactions Application-wide transactions
+ *
+ * In @ref SecUndoRedo "Documents" we explain more about the transaction
+ * system.  Although transactions are mainly a feature of documents and
+ * document objects, there is also applicaton-wide functionality that allows
+ * creating transactions in multiple documents sharing the same transaction ID.
+ *
+ * @section SecApplicationLinks Links between document objects
+ *
+ * Although links occur between document objects and are as such more a topic
+ * of @ref GroupDocumentObject "DocumentObjects", App::Application provides
+ * functions to check for cyclic dependencies and obtaining links to a document
+ * object.
+ *
+ * @section SecApplicationSignals Signals
+ *
+ * The application class has various signals that can be connected to.  There
+ * are various categories of signals:
+ * - on the level of the application, such as with new or deleted documents or
+ *   transactions,
+ * - on the level of documents, such as with changed properties of documents or
+ *   document objects, or with newly added objects,
+ * - on the level of objects, such as newly added properties,
+ * - on the level of extensions, such as newly added extensions.
+ *
+ * Many of the signals are also available on the document level and typically
+ * the application class has slots that connect to these document signals when
+ * a document is opened.
  */
 
 /**
@@ -127,7 +201,7 @@
  */
 
 /**
- * @defgroup DocumentObjectGroup Document Object
+ * @defgroup DocumentObjectGroup DocumentObject
  * @ingroup APP
  * @brief %Base class of all objects handled in the @ref App::Document "Document".
  *
@@ -398,7 +472,7 @@
 /**
  * @defgroup ExtensionFramework Extension framework
  * @ingroup APP
- * @brief The extension system provides a way to extend the functionality of Document Objects.
+ * @brief The extension system provides a way to extend the functionality of @ref DocumentObjectGroup "DocumentObjects".
  *
  * The concept of extensions provides a way to extend the functionality of
  * objects in FreeCAD despite Python's limitations with multiple inheritance
