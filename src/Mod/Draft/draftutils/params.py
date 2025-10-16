@@ -573,8 +573,8 @@ def _get_param_dictionary():
         "ifcMergeProfiles":            ("bool",      False),
         "IfcScalingFactor":            ("float",     1.0),    # importIFClegacy.py
         "ifcSeparatePlacements":       ("bool",      False),  # importIFClegacy.py
-        "MultiMaterialColumnWidth0":   ("int",       60),
-        "MultiMaterialColumnWidth1":   ("int",       60),
+        "MultiMaterialColumnWidth0":   ("int",       120),
+        "MultiMaterialColumnWidth1":   ("int",       120),
         "PanelLength":                 ("float",     1000.0),
         "PanelThickness":              ("float",     10.0),
         "PanelWidth":                  ("float",     1000.0),
