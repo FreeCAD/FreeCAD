@@ -379,6 +379,7 @@ def makeFace(wires, method=2, cleanup=False):
     """makeFace(wires): makes a face from a list of wires, finding which ones are holes"""
     # print("makeFace: start:", wires)
     import Part
+    import DraftGeomUtils
 
     if not isinstance(wires, list):
         if len(wires.Vertexes) < 3:
