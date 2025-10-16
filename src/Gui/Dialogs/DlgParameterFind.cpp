@@ -303,9 +303,29 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            QMessageBox::warning(this,
-                                 tr("Not found"),
-                                 tr("Cannot find the text: %1").arg(opt.text));
+            // QMessageBox::warning(this,
+            //                      tr("Not found"),
+            //                      tr("Cannot find the text: %1").arg(opt.text));
+
+            QMessageBox msgBox;
+            if next
+            msgBox.setText(tr("%1 not found. Would like to start from the beginning?").arg(opt.text));
+            // msgBox.setInformativeText("Do you want to save your changes?");
+            msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::Save);
+            int ret = msgBox.exec();
+
+            switch (ret) {
+                case QMessageBox::No:
+                    break;
+                case QMessageBox::Yes:
+                     QTreeWidgetItem* begin = groupTree->setCurrentItem(root);
+                    dlgParameterFind::findItem(begin, opt)
+                    break;
+                default:
+                    // should never be reached
+                    break;
+                }
         }
     }
 }
