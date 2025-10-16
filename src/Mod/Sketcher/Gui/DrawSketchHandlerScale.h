@@ -341,6 +341,7 @@ private:
             return;
         }
 
+        listOfFacadeIds.clear();
         for (auto& geoId : listOfGeoIds) {
             const Part::Geometry* pGeo = Obj->getGeometry(geoId);
             long facadeId;
