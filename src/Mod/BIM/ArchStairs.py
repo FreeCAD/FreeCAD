@@ -432,8 +432,10 @@ class _Stairs(ArchComponent.Component):
                 locked=True,
             )
         # Allow negative value: App::PropertyDistance instead of App::PropertyLength (2025.10.11)
-        if not "StructureOffset" in pl \
-                or obj.getTypeIdOfProperty("StructureOffset") != "App::PropertyDistance":
+        if (
+            not "StructureOffset" in pl
+            or obj.getTypeIdOfProperty("StructureOffset") != "App::PropertyDistance"
+        ):
             value = 0.0
             if "StructureOffset" in pl:
                 value = obj.StructureOffset
@@ -1968,34 +1970,34 @@ class _Stairs(ArchComponent.Component):
                 )
                 p1 = vBase.add(l1).add(h1)
                 p1 = self.align(p1, align, vWidth)
-                overlapDiff = (float(hgt)/numOfSteps + vTreadThickness.Length) - stringerOverlap
-                strOverlapMax = (structureThickness/vLength.Length)*hyp
-                strucHorLen = structureThickness*(hyp/vHeight.Length)
+                overlapDiff = (float(hgt) / numOfSteps + vTreadThickness.Length) - stringerOverlap
+                strOverlapMax = (structureThickness / vLength.Length) * hyp
+                strucHorLen = structureThickness * (hyp / vHeight.Length)
                 p1a = p1b = None
                 if overlapDiff > 0:
                     lProfile.append(p1)
-                    lProfile.append(p1.add(Vector(0,0,-strOverlapMax)))
+                    lProfile.append(p1.add(Vector(0, 0, -strOverlapMax)))
                 else:
                     if (strOverlapMax + overlapDiff) > 0:  # overlapDiff is -ve
-                        vLenDiffP1b = (vLength.Length/vHeight.Length)*overlapDiff
-                        vLenDiffP1c = (structureThickness/vLength.Length)*hyp
-                        p1b = p1.add(Vector(0,0,overlapDiff)) #overlapDiff is -ve
-                        p1a = p1b.add(Vector(vLenDiffP1b,0,0))
-                        p1c = p1.add(Vector(0,0,-vLenDiffP1c))
+                        vLenDiffP1b = (vLength.Length / vHeight.Length) * overlapDiff
+                        vLenDiffP1c = (structureThickness / vLength.Length) * hyp
+                        p1b = p1.add(Vector(0, 0, overlapDiff))  # overlapDiff is -ve
+                        p1a = p1b.add(Vector(vLenDiffP1b, 0, 0))
+                        p1c = p1.add(Vector(0, 0, -vLenDiffP1c))
                         lProfile.append(p1a)
                         lProfile.append(p1b)
                         lProfile.append(p1c)
                     else:
-                        vLenDiffP1a = (vLength.Length/vHeight.Length)*(overlapDiff)
-                        p1a = p1.add(Vector(vLenDiffP1a,0,overlapDiff))
-                        p1b = p1a.add(Vector(strucHorLen,0,0))
+                        vLenDiffP1a = (vLength.Length / vHeight.Length) * (overlapDiff)
+                        p1a = p1.add(Vector(vLenDiffP1a, 0, overlapDiff))
+                        p1b = p1a.add(Vector(strucHorLen, 0, 0))
                         lProfile.append(p1a)
                         lProfile.append(p1b)
-                h3 = lProfile[-1].z-vBase.z
-                l3 = (h3/vHeight.Length)*vLength.Length
-                v3 = DraftVecUtils.scaleTo(vLength,-l3)
-                lProfile.append(lProfile[-1].add(Vector(0,0,-abs(h3))).add(v3))
-                v4 = DraftVecUtils.scaleTo(vLength,-strucHorLen)
+                h3 = lProfile[-1].z - vBase.z
+                l3 = (h3 / vHeight.Length) * vLength.Length
+                v3 = DraftVecUtils.scaleTo(vLength, -l3)
+                lProfile.append(lProfile[-1].add(Vector(0, 0, -abs(h3))).add(v3))
+                v4 = DraftVecUtils.scaleTo(vLength, -strucHorLen)
                 lProfile.append(lProfile[-1].add(v4))
                 lProfile.append(lProfile[0])
                 # print(lProfile)
