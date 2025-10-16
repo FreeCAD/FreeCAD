@@ -2776,14 +2776,11 @@ bool ViewProviderSketch::selectAll()
 
         const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
 
-        int VertexId = -1;
         int GeoId = 0;
 
-        auto selectVertex = [this](int &vertexId, int numberOfVertices) {
-            for (int i = 0; i < numberOfVertices; i++) {
-                vertexId++;
-                addSelection2(fmt::format("Vertex{}", vertexId + 1));
-            }
+        auto selectVertex = [this](int geoId, Sketcher::PointPos pos) {
+            int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
+            addSelection2(fmt::format("Vertex{}", vertexId + 1));
         };
 
         auto selectEdge = [this](int GeoId) {
@@ -2809,18 +2806,21 @@ bool ViewProviderSketch::selectAll()
             }
 
             if ((*it)->is<Part::GeomPoint>()) {
-                selectVertex(VertexId, 1);
+                selectVertex(GeoId, Sketcher::PointPos::start);
             }
             else if ((*it)->is<Part::GeomLineSegment>() || (*it)->is<Part::GeomBSplineCurve>()) {
-                selectVertex(VertexId, 2); // Start + End
+                selectVertex(GeoId, Sketcher::PointPos::start);
+                selectVertex(GeoId, Sketcher::PointPos::end);
                 selectEdge(GeoId);
             }
             else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
-                selectVertex(VertexId, 1); // Center
+                selectVertex(GeoId, Sketcher::PointPos::mid);
                 selectEdge(GeoId);
             }
             else if ((*it)->isDerivedFrom<Part::GeomArcOfConic>()) {
-                selectVertex(VertexId, 3); // Start + End + Center
+                selectVertex(GeoId, Sketcher::PointPos::start);
+                selectVertex(GeoId, Sketcher::PointPos::end);
+                selectVertex(GeoId, Sketcher::PointPos::mid);
                 selectEdge(GeoId);
             }
             else {
