@@ -48,4 +48,5 @@ class ViewProviderPolarArray(ViewProviderDraftArray):
         """Set the icon in the tree view."""
         return ":/icons/Draft_PolarArray"
 
+
 ## @}

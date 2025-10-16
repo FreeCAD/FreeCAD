@@ -103,10 +103,8 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         start_angle = 0
         end_angle = 90
         _msg("  radius={}".format(radius))
-        _msg("  startangle={0}, endangle={1}".format(start_angle,
-                                                     end_angle))
-        obj = Draft.make_circle(radius,
-                                startangle=start_angle, endangle=end_angle)
+        _msg("  startangle={0}, endangle={1}".format(start_angle, end_angle))
+        obj = Draft.make_circle(radius, startangle=start_angle, endangle=end_angle)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_arc_3points(self):
@@ -185,9 +183,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         line = Draft.make_line(a, b)
         self.doc.recompute()
 
-        obj = Draft.make_linear_dimension_obj(line,
-                                              i1=1, i2=2,
-                                              dim_line=Vector(5, 3, 0))
+        obj = Draft.make_linear_dimension_obj(line, i1=1, i2=2, dim_line=Vector(5, 3, 0))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_dimension_radial_obj(self):
@@ -198,18 +194,16 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         start_angle = 0
         end_angle = 90
         _msg("  radius={}".format(radius))
-        _msg("  startangle={0}, endangle={1}".format(start_angle,
-                                                     end_angle))
-        circ = Draft.make_circle(radius,
-                                 startangle=start_angle, endangle=end_angle)
+        _msg("  startangle={0}, endangle={1}".format(start_angle, end_angle))
+        circ = Draft.make_circle(radius, startangle=start_angle, endangle=end_angle)
         self.doc.recompute()
 
-        obj1 = Draft.make_radial_dimension_obj(circ, index=1,
-                                               mode="radius",
-                                               dim_line=Vector(1, 1, 0))
-        obj2 = Draft.make_radial_dimension_obj(circ, index=1,
-                                               mode="diameter",
-                                               dim_line=Vector(3, 1, 0))
+        obj1 = Draft.make_radial_dimension_obj(
+            circ, index=1, mode="radius", dim_line=Vector(1, 1, 0)
+        )
+        obj2 = Draft.make_radial_dimension_obj(
+            circ, index=1, mode="diameter", dim_line=Vector(3, 1, 0)
+        )
         self.assertTrue(obj1 and obj2, "'{}' failed".format(operation))
 
     def test_dimension_angular(self):
@@ -322,12 +316,9 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         target_point = Vector(0, 0, 0)
         distance = -25
         placement = App.Placement(Vector(50, 50, 0), App.Rotation())
-        _msg("  target_point={0}, "
-             "distance={1}".format(target_point, distance))
+        _msg("  target_point={0}, " "distance={1}".format(target_point, distance))
         _msg("  placement={}".format(placement))
-        obj = Draft.make_label(target_point=target_point,
-                               distance=distance,
-                               placement=placement)
+        obj = Draft.make_label(target_point=target_point, distance=distance, placement=placement)
         self.doc.recompute()
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -374,9 +365,12 @@ class DraftCreation(test_base.DraftTestCaseDoc):
 
         box = obj.Shape.BoundBox
         # A rather high tolerance is required.
-        obj_is_ok = (box.Center.isEqual(Vector(length/2, width/2, 0), 1e-6)
-                      and math.isclose(box.XLength, length, rel_tol=0, abs_tol=1e-6)
-                      and math.isclose(box.YLength, width, rel_tol=0, abs_tol=1e-6))
+        obj_is_ok = (
+            box.Center.isEqual(Vector(length / 2, width / 2, 0), 1e-6)
+            and math.isclose(box.XLength, length, rel_tol=0, abs_tol=1e-6)
+            and math.isclose(box.YLength, width, rel_tol=0, abs_tol=1e-6)
+        )
         self.assertTrue(obj_is_ok, "'{}' failed".format(operation))
+
 
 ## @}

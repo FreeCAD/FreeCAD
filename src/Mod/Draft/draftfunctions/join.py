@@ -31,7 +31,7 @@ import FreeCAD as App
 import DraftVecUtils
 
 
-def join_wires(wires, joinAttempts = 0):
+def join_wires(wires, joinAttempts=0):
     """join_wires(objects): merges a set of wires where possible, if any of those
     wires have a coincident start and end point"""
     wires = list(wires)
@@ -58,10 +58,13 @@ def join_two_wires(wire1, wire2):
     """
     wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
     wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
-    if ((DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[-1])
-            and DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[0]))
-        or (DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[0])
-            and DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[-1]))):
+    if (
+        DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[-1])
+        and DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[0])
+    ) or (
+        DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[0])
+        and DraftVecUtils.equals(wire1AbsPoints[-1], wire2AbsPoints[-1])
+    ):
         wire2AbsPoints.pop()
         wire1.Closed = True
     elif DraftVecUtils.equals(wire1AbsPoints[0], wire2AbsPoints[0]):
@@ -76,10 +79,9 @@ def join_two_wires(wire1, wire2):
     else:
         return False
     wire2AbsPoints.pop(0)
-    wire1.Points = ([wire1.Placement.inverse().multVec(point)
-                     for point in wire1AbsPoints] +
-                    [wire1.Placement.inverse().multVec(point)
-                     for point in wire2AbsPoints])
+    wire1.Points = [wire1.Placement.inverse().multVec(point) for point in wire1AbsPoints] + [
+        wire1.Placement.inverse().multVec(point) for point in wire2AbsPoints
+    ]
     App.ActiveDocument.removeObject(wire2.Name)
     return True
 

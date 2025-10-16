@@ -30,6 +30,7 @@
 from draftmake import make_copy
 from draftutils import utils
 
+
 def split(wire, newPoint, edgeIndex):
     if utils.get_type(wire) != "Wire":
         return None
@@ -44,8 +45,10 @@ def split_closed_wire(wire, edgeIndex):
     if edgeIndex == len(wire.Points):
         new.Points = [wire.Points[0], wire.Points[-1]]
     else:
-        new.Points = [wire.Points[edgeIndex-1], wire.Points[edgeIndex]]
-        wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
+        new.Points = [wire.Points[edgeIndex - 1], wire.Points[edgeIndex]]
+        wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(
+            reversed(wire.Points[edgeIndex:])
+        )
     return new
 
 

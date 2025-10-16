@@ -80,9 +80,7 @@ def pocket2d(shape, offset):
         if len(innerWire.Edges) == 1:
             e = innerWire.Edges[0]
             if isinstance(e.Curve, Part.Circle):
-                e = Part.makeCircle(e.Curve.Radius + offset,
-                                    e.Curve.Center,
-                                    e.Curve.Axis)
+                e = Part.makeCircle(e.Curve.Radius + offset, e.Curve.Center, e.Curve.Axis)
                 i = Part.Wire(e)
         if i.Wires:
             # print("offsetting island ", innerWire, " : ", i.Wires)
@@ -108,12 +106,14 @@ def pocket2d(shape, offset):
                         else:
                             a = w.BoundBox
                             b = ow.BoundBox
-                            if ((a.XMin <= b.XMin)
-                                    and (a.YMin <= b.YMin)
-                                    and (a.ZMin <= b.ZMin)
-                                    and (a.XMax >= b.XMax)
-                                    and (a.YMax >= b.YMax)
-                                    and (a.ZMax >= b.ZMax)):
+                            if (
+                                (a.XMin <= b.XMin)
+                                and (a.YMin <= b.YMin)
+                                and (a.ZMin <= b.ZMin)
+                                and (a.XMax >= b.XMax)
+                                and (a.YMax >= b.YMax)
+                                and (a.ZMax >= b.ZMax)
+                            ):
                                 # print("this wire is bigger than "
                                 #       "the outer wire")
                                 offsetWires[j] = None
@@ -151,8 +151,7 @@ def offset(edge, vector, trim=False):
     Part.Shape
         The offset shape
     """
-    if (not isinstance(edge, Part.Shape)
-            or not isinstance(vector, App.Vector)):
+    if not isinstance(edge, Part.Shape) or not isinstance(vector, App.Vector):
         return None
 
     if geomType(edge) == "Line":
@@ -165,27 +164,34 @@ def offset(edge, vector, trim=False):
         curve = Part.Circle(edge.Curve)
         curve.Radius = App.Vector.add(rad, vector).Length
         if trim:
-            return Part.ArcOfCircle(curve,
-                                    edge.FirstParameter,
-                                    edge.LastParameter).toShape()
+            return Part.ArcOfCircle(curve, edge.FirstParameter, edge.LastParameter).toShape()
     elif geomType(edge) == "Ellipse":
         rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
         curve = edge.Curve.copy()
         if vector.getAngle(rad) < 1:
-            curve.MajorRadius = curve.MajorRadius+vector.Length
-            curve.MinorRadius = curve.MinorRadius+vector.Length
+            curve.MajorRadius = curve.MajorRadius + vector.Length
+            curve.MinorRadius = curve.MinorRadius + vector.Length
         else:
-            curve.MajorRadius = curve.MajorRadius-vector.Length
-            curve.MinorRadius = curve.MinorRadius-vector.Length
+            curve.MajorRadius = curve.MajorRadius - vector.Length
+            curve.MinorRadius = curve.MinorRadius - vector.Length
         return curve.toShape()
     else:
         return None
 
 
-def offsetWire(wire, dvec, bind=False, occ=False,
-               widthList=None, offsetMode=None, alignList=[],
-               normal=None, basewireOffset=0, wireNedge=False):
-               # normal=None, basewireOffset=0):
+def offsetWire(
+    wire,
+    dvec,
+    bind=False,
+    occ=False,
+    widthList=None,
+    offsetMode=None,
+    alignList=[],
+    normal=None,
+    basewireOffset=0,
+    wireNedge=False,
+):
+    # normal=None, basewireOffset=0):
     """Offset the wire along the given vector.
 
     Parameters
@@ -244,8 +250,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         edges = [wire]
         closed = wire.isClosed()
     else:
-        print("Either Part.Wire or Part.Edges should be provided, "
-              "returning None")
+        print("Either Part.Wire or Part.Edges should be provided, " "returning None")
         return None
 
     # For sketch with a number of wires, getNormal() may result
@@ -291,15 +296,15 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     # Check the direction / offset of starting edge
     firstDir = None
     try:
-        if alignListC[0] == 'Left':
+        if alignListC[0] == "Left":
             firstDir = 1
-            firstAlign = 'Left'
-        elif alignListC[0] == 'Right':
+            firstAlign = "Left"
+        elif alignListC[0] == "Right":
             firstDir = -1
-            firstAlign = 'Right'
-        elif alignListC[0] == 'Center':
+            firstAlign = "Right"
+        elif alignListC[0] == "Center":
             firstDir = 1
-            firstAlign = 'Center'
+            firstAlign = "Center"
     except IndexError:
         # Should no longer happen for ArchWall
         # as aligns are 'filled in' by ArchWall
@@ -312,7 +317,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     # ('legacy/backward-compatible' mode)
     if not firstDir:
         # need to test against Part.Circle, not Part.ArcOfCircle
-        if isinstance(e.Curve, (Part.Circle,Part.Ellipse)):
+        if isinstance(e.Curve, (Part.Circle, Part.Ellipse)):
             v0 = e.tangentAt(e.FirstParameter).cross(norm)
         else:
             v0 = vec(e).cross(norm)
@@ -324,17 +329,17 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if v0.isEqual(v1, 0.0001):
             # "Left Offset" (Left Align or 'left offset' in Centre Align)
             firstDir = 1
-            firstAlign = 'Left'
-            alignListC.append('Left')
+            firstAlign = "Left"
+            alignListC.append("Left")
         elif v0.isEqual(v1.negative(), 0.0001):
             # "Right Offset" (Right Align or 'right offset' in Centre Align)
             firstDir = -1
-            firstAlign = 'Right'
-            alignListC.append('Right')
+            firstAlign = "Right"
+            alignListC.append("Right")
         else:
             print(" something wrong with firstDir ")
-            firstAlign = 'Left'
-            alignListC.append('Left')
+            firstAlign = "Left"
+            alignListC.append("Left")
 
     if not isinstance(basewireOffset, list):
         basewireOffset = [basewireOffset]
@@ -357,9 +362,9 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # record current edge's Orientation, and set Delta
         if i != 0:  # else:
             # TODO Should also calculate 1st edge direction above
-            if isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
-            # Seems Circle/Ellipse (1 geometry) would be sorted in 1 list,
-            # so i=0; should not happen here in fact (i != 0). 2024.8.25.
+            if isinstance(curredge.Curve, (Part.Circle, Part.Ellipse)):
+                # Seems Circle/Ellipse (1 geometry) would be sorted in 1 list,
+                # so i=0; should not happen here in fact (i != 0). 2024.8.25.
                 delta = curredge.tangentAt(curredge.FirstParameter).cross(norm)
             else:
                 delta = vec(curredge).cross(norm)
@@ -396,31 +401,31 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # Consider individual edge Align direction
         # - ArchWall should now always provide alignList
         if i == 0:
-            if alignListC[0] == 'Center':
-                delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+            if alignListC[0] == "Center":
+                delta = DraftVecUtils.scaleTo(delta, delta.Length / 2)
             # No need to do anything for 'Left' and 'Right' as original dvec
             # have set both the direction and amount of offset correct
             # elif alignListC[i] == 'Left':  #elif alignListC[i] == 'Right':
         if i != 0:
             try:
-                if alignListC[i] == 'Left':
+                if alignListC[i] == "Left":
                     curDir = 1
-                    curAlign = 'Left'
-                elif alignListC[i] == 'Right':
+                    curAlign = "Left"
+                elif alignListC[i] == "Right":
                     curDir = -1
-                    curAlign = 'Right'
+                    curAlign = "Right"
                     delta = delta.negative()
-                elif alignListC[i] == 'Center':
+                elif alignListC[i] == "Center":
                     curDir = 1
-                    curAlign = 'Center'
-                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+                    curAlign = "Center"
+                    delta = DraftVecUtils.scaleTo(delta, delta.Length / 2)
             except IndexError:
                 curDir = firstDir
                 curAlign = firstAlign
-                if firstAlign == 'Right':
+                if firstAlign == "Right":
                     delta = delta.negative()
-                elif firstAlign == 'Center':
-                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+                elif firstAlign == "Center":
+                    delta = DraftVecUtils.scaleTo(delta, delta.Length / 2)
 
         # Consider whether generating the 'offset wire' or the 'base wire'
         if offsetMode is None:
@@ -430,16 +435,16 @@ def offsetWire(wire, dvec, bind=False, occ=False,
 
             # This is a xor
             if (curOrientation == firstOrientation) != (curDir == firstDir):
-                if curAlign in ['Left', 'Right']:
+                if curAlign in ["Left", "Right"]:
                     # ArchWall has an Offset properties for user to offset
                     # the basewire before creating the base profile of wall
                     # (not applicable to 'Center' align)
                     if currOffset:
                         delta = DraftVecUtils.scaleTo(delta, currOffset)
-                        nedge = offset(curredge,delta,trim=True)
+                        nedge = offset(curredge, delta, trim=True)
                     else:
                         nedge = curredge
-                elif curAlign == 'Center':
+                elif curAlign == "Center":
                     delta = delta.negative()
                     nedge = offset(curredge, delta, trim=True)
             else:
@@ -449,32 +454,32 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                 # the basewire before creating the base profile of wall
                 # (not applicable to 'Center' align)
                 if currOffset:
-                    if curAlign in ['Left', 'Right']:
-                        delta = DraftVecUtils.scaleTo(delta,
-                                                      delta.Length + currOffset)
+                    if curAlign in ["Left", "Right"]:
+                        delta = DraftVecUtils.scaleTo(delta, delta.Length + currOffset)
                 nedge = offset(curredge, delta, trim=True)
 
             # TODO arc always in counter-clockwise directinon
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
-                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+                if not isinstance(curredge.Curve, (Part.Circle, Part.Ellipse)):
                     # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
                 elif nedge.isClosed():
                     pass
                 else:
-                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
+                    midParameter = (
+                        nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter) / 2
+                    )
                     midOfArc = nedge.valueAt(midParameter)
-                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point,
-                                             midOfArc,
-                                             nedge.Vertexes[0].Point).toShape()
+                    nedge = Part.ArcOfCircle(
+                        nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point
+                    ).toShape()
                     # TODO any better solution than to calculate midpoint
                     # of arc to reverse?
 
         elif offsetMode in ["BasewireMode"]:
-            if (not (curOrientation == firstOrientation)
-                    != (curDir == firstDir)):
-                if curAlign in ['Left', 'Right']:
+            if not (curOrientation == firstOrientation) != (curDir == firstDir):
+                if curAlign in ["Left", "Right"]:
                     # ArchWall has an Offset properties for user to offset
                     # the basewire before creating the base profile of wall
                     # (not applicable to 'Center' align)
@@ -483,32 +488,33 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                         nedge = offset(curredge, delta, trim=True)
                     else:
                         nedge = curredge
-                elif curAlign == 'Center':
+                elif curAlign == "Center":
                     delta = delta.negative()
                     nedge = offset(curredge, delta, trim=True)
             else:
-                if curAlign in ['Left', 'Right']:
+                if curAlign in ["Left", "Right"]:
                     # ArchWall has an Offset properties for user to offset
                     # the basewire before creating the base profile of wall
                     # (not applicable to 'Center' align)
                     if currOffset:
-                        delta = DraftVecUtils.scaleTo(delta,
-                                                      delta.Length + currOffset)
+                        delta = DraftVecUtils.scaleTo(delta, delta.Length + currOffset)
                     nedge = offset(curredge, delta, trim=True)
-                elif curAlign == 'Center':
+                elif curAlign == "Center":
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
-                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+                if not isinstance(curredge.Curve, (Part.Circle, Part.Ellipse)):
                     # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
                 elif nedge.isClosed():
                     pass
                 else:
-                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
+                    midParameter = (
+                        nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter) / 2
+                    )
                     midOfArc = nedge.valueAt(midParameter)
-                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point,
-                                             midOfArc,
-                                             nedge.Vertexes[0].Point).toShape()
+                    nedge = Part.ArcOfCircle(
+                        nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point
+                    ).toShape()
                     # TODO any better solution than to calculate midpoint
                     # of arc to reverse?
         else:
@@ -523,7 +529,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     if len(edges) > 1:
         # TODO May phase out wire if bind() can do without it later and do with
         # only connectEdges so no need bind() to find 'touching edges' there
-        wire,connectEdgesF,connectEdges = connect(nedges,closed,wireNedge=True)
+        wire, connectEdgesF, connectEdges = connect(nedges, closed, wireNedge=True)
     else:
         # TODO May phase out wire if bind() can do without it later and do with
         # only connectEdges so no need bind() to find 'touching edges' there
@@ -531,19 +537,18 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         connectEdgesF = connectEdges = nedges  # nedges[0]
 
     if bind and not closed:
-        e1 = Part.LineSegment(edges[0].Vertexes[0].Point,
-                              wire[0].Vertexes[0].Point).toShape()
-        e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,
-                              wire[-1].Vertexes[-1].Point).toShape()
-                              #nedges[-1].Vertexes[-1].Point).toShape()
+        e1 = Part.LineSegment(edges[0].Vertexes[0].Point, wire[0].Vertexes[0].Point).toShape()
+        e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point, wire[-1].Vertexes[-1].Point).toShape()
+        # nedges[-1].Vertexes[-1].Point).toShape()
         alledges = edges.extend(nedges)  # TODO nedges is a wire or are edges?
         alledges = alledges.extend([e1, e2])
         w = Part.Wire(alledges)
         return w
     else:
         if wireNedge:
-            return (wire,connectEdgesF,connectEdges,nedges)
+            return (wire, connectEdgesF, connectEdges, nedges)
         else:
             return wire
+
 
 ## @}

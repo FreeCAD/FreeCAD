@@ -35,6 +35,7 @@ import FreeCAD as App
 
 if App.GuiUp:
     import Draft_rc
+
     gui = True
     # To prevent complaints from code checkers (flake8)
     True if Draft_rc.__name__ else False
@@ -42,8 +43,9 @@ else:
     gui = False
 
 __title__ = "FreeCAD Draft Workbench"
-__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
-              "Dmitry Chigrin, Daniel Falck")
+__author__ = (
+    "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, " "Dmitry Chigrin, Daniel Falck"
+)
 __url__ = "https://www.freecad.org"
 
 # ---------------------------------------------------------------------------
@@ -51,80 +53,80 @@ __url__ = "https://www.freecad.org"
 # ---------------------------------------------------------------------------
 from draftutils.utils import ARROW_TYPES as arrowtypes
 
-from draftutils.utils import (type_check,
-                              typecheck,
-                              precision,
-                              tolerance)
+from draftutils.utils import type_check, typecheck, precision, tolerance
 
-from draftutils.utils import (get_real_name,
-                              getRealName,
-                              get_type,
-                              getType,
-                              get_objects_of_type,
-                              getObjectsOfType,
-                              is_clone,
-                              isClone,
-                              get_clone_base,
-                              getCloneBase,
-                              print_shape,
-                              printShape,
-                              compare_objects,
-                              compareObjects,
-                              shapify,
-                              is_closed_edge)
+from draftutils.utils import (
+    get_real_name,
+    getRealName,
+    get_type,
+    getType,
+    get_objects_of_type,
+    getObjectsOfType,
+    is_clone,
+    isClone,
+    get_clone_base,
+    getCloneBase,
+    print_shape,
+    printShape,
+    compare_objects,
+    compareObjects,
+    shapify,
+    is_closed_edge,
+)
 
-from draftutils.utils import (string_encode_coin,
-                              stringencodecoin,
-                              load_svg_patterns,
-                              loadSvgPatterns,
-                              svg_patterns,
-                              svgpatterns,
-                              get_rgb,
-                              getrgb,
-                              argb_to_rgba,
-                              rgba_to_argb,
-                              get_rgba_tuple)
+from draftutils.utils import (
+    string_encode_coin,
+    stringencodecoin,
+    load_svg_patterns,
+    loadSvgPatterns,
+    svg_patterns,
+    svgpatterns,
+    get_rgb,
+    getrgb,
+    argb_to_rgba,
+    rgba_to_argb,
+    get_rgba_tuple,
+)
 
-from draftfunctions.svg import (get_svg,
-                                getSVG)
+from draftfunctions.svg import get_svg, getSVG
 
-from draftfunctions.dxf import (get_dxf,
-                                getDXF)
+from draftfunctions.dxf import get_dxf, getDXF
 
-from draftutils.gui_utils import (get3DView,
-                                  get_3d_view,
-                                  autogroup,
-                                  removeHidden,
-                                  remove_hidden,
-                                  get_diffuse_color,
-                                  apply_current_style,
-                                  restore_view_object,
-                                  formatObject,
-                                  format_object,
-                                  getSelection,
-                                  get_selection,
-                                  getSelectionEx,
-                                  get_selection_ex,
-                                  select,
-                                  loadTexture,
-                                  load_texture,
-                                  get_bbox,
-                                  end_all_events)
+from draftutils.gui_utils import (
+    get3DView,
+    get_3d_view,
+    autogroup,
+    removeHidden,
+    remove_hidden,
+    get_diffuse_color,
+    apply_current_style,
+    restore_view_object,
+    formatObject,
+    format_object,
+    getSelection,
+    get_selection,
+    getSelectionEx,
+    get_selection_ex,
+    select,
+    loadTexture,
+    load_texture,
+    get_bbox,
+    end_all_events,
+)
 
-from draftutils.gui_utils import (dim_symbol,
-                                  dimSymbol,
-                                  dim_dash,
-                                  dimDash)
+from draftutils.gui_utils import dim_symbol, dimSymbol, dim_dash, dimDash
 
-from draftutils.groups import (is_group,
-                               get_group_names,
-                               getGroupNames,
-                               ungroup,
-                               get_windows,
-                               get_group_contents,
-                               getGroupContents,
-                               get_movable_children,
-                               getMovableChildren)
+from draftutils.groups import (
+    is_group,
+    get_group_names,
+    getGroupNames,
+    ungroup,
+    get_windows,
+    get_group_contents,
+    getGroupContents,
+    get_movable_children,
+    getMovableChildren,
+)
 
 # ---------------------------------------------------------------------------
 # Draft functions
@@ -143,25 +145,13 @@ from draftfunctions.fuse import fuse
 
 from draftfunctions.heal import heal
 
-from draftfunctions.move import (move,
-                                 move_vertex,
-                                 move_edge,
-                                 copy_moved_edge)
+from draftfunctions.move import move, move_vertex, move_edge, copy_moved_edge
 
-from draftfunctions.rotate import (rotate,
-                                   rotate_vertex,
-                                   rotate_edge,
-                                   copy_rotated_edge)
+from draftfunctions.rotate import rotate, rotate_vertex, rotate_edge, copy_rotated_edge
 
-from draftfunctions.scale import (scale,
-                                  scale_vertex,
-                                  scale_edge,
-                                  copy_scaled_edge)
+from draftfunctions.scale import scale, scale_vertex, scale_edge, copy_scaled_edge
 
-from draftfunctions.join import (join_wires,
-                                 joinWires,
-                                 join_two_wires,
-                                 joinTwoWires)
+from draftfunctions.join import join_wires, joinWires, join_two_wires, joinTwoWires
 
 from draftfunctions.split import split
 
@@ -177,178 +167,135 @@ from draftfunctions.upgrade import upgrade
 # ---------------------------------------------------------------------------
 
 # base object
-from draftobjects.base import (DraftObject,
-                               _DraftObject)
+from draftobjects.base import DraftObject, _DraftObject
 
 # base viewprovider
-from draftviewproviders.view_base import (ViewProviderDraft,
-                                          _ViewProviderDraft,
-                                          ViewProviderDraftAlt,
-                                          _ViewProviderDraftAlt,
-                                          ViewProviderDraftPart,
-                                          _ViewProviderDraftPart)
+from draftviewproviders.view_base import (
+    ViewProviderDraft,
+    _ViewProviderDraft,
+    ViewProviderDraftAlt,
+    _ViewProviderDraftAlt,
+    ViewProviderDraftPart,
+    _ViewProviderDraftPart,
+)
 
 # App::Link support, used by the arrays
-from draftobjects.draftlink import (DraftLink,
-                                    _DraftLink)
-from draftviewproviders.view_draftlink import (ViewProviderDraftLink,
-                                               _ViewProviderDraftLink)
+from draftobjects.draftlink import DraftLink, _DraftLink
+from draftviewproviders.view_draftlink import ViewProviderDraftLink, _ViewProviderDraftLink
 
 # circle
-from draftobjects.circle import (Circle,
-                                 _Circle)
-from draftmake.make_circle import (make_circle,
-                                   makeCircle)
+from draftobjects.circle import Circle, _Circle
+from draftmake.make_circle import make_circle, makeCircle
 
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
 
 
-
 # ellipse
-from draftobjects.ellipse import (Ellipse,
-                                  _Ellipse)
-from draftmake.make_ellipse import (make_ellipse,
-                                    makeEllipse)
+from draftobjects.ellipse import Ellipse, _Ellipse
+from draftmake.make_ellipse import make_ellipse, makeEllipse
 
 # rectangle
-from draftobjects.rectangle import (Rectangle,
-                                    _Rectangle)
-from draftmake.make_rectangle import (make_rectangle,
-                                      makeRectangle)
+from draftobjects.rectangle import Rectangle, _Rectangle
+from draftmake.make_rectangle import make_rectangle, makeRectangle
 
 if App.GuiUp:
-    from draftviewproviders.view_rectangle import (ViewProviderRectangle,
-                                                   _ViewProviderRectangle)
+    from draftviewproviders.view_rectangle import ViewProviderRectangle, _ViewProviderRectangle
 
 # polygon
-from draftobjects.polygon import (Polygon,
-                                  _Polygon)
-from draftmake.make_polygon import (make_polygon,
-                                    makePolygon)
+from draftobjects.polygon import Polygon, _Polygon
+from draftmake.make_polygon import make_polygon, makePolygon
 
 # wire and line
-from draftobjects.wire import (Wire,
-                               _Wire)
+from draftobjects.wire import Wire, _Wire
 
-from draftmake.make_line import (make_line,
-                                 makeLine)
-from draftmake.make_wire import (make_wire,
-                                 makeWire)
+from draftmake.make_line import make_line, makeLine
+from draftmake.make_wire import make_wire, makeWire
 
 if App.GuiUp:
-    from draftviewproviders.view_wire import (ViewProviderWire,
-                                              _ViewProviderWire)
+    from draftviewproviders.view_wire import ViewProviderWire, _ViewProviderWire
 
 # bspline
-from draftobjects.bspline import (BSpline,
-                                  _BSpline)
-from draftmake.make_bspline import (make_bspline,
-                                    makeBSpline)
+from draftobjects.bspline import BSpline, _BSpline
+from draftmake.make_bspline import make_bspline, makeBSpline
 
 if App.GuiUp:
-    from draftviewproviders.view_bspline import (ViewProviderBSpline,
-                                                 _ViewProviderBSpline)
+    from draftviewproviders.view_bspline import ViewProviderBSpline, _ViewProviderBSpline
 
 # bezcurve
-from draftobjects.bezcurve import (BezCurve,
-                                   _BezCurve)
-from draftmake.make_bezcurve import (make_bezcurve,
-                                     makeBezCurve)
+from draftobjects.bezcurve import BezCurve, _BezCurve
+from draftmake.make_bezcurve import make_bezcurve, makeBezCurve
 
 if App.GuiUp:
-    from draftviewproviders.view_bezcurve import (ViewProviderBezCurve,
-                                                  _ViewProviderBezCurve)
+    from draftviewproviders.view_bezcurve import ViewProviderBezCurve, _ViewProviderBezCurve
 
 # copy
 from draftmake.make_copy import make_copy
 from draftmake.make_copy import make_copy as makeCopy
 
 # clone
-from draftobjects.clone import (Clone,
-                                _Clone)
-from draftmake.make_clone import (make_clone,
-                                  clone)
+from draftobjects.clone import Clone, _Clone
+from draftmake.make_clone import make_clone, clone
 
 if App.GuiUp:
-    from draftviewproviders.view_clone import (ViewProviderClone,
-                                               _ViewProviderClone)
+    from draftviewproviders.view_clone import ViewProviderClone, _ViewProviderClone
 
 # point
-from draftobjects.point import (Point,
-                                _Point)
-from draftmake.make_point import (make_point,
-                                  makePoint)
+from draftobjects.point import Point, _Point
+from draftmake.make_point import make_point, makePoint
 
 if App.GuiUp:
-    from draftviewproviders.view_point import (ViewProviderPoint,
-                                               _ViewProviderPoint)
+    from draftviewproviders.view_point import ViewProviderPoint, _ViewProviderPoint
 
 # arrays
-from draftobjects.array import (Array,
-                                _Array)
-from draftmake.make_array import (make_array,
-                                  makeArray)
-from draftmake.make_orthoarray import (make_ortho_array,
-                                       make_ortho_array2d,
-                                       make_rect_array,
-                                       make_rect_array2d)
+from draftobjects.array import Array, _Array
+from draftmake.make_array import make_array, makeArray
+from draftmake.make_orthoarray import (
+    make_ortho_array,
+    make_ortho_array2d,
+    make_rect_array,
+    make_rect_array2d,
+)
 from draftmake.make_polararray import make_polar_array
 from draftmake.make_circulararray import make_circular_array
 
-from draftobjects.patharray import (PathArray,
-                                    _PathArray)
-from draftmake.make_patharray import (make_path_array,
-                                      makePathArray,
-                                      make_path_twisted_array)
+from draftobjects.patharray import PathArray, _PathArray
+from draftmake.make_patharray import make_path_array, makePathArray, make_path_twisted_array
 
-from draftobjects.pointarray import (PointArray,
-                                     _PointArray)
-from draftmake.make_pointarray import (make_point_array,
-                                       makePointArray)
+from draftobjects.pointarray import PointArray, _PointArray
+from draftmake.make_pointarray import make_point_array, makePointArray
 
 if App.GuiUp:
-    from draftviewproviders.view_array import (ViewProviderDraftArray,
-                                               _ViewProviderDraftArray)
+    from draftviewproviders.view_array import ViewProviderDraftArray, _ViewProviderDraftArray
 
 # facebinder
-from draftobjects.facebinder import (Facebinder,
-                                     _Facebinder)
-from draftmake.make_facebinder import (make_facebinder,
-                                       makeFacebinder)
+from draftobjects.facebinder import Facebinder, _Facebinder
+from draftmake.make_facebinder import make_facebinder, makeFacebinder
 
 if App.GuiUp:
-    from draftviewproviders.view_facebinder import (ViewProviderFacebinder,
-                                                    _ViewProviderFacebinder)
+    from draftviewproviders.view_facebinder import ViewProviderFacebinder, _ViewProviderFacebinder
 
 # shapestring
-from draftobjects.block import (Block,
-                                _Block)
-from draftmake.make_block import (make_block,
-                                  makeBlock)
+from draftobjects.block import Block, _Block
+from draftmake.make_block import make_block, makeBlock
 
 # shapestring
-from draftobjects.shapestring import (ShapeString,
-                                      _ShapeString)
-from draftmake.make_shapestring import (make_shapestring,
-                                        makeShapeString)
+from draftobjects.shapestring import ShapeString, _ShapeString
+from draftmake.make_shapestring import make_shapestring, makeShapeString
+
 if App.GuiUp:
     from draftviewproviders.view_shapestring import ViewProviderShapeString
 
 # shape 2d view
-from draftobjects.shape2dview import (Shape2DView,
-                                      _Shape2DView)
-from draftmake.make_shape2dview import (make_shape2dview,
-                                        makeShape2DView)
+from draftobjects.shape2dview import Shape2DView, _Shape2DView
+from draftmake.make_shape2dview import make_shape2dview, makeShape2DView
 
 # sketch
-from draftmake.make_sketch import (make_sketch,
-                                   makeSketch)
+from draftmake.make_sketch import make_sketch, makeSketch
 
 # working plane proxy
 from draftobjects.wpproxy import WorkingPlaneProxy
-from draftmake.make_wpproxy import (make_workingplaneproxy,
-                                    makeWorkingPlaneProxy)
+from draftmake.make_wpproxy import make_workingplaneproxy, makeWorkingPlaneProxy
 
 if App.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
@@ -359,59 +306,49 @@ from draftmake.make_fillet import make_fillet
 if App.GuiUp:
     from draftviewproviders.view_fillet import ViewProviderFillet
 
-from draftobjects.layer import (Layer,
-                                _VisGroup,
-                                get_layer)
+from draftobjects.layer import Layer, _VisGroup, get_layer
 
 from draftmake.make_layer import make_layer
 
 if App.GuiUp:
-    from draftviewproviders.view_layer import (ViewProviderLayer,
-                                               _ViewProviderVisGroup)
+    from draftviewproviders.view_layer import ViewProviderLayer, _ViewProviderVisGroup
 
 # Annotation objects
-from draftobjects.dimension import (LinearDimension,
-                                    _Dimension,
-                                    AngularDimension,
-                                    _AngularDimension)
-from draftmake.make_dimension import (make_dimension,
-                                      makeDimension,
-                                      make_linear_dimension,
-                                      make_linear_dimension_obj,
-                                      make_radial_dimension_obj,
-                                      make_angular_dimension,
-                                      makeAngularDimension)
+from draftobjects.dimension import LinearDimension, _Dimension, AngularDimension, _AngularDimension
+from draftmake.make_dimension import (
+    make_dimension,
+    makeDimension,
+    make_linear_dimension,
+    make_linear_dimension_obj,
+    make_radial_dimension_obj,
+    make_angular_dimension,
+    makeAngularDimension,
+)
 
 if App.GuiUp:
-    from draftviewproviders.view_dimension \
-        import (ViewProviderLinearDimension,
-                _ViewProviderDimension,
-                ViewProviderAngularDimension,
-                _ViewProviderAngularDimension)
+    from draftviewproviders.view_dimension import (
+        ViewProviderLinearDimension,
+        _ViewProviderDimension,
+        ViewProviderAngularDimension,
+        _ViewProviderAngularDimension,
+    )
 
-from draftobjects.label import (Label,
-                                DraftLabel)
-from draftmake.make_label import (make_label,
-                                  makeLabel)
-
-if App.GuiUp:
-    from draftviewproviders.view_label import (ViewProviderLabel,
-                                               ViewProviderDraftLabel)
-
-from draftobjects.text import (Text,
-                               DraftText)
-from draftmake.make_text import (make_text,
-                                 makeText,
-                                 convert_draft_texts,
-                                 convertDraftTexts)
+from draftobjects.label import Label, DraftLabel
+from draftmake.make_label import make_label, makeLabel
 
 if App.GuiUp:
-    from draftviewproviders.view_text import (ViewProviderText,
-                                              ViewProviderDraftText)
+    from draftviewproviders.view_label import ViewProviderLabel, ViewProviderDraftLabel
 
-from draftobjects.hatch import (Hatch)
-from draftmake.make_hatch import (make_hatch)
+from draftobjects.text import Text, DraftText
+from draftmake.make_text import make_text, makeText, convert_draft_texts, convertDraftTexts
+
 if App.GuiUp:
-    from draftviewproviders.view_hatch import (ViewProviderDraftHatch)
+    from draftviewproviders.view_text import ViewProviderText, ViewProviderDraftText
+
+from draftobjects.hatch import Hatch
+from draftmake.make_hatch import make_hatch
+
+if App.GuiUp:
+    from draftviewproviders.view_hatch import ViewProviderDraftHatch
 
 ## @}
