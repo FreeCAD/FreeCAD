@@ -307,8 +307,8 @@ void Material::setType(MaterialType MatType)
         case USER_DEFINED:
             break;
         default:
-            ambientColor.set(0.3333F, 0.3333F, 0.3333F);
-            diffuseColor.set(0.8000F, 0.8000F, 0.9000F);
+            ambientColor.set(0.8157F, 0.8157F, 0.8157F);
+            diffuseColor.set(0.6550F, 0.6550F, 0.7451F);
             specularColor.set(0.5333F, 0.5333F, 0.5333F);
             emissiveColor.set(0.0000F, 0.0000F, 0.0000F);
             shininess = 0.9000F;
