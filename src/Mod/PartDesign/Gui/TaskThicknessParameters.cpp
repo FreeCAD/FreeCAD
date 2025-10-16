@@ -33,8 +33,8 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/FeatureThickness.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskThicknessParameters.h"
 #include "TaskThicknessParameters.h"
