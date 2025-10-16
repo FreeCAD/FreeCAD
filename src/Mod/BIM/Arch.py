@@ -2203,6 +2203,7 @@ def is_debasable(wall):
     # If all checks pass, the wall is debasable.
     return True
 
+
 def debaseWall(wall):
     """
     Converts a line-based Arch Wall to be parametrically driven by its own
@@ -2239,7 +2240,7 @@ def debaseWall(wall):
         # positions of this globally-aware edge, the new wall's final Placement is calculated.
         extrusion_data = wall.Proxy.getExtrusionData(wall)
         if not extrusion_data or not hasattr(wall.Proxy, "basewires") or not wall.Proxy.basewires:
-             raise Exception("Could not retrieve extrusion data to calculate global placement.")
+            raise Exception("Could not retrieve extrusion data to calculate global placement.")
 
         # In addition to the baseline edge, getExtrusionData() also provides the extrusion vector,
         # which is used to determine the wall's vertical orientation.
@@ -2304,6 +2305,7 @@ def debaseWall(wall):
         doc.commitTransaction()
 
     return True
+
 
 def _initializeArchObject(
     objectType,

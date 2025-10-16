@@ -1538,15 +1538,19 @@ class _Wall(ArchComponent.Component):
                 if FreeCAD.GuiUp:
                     # --- GUI Path: Warn the user and ask for confirmation. ---
                     from PySide import QtGui
+
                     msg_box = QtGui.QMessageBox()
                     msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
                     msg_box.setText(
-                        translate("ArchComponent", "The base of this wall is not a single straight line.")
+                        translate(
+                            "ArchComponent", "The base of this wall is not a single straight line."
+                        )
                     )
                     msg_box.setInformativeText(
-                        translate("ArchComponent",
+                        translate(
+                            "ArchComponent",
                             "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
-                            "This operation cannot be undone. Do you want to proceed?"
+                            "This operation cannot be undone. Do you want to proceed?",
                         )
                     )
                     msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
@@ -1564,6 +1568,7 @@ class _Wall(ArchComponent.Component):
             # If it's not the base (e.g., an Addition), use the default behavior
             # from the parent Component class.
             super(_Wall, self).handleComponentRemoval(obj, subobject)
+
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.

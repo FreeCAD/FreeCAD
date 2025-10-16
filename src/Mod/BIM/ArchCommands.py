@@ -246,7 +246,7 @@ def removeComponents(objectsList, host=None):
             if o.InList:
                 h = o.InList[0]
 
-                is_base_removal = (hasattr(h, "Base") and h.Base == o)
+                is_base_removal = hasattr(h, "Base") and h.Base == o
                 has_handler = hasattr(h, "Proxy") and hasattr(h.Proxy, "handleComponentRemoval")
 
                 if is_base_removal and has_handler:
