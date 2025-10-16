@@ -119,6 +119,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.DropCutterDir != str(self.form.dropCutterDirSelect.currentData()):
             obj.DropCutterDir = str(self.form.dropCutterDirSelect.currentData())
 
+        obj.Accuracy = self.form.accuracySlider.value()
+
         PathGuiUtil.updateInputField(obj, "DepthOffset", self.form.depthOffset)
 
         if obj.StepOver != self.form.stepOver.value():
@@ -160,6 +162,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # self.form.profileEdges.setCurrentIndex(idx)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
+
+        self.form.accuracySlider.setValue(obj.Accuracy)
 
         self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
         self.form.boundBoxExtraOffsetX.setText(
@@ -213,6 +217,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.boundBoxExtraOffsetX.editingFinished)
         signals.append(self.form.boundBoxExtraOffsetY.editingFinished)
         signals.append(self.form.dropCutterDirSelect.currentIndexChanged)
+        signals.append(self.form.accuracySlider.valueChanged)
         signals.append(self.form.depthOffset.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
