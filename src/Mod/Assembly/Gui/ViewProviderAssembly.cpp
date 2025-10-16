@@ -1523,8 +1523,8 @@ inline QString objListHelper(const std::vector<App::DocumentObject*>& joints)
         const int numToShow = 2;
         int more = joints.size() - numToShow;
         for (int i = 0; i < numToShow; ++i) {
-            results.append(
-                QStringLiteral("%1, ").arg(QString::fromLatin1(joints[i]->Label.getStrValue().c_str())));
+            results.append(QStringLiteral("%1, ").arg(
+                QString::fromLatin1(joints[i]->Label.getStrValue().c_str())));
         }
         results.append(ViewProviderAssembly::tr("and %1 more").arg(more));
     }
