@@ -1,0 +1,12 @@
+prefix=/usr/local
+exec_prefix=/usr/local
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OndselSolver
+Description: Assembly Constraints and Multibody Dynamics code
+Version: 1.0.1
+
+Requires:
+Libs: -L${libdir} -lOndselSolver
+Cflags: -I${includedir}

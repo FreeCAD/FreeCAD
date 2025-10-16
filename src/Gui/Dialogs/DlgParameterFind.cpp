@@ -270,8 +270,11 @@ void DlgParameterFind::accept()
         opt.name = ui->checkNames->isChecked();
         opt.value = ui->checkValues->isChecked();
         opt.match = ui->checkMatch->isChecked();
-
+        
+        // store the top item, to go back when you have reached the end
         QTreeWidgetItem* current = groupTree->currentItem();
+        QTreeWidgetItem* top = current->parent();
+
         QTreeWidgetItem* next = findItem(current, opt);
         while (!next && current) {
             // go to the parent item and try again for each sibling after the current item
@@ -303,29 +306,21 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            // QMessageBox::warning(this,
-            //                      tr("Not found"),
-            //                      tr("Cannot find the text: %1").arg(opt.text));
-
-            QMessageBox msgBox;
-            if next
-            msgBox.setText(tr("%1 not found. Would like to start from the beginning?").arg(opt.text));
-            // msgBox.setInformativeText("Do you want to save your changes?");
-            msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Save);
-            int ret = msgBox.exec();
+            int ret = QMessageBox::warning(this, tr("Not found"), tr("%1 not found. Would you like to start from the beginning?").arg(opt.text),
+                QMessageBox::Yes| QMessageBox::No);
 
             switch (ret) {
                 case QMessageBox::No:
                     break;
                 case QMessageBox::Yes:
-                     QTreeWidgetItem* begin = groupTree->setCurrentItem(root);
-                    dlgParameterFind::findItem(begin, opt)
+                    groupTree->setCurrentItem(top);
+                    DlgParameterFind::findItem(current, opt);
                     break;
                 default:
                     // should never be reached
                     break;
                 }
+            
         }
     }
 }

@@ -1,0 +1,1 @@
+include("/home/paul/Programming/Repositories/FreeCAD/src/tests/Gui_tests_run[1]_include.cmake")

@@ -1,0 +1,12 @@
+
+// Version Number
+#define FCVersionMajor  "1"
+#define FCVersionMinor  "1"
+#define FCVersionName   ""
+#define FCVersionPoint  "0"
+#define FCVersionSuffix "dev"
+// test: $Format:Hash (%H), Date: %ci$
+#define FCRevision      "$WCREV$"      //Highest committed revision number
+#define FCRevisionDate  "$WCDATE$"     //Date of highest committed revision
+#define FCRepositoryURL "$WCURL$"      //Repository URL of the working copy
+
