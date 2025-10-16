@@ -498,11 +498,19 @@ class Stretch(gui_base_original.Modifier):
                             else:
                                 npts.append(pt)
                         # Construct the points list string
-                        points_str = "[" + ", ".join([f"FreeCAD.Vector({p.x}, {p.y}, {p.z})" for p in npts]) + "]"
+                        points_str = (
+                            "["
+                            + ", ".join([f"FreeCAD.Vector({p.x}, {p.y}, {p.z})" for p in npts])
+                            + "]"
+                        )
 
                         commitops.append("import FreeCAD")
-                        commitops.append(f"wall_obj = FreeCAD.ActiveDocument.getObject('{ops[0].Name}')")
-                        commitops.append(f"wall_obj.Proxy.set_from_endpoints(wall_obj, {points_str})")
+                        commitops.append(
+                            f"wall_obj = FreeCAD.ActiveDocument.getObject('{ops[0].Name}')"
+                        )
+                        commitops.append(
+                            f"wall_obj.Proxy.set_from_endpoints(wall_obj, {points_str})"
+                        )
                     else:
                         _pl = _doc + ops[0].Name
                         _pl += ".Placement.Base=FreeCAD."
