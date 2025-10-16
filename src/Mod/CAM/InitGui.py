@@ -158,6 +158,7 @@ class CAMWorkbench(Workbench):
             "CAM_DressupLeadInOut",
             "CAM_DressupRampEntry",
             "CAM_DressupTag",
+            "CAM_DressupTangential",
             "CAM_DressupZCorrect",
         ]
         extracmdlist = []
