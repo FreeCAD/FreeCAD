@@ -536,7 +536,7 @@ void ParameterGroup::onDeleteSelectedItem()
     QTreeWidgetItem* sel = currentItem();
     if (sel && sel->isSelected() && sel->parent()) {
         if (QMessageBox::question(this,
-                                  tr("Remove group"),
+                                  tr("Remove Group"),
                                   tr("Remove this parameter group?"),
                                   QMessageBox::Yes | QMessageBox::No,
                                   QMessageBox::No)
@@ -573,8 +573,9 @@ void ParameterGroup::onCreateSubgroup()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New sub-group"),
-                                         QObject::tr("Enter the name:"),
+                                         QObject::tr("New Sub-Group"),
+                                         QObject::tr("Enter the name"),
+
                                          QLineEdit::Normal,
                                          QString(),
                                          &ok,
@@ -588,8 +589,9 @@ void ParameterGroup::onCreateSubgroup()
 
             if (hGrp->HasGroup(name.toLatin1())) {
                 QMessageBox::critical(this,
-                                      tr("Existing sub-group"),
-                                      tr("The sub-group '%1' already exists.").arg(name));
+                                      tr("Existing Sub-Group"),
+                                      tr("The sub-group '%1' already exists").arg(name));
+
                 return;
             }
 
@@ -603,7 +605,7 @@ void ParameterGroup::onCreateSubgroup()
 void ParameterGroup::onExportToFile()
 {
     QString file = FileDialog::getSaveFileName(this,
-                                               tr("Export parameter to file"),
+                                               tr("Export Parameter to File"),
                                                QString(),
                                                QStringLiteral("XML (*.FCParam)"));
     if (!file.isEmpty()) {
@@ -619,7 +621,7 @@ void ParameterGroup::onExportToFile()
 void ParameterGroup::onImportFromFile()
 {
     QString file = FileDialog::getOpenFileName(this,
-                                               tr("Import parameter from file"),
+                                               tr("Import Parameter From File"),
                                                QString(),
                                                QStringLiteral("XML (*.FCParam)"));
     if (!file.isEmpty()) {
@@ -645,8 +647,9 @@ void ParameterGroup::onImportFromFile()
             }
             catch (const Base::Exception&) {
                 QMessageBox::critical(this,
-                                      tr("Import error"),
-                                      tr("Reading from '%1' failed.").arg(file));
+                                      tr("Import Error"),
+                                      tr("Reading from '%1' failed").arg(file));
+
             }
         }
     }
@@ -796,8 +799,9 @@ void ParameterValue::onCreateTextItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New text item"),
-                                         QObject::tr("Enter the name:"),
+                                         QObject::tr("New Text Item"),
+                                         QObject::tr("Enter the name"),
+
                                          QLineEdit::Normal,
                                          QString(),
                                          &ok,
@@ -811,15 +815,16 @@ void ParameterValue::onCreateTextItem()
     for (const auto& it : smap) {
         if (name == QLatin1String(it.first.c_str())) {
             QMessageBox::critical(this,
-                                  tr("Existing item"),
+                                  tr("Existing Item"),
                                   tr("The item '%1' already exists.").arg(name));
             return;
         }
     }
 
     QString val = QInputDialog::getText(this,
-                                        QObject::tr("New text item"),
-                                        QObject::tr("Enter text:"),
+                                        QObject::tr("New Text Item"),
+                                        QObject::tr("Enter text"),
+
                                         QLineEdit::Normal,
                                         QString(),
                                         &ok,
@@ -835,8 +840,9 @@ void ParameterValue::onCreateIntItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New integer item"),
-                                         QObject::tr("Enter the name:"),
+                                         QObject::tr("New Integer Item"),
+                                         QObject::tr("Enter the name"),
+
                                          QLineEdit::Normal,
                                          QString(),
                                          &ok,
@@ -850,15 +856,17 @@ void ParameterValue::onCreateIntItem()
     for (const auto& it : lmap) {
         if (name == QLatin1String(it.first.c_str())) {
             QMessageBox::critical(this,
-                                  tr("Existing item"),
-                                  tr("The item '%1' already exists.").arg(name));
+                                  tr("Existing Item"),
+                                  tr("The item '%1' already exists").arg(name));
+
             return;
         }
     }
 
     int val = QInputDialog::getInt(this,
-                                   QObject::tr("New integer item"),
-                                   QObject::tr("Enter number:"),
+                                   QObject::tr("New Integer Item"),
+                                   QObject::tr("Enter number"),
+
                                    0,
                                    -2147483647,
                                    2147483647,
@@ -877,8 +885,9 @@ void ParameterValue::onCreateUIntItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New unsigned item"),
-                                         QObject::tr("Enter the name:"),
+                                         QObject::tr("New Unsigned Item"),
+                                         QObject::tr("Enter the name"),
+
                                          QLineEdit::Normal,
                                          QString(),
                                          &ok,
@@ -892,8 +901,9 @@ void ParameterValue::onCreateUIntItem()
     for (const auto& it : lmap) {
         if (name == QLatin1String(it.first.c_str())) {
             QMessageBox::critical(this,
-                                  tr("Existing item"),
-                                  tr("The item '%1' already exists.").arg(name));
+                                  tr("Existing Item"),
+                                  tr("The item '%1' already exists").arg(name));
+
             return;
         }
     }
@@ -921,8 +931,9 @@ void ParameterValue::onCreateFloatItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New float item"),
-                                         QObject::tr("Enter the name:"),
+                                         QObject::tr("New Float Item"),
+                                         QObject::tr("Enter the name"),
+
                                          QLineEdit::Normal,
                                          QString(),
                                          &ok,
@@ -936,15 +947,17 @@ void ParameterValue::onCreateFloatItem()
     for (const auto& it : fmap) {
         if (name == QLatin1String(it.first.c_str())) {
             QMessageBox::critical(this,
-                                  tr("Existing item"),
-                                  tr("The item '%1' already exists.").arg(name));
+                                  tr("Existing Item"),
+                                  tr("The item '%1' already exists").arg(name));
+
             return;
         }
     }
 
     double val = QInputDialog::getDouble(this,
-                                         QObject::tr("New float item"),
-                                         QObject::tr("Enter number:"),
+                                         QObject::tr("New Float Item"),
+                                         QObject::tr("Enter number"),
+
                                          0,
                                          -2147483647,
                                          2147483647,
@@ -962,8 +975,9 @@ void ParameterValue::onCreateBoolItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New boolean item"),
-                                         QObject::tr("Enter the name:"),
+                                         QObject::tr("New Boolean Item"),
+                                         QObject::tr("Enter the name"),
+
                                          QLineEdit::Normal,
                                          QString(),
                                          &ok,
@@ -977,8 +991,9 @@ void ParameterValue::onCreateBoolItem()
     for (const auto& it : bmap) {
         if (name == QLatin1String(it.first.c_str())) {
             QMessageBox::critical(this,
-                                  tr("Existing item"),
-                                  tr("The item '%1' already exists.").arg(name));
+                                  tr("Existing Item"),
+                                  tr("The item '%1' already exists").arg(name));
+
             return;
         }
     }
@@ -986,8 +1001,9 @@ void ParameterValue::onCreateBoolItem()
     QStringList list;
     list << QStringLiteral("true") << QStringLiteral("false");
     QString val = QInputDialog::getItem(this,
-                                        QObject::tr("New boolean item"),
-                                        QObject::tr("Choose an item:"),
+                                        QObject::tr("New Boolean Item"),
+                                        QObject::tr("Choose an item"),
+
                                         list,
                                         0,
                                         false,
