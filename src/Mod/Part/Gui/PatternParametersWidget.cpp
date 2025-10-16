@@ -44,9 +44,12 @@
 
 using namespace PartGui;
 
-PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* parent) :
+PatternParametersWidget::PatternParametersWidget(PatternType type,
+                                                 Gui::View3DInventorViewer* v,
+                                                 QWidget* parent) :
     QWidget(parent),
     type(type),
+    viewer(v),
     ui(new Ui_PatternParametersWidget)
 {
     ui->setupUi(this);
@@ -54,7 +57,10 @@ PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* pare
     connectSignals();
 }
 
-PatternParametersWidget::~PatternParametersWidget() = default;
+PatternParametersWidget::~PatternParametersWidget()
+{
+    clearAllSpacingLabels();
+}
 
 void PatternParametersWidget::setupUiElements()
 {
@@ -112,6 +118,7 @@ void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp
     App::PropertyEnumeration* modeProp,
     App::PropertyQuantity* lengthProp,
     App::PropertyQuantity* offsetProp,
+    App::PropertyFloatList* spacingsOverrideProp,
     App::PropertyFloatList* spacingPatternProp,
     App::PropertyIntegerConstraint* occurrencesProp,
     App::DocumentObject* feature)
@@ -122,6 +129,7 @@ void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp
     m_modeProp = modeProp;
     m_extentProp = lengthProp;
     m_spacingProp = offsetProp;
+    m_spacingsOverrideProp = spacingsOverrideProp;
     m_spacingPatternProp = spacingPatternProp;
     m_occurrencesProp = occurrencesProp;
     m_feature = feature; // Store feature for context (units, etc.)
@@ -530,6 +538,248 @@ void PatternParametersWidget::applyQuantitySpinboxes() const
     ui->spinExtent->apply();
     ui->spinSpacing->apply();
     ui->spinOccurrences->apply();
+}
+
+void PatternParametersWidget::clearAllSpacingLabels()
+{
+    spacingLabels.clear();
+}
+
+void PatternParametersWidget::updateSpacingLabels(const Base::Vector3d& startPoint,
+                                                  const Base::Vector3d& direction)
+{
+    clearAllSpacingLabels();
+
+    // Prerequisites: feature bound, viewer exists, and it's a linear pattern.
+    if (!m_feature || !viewer || type != PatternType::Linear) {
+        return;
+    }
+
+    // Labels are only shown in Spacing mode.
+    if (static_cast<PatternMode>(m_modeProp->getValue()) != PatternMode::Spacing
+        || m_occurrencesProp->getValue() <= 1) {
+        return;
+    }
+
+    try {
+        size_t requiredLabels = m_occurrencesProp->getValue() - 1;
+        Base::Rotation rotation(Base::Vector3d(1.0, 0.0, 0.0), direction);
+
+        // Adjust the number of label objects.
+        if (spacingLabels.size() > requiredLabels) {
+            spacingLabels.resize(requiredLabels);
+        }
+        while (spacingLabels.size() < requiredLabels) {
+            auto label = std::make_unique<Gui::EditableDatumLabel>(
+                viewer,
+                Base::Placement(startPoint, rotation),
+                true  // autoDistance
+            );
+            label->setLabelType(Gui::SoDatumLabel::DISTANCE,
+                                Gui::EditableDatumLabel::Function::Dimensioning);
+            label->setPickable(true);
+            connect(label.get(),
+                    &Gui::EditableDatumLabel::clicked,
+                    this,
+                    &PatternParametersWidget::onSpacingLabelClicked);
+            spacingLabels.push_back(std::move(label));
+        }
+
+        // Get the spacing values from the bound properties.
+        const auto& spacings = m_spacingsOverrideProp->getValues();
+        double globalOffset = m_spacingProp->getValue();
+
+        // Calculate positions iteratively.
+        Base::Vector3d currentPoint = Base::Vector3d();
+        for (size_t i = 0; i < requiredLabels; ++i) {
+            auto& label = spacingLabels[i];
+            if (!label->isActive()) {
+                label->activate();
+            }
+
+            // Define the start point for this label's line segment.
+            Base::Vector3d p1 = currentPoint;
+
+            // Calculate the end point for this segment.
+            double spacingOverride = spacings.at(i);
+            double currentSpacing = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
+
+            Base::Vector3d p2 = p1 + Base::Vector3d(currentSpacing, 0., 0.);
+
+            label->setPoints(p1, p2);
+
+            // Set the text of the label.
+            Base::Quantity quantity(currentSpacing, Base::Unit::Length);
+            label->label->string = quantity.getUserString().c_str();
+
+            if (spacingOverride == -1.0) {
+                // Only set color if not currently being edited to avoid flicker.
+                if (!label->isInEdit()) {
+                    label->setDeactivatedColor();
+                }
+            }
+            else {
+                label->setActivatedColor();
+            }
+
+            // The end of this segment is the start of the next one.
+            currentPoint = p2;
+        }
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Could not update on-view spacing labels: %s\n", e.what());
+        clearAllSpacingLabels();
+    }
+}
+
+void PatternParametersWidget::updateSpacingLabels(const Base::Vector3d& center,
+                                                  const Base::Vector3d& axis,
+                                                  double radius,
+                                                  double startAngle)
+{
+    clearAllSpacingLabels();
+    if (!m_feature || !viewer || type != PatternType::Polar) {
+        return;
+    }
+
+    if (static_cast<PatternMode>(m_modeProp->getValue()) != PatternMode::Spacing
+        || m_occurrencesProp->getValue() <= 1) {
+        return;
+    }
+
+    try {
+        size_t requiredLabels = m_occurrencesProp->getValue() - 1;
+
+        // Create a placement for the labels. The origin is the rotation center,
+        // and the Z-axis is aligned with the rotation axis.
+        Base::Rotation rotation(Base::Vector3d(0.0, 0.0, 1.0), axis);
+        Base::Placement labelPlacement(center, rotation);
+
+        if (spacingLabels.size() > requiredLabels) {
+            spacingLabels.resize(requiredLabels);
+        }
+        while (spacingLabels.size() < requiredLabels) {
+            auto label = std::make_unique<Gui::EditableDatumLabel>(viewer, labelPlacement, true);
+            label->setLabelType(Gui::SoDatumLabel::ANGLE,
+                                Gui::EditableDatumLabel::Function::Dimensioning);
+            label->setPickable(true);
+            connect(label.get(),
+                    &Gui::EditableDatumLabel::clicked,
+                    this,
+                    &PatternParametersWidget::onSpacingLabelClicked);
+            spacingLabels.push_back(std::move(label));
+        }
+
+        const auto& spacings = m_spacingsOverrideProp->getValues();
+        double globalOffset = m_spacingProp->getValue();
+        double cumulativeAngle = startAngle;
+
+        for (size_t i = 0; i < requiredLabels; ++i) {
+            auto& label = spacingLabels[i];
+            if (!label->isActive()) {
+                label->activate();
+            }
+
+            double spacingOverride = spacings.at(i);
+            // Spacing values for PolarPattern are in degrees, but label params need radians.
+            double currentAngle_deg = (spacingOverride == -1.0) ? globalOffset : spacingOverride;
+            double currentAngle_rad = Base::toRadians(currentAngle_deg);
+
+            label->setPoints(center, Base::Vector3d());
+            label->setLabelDistance(radius);             // param1 is the radius
+            label->setLabelStartAngle(cumulativeAngle);  // param2 is start angle in rad
+            label->setLabelRange(currentAngle_rad);      // param3 is angle range in rad
+
+            Base::Quantity quantity(currentAngle_deg, Base::Unit::Angle);
+            label->label->string = quantity.getUserString().c_str();
+
+            if (spacingOverride == -1.0) {
+                if (!label->isInEdit()) {
+                    label->setDeactivatedColor();
+                }
+            }
+            else {
+                label->setActivatedColor();
+            }
+
+            cumulativeAngle += currentAngle_rad;
+        }
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Could not update on-view polar spacing labels: %s\n", e.what());
+        clearAllSpacingLabels();
+    }
+}
+
+void PatternParametersWidget::onSpacingLabelClicked(Gui::EditableDatumLabel* label)
+{
+    if (!m_spacingsOverrideProp || !m_spacingProp) {
+        return;
+    }
+
+    // Find the index of the clicked label in our vector.
+    auto it = std::find_if(spacingLabels.begin(), spacingLabels.end(), [&](const auto& ptr) {
+        return ptr.get() == label;
+    });
+    if (it == spacingLabels.end()) {
+        return;  // Clicked label not found.
+    }
+    int index = std::distance(spacingLabels.begin(), it);
+
+    // Get the current value for this specific spacing to initialize the spinbox.
+    const auto& spacings = m_spacingsOverrideProp->getValues();
+    double currentValue =
+        (spacings.at(index) == -1.0) ? m_spacingProp->getValue() : spacings.at(index);
+
+    disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+    disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
+
+    // 2. Start the editing session.
+    label->startEdit(currentValue);
+
+    // 3. Establish the new, single connection for this editing session.
+
+    connect(label,
+            &Gui::EditableDatumLabel::valueChanged,
+            this,
+            [this, index, label](double newValue) {
+                if (!label->hasFinishedEditing) {
+                    return;
+                }
+
+                // The connection is no longer needed, disconnect immediately to prevent any
+                // re-entry.
+                disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+                disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
+
+                if (!m_spacingsOverrideProp) {
+                    return;
+                }
+
+                // Update the corresponding value in the property list.
+                std::vector<double> currentSpacings = m_spacingsOverrideProp->getValues();
+                if (static_cast<size_t>(index) < currentSpacings.size()) {
+                    if (newValue == m_spacingProp->getValue()) {
+                        newValue = -1;
+                    }
+                    currentSpacings[index] = newValue;
+                    m_spacingsOverrideProp->setValues(currentSpacings);
+
+                    // Trigger a recompute of the feature.
+                    Q_EMIT parametersChanged();
+                }
+
+                label->stopEdit();
+            });
+
+    connect(label, &Gui::EditableDatumLabel::focusLost, this, [this, label]() {
+        // The job is done (cancelled), disconnect both signals for this session.
+        disconnect(label, &Gui::EditableDatumLabel::valueChanged, this, nullptr);
+        disconnect(label, &Gui::EditableDatumLabel::focusLost, this, nullptr);
+
+        // Finalize the edit by hiding the spinbox and reverting to the original value.
+        label->stopEdit(false);
+    });
 }
 
 //#include "moc_PatternParametersWidget.cpp"

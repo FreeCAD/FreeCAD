@@ -153,6 +153,13 @@ protected:
     bool isEnabledTransaction() const;
     void setupTransaction();
 
+    /**
+     * Returns the base transformation view provider
+     * For stand alone features it will be view provider associated with this object
+     * For features inside multitransform it will be the view provider of the multitransform object
+     */
+    PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
+
 private Q_SLOTS:
     virtual void onUpdateView(bool /*unused*/) = 0;
 
@@ -180,13 +187,6 @@ private:
     /// Return the base object of the base transformed object (see getTopTransformedObject())
     // Either through the ViewProvider or the currently active subFeature of the parentTask
     App::DocumentObject* getBaseObject() const;
-
-    /**
-     * Returns the base transformation view provider
-     * For stand alone features it will be view provider associated with this object
-     * For features inside multitransform it will be the view provider of the multitransform object
-     */
-    PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
 
     void changeEvent(QEvent* event) override;
 
@@ -238,3 +238,4 @@ protected:
 }  // namespace PartDesignGui
 
 #endif  // GUI_TASKVIEW_TASKAPPERANCE_H
+
