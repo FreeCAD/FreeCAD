@@ -55,16 +55,32 @@ void twoOptSwap(std::vector<int>& path, size_t i, size_t k)
 }
 }  // namespace
 
-std::vector<int> TSPSolver::solve(const std::vector<TSPPoint>& points)
+std::vector<int> TSPSolver::solve(const std::vector<TSPPoint>& points,
+                                  const TSPPoint* startPoint,
+                                  const TSPPoint* endPoint)
 {
     size_t n = points.size();
     if (n == 0) {
         return {};
     }
+
     // Start with a simple nearest neighbor path
     std::vector<bool> visited(n, false);
     std::vector<int> path;
+
+    // If startPoint provided, find the closest point to it
     size_t current = 0;
+    if (startPoint) {
+        double minDist = std::numeric_limits<double>::max();
+        for (size_t i = 0; i < n; ++i) {
+            double d = dist(points[i], *startPoint);
+            if (d < minDist) {
+                minDist = d;
+                current = i;
+            }
+        }
+    }
+
     path.push_back(static_cast<int>(current));
     visited[current] = true;
     for (size_t step = 1; step < n; ++step) {
@@ -101,5 +117,35 @@ std::vector<int> TSPSolver::solve(const std::vector<TSPPoint>& points)
             }
         }
     }
+
+    // If an end point was specified, we want to ensure the path ends at the closest point to it
+    // This is handled by rearranging the path
+    if (endPoint) {
+        // Find closest point to the end point
+        double minDist = std::numeric_limits<double>::max();
+        size_t endIdx = 0;
+        for (size_t i = 0; i < n; ++i) {
+            double d = dist(points[path[i]], *endPoint);
+            if (d < minDist) {
+                minDist = d;
+                endIdx = i;
+            }
+        }
+
+        // Rotate the path so that endIdx is at the end
+        if (endIdx != n - 1) {
+            std::vector<int> newPath;
+            // Start with points after endIdx
+            for (size_t i = endIdx + 1; i < n; ++i) {
+                newPath.push_back(path[i]);
+            }
+            // Then add points from beginning up to and including endIdx
+            for (size_t i = 0; i <= endIdx; ++i) {
+                newPath.push_back(path[i]);
+            }
+            path = newPath;
+        }
+    }
+
     return path;
 }

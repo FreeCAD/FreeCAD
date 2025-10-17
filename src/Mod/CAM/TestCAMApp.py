@@ -108,3 +108,4 @@ from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
 from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
 from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestTSPSolver import TestTSPSolver
