@@ -471,7 +471,7 @@ class _ViewProviderArchMaterial:
                     if hasattr(widget, "setText"):
                         widget.setText(value)
                     elif hasattr(widget, "setValue"):
-                        widget.setText(value)
+                        widget.setValue(value)
 
     def dumps(self):
         return None
