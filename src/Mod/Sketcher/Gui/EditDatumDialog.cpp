@@ -211,7 +211,9 @@ void EditDatumDialog::accepted()
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();
 
+        double oldValue = Constr->getValue();
         double newDatum = newQuant.getValue();
+        double initLabelDistance = Constr->LabelDistance;
 
         try {
 
@@ -234,6 +236,16 @@ void EditDatumDialog::accepted()
                                           ConstrNbr,
                                           newDatum,
                                           unitString);
+
+                    // When changing angle, the line intersection moves (more so at small angles)
+                    // this tris to limit the movement of the annotation
+                    // to really keep it in place I think we would have to solve first
+                    if (sketch->Constraints[ConstrNbr]->Type == Sketcher::Angle) {
+                        double newValue = sketch->Constraints[ConstrNbr]->getValue();
+                        sketch->setLabelDistance(ConstrNbr,
+                                                 initLabelDistance
+                                                     * (tan(oldValue / 2.0) / tan(newValue / 2.0)));
+                    }
                 }
             }
 
