@@ -2059,7 +2059,7 @@ bool MainWindow::canInsertFromMimeData (const QMimeData * source) const
     if (!source)
         return false;
     return source->hasUrls() ||
-        (source->hasImage() && App::GetApplication().getActiveDocument()) ||
+        source->hasImage() ||
         source->hasFormat(_MimeDocObj) || source->hasFormat(_MimeDocObjX) ||
         source->hasFormat(_MimeDocObjFile) || source->hasFormat(_MimeDocObjXFile);
 }
@@ -2091,7 +2091,6 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
             doc->openTransaction("Paste image");
 
             try {
-                Base::Interpreter().runString("import Image");
                 std::string objName = doc->getUniqueObjectName("ImagePlane");
                 App::DocumentObject* obj = doc->addObject("Image::ImagePlane", objName.c_str());
                 if (obj) {
