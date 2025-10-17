@@ -613,14 +613,26 @@ def sort_locations(locations, keys, attractors=None):
     return out
 
 
-def sort_locations_tsp(locations, keys, attractors=None):
+def sort_locations_tsp(locations, keys, attractors=None, startPoint=None, endPoint=None):
     """
     Python wrapper for the C++ TSP solver. Takes a list of dicts (locations),
-    a list of keys (e.g. ['x', 'y']), and optional attractors.
-    Returns the sorted list of locations in TSP order, starting at (0,0).
+    a list of keys (e.g. ['x', 'y']), and optional parameters.
+
+    Parameters:
+    - locations: List of dictionaries with point coordinates
+    - keys: List of keys to use for coordinates (e.g. ['x', 'y'])
+    - attractors: Optional parameter (not used, kept for compatibility)
+    - startPoint: Optional starting point [x, y]
+    - endPoint: Optional ending point [x, y]
+
+    Returns the sorted list of locations in TSP order.
+    If startPoint is None, path starts from the first point in the original order.
     """
+    # Extract points from locations
     points = [(loc[keys[0]], loc[keys[1]]) for loc in locations]
-    order = tsp_solver.solve(points)
+    order = tsp_solver.solve(points=points, startPoint=startPoint, endPoint=endPoint)
+
+    # Return the reordered locations
     return [locations[i] for i in order]
 
 

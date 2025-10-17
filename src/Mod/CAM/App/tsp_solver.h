@@ -38,5 +38,9 @@ class TSPSolver
 {
 public:
     // Returns a vector of indices representing the visit order using 2-Opt
-    static std::vector<int> solve(const std::vector<TSPPoint>& points);
+    // If startPoint or endPoint are provided, the path will start/end at the closest point to these
+    // coordinates
+    static std::vector<int> solve(const std::vector<TSPPoint>& points,
+                                  const TSPPoint* startPoint = nullptr,
+                                  const TSPPoint* endPoint = nullptr);
 };
