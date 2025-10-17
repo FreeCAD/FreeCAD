@@ -1498,11 +1498,21 @@ double ConstraintTangentCircumf::error()
 {
     double dx = (*c1x() - *c2x());
     double dy = (*c1y() - *c2y());
+    double d_sq = dx * dx + dy * dy;
+
+    // Handle the singularity for near-concentric circles.
+    // When concentric, tangency is equivalent to equal radii.
+    // We switch to the robust 'r1 - r2 = 0' formulation, which has a
+    // constant non-zero gradient, avoiding the singularity.
+    if (d_sq < 1e-14) {
+        return scale * (*r1() - *r2());
+    }
+
     if (internal) {
-        return scale * ((dx * dx + dy * dy) - (*r1() - *r2()) * (*r1() - *r2()));
+        return scale * (d_sq - (*r1() - *r2()) * (*r1() - *r2()));
     }
     else {
-        return scale * ((dx * dx + dy * dy) - (*r1() + *r2()) * (*r1() + *r2()));
+        return scale * (d_sq - (*r1() + *r2()) * (*r1() + *r2()));
     }
 }
 
@@ -1513,6 +1523,21 @@ double ConstraintTangentCircumf::grad(double* param)
         || param == r2()) {
         double dx = (*c1x() - *c2x());
         double dy = (*c1y() - *c2y());
+        double d_sq = dx * dx + dy * dy;
+
+        // Provide the gradient corresponding to the robust 'r1 - r2 = 0' error function.
+        // This gradient is constant and non-zero, preventing the false redundancy report.
+        if (d_sq < 1e-14) {
+            if (param == r1()) {
+                deriv = 1.0;
+            }
+            else if (param == r2()) {
+                deriv = -1.0;
+            }
+            // The gradient is 0 for all other parameters (center coordinates).
+            return scale * deriv;
+        }
+
         if (param == c1x()) {
             deriv += 2 * dx;
         }
