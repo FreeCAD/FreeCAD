@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2010 Werner Mayer LGPL
 # FreeCAD Python script to work with the FCStd file format.
 

@@ -20,8 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions to return the DXF representation of various shapes.
-"""
+"""Provides functions to return the DXF representation of various shapes."""
 ## @package dxf
 # \ingroup draftfunctions
 # \brief Provides functions to return the DXF representation of shapes.
@@ -43,6 +42,7 @@ TechDraw = lz.LazyLoader("TechDraw", globals(), "TechDraw")
 
 ## \addtogroup draftfunctions
 # @{
+
 
 def _get_proj(vec, plane=None):
     """Get a projection of the vector in the plane's u and v directions.
@@ -85,9 +85,9 @@ def get_dxf(obj, direction=None):
         p2 = _get_proj(obj.End, plane=plane)
         p3 = _get_proj(obj.Dimline, plane=plane)
         result += "0\nDIMENSION\n8\n0\n62\n0\n3\nStandard\n70\n1\n"
-        result += "10\n"+str(p3.x)+"\n20\n"+str(p3.y)+"\n30\n"+str(p3.z)+"\n"
-        result += "13\n"+str(p1.x)+"\n23\n"+str(p1.y)+"\n33\n"+str(p1.z)+"\n"
-        result += "14\n"+str(p2.x)+"\n24\n"+str(p2.y)+"\n34\n"+str(p2.z)+"\n"
+        result += "10\n" + str(p3.x) + "\n20\n" + str(p3.y) + "\n30\n" + str(p3.z) + "\n"
+        result += "13\n" + str(p1.x) + "\n23\n" + str(p1.y) + "\n33\n" + str(p1.z) + "\n"
+        result += "14\n" + str(p2.x) + "\n24\n" + str(p2.y) + "\n34\n" + str(p2.z) + "\n"
 
     elif utils.get_type(obj) == "Annotation":
         # Only for App::Annotation
@@ -104,7 +104,7 @@ def get_dxf(obj, direction=None):
             result += "7\nSTANDARD\n"
             count += 1
 
-    elif hasattr(obj, 'Shape'):
+    elif hasattr(obj, "Shape"):
         # TODO do this the Draft way, for ex. using polylines and rectangles
         if not direction:
             direction = App.Vector(0, 0, -1)
@@ -117,8 +117,7 @@ def get_dxf(obj, direction=None):
         except Exception:
             # TODO: trap only specific exception.
             # Impossible to generate DXF from Shape? Which exception is throw?
-            _wrn("get_dxf: "
-                 "unable to project '{}' to {}".format(obj.Label, direction))
+            _wrn("get_dxf: " "unable to project '{}' to {}".format(obj.Label, direction))
         else:
             result += d
     else:
@@ -127,11 +126,10 @@ def get_dxf(obj, direction=None):
     return result
 
 
-def getDXF(obj,
-           direction=None):
+def getDXF(obj, direction=None):
     """Return DXF string of the object. DEPRECATED. Use 'get_dxf'."""
     utils.use_instead("get_dxf")
-    return get_dxf(obj,
-                   direction=direction)
+    return get_dxf(obj, direction=direction)
+
 
 ## @}

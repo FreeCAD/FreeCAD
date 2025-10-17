@@ -68,6 +68,7 @@ _HINT_MOD_KEYS = [Gui.UserInput.KeyShift, Gui.UserInput.KeyControl, Gui.UserInpu
 # To allows for easy concatenation the _get_hint_* functions
 # always return a list (with a single item or an empty list).
 
+
 def _get_hint_mod_constrain():
     key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
     return [Gui.InputHint(translate("draft", "%1 constrain"), key)]
@@ -85,13 +86,17 @@ def _get_hint_xyz_constrain():
     shortcut_x = params.get_param("inCommandShortcutRestrictX").upper()
     shortcut_y = params.get_param("inCommandShortcutRestrictY").upper()
     shortcut_z = params.get_param("inCommandShortcutRestrictZ").upper()
-    if pattern.fullmatch(shortcut_x) \
-            and pattern.fullmatch(shortcut_y) \
-            and pattern.fullmatch(shortcut_z):
+    if (
+        pattern.fullmatch(shortcut_x)
+        and pattern.fullmatch(shortcut_y)
+        and pattern.fullmatch(shortcut_z)
+    ):
         key_x = getattr(Gui.UserInput, "Key" + shortcut_x)
         key_y = getattr(Gui.UserInput, "Key" + shortcut_y)
         key_z = getattr(Gui.UserInput, "Key" + shortcut_z)
-        return [Gui.InputHint(translate("draft", "%1/%2/%3 switch constraint"), key_x, key_y, key_z)]
+        return [
+            Gui.InputHint(translate("draft", "%1/%2/%3 switch constraint"), key_x, key_y, key_z)
+        ]
     return []
 
 
@@ -267,11 +272,9 @@ def get_point(target, args, noTracker=False):
     point = None
 
     if hasattr(Gui, "Snapper"):
-        point = Gui.Snapper.snap(args["Position"],
-                                 lastpoint=last,
-                                 active=smod,
-                                 constrain=cmod,
-                                 noTracker=noTracker)
+        point = Gui.Snapper.snap(
+            args["Position"], lastpoint=last, active=smod, constrain=cmod, noTracker=noTracker
+        )
         info = Gui.Snapper.snapInfo
         mask = Gui.Snapper.affinity
     if not point:
@@ -310,9 +313,9 @@ def set_working_plane_to_object_under_cursor(mouseEvent):
     App::DocumentObject or None
         The parent object the face belongs to, if alignment occurred, or None.
     """
-    objectUnderCursor = gui_utils.get_3d_view().getObjectInfo((
-        mouseEvent["Position"][0],
-        mouseEvent["Position"][1]))
+    objectUnderCursor = gui_utils.get_3d_view().getObjectInfo(
+        (mouseEvent["Position"][0], mouseEvent["Position"][1])
+    )
 
     if not objectUnderCursor:
         return None
@@ -323,6 +326,7 @@ def set_working_plane_to_object_under_cursor(mouseEvent):
         return None
 
     import Part
+
     if "ParentObject" in objectUnderCursor:
         obj = objectUnderCursor["ParentObject"]
         sub = objectUnderCursor["SubName"]
@@ -357,14 +361,16 @@ def set_working_plane_to_selected_object():
 
     sels = Gui.Selection.getSelectionEx("", 0)
 
-    if len(sels) == 1 \
-            and len(sels[0].SubObjects) == 1 \
-            and sels[0].SubObjects[0].ShapeType == "Face":
+    if (
+        len(sels) == 1
+        and len(sels[0].SubObjects) == 1
+        and sels[0].SubObjects[0].ShapeType == "Face"
+    ):
         import Part
-        shape = Part.getShape(sels[0].Object,
-                              sels[0].SubElementNames[0],
-                              needSubElement=True,
-                              retType=0)
+
+        shape = Part.getShape(
+            sels[0].Object, sels[0].SubElementNames[0], needSubElement=True, retType=0
+        )
 
         if wp.align_to_face(shape, _hist_add=False):
             wp.auto = True
@@ -377,7 +383,7 @@ setWorkingPlaneToSelectedObject = set_working_plane_to_selected_object
 
 
 def get_support(mouseEvent=None):
-    """"Align the working plane to a preselected face or the face under the cursor.
+    """ "Align the working plane to a preselected face or the face under the cursor.
 
     The working plane is only aligned if it is `'auto'`.
 

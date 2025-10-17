@@ -26,9 +26,10 @@ import FreeCAD as App
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchStructure(TestArchBase.TestArchBase):
 
     def testStructure(self):
-        App.Console.PrintLog ('Checking BIM Structure...\n')
-        s = Arch.makeStructure(length=2,width=3,height=5)
-        self.assertTrue(s,"BIM Structure failed")
+        App.Console.PrintLog("Checking BIM Structure...\n")
+        s = Arch.makeStructure(length=2, width=3, height=5)
+        self.assertTrue(s, "BIM Structure failed")

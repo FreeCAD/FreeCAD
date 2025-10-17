@@ -22,8 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the object code for the PointArray object.
-"""
+"""Provides the object code for the PointArray object."""
 ## @package pointarray
 # \ingroup draftobjects
 # \brief Provides the object code for the PointArray object.
@@ -56,7 +55,7 @@ class PointArray(DraftLink):
     def linkSetup(self, obj):
         """Set up the object as a link object."""
         super().linkSetup(obj)
-        obj.configLinkProperty(ElementCount='Count')
+        obj.configLinkProperty(ElementCount="Count")
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -64,78 +63,63 @@ class PointArray(DraftLink):
 
         if "Base" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Base object that will be duplicated")
-            obj.addProperty("App::PropertyLink",
-                            "Base",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyLink", "Base", "Objects", _tip, locked=True)
             obj.Base = None
 
         if "PointObject" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Object containing points used to distribute the copies.")
-            obj.addProperty("App::PropertyLink",
-                            "PointObject",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Object containing points used to distribute the copies."
+            )
+            obj.addProperty("App::PropertyLink", "PointObject", "Objects", _tip, locked=True)
             obj.PointObject = None
 
         if "Fuse" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Specifies if the copies "
-                                     "should be fused together "
-                                     "if they touch each other (slower)")
-            obj.addProperty("App::PropertyBool",
-                            "Fuse",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Specifies if the copies "
+                "should be fused together "
+                "if they touch each other (slower)",
+            )
+            obj.addProperty("App::PropertyBool", "Fuse", "Objects", _tip, locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Number of copies in the array.\nThis property is read-only, as the number depends on the points in 'Point Object'.")
-            obj.addProperty("App::PropertyInteger",
-                            "Count",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Number of copies in the array.\nThis property is read-only, as the number depends on the points in 'Point Object'.",
+            )
+            obj.addProperty("App::PropertyInteger", "Count", "Objects", _tip, locked=True)
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
 
         if "ExtraPlacement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, that will be applied to each copy")
-            obj.addProperty("App::PropertyPlacement",
-                            "ExtraPlacement",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Additional placement, shift and rotation, that will be applied to each copy",
+            )
+            obj.addProperty(
+                "App::PropertyPlacement", "ExtraPlacement", "Objects", _tip, locked=True
+            )
             obj.ExtraPlacement = App.Placement()
 
         if self.use_link and "ExpandArray" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Show the individual array elements (only for Link arrays)")
-            obj.addProperty("App::PropertyBool",
-                            "ExpandArray",
-                            "Objects",
-                            _tip,
-                            locked=True)
-            obj.setPropertyStatus('Shape', 'Transient')
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Show the individual array elements (only for Link arrays)"
+            )
+            obj.addProperty("App::PropertyBool", "ExpandArray", "Objects", _tip, locked=True)
+            obj.setPropertyStatus("Shape", "Transient")
 
         if not self.use_link:
             if "PlacementList" not in properties:
-                _tip = QT_TRANSLATE_NOOP("App::Property",
-                                         "The placement for each array element")
-                obj.addProperty("App::PropertyPlacementList",
-                                "PlacementList",
-                                "Objects",
-                                _tip,
-                                locked=True)
+                _tip = QT_TRANSLATE_NOOP("App::Property", "The placement for each array element")
+                obj.addProperty(
+                    "App::PropertyPlacementList", "PlacementList", "Objects", _tip, locked=True
+                )
                 obj.PlacementList = []
 
     def execute(self, obj):
         """Run when the object is created or recomputed."""
-        if self.props_changed_placement_only(obj) \
-                or not obj.Base \
-                or not obj.PointObject:
+        if self.props_changed_placement_only(obj) or not obj.Base or not obj.PointObject:
             self.props_changed_clear()
             return
 
@@ -145,7 +129,7 @@ class PointArray(DraftLink):
 
         self.buildShape(obj, obj.Placement, pls)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -167,9 +151,10 @@ class PointArray(DraftLink):
         if hasattr(obj, "PointList"):
             obj.PointObject = obj.PointList
             obj.removeProperty("PointList")
-        self.execute(obj) # Required to update PlacementList.
+        self.execute(obj)  # Required to update PlacementList.
 
-def remove_equal_vecs (vec_list):
+
+def remove_equal_vecs(vec_list):
     """Remove equal vectors from a list.
 
     Parameters
@@ -189,6 +174,7 @@ def remove_equal_vecs (vec_list):
             res_list.append(vec)
     return res_list
 
+
 def get_point_list(point_object):
     """Extract a list of points from a point object.
 
@@ -205,7 +191,7 @@ def get_point_list(point_object):
     if hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"):
         pt_list = [v.Point for v in point_object.Shape.Vertexes]
         # For compatibility with previous versions: add all points from sketch (including construction geometry):
-        if hasattr(point_object, 'Geometry'):
+        if hasattr(point_object, "Geometry"):
             place = point_object.Placement
             for geo in point_object.Geometry:
                 if geo.TypeId == "Part::GeomPoint":
@@ -219,6 +205,7 @@ def get_point_list(point_object):
 
     return remove_equal_vecs(pt_list)
 
+
 def build_placements(base_object, pt_list=None, placement=App.Placement()):
     """Build a placements from the base object and list of points.
 
@@ -227,9 +214,12 @@ def build_placements(base_object, pt_list=None, placement=App.Placement()):
     list of App.Placements
     """
     if not pt_list:
-        _err(translate("Draft",
-                       "Point object does not have a discrete point, "
-                       "it cannot be used for an array"))
+        _err(
+            translate(
+                "Draft",
+                "Point object does not have a discrete point, " "it cannot be used for an array",
+            )
+        )
         return []
 
     pls = list()

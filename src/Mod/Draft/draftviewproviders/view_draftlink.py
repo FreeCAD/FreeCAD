@@ -30,32 +30,32 @@
 # @{
 from draftviewproviders.view_base import ViewProviderDraft
 
-class ViewProviderDraftLink(ViewProviderDraft):
-    """ A view provider for link type object.
-    """
 
-    def __init__(self,vobj):
+class ViewProviderDraftLink(ViewProviderDraft):
+    """A view provider for link type object."""
+
+    def __init__(self, vobj):
         super(ViewProviderDraftLink, self).__init__(vobj)
 
     def getIcon(self):
         tp = self.Object.Proxy.Type
-        if tp == 'Array':
-            if self.Object.ArrayType == 'ortho':
+        if tp == "Array":
+            if self.Object.ArrayType == "ortho":
                 return ":/icons/Draft_LinkArray.svg"
-            elif self.Object.ArrayType == 'polar':
+            elif self.Object.ArrayType == "polar":
                 return ":/icons/Draft_PolarLinkArray.svg"
-            elif self.Object.ArrayType == 'circular':
+            elif self.Object.ArrayType == "circular":
                 return ":/icons/Draft_CircularLinkArray.svg"
-        elif tp == 'PathArray':
+        elif tp == "PathArray":
             return ":/icons/Draft_PathLinkArray.svg"
-        elif tp == 'PathTwistedArray':
+        elif tp == "PathTwistedArray":
             return ":/icons/Draft_PathTwistedLinkArray.svg"
-        elif tp == 'PointArray':
+        elif tp == "PointArray":
             return ":/icons/Draft_PointLinkArray.svg"
 
     def claimChildren(self):
         obj = self.Object
-        if hasattr(obj,'ExpandArray'):
+        if hasattr(obj, "ExpandArray"):
             expand = obj.ExpandArray
         else:
             expand = obj.ShowElement

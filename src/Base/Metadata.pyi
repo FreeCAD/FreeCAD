@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """
 This file keeps auxiliary metadata to be used by the Python API stubs.
 """

@@ -23,8 +23,8 @@
 # ***************************************************************************
 
 """This script retrieves a list of standard property sets from the IFC4 official
-   documentation website and stores them into 1) a pset_definitions.csv  and 2)
-   a qto_definitions.csv files in the directory ../Presets."""
+documentation website and stores them into 1) a pset_definitions.csv  and 2)
+a qto_definitions.csv files in the directory ../Presets."""
 
 import os
 from urllib.request import urlopen
@@ -43,6 +43,7 @@ QTO_TYPES = {
     "Q_VOLUME": "IfcQuantityVolume",
     "Q_WEIGHT": "IfcQuantityWeight",
 }
+
 
 class PropertyDefHandler(xml.sax.ContentHandler):
     "A XML handler to process pset definitions"
@@ -100,13 +101,12 @@ class PropertyDefHandler(xml.sax.ContentHandler):
             self.currenttype = None
 
 
-
 # MAIN
 
 
 print("Getting psets xml definitions…")
 
-with open("psd.zip","wb") as f:
+with open("psd.zip", "wb") as f:
     u = urlopen(URL)
     p = u.read()
     f.write(p)
@@ -116,9 +116,9 @@ print("Reading xml definitions…")
 psets = []
 qtos = []
 
-with ZipFile("psd.zip", 'r') as z:
+with ZipFile("psd.zip", "r") as z:
     for entry in z.namelist():
-        print("Parsing",entry)
+        print("Parsing", entry)
         xml_data = z.read(entry).decode(encoding="utf-8")
         handler = PropertyDefHandler(entry)
         xml.sax.parseString(xml_data, handler)

@@ -39,6 +39,7 @@
 #include "AutoConstraint.h"
 #include "DrawSketchHandler.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 #include "Utils.h"
 
@@ -425,9 +426,9 @@ public:
      * overridden/specialised instead.
      */
     //@{
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        updateDataAndDrawToPosition(onSketchPos);
+        updateDataAndDrawToPosition(snapHandle.compute());
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override

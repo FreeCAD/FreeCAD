@@ -293,6 +293,10 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
+    if (!feature->snapsToPosition()) {
+        return;
+    }
+
     auto dvp = freecad_cast<DrawViewPart*>(feature);
     if (dvp  &&
         !dvp->hasGeometry()) {

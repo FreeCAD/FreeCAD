@@ -36,9 +36,7 @@ import draftutils.utils as utils
 # @{
 
 
-def _get_text_techdraw(text, tcolor, fontsize, anchor,
-                       align, fontname, angle, base,
-                       linespacing):
+def _get_text_techdraw(text, tcolor, fontsize, anchor, align, fontname, angle, base, linespacing):
     """Return the SVG representation of text for TechDraw display.
 
     `text` is a list of textual elements; they are iterated, styled,
@@ -56,28 +54,23 @@ def _get_text_techdraw(text, tcolor, fontsize, anchor,
         _t = _t.replace("<", "&lt;")
         t = _t.replace(">", "&gt;")
 
-        svg += '<text '
+        svg += "<text "
         svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
         svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                             align.lower())
+        svg += 'style="text-anchor:{};text-align:{};'.format(anchor, align.lower())
         svg += 'font-family:{}" '.format(fontname)
         svg += 'transform="'
-        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                          point.x,
-                                          point.y)
-        svg += 'translate({},{}) '.format(point.x,
-                                          point.y)
+        svg += "rotate({},{},{}) ".format(math.degrees(angle), point.x, point.y)
+        svg += "translate({},{}) ".format(point.x, point.y)
         svg += 'scale(1,-1)"'
         # svg += 'freecad:skip="1"'
-        svg += '>\n'
+        svg += ">\n"
         svg += t
-        svg += '</text>\n'
+        svg += "</text>\n"
     return svg
 
 
-def _get_text_header(tcolor, fontsize, anchor, align,
-                     fontname, angle, base, flip):
+def _get_text_header(tcolor, fontsize, anchor, align, fontname, angle, base, flip):
     """Return the initial <text> tag with style options.
 
     The text must be added after this tag, and then must be closed.
@@ -86,37 +79,43 @@ def _get_text_header(tcolor, fontsize, anchor, align,
         ...
         </text>
     """
-    svg = '<text '
+    svg = "<text "
     svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
     svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-    svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                         align.lower())
+    svg += 'style="text-anchor:{};text-align:{};'.format(anchor, align.lower())
     svg += 'font-family:{}" '.format(fontname)
     svg += 'transform="'
-    svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                      base.x,
-                                      base.y)
+    svg += "rotate({},{},{}) ".format(math.degrees(angle), base.x, base.y)
     if flip:
-        svg += 'translate({},{}) '.format(base.x, base.y)
+        svg += "translate({},{}) ".format(base.x, base.y)
     else:
-        svg += 'translate({},{}) '.format(base.x, -base.y)
+        svg += "translate({},{}) ".format(base.x, -base.y)
     # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
 
     if flip:
-        svg += 'scale(1,-1) '
+        svg += "scale(1,-1) "
     else:
-        svg += 'scale(1,1) '
+        svg += "scale(1,1) "
 
     svg += '" '
     svg += 'freecad:skip="1"'
-    svg += '>\n'
+    svg += ">\n"
     return svg
 
 
-def get_text(plane, techdraw,
-             tcolor, fontsize, fontname,
-             angle, base, text,
-             linespacing=0.5, align="center", flip=True):
+def get_text(
+    plane,
+    techdraw,
+    tcolor,
+    fontsize,
+    fontname,
+    angle,
+    base,
+    text,
+    linespacing=0.5,
+    align="center",
+    flip=True,
+):
     """Get the SVG representation of a textual element."""
     if isinstance(angle, App.Rotation):
         if not plane:
@@ -129,14 +128,14 @@ def get_text(plane, techdraw,
                     angle = -angle.Angle
                 else:
                     angle = angle.Angle
-            elif abs(plane.axis.getAngle(angle.Axis) - math.pi/2) < 0.001:
+            elif abs(plane.axis.getAngle(angle.Axis) - math.pi / 2) < 0.001:
                 # text is perpendicular to view, so it shouldn't appear
                 return ""
             else:
                 # Compute an X vector
-                vec = App.Vector(1,0,0)
-                vec = angle.multVec(App.Vector(1,0,0))
-                angle = DraftVecUtils.angle(vec,plane.u)
+                vec = App.Vector(1, 0, 0)
+                vec = angle.multVec(App.Vector(1, 0, 0))
+                angle = DraftVecUtils.angle(vec, plane.u)
 
     # text should be a list of strings separated by a newline
     if not isinstance(text, list):
@@ -154,9 +153,9 @@ def get_text(plane, techdraw,
         # in an individual tag.
         # <text ...> text[0] </text>
         # <text ...> text[1] </text>
-        svg = _get_text_techdraw(text, tcolor, fontsize, anchor,
-                                 align, fontname, angle, base,
-                                 linespacing)
+        svg = _get_text_techdraw(
+            text, tcolor, fontsize, anchor, align, fontname, angle, base, linespacing
+        )
     else:
         # If the SVG is not for TechDraw, and there is a single item
         # in the text list, place it in a single tag.
@@ -167,8 +166,7 @@ def get_text(plane, techdraw,
         #   <tspan>text[0]</tspan>
         #   <tspan>text[1]</tspan>
         # </text>
-        svg = _get_text_header(tcolor, fontsize, anchor, align,
-                               fontname, angle, base, flip)
+        svg = _get_text_header(tcolor, fontsize, anchor, align, fontname, angle, base, flip)
 
         if len(text) == 1:
             _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
@@ -176,25 +174,34 @@ def get_text(plane, techdraw,
         else:
             for i in range(len(text)):
                 if i == 0:
-                    svg += '<tspan>'
+                    svg += "<tspan>"
                 else:
                     svg += '<tspan x="0" dy="{}">'.format(linespacing)
                 _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
                 svg += _t.replace(">", "&gt;")
-                svg += '</tspan>\n'
-        svg += '</text>\n'
+                svg += "</tspan>\n"
+        svg += "</text>\n"
     return svg
 
 
-def getText(plane, techdraw,
-            tcolor, fontsize, fontname,
-            angle, base, text,
-            linespacing=0.5, align="center", flip=True):
+def getText(
+    plane,
+    techdraw,
+    tcolor,
+    fontsize,
+    fontname,
+    angle,
+    base,
+    text,
+    linespacing=0.5,
+    align="center",
+    flip=True,
+):
     """Get the SVG representation of a textual element. DEPRECATED."""
     utils.use_instead("get_text")
-    return get_text(plane, techdraw,
-                    tcolor, fontsize, fontname,
-                    angle, base, text,
-                    linespacing, align, flip)
+    return get_text(
+        plane, techdraw, tcolor, fontsize, fontname, angle, base, text, linespacing, align, flip
+    )
+
 
 ## @}

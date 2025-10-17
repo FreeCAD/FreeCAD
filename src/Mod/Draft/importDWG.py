@@ -2,7 +2,7 @@
 ## @package importDWG
 #  \ingroup DRAFT
 #  \brief DWG file importer & exporter
-'''
+"""
 @package importDWG
 ingroup DRAFT
 \brief DWG file importer & exporter
@@ -15,7 +15,7 @@ importDXF
 Test files
 https://knowledge.autodesk.com/support/autocad/downloads/
     caas/downloads/content/autocad-sample-files.html
-'''
+"""
 # Check code quality with
 # flake8 --ignore=E226,E266,E401,W503
 
@@ -47,10 +47,9 @@ from draftutils import params
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
+
     def translate(context, txt):
         return txt
-
-
 
 
 def open(filename):
@@ -69,6 +68,7 @@ def open(filename):
     dxf = convertToDxf(filename)
     if dxf:
         import importDXF
+
         doc = importDXF.open(dxf)
         return doc
     return
@@ -96,6 +96,7 @@ def insert(filename, docname):
     dxf = convertToDxf(filename)
     if dxf:
         import importDXF
+
         # Warning: function doesn't return?
         doc = importDXF.insert(dxf, docname)
         return doc
@@ -123,6 +124,7 @@ def export(objectslist, filename):
     import importDXF
     import os
     import tempfile
+
     outdir = tempfile.mkdtemp()
     _basename = os.path.splitext(os.path.basename(filename))[0]
     dxf = outdir + os.sep + _basename + ".dxf"
@@ -154,7 +156,7 @@ def get_libredwg_converter(typ):
 
     path = params.get_param("TeighaFileConverter")
 
-    if "dwg2dxf" in path or "dxf2dwg" in path: # path set manually
+    if "dwg2dxf" in path or "dxf2dwg" in path:  # path set manually
         if typ not in path:
             path = os.path.dirname(path) + "/" + typ + os.path.splitext(path)[1]
         if os.path.exists(path) and os.path.isfile(path):
@@ -164,7 +166,7 @@ def get_libredwg_converter(typ):
             path = sub.replace("\\", "/") + "/" + typ + ".exe"
             if os.path.exists(path) and os.path.isfile(path):
                 return path
-    else: # for Linux and macOS
+    else:  # for Linux and macOS
         for sub in os.getenv("PATH").split(os.pathsep):
             path = sub + "/" + typ
             if os.path.exists(path) and os.path.isfile(path):
@@ -192,7 +194,7 @@ def get_oda_converter():
 
     path = params.get_param("TeighaFileConverter")
 
-    if "ODAFileConverter" in path: # path set manually
+    if "ODAFileConverter" in path:  # path set manually
         if os.path.exists(path) and os.path.isfile(path):
             return path
     elif platform.system() == "Windows":
@@ -206,7 +208,7 @@ def get_oda_converter():
         path = "/usr/bin/ODAFileConverter"
         if os.path.exists(path) and os.path.isfile(path):
             return path
-    else: # for macOS
+    else:  # for macOS
         path = "/Applications/ODAFileConverter.app/Contents/MacOS/ODAFileConverter"
         if os.path.exists(path) and os.path.isfile(path):
             return path
@@ -233,7 +235,7 @@ def get_qcad_converter():
 
     path = params.get_param("TeighaFileConverter")
 
-    if "dwg2dwg" in path: # path set manually
+    if "dwg2dwg" in path:  # path set manually
         pass
     elif platform.system() == "Windows":
         path = os.path.expandvars("%ProgramFiles%\\QCAD\\dwg2dwg.bat").replace("\\", "/")
@@ -245,7 +247,7 @@ def get_qcad_converter():
                 if "qcad" in sub:
                     path = path + "/" + sub + "/" + "dwg2dwg"
                     break
-    else: # for macOS
+    else:  # for macOS
         path = "/Applications/QCAD.app/Contents/Resources/dwg2dwg"
 
     if os.path.exists(path) and os.path.isfile(path):
@@ -274,11 +276,17 @@ def convertToDxf(dwgfilename):
 
     dwgfilename = dwgfilename.replace("\\", "/")
     conv = params.get_param("DWGConversion")
-    error_msg = translate("draft", """Error during DWG conversion.
+    error_msg = (
+        translate(
+            "draft",
+            """Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.""") + "\n"
+or try saving to a lower DWG version.""",
+        )
+        + "\n"
+    )
 
-    if conv in [0, 1]: # LibreDWG
+    if conv in [0, 1]:  # LibreDWG
         libredwg = get_libredwg_converter("dwg2dxf")
         if libredwg is not None:
             outdir = tempfile.mkdtemp().replace("\\", "/")
@@ -296,7 +304,7 @@ or try saving to a lower DWG version.""") + "\n"
         elif conv != 0:
             FCC.PrintError(translate("draft", "LibreDWG converter not found") + "\n")
 
-    if conv in [0, 2]: # ODA
+    if conv in [0, 2]:  # ODA
         oda = get_oda_converter()
         if oda is not None:
             indir = os.path.dirname(dwgfilename)
@@ -315,7 +323,7 @@ or try saving to a lower DWG version.""") + "\n"
         elif conv != 0:
             FCC.PrintError(translate("draft", "ODA converter not found") + "\n")
 
-    if conv in [0, 3]: # QCAD
+    if conv in [0, 3]:  # QCAD
         qcad = get_qcad_converter()
         if qcad is not None:
             outdir = tempfile.mkdtemp().replace("\\", "/")
@@ -323,7 +331,7 @@ or try saving to a lower DWG version.""") + "\n"
             result = outdir + "/" + os.path.splitext(basename)[0] + ".dxf"
             cmdline = [qcad, "-f", "-o", result, dwgfilename]
             FCC.PrintMessage(translate("draft", "Converting:") + " " + str(cmdline) + "\n")
-            proc = subprocess.Popen(cmdline, cwd=os.path.dirname(qcad)) # cwd required for Windows
+            proc = subprocess.Popen(cmdline, cwd=os.path.dirname(qcad))  # cwd required for Windows
             proc.communicate()
             if os.path.exists(result):
                 FCC.PrintMessage(translate("draft", "Conversion successful") + "\n")
@@ -333,10 +341,16 @@ or try saving to a lower DWG version.""") + "\n"
         elif conv != 0:
             FCC.PrintError(translate("draft", "QCAD converter not found") + "\n")
 
-    FCC.PrintError(translate("draft", """No suitable external DWG converter has been found.
+    FCC.PrintError(
+        translate(
+            "draft",
+            """No suitable external DWG converter has been found.
 Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
-https://wiki.freecad.org/Import_Export_Preferences""") + "\n")
+https://wiki.freecad.org/Import_Export_Preferences""",
+        )
+        + "\n"
+    )
     return None
 
 
@@ -364,7 +378,7 @@ def convertToDwg(dxffilename, dwgfilename):
     dwgfilename = dwgfilename.replace("\\", "/")
     conv = params.get_param("DWGConversion")
 
-    if conv in [0, 1]: # LibreDWG
+    if conv in [0, 1]:  # LibreDWG
         libredwg = get_libredwg_converter("dxf2dwg")
         if libredwg is not None:
             cmdline = [libredwg, dxffilename, "-y", "-o", dwgfilename]
@@ -375,7 +389,7 @@ def convertToDwg(dxffilename, dwgfilename):
         elif conv != 0:
             FCC.PrintError(translate("draft", "LibreDWG converter not found") + "\n")
 
-    if conv in [0, 2]: # ODA
+    if conv in [0, 2]:  # ODA
         oda = get_oda_converter()
         if oda is not None:
             indir = os.path.dirname(dxffilename)
@@ -389,19 +403,25 @@ def convertToDwg(dxffilename, dwgfilename):
         elif conv != 0:
             FCC.PrintError(translate("draft", "ODA converter not found") + "\n")
 
-    if conv in [0, 3]: # QCAD
+    if conv in [0, 3]:  # QCAD
         qcad = get_qcad_converter()
         if qcad is not None:
             cmdline = [qcad, "-f", "-o", dwgfilename, dxffilename]
             FCC.PrintMessage(translate("draft", "Converting:") + " " + str(cmdline) + "\n")
-            proc = subprocess.Popen(cmdline, cwd=os.path.dirname(qcad)) # cwd required for Windows
+            proc = subprocess.Popen(cmdline, cwd=os.path.dirname(qcad))  # cwd required for Windows
             proc.communicate()
             return dwgfilename
         elif conv != 0:
             FCC.PrintError(translate("draft", "QCAD converter not found") + "\n")
 
-    FCC.PrintError(translate("draft", """No suitable external DWG converter has been found.
+    FCC.PrintError(
+        translate(
+            "draft",
+            """No suitable external DWG converter has been found.
 Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
-https://wiki.freecad.org/Import_Export_Preferences""") + "\n")
+https://wiki.freecad.org/Import_Export_Preferences""",
+        )
+        + "\n"
+    )
     return None

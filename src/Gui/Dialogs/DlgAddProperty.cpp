@@ -349,12 +349,21 @@ void DlgAddProperty::addEnumEditor(PropertyItem* propertyItem)
 
 void DlgAddProperty::addNormalEditor(PropertyItem* propertyItem)
 {
-    editor.reset(propertyItem->createEditor(this, []() {},
-                                            FrameOption::WithFrame));
+    editor.reset(propertyItem->createEditor(this, [this]() {
+        this->valueChanged();
+    }, FrameOption::WithFrame));
 }
 
 void DlgAddProperty::addEditor(PropertyItem* propertyItem)
 {
+    if (isSubLinkPropertyItem()) {
+        // Since sublinks need the 3D view to select an object and the dialog
+        // is modal, we do not provide an editor for sublinks.  It is possible
+        // to create a property of this type though and the property can be set
+        // in the property view later which does give access to the 3D view.
+        return;
+    }
+
     if (isEnumPropertyItem()) {
         addEnumEditor(propertyItem);
     }
@@ -404,6 +413,10 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
         App::PropertyFloatList::getClassTypeId(),
         App::PropertyFont::getClassTypeId(),
         App::PropertyIntegerList::getClassTypeId(),
+        App::PropertyLink::getClassTypeId(),
+        App::PropertyLinkSub::getClassTypeId(),
+        App::PropertyLinkList::getClassTypeId(),
+        App::PropertyLinkSubList::getClassTypeId(),
         App::PropertyMaterialList::getClassTypeId(),
         App::PropertyPath::getClassTypeId(),
         App::PropertyString::getClassTypeId(),
@@ -619,6 +632,13 @@ bool DlgAddProperty::isEnumPropertyItem() const
         QString::fromLatin1(App::PropertyEnumeration::getClassTypeId().getName());
 }
 
+bool DlgAddProperty::isSubLinkPropertyItem() const
+{
+    const QString& type = ui->comboBoxType->currentText();
+    return type == QString::fromLatin1(App::PropertyLinkSub::getClassTypeId().getName()) ||
+        type == QString::fromLatin1(App::PropertyLinkSubList::getClassTypeId().getName());
+}
+
 QVariant DlgAddProperty::getEditorData() const
 {
     if (isEnumPropertyItem()) {
@@ -662,6 +682,11 @@ void DlgAddProperty::setEditor(bool valueNeedsReset)
     }
     else {
         initializeValue();
+    }
+
+    if (editor) {
+        QVariant data = propertyItem->editorData(editor.get());
+        propertyItem->setData(data);
     }
 }
 
@@ -807,6 +832,12 @@ void DlgAddProperty::valueChangedEnum()
     propEnum->setEnums(enumValuesVec);
 }
 
+void DlgAddProperty::valueChanged()
+{
+    QVariant data = propertyItem->editorData(editor.get());
+    propertyItem->setData(data);
+}
+
 /* We use these functions rather than the functions provided by App::Document
  * because this dialog may be opened when another transaction is in progress.
  * An example is opening a sketch.  If this dialog uses the functions provided
@@ -924,10 +955,6 @@ void DlgAddProperty::addDocumentation() {
 
 void DlgAddProperty::accept()
 {
-    if (editor) {
-        QVariant data = propertyItem->editorData(editor.get());
-        propertyItem->setData(data);
-    }
     addDocumentation();
     auto* object = freecad_cast<App::DocumentObject*>(container);
     if (object) {

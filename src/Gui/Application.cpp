@@ -1371,11 +1371,10 @@ Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 
 void Application::setEditDocument(Gui::Document* doc)
 {
-    if (doc == d->editDocument) {
-        return;
-    }
     if (!doc) {
         d->editDocument = nullptr;
+    } else if (doc == d->editDocument) {
+        return;
     }
     for (auto& v : d->documents) {
         v.second->_resetEdit();

@@ -70,7 +70,7 @@ class BaseMode(gui_base.GuiCommandSimplest):
         if hasattr(Gui, "draftToolBar"):
             _ui = Gui.draftToolBar
         else:
-            _msg(translate("draft","No active Draft toolbar"))
+            _msg(translate("draft", "No active Draft toolbar"))
             return
 
         if _ui is not None:
@@ -89,16 +89,21 @@ class ToggleConstructionMode(BaseMode):
     """
 
     def __init__(self):
-        super(ToggleConstructionMode,
-              self).__init__(name=translate("draft","Construction Mode"))
+        super(ToggleConstructionMode, self).__init__(name=translate("draft", "Construction Mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        d = {'Pixmap': 'Draft_Construction',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode","Toggle Construction Mode"),
-             'Accel': "C, M",
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode","Toggles the construction mode")}
+        d = {
+            "Pixmap": "Draft_Construction",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Draft_ToggleConstructionMode", "Toggle Construction Mode"
+            ),
+            "Accel": "C, M",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_ToggleConstructionMode", "Toggles the construction mode"
+            ),
+        }
         return d
 
     def Activated(self):
@@ -110,7 +115,7 @@ class ToggleConstructionMode(BaseMode):
         super(ToggleConstructionMode, self).Activated(mode="construction")
 
 
-Gui.addCommand('Draft_ToggleConstructionMode', ToggleConstructionMode())
+Gui.addCommand("Draft_ToggleConstructionMode", ToggleConstructionMode())
 
 
 class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
@@ -125,16 +130,20 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(ToggleDisplayMode,
-              self).__init__(name=translate("draft","Toggle Display Mode"))
+        super(ToggleDisplayMode, self).__init__(name=translate("draft", "Toggle Display Mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        d = {'Pixmap': 'Draft_SwitchMode',
-             'Accel': "Shift+Space",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Toggle Wireframe"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Switches the view style of the selected objects from Flat Lines to Wireframe and back")}
+        d = {
+            "Pixmap": "Draft_SwitchMode",
+            "Accel": "Shift+Space",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode", "Toggle Wireframe"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_ToggleDisplayMode",
+                "Switches the view style of the selected objects from Flat Lines to Wireframe and back",
+            ),
+        }
         return d
 
     def Activated(self):
@@ -155,6 +164,6 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
                     obj.ViewObject.DisplayMode = "Flat Lines"
 
 
-Gui.addCommand('Draft_ToggleDisplayMode', ToggleDisplayMode())
+Gui.addCommand("Draft_ToggleDisplayMode", ToggleDisplayMode())
 
 ## @}
