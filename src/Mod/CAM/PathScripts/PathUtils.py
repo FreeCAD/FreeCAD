@@ -2,6 +2,7 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -29,6 +30,7 @@ import Path
 import Path.Main.Job as PathJob
 import math
 from numpy import linspace
+import tsp_solver
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -609,6 +611,17 @@ def sort_locations(locations, keys, attractors=None):
         locations.remove(closest)
 
     return out
+
+
+def sort_locations_tsp(locations, keys, attractors=None):
+    """
+    Python wrapper for the C++ TSP solver. Takes a list of dicts (locations),
+    a list of keys (e.g. ['x', 'y']), and optional attractors.
+    Returns the sorted list of locations in TSP order, starting at (0,0).
+    """
+    points = [(loc[keys[0]], loc[keys[1]]) for loc in locations]
+    order = tsp_solver.solve(points)
+    return [locations[i] for i in order]
 
 
 def guessDepths(objshape, subs=None):
