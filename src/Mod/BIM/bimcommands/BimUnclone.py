@@ -69,6 +69,8 @@ class BIM_Unclone:
                 else:
                     newobj = obj
                     newobj.CloneOf = None
+                    if hasattr(newobj, "ViewObject") and newobj.ViewObject:
+                        newobj.ViewObject.signalChangeIcon()
 
                 # copy properties over, except special ones
                 for prop in cloned.PropertiesList:

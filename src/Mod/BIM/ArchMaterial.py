@@ -869,6 +869,7 @@ class _ArchMultiMaterialTaskPanel:
                 translate("Arch", "Thickness"),
             ]
         )
+        self.form.tree.setRootIsDecorated(False)  # remove 1st column's extra left margin
         self.form.tree.setModel(self.model)
         self.form.tree.setUniformRowHeights(True)
         self.form.tree.setItemDelegate(MultiMaterialDelegate())

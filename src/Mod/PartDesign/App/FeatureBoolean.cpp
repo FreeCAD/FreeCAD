@@ -177,6 +177,12 @@ void Boolean::updatePreviewShape()
     }
 
     if (strcmp(Type.getValueAsString(), "Fuse") == 0) {
+        // if there are no other shapes to fuse just return itself
+        if (Group.getValues().empty()) {
+            PreviewShape.setValue(Shape.getShape());
+            return;
+        }
+
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {

@@ -50,6 +50,7 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup DRAFTVECUTILS
 #  @{
 
+
 # @deprecated("use Draft.precision() instead.")
 def precision():
     """
@@ -65,11 +66,16 @@ def precision():
         Return the number of fractional decimal digits as configured
         in Draft preferences.
     """
-    warnings.warn("Call to deprecated function 'DraftVecUtils.precision()'."
-                  + " Please consider using Draft.precision().",
-                  DeprecationWarning, stacklevel=2)
-    messages._wrn("DraftVecUtils.precision() called, which is deprecated."
-                  + " Please consider using Draft.precision(). ")
+    warnings.warn(
+        "Call to deprecated function 'DraftVecUtils.precision()'."
+        + " Please consider using Draft.precision().",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    messages._wrn(
+        "DraftVecUtils.precision() called, which is deprecated."
+        + " Please consider using Draft.precision(). "
+    )
 
     return draft_precision()
 
@@ -237,7 +243,7 @@ def scale(u, scalar):
         The new vector with each of its elements multiplied by `scalar`.
     """
     typecheck([(u, Vector), (scalar, (int, int, float))], "scale")
-    return Vector(u.x*scalar, u.y*scalar, u.z*scalar)
+    return Vector(u.x * scalar, u.y * scalar, u.z * scalar)
 
 
 def scaleTo(u, l):
@@ -270,8 +276,8 @@ def scaleTo(u, l):
     if u.Length == 0:
         return Vector(u)
     else:
-        a = l/u.Length
-        return Vector(u.x*a, u.y*a, u.z*a)
+        a = l / u.Length
+        return Vector(u.x * a, u.y * a, u.z * a)
 
 
 def dist(u, v):
@@ -338,7 +344,7 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
         return 0
 
     # The dot product indicates the projection of one vector over the other
-    dp = u.dot(v)/ll
+    dp = u.dot(v) / ll
 
     # Due to rounding errors, the dot product could be outside
     # the range [-1, 1], so let's force it to be within this range.
@@ -390,7 +396,7 @@ def project(u, v):
         return Vector(0, 0, 0)  # to avoid division by zero
     # Why specifically this value? This should be an else?
     if dp != 15:
-        return scale(v, u.dot(v)/dp)
+        return scale(v, u.dot(v) / dp)
 
     # Return a null vector if the magnitude squared is 15, why?
     return Vector(0, 0, 0)
@@ -476,9 +482,9 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
 
     # Unit components, so that x**2 + y**2 + z**2 = 1
     L = axis.Length
-    x = axis.x/L
-    y = axis.y/L
-    z = axis.z/L
+    x = axis.x / L
+    y = axis.y / L
+    z = axis.z / L
 
     c = math.cos(angle)
     s = math.sin(angle)
@@ -571,7 +577,7 @@ def isNull(vector, precision=None):
     x = round(vector.x, precision)
     y = round(vector.y, precision)
     z = round(vector.z, precision)
-    return (x == 0 and y == 0 and z == 0)
+    return x == 0 and y == 0 and z == 0
 
 
 def find(vector, vlist, precision=None):
@@ -724,7 +730,7 @@ def isColinear(vlist, precision=None):
     return True
 
 
-def rounded(v,precision=None):
+def rounded(v, precision=None):
     """Return a vector rounded to the `precision` in the parameter database
     or to the given decimals value
 
@@ -736,7 +742,7 @@ def rounded(v,precision=None):
     v         : Base::Vector3
                 The input vector.
     precision : int | None
-    			mathematical precision - if None use configured draft
+                        mathematical precision - if None use configured draft
                 precision
 
 
@@ -752,7 +758,7 @@ def rounded(v,precision=None):
     return Vector(round(v.x, precision), round(v.y, precision), round(v.z, precision))
 
 
-def getPlaneRotation(u, v, _ = None):
+def getPlaneRotation(u, v, _=None):
     """Return a rotation matrix defining the (u,v,w) coordinate system.
 
     The rotation matrix uses the elements from each vector.
@@ -840,11 +846,12 @@ def removeDoubles(vlist, precision=None):
     # Iterate until the penultimate element, and test for equality
     # with the element in front
     for i in range(len(vlist) - 1):
-        if not equals(vlist[i], vlist[i+1], precision):
+        if not equals(vlist[i], vlist[i + 1], precision):
             nlist.append(vlist[i])
     # Add the last element
     nlist.append(vlist[-1])
     return nlist
+
 
 def get_spherical_coords(x, y, z, precision=None):
     """Get the Spherical coordinates of the vector represented
@@ -853,7 +860,7 @@ def get_spherical_coords(x, y, z, precision=None):
     Parameters
     ----------
     vector    : Base::Vector3
-        		The input vector.
+                        The input vector.
     precision : int | None
                 mathematical precision - if None use configured draft
                 precision
@@ -877,23 +884,23 @@ def get_spherical_coords(x, y, z, precision=None):
     if precision is None:
         precision = params.get_param("precision")
 
-    v = Vector(x,y,z)
-    x_axis = Vector(1,0,0)
-    z_axis = Vector(0,0,1)
-    y_axis = Vector(0,1,0)
+    v = Vector(x, y, z)
+    x_axis = Vector(1, 0, 0)
+    z_axis = Vector(0, 0, 1)
+    y_axis = Vector(0, 1, 0)
     rad = v.Length
 
     if not bool(round(rad, precision)):
-        return (0, math.pi/2, 0)
+        return (0, math.pi / 2, 0)
 
     theta = v.getAngle(z_axis)
-    v.projectToPlane(Vector(0,0,0), z_axis)
+    v.projectToPlane(Vector(0, 0, 0), z_axis)
     phi = v.getAngle(x_axis)
     if math.isnan(phi):
         return (rad, theta, 0)
     # projected vector is on 3rd or 4th quadrant
     if v.dot(Vector(y_axis)) < 0:
-        phi = -1*phi
+        phi = -1 * phi
 
     return (rad, theta, phi)
 
@@ -917,9 +924,9 @@ def get_cartesian_coords(radius, theta, phi):
         Tuple (x, y, z) with the Cartesian coordinates.
     """
 
-    x = radius*math.sin(theta)*math.cos(phi)
-    y = radius*math.sin(theta)*math.sin(phi)
-    z = radius*math.cos(theta)
+    x = radius * math.sin(theta) * math.cos(phi)
+    y = radius * math.sin(theta) * math.sin(phi)
+    z = radius * math.cos(theta)
 
     return (x, y, z)
 

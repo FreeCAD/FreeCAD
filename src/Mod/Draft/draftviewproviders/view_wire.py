@@ -61,39 +61,25 @@ class ViewProviderWire(ViewProviderDraft):
 
         if not hasattr(vobj, "ArrowSizeStart"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
-            vobj.addProperty("App::PropertyLength",
-                             "ArrowSizeStart",
-                             "Draft",
-                             _tip,
-                             locked=True)
+            vobj.addProperty("App::PropertyLength", "ArrowSizeStart", "Draft", _tip, locked=True)
             vobj.ArrowSizeStart = params.get_param("arrowsizestart")
 
         if not hasattr(vobj, "ArrowTypeStart"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowTypeStart",
-                             "Draft",
-                             _tip,
-                             locked=True)
+            vobj.addProperty(
+                "App::PropertyEnumeration", "ArrowTypeStart", "Draft", _tip, locked=True
+            )
             vobj.ArrowTypeStart = utils.ARROW_TYPES
             vobj.ArrowTypeStart = "None"
 
         if not hasattr(vobj, "ArrowSizeEnd"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
-            vobj.addProperty("App::PropertyLength",
-                             "ArrowSizeEnd",
-                             "Draft",
-                             _tip,
-                             locked=True)
+            vobj.addProperty("App::PropertyLength", "ArrowSizeEnd", "Draft", _tip, locked=True)
             vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
 
         if not hasattr(vobj, "ArrowTypeEnd"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowTypeEnd",
-                             "Draft",
-                             _tip,
-                             locked=True)
+            vobj.addProperty("App::PropertyEnumeration", "ArrowTypeEnd", "Draft", _tip, locked=True)
             vobj.ArrowTypeEnd = utils.ARROW_TYPES
             vobj.ArrowTypeEnd = "None"
 
@@ -121,11 +107,13 @@ class ViewProviderWire(ViewProviderDraft):
         self.onChanged(vobj, "ArrowSizeStart")
 
     def updateData(self, obj, prop):
-        if prop == "Points" \
-                and hasattr(obj, "Points") \
-                and len(obj.Points) >= 2 \
-                and hasattr(self, "coords1") \
-                and hasattr(self, "coords2"):
+        if (
+            prop == "Points"
+            and hasattr(obj, "Points")
+            and len(obj.Points) >= 2
+            and hasattr(self, "coords1")
+            and hasattr(self, "coords2")
+        ):
             self.coords1.translation.setValue(*obj.Points[0])
             v1 = obj.Points[1].sub(obj.Points[0])
             if not DraftVecUtils.isNull(v1):
@@ -142,24 +130,25 @@ class ViewProviderWire(ViewProviderDraft):
                 self.coords2.rotation.setValue(rot2)
 
     def onChanged(self, vobj, prop):
-        if prop in ["ArrowSizeStart",
-                    "ArrowSizeEnd",
-                    "ArrowTypeStart",
-                    "ArrowTypeEnd",
-                    "Visibility"] \
-                and hasattr(vobj, "ArrowSizeStart") \
-                and hasattr(vobj, "ArrowSizeEnd") \
-                and hasattr(vobj, "ArrowTypeStart") \
-                and hasattr(vobj, "ArrowTypeEnd") \
-                and hasattr(vobj, "Visibility") \
-                and hasattr(self, "pt1") \
-                and hasattr(self, "pt2"):
+        if (
+            prop
+            in ["ArrowSizeStart", "ArrowSizeEnd", "ArrowTypeStart", "ArrowTypeEnd", "Visibility"]
+            and hasattr(vobj, "ArrowSizeStart")
+            and hasattr(vobj, "ArrowSizeEnd")
+            and hasattr(vobj, "ArrowTypeStart")
+            and hasattr(vobj, "ArrowTypeEnd")
+            and hasattr(vobj, "Visibility")
+            and hasattr(self, "pt1")
+            and hasattr(self, "pt2")
+        ):
             rn = vobj.RootNode
             rn.removeChild(self.pt1)
             rn.removeChild(self.pt2)
             if vobj.Visibility:
                 self.pt1.removeChild(self.startSymbol)
-                self.startSymbol = gui_utils.dim_symbol(utils.ARROW_TYPES.index(vobj.ArrowTypeStart))
+                self.startSymbol = gui_utils.dim_symbol(
+                    utils.ARROW_TYPES.index(vobj.ArrowTypeStart)
+                )
                 self.pt1.addChild(self.startSymbol)
                 self.coords1.scaleFactor.setValue([vobj.ArrowSizeStart] * 3)
 
@@ -172,28 +161,30 @@ class ViewProviderWire(ViewProviderDraft):
                 rn.addChild(self.pt1)
                 rn.addChild(self.pt2)
 
-        if prop == "LineColor" \
-                and hasattr(vobj, "LineColor") \
-                and hasattr(self, "pt1") \
-                and hasattr(self, "pt2"):
+        if (
+            prop == "LineColor"
+            and hasattr(vobj, "LineColor")
+            and hasattr(self, "pt1")
+            and hasattr(self, "pt2")
+        ):
             self.color.rgb.setValue(*vobj.LineColor[:3])
 
         super().onChanged(vobj, prop)
         return
 
     def claimChildren(self):
-        if hasattr(self.Object,"Base"):
-            return [self.Object.Base,self.Object.Tool]
+        if hasattr(self.Object, "Base"):
+            return [self.Object.Base, self.Object.Tool]
         return []
 
-    def flatten(self): # Only to be used for Draft_Wires.
+    def flatten(self):  # Only to be used for Draft_Wires.
         if not hasattr(self, "Object"):
             return
 
         wp = WorkingPlane.get_working_plane()
-        flat_wire = wires.flattenWire(self.Object.Shape.Wires[0],
-                                      origin=wp.position,
-                                      normal=wp.axis)
+        flat_wire = wires.flattenWire(
+            self.Object.Shape.Wires[0], origin=wp.position, normal=wp.axis
+        )
 
         doc = App.ActiveDocument
         doc.openTransaction(translate("draft", "Flatten"))

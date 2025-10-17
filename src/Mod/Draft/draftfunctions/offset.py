@@ -70,43 +70,51 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     """
     import Part
     import DraftGeomUtils
+
     newwire = None
     delete = None
 
-    if (copy is False
-            and (utils.get_type(obj).startswith("Sketcher::")
-                or utils.get_type(obj).startswith("Part::")
-                or utils.get_type(obj).startswith("PartDesign::"))): # For PartDesign_SubShapeBinders which can reference sketches.
-        print("the offset tool is currently unable to offset a non-Draft object directly - Creating a copy")
+    if copy is False and (
+        utils.get_type(obj).startswith("Sketcher::")
+        or utils.get_type(obj).startswith("Part::")
+        or utils.get_type(obj).startswith("PartDesign::")
+    ):  # For PartDesign_SubShapeBinders which can reference sketches.
+        print(
+            "the offset tool is currently unable to offset a non-Draft object directly - Creating a copy"
+        )
         copy = True
 
-    def getRect(p,obj):
+    def getRect(p, obj):
         """returns length,height,placement"""
         pl = obj.Placement.copy()
         pl.Base = p[0]
         diag = p[2].sub(p[0])
         bb = p[1].sub(p[0])
         bh = p[3].sub(p[0])
-        nb = DraftVecUtils.project(diag,bb)
-        nh = DraftVecUtils.project(diag,bh)
-        if obj.Length.Value < 0: l = -nb.Length
-        else: l = nb.Length
-        if obj.Height.Value < 0: h = -nh.Length
-        else: h = nh.Length
-        return l,h,pl
+        nb = DraftVecUtils.project(diag, bb)
+        nh = DraftVecUtils.project(diag, bh)
+        if obj.Length.Value < 0:
+            l = -nb.Length
+        else:
+            l = nb.Length
+        if obj.Height.Value < 0:
+            h = -nh.Length
+        else:
+            h = nh.Length
+        return l, h, pl
 
-    def getRadius(obj,delta):
+    def getRadius(obj, delta):
         """returns a new radius for a regular polygon"""
-        an = math.pi/obj.FacesNumber
-        nr = DraftVecUtils.rotate(delta,-an)
-        nr.multiply(1/math.cos(an))
+        an = math.pi / obj.FacesNumber
+        nr = DraftVecUtils.rotate(delta, -an)
+        nr.multiply(1 / math.cos(an))
         nr = obj.Shape.Vertexes[0].Point.add(nr)
         nr = nr.sub(obj.Placement.Base)
         nr = nr.Length
         if obj.DrawMode == "inscribed":
             return nr
         else:
-            return nr * math.cos(math.pi/obj.FacesNumber)
+            return nr * math.cos(math.pi / obj.FacesNumber)
 
     newwire = None
     if utils.get_type(obj) == "Circle":
@@ -117,27 +125,29 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         if sym:
             d1 = App.Vector(delta).multiply(0.5)
             d2 = d1.negative()
-            n1 = DraftGeomUtils.offsetWire(obj.Shape,d1)
-            n2 = DraftGeomUtils.offsetWire(obj.Shape,d2)
+            n1 = DraftGeomUtils.offsetWire(obj.Shape, d1)
+            n2 = DraftGeomUtils.offsetWire(obj.Shape, d2)
         else:
-            if isinstance(delta,float) and (len(obj.Shape.Edges) == 1):
+            if isinstance(delta, float) and (len(obj.Shape.Edges) == 1):
                 # circle
                 c = obj.Shape.Edges[0].Curve
-                nc = Part.Circle(c.Center,c.Axis,delta)
+                nc = Part.Circle(c.Center, c.Axis, delta)
                 if len(obj.Shape.Vertexes) > 1:
-                    nc = Part.ArcOfCircle(nc,obj.Shape.Edges[0].FirstParameter,obj.Shape.Edges[0].LastParameter)
+                    nc = Part.ArcOfCircle(
+                        nc, obj.Shape.Edges[0].FirstParameter, obj.Shape.Edges[0].LastParameter
+                    )
                 newwire = Part.Wire(nc.toShape())
                 p = []
             else:
-                newwire = DraftGeomUtils.offsetWire(obj.Shape,delta)
+                newwire = DraftGeomUtils.offsetWire(obj.Shape, delta)
                 if DraftGeomUtils.hasCurves(newwire) and copy:
                     p = []
                 else:
                     p = DraftGeomUtils.getVerts(newwire)
     if occ:
-        newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
-        newobj.Shape = DraftGeomUtils.offsetWire(obj.Shape,delta,occ=True)
-        gui_utils.formatObject(newobj,obj)
+        newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
+        newobj.Shape = DraftGeomUtils.offsetWire(obj.Shape, delta, occ=True)
+        gui_utils.formatObject(newobj, obj)
         if not copy:
             delete = obj.Name
     elif bind:
@@ -151,35 +161,36 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
             if s1 and s2:
                 w1 = s1.Edges
                 w2 = s2.Edges
-                w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
-                w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
-                newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
-                newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+                w3 = Part.LineSegment(s1.Vertexes[0].Point, s2.Vertexes[0].Point).toShape()
+                w4 = Part.LineSegment(s1.Vertexes[-1].Point, s2.Vertexes[-1].Point).toShape()
+                newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
+                newobj.Shape = Part.Face(Part.Wire(w1 + [w3] + w2 + [w4]))
             else:
                 print("Draft.offset: Unable to bind wires")
         else:
-            newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
+            newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
             newobj.Shape = Part.Face(obj.Shape.Wires[0])
         if not copy:
             delete = obj.Name
     elif copy:
         newobj = None
-        if sym: return None
+        if sym:
+            return None
         if utils.get_type(obj) == "Wire":
             if p:
                 newobj = make_wire(p)
                 newobj.Closed = obj.Closed
             elif newwire:
-                newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
                 newobj.Shape = newwire
             else:
                 print("Draft.offset: Unable to duplicate this object")
         elif utils.get_type(obj) == "Rectangle":
             if p:
-                length,height,plac = getRect(p,obj)
-                newobj = make_rectangle(length,height,plac)
+                length, height, plac = getRect(p, obj)
+                newobj = make_rectangle(length, height, plac)
             elif newwire:
-                newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
                 newobj.Shape = newwire
             else:
                 print("Draft.offset: Unable to duplicate this object")
@@ -192,7 +203,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         elif utils.get_type(obj) == "Polygon":
             pl = obj.Placement
             newobj = make_polygon(obj.FacesNumber)
-            newobj.Radius = getRadius(obj,delta)
+            newobj.Radius = getRadius(obj, delta)
             newobj.DrawMode = obj.DrawMode
             newobj.Placement = pl
         elif utils.get_type(obj) == "BSpline":
@@ -207,37 +218,38 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
             except Part.OCCError:
                 pass
             if (not newobj) and newwire:
-                newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
                 newobj.Shape = newwire
             if not newobj:
                 print("Draft.offset: Unable to create an offset")
         if newobj:
-            gui_utils.formatObject(newobj,obj)
+            gui_utils.formatObject(newobj, obj)
     else:
         newobj = None
-        if sym: return None
+        if sym:
+            return None
         if utils.get_type(obj) == "Wire":
             if obj.Base or obj.Tool:
                 App.Console.PrintWarning("Warning: object history removed\n")
                 obj.Base = None
                 obj.Tool = None
-            obj.Placement = App.Placement() # p points are in the global coordinate system
+            obj.Placement = App.Placement()  # p points are in the global coordinate system
             obj.Points = p
         elif utils.get_type(obj) == "BSpline":
-            #print(delta)
+            # print(delta)
             obj.Points = delta
-            #print("done")
+            # print("done")
         elif utils.get_type(obj) == "Rectangle":
-            length,height,plac = getRect(p,obj)
+            length, height, plac = getRect(p, obj)
             obj.Placement = plac
             obj.Length = length
             obj.Height = height
         elif utils.get_type(obj) == "Circle":
             obj.Radius = delta
         elif utils.get_type(obj) == "Polygon":
-            obj.Radius = getRadius(obj,delta)
-        elif utils.get_type(obj) == 'Part':
-            print("unsupported object") # TODO
+            obj.Radius = getRadius(obj, delta)
+        elif utils.get_type(obj) == "Part":
+            print("unsupported object")  # TODO
         newobj = obj
     if copy and params.get_param("selectBaseObjects"):
         gui_utils.select(obj)
@@ -246,5 +258,6 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     if delete:
         App.ActiveDocument.removeObject(delete)
     return newobj
+
 
 ## @}

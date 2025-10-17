@@ -64,19 +64,23 @@ def make_clone(obj, delta=None, forcedraft=False):
     if prefix:
         prefix = prefix.strip() + " "
 
-    if not isinstance(obj,list):
+    if not isinstance(obj, list):
         obj = [obj]
 
-    if len(obj) == 1 \
-            and obj[0].isDerivedFrom("Part::Part2DObject") \
-            and utils.get_type(obj[0]) not in ["BezCurve", "BSpline", "Wire"]:
+    if (
+        len(obj) == 1
+        and obj[0].isDerivedFrom("Part::Part2DObject")
+        and utils.get_type(obj[0]) not in ["BezCurve", "BSpline", "Wire"]
+    ):
         # "BezCurve", "BSpline" and "Wire" objects created with < v1.1
         # are "Part::Part2DObject" objects but they need not be 2D.
         cl = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Clone2D")
         cl.Label = prefix + obj[0].Label + " (2D)"
-    elif len(obj) == 1 \
-            and (hasattr(obj[0], "CloneOf") or utils.get_type(obj[0]) == "BuildingPart") \
-            and not forcedraft:
+    elif (
+        len(obj) == 1
+        and (hasattr(obj[0], "CloneOf") or utils.get_type(obj[0]) == "BuildingPart")
+        and not forcedraft
+    ):
         # arch objects can be clones
         try:
             import Arch
@@ -87,13 +91,13 @@ def make_clone(obj, delta=None, forcedraft=False):
             if utils.get_type(obj[0]) == "BuildingPart":
                 cl = Arch.makeComponent()
             else:
-                try: # new-style make function
+                try:  # new-style make function
                     cl = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())()
                 except Exception:
-                    try: # old-style make function
+                    try:  # old-style make function
                         cl = getattr(Arch, "make" + obj[0].Proxy.Type)()
                     except Exception:
-                        pass # not a standard Arch object... Fall back to Draft mode
+                        pass  # not a standard Arch object... Fall back to Draft mode
             if cl:
                 base = utils.get_clone_base(obj[0])
                 cl.Label = prefix + base.Label
@@ -119,9 +123,9 @@ def make_clone(obj, delta=None, forcedraft=False):
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
-    elif (len(obj) == 1) and hasattr(obj[0],"Placement"):
+    elif (len(obj) == 1) and hasattr(obj[0], "Placement"):
         cl.Placement = obj[0].Placement
-    if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
+    if hasattr(cl, "LongName") and hasattr(obj[0], "LongName"):
         cl.LongName = obj[0].LongName
     if App.GuiUp:
         ViewProviderClone(cl.ViewObject)

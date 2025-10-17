@@ -115,3 +115,26 @@ class TestArchWall(TestArchBase.TestArchBase):
         wall2 = Arch.makeWall(base_line2, width=200, height=3000)
         joined_wall = Arch.joinWalls([wall1, wall2])
         self.assertIsNotNone(joined_wall, "joinWalls failed to join walls.")
+
+    def test_remove_base_from_wall_without_host(self):
+        """
+        Tests that removing a wall's base using removeComponents(host=None)
+        does not crash and successfully unlinks the base.
+        This is the non-regression test for the 'list' has no attribute 'Base' bug.
+        https://github.com/FreeCAD/FreeCAD/issues/24532
+        """
+        self.printTestMessage("Testing removal of a wall's base component...")
+
+        # 1. Arrange: Create a wall with a base
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        wall = Arch.makeWall(line)
+        self.assertIsNotNone(wall.Base, "Pre-condition failed: Wall should have a base.")
+
+        # 2. Act: Call removeComponents on the base, simulating the failing workflow
+        # Before the fix, this will raise an AttributeError.
+        # After the fix, it should complete without error.
+        Arch.removeComponents([wall.Base])
+        self.document.recompute()
+
+        # 3. Assert: The base should now be None
+        self.assertIsNone(wall.Base, "The wall's Base property was not cleared after removal.")

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Zlib
+
 /*
 base64.cpp and base64.h
 

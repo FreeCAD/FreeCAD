@@ -95,6 +95,7 @@ public:
                                   QLayout* layout);
 
 public Q_SLOTS:
+    void valueChanged();
     void valueChangedEnum();
 
 private:
@@ -122,6 +123,7 @@ private:
     void removeSelectionEditor();
     QVariant getEditorData() const;
     void setEditorData(const QVariant& data);
+    bool isSubLinkPropertyItem() const;
     bool isEnumPropertyItem() const;
     void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
     void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
