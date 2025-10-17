@@ -56,7 +56,7 @@ class TestRefactoredMassoG3Post(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_masso_g3")
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_masso_g3", None)
         # locate the operation named "Profile"
         for op in cls.job.Operations.Group:
             if op.Label == "Profile":
