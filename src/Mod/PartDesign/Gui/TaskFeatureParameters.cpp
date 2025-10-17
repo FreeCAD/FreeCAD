@@ -164,7 +164,6 @@ bool TaskDlgFeatureParameters::accept()
             // object was already computed, nothing more to do with it...
             Gui::cmdAppDocument(feature, "purgeTouched()");
 
-            // NOTE: @ipatch, below if block should resolve https://github.com/FreeCAD/FreeCAD/issues/24188
             if (!feature->isValid()) {
               throw Base::RuntimeError(getObject()->getStatusString());
             }
