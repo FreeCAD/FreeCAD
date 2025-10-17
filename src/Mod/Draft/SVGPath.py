@@ -16,15 +16,16 @@ from Part import (
     Edge,
     Wire,
     Compound,
-    OCCError
+    OCCError,
 )
 
-def _tolerance(precision):
-    return 10**(-precision)
 
-def _arc_end_to_center(lastvec, currentvec, rx, ry,
-                      x_rotation=0.0, correction=False):
-    '''Calculate the possible centers for an arc in endpoint parameterization.
+def _tolerance(precision):
+    return 10 ** (-precision)
+
+
+def _arc_end_to_center(lastvec, currentvec, rx, ry, x_rotation=0.0, correction=False):
+    """Calculate the possible centers for an arc in endpoint parameterization.
 
     Calculate (positive and negative) possible centers for an arc given in
     ``endpoint parametrization``.
@@ -63,7 +64,7 @@ def _arc_end_to_center(lastvec, currentvec, rx, ry,
         The first element of the list is the positive tuple,
         consisting of center, angle, and angle increment;
         the second element is the negative tuple.
-    '''
+    """
     # scalefacsign = 1 if (largeflag != sweepflag) else -1
     rx = float(rx)
     ry = float(ry)
@@ -84,11 +85,11 @@ def _arc_end_to_center(lastvec, currentvec, rx, ry,
 
     # If the division is very small, set the scaling factor to zero,
     # otherwise try to calculate it by taking the square root
-    if abs(numer/denom) < 1.0e-7:
+    if abs(numer / denom) < 1.0e-7:
         scalefacpos = 0
     else:
         try:
-            scalefacpos = math.sqrt(numer/denom)
+            scalefacpos = math.sqrt(numer / denom)
         except ValueError:
             _msg("sqrt({0}/{1})".format(numer, denom))
             scalefacpos = 0
@@ -97,7 +98,7 @@ def _arc_end_to_center(lastvec, currentvec, rx, ry,
     for scalefacsign in (1, -1):
         scalefac = scalefacpos * scalefacsign
         # Step2 eq. 5.2
-        vcx1 = Vector(v1.y * rx/ry, -v1.x * ry/rx, 0).multiply(scalefac)
+        vcx1 = Vector(v1.y * rx / ry, -v1.x * ry / rx, 0).multiply(scalefac)
         m2 = Matrix()
         m2.rotateZ(x_rotation)
         centeroff = currentvec.add(lastvec)
@@ -112,16 +113,13 @@ def _arc_end_to_center(lastvec, currentvec, rx, ry,
         #                                        (-v1.y - vcx1.y)/ry,
         #                                        0))  # eq. 5.6
         # we need the right sign for the angle
-        angle1 = angle(Vector(1, 0, 0),
-                       Vector((v1.x - vcx1.x)/rx,
-                              (v1.y - vcx1.y)/ry,
-                              0))  # eq. 5.5
-        angledelta = angle(Vector((v1.x - vcx1.x)/rx,
-                                  (v1.y - vcx1.y)/ry,
-                                  0),
-                           Vector((-v1.x - vcx1.x)/rx,
-                                  (-v1.y - vcx1.y)/ry,
-                                  0))  # eq. 5.6
+        angle1 = angle(
+            Vector(1, 0, 0), Vector((v1.x - vcx1.x) / rx, (v1.y - vcx1.y) / ry, 0)
+        )  # eq. 5.5
+        angledelta = angle(
+            Vector((v1.x - vcx1.x) / rx, (v1.y - vcx1.y) / ry, 0),
+            Vector((-v1.x - vcx1.x) / rx, (-v1.y - vcx1.y) / ry, 0),
+        )  # eq. 5.6
         results.append((vcenter, angle1, angledelta))
 
         if rx < 0 or ry < 0:
@@ -131,7 +129,7 @@ def _arc_end_to_center(lastvec, currentvec, rx, ry,
 
 
 def _arc_center_to_end(center, rx, ry, angle1, angledelta, xrotation=0.0):
-    '''Calculate start and end points, and flags of an arc.
+    """Calculate start and end points, and flags of an arc.
 
     Calculate start and end points, and flags of an arc given in
     ``center parametrization``.
@@ -158,11 +156,9 @@ def _arc_center_to_end(center, rx, ry, angle1, angledelta, xrotation=0.0):
         Tuple indicating the end points of the arc, and two boolean values
         indicating whether the arc is less than 180 degrees or not,
         and whether the angledelta is negative.
-    '''
+    """
     vr1 = Vector(rx * math.cos(angle1), ry * math.sin(angle1), 0)
-    vr2 = Vector(rx * math.cos(angle1 + angledelta),
-                 ry * math.sin(angle1 + angledelta),
-                 0)
+    vr2 = Vector(rx * math.cos(angle1 + angledelta), ry * math.sin(angle1 + angledelta), 0)
     mxrot = Matrix()
     mxrot.rotateZ(xrotation)
     v1 = mxrot.multiply(vr1).add(center)
@@ -192,8 +188,8 @@ def _approx_bspline(
     return curve
 
 
-def _make_wire(path : list[Edge], precision : int, checkclosed : bool=False, donttry : bool=False):
-    '''Try to make a wire out of the list of edges.
+def _make_wire(path: list[Edge], precision: int, checkclosed: bool = False, donttry: bool = False):
+    """Try to make a wire out of the list of edges.
 
     If the wire functions fail or the wire is not closed,
     if required the TopoShapeCompoundPy::connectEdgesToWires()
@@ -215,7 +211,7 @@ def _make_wire(path : list[Edge], precision : int, checkclosed : bool=False, don
         A wire created from the ordered edges.
     Part::Compound
         A compound made of the edges, but unable to form a wire.
-    '''
+    """
     if not donttry:
         try:
             sh = Wire(path)
@@ -239,26 +235,25 @@ def _make_wire(path : list[Edge], precision : int, checkclosed : bool=False, don
 
 
 class FaceTreeNode:
-    '''
-    Building Block of a tree structure holding one-closed-wire faces 
+    """
+    Building Block of a tree structure holding one-closed-wire faces
     sorted after their enclosure of each other.
     This class only works with faces that have exactly one closed wire
-    '''
-    face     : Face
-    children : list
-    name     : str
+    """
 
-    
+    face: Face
+    children: list
+    name: str
+
     def __init__(self, face=None, name="root"):
         super().__init__()
         self.face = face
         self.name = name
-        self.children = [] 
+        self.children = []
 
-      
-    def insert (self, face, name):
-        ''' 
-        takes a single-wire named face, and inserts it into the tree 
+    def insert(self, face, name):
+        """
+        takes a single-wire named face, and inserts it into the tree
         depending on its enclosure in/of already added faces.
 
         Parameters
@@ -266,42 +261,45 @@ class FaceTreeNode:
         face : Face
                single closed wire face to be added to the tree
         name : str
-               face identifier       
-        ''' 
+               face identifier
+        """
         for node in self.children:
-            if  node.face.Area > face.Area:
+            if node.face.Area > face.Area:
                 # new face could be encompassed
-                if (face.distToShape(node.face)[0] == 0.0 and 
-                    face.Wires[0].distToShape(node.face.Wires[0])[0] != 0.0):
+                if (
+                    face.distToShape(node.face)[0] == 0.0
+                    and face.Wires[0].distToShape(node.face.Wires[0])[0] != 0.0
+                ):
                     # it is encompassed - enter next tree layer
                     node.insert(face, name)
                     return
             else:
                 # new face could encompass
-                if (node.face.distToShape(face)[0] == 0.0 and
-                    node.face.Wires[0].distToShape(face.Wires[0])[0] != 0.0):
+                if (
+                    node.face.distToShape(face)[0] == 0.0
+                    and node.face.Wires[0].distToShape(face.Wires[0])[0] != 0.0
+                ):
                     # it does encompass the current child nodes face
                     # create new node from face
                     new = FaceTreeNode(face, name)
-                    # swap the new one with the child node 
+                    # swap the new one with the child node
                     self.children.remove(node)
                     self.children.append(new)
                     # add former child node as child to the new node
                     new.children.append(node)
                     return
         # the face is not encompassing and is not encompassed (from) any
-        # other face, we add it as new child 
+        # other face, we add it as new child
         new = FaceTreeNode(face, name)
         self.children.append(new)
 
-     
     def makeCuts(self):
-        ''' 
-        recursively traverse the tree and cuts all faces in even 
-        numbered tree levels with their direct childrens faces. 
-        Additionally the tree is shrunk by removing the odd numbered 
-        tree levels.                 
-        '''
+        """
+        recursively traverse the tree and cuts all faces in even
+        numbered tree levels with their direct childrens faces.
+        Additionally the tree is shrunk by removing the odd numbered
+        tree levels.
+        """
         result = self.face
         if not result:
             for node in self.children:
@@ -316,29 +314,27 @@ class FaceTreeNode:
             self.children = new_children
             self.face = result
 
-           
     def flatten(self):
-        ''' creates a flattened list of face-name tuples from the facetree
-            content
-        '''
+        """creates a flattened list of face-name tuples from the facetree
+        content
+        """
         result = []
         result.append((self.name, self.face))
         for node in self.children:
             result.extend(node.flatten())
-        return result  
-        
-  
-  
+        return result
+
+
 class SvgPathElement:
 
-    path : list[dict]
+    path: list[dict]
 
-    def __init__(self, precision : int, interpol_pts : int, origin : Vector = Vector(0, 0, 0)):
+    def __init__(self, precision: int, interpol_pts: int, origin: Vector = Vector(0, 0, 0)):
         self.precision = precision
         self.interpol_pts = interpol_pts
-        self.path = [{"type": "start", "last_v": origin }]
-        
-    def add_move(self, x : float, y : float, relative : bool) -> None:
+        self.path = [{"type": "start", "last_v": origin}]
+
+    def add_move(self, x: float, y: float, relative: bool) -> None:
         if relative:
             last_v = self.path[-1]["last_v"].add(Vector(x, -y, 0))
         else:
@@ -380,8 +376,14 @@ class SvgPathElement:
 
     def add_arcs(self, args: list[float], relative: bool) -> None:
         p_iter = zip(
-            args[0::7], args[1::7], args[2::7], args[3::7],
-            args[4::7], args[5::7], args[6::7], strict=False,
+            args[0::7],
+            args[1::7],
+            args[2::7],
+            args[3::7],
+            args[4::7],
+            args[5::7],
+            args[6::7],
+            strict=False,
         )
         for rx, ry, x_rotation, large_flag, sweep_flag, x, y in p_iter:
             # support for large-arc and x-rotation is missing
@@ -389,31 +391,43 @@ class SvgPathElement:
                 last_v = self.path[-1]["last_v"].add(Vector(x, -y, 0))
             else:
                 last_v = Vector(x, -y, 0)
-            self.path.append({
-                "type": "arc",
-                "rx": rx,
-                "ry": ry,
-                "x_rotation": x_rotation,
-                "large_flag": large_flag != 0,
-                "sweep_flag": sweep_flag != 0,
-                "last_v": last_v
-            })
+            self.path.append(
+                {
+                    "type": "arc",
+                    "rx": rx,
+                    "ry": ry,
+                    "x_rotation": x_rotation,
+                    "large_flag": large_flag != 0,
+                    "sweep_flag": sweep_flag != 0,
+                    "last_v": last_v,
+                }
+            )
 
     def add_cubic_beziers(self, args: list[float], relative: bool, smooth: bool) -> None:
         last_v = self.path[-1]["last_v"]
         if smooth:
             p_iter = list(
                 zip(
-                    args[2::4], args[3::4],
-                    args[0::4], args[1::4],
-                    args[2::4], args[3::4], strict=False )
+                    args[2::4],
+                    args[3::4],
+                    args[0::4],
+                    args[1::4],
+                    args[2::4],
+                    args[3::4],
+                    strict=False,
+                )
             )
         else:
             p_iter = list(
                 zip(
-                    args[0::6], args[1::6],
-                    args[2::6], args[3::6],
-                    args[4::6], args[5::6], strict=False )
+                    args[0::6],
+                    args[1::6],
+                    args[2::6],
+                    args[3::6],
+                    args[4::6],
+                    args[5::6],
+                    strict=False,
+                )
             )
         for p1x, p1y, p2x, p2y, x, y in p_iter:
             if smooth:
@@ -433,21 +447,14 @@ class SvgPathElement:
                 pole2 = Vector(p2x, -p2y, 0)
                 last_v = Vector(x, -y, 0)
 
-            self.path.append({
-                "type": "cbezier",
-                "pole1": pole1,
-                "pole2": pole2,
-                "last_v": last_v
-            })
+            self.path.append({"type": "cbezier", "pole1": pole1, "pole2": pole2, "last_v": last_v})
 
     def add_quadratic_beziers(self, args: list[float], relative: bool, smooth: bool):
         last_v = self.path[-1]["last_v"]
         if smooth:
-            p_iter = list( zip( args[1::2], args[1::2],
-                                args[0::2], args[1::2], strict=False ) )
+            p_iter = list(zip(args[1::2], args[1::2], args[0::2], args[1::2], strict=False))
         else:
-            p_iter = list( zip( args[0::4], args[1::4],
-                                args[2::4], args[3::4], strict=False ) )
+            p_iter = list(zip(args[0::4], args[1::4], args[2::4], args[3::4], strict=False))
         for px, py, x, y in p_iter:
             if smooth:
                 if self.path[-1]["type"] == "qbezier":
@@ -464,14 +471,10 @@ class SvgPathElement:
             else:
                 last_v = Vector(x, -y, 0)
 
-            self.path.append({
-                "type": "qbezier",
-                "pole": pole,
-                "last_v": last_v 
-            })
+            self.path.append({"type": "qbezier", "pole": pole, "last_v": last_v})
 
     def add_close(self):
-        last_v  = self.path[-1]["last_v"]
+        last_v = self.path[-1]["last_v"]
         first_v = self.__get_last_start()
         if not equals(last_v, first_v, self.precision):
             self.path.append({"type": "line", "last_v": first_v})
@@ -489,17 +492,16 @@ class SvgPathElement:
 
     def __correct_last_v(self, pds: dict, last_v: Vector) -> None:
         """
-        Correct the endpoint of the given path dataset to the 
+        Correct the endpoint of the given path dataset to the
         given vector and move possibly associated members accordingly.
         """
         delta = last_v.sub(pds["last_v"])
-        # we won't move last_v if it's already correct or if the delta 
+        # we won't move last_v if it's already correct or if the delta
         # is substantially greater than what rounding errors could accumulate,
-        # so we assume the path is intended to be open. 
-        if (delta.x == 0 and delta.y == 0 and delta.z == 0 or
-            not isNull(delta, self.precision)):
+        # so we assume the path is intended to be open.
+        if delta.x == 0 and delta.y == 0 and delta.z == 0 or not isNull(delta, self.precision):
             return
-        
+
         # for cbeziers we also relocate the second pole
         if pds["type"] == "cbezier":
             pds["pole2"] = pds["pole2"].add(delta)
@@ -509,10 +511,9 @@ class SvgPathElement:
         # all data types have last_v
         pds["last_v"] = last_v
 
-
     def correct_endpoints(self):
-        """ 
-        Correct the endpoints of all subpaths and move possibly 
+        """
+        Correct the endpoints of all subpaths and move possibly
         associated members accordingly.
         """
         start = None
@@ -522,7 +523,7 @@ class SvgPathElement:
                 if start:
                     # there is already a start
                     if last:
-                        # and there are edges behind us. 
+                        # and there are edges behind us.
                         # we correct the last to the start vector
                         self.__correct_last_v(last, start["last_v"])
                         last = None
@@ -532,10 +533,9 @@ class SvgPathElement:
         if start and last and start != last:
             self.__correct_last_v(last, start["last_v"])
 
-
     def create_edges(self) -> list[list[Edge]]:
         """
-        Creates shapes from prepared path datasets and returns them in an 
+        Creates shapes from prepared path datasets and returns them in an
         ordered list of lists of edges, where each 1st order list entry
         represents a single continuous (and probably closed) sub-path.
         """
@@ -546,7 +546,7 @@ class SvgPathElement:
             next_v = pds["last_v"]
             match pds["type"]:
                 case "start":
-                    if edges and len(edges) > 0 :
+                    if edges and len(edges) > 0:
                         result.append(edges)
                     edges = []
                 case "line":
@@ -565,10 +565,7 @@ class SvgPathElement:
                     # in 'endpoint parameterization'.
                     _x_rot = math.radians(-x_rotation)
                     (solution, (rx, ry)) = _arc_end_to_center(
-                        last_v, next_v,
-                        rx, ry,
-                        _x_rot,
-                        correction=True
+                        last_v, next_v, rx, ry, _x_rot, correction=True
                     )
                     # Choose one of the two solutions
                     neg_sol = large_flag != sweep_flag
@@ -633,57 +630,55 @@ class SvgPathElement:
                             seg = _approx_bspline(b, self.interpol_pts).toShape()
                         edges.append(seg)
                 case _:
-                    _msg("Illegal path_data type. {}".format(pds['type']))
+                    _msg("Illegal path_data type. {}".format(pds["type"]))
                     return []
             last_v = next_v
-        if not edges is None and len(edges) > 0 :
+        if not edges is None and len(edges) > 0:
             result.append(edges)
         return result
 
-        
 
 class SvgPathParser:
     """Parse SVG path data and create FreeCAD Shapes."""
 
-    commands : list[tuple]
-    pointsre : re.Pattern
-    data     : dict
-    shapes   : list[list[Shape]]
-    faces    : FaceTreeNode  
-    name     : str
+    commands: list[tuple]
+    pointsre: re.Pattern
+    data: dict
+    shapes: list[list[Shape]]
+    faces: FaceTreeNode
+    name: str
 
     def __init__(self, data, name):
         super().__init__()
         """Evaluate path data and initialize."""
-        _op = '([mMlLhHvVaAcCqQsStTzZ])'
-        _op2 = '([^mMlLhHvVaAcCqQsStTzZ]*)'
-        _command = '\\s*?' + _op + '\\s*?' + _op2 + '\\s*?'
+        _op = "([mMlLhHvVaAcCqQsStTzZ])"
+        _op2 = "([^mMlLhHvVaAcCqQsStTzZ]*)"
+        _command = "\\s*?" + _op + "\\s*?" + _op2 + "\\s*?"
         pathcommandsre = re.compile(_command, re.DOTALL)
-    
-        _num = '[-+]?[0-9]*\\.?[0-9]+'
-        _exp = '([eE][-+]?[0-9]+)?'
-        _arg = '(' + _num + _exp + ')'
-        self.commands = pathcommandsre.findall(' '.join(data['d']))
+
+        _num = "[-+]?[0-9]*\\.?[0-9]+"
+        _exp = "([eE][-+]?[0-9]+)?"
+        _arg = "(" + _num + _exp + ")"
+        self.commands = pathcommandsre.findall(" ".join(data["d"]))
         self.argsre = re.compile(_arg, re.DOTALL)
         self.data = data
         self.paths = []
         self.shapes = []
         self.faces = None
         self.name = name
-     
-        
+
     def parse(self):
-        ''' 
-        Creates lists of SvgPathElements from raw svg path 
+        """
+        Creates lists of SvgPathElements from raw svg path
         data. It's supposed to be called direct after SvgPath Object
         creation.
-        '''
+        """
         path = SvgPathElement(svg_precision(), 10)
         self.paths = []
         for d, argsstr in self.commands:
             relative = d.islower()
-            
-            _args = self.argsre.findall(argsstr.replace(',', ' '))
+
+            _args = self.argsre.findall(argsstr.replace(",", " "))
             args = [float(number) for number, exponent in _args]
 
             if d in "Mm":
@@ -706,38 +701,36 @@ class SvgPathParser:
                 path.add_quadratic_beziers(args, relative, True)
             elif d in "Zz":
                 path.add_close()
-                
-        path.correct_endpoints();
+
+        path.correct_endpoints()
         self.shapes = path.create_edges()
-        
-        
+
     def create_faces(self, fill=True, add_wire_for_invalid_face=False):
-        ''' 
+        """
         Generate Faces from lists of Shapes.
-        If shapes form a closed wire and the fill Attribute is set, we 
+        If shapes form a closed wire and the fill Attribute is set, we
         generate a closed Face. Otherwise we treat the shape as pure wire.
-        
+
         Parameters
         ----------
         fill : Object/bool
                if True or not None Faces are generated from closed shapes.
-        '''
+        """
         precision = svg_precision()
-        cnt = -1;
+        cnt = -1
         openShapes = []
         self.faces = FaceTreeNode()
         for sh in self.shapes:
             cnt += 1
             add_wire = True
             wr = _make_wire(sh, precision, checkclosed=True)
-            wrcpy = wr.copy();
+            wrcpy = wr.copy()
             wire_reason = ""
             if cnt > 0:
                 face_name = self.name + "_" + str(cnt)
             else:
-                face_name = self.name 
+                face_name = self.name
 
-                
             if not fill:
                 wire_reason = " no-fill"
             if not wr.Wires[0].isClosed():
@@ -752,37 +745,39 @@ class SvgPathParser:
                             res = "succeed"
                         else:
                             res = "fail"
-                        _wrn("Invalid Face '{}' created. Attempt to fix - {}ed."
-                              .format(face_name, res))
+                        _wrn(
+                            "Invalid Face '{}' created. Attempt to fix - {}ed.".format(
+                                face_name, res
+                            )
+                        )
                     else:
                         add_wire = False
                     if not (face.Area < 10 * (_tolerance(precision) ** 2)):
                         self.faces.insert(face, face_name)
                 except:
-                    _wrn("Failed to make a shape from '{}'. ".format(face_name) 
-                          + "This Path will be discarded.")
+                    _wrn(
+                        "Failed to make a shape from '{}'. ".format(face_name)
+                        + "This Path will be discarded."
+                    )
             if add_wire:
                 if wrcpy.Length > _tolerance(precision):
-                    _msg("Adding wire for '{}' - reason: {}."
-                          .format(face_name, wire_reason))
+                    _msg("Adding wire for '{}' - reason: {}.".format(face_name, wire_reason))
                     openShapes.append((face_name + "_w", wrcpy))
 
         self.shapes = openShapes
 
-
     def doCuts(self):
-        ''' Exposes the FaceTreeNode.makeCuts function of the tree containing 
-            closed wire faces.
-            This function is called after creating closed Faces with
-            'createFaces' in order to hollow faces encompassing others.
-        '''      
+        """Exposes the FaceTreeNode.makeCuts function of the tree containing
+        closed wire faces.
+        This function is called after creating closed Faces with
+        'createFaces' in order to hollow faces encompassing others.
+        """
         self.faces.makeCuts()
 
-
     def getShapeList(self):
-        ''' Returns the resulting list of tuples containing name and face of 
-            each created element.
-        ''' 
+        """Returns the resulting list of tuples containing name and face of
+        each created element.
+        """
         result = self.faces.flatten()
-        result.extend(self.shapes)             
+        result.extend(self.shapes)
         return result

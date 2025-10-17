@@ -58,7 +58,7 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
 
     newobj = None
 
-    if simple_copy and hasattr(obj, 'Shape'):
+    if simple_copy and hasattr(obj, "Shape"):
         # this was the old implementation that is actually not used by default
         _name = utils.get_real_name(obj.Name)
         newobj = App.ActiveDocument.addObject("Part::Feature", _name)
@@ -90,5 +90,6 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
                             par.Group = group
 
     return newobj
+
 
 ## @}

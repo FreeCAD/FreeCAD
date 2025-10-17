@@ -43,10 +43,16 @@ class DraftArray(test_base.DraftTestCaseDoc):
         box.Label = "Box"
         self.doc.recompute()
 
-        array = Draft.make_ortho_array(box, v_x=Vector(100.0, 0.0, 0.0),
-                                            v_y=Vector(0.0, 100.0, 0.0),
-                                            v_z=Vector(0.0, 0.0, 100.0),
-                                            n_x=12, n_y=1, n_z=1, use_link=True)
+        array = Draft.make_ortho_array(
+            box,
+            v_x=Vector(100.0, 0.0, 0.0),
+            v_y=Vector(0.0, 100.0, 0.0),
+            v_z=Vector(0.0, 0.0, 100.0),
+            n_x=12,
+            n_y=1,
+            n_z=1,
+            use_link=True,
+        )
 
         Draft.autogroup(array)
         array.ExpandArray = True
@@ -63,5 +69,6 @@ class DraftArray(test_base.DraftTestCaseDoc):
 
         self.doc.recompute(None, True, True)
         self.assertEqual(array.Count, array.NumberX)
+
 
 ## @}

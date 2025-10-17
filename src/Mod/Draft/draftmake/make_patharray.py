@@ -50,14 +50,21 @@ if App.GuiUp:
     from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
 
-def make_path_array(base_object, path_object, count=4,
-                    extra=App.Vector(0, 0, 0), subelements=None,
-                    align=False, align_mode="Original",
-                    tan_vector=App.Vector(1, 0, 0),
-                    force_vertical=False,
-                    vertical_vector=App.Vector(0, 0, 1),
-                    start_offset=0.0, end_offset=0.0,
-                    use_link=True):
+def make_path_array(
+    base_object,
+    path_object,
+    count=4,
+    extra=App.Vector(0, 0, 0),
+    subelements=None,
+    align=False,
+    align_mode="Original",
+    tan_vector=App.Vector(1, 0, 0),
+    force_vertical=False,
+    vertical_vector=App.Vector(0, 0, 1),
+    start_offset=0.0,
+    end_offset=0.0,
+    use_link=True,
+):
     """Make a Draft PathArray object.
 
     Distribute copies of a `base_object` along `path_object`
@@ -166,32 +173,30 @@ def make_path_array(base_object, path_object, count=4,
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _err(translate("draft","Wrong input: base_object not in document."))
+        _err(translate("draft", "Wrong input: base_object not in document."))
         return None
 
     found, path_object = utils.find_object(path_object, doc)
     if not found:
-        _err(translate("draft","Wrong input: path_object not in document."))
+        _err(translate("draft", "Wrong input: path_object not in document."))
         return None
 
     try:
-        utils.type_check([(count, (int, float))],
-                         name=_name)
+        utils.type_check([(count, (int, float))], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a number."))
+        _err(translate("draft", "Wrong input: must be a number."))
         return None
     count = int(count)
 
     try:
-        utils.type_check([(extra, App.Vector)],
-                         name=_name)
+        utils.type_check([(extra, App.Vector)], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a vector."))
+        _err(translate("draft", "Wrong input: must be a vector."))
         return None
 
     if subelements:
@@ -200,10 +205,13 @@ def make_path_array(base_object, path_object, count=4,
             if isinstance(subelements, str):
                 subelements = [subelements]
 
-            utils.type_check([(subelements, (list, tuple, str))],
-                             name=_name)
+            utils.type_check([(subelements, (list, tuple, str))], name=_name)
         except TypeError:
-            _err(translate("draft","Wrong input: must be a list or tuple of strings, or a single string."))
+            _err(
+                translate(
+                    "draft", "Wrong input: must be a list or tuple of strings, or a single string."
+                )
+            )
             return None
 
         # The subelements list is used to build a special list
@@ -228,43 +236,38 @@ def make_path_array(base_object, path_object, count=4,
     align = bool(align)
 
     try:
-        utils.type_check([(align_mode, str)],
-                         name=_name)
+        utils.type_check([(align_mode, str)], name=_name)
 
         if align_mode not in ("Original", "Frenet", "Tangent"):
             raise TypeError
     except TypeError:
-        _err(translate("draft","Wrong input: must be 'Original', 'Frenet', or 'Tangent'."))
+        _err(translate("draft", "Wrong input: must be 'Original', 'Frenet', or 'Tangent'."))
         return None
 
     try:
-        utils.type_check([(tan_vector, App.Vector)],
-                         name=_name)
+        utils.type_check([(tan_vector, App.Vector)], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a vector."))
+        _err(translate("draft", "Wrong input: must be a vector."))
         return None
 
     force_vertical = bool(force_vertical)
     try:
-        utils.type_check([(vertical_vector, App.Vector)],
-                         name=_name)
+        utils.type_check([(vertical_vector, App.Vector)], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a vector."))
+        _err(translate("draft", "Wrong input: must be a vector."))
         return None
 
     try:
-        utils.type_check([(start_offset, (int, float))],
-                         name=_name)
+        utils.type_check([(start_offset, (int, float))], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a number."))
+        _err(translate("draft", "Wrong input: must be a number."))
         return None
     start_offset = float(start_offset)
 
     try:
-        utils.type_check([(end_offset, (int, float))],
-                         name=_name)
+        utils.type_check([(end_offset, (int, float))], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a number."))
+        _err(translate("draft", "Wrong input: must be a number."))
         return None
     end_offset = float(end_offset)
 
@@ -273,8 +276,7 @@ def make_path_array(base_object, path_object, count=4,
     if use_link:
         # The PathArray class must be called in this special way
         # to make it a PathLinkArray
-        new_obj = doc.addObject("Part::FeaturePython", "PathArray",
-                                PathArray(None), None, True)
+        new_obj = doc.addObject("Part::FeaturePython", "PathArray", PathArray(None), None, True)
     else:
         new_obj = doc.addObject("Part::FeaturePython", "PathArray")
         PathArray(new_obj)
@@ -305,44 +307,37 @@ def make_path_array(base_object, path_object, count=4,
     return new_obj
 
 
-def makePathArray(baseobject, pathobject, count,
-                  xlate=None, align=False,
-                  pathobjsubs=[],
-                  use_link=False):
+def makePathArray(
+    baseobject, pathobject, count, xlate=None, align=False, pathobjsubs=[], use_link=False
+):
     """Create PathArray. DEPRECATED. Use 'make_path_array'."""
-    utils.use_instead('make_path_array')
+    utils.use_instead("make_path_array")
 
-    return make_path_array(baseobject, pathobject, count,
-                           xlate, pathobjsubs,
-                           align,
-                           use_link)
+    return make_path_array(baseobject, pathobject, count, xlate, pathobjsubs, align, use_link)
 
 
-def make_path_twisted_array(base_object, path_object,
-                            count=15, rot_factor=0.25,
-                            use_link=True):
+def make_path_twisted_array(base_object, path_object, count=15, rot_factor=0.25, use_link=True):
     """Create a Path twisted array."""
     _name = "make_path_twisted_array"
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _err(translate("draft","Wrong input: base_object not in document."))
+        _err(translate("draft", "Wrong input: base_object not in document."))
         return None
 
     found, path_object = utils.find_object(path_object, doc)
     if not found:
-        _err(translate("draft","Wrong input: path_object not in document."))
+        _err(translate("draft", "Wrong input: path_object not in document."))
         return None
     try:
-        utils.type_check([(count, (int, float))],
-                         name=_name)
+        utils.type_check([(count, (int, float))], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a number."))
+        _err(translate("draft", "Wrong input: must be a number."))
         return None
     count = int(count)
 
@@ -350,8 +345,9 @@ def make_path_twisted_array(base_object, path_object,
     if use_link:
         # The PathTwistedArray class must be called in this special way
         # to make it a PathTwistLinkArray
-        new_obj = doc.addObject("Part::FeaturePython", "PathTwistedArray",
-                                PathTwistedArray(None), None, True)
+        new_obj = doc.addObject(
+            "Part::FeaturePython", "PathTwistedArray", PathTwistedArray(None), None, True
+        )
     else:
         new_obj = doc.addObject("Part::FeaturePython", "PathTwistedArray")
         PathTwistedArray(new_obj)
@@ -372,5 +368,6 @@ def make_path_twisted_array(base_object, path_object,
         gui_utils.select(new_obj)
 
     return new_obj
+
 
 ## @}

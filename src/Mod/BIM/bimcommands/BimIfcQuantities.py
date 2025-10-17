@@ -69,9 +69,7 @@ class BIM_IfcQuantities:
     def GetResources(self):
         return {
             "Pixmap": "BIM_IfcQuantities",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcQuantities", "Manage IFC Quantities"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcQuantities", "Manage IFC Quantities"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcQuantities",
                 "Manages how the quantities of different elements of the BIM project will be exported to IFC",
@@ -101,8 +99,8 @@ class BIM_IfcQuantities:
                 # support for arrays
                 array = self.getArray(obj)
                 for i in range(array):
-                    if i > 0: # the first item already went above
-                        self.objectslist[obj.Name+"+array"+str(i)] = role
+                    if i > 0:  # the first item already went above
+                        self.objectslist[obj.Name + "+array" + str(i)] = role
         try:
             import ArchIFC
 
@@ -129,9 +127,9 @@ class BIM_IfcQuantities:
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.buttonBox.rejected.connect(self.reject)
         self.form.quantities.clicked.connect(self.onClickTree)
-        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.onlyVisible, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.onlyVisible.checkStateChanged.connect(self.update)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonRefresh.clicked.connect(self.update)
         self.form.buttonApply.clicked.connect(self.add_qto)
@@ -139,9 +137,7 @@ class BIM_IfcQuantities:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.form.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center()
         )
 
         self.update()
@@ -186,7 +182,9 @@ class BIM_IfcQuantities:
         ]
         self.qtokeys.sort()
         self.form.comboQto.addItems(
-            [translate("BIM", "Add quantity set..."),]
+            [
+                translate("BIM", "Add quantity set..."),
+            ]
             + self.qtokeys
         )
 
@@ -199,10 +197,10 @@ class BIM_IfcQuantities:
         if len(FreeCADGui.Selection.getSelection()) != 1:
             return
         obj = FreeCADGui.Selection.getSelection()[0]
-        qto = list(self.qtodefs.keys())[index-1]
+        qto = list(self.qtodefs.keys())[index - 1]
         self.ifcqtolist.setdefault(obj.Name, []).append(qto)
         self.update_line(obj.Name, qto)
-        FreeCAD.Console.PrintMessage(translate("BIM", "Adding quantity set")+": "+qto+"\n")
+        FreeCAD.Console.PrintMessage(translate("BIM", "Adding quantity set") + ": " + qto + "\n")
 
     def apply_qto(self, obj, qto):
         "Adds a standard qto set to the object"
@@ -211,6 +209,7 @@ class BIM_IfcQuantities:
         qset = None
         if hasattr(obj, "StepId"):
             from nativeifc import ifc_tools
+
             ifcfile = ifc_tools.get_ifcfile(obj)
             element = ifc_tools.get_ifc_element(obj)
             if not ifcfile or not element:
@@ -218,17 +217,17 @@ class BIM_IfcQuantities:
             qset = ifc_tools.api_run("pset.add_qto", ifcfile, product=element, name=qto)
         for i in range(0, len(val), 2):
             qname = val[i]
-            qtype = QTO_TYPES[val[i+1]]
+            qtype = QTO_TYPES[val[i + 1]]
             if not qname in obj.PropertiesList:
-                obj.addProperty(qtype, qname, "Quantities", val[i+1], locked=True)
+                obj.addProperty(qtype, qname, "Quantities", val[i + 1], locked=True)
                 qval = 0
                 i = self.get_row(obj.Name)
                 if i > -1:
                     for j, p in enumerate(QPROPS):
-                        it = self.qmodel.item(i, j+1)
+                        it = self.qmodel.item(i, j + 1)
                         t = it.text()
                         if t:
-                            t = t.replace("²","^2").replace("³","^3")
+                            t = t.replace("²", "^2").replace("³", "^3")
                             qval = FreeCAD.Units.Quantity(t).Value
                 if qval:
                     setattr(obj, qname, qval)
@@ -245,9 +244,7 @@ class BIM_IfcQuantities:
         # quantities tab
 
         self.qmodel.clear()
-        self.qmodel.setHorizontalHeaderLabels(
-            [translate("BIM", "Label")] + TR_QPROPS
-        )
+        self.qmodel.setHorizontalHeaderLabels([translate("BIM", "Label")] + TR_QPROPS)
         self.form.quantities.setColumnWidth(0, 200)  # TODO remember width
         quantheaders = self.form.quantities.header()  # QHeaderView instance
         quantheaders.setSectionsClickable(True)
@@ -266,9 +263,7 @@ class BIM_IfcQuantities:
                     suffix = " (duplicate)"
                 obj = FreeCAD.ActiveDocument.getObject(name)
                 if obj:
-                    if (
-                        not self.form.onlyVisible.isChecked()
-                    ) or obj.ViewObject.isVisible():
+                    if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                         if obj.isDerivedFrom("Part::Feature") and not (
                             Draft.getType(obj) == "Site"
                         ):
@@ -280,9 +275,7 @@ class BIM_IfcQuantities:
                             for prop in QPROPS:
                                 it = QtGui.QStandardItem()
                                 val = None
-                                if hasattr(obj, prop) and (
-                                    "Hidden" not in obj.getEditorMode(prop)
-                                ):
+                                if hasattr(obj, prop) and ("Hidden" not in obj.getEditorMode(prop)):
                                     val = self.get_text(obj, prop)
                                     it.setText(val)
                                     it.setCheckable(True)
@@ -311,6 +304,7 @@ class BIM_IfcQuantities:
         if not "StepId" in obj.PropertiesList:
             return False
         from nativeifc import ifc_tools
+
         element = ifc_tools.get_ifc_element(obj)
         if not element:
             return False
@@ -349,7 +343,7 @@ class BIM_IfcQuantities:
         obj = FreeCAD.ActiveDocument.getObject(name)
         qto_val = self.qtodefs[qto]
         for j, p in enumerate(QPROPS):
-            it = self.qmodel.item(i, j+1)
+            it = self.qmodel.item(i, j + 1)
             if p in obj.PropertiesList:
                 val = self.get_text(obj, p)
                 it.setText(val)
@@ -390,9 +384,7 @@ class BIM_IfcQuantities:
         changed = False
         if self.ifcqtolist:
             if not changed:
-                FreeCAD.ActiveDocument.openTransaction(
-                    "Change quantities"
-                )
+                FreeCAD.ActiveDocument.openTransaction("Change quantities")
             changed = True
             for key, val in self.ifcqtolist.items():
                 obj = FreeCAD.ActiveDocument.getObject(key)
@@ -412,9 +404,7 @@ class BIM_IfcQuantities:
                             if getattr(obj, QPROPS[i]).getUserPreferred()[0] != val:
                                 setattr(obj, QPROPS[i], val)
                                 if not changed:
-                                    FreeCAD.ActiveDocument.openTransaction(
-                                        "Change quantities"
-                                    )
+                                    FreeCAD.ActiveDocument.openTransaction("Change quantities")
                                 changed = True
                     d = None
                     if hasattr(obj, "IfcAttributes"):
@@ -431,9 +421,7 @@ class BIM_IfcQuantities:
                                 d["Export" + QPROPS[i]] = "True"
                                 setattr(obj, att, d)
                                 if not changed:
-                                    FreeCAD.ActiveDocument.openTransaction(
-                                        "Change quantities"
-                                    )
+                                    FreeCAD.ActiveDocument.openTransaction("Change quantities")
                                 changed = True
                         else:
                             if "Export" + QPROPS[i] in d:
@@ -441,9 +429,7 @@ class BIM_IfcQuantities:
                                     d["Export" + QPROPS[i]] = "False"
                                     setattr(obj, att, d)
                                     if not changed:
-                                        FreeCAD.ActiveDocument.openTransaction(
-                                            "Change quantities"
-                                        )
+                                        FreeCAD.ActiveDocument.openTransaction("Change quantities")
                                     changed = True
                     elif "StepId" not in obj.PropertiesList:
                         FreeCAD.Console.PrintError(
@@ -496,9 +482,7 @@ class BIM_IfcQuantities:
         sel = self.form.quantities.selectedIndexes()
         for index in sel:
             if index.column() == 0:
-                obj = FreeCAD.ActiveDocument.getObject(
-                    self.qmodel.itemFromIndex(index).toolTip()
-                )
+                obj = FreeCAD.ActiveDocument.getObject(self.qmodel.itemFromIndex(index).toolTip())
                 if obj:
                     FreeCADGui.Selection.addSelection(obj)
 

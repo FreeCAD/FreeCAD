@@ -35,8 +35,7 @@ from draftutils.messages import _err
 from draftutils.translate import translate
 
 if App.GuiUp:
-    from draftviewproviders.view_layer import (ViewProviderLayer,
-                                               ViewProviderLayerContainer)
+    from draftviewproviders.view_layer import ViewProviderLayer, ViewProviderLayerContainer
 
 
 def get_layer_container():
@@ -51,15 +50,14 @@ def get_layer_container():
     """
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     for obj in doc.Objects:
         if obj.Name == "LayerContainer":
             return obj
 
-    obj = doc.addObject("App::DocumentObjectGroupPython",
-                            "LayerContainer")
+    obj = doc.addObject("App::DocumentObjectGroupPython", "LayerContainer")
     obj.Label = translate("draft", "Layers")
 
     LayerContainer(obj)
@@ -77,12 +75,14 @@ def getLayerContainer():
     return get_layer_container()
 
 
-def make_layer(name=None,
-               line_color=(0.0, 0.0, 0.0),   # does not match default DefaultShapeLineColor
-               shape_color=(0.8, 0.8, 0.8),  # does not match default DefaultShapeColor
-               line_width=2.0,
-               draw_style="Solid",
-               transparency=0):
+def make_layer(
+    name=None,
+    line_color=(0.0, 0.0, 0.0),  # does not match default DefaultShapeLineColor
+    shape_color=(0.8, 0.8, 0.8),  # does not match default DefaultShapeColor
+    line_width=2.0,
+    draw_style="Solid",
+    transparency=0,
+):
     """Create a Layer object in the active document.
 
     If a layer container named `'LayerContainer'` does not exist, it is created.
@@ -140,14 +140,14 @@ def make_layer(name=None,
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     if name is not None:
         try:
             utils.type_check([(name, str)], name=_name)
         except TypeError:
-            _err(translate("draft","Wrong input: it must be a string."))
+            _err(translate("draft", "Wrong input: it must be a string."))
             return None
     else:
         name = translate("draft", "Layer")
@@ -156,22 +156,22 @@ def make_layer(name=None,
         try:
             utils.type_check([(line_color, tuple)], name=_name)
         except TypeError:
-            _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
+            _err(translate("draft", "Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
 
         if not all(isinstance(color, (int, float)) for color in line_color):
-            _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
+            _err(translate("draft", "Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
 
     if shape_color is not None:
         try:
             utils.type_check([(shape_color, tuple)], name=_name)
         except TypeError:
-            _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
+            _err(translate("draft", "Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
 
         if not all(isinstance(color, (int, float)) for color in shape_color):
-            _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
+            _err(translate("draft", "Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
 
     if line_width is not None:
@@ -179,18 +179,26 @@ def make_layer(name=None,
             utils.type_check([(line_width, (int, float))], name=_name)
             line_width = float(abs(line_width))
         except TypeError:
-            _err(translate("draft","Wrong input: must be a number."))
+            _err(translate("draft", "Wrong input: must be a number."))
             return None
 
     if draw_style is not None:
         try:
             utils.type_check([(draw_style, str)], name=_name)
         except TypeError:
-            _err(translate("draft","Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."))
+            _err(
+                translate(
+                    "draft", "Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."
+                )
+            )
             return None
 
-        if draw_style not in ('Solid', 'Dashed', 'Dotted', 'Dashdot'):
-            _err(translate("draft","Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."))
+        if draw_style not in ("Solid", "Dashed", "Dotted", "Dashdot"):
+            _err(
+                translate(
+                    "draft", "Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."
+                )
+            )
             return None
 
     if transparency is not None:
@@ -198,7 +206,7 @@ def make_layer(name=None,
             utils.type_check([(transparency, (int, float))], name=_name)
             transparency = int(abs(transparency))
         except TypeError:
-            _err(translate("draft","Wrong input: must be a number between 0 and 100."))
+            _err(translate("draft", "Wrong input: must be a number between 0 and 100."))
             return None
 
     obj = doc.addObject("App::FeaturePython", "Layer")
@@ -224,5 +232,6 @@ def make_layer(name=None,
     container.addObject(obj)
 
     return obj
+
 
 ## @}

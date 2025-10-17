@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # FreeCAD tools of the _TEMPLATEPY_ workbench
 # (c) 2001 Juergen Riegel
 # License LGPL

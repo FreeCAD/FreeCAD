@@ -34,6 +34,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -107,9 +108,9 @@ public:
         STATUS_SEEK_Second,
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        Q_UNUSED(onSketchPos);
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         using std::numbers::pi;
 

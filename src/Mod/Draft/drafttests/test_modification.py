@@ -60,8 +60,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  c={}".format(c))
         Draft.move(obj, c)
         self.doc.recompute()
-        self.assertTrue(obj.Start.isEqual(Vector(3, 3, 0), 1e-6),
-                        "'{}' failed".format(operation))
+        self.assertTrue(obj.Start.isEqual(Vector(3, 3, 0), 1e-6), "'{}' failed".format(operation))
 
     def test_copy(self):
         """Create a line, then copy and move it."""
@@ -96,8 +95,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  angle={} degrees".format(rot))
         Draft.rotate(obj, rot)
         self.doc.recompute()
-        self.assertTrue(obj.Start.isEqual(c, 1e-6),
-                        "'{}' failed".format(operation))
+        self.assertTrue(obj.Start.isEqual(c, 1e-6), "'{}' failed".format(operation))
 
     def test_offset_open(self):
         """Create an open wire, then produce an offset copy."""
@@ -129,10 +127,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         b = Vector(10, 0, 0)
         c = Vector(10, 4, 0)
         d = Vector(0, 4, 0)
-        edges = [Part.makeLine(a, b),
-                 Part.makeLine(b, c),
-                 Part.makeLine(c, d),
-                 Part.makeLine(a, d)]
+        edges = [Part.makeLine(a, b), Part.makeLine(b, c), Part.makeLine(c, d), Part.makeLine(a, d)]
         wire = Part.Wire(edges)
         obj = self.doc.addObject("Part::Feature")
         obj.Shape = wire
@@ -160,9 +155,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  vector={}".format(offset))
         obj = Draft.offset(rect, offset, copy=True)
         self.doc.recompute()
-        obj_is_ok = (obj.Shape.CenterOfGravity == Vector(5, 2, 0)
-                     and obj.Length == 12
-                     and obj.Height == 6)
+        obj_is_ok = (
+            obj.Shape.CenterOfGravity == Vector(5, 2, 0) and obj.Length == 12 and obj.Height == 6
+        )
         self.assertTrue(obj_is_ok, "'{}' failed".format(operation))
 
     def test_trim(self):
@@ -335,8 +330,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj3 = Draft.downgrade(obj2[0], delete=True)
         self.doc.recompute()
         s3 = obj3[0][0]
-        _msg("  3: Result 3 x '{0}' ({1})".format(s3.Shape.ShapeType,
-                                                  s3.TypeId))
+        _msg("  3: Result 3 x '{0}' ({1})".format(s3.Shape.ShapeType, s3.TypeId))
         self.assertTrue(len(obj3[0]) == 3, "'{}' failed".format(operation))
 
         # edges cannot be downgraded
@@ -376,7 +370,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         prism.Polygon = 5
         # Rotate the prism 45 degrees around the Y axis
         prism.Placement.Rotation.Axis = Vector(0, 1, 0)
-        prism.Placement.Rotation.Angle = 45 * (3.14159/180)
+        prism.Placement.Rotation.Angle = 45 * (3.14159 / 180)
         _msg("  Prism")
         _msg("  n_sides={}".format(prism.Polygon))
         _msg("  placement={}".format(prism.Placement))
@@ -402,14 +396,12 @@ class DraftModification(test_base.DraftTestCaseDoc):
 
         obj = Draft.make_sketch(wire, autoconstraints=True)
         self.doc.recompute()
-        _msg("  1: Result '{0}' ({1})".format(obj.Shape.ShapeType,
-                                              obj.TypeId))
+        _msg("  1: Result '{0}' ({1})".format(obj.Shape.ShapeType, obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
         obj2 = Draft.draftify(obj, delete=False)
         self.doc.recompute()
-        _msg("  2: Result '{0}' ({1})".format(obj2.Proxy.Type,
-                                              obj2.TypeId))
+        _msg("  2: Result '{0}' ({1})".format(obj2.Proxy.Type, obj2.TypeId))
         self.assertTrue(obj2, "'{}' failed".format(operation))
 
     def test_rectangular_array(self):
@@ -433,12 +425,8 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  direction_x={}".format(dir_x))
         _msg("  direction_y={}".format(dir_y))
         _msg("  direction_z={}".format(dir_z))
-        _msg("  number_x={0}, number_y={1}, number_z={2}".format(number_x,
-                                                                 number_y,
-                                                                 number_z))
-        obj = Draft.make_ortho_array(rect,
-                                     dir_x, dir_y, dir_z,
-                                     number_x, number_y, number_z)
+        _msg("  number_x={0}, number_y={1}, number_z={2}".format(number_x, number_y, number_z))
+        obj = Draft.make_ortho_array(rect, dir_x, dir_y, dir_z, number_x, number_y, number_z)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_polar_array(self):
@@ -458,8 +446,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Array")
         _msg("  number={0}, polar_angle={1}".format(number, angle))
         _msg("  center={}".format(center))
-        obj = Draft.make_polar_array(rect,
-                                     number, angle, center)
+        obj = Draft.make_polar_array(rect, number, angle, center)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_circular_array(self):
@@ -480,15 +467,13 @@ class DraftModification(test_base.DraftTestCaseDoc):
         number = 3
         symmetry = 1
         _msg("  Array")
-        _msg("  radial_distance={0}, "
-             "tangential_distance={1}".format(rad_distance, tan_distance))
+        _msg("  radial_distance={0}, " "tangential_distance={1}".format(rad_distance, tan_distance))
         _msg("  number={0}, symmetry={1}".format(number, symmetry))
         _msg("  axis={}".format(axis))
         _msg("  center={}".format(center))
-        obj = Draft.make_circular_array(rect,
-                                        rad_distance, tan_distance,
-                                        number, symmetry,
-                                        axis, center)
+        obj = Draft.make_circular_array(
+            rect, rad_distance, tan_distance, number, symmetry, axis, center
+        )
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_path_array(self):
@@ -517,8 +502,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Path Array")
         _msg("  number={}, translation={}".format(number, translation))
         _msg("  subelements={}, align={}".format(subelements, align))
-        obj = Draft.make_path_array(poly, wire, number,
-                                    translation, subelements, align)
+        obj = Draft.make_path_array(poly, wire, number, translation, subelements, align)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_point_array(self):
@@ -532,10 +516,12 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Points")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
-        points = [Draft.make_point(a),
-                  Draft.make_point(b),
-                  Draft.make_point(c),
-                  Draft.make_point(d)]
+        points = [
+            Draft.make_point(a),
+            Draft.make_point(b),
+            Draft.make_point(c),
+            Draft.make_point(d),
+        ]
 
         _msg("  Upgrade")
         add, delete = Draft.upgrade(points)
@@ -565,8 +551,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.make_clone(box)
         _msg("  clone: '{0}' ({1})".format(obj.Proxy.Type, obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
-        self.assertTrue(obj.hasExtension("Part::AttachExtension"),
-                        "'{}' failed".format(operation))
+        self.assertTrue(obj.hasExtension("Part::AttachExtension"), "'{}' failed".format(operation))
 
     def test_attached_clone_behavior(self):
         """Check if an attached clone behaves correctly.
@@ -599,7 +584,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         prism.Polygon = 5
         # Rotate the prism 45 degrees around the Y axis
         prism.Placement.Rotation.Axis = Vector(0, 1, 0)
-        prism.Placement.Rotation.Angle = 45 * (3.14159/180)
+        prism.Placement.Rotation.Angle = 45 * (3.14159 / 180)
         _msg("  Prism")
         _msg("  n_sides={}".format(prism.Polygon))
         _msg("  placement={}".format(prism.Placement))
@@ -607,8 +592,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
         page = self.doc.addObject("TechDraw::DrawPage")
         _msg("  page={}".format(page.TypeId))
         template = self.doc.addObject("TechDraw::DrawSVGTemplate")
-        template.Template = App.getResourceDir() \
-                            + "Mod/TechDraw/Templates/ISO/A3_Landscape_blank.svg"
+        template.Template = (
+            App.getResourceDir() + "Mod/TechDraw/Templates/ISO/A3_Landscape_blank.svg"
+        )
         page.Template = template
         _msg("  template={}".format(template.TypeId))
         view = self.doc.addObject("TechDraw::DrawViewDraft")
@@ -659,21 +645,29 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
 
         base = Vector(3.5, 2.5, 0.0)
-        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        cen = Vector(2.0, 1.0, 0.0)  # center for scaling
         sca = Vector(2.0, 3.0, 1.0)
-        ends = [Vector(0.0, 0.0, 0.0),
-                Vector(4.0, 0.0, 0.0),
-                Vector(4.0, 3.0, 0.0),
-                Vector(0.0, 3.0, 0.0)]
-        mids = [Vector( 2.0, -0.5, 0.0),
-                Vector( 4.5,  1.5, 0.0),
-                Vector( 2.0,  3.5, 0.0),
-                Vector(-0.5,  1.5, 0.0)] # arc midpoints
+        ends = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(4.0, 0.0, 0.0),
+            Vector(4.0, 3.0, 0.0),
+            Vector(0.0, 3.0, 0.0),
+        ]
+        mids = [
+            Vector(2.0, -0.5, 0.0),
+            Vector(4.5, 1.5, 0.0),
+            Vector(2.0, 3.5, 0.0),
+            Vector(-0.5, 1.5, 0.0),
+        ]  # arc midpoints
 
-        shp = Part.Shape([Part.Arc(ends[0], mids[0], ends[1]),
-                          Part.Arc(ends[1], mids[1], ends[2]),
-                          Part.Arc(ends[2], mids[2], ends[3]),
-                          Part.Arc(ends[3], mids[3], ends[0])])
+        shp = Part.Shape(
+            [
+                Part.Arc(ends[0], mids[0], ends[1]),
+                Part.Arc(ends[1], mids[1], ends[2]),
+                Part.Arc(ends[2], mids[2], ends[3]),
+                Part.Arc(ends[3], mids[3], ends[0]),
+            ]
+        )
         obj = self.doc.addObject("Part::Feature")
         obj.Shape = shp
         obj.Placement.Base = base
@@ -682,24 +676,30 @@ class DraftModification(test_base.DraftTestCaseDoc):
         self.doc.recompute()
 
         # check endpoints of arcs:
-        newEnds = [Vector( 5.0,  5.5, 0.0),
-                   Vector(13.0,  5.5, 0.0),
-                   Vector(13.0, 14.5, 0.0),
-                   Vector( 5.0, 14.5, 0.0)]
+        newEnds = [
+            Vector(5.0, 5.5, 0.0),
+            Vector(13.0, 5.5, 0.0),
+            Vector(13.0, 14.5, 0.0),
+            Vector(5.0, 14.5, 0.0),
+        ]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-6),
-                            "'{}' failed".format(operation))
+            self.assertTrue(
+                vrts[i].Point.isEqual(newEnds[i], 1e-6), "'{}' failed".format(operation)
+            )
         # check midpoints of arcs:
-        newMids = [Vector( 9.0,  4.0, 0.0),
-                   Vector(14.0, 10.0, 0.0),
-                   Vector( 9.0, 16.0, 0.0),
-                   Vector( 4.0, 10.0, 0.0)]
+        newMids = [
+            Vector(9.0, 4.0, 0.0),
+            Vector(14.0, 10.0, 0.0),
+            Vector(9.0, 16.0, 0.0),
+            Vector(4.0, 10.0, 0.0),
+        ]
         for i in range(4):
             edge = obj.Shape.Edges[i]
             par = (edge.LastParameter - edge.FirstParameter) / 2.0
-            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-6),
-                            "'{}' failed".format(operation))
+            self.assertTrue(
+                edge.valueAt(par).isEqual(newMids[i], 1e-6), "'{}' failed".format(operation)
+            )
 
     def test_scale_part_feature_lines(self):
         """Create and scale a part feature (lines)."""
@@ -707,17 +707,23 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
 
         base = Vector(3.5, 2.5, 0.0)
-        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        cen = Vector(2.0, 1.0, 0.0)  # center for scaling
         sca = Vector(2.0, 3.0, 1.0)
-        pts = [Vector(0.0, 0.0, 0.0),
-               Vector(4.0, 0.0, 0.0),
-               Vector(4.0, 3.0, 0.0),
-               Vector(0.0, 3.0, 0.0)]
+        pts = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(4.0, 0.0, 0.0),
+            Vector(4.0, 3.0, 0.0),
+            Vector(0.0, 3.0, 0.0),
+        ]
 
-        shp = Part.Shape([Part.LineSegment(pts[0], pts[1]),
-                          Part.LineSegment(pts[1], pts[2]),
-                          Part.LineSegment(pts[2], pts[3]),
-                          Part.LineSegment(pts[3], pts[0])])
+        shp = Part.Shape(
+            [
+                Part.LineSegment(pts[0], pts[1]),
+                Part.LineSegment(pts[1], pts[2]),
+                Part.LineSegment(pts[2], pts[3]),
+                Part.LineSegment(pts[3], pts[0]),
+            ]
+        )
         obj = self.doc.addObject("Part::Feature")
         obj.Shape = shp
         obj.Placement.Base = base
@@ -725,14 +731,15 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
 
-        newPts = [Vector( 5.0,  5.5, 0.0),
-                  Vector(13.0,  5.5, 0.0),
-                  Vector(13.0, 14.5, 0.0),
-                  Vector( 5.0, 14.5, 0.0)]
+        newPts = [
+            Vector(5.0, 5.5, 0.0),
+            Vector(13.0, 5.5, 0.0),
+            Vector(13.0, 14.5, 0.0),
+            Vector(5.0, 14.5, 0.0),
+        ]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
-                            "'{}' failed".format(operation))
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6), "'{}' failed".format(operation))
 
     def test_scale_rectangle(self):
         """Create and scale a rectangle."""
@@ -740,7 +747,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
 
         base = Vector(3.5, 2.5, 0.0)
-        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        cen = Vector(2.0, 1.0, 0.0)  # center for scaling
         sca = Vector(2.0, 3.0, 1.0)
         len = 4.0
         hgt = 3.0
@@ -754,16 +761,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
         newBase = Vector(5.0, 5.5, 0.0)
         newLen = 8.0
         newHgt = 9.0
-        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-6),
-                        "'{}' failed".format(operation))
-        self.assertAlmostEqual(obj.Length,
-                               newLen,
-                               delta = 1e-6,
-                               msg = "'{}' failed".format(operation))
-        self.assertAlmostEqual(obj.Height,
-                               newHgt,
-                               delta = 1e-6,
-                               msg = "'{}' failed".format(operation))
+        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-6), "'{}' failed".format(operation))
+        self.assertAlmostEqual(obj.Length, newLen, delta=1e-6, msg="'{}' failed".format(operation))
+        self.assertAlmostEqual(obj.Height, newHgt, delta=1e-6, msg="'{}' failed".format(operation))
 
     def test_scale_spline(self):
         """Create and scale a spline."""
@@ -771,11 +771,9 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
 
         base = Vector(3.5, 2.5, 0.0)
-        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        cen = Vector(2.0, 1.0, 0.0)  # center for scaling
         sca = Vector(2.0, 3.0, 1.0)
-        pts = [Vector(0.0, 0.0, 0.0),
-               Vector(2.0, 3.0, 0.0),
-               Vector(4.0, 0.0, 0.0)]
+        pts = [Vector(0.0, 0.0, 0.0), Vector(2.0, 3.0, 0.0), Vector(4.0, 0.0, 0.0)]
 
         obj = Draft.make_bspline(pts, False)
         obj.Placement.Base = base
@@ -784,12 +782,11 @@ class DraftModification(test_base.DraftTestCaseDoc):
         self.doc.recompute()
         pla = obj.Placement
 
-        newPts = [Vector( 5.0,  5.5, 0.0),
-                  Vector( 9.0, 14.5, 0.0),
-                  Vector(13.0,  5.5, 0.0)]
+        newPts = [Vector(5.0, 5.5, 0.0), Vector(9.0, 14.5, 0.0), Vector(13.0, 5.5, 0.0)]
         for i in range(3):
-            self.assertTrue(pla.multVec(obj.Points[i]).isEqual(newPts[i], 1e-6),
-                            "'{}' failed".format(operation))
+            self.assertTrue(
+                pla.multVec(obj.Points[i]).isEqual(newPts[i], 1e-6), "'{}' failed".format(operation)
+            )
 
     def test_scale_wire(self):
         """Create and scale a wire."""
@@ -797,12 +794,14 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
 
         base = Vector(3.5, 2.5, 0.0)
-        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        cen = Vector(2.0, 1.0, 0.0)  # center for scaling
         sca = Vector(2.0, 3.0, 1.0)
-        pts = [Vector(0.0, 0.0, 0.0),
-               Vector(4.0, 0.0, 0.0),
-               Vector(4.0, 3.0, 0.0),
-               Vector(0.0, 3.0, 0.0)]
+        pts = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(4.0, 0.0, 0.0),
+            Vector(4.0, 3.0, 0.0),
+            Vector(0.0, 3.0, 0.0),
+        ]
 
         obj = Draft.make_wire(pts, True)
         obj.Placement.Base = base
@@ -810,13 +809,15 @@ class DraftModification(test_base.DraftTestCaseDoc):
         obj = Draft.scale(obj, sca, cen, False)
         self.doc.recompute()
 
-        newPts = [Vector( 5.0,  5.5, 0.0),
-                  Vector(13.0,  5.5, 0.0),
-                  Vector(13.0, 14.5, 0.0),
-                  Vector( 5.0, 14.5, 0.0)]
+        newPts = [
+            Vector(5.0, 5.5, 0.0),
+            Vector(13.0, 5.5, 0.0),
+            Vector(13.0, 14.5, 0.0),
+            Vector(5.0, 14.5, 0.0),
+        ]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
-                            "'{}' failed".format(operation))
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6), "'{}' failed".format(operation))
+
 
 ## @}

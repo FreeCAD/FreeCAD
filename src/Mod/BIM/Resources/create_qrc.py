@@ -25,6 +25,7 @@
 #!/usr/bin/python
 
 import os
+
 txt = "<RCC>\n    <qresource>\n"
 cdir = os.path.dirname(__file__)
 for subdir in ["geometry", "icons", "icons/IFC", "translations", "ui"]:

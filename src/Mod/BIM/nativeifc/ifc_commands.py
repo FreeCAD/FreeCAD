@@ -48,9 +48,7 @@ class IFC_Diff:
     """Shows a diff of the changes in the current IFC document"""
 
     def GetResources(self):
-        tt = QT_TRANSLATE_NOOP(
-            "IFC_Diff", "Shows the current unsaved changes in the IFC file"
-        )
+        tt = QT_TRANSLATE_NOOP("IFC_Diff", "Shows the current unsaved changes in the IFC file")
         return {
             "Pixmap": "IFC",
             "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff"),
@@ -123,11 +121,7 @@ class IFC_ConvertDocument:
 
     def Activated(self):
         doc = FreeCAD.ActiveDocument
-        if (
-            hasattr(doc, "Proxy")
-            and hasattr(doc.Proxy, "ifcfile")
-            and doc.Proxy.ifcfile
-        ):
+        if hasattr(doc, "Proxy") and hasattr(doc.Proxy, "ifcfile") and doc.Proxy.ifcfile:
             FreeCAD.Console.PrintError(
                 translate("BIM", "The active document is already an IFC document")
             )
@@ -181,9 +175,7 @@ class IFC_Save:
     """Saves the current IFC document"""
 
     def GetResources(self):
-        tt = QT_TRANSLATE_NOOP(
-            "IFC_Save", "Saves the current IFC document"
-        )
+        tt = QT_TRANSLATE_NOOP("IFC_Save", "Saves the current IFC document")
         return {
             "Pixmap": "IFC_document",
             "MenuText": QT_TRANSLATE_NOOP("IFC_Save", "Save IFC File"),
@@ -216,9 +208,7 @@ class IFC_SaveAs:
     """Saves the current IFC document as another name"""
 
     def GetResources(self):
-        tt = QT_TRANSLATE_NOOP(
-            "IFC_SaveAs", "Saves the current IFC document as another file"
-        )
+        tt = QT_TRANSLATE_NOOP("IFC_SaveAs", "Saves the current IFC document as another file")
         return {
             "Pixmap": "IFC_document",
             "MenuText": QT_TRANSLATE_NOOP("IFC_SaveAs", "Save IFC File As…"),
