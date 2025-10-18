@@ -156,27 +156,27 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="73"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>无法检索此页面的内容。请检查菜单“编辑 → 首选项 → 常规 → 帮助”下的设置。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="77"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>无法确定帮助文件的位置。请检查菜单“编辑 → 首选项 → 常规 → 帮助”下的设置。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgets 模块不可用。帮助渲染由系统浏览器完成</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>您的系统未安装 Markdown 渲染器，因此本帮助页面按原样渲染。请安装 Markdown 或 Pandoc Python 模块，以改善本页面的渲染效果。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>帮助</translation>
     </message>
@@ -184,7 +184,7 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>常规</translation>
     </message>

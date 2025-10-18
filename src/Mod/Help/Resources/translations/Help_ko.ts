@@ -36,17 +36,17 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
       <source>Custom location</source>
-      <translation type="unfinished">Custom location</translation>
+      <translation>사용자 지정 위치</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation type="unfinished">FreeCAD Wiki (online)</translation>
+      <translation>프리캐드 위키문서 (온라인)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>깃허브 (온라인)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
@@ -159,27 +159,27 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="73"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="77"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>도움말</translation>
     </message>
@@ -187,7 +187,7 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>일반</translation>
     </message>
