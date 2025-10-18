@@ -75,6 +75,7 @@ class BIM_ProjectManager:
         self.form.presets.currentIndexChanged.connect(self.getPreset)
         self.form.buttonOK.clicked.connect(self.accept)
         self.form.buttonCancel.clicked.connect(self.reject)
+        self.form.rejected.connect(self.reject)
         self.fillPresets()
 
         # Detect existing objects
