@@ -57,8 +57,11 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
         setLinkTooltip(tr("Click to select these redundant joints."));
     }
     else if (link == QStringLiteral("#dofs")) {
-        setLinkTooltip(tr("The assembly has unconstrained components giving rise to those "
-                          "Degrees Of Freedom. Click to select these unconstrained components."));
+        setLinkTooltip(tr(
+            "The assembly has unconstrained components giving rise to those "
+            "Degrees Of Freedom.\nClick to select these unconstrained components.\nNote: Currently "
+            "this selects only unconnected parts, not constrained parts that still have free "
+            "DoF."));
     }
     else if (link == QStringLiteral("#malformed")) {
         setLinkTooltip(tr("Click to select these malformed joints."));
@@ -67,8 +70,7 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
 
 void TaskAssemblyMessages::onLabelStatusLinkClicked(const QString& str)
 {
-    // The commands are not implemented yet since App is not reporting yet the solver's status
-    /* if (str == QStringLiteral("#conflicting")) {
+    if (str == QStringLiteral("#conflicting")) {
         Gui::Application::Instance->commandManager().runCommandByName(
             "Assembly_SelectConflictingConstraints");
     }
@@ -83,7 +85,7 @@ void TaskAssemblyMessages::onLabelStatusLinkClicked(const QString& str)
     else if (str == QStringLiteral("#malformed")) {
         Gui::Application::Instance->commandManager().runCommandByName(
             "Assembly_SelectMalformedConstraints");
-    }*/
+    }
 }
 
 #include "moc_TaskAssemblyMessages.cpp"
