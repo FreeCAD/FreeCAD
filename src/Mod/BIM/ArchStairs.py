@@ -1948,7 +1948,7 @@ class _Stairs(ArchComponent.Component):
                 if structureOffset:
                     mvec = DraftVecUtils.scaleTo(vWidth, structureOffset)
                     struct.translate(mvec)
-                    evec = DraftVecUtils.scaleTo(evec, evec.Length - (2 * mvec.Length))
+                    evec = vWidth - (2 * mvec)
                 struct = struct.extrude(evec)
 
         elif structure in ["One stringer", "Two stringers"]:
