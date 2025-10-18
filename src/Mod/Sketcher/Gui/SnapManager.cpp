@@ -190,7 +190,7 @@ Base::Vector2d SnapManager::snap(Base::Vector2d inputPos, SnapType mask)
         return inputPos;
     }
 
-    Base::Vector2d snapPos;
+    Base::Vector2d snapPos = inputPos;
 
     // In order of priority:
 
@@ -317,6 +317,8 @@ bool SnapManager::snapToGrid(Base::Vector2d inputPos, Base::Vector2d& snapPos)
 {
     // Snap Tolerance in pixels
     const double snapTol = viewProvider.getGridSize() / 5;
+
+    snapPos = inputPos;
 
     double tmpX = inputPos.x, tmpY = inputPos.y;
 
