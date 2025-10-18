@@ -1486,7 +1486,7 @@ bool Document::saveAs()
     }
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
+        QStringList(QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document"))));
 
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -1587,7 +1587,7 @@ bool Document::saveCopy()
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
                                              QString::fromUtf8(getDocument()->FileName.getValue()),
-                                             QObject::tr("%1 document (*.FCStd)").arg(exe));
+                                             QStringList(QObject::tr("%1 document (*.FCStd)").arg(exe)));
     if (!fn.isEmpty()) {
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 

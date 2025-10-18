@@ -89,7 +89,7 @@ void CmdRobotExportKukaCompact::activated(int)
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                   QObject::tr("Export program"),
                                                   QString(),
-                                                  filter.join(QLatin1String(";;")));
+                                                  filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -164,7 +164,7 @@ void CmdRobotExportKukaFull::activated(int)
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                   QObject::tr("Export program"),
                                                   QString(),
-                                                  filter.join(QLatin1String(";;")));
+                                                  filter);
     if (fn.isEmpty()) {
         return;
     }
