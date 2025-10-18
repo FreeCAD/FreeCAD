@@ -52,6 +52,7 @@
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
 #include <Inventor/events/SoKeyboardEvent.h>
+#include "SnapManager.h"
 
 // Remove this after pre-commit hook is activated
 // clang-format off
@@ -1033,7 +1034,7 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(Base::Vector2d /*onSketchPos*/) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {}
 
     bool pressButton(Base::Vector2d /*onSketchPos*/) override
@@ -1835,13 +1836,16 @@ public:
         }
     }
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         if (hasBeenAborted()) {
             resetTool();
             return;
         }
 
+        //All snap Positions except of edges, because it results in jumps on angle constraints
+        SnapType mask = static_cast<SnapType>(static_cast<int>(SnapType::All) & ~static_cast<int>(SnapType::Edge));
+        Base::Vector2d onSketchPos = snapHandle.compute(mask);
         previousOnSketchPos = onSketchPos;
 
         //Change distance constraint based on position of mouse.

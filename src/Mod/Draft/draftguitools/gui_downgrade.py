@@ -53,10 +53,15 @@ class Downgrade(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Downgrade',
-                'Accel': "D, N",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrades the selected objects into simpler shapes.\nThe result of the operation depends on the types of objects, which may be downgraded several times in a row.\nFor example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.")}
+        return {
+            "Pixmap": "Draft_Downgrade",
+            "Accel": "D, N",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Downgrade",
+                "Downgrades the selected objects into simpler shapes.\nThe result of the operation depends on the types of objects, which may be downgraded several times in a row.\nFor example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -76,18 +81,16 @@ class Downgrade(gui_base_original.Modifier):
             self.end_callbacks(self.call)
         if Gui.Selection.getSelection():
             Gui.addModule("Draft")
-            _cmd = 'Draft.downgrade'
-            _cmd += '('
-            _cmd += 'FreeCADGui.Selection.getSelection(), '
-            _cmd += 'delete=True'
-            _cmd += ')'
-            _cmd_list = ['_objs_ = ' + _cmd,
-                         'FreeCAD.ActiveDocument.recompute()']
-            self.commit(translate("draft", "Downgrade"),
-                        _cmd_list)
+            _cmd = "Draft.downgrade"
+            _cmd += "("
+            _cmd += "FreeCADGui.Selection.getSelection(), "
+            _cmd += "delete=True"
+            _cmd += ")"
+            _cmd_list = ["_objs_ = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+            self.commit(translate("draft", "Downgrade"), _cmd_list)
         self.finish()
 
 
-Gui.addCommand('Draft_Downgrade', Downgrade())
+Gui.addCommand("Draft_Downgrade", Downgrade())
 
 ## @}

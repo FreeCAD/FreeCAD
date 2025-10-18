@@ -36,14 +36,17 @@ import ArchIFCSchema
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
-    def QT_TRANSLATE_NOOP(ctx,txt):
+
+    def QT_TRANSLATE_NOOP(ctx, txt):
         return txt
 
 
 def uncamel(t):
-    return ''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
+    return "".join(map(lambda x: x if x.islower() else " " + x, t[3:]))[1:]
+
 
 IfcTypes = [uncamel(t) for t in ArchIFCSchema.IfcProducts.keys()]
+
 
 class IfcRoot:
     """This class defines the common methods and properties for managing IFC data.
@@ -68,14 +71,32 @@ class IfcRoot:
         """
 
         if not "IfcData" in obj.PropertiesList:
-            obj.addProperty("App::PropertyMap","IfcData","IFC",QT_TRANSLATE_NOOP("App::Property","IFC data"), locked=True)
+            obj.addProperty(
+                "App::PropertyMap",
+                "IfcData",
+                "IFC",
+                QT_TRANSLATE_NOOP("App::Property", "IFC data"),
+                locked=True,
+            )
 
         if not "IfcType" in obj.PropertiesList:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "IfcType",
+                "IFC",
+                QT_TRANSLATE_NOOP("App::Property", "The type of this object"),
+                locked=True,
+            )
             obj.IfcType = self.getCanonicalisedIfcTypes()
 
         if not "IfcProperties" in obj.PropertiesList:
-            obj.addProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyMap",
+                "IfcProperties",
+                "IFC",
+                QT_TRANSLATE_NOOP("App::Property", "IFC properties of this object"),
+                locked=True,
+            )
 
         self.migrateDeprecatedAttributes(obj)
 
@@ -198,7 +219,9 @@ class IfcRoot:
 
         """
         schema = self.getIfcSchema()
-        return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
+        return [
+            "".join(map(lambda x: x if x.islower() else " " + x, t[3:]))[1:] for t in schema.keys()
+        ]
 
     def getIfcAttributeSchema(self, ifcTypeSchema, name):
         """Get the schema of an IFC attribute with the given name.
@@ -224,7 +247,7 @@ class IfcRoot:
         """
 
         for attribute in ifcTypeSchema["attributes"]:
-            if attribute["name"].replace(' ', '') == name:
+            if attribute["name"].replace(" ", "") == name:
                 return attribute
         return None
 
@@ -254,10 +277,12 @@ class IfcRoot:
         """
 
         for attribute in ifcTypeSchema["attributes"]:
-            if attribute["name"] in obj.PropertiesList \
-                or attribute["name"] == "RefLatitude" \
-                or attribute["name"] == "RefLongitude" \
-                or attribute["name"] == "Name":
+            if (
+                attribute["name"] in obj.PropertiesList
+                or attribute["name"] == "RefLatitude"
+                or attribute["name"] == "RefLongitude"
+                or attribute["name"] == "Name"
+            ):
                 continue
             self.addIfcAttribute(obj, attribute)
             self.addIfcAttributeValueExpressions(obj, attribute)
@@ -288,17 +313,25 @@ class IfcRoot:
 
         obj.IfcData = IfcData
         if attribute["is_enum"]:
-            obj.addProperty("App::PropertyEnumeration",
-                            attribute["name"],
-                            "IFC Attributes",
-                            QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                attribute["name"],
+                "IFC Attributes",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Description of IFC attributes are not yet implemented"
+                ),
+            )
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
             propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
-            obj.addProperty(propertyType,
-                            attribute["name"],
-                            "IFC Attributes",
-                            QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
+            obj.addProperty(
+                propertyType,
+                attribute["name"],
+                "IFC Attributes",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Description of IFC attributes are not yet implemented"
+                ),
+            )
 
     def addIfcAttributeValueExpressions(self, obj, attribute):
         """Add expressions for IFC attributes, so they stay accurate with the object.
@@ -327,8 +360,10 @@ class IfcRoot:
             The schema of the attribute to add the expression for.
         """
 
-        if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes" \
-            or attribute["name"] not in obj.PropertiesList:
+        if (
+            obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes"
+            or attribute["name"] not in obj.PropertiesList
+        ):
             return
         if attribute["name"] == "OverallWidth":
             if "Length" in obj.PropertiesList:
@@ -431,26 +466,30 @@ class IfcRoot:
                 obj.removeProperty(property)
 
     def migrateDeprecatedAttributes(self, obj):
-        """Update the object to use the newer property names for IFC related properties.
-        """
+        """Update the object to use the newer property names for IFC related properties."""
 
         if "Role" in obj.PropertiesList:
             r = obj.Role
             obj.removeProperty("Role")
             if r in IfcTypes:
                 obj.IfcType = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcType\n")
+                FreeCAD.Console.PrintMessage(
+                    "Upgrading " + obj.Label + " Role property to IfcType\n"
+                )
 
         if "IfcRole" in obj.PropertiesList:
             r = obj.IfcRole
             obj.removeProperty("IfcRole")
             if r in IfcTypes:
                 obj.IfcType = r
-                FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" IfcRole property to IfcType\n")
+                FreeCAD.Console.PrintMessage(
+                    "Upgrading " + obj.Label + " IfcRole property to IfcType\n"
+                )
 
-        if "IfcAttributes"in obj.PropertiesList:
+        if "IfcAttributes" in obj.PropertiesList:
             obj.IfcData = obj.IfcAttributes
             obj.removeProperty("IfcAttributes")
+
 
 class IfcProduct(IfcRoot):
     """This class is subclassed by classes that have a specific location in space.
@@ -472,6 +511,7 @@ class IfcProduct(IfcRoot):
             The schema of all the types relevant to this class.
         """
         return ArchIFCSchema.IfcProducts
+
 
 class IfcContext(IfcRoot):
     """This class is subclassed by classes that define a particular context.

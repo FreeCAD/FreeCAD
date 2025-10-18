@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2010 Werner Mayer LGPL
 
 __author__ = "Werner Mayer <wmayer[at]users.sourceforge.net>"

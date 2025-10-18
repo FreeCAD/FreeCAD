@@ -55,10 +55,14 @@ class Facebinder(gui_base_original.Creator):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_Facebinder",
-                "Accel": "F,F",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder from the selected faces")}
+        return {
+            "Pixmap": "Draft_Facebinder",
+            "Accel": "F,F",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Facebinder", "Creates a facebinder from the selected faces"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""

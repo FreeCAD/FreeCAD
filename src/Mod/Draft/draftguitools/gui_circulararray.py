@@ -51,9 +51,14 @@ class CircularArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_CircularArray",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_CircularArray", "Circular Array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_CircularArray", "Creates copies of the selected object in a radial pattern with 1 or more circular layers")}
+        return {
+            "Pixmap": "Draft_CircularArray",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_CircularArray", "Circular Array"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_CircularArray",
+                "Creates copies of the selected object in a radial pattern with 1 or more circular layers",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called.
@@ -65,10 +70,8 @@ class CircularArray(gui_base.GuiCommandBase):
 
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
-        self.callback_move = \
-            self.view.addEventCallbackPivy(self.location, self.move)
-        self.callback_click = \
-            self.view.addEventCallbackPivy(self.mouse_event, self.click)
+        self.callback_move = self.view.addEventCallbackPivy(self.location, self.move)
+        self.callback_click = self.view.addEventCallbackPivy(self.mouse_event, self.click)
 
         self.ui = task_circulararray.TaskPanelCircularArray()
         # The calling class (this one) is saved in the object
@@ -99,8 +102,10 @@ class CircularArray(gui_base.GuiCommandBase):
         """
         if event_cb:
             event = event_cb.getEvent()
-            if (event.getState() != coin.SoMouseButtonEvent.DOWN
-                    or event.getButton() != coin.SoMouseButtonEvent.BUTTON1):
+            if (
+                event.getState() != coin.SoMouseButtonEvent.DOWN
+                or event.getButton() != coin.SoMouseButtonEvent.BUTTON1
+            ):
                 return
         if self.ui and self.point:
             # The accept function of the interface
@@ -128,6 +133,6 @@ class CircularArray(gui_base.GuiCommandBase):
         self.finish()
 
 
-Gui.addCommand('Draft_CircularArray', CircularArray())
+Gui.addCommand("Draft_CircularArray", CircularArray())
 
 ## @}

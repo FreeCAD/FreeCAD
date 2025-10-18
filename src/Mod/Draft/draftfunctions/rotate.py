@@ -42,8 +42,14 @@ from draftutils import params
 from draftutils import utils
 
 
-def rotate(selection, angle, center=App.Vector(0, 0, 0),
-           axis=App.Vector(0, 0, 1), copy=False, subelements=False):
+def rotate(
+    selection,
+    angle,
+    center=App.Vector(0, 0, 0),
+    axis=App.Vector(0, 0, 1),
+    copy=False,
+    subelements=False,
+):
     """rotate(selection, angle, [center], [axis], [copy], [subelements])
 
     Rotates or copies selected objects.
@@ -80,8 +86,16 @@ def rotate(selection, angle, center=App.Vector(0, 0, 0),
     single object / list with 2 or more objects / empty list
         The objects (or their copies).
     """
-    utils.type_check([(angle, (float, int)), (center, App.Vector),
-                      (axis, App.Vector), (copy, bool), (subelements, bool)], "rotate")
+    utils.type_check(
+        [
+            (angle, (float, int)),
+            (center, App.Vector),
+            (axis, App.Vector),
+            (copy, bool),
+            (subelements, bool),
+        ],
+        "rotate",
+    )
     if not isinstance(selection, list):
         selection = [selection]
     if not selection:
@@ -106,7 +120,9 @@ def rotate(selection, angle, center=App.Vector(0, 0, 0),
     if copy:
         for obj in objs:
             if obj.isDerivedFrom("App::DocumentObjectGroup") and obj.Name not in newgroups:
-                newgroups[obj.Name] = obj.Document.addObject(obj.TypeId, utils.get_real_name(obj.Name))
+                newgroups[obj.Name] = obj.Document.addObject(
+                    obj.TypeId, utils.get_real_name(obj.Name)
+                )
 
     for idx, obj in enumerate(objs):
         newobj = None
@@ -230,9 +246,8 @@ def rotate_vertex(obj, vert_idx, angle, center, axis, global_place=None):
         glp = global_place
     points = obj.Points
     points[vert_idx] = glp.inverse().multVec(
-        rotate_vector_from_center(
-            glp.multVec(points[vert_idx]),
-            angle, axis, center))
+        rotate_vector_from_center(glp.multVec(points[vert_idx]), angle, axis, center)
+    )
     obj.Points = points
 
 
@@ -245,7 +260,7 @@ def rotate_edge(obj, edge_idx, angle, center, axis, global_place=None):
     if utils.is_closed_edge(edge_idx, obj):
         rotate_vertex(obj, 0, angle, center, axis, global_place)
     else:
-        rotate_vertex(obj, edge_idx+1, angle, center, axis, global_place)
+        rotate_vertex(obj, edge_idx + 1, angle, center, axis, global_place)
 
 
 def copy_rotated_edge(obj, edge_idx, angle, center, axis, global_place=None):
@@ -257,19 +272,16 @@ def copy_rotated_edge(obj, edge_idx, angle, center, axis, global_place=None):
         glp = obj.getGlobalPlacement()
     else:
         glp = global_place
-    vertex1 = rotate_vector_from_center(
-        glp.multVec(obj.Points[edge_idx]),
-        angle, axis, center)
+    vertex1 = rotate_vector_from_center(glp.multVec(obj.Points[edge_idx]), angle, axis, center)
     if utils.is_closed_edge(edge_idx, obj):
-        vertex2 = rotate_vector_from_center(
-            glp.multVec(obj.Points[0]),
-            angle, axis, center)
+        vertex2 = rotate_vector_from_center(glp.multVec(obj.Points[0]), angle, axis, center)
     else:
         vertex2 = rotate_vector_from_center(
-            glp.multVec(obj.Points[edge_idx+1]),
-            angle, axis, center)
+            glp.multVec(obj.Points[edge_idx + 1]), angle, axis, center
+        )
     newobj = make_line.make_line(vertex1, vertex2)
     gui_utils.format_object(newobj, obj)
     return newobj
+
 
 ## @}

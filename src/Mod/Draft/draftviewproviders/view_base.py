@@ -44,6 +44,7 @@ if App.GuiUp:
     from pivy import coin
     import FreeCADGui as Gui
     import Draft_rc
+
     # The module is used to prevent complaints from code checkers (flake8)
     bool(Draft_rc.__name__)
 
@@ -102,23 +103,25 @@ class ViewProviderDraft(object):
     def _set_properties(self, vobj):
         """Set the properties of objects if they don't exist."""
         if not hasattr(vobj, "Pattern"):
-            vobj.addProperty("App::PropertyEnumeration",
-                             "Pattern",
-                             "Draft",
-                             QT_TRANSLATE_NOOP("App::Property",
-                                               "Defines an SVG pattern."),
-                             locked=True)
+            vobj.addProperty(
+                "App::PropertyEnumeration",
+                "Pattern",
+                "Draft",
+                QT_TRANSLATE_NOOP("App::Property", "Defines an SVG pattern."),
+                locked=True,
+            )
             patterns = list(utils.svg_patterns())
             patterns.sort()
             vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
-            vobj.addProperty("App::PropertyFloat",
-                             "PatternSize",
-                             "Draft",
-                             QT_TRANSLATE_NOOP("App::Property",
-                                               "Defines the size of the SVG pattern."),
-                             locked=True)
+            vobj.addProperty(
+                "App::PropertyFloat",
+                "PatternSize",
+                "Draft",
+                QT_TRANSLATE_NOOP("App::Property", "Defines the size of the SVG pattern."),
+                locked=True,
+            )
             vobj.PatternSize = params.get_param("HatchPatternSize")
 
     def dumps(self):
@@ -295,8 +298,8 @@ class ViewProviderDraft(object):
                         if switch is not None:
                             if switch.getChildren().getLength() > 0:
                                 innodes = switch.getChild(0).getChildren().getLength()
-                                if  innodes > 2:
-                                    r = switch.getChild(0).getChild(innodes-1)
+                                if innodes > 2:
+                                    r = switch.getChild(0).getChild(innodes - 1)
                                     i = QtCore.QFileInfo(path)
                                     if self.texture:
                                         r.removeChild(self.texture)
@@ -401,8 +404,15 @@ class ViewProviderDraft(object):
         # Facebinder, ShapeString, PanelSheet and Profile objects have their own
         # setEdit and unsetEdit.
 
-        if utils.get_type(vobj.Object) in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                                           "BSpline", "BezCurve"):
+        if utils.get_type(vobj.Object) in (
+            "Wire",
+            "Circle",
+            "Ellipse",
+            "Rectangle",
+            "Polygon",
+            "BSpline",
+            "BezCurve",
+        ):
             if not "Draft_Edit" in Gui.listCommands():
                 self.wb_before_edit = Gui.activeWorkbench()
                 Gui.activateWorkbench("DraftWorkbench")
@@ -419,8 +429,15 @@ class ViewProviderDraft(object):
         if mode == 1 or mode == 2:
             return None
 
-        if utils.get_type(vobj.Object) in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                                           "BSpline", "BezCurve"):
+        if utils.get_type(vobj.Object) in (
+            "Wire",
+            "Circle",
+            "Ellipse",
+            "Rectangle",
+            "Polygon",
+            "BSpline",
+            "BezCurve",
+        ):
             if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
                 App.activeDraftCommand.finish()
             Gui.Control.closeDialog()
@@ -434,22 +451,28 @@ class ViewProviderDraft(object):
     def setupContextMenu(self, vobj, menu):
         tp = utils.get_type(self.Object)
 
-        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline", "BezCurve", "Facebinder", "ShapeString",
-                  "PanelSheet", "Profile"):
-            action_edit = QtGui.QAction(translate("draft", "Edit"),
-                                        menu)
-            QtCore.QObject.connect(action_edit,
-                                   QtCore.SIGNAL("triggered()"),
-                                   self.edit)
+        if tp in (
+            "Wire",
+            "Circle",
+            "Ellipse",
+            "Rectangle",
+            "Polygon",
+            "BSpline",
+            "BezCurve",
+            "Facebinder",
+            "ShapeString",
+            "PanelSheet",
+            "Profile",
+        ):
+            action_edit = QtGui.QAction(translate("draft", "Edit"), menu)
+            QtCore.QObject.connect(action_edit, QtCore.SIGNAL("triggered()"), self.edit)
             menu.addAction(action_edit)
 
         if tp == "Wire":
-            action_flatten = QtGui.QAction(translate("draft", "Flatten"),
-                                           menu)
-            QtCore.QObject.connect(action_flatten,
-                                   QtCore.SIGNAL("triggered()"),
-                                   self.flatten) # The flatten function is defined in view_wire.py.
+            action_flatten = QtGui.QAction(translate("draft", "Flatten"), menu)
+            QtCore.QObject.connect(
+                action_flatten, QtCore.SIGNAL("triggered()"), self.flatten
+            )  # The flatten function is defined in view_wire.py.
             menu.addAction(action_flatten)
 
         # The default Part::FeaturePython context menu contains a `Set colors`
@@ -457,15 +480,27 @@ class ViewProviderDraft(object):
         # can only have a single face. In those cases we override this menu and
         # have to add our own `Transform` item.
         # To override the default menu this function must return `True`.
-        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline","BezCurve", "Fillet", "Point", "Shape2DView",
-                  "PanelCut", "PanelSheet", "Profile"):
-            action_transform = QtGui.QAction(Gui.getIcon("Std_TransformManip.svg"),
-                                             translate("Command", "Transform"), # Context `Command` instead of `draft`.
-                                             menu)
-            QtCore.QObject.connect(action_transform,
-                                   QtCore.SIGNAL("triggered()"),
-                                   self.transform)
+        if tp in (
+            "Wire",
+            "Circle",
+            "Ellipse",
+            "Rectangle",
+            "Polygon",
+            "BSpline",
+            "BezCurve",
+            "Fillet",
+            "Point",
+            "Shape2DView",
+            "PanelCut",
+            "PanelSheet",
+            "Profile",
+        ):
+            action_transform = QtGui.QAction(
+                Gui.getIcon("Std_TransformManip.svg"),
+                translate("Command", "Transform"),  # Context `Command` instead of `draft`.
+                menu,
+            )
+            QtCore.QObject.connect(action_transform, QtCore.SIGNAL("triggered()"), self.transform)
             menu.addAction(action_transform)
             return True
 
@@ -501,8 +536,9 @@ class ViewProviderDraft(object):
             return ":/icons/Draft_N-Curve.svg"
         if tp in ("ShapeString"):
             return ":/icons/Draft_ShapeString_tree.svg"
-        if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
+        if hasattr(self.Object, "AutoUpdate") and not self.Object.AutoUpdate:
             import TechDrawGui
+
             return ":/icons/TechDraw_TreePageUnsync.svg"
         return ":/icons/Draft_Draft.svg"
 

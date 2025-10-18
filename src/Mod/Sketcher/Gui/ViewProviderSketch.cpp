@@ -963,9 +963,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         }
     }
 
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
         getCoordsOnSketchPlane(pos, normal, x, y);
-        snapManager->snap(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
     }
     catch (const Base::ZeroDivisionError&) {
         return false;
@@ -1436,10 +1437,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
     SbLine line;
     getProjectingLine(cursorPos, viewer, line);
 
-    double x, y;
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
+        double x, y;
         getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y);
-        snapManager->snap(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
     }
     catch (const Base::ZeroDivisionError&) {
         return false;
@@ -1488,27 +1490,31 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             }
             resetPreselectPoint();
             return true;
-        case STATUS_SELECT_Constraint:
+        case STATUS_SELECT_Constraint: {
             setSketchMode(STATUS_SKETCH_DragConstraint);
             drag.DragConstraintSet = preselection.PreselectConstraintSet;
-            drag.xInit = x;
-            drag.yInit = y;
+            Base::Vector2d selectionPos = snapHandle->compute();
+            drag.xInit = selectionPos.x;
+            drag.yInit = selectionPos.y;
             resetPreselectPoint();
             return true;
+        }
         case STATUS_SKETCH_Drag: {
-            doDragStep(x, y);
+            Base::Vector2d dragPos = snapHandle->compute();
+            doDragStep(dragPos.x, dragPos.y);
             return true;
         }
         case STATUS_SKETCH_DragConstraint:
             if (!drag.DragConstraintSet.empty()) {
+                Base::Vector2d dragPos = snapHandle->compute();
                 auto idset = drag.DragConstraintSet;
                 for (int id : idset) {
-                    moveConstraint(id, Base::Vector2d(x, y));
+                    moveConstraint(id, Base::Vector2d(dragPos.x, dragPos.y));
                 }
             }
             return true;
         case STATUS_SKETCH_UseHandler:
-            sketchHandler->mouseMove(Base::Vector2d(x, y));
+            sketchHandler->mouseMove(*snapHandle);
             if (preselectChanged) {
                 editCoinManager->drawConstraintIcons();
                 sketchHandler->applyCursor();
@@ -1617,7 +1623,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
         getCoordsOnSketchPlane(
             line2.getPosition(), line2.getDirection(), drag.xInit, drag.yInit);
-        snapManager->snap(drag.xInit, drag.yInit);
+        snapManager->snap(Base::Vector2d(drag.xInit, drag.yInit), SnapType::All);
     };
 
     if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
@@ -2770,14 +2776,11 @@ bool ViewProviderSketch::selectAll()
 
         const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
 
-        int VertexId = -1;
         int GeoId = 0;
 
-        auto selectVertex = [this](int &vertexId, int numberOfVertices) {
-            for (int i = 0; i < numberOfVertices; i++) {
-                vertexId++;
-                addSelection2(fmt::format("Vertex{}", vertexId + 1));
-            }
+        auto selectVertex = [this](int geoId, Sketcher::PointPos pos) {
+            int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
+            addSelection2(fmt::format("Vertex{}", vertexId + 1));
         };
 
         auto selectEdge = [this](int GeoId) {
@@ -2803,18 +2806,21 @@ bool ViewProviderSketch::selectAll()
             }
 
             if ((*it)->is<Part::GeomPoint>()) {
-                selectVertex(VertexId, 1);
+                selectVertex(GeoId, Sketcher::PointPos::start);
             }
             else if ((*it)->is<Part::GeomLineSegment>() || (*it)->is<Part::GeomBSplineCurve>()) {
-                selectVertex(VertexId, 2); // Start + End
+                selectVertex(GeoId, Sketcher::PointPos::start);
+                selectVertex(GeoId, Sketcher::PointPos::end);
                 selectEdge(GeoId);
             }
             else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
-                selectVertex(VertexId, 1); // Center
+                selectVertex(GeoId, Sketcher::PointPos::mid);
                 selectEdge(GeoId);
             }
             else if ((*it)->isDerivedFrom<Part::GeomArcOfConic>()) {
-                selectVertex(VertexId, 3); // Start + End + Center
+                selectVertex(GeoId, Sketcher::PointPos::start);
+                selectVertex(GeoId, Sketcher::PointPos::end);
+                selectVertex(GeoId, Sketcher::PointPos::mid);
                 selectEdge(GeoId);
             }
             else {

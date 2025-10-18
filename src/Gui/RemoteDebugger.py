@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #/******************************************************************************
 # *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>        *
 # *                                                                            *

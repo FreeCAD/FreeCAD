@@ -24,6 +24,13 @@
     <number>0</number>
    </property>
    <item>
+    <widget class="QCheckBox" name="enableCheckbox">
+     <property name="text">
+      <string>Direction 2</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Direction</string>
@@ -191,3 +198,4 @@
  <resources/>
  <connections/>
 </ui>
+

@@ -394,6 +394,9 @@ class ObjectSlot(PathOp.ObjectOp):
                     self.updateEnumerations(obj)
                     self.opSetEditorModes(obj)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
         job = PathUtils.findParentJob(obj)

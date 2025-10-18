@@ -25,20 +25,25 @@
 #include <Base/Interpreter.h>
 
 
-namespace DraftUtils {
-class Module : public Py::ExtensionModule<Module>
+namespace DraftUtils
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("DraftUtils")
+    Module()
+        : Py::ExtensionModule<Module>("DraftUtils")
     {
-        add_varargs_method("readDXF",&Module::readDXF,
-            "readDXF(filename,[document,ignore_errors]): "
-            "Imports a DXF file into the given document. "
-            "ignore_errors is True by default. "
-            "NOTE: DraftUtils.readDXF is removed. "
-            "Use Import.readDxf instead."
-        );
-        initialize("The DraftUtils module contains utility functions for the Draft module."); // register with Python
+        add_varargs_method("readDXF",
+                           &Module::readDXF,
+                           "readDXF(filename,[document,ignore_errors]): "
+                           "Imports a DXF file into the given document. "
+                           "ignore_errors is True by default. "
+                           "NOTE: DraftUtils.readDXF is removed. "
+                           "Use Import.readDxf instead.");
+        initialize(
+            "The DraftUtils module contains utility functions for the Draft module.");  // register
+                                                                                        // with
+                                                                                        // Python
     }
 
 private:
@@ -55,4 +60,4 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace DraftUtils
+}  // namespace DraftUtils

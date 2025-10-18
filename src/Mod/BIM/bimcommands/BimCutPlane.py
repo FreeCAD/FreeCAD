@@ -35,40 +35,57 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
-
 class Arch_CutPlane:
     "the Arch CutPlane command definition"
 
     def GetResources(self):
-       return {"Pixmap": "Arch_CutPlane",
-               "MenuText": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut With Plane"),
-               "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut an object with a plane")}
+        return {
+            "Pixmap": "Arch_CutPlane",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut With Plane"),
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut an object with a plane"),
+        }
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v and len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
-        import  ArchCutPlane
-        baseObj, baseShp, cutterShp = ArchCutPlane._getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
+        import ArchCutPlane
+
+        baseObj, baseShp, cutterShp = ArchCutPlane._getShapes(
+            FreeCADGui.Selection.getSelectionEx("", 0)
+        )
         if baseObj is None:
             FreeCAD.Console.PrintError(
-                translate("Arch", "Select two objects, an object to be cut and an object defining a cutting plane, in that order")+"\n")
+                translate(
+                    "Arch",
+                    "Select two objects, an object to be cut and an object defining a cutting plane, in that order",
+                )
+                + "\n"
+            )
             return
         if baseShp is None:
-            FreeCAD.Console.PrintError(translate("Arch", "The first object does not have a shape")+"\n")
+            FreeCAD.Console.PrintError(
+                translate("Arch", "The first object does not have a shape") + "\n"
+            )
             return
         if cutterShp is None:
-            FreeCAD.Console.PrintError(translate("Arch", "The second object does not define a plane")+"\n")
+            FreeCAD.Console.PrintError(
+                translate("Arch", "The second object does not define a plane") + "\n"
+            )
             return
-        panel= CutPlaneTaskPanel()
+        panel = CutPlaneTaskPanel()
         FreeCADGui.Control.showDialog(panel)
+
 
 class CutPlaneTaskPanel:
     def __init__(self):
         import ArchCutPlane
         from PySide import QtCore, QtGui
-        _, self.base, self.cutter = ArchCutPlane._getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
+
+        _, self.base, self.cutter = ArchCutPlane._getShapes(
+            FreeCADGui.Selection.getSelectionEx("", 0)
+        )
 
         self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
         self.previewObj.ViewObject.ShapeColor = (1.00, 0.00, 0.00)
@@ -80,12 +97,14 @@ class CutPlaneTaskPanel:
         self.grid.setObjectName("grid")
         self.title = QtGui.QLabel(self.form)
         self.grid.addWidget(self.title, 1, 0)
-        self.infoText =  QtGui.QLabel(self.form)
+        self.infoText = QtGui.QLabel(self.form)
         self.grid.addWidget(self.infoText, 2, 0)
         self.combobox = QtGui.QComboBox()
         self.combobox.setCurrentIndex(0)
         self.grid.addWidget(self.combobox, 2, 1)
-        QtCore.QObject.connect(self.combobox,QtCore.SIGNAL("currentIndexChanged(int)"), self.previewCutVolume)
+        QtCore.QObject.connect(
+            self.combobox, QtCore.SIGNAL("currentIndexChanged(int)"), self.previewCutVolume
+        )
         self.retranslateUi(self.form)
         self.previewCutVolume(self.combobox.currentIndex())
 
@@ -110,10 +129,12 @@ class CutPlaneTaskPanel:
 
     def getStandardButtons(self):
         from PySide import QtGui
+
         return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def previewCutVolume(self, i):
         import Arch
+
         cutVolume = Arch.getCutVolume(self.cutter, self.base)
         if i == 1:
             cutVolume = cutVolume[1]

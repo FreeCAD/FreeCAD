@@ -99,9 +99,11 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         _err(translate("draft", "Wrong input: point_object not in document."))
         return None
 
-    if not ((hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"))
-            or hasattr(point_object, "Mesh")
-            or hasattr(point_object, "Points")):
+    if not (
+        (hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"))
+        or hasattr(point_object, "Mesh")
+        or hasattr(point_object, "Points")
+    ):
         _err(translate("draft", "Wrong input: object has the wrong type."))
         return None
 
@@ -109,10 +111,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         extra = App.Placement()
 
     try:
-        utils.type_check([(extra, (App.Placement,
-                                   App.Vector,
-                                   App.Rotation))],
-                         name=_name)
+        utils.type_check([(extra, (App.Placement, App.Vector, App.Rotation))], name=_name)
     except TypeError:
         _err(translate("draft", "Wrong input: must be a placement, a vector, or a rotation."))
         return None
@@ -126,8 +125,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     if use_link:
         # The PointArray class must be called in this special way
         # to make it a LinkArray
-        new_obj = doc.addObject("Part::FeaturePython", "PointArray",
-                                PointArray(None), None, True)
+        new_obj = doc.addObject("Part::FeaturePython", "PointArray", PointArray(None), None, True)
     else:
         new_obj = doc.addObject("Part::FeaturePython", "PointArray")
         PointArray(new_obj)
@@ -140,7 +138,9 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         if use_link:
             ViewProviderDraftLink(new_obj.ViewObject)
         else:
-            new_obj.Proxy.execute(new_obj) # Updates Count which is required for correct DiffuseColor.
+            new_obj.Proxy.execute(
+                new_obj
+            )  # Updates Count which is required for correct DiffuseColor.
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.format_object(new_obj, new_obj.Base)
             new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
@@ -152,8 +152,9 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
 
 def makePointArray(base, ptlst):
     """Create PointArray. DEPRECATED. Use 'make_point_array'."""
-    utils.use_instead('make_point_array')
+    utils.use_instead("make_point_array")
 
     return make_point_array(base, ptlst)
+
 
 ## @}

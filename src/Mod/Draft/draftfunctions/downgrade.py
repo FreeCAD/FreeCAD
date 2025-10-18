@@ -247,7 +247,6 @@ def downgrade(objects, delete=False, force=None):
             return True
         return False
 
-
     # helper functions (same as in upgrade.py)
 
     def get_parent(obj):
@@ -311,7 +310,6 @@ def downgrade(objects, delete=False, force=None):
         for newobj in new_list:
             gui_utils.format_object(newobj, obj, ignore_construction=True)
 
-
     doc = App.ActiveDocument
     add_list = []
     delete_list = []
@@ -347,15 +345,15 @@ def downgrade(objects, delete=False, force=None):
 
     elif force:
         # functions that work on a single object:
-        single_funcs = {"explode": explode,
-                        "getWire": getWire,
-                        "shapify": _shapify}
+        single_funcs = {"explode": explode, "getWire": getWire, "shapify": _shapify}
         # functions that work on multiple objects:
-        multi_funcs = {"cut2": cut2,
-                       "splitCompounds": splitCompounds,
-                       "splitFaces": splitFaces,
-                       "splitWires": splitWires,
-                       "subtr": subtr}
+        multi_funcs = {
+            "cut2": cut2,
+            "splitCompounds": splitCompounds,
+            "splitFaces": splitFaces,
+            "splitWires": splitWires,
+            "subtr": subtr,
+        }
         if force in single_funcs:
             result = any([single_funcs[force](obj) for obj in objects])
         elif force in multi_funcs:
@@ -388,21 +386,21 @@ def downgrade(objects, delete=False, force=None):
                 _msg(translate("draft", "Found 1 array: exploding it"))
 
         # special case, we have one parametric object: we "de-parametrize" it
-        elif len(objects) == 1 \
-                and hasattr(objects[0], "Shape") \
-                and (
-                    hasattr(objects[0], "Base")
-                    or hasattr(objects[0], "Profile")
-                    or hasattr(objects[0], "Sections")
-                ):
+        elif (
+            len(objects) == 1
+            and hasattr(objects[0], "Shape")
+            and (
+                hasattr(objects[0], "Base")
+                or hasattr(objects[0], "Profile")
+                or hasattr(objects[0], "Sections")
+            )
+        ):
             result = _shapify(objects[0])
             if result:
                 _msg(translate("draft", "Found 1 parametric object: breaking its dependencies"))
 
         # we have one multi-solids compound object: extract its solids
-        elif len(objects) == 1 \
-                and hasattr(objects[0], "Shape") \
-                and len(solids) > 1:
+        elif len(objects) == 1 and hasattr(objects[0], "Shape") and len(solids) > 1:
             result = splitCompounds(objects)
             if result:
                 _msg(translate("draft", "Found 1 multi-solids compound: exploding it"))
@@ -423,7 +421,11 @@ def downgrade(objects, delete=False, force=None):
             elif same_parent and same_parent_type != "PartDesign::Body":
                 result = subtr(objects)
                 if result:
-                    _msg(translate("draft", "Found several faces: subtracting them from the first one"))
+                    _msg(
+                        translate(
+                            "draft", "Found several faces: subtracting them from the first one"
+                        )
+                    )
 
         # only one face: we extract its wires
         elif len(faces) > 0:
@@ -447,5 +449,6 @@ def downgrade(objects, delete=False, force=None):
 
     gui_utils.select(add_list)
     return add_list, delete_list
+
 
 ## @}

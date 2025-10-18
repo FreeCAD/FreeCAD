@@ -20,8 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the grid observer for the Draft and BIM workbenches.
-"""
+"""Provide the grid observer for the Draft and BIM workbenches."""
 
 import FreeCAD
 
