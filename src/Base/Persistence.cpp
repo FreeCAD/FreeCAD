@@ -37,6 +37,10 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Persistence.h"
 
+#include <QChar>
+#include <QVector>
+#include <QByteArray>
+
 
 using namespace Base;
 
@@ -115,13 +119,35 @@ std::string Persistence::encodeAttribute(const std::string& str)
 
 // clang-format off
 // https://www.w3.org/TR/xml/#charsets
+// Nominally allowed ranges
 static constexpr std::array<std::pair<char32_t, char32_t>, 6> validRanges {{
-    {0x9, 0x9},
-    {0xA, 0xA},
-    {0xD, 0xD},
+    {0x9, 0x9}, // TAB -- explicitly allowed
+    {0xA, 0xA}, // LF -- explicitly allowed
+    {0xD, 0xD}, // CR -- explicitly allowed
     {0x20, 0xD7FF},
     {0xE000, 0xFFFD},
-    {0x10000, 0x10FFFF},
+    {0x10000, 0x10FFFF}
+}};
+static constexpr std::array<std::pair<char32_t, char32_t>, 19> discouragedRanges {{
+    {0x7F, 0x84},
+    {0x86, 0x9F},
+    {0xFDD0, 0xFDEF},
+    {0x1FFFE, 0x1FFFF},
+    {0x2FFFE, 0x2FFFF},
+    {0x3FFFE, 0x3FFFF},
+    {0x4FFFE, 0x4FFFF},
+    {0x5FFFE, 0x5FFFF},
+    {0x6FFFE, 0x6FFFF},
+    {0x7FFFE, 0x7FFFF},
+    {0x8FFFE, 0x8FFFF},
+    {0x9FFFE, 0x9FFFF},
+    {0xAFFFE, 0xAFFFF},
+    {0xBFFFE, 0xBFFFF},
+    {0xCFFFE, 0xCFFFF},
+    {0xDFFFE, 0xDFFFF},
+    {0xEFFFE, 0xEFFFF},
+    {0xFFFFE, 0xFFFFF},
+    {0x10FFFE, 0x10FFFF}
 }};
 // clang-format on
 
@@ -131,21 +157,71 @@ static constexpr std::array<std::pair<char32_t, char32_t>, 6> validRanges {{
  */
 std::string Persistence::validateXMLString(const std::string& str)
 {
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
-    std::u32string cp_in = cvt.from_bytes(str);
-    std::u32string cp_out;
-    cp_out.reserve(cp_in.size());
-    for (auto cp : cp_in) {
-        if (std::any_of(validRanges.begin(), validRanges.end(), [cp](const auto& range) {
-                return cp >= range.first && cp <= range.second;
-            })) {
-            cp_out += cp;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    // In newer Qt we cannot use QString::toUcs4, so we have to do it the long way...
+
+    const QString input = QString::fromUtf8(str);
+    QString output;
+    output.reserve(input.size());
+
+    for (auto it = input.cbegin(); it != input.cend();) {
+        const auto cp = static_cast<char32_t>(it->unicode());
+        const uint ch = it->unicode();
+        ++it;
+
+        if (QChar::isHighSurrogate(ch) && it != input.cend()
+            && QChar::isLowSurrogate(static_cast<char32_t>(it->unicode()))) {
+            // We are outside the "Basic Multilingual Plane (BMP)" (directly storable in a UTF-16
+            // char, which is what QString uses internally). So now we have to use *two* chars,
+            // combine them into one for our check, and then run the validity check for XML output.
+            const uint low = it->unicode();
+            ++it;
+            const char32_t full = QChar::surrogateToUcs4(ch, low);
+            const bool valid = std::ranges::any_of(validRanges, [full](const auto& r) {
+                return full >= r.first && full <= r.second;
+            });
+            const bool discouraged = std::ranges::any_of(discouragedRanges, [full](const auto& r) {
+                return full >= r.first && full <= r.second;
+            });
+            output.append((valid && !discouraged) ? QChar::fromUcs4(full) : QChar::fromUcs4('_'));
         }
         else {
-            cp_out += '_';
+            // The character fits into 16 bytes, it can be checked directly
+            const bool valid = std::ranges::any_of(validRanges, [cp](const auto& r) {
+                return cp >= r.first && cp <= r.second;
+            });
+            const bool discouraged = std::ranges::any_of(discouragedRanges, [cp](const auto& r) {
+                return cp >= r.first && cp <= r.second;
+            });
+            output.append((valid && !discouraged) ? QChar(ch) : QChar::fromUcs2('_'));
         }
     }
-    return cvt.to_bytes(cp_out);
+
+    const QByteArray utf8 = output.toUtf8();
+    return {utf8.constData(), static_cast<size_t>(utf8.size())};
+#else
+    // In older Qt we can directly use QString::toUcs4, which makes for a bit simpler code
+    const QString input = QString::fromStdString(str);
+    const QVector<uint> ucs4 = input.toUcs4();
+
+    QVector<uint> filtered;
+    filtered.reserve(ucs4.size());
+
+    for (uint cp : ucs4) {
+        const char32_t c32 = static_cast<char32_t>(cp);
+        const bool ok = std::ranges::any_of(validRanges, [c32](const auto& r) {
+            return c32 >= r.first && c32 <= r.second;
+        });
+        const bool discouraged = std::ranges::any_of(discouragedRanges, [c32](const auto& r) {
+            return c32 >= r.first && c32 <= r.second;
+        });
+        filtered.push_back((ok && !discouraged) ? cp : static_cast<uint>(U'_'));
+    }
+
+    const QString output = QString::fromUcs4(filtered.constData(), filtered.size());
+    const QByteArray utf8 = output.toUtf8();
+    return {utf8.constData(), static_cast<size_t>(utf8.size())};
+#endif
 }
 
 void Persistence::dumpToStream(std::ostream& stream, int compression)
