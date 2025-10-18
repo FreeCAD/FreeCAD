@@ -90,8 +90,6 @@ void TaskExtrudeParameters::setupDialog()
     ui->ZDirectionEdit->setDecimals(UserDecimals);
 
     ui->checkBoxAlongDirection->setChecked(extrude->AlongSketchNormal.getValue());
-    ui->checkBoxDirection->setChecked(extrude->UseCustomVector.getValue());
-    onDirectionToggled(ui->checkBoxDirection->isChecked());
 
     ui->XDirectionEdit->setValue(extrude->Direction.getValue().x);
     ui->YDirectionEdit->setValue(extrude->Direction.getValue().y);
@@ -312,8 +310,6 @@ void TaskExtrudeParameters::connectSlots()
             this, &TaskExtrudeParameters::onDirectionCBChanged);
     connect(ui->checkBoxAlongDirection, &QCheckBox::toggled,
             this, &TaskExtrudeParameters::onAlongSketchNormalChanged);
-    connect(ui->checkBoxDirection, &QCheckBox::toggled,
-            this, &TaskExtrudeParameters::onDirectionToggled);
     connect(ui->XDirectionEdit, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &TaskExtrudeParameters::onXDirectionEditChanged);
     connect(ui->YDirectionEdit, qOverload<double>(&QDoubleSpinBox::valueChanged),
@@ -732,10 +728,14 @@ void TaskExtrudeParameters::fillDirectionCombo()
     bool hasCustom = extrude->UseCustomVector.getValue();
     if (indexOfCurrent != -1 && !hasCustom) {
         ui->directionCB->setCurrentIndex(indexOfCurrent);
+        updateDirectionEdits();
+        setDirectionMode(indexOfCurrent);
     }
     if (hasCustom) {
         ui->directionCB->setCurrentIndex(DirectionModes::Custom);
+        setDirectionMode(ui->directionCB->currentIndex());
     }
+
 }
 
 void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj,
@@ -773,10 +773,6 @@ void TaskExtrudeParameters::updateWholeUI(Type type, Side side)
     // Side 2 is only visible if in TwoSides mode, and we pass whether it should receive focus.
     updateSideUI(m_side2, type, mode2, isSide2GroupVisible, (side == Side::Second));
 
-    bool side1HasLength = (mode1 == Mode::Dimension);
-    bool side2HasLength = (sidesMode == SidesMode::TwoSides && mode2 == Mode::Dimension);
-    ui->checkBoxAlongDirection->setVisible(side1HasLength || side2HasLength);
-  
     ui->checkBoxReversed->setEnabled(sidesMode != SidesMode::Symmetric || mode1 != Mode::Dimension);
 }
 
@@ -909,16 +905,6 @@ void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
     }
 }
 
-void TaskExtrudeParameters::onDirectionToggled(bool on)
-{
-    if (on) {
-        ui->groupBoxDirection->show();
-    }
-    else {
-        ui->groupBoxDirection->hide();
-    }
-}
-
 void TaskExtrudeParameters::onAllFacesToggled(bool on, Side side)
 {
     auto& sideCtrl = getSideController(side);
@@ -992,33 +978,49 @@ void TaskExtrudeParameters::setDirectionMode(int index)
         return;
     }
 
-    // disable AlongSketchNormal when the direction is already normal
-    if (index == DirectionModes::Normal) {
-        ui->checkBoxAlongDirection->setEnabled(false);
-    }
-    else {
-        ui->checkBoxAlongDirection->setEnabled(true);
-    }
+    switch (index) {
 
-    // if custom direction is used, show it
-    if (index == DirectionModes::Custom) {
-        ui->checkBoxDirection->setChecked(true);
-        extrude->UseCustomVector.setValue(true);
-    }
-    else {
-        extrude->UseCustomVector.setValue(false);
-    }
+        case DirectionModes::Normal:
+            ui->groupBoxDirection->hide();
 
-    // if we don't use custom direction, only allow one to show its direction
-    if (index != DirectionModes::Custom) {
-        ui->XDirectionEdit->setEnabled(false);
-        ui->YDirectionEdit->setEnabled(false);
-        ui->ZDirectionEdit->setEnabled(false);
-    }
-    else {
-        ui->XDirectionEdit->setEnabled(true);
-        ui->YDirectionEdit->setEnabled(true);
-        ui->ZDirectionEdit->setEnabled(true);
+            extrude->UseCustomVector.setValue(false);
+            ui->XDirectionEdit->setEnabled(false);
+            ui->YDirectionEdit->setEnabled(false);
+            ui->ZDirectionEdit->setEnabled(false);
+
+            ui->checkBoxAlongDirection->setEnabled(false);
+            ui->checkBoxAlongDirection->hide();
+
+            break;
+
+        // Covered by the default option
+        // case DirectionModes::Select:
+
+        case DirectionModes::Custom:
+            ui->groupBoxDirection->show();
+
+            extrude->UseCustomVector.setValue(true);
+            ui->XDirectionEdit->setEnabled(true);
+            ui->YDirectionEdit->setEnabled(true);
+            ui->ZDirectionEdit->setEnabled(true);
+
+            ui->checkBoxAlongDirection->setEnabled(true);
+            ui->checkBoxAlongDirection->show();
+            break;
+
+        default:
+            ui->groupBoxDirection->show();
+
+            updateDirectionEdits();
+
+            extrude->UseCustomVector.setValue(false);
+            ui->XDirectionEdit->setEnabled(false);
+            ui->YDirectionEdit->setEnabled(false);
+            ui->ZDirectionEdit->setEnabled(false);
+
+            ui->checkBoxAlongDirection->setEnabled(true);
+            ui->checkBoxAlongDirection->show();
+            break;
     }
 }
 
