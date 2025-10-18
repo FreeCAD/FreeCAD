@@ -1849,8 +1849,8 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs",
             ),
         )
-        obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
-        obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
+        obj.setEditorMode("OrderCutsByRegion", 2)
+        obj.setEditorMode("ZStockToLeave", 2)
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
