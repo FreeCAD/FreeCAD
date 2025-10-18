@@ -2041,6 +2041,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     double labelAngle = 0.0;
 
     anglePoints anglePoints = dimension->getAnglePoints();
+    if (auto* detail = dynamic_cast<const TechDraw::DrawViewDetail*>(dimension->getViewPart())) {
+        anglePoints.vertex(detail->AnchorPoint.getValue());
+    }
 
     Base::Vector2d angleVertex = fromQtApp(anglePoints.vertex());
     Base::Vector2d startPoint = fromQtApp(anglePoints.first());
