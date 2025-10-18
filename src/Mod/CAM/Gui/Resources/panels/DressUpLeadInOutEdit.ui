@@ -57,26 +57,20 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Radius/length (% tool radius)</string>
+           <string>Radius/length</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dspPercentageRadiusIn">
+         <widget class="QDoubleSpinBox" name="dspRadiusIn">
           <property name="toolTip">
-           <string>Length of the Lead-in, as a percentage of tool radius</string>
-          </property>
-          <property name="decimals">
-           <number>0</number>
+           <string>Length of the Lead-in</string>
           </property>
           <property name="minimum">
-           <double>1.000000000000000</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="maximum">
            <double>999999.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>10.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
@@ -175,26 +169,20 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Radius/length (% tool radius)</string>
+           <string>Radius/length</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dspPercentageRadiusOut">
+         <widget class="QDoubleSpinBox" name="dspRadiusOut">
           <property name="toolTip">
-           <string>Length of the Lead-out, as a percentage of tool radius</string>
-          </property>
-          <property name="decimals">
-           <number>0</number>
+           <string>Length of the Lead-out</string>
           </property>
           <property name="minimum">
-           <double>1.000000000000000</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="maximum">
            <double>999999.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>10.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
