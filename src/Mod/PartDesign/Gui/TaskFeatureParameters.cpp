@@ -200,8 +200,8 @@ bool TaskDlgFeatureParameters::accept()
       QString statusText = QString::fromUtf8(getObject()->getStatusString());
 
       // generic, fallback error message
-      if (errorText == "Error" || errorText.isEmpty()) {
-        if (!statusText.isEmpty() && statusText != "Error") {
+      if (errorText == QStringLiteral("Error") || errorText.isEmpty()) {
+        if (!statusText.isEmpty() && statusText != QStringLiteral("Error")) {
           errorText = statusText;
         } else {
           errorText = tr("The feature could not be created with the given parameters.\n"
