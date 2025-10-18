@@ -33,8 +33,8 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
-    """Test the refactored_test_post.py postprocessor G codes."""
+class TestPostGCodes(PathTestUtils.PathTestBase):
+    """Test the test_post.py postprocessor G codes."""
 
     @classmethod
     def setUpClass(cls):
@@ -50,7 +50,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_test")
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "test")
         # locate the operation named "Profile"
         for op in cls.job.Operations.Group:
             if op.Label == "Profile":

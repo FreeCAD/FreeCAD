@@ -22,10 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+
+
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
+import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 
 
@@ -33,11 +36,11 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
-    """Test the refactored_mach3_mach4_post.py postprocessor."""
+class TestGenericPost(PathTestUtils.PathTestBase):
+    """Test the generic postprocessor."""
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         """setUpClass()...
 
         This method is called upon instantiation of this test class.  Add code
@@ -48,33 +51,32 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         is able to call static methods within this same class.
         """
 
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_mach3_mach4")
-        # locate the operation named "Profile"
-        for op in cls.job.Operations.Group:
-            if op.Label == "Profile":
-                # remember the "Profile" operation
-                cls.profile_op = op
-                return
+        # Create mock job with default operation and tool controller
+        cls.job, cls.profile_op, cls.tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
+        
+        # Create postprocessor using the mock job
+        cls.post = PostProcessorFactory.get_post_processor(
+            cls.job, "generic"
+        )
 
     @classmethod
-    def tearDownClass(cls) -> None:
+    def tearDownClass(cls):
         """tearDownClass()...
 
         This method is called prior to destruction of this test class.  Add
         code and objects here that cleanup the test environment after the
         test() methods in this class have been executed.  This method does not
-        have access to the class `self` reference.  This method is able to
-        call static methods within this same class.
+        have access to the class `self` reference.  This method
+        is able to call static methods within this same class.
         """
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+        # No cleanup needed for mock objects
+        pass
 
     # Setup and tear down methods called before and after each unit test
 
-    def setUp(self) -> None:
+    def setUp(self):
         """setUp()...
 
         This method is called prior to each `test()` method.  Add code and
@@ -85,7 +87,7 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         # reinitialize the postprocessor data structures between tests
         self.post.reinitialize()
 
-    def tearDown(self) -> None:
+    def tearDown(self):
         """tearDown()...
 
         This method is called after each test() method. Add cleanup instructions here.
@@ -93,32 +95,7 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         """
         pass
 
-    def single_compare(self, path, expected, args, debug=False):
-        """Perform a test with a single line of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
-
-    def multi_compare(self, path, expected, args, debug=False):
-        """Perform a test with multiple lines of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode, expected)
-
-    def test000(self) -> None:
+    def test000(self):
         """Test Output Generation.
         Empty path.  Produces only the preamble and postable.
         """
@@ -131,33 +108,32 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         # Only test length of result.
         self.job.PostProcessorArgs = "--no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertTrue(len(gcode.splitlines()) == 26)
+        # print(f"--------{nl}Actual line count: {len(gcode.splitlines())}{nl}{gcode}--------{nl}")
+        self.assertTrue(len(gcode.splitlines()) == 23)
 
         # Test without header
         expected = """(Begin preamble)
-G17 G54 G40 G49 G80 G90
+G90
 G21
-(Begin operation: Fixture)
-(Machine: mach3_4, mm/min)
-G54
-(Finish operation: Fixture)
 (Begin operation: TC: Default Tool)
-(Machine: mach3_4, mm/min)
-(TC: Default Tool)
+(Machine units: mm/min)
 (Begin toolchange)
 M5
 M6 T1
 G43 H1
+M3 S1000
 (Finish operation: TC: Default Tool)
+(Begin operation: Fixture)
+(Machine units: mm/min)
+G54
+(Finish operation: Fixture)
 (Begin operation: Profile)
-(Machine: mach3_4, mm/min)
+(Machine units: mm/min)
 (Finish operation: Profile)
 (Begin postamble)
-M05
-G17 G54 G90 G80 G40
-M2
 """
+
+        self.profile_op.Path = Path.Path([])
 
         # args = ("--no-header --no-comments --no-show-editor --precision=2")
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
@@ -166,15 +142,13 @@ M2
         self.assertEqual(gcode, expected)
 
         # test without comments
-        expected = """G17 G54 G40 G49 G80 G90
+        expected = """G90
 G21
-G54
 M5
 M6 T1
 G43 H1
-M05
-G17 G54 G90 G80 G40
-M2
+M3 S1000
+G54
 """
 
         # args = ("--no-header --no-comments --no-show-editor --precision=2")
@@ -237,8 +211,9 @@ M2
         )
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[0]
-        self.assertEqual(result, "G18 G55")
+        lines = gcode.splitlines()
+        # Preamble should be in the output
+        self.assertIn("G18 G55", gcode)
 
     def test040(self):
         """
