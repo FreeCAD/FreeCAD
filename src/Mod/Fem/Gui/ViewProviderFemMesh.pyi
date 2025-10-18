@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
-
 @export(
     Include="Mod/Fem/Gui/ViewProviderFemMesh.h",
     Namespace="FemGui",
@@ -44,7 +43,6 @@ class ViewProviderFemMesh(ViewProviderGeometryObject):
     def setNodeDisplacementByVectors(self) -> Any:
         """"""
         ...
-
     NodeColor: dict
     """Postprocessing color of the nodes. The faces between the nodes get interpolated."""
 

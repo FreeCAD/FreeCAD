@@ -10,7 +10,6 @@ from Base.Metadata import export, no_args
 from Part.App.TopoShape import TopoShape
 from CAM.App.Command import Command
 
-
 @export(
     Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
     FatherInclude="Base/BaseClassPy.h",

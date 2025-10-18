@@ -7,7 +7,6 @@ from typing import Final, Any
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
-
 @export(
     Include="Mod/Mesh/App/Edge.h",
     Namespace="Mesh",
@@ -46,7 +45,6 @@ class Edge(PyObjectBase):
         After calling unbound() no topological operation will
         work!"""
         ...
-
     Index: Final[int]
     """The index of this edge of the facet"""
 

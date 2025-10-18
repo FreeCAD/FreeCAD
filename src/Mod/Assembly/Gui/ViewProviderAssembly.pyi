@@ -51,7 +51,6 @@ class ViewProviderAssembly(ViewProvider):
         Restores the visual state of all components, clearing any active isolation.
         """
         ...
-
     EnableMovement: bool
     """Enable moving the parts by clicking and dragging."""
 

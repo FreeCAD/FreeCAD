@@ -7,7 +7,6 @@ from typing import Any
 from Base.BaseClass import PyObjectBase
 from Base.Metadata import export
 
-
 @export(
     Include="Mod/Surface/App/Blending/BlendCurve.h",
     Namespace="Surface",

@@ -27,10 +27,8 @@ class Path(Persistence):
 
     @overload
     def addCommands(self, command: Command, /) -> Path: ...
-
     @overload
     def addCommands(self, commands: list[Command], /) -> Path: ...
-
     def addCommands(self, arg: Union[Command, list[Command]], /) -> Path:
         """adds a command or a list of commands at the end of the path"""
         ...
@@ -62,10 +60,11 @@ class Path(Persistence):
         ...
 
     @constmethod
-    def getCycleTime(self, h_feed: float, v_feed: float, h_rapid: float, v_rapid: float, /) -> float:
+    def getCycleTime(
+        self, h_feed: float, v_feed: float, h_rapid: float, v_rapid: float, /
+    ) -> float:
         """return the cycle time estimation for this path in s"""
         ...
-
     Length: Final[float]
     """the total length of this path in mm"""
 

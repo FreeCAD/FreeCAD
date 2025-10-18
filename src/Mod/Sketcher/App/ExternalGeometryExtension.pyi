@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
 
-
 @export(
     PythonName="Sketcher.ExternalGeometryExtension",
     Include="Mod/Sketcher/App/ExternalGeometryExtension.h",
@@ -32,6 +31,5 @@ class ExternalGeometryExtension(GeometryExtension):
         Sets the given bit to true/false.
         """
         ...
-
     Ref: str = ""
     """Returns the reference string of this external geometry."""

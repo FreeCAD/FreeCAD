@@ -7,7 +7,6 @@ from typing import Any, Final
 from Base.Metadata import constmethod, export
 from Data import object
 
-
 @export(
     Father="ComplexGeoDataPy",
     Twin="PointKernel",
@@ -61,7 +60,6 @@ class Points(object):
     def fromValid(self) -> Any:
         """Get a new point object from points with valid coordinates (i.e. that are not NaN)"""
         ...
-
     CountPoints: Final[int]
     """Return the number of vertices of the points object."""
 

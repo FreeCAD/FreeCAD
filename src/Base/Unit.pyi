@@ -7,7 +7,6 @@ from PyObjectBase import PyObjectBase
 from Quantity import Quantity
 from typing import Final, Tuple, overload
 
-
 @export(
     NumberProtocol=True,
     RichCompare=True,
@@ -31,9 +30,7 @@ class Unit(PyObjectBase):
     """
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
     def __init__(
         self,
@@ -45,20 +42,13 @@ class Unit(PyObjectBase):
         i6: float,
         i7: float,
         i8: float,
-    ) -> None:
-        ...
-
+    ) -> None: ...
     @overload
-    def __init__(self, quantity: Quantity) -> None:
-        ...
-
+    def __init__(self, quantity: Quantity) -> None: ...
     @overload
-    def __init__(self, unit: Unit) -> None:
-        ...
-
+    def __init__(self, unit: Unit) -> None: ...
     @overload
-    def __init__(self, string: str) -> None:
-        ...
+    def __init__(self, string: str) -> None: ...
 
     Type: Final[str] = ...
     """holds the unit type as a string, e.g. 'Area'."""

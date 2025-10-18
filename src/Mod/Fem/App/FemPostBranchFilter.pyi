@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from Fem.FemPostFilter import FemPostFilter
 
-
 @export(
     Include="Mod/Fem/App/FemPostBranchFilter.h",
     Namespace="Fem",

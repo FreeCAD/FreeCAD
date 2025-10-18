@@ -8,7 +8,6 @@ from Vector import Vector
 from Placement import Placement
 from typing import overload
 
-
 @export(
     Constructor=True,
     Delete=True,

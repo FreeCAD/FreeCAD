@@ -83,7 +83,6 @@ class Voronoi(BaseClass):
     def numSegments(self) -> Any:
         """Return number of input segments"""
         ...
-
     Cells: Final[list]
     """List of all cells of the voronoi diagram"""
 

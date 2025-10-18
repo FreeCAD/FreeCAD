@@ -27,7 +27,6 @@ class FemPostPipeline(FemPostObject):
 
     @overload
     def read(self, file_name: str, /) -> None: ...
-
     @overload
     def read(
         self,
@@ -36,8 +35,7 @@ class FemPostPipeline(FemPostObject):
         unit: Unit,
         frame_type: str,
         /,
-        ) -> None: ...
-
+    ) -> None: ...
     def read(self, *args) -> None:
         """
         Reads in a single vtk file or creates a multiframe result by reading in multiple result files.
@@ -56,7 +54,6 @@ class FemPostPipeline(FemPostObject):
 
     @overload
     def load(self, obj: DocumentObject, /) -> None: ...
-
     @overload
     def load(
         self,
@@ -65,8 +62,7 @@ class FemPostPipeline(FemPostObject):
         unit: Unit,
         frame_type: str,
         /,
-        ) -> None: ...
-
+    ) -> None: ...
     def load(self, *args) -> Any:
         """
         Load a single result object or create a multiframe result by loading multiple result frames.
