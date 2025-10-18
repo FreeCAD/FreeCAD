@@ -57,6 +57,7 @@ public:
     // interface
     void clear();                                         // clears the internal data
     void addCommand(const Command& Cmd);                  // adds a command at the end
+    void addCommandNoRecalc(const Command& Cmd);          // adds a command without recalculation
     void insertCommand(const Command& Cmd, int);          // inserts a command
     void deleteCommand(int);                              // deletes a command
     double getLength();                                   // return the Length (mm) of the Path
