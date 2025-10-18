@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from Axis import Axis as AxisPy
@@ -40,10 +42,8 @@ class CoordinateSystem(PyObjectBase):
     Position: Vector = None
     """Set or get position."""
 
-    def setAxes(self, axis: Union[AxisPy, Vector], xDir: Vector) -> None:
+    def setAxes(self, axis: Union[AxisPy, Vector], xDir: Vector, /) -> None:
         """
-        setAxes(axis, xDir) -> None
-
         Set axis or Z-direction, and X-direction.
         The X-direction is determined from the orthonormal compononent of `xDir`
         with respect to `axis` direction.
@@ -54,40 +54,32 @@ class CoordinateSystem(PyObjectBase):
         ...
 
     @constmethod
-    def displacement(self, coordSystem2: "CoordinateSystem") -> Placement:
+    def displacement(self, coordSystem2: "CoordinateSystem", /) -> Placement:
         """
-        displacement(coordSystem2) -> Base.Placement
-
         Computes the placement from this to the passed coordinate system `coordSystem2`.
 
         coordSystem2 : Base.CoordinateSystem
         """
         ...
 
-    def transformTo(self, vector: Vector) -> Vector:
+    def transformTo(self, vector: Vector, /) -> Vector:
         """
-        transformTo(vector) -> Base.Vector
-
         Computes the coordinates of the point in coordinates of this coordinate system.
 
         vector : Base.Vector
         """
         ...
 
-    def transform(self, trans: Union[Rotation, Placement]) -> None:
+    def transform(self, trans: Union[Rotation, Placement], /) -> None:
         """
-        transform(trans) -> None
-
         Applies a transformation on this coordinate system.
 
         trans : Base.Rotation, Base.Placement
         """
         ...
 
-    def setPlacement(self, placement: Placement) -> None:
+    def setPlacement(self, placement: Placement, /) -> None:
         """
-        setPlacement(placement) -> None
-
         Set placement to the coordinate system.
 
         placement : Base.Placement

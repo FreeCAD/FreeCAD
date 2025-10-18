@@ -1,8 +1,14 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any
 
 from Base.BaseClass import BaseClass
-from Base.Metadata import export
-from Metadata import no_args
+from Base.Metadata import export, no_args
+
+from Part.App.TopoShape import TopoShape
+from CAM.App.Command import Command
 
 @export(
     Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
@@ -23,38 +29,33 @@ class CAMSim(BaseClass):
     License: LGPL-2.1-or-later
     """
 
-    def BeginSimulation(self, **kwargs) -> Any:
+    def BeginSimulation(self, stock: TopoShape, resolution: float) -> None:
         """
-        BeginSimulation(stock, resolution):
-
-                  Start a simulation process on a box shape stock with given resolution"""
+        Start a simulation process on a box shape stock with given resolution
+        """
         ...
 
     @no_args
-    def ResetSimulation(self) -> Any:
+    def ResetSimulation(self) -> None:
         """
-        ResetSimulation():
-
-                  Clear the simulation and all gcode commands"""
+        Clear the simulation and all gcode commands
+        """
         ...
 
-    def AddTool(self, **kwargs) -> Any:
+    def AddTool(self, shape: TopoShape, toolnumber: int, diameter: float, resolution: float) -> Any:
         """
-        AddTool(shape, toolnumber, diameter, resolution):
-
-                  Set the shape of the tool to be used for simulation"""
+        Set the shape of the tool to be used for simulation
+        """
         ...
 
-    def SetBaseShape(self, **kwargs) -> Any:
+    def SetBaseShape(self, shape: TopoShape, resolution: float) -> None:
         """
-        SetBaseShape(shape, resolution):
-
-                  Set the shape of the base object of the job"""
+        Set the shape of the base object of the job
+        """
         ...
 
-    def AddCommand(self) -> Any:
+    def AddCommand(self, command: Command, /) -> Any:
         """
-        AddCommand(command):
-
-                  Add a path command to the simulation."""
+        Add a path command to the simulation.
+        """
         ...

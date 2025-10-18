@@ -1,6 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Final, overload
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.Conic2d import Conic2d
+
 
 @export(
     Twin="Geom2dEllipse",
@@ -51,16 +56,20 @@ class Ellipse2d(Conic2d):
     """The second focus is on the negative side of the major axis of the ellipse."""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, Ellipse: "Ellipse2d") -> None: ...
+    def __init__(self, Ellipse: "Ellipse2d") -> None:
+        ...
 
     @overload
-    def __init__(self, S1: object, S2: object, Center: object) -> None: ...
+    def __init__(self, S1: object, S2: object, Center: object) -> None:
+        ...
 
     @overload
-    def __init__(self, Center: object, MajorRadius: float, MinorRadius: float) -> None: ...
+    def __init__(self, Center: object, MajorRadius: float, MinorRadius: float) -> None:
+        ...
 
     @overload
     def __init__(self, *args, **kwargs) -> None:

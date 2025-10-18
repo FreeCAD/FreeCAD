@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, overload
@@ -7,11 +11,9 @@ from typing import Any, overload
     Constructor=True,
     Delete=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
     static Base::Color toColor(PyObject* value);
-        """
-)
+        """)
 class Material(PyObjectBase):
     """
     App.Material class.
@@ -21,11 +23,7 @@ class Material(PyObjectBase):
     UserDocu: This is the Material class
     """
 
-    @overload
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        ...
-
-    def set(self, string: str) -> None:
+    def set(self, string: str, /) -> None:
         """
         Set(string) -- Set the material.
 

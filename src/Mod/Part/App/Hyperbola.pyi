@@ -1,4 +1,8 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.Vector import Vector
 from Conic import Conic
 from typing import Final, overload
@@ -58,15 +62,17 @@ class Hyperbola(Conic):
     """The second focus is on the negative side of the major axis of the hyperbola."""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, hyperbola: "Hyperbola") -> None: ...
+    def __init__(self, hyperbola: "Hyperbola") -> None:
+        ...
 
     @overload
-    def __init__(self, S1: Vector, S2: Vector, Center: Vector) -> None: ...
+    def __init__(self, S1: Vector, S2: Vector, Center: Vector) -> None:
+        ...
 
     @overload
-    def __init__(
-        self, Center: Vector, MajorRadius: float, MinorRadius: float
-    ) -> None: ...
+    def __init__(self, Center: Vector, MajorRadius: float, MinorRadius: float) -> None:
+        ...

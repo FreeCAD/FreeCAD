@@ -1,6 +1,11 @@
-from Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Metadata import export
 from typing import Final, overload
 from Part import ArcOfConic2d
+
 
 @export(
     PythonName="Part.Geom2d.ArcOfEllipse2d",

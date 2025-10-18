@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from __future__ import annotations
+
 from Metadata import constmethod
 from PyObjectBase import PyObjectBase
 from typing import List, Final
@@ -19,7 +21,7 @@ class BaseClass(PyObjectBase):
     """Module in which this class is defined"""
 
     @constmethod
-    def isDerivedFrom(self, typeName: str) -> bool:
+    def isDerivedFrom(self, typeName: str, /) -> bool:
         """
         Returns true if given type is a father
         """

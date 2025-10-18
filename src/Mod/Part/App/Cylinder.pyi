@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Vector import Vector
 from Circle import Circle
@@ -48,16 +52,21 @@ class Cylinder(GeometrySurface):
     """The axis direction of the cylinder"""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, cylinder: "Cylinder") -> None: ...
+    def __init__(self, cylinder: "Cylinder") -> None:
+        ...
 
     @overload
-    def __init__(self, cylinder: "Cylinder", distance: float) -> None: ...
+    def __init__(self, cylinder: "Cylinder", distance: float) -> None:
+        ...
 
     @overload
-    def __init__(self, point1: Vector, point2: Vector, point3: Vector) -> None: ...
+    def __init__(self, point1: Vector, point2: Vector, point3: Vector) -> None:
+        ...
 
     @overload
-    def __init__(self, circle: Circle) -> None: ...
+    def __init__(self, circle: Circle) -> None:
+        ...

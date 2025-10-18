@@ -1,7 +1,12 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Part.TopoShapePy import TopoShape
 from Base.PyObjectBase import PyObjectBase
-from typing import Optional, overload
+from typing import Optional
+
 
 @export(
     PythonName="Part.HLRToShapePy",
@@ -41,7 +46,7 @@ class HLRToShape(PyObjectBase):
     class.
     """
 
-    def vCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def vCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         vCompound(Shape=None) -> TopoShape
 
@@ -50,7 +55,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def Rg1LineVCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def Rg1LineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         Rg1LineVCompound(Shape=None) -> TopoShape
 
@@ -59,7 +64,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def RgNLineVCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def RgNLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         RgNLineVCompound(Shape=None) -> TopoShape
 
@@ -68,7 +73,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def outLineVCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def outLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         outLineVCompound(Shape=None) -> TopoShape
 
@@ -77,7 +82,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def outLineVCompound3d(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def outLineVCompound3d(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         outLineVCompound(Shape=None) -> TopoShape
 
@@ -86,7 +91,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def isoLineVCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def isoLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         isoLineVCompound(Shape=None) -> TopoShape
 
@@ -95,7 +100,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def hCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def hCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         hCompound(Shape=None) -> TopoShape
 
@@ -104,7 +109,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def Rg1LineHCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def Rg1LineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         Rg1LineHCompound(Shape=None) -> TopoShape
 
@@ -113,7 +118,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def RgNLineHCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def RgNLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         RgNLineHCompound(Shape=None) -> TopoShape
 
@@ -122,7 +127,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def outLineHCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def outLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         outLineHCompound(Shape=None) -> TopoShape
 
@@ -131,7 +136,7 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def isoLineHCompound(self, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def isoLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         isoLineHCompound(Shape=None) -> TopoShape
 
@@ -140,7 +145,9 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def compoundOfEdges(self, Type: int, Visible: bool, In3D: bool, *, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def compoundOfEdges(
+        self, Type: int, Visible: bool, In3D: bool, Shape: Optional[TopoShape] = None
+    ) -> TopoShape:
         """
         compoundOfEdges(Type: int, Visible: bool, In3D: bool, Shape=None) -> TopoShape
 

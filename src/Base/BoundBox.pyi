@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from Vector import Vector
@@ -107,19 +109,17 @@ class BoundBox(PyObjectBase):
         xMax: float = 0,
         yMax: float = 0,
         zMax: float = 0,
-    ) -> None: ...
+    ) -> None:        ...
     @overload
     def __init__(
         self,
         min: Union[Vector, Tuple[float, float, float]],
         max: Union[Vector, Tuple[float, float, float]],
-    ) -> None: ...
+    ) -> None:        ...
     # fmt: on
 
     def setVoid(self) -> None:
         """
-        setVoid() -> None
-
         Invalidate the bounding box.
         """
         ...
@@ -127,23 +127,18 @@ class BoundBox(PyObjectBase):
     @constmethod
     def isValid(self) -> bool:
         """
-        isValid() -> bool
-
         Checks if the bounding box is valid.
         """
         ...
 
     @overload
-    def add(self, minMax: Vector) -> None: ...
+    def add(self, minMax: Vector, /) -> None: ...
     @overload
-    def add(self, minMax: Tuple[float, float, float]) -> None: ...
+    def add(self, minMax: Tuple[float, float, float], /) -> None: ...
     @overload
-    def add(self, x: float, y: float, z: float) -> None: ...
+    def add(self, x: float, y: float, z: float, /) -> None: ...
     def add(self, *args: Any, **kwargs: Any) -> None:
         """
-        add(minMax) -> None
-        add(x, y, z) -> None
-
         Increase the maximum values or decrease the minimum values of this BoundBox by
         replacing the current values with the given values, so the bounding box can grow
         but not shrink.
@@ -160,10 +155,8 @@ class BoundBox(PyObjectBase):
         ...
 
     @constmethod
-    def getPoint(self, index: int) -> Vector:
+    def getPoint(self, index: int, /) -> Vector:
         """
-        getPoint(index) -> Base.Vector
-
         Get the point of the given index.
         The index must be in the range of [0, 7].
 
@@ -172,10 +165,8 @@ class BoundBox(PyObjectBase):
         ...
 
     @constmethod
-    def getEdge(self, index: int) -> Tuple[Vector, ...]:
+    def getEdge(self, index: int, /) -> Tuple[Vector, ...]:
         """
-        getEdge(index) -> tuple of Base.Vector
-
         Get the edge points of the given index.
         The index must be in the range of [0, 11].
 
@@ -184,15 +175,12 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def closestPoint(self, point: Vector) -> Vector: ...
+    def closestPoint(self, point: Vector, /) -> Vector: ...
     @overload
-    def closestPoint(self, x: float, y: float, z: float) -> Vector: ...
+    def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
     @constmethod
     def closestPoint(self, *args: Any, **kwargs: Any) -> Vector:
         """
-        closestPoint(point) -> Base.Vector
-        closestPoint(x, y, z) -> Base.Vector
-
         Get the closest point of the bounding box to the given point.
 
         point : Base.Vector, tuple
@@ -207,18 +195,16 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def intersect(self, boundBox2: "BoundBox") -> bool: ...
+    def intersect(self, boundBox2: "BoundBox", /) -> bool: ...
     @overload
     def intersect(
         self,
         base: Union[Vector, Tuple[float, float, float]],
         dir: Union[Vector, Tuple[float, float, float]],
+        /,
     ) -> bool: ...
     def intersect(self, *args: Any) -> bool:
         """
-        intersect(boundBox2) -> bool
-        intersect(base, dir) -> bool
-
         Checks if the given object intersects with this bounding box. That can be
         another bounding box or a line specified by base and direction.
 
@@ -228,30 +214,24 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def intersected(self, boundBox2: "BoundBox") -> "BoundBox":
+    def intersected(self, boundBox2: "BoundBox", /) -> "BoundBox":
         """
-        intersected(boundBox2) -> Base.BoundBox
-
         Returns the intersection of this and the given bounding box.
 
         boundBox2 : Base.BoundBox
         """
         ...
 
-    def united(self, boundBox2: "BoundBox") -> "BoundBox":
+    def united(self, boundBox2: "BoundBox", /) -> "BoundBox":
         """
-        united(boundBox2) -> Base.BoundBox
-
         Returns the union of this and the given bounding box.
 
         boundBox2 : Base.BoundBox
         """
         ...
 
-    def enlarge(self, variation: float) -> None:
+    def enlarge(self, variation: float, /) -> None:
         """
-        enlarge(variation) -> None
-
         Decrease the minimum values and increase the maximum values by the given value.
         A negative value shrinks the bounding box.
 
@@ -259,10 +239,8 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def getIntersectionPoint(self, base: Vector, dir: Vector, epsilon: float = 0.0001) -> Vector:
+    def getIntersectionPoint(self, base: Vector, dir: Vector, epsilon: float = 0.0001, /) -> Vector:
         """
-        getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector
-
         Calculate the intersection point of a line with the bounding box.
         The base point must lie inside the bounding box, if not an exception is thrown.
 
@@ -276,16 +254,13 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def move(self, displacement: Vector) -> None: ...
+    def move(self, displacement: Vector, /) -> None: ...
     @overload
-    def move(self, displacement: Tuple[float, float, float]) -> None: ...
+    def move(self, displacement: Tuple[float, float, float], /) -> None: ...
     @overload
-    def move(self, x: float, y: float, z: float) -> None: ...
+    def move(self, x: float, y: float, z: float, /) -> None: ...
     def move(self, *args: Any, **kwargs: Any) -> None:
         """
-        move(displacement) -> None
-        move(x, y, z) -> None
-
         Move the bounding box by the given values.
 
         displacement : Base.Vector, tuple
@@ -300,16 +275,13 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def scale(self, factor: Vector) -> None: ...
+    def scale(self, factor: Vector, /) -> None: ...
     @overload
-    def scale(self, factor: Tuple[float, float, float]) -> None: ...
+    def scale(self, factor: Tuple[float, float, float], /) -> None: ...
     @overload
-    def scale(self, x: float, y: float, z: float) -> None: ...
+    def scale(self, x: float, y: float, z: float, /) -> None: ...
     def scale(self, *args: Any, **kwargs: Any) -> None:
         """
-        scale(factor) -> None
-        scale(x, y, z) -> None
-
         Scale the bounding box by the given values.
 
         factor : Base.Vector, tuple
@@ -323,10 +295,8 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def transformed(self, matrix: Matrix) -> "BoundBox":
+    def transformed(self, matrix: Matrix, /) -> "BoundBox":
         """
-        transformed(matrix) -> Base.BoundBox
-
         Returns a new BoundBox containing the transformed rectangular cuboid
         represented by this BoundBox.
 
@@ -335,10 +305,8 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def isCutPlane(self, base: Vector, normal: Vector) -> bool:
+    def isCutPlane(self, base: Vector, normal: Vector, /) -> bool:
         """
-        isCutPlane(base, normal) -> bool
-
         Check if the plane specified by base and normal intersects (cuts) this bounding
         box.
 
@@ -348,16 +316,13 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def isInside(self, object: Vector) -> bool: ...
+    def isInside(self, object: Vector, /) -> bool: ...
     @overload
-    def isInside(self, object: "BoundBox") -> bool: ...
+    def isInside(self, object: "BoundBox", /) -> bool: ...
     @overload
-    def isInside(self, x: float, y: float, z: float) -> bool: ...
+    def isInside(self, x: float, y: float, z: float, /) -> bool: ...
     def isInside(self, *args: Any) -> bool:
         """
-        isInside(object) -> bool
-        isInside(x, y, z) -> bool
-
         Check if a point or a bounding box is inside this bounding box.
 
         object : Base.Vector, Base.BoundBox

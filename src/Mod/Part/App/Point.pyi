@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Geometry import Geometry
@@ -30,13 +34,16 @@ class Point(Geometry):
     """
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, other: "Point") -> None: ...
+    def __init__(self, other: "Point") -> None:
+        ...
 
     @overload
-    def __init__(self, coordinates: Vector) -> None: ...
+    def __init__(self, coordinates: Vector) -> None:
+        ...
 
     @constmethod
     def toShape(self) -> object:

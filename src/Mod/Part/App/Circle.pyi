@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Vector import Vector
 from Conic import Conic
@@ -38,16 +42,21 @@ class Circle(Conic):
     """The radius of the circle."""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, circle: "Circle") -> None: ...
+    def __init__(self, circle: "Circle") -> None:
+        ...
 
     @overload
-    def __init__(self, circle: "Circle", distance: float) -> None: ...
+    def __init__(self, circle: "Circle", distance: float) -> None:
+        ...
 
     @overload
-    def __init__(self, center: Point, normal: Vector, radius: float) -> None: ...
+    def __init__(self, center: Point, normal: Vector, radius: float) -> None:
+        ...
 
     @overload
-    def __init__(self, point1: Point, point2: Point, point3: Point) -> None: ...
+    def __init__(self, point1: Point, point2: Point, point3: Point) -> None:
+        ...

@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from typing import overload, Final, Tuple, Union
@@ -52,20 +54,18 @@ class Quantity(PyObjectBase):
     def __init__(self, string: str) -> None: ...
     # fmt: on
 
+    @overload
+    def toStr(self, /) -> str: ...
+    @overload
+    def toStr(self, decimals: int, /) -> str: ...
     @constmethod
-    def toStr(self, decimals: int = ...) -> str:
+    def toStr(self, decimals: int = ..., /) -> str:
         """
-        toStr([decimals])
-
         Returns a string representation rounded to number of decimals. If no decimals are specified then
         the internal precision is used
         """
         ...
 
-    @overload
-    def toStr(self) -> str: ...
-    @overload
-    def toStr(self, decimals: int) -> str: ...
     @constmethod
     def getUserPreferred(self) -> Tuple["Quantity", str]:
         """
@@ -74,13 +74,13 @@ class Quantity(PyObjectBase):
         ...
 
     @overload
-    def getValueAs(self, unit: str) -> float: ...
+    def getValueAs(self, unit: str, /) -> float: ...
     @overload
-    def getValueAs(self, translation: float, unit_signature: int) -> float: ...
+    def getValueAs(self, translation: float, unit_signature: int, /) -> float: ...
     @overload
-    def getValueAs(self, unit: UnitPy) -> float: ...
+    def getValueAs(self, unit: UnitPy, /) -> float: ...
     @overload
-    def getValueAs(self, quantity: "Quantity") -> float: ...
+    def getValueAs(self, quantity: "Quantity", /) -> float: ...
     @constmethod
     def getValueAs(self, *args) -> float:
         """
@@ -95,15 +95,14 @@ class Quantity(PyObjectBase):
         """
         ...
 
+    @overload
+    def __round__(self, /) -> int: ...
+    @overload
+    def __round__(self, ndigits: int, /) -> float: ...
     @constmethod
-    def __round__(self, ndigits: int = ...) -> Union[int, float]:
+    def __round__(self, ndigits: int = ..., /) -> Union[int, float]:
         """
         Returns the Integral closest to x, rounding half toward even.
         When an argument is passed, work like built-in round(x, ndigits).
         """
         ...
-
-    @overload
-    def __round__(self) -> int: ...
-    @overload
-    def __round__(self, ndigits: int) -> float: ...

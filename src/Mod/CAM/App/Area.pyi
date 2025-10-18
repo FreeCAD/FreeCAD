@@ -28,24 +28,25 @@ class Area(BaseClass):
         """"""
         ...
 
-    def setPlane(self) -> Any:
-        """setPlane(shape): Set the working plane.
+    def setPlane(self) -> None:
+        """
+        Set the working plane.
 
         The supplied shape does not need to be planar. Area will try to find planar
         sub-shape (face, wire or edge). If more than one planar sub-shape is found, it
         will prefer the top plane parallel to XY0 plane. If no working plane are set,
         Area will try to find a working plane from the added children shape using the
-        same algorithm"""
+        same algorithm
+        """
         ...
 
     def getShape(self, **kwargs) -> Any:
-        """getShape(index=-1,rebuild=False): Return the resulting shape
-
+        """
+        Return the resulting shape
 
         * index (-1): the index of the section. -1 means all sections. No effect on planar shape.
-
-
-        * rebuild: clean the internal cache and rebuild"""
+        * rebuild: clean the internal cache and rebuild
+        """
         ...
 
     def makeOffset(self, **kwargs) -> Any:
