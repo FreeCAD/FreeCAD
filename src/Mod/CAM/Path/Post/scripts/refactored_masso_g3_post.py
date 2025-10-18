@@ -52,12 +52,14 @@ class Refactored_Masso_G3(Refactored_Linuxcnc):
     def __init__(
         self,
         job,
+        operations,
         tooltip=translate("CAM", "Refactored Masso G3 post processor"),
         tooltipargs=[""],
         units="Metric",
     ) -> None:
         super().__init__(
             job=job,
+            operations=operations,
             tooltip=tooltip,
             tooltipargs=tooltipargs,
             units=units,
