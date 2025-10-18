@@ -1574,7 +1574,16 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="196"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="207"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="212"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -2615,7 +2624,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right corner</source>
-      <translation>Правый угол</translation>
+      <translation>Правильный угол</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
@@ -2857,7 +2866,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
       <source>Two angles</source>
-      <translation type="unfinished">Two angles</translation>
+      <translation>Два угла</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="460"/>
@@ -3183,11 +3192,11 @@ measured along the specified direction</source>
       <translation>В документе нет подходящих плоскостей</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
@@ -3227,11 +3236,11 @@ measured along the specified direction</source>
       <translation>В документе нет доступных эскизов</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <source>Close this dialog?</source>
       <translation>Закрыть диалоговое окно?</translation>
     </message>
@@ -3464,14 +3473,14 @@ This may lead to unexpected results.</source>
       <translation>Невозможно создать субтрактивный элемент без базового элемента</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <location filename="../../TaskTransformedParameters.cpp" line="438"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикальная ось эскиза</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <source>Horizontal sketch axis</source>
       <translation>Горизонтальная ось эскиза</translation>
     </message>
@@ -3526,8 +3535,8 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Редактировать %1</translation>
@@ -4279,108 +4288,108 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>WizardShaftTable</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
       <source>Length [mm]</source>
       <translation>Длина [мм]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Diameter [mm]</source>
       <translation>Диаметр [мм]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Inner diameter [mm]</source>
       <translation>Внутренний диаметр [мм]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
       <source>Constraint type</source>
       <translation>Тип ограничения</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Start edge type</source>
       <translation>Тип начального ребра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>Start edge size</source>
       <translation>Размер начального ребра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>End edge type</source>
       <translation>Тип конечного ребра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="54"/>
       <source>End edge size</source>
       <translation>Размер конечного ребра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="63"/>
       <source>Shaft Wizard</source>
       <translation>Мастер создания вала</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 1</source>
       <translation>Сечение 1</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 2</source>
       <translation>Сечение 2</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="75"/>
       <source>Add column</source>
       <translation>Добавить столбец</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="121"/>
       <source>Section %s</source>
       <translation>Сечение %s</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="149"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="164"/>
       <source>None</source>
       <translation>Ничего</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <source>Fixed</source>
       <translation>Неподвижное</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
       <source>Force</source>
       <translation>Сила</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
       <source>Bearing</source>
       <translation>Подшипник</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Gear</source>
       <translation>Шестерня</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Pulley</source>
       <translation>Шкив</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>Chamfer</source>
       <translation>Фаска</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
       <source>Fillet</source>
       <translation>Скругление</translation>
     </message>
@@ -4388,17 +4397,17 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>TaskWizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="56"/>
       <source>All</source>
       <translation>Все</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="103"/>
       <source>Missing Module</source>
       <translation>Модуль отсутствует</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
       <translation>Дополнение Plot не установлено. Установите его, чтобы включить эту функцию.</translation>
     </message>
@@ -4406,12 +4415,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>PartDesign_WizardShaftCallBack</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="213"/>
       <source>Shaft design wizard...</source>
       <translation>Мастер проектирования вала...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Start the shaft design wizard</source>
       <translation>Запускает мастер проектирования вала</translation>
     </message>
@@ -4470,20 +4479,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Базовая форма пустая (null)</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureGroove.cpp" line="231"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Результат содержит несколько твёрдых тел: включите параметр "Разрешить составные тела" в активном теле.</translation>
     </message>
@@ -4532,8 +4541,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Не удалось создать фаску</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <source>Resulting shape is null</source>
       <translation>Результирующая форма нулевая (null)</translation>
     </message>
@@ -4608,7 +4617,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
       <source>Angles of groove nullify each other</source>
-      <translation type="unfinished">Angles of groove nullify each other</translation>
+      <translation>Углы канавки сводят на нет друг друга</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
@@ -4674,9 +4683,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Ошибка: грань должна быть плоской</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <location filename="../../../App/FeatureHelix.cpp" line="295"/>
       <location filename="../../../App/FeatureHelix.cpp" line="327"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <source>Error: Result is not a solid</source>
       <translation>Ошибка: Результат не твердотельный</translation>
     </message>
@@ -5073,7 +5082,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="104"/>
       <source>Angles of revolution nullify each other</source>
-      <translation type="unfinished">Angles of revolution nullify each other</translation>
+      <translation>Углы вращения сводят на нет друг друга</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="131"/>
@@ -5164,12 +5173,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesign_WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="188"/>
       <source>Shaft Design Wizard</source>
       <translation>Мастер проектирования вала</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Starts the shaft design wizard</source>
       <translation>Запускает мастер проектирования вала</translation>
     </message>
@@ -5442,12 +5451,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Направление 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="215"/>
+      <location filename="../../TaskPatternParameters.cpp" line="216"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Выберите ориентир для направления (ребро, грань, опорная линия)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="295"/>
+      <location filename="../../TaskPatternParameters.cpp" line="296"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Неверный выбор. Выберите ребро, плоскую грань или опорную линию.</translation>
     </message>

@@ -4,35 +4,35 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="561"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="562"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;tom&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2379"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2648"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2380"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2649"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2383"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2652"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2384"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2653"/>
       <source>Axis</source>
       <translation>Axel</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2657"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2658"/>
       <source>Position</source>
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="327"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2907"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="339"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2908"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyModel.cpp" line="275"/>
+      <location filename="../propertyeditor/PropertyModel.cpp" line="276"/>
       <source>Base</source>
       <translation>Bas</translation>
     </message>
@@ -128,10 +128,10 @@
       <translation>Placering</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="126"/>
-      <location filename="../TaskTransform.cpp" line="788"/>
       <location filename="../Transform.cpp" line="102"/>
       <location filename="../ViewProviderAnnotation.cpp" line="418"/>
+      <location filename="../TaskTransform.cpp" line="126"/>
+      <location filename="../TaskTransform.cpp" line="788"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
     </message>
@@ -141,8 +141,8 @@
       <translation>Växla arrayelement</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="256"/>
       <source>Edit image</source>
       <translation>Redigera bild</translation>
     </message>
@@ -504,22 +504,22 @@ Egenskapen för detta objekt kommer att referera till egenskapen i variabelupps�
   <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="51"/>
       <source>Press Shift and middle mouse button</source>
       <translation>Tryck på Shift och den mellersta musknappen</translation>
     </message>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>Tryck på mittre musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel</source>
       <translation>Rulla mushjulet</translation>
     </message>
@@ -527,22 +527,22 @@ Egenskapen för detta objekt kommer att referera till egenskapen i variabelupps�
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
       <translation>Tryck på musens mittknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left or middle+right mouse button</source>
       <translation>Tryck på mitten+vänster eller mitten+höger musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Scrolla mushjulet eller håll mittknappen nedtryckt
@@ -565,22 +565,22 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
   <context>
     <name>Gui::DAG::Model</name>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="123"/>
+      <location filename="../DAGView/DAGModel.cpp" line="124"/>
       <source>Rename</source>
       <translation>Döp om</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="124"/>
+      <location filename="../DAGView/DAGModel.cpp" line="125"/>
       <source>Renames the object</source>
       <translation>Byter namn på objektet</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="131"/>
+      <location filename="../DAGView/DAGModel.cpp" line="132"/>
       <source>Finish Editing</source>
       <translation>Avsluta redigeringen</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="132"/>
+      <location filename="../DAGView/DAGModel.cpp" line="133"/>
       <source>Finishes editing the object</source>
       <translation>Avslutar redigeringen av objektet</translation>
     </message>
@@ -924,7 +924,7 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="474"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="498"/>
       <source>Add Property</source>
       <translation>Nytt objekt</translation>
     </message>
@@ -954,37 +954,37 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
       <translation>Namn</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="501"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="525"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="565"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="589"/>
       <source>Invalid group name</source>
       <translation>Ogiltigt gruppnamn</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="568"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="592"/>
       <source>Invalid type name</source>
       <translation>Ogiltigt typnamn</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="598"/>
       <source>Invalid property name '%1'</source>
       <translation>Ogiltigt egenskapsnamn '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="577"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="601"/>
       <source>Property '%1' already exists</source>
       <translation>Egenskapen '%1' finns redan</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="580"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="604"/>
       <source>'%1' is a constant</source>
       <translation>'%1' är en konstant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="583"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="607"/>
       <source>'%1' is a unit</source>
       <translation>'%1' är en enhet</translation>
     </message>
@@ -1137,26 +1137,26 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
-      <source>Pixmap</source>
-      <translation>Pixelkarta</translation>
+      <source>Icon</source>
+      <translation>Ikon</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
-      <source>Choose Icon</source>
-      <translation>Välj ikon</translation>
+      <source>Choose an icon</source>
+      <translation type="unfinished">Choose an icon</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActions.ui" line="231"/>
+      <location filename="../Dialogs/DlgActions.ui" line="234"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActions.ui" line="238"/>
+      <location filename="../Dialogs/DlgActions.ui" line="241"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActions.ui" line="245"/>
+      <location filename="../Dialogs/DlgActions.ui" line="248"/>
       <source>Replace</source>
       <translation>Ersätt</translation>
     </message>
@@ -1720,14 +1720,14 @@ samma tidpunkt. Det med högst prioritet kommer att utlösas.</translation>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="468"/>
       <source>Macro file</source>
-      <translation>Makro fil</translation>
+      <translation>Makrofil</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="492"/>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="884"/>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1043"/>
       <source>Existing file</source>
-      <translation>Filen finns</translation>
+      <translation>Befintlig fil</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="493"/>
@@ -1739,7 +1739,7 @@ Denna fil finns redan.</translation>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="500"/>
       <source>Cannot create file</source>
-      <translation>Kan inte skapa fil</translation>
+      <translation>Kan inte skapa filen</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="501"/>
@@ -5533,82 +5533,82 @@ som ursprungligen valdes innan denna dialog öppnades</translation>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <location filename="../ReportView.cpp" line="587"/>
+      <location filename="../ReportView.cpp" line="598"/>
       <source>Options</source>
       <translation>Alternativ</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="595"/>
-      <location filename="../ReportView.cpp" line="619"/>
+      <location filename="../ReportView.cpp" line="606"/>
+      <location filename="../ReportView.cpp" line="630"/>
       <source>Normal Messages</source>
       <translation>Normala meddelanden</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="599"/>
-      <location filename="../ReportView.cpp" line="623"/>
+      <location filename="../ReportView.cpp" line="610"/>
+      <location filename="../ReportView.cpp" line="634"/>
       <source>Log Messages</source>
       <translation>Loggmeddelanden</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="611"/>
-      <location filename="../ReportView.cpp" line="635"/>
+      <location filename="../ReportView.cpp" line="622"/>
+      <location filename="../ReportView.cpp" line="646"/>
       <source>Critical Messages</source>
       <translation>Kritiska meddelanden</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="641"/>
+      <location filename="../ReportView.cpp" line="652"/>
       <source>Redirect Python Output</source>
       <translation>Omdirigera Python-utdata</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="645"/>
+      <location filename="../ReportView.cpp" line="656"/>
       <source>Redirect Python Errors</source>
       <translation>Omdirigera Python-fel</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="650"/>
+      <location filename="../ReportView.cpp" line="661"/>
       <source>Go to End</source>
       <translation>Gå till slutet</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="671"/>
+      <location filename="../ReportView.cpp" line="682"/>
       <source>Save As…</source>
       <translation>Spara som…</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="680"/>
+      <location filename="../ReportView.cpp" line="691"/>
       <source>Plain text files</source>
       <translation>Vanliga textfiler</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="603"/>
-      <location filename="../ReportView.cpp" line="627"/>
+      <location filename="../ReportView.cpp" line="614"/>
+      <location filename="../ReportView.cpp" line="638"/>
       <source>Warnings</source>
       <translation>Varningar</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="592"/>
+      <location filename="../ReportView.cpp" line="603"/>
       <source>Display Message Types</source>
       <translation>Typer av displaymeddelanden</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="607"/>
-      <location filename="../ReportView.cpp" line="631"/>
+      <location filename="../ReportView.cpp" line="618"/>
+      <location filename="../ReportView.cpp" line="642"/>
       <source>Errors</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="616"/>
+      <location filename="../ReportView.cpp" line="627"/>
       <source>Show Report View On</source>
       <translation>Visa rapportvy på</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="669"/>
+      <location filename="../ReportView.cpp" line="680"/>
       <source>Clear</source>
       <translation>Rensa</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="679"/>
+      <location filename="../ReportView.cpp" line="690"/>
       <source>Save Report Output</source>
       <translation>Spara rapport utmatning</translation>
     </message>
@@ -5631,102 +5631,102 @@ som ursprungligen valdes innan denna dialog öppnades</translation>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="65"/>
+      <location filename="../Selection/SelectionView.cpp" line="66"/>
       <source>Selection View</source>
       <translation>Markeringsvy</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="72"/>
+      <location filename="../Selection/SelectionView.cpp" line="73"/>
       <source>Search</source>
       <translation>Sök</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="73"/>
+      <location filename="../Selection/SelectionView.cpp" line="74"/>
       <source>Searches object labels</source>
       <translation>Söker efter objektetiketter</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="81"/>
+      <location filename="../Selection/SelectionView.cpp" line="82"/>
       <source>Clears the search field</source>
       <translation>Rensar sökfältet</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="85"/>
+      <location filename="../Selection/SelectionView.cpp" line="86"/>
       <source>The number of selected items</source>
       <translation>Antalet utvalda objekt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="96"/>
+      <location filename="../Selection/SelectionView.cpp" line="97"/>
       <source>Picked object list</source>
       <translation>Lista över utvalda objekt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="643"/>
+      <location filename="../Selection/SelectionView.cpp" line="644"/>
       <source>Select Only</source>
       <translation>Välj endast</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="653"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Zoom Fit</source>
       <translation>Zoom Passform</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Go to Selection</source>
       <translation>Gå till markering</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="660"/>
+      <location filename="../Selection/SelectionView.cpp" line="661"/>
       <source>Mark to Recompute</source>
       <translation>Markera för att räkna om</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="662"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Marks this object to be recomputed</source>
       <translation>Markerar detta objekt för att beräknas på nytt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="666"/>
       <source>To Python Console</source>
       <translation>Till Python-konsolen</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="675"/>
       <source>Duplicate Subshape</source>
       <translation>Duplicera underform</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="647"/>
+      <location filename="../Selection/SelectionView.cpp" line="648"/>
       <source>Selects only this object</source>
       <translation>Väljer endast detta objekt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="649"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Deselect</source>
       <translation>Avmarkera</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="651"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Deselects this object</source>
       <translation>Avmarkerar detta objekt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="655"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Väljer och passar in detta objekt i 3D-fönstret</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="658"/>
+      <location filename="../Selection/SelectionView.cpp" line="659"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Markerar och lokaliserar detta objekt i trädvyn</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="668"/>
+      <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>Visar detta objekt och dess underelement i Python-konsolen.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="677"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Skapar en fristående kopia av denna delform i dokumentet</translation>
     </message>
@@ -5871,22 +5871,22 @@ Spara alla ändringar?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="858"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="859"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Tryck ELLER klicka på vänster musknapp.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="860"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="861"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Dra skärmen med två fingrar ELLER tryck på höger musknapp.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="862"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="863"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Dra skärmen med ett finger ELLER tryck på vänster musknapp. I Sketcher och andra redigeringslägen håller du dessutom ned Alt.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="864"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="865"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>Nyp (placera två fingrar på skärmen och dra dem från varandra eller mot varandra) ELLER scrolla med mushjulet ELLER PgUp/PgDown på tangentbordet.</translation>
     </message>
@@ -5960,15 +5960,15 @@ Spara alla ändringar?</translation>
       <translation>PDF-format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="620"/>
       <location filename="../GraphvizView.cpp" line="445"/>
+      <location filename="../CommandDoc.cpp" line="620"/>
       <source>Graphviz format</source>
       <translation>Graphviz-format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="621"/>
       <location filename="../GraphvizView.cpp" line="459"/>
       <location filename="../GraphvizView.cpp" line="549"/>
+      <location filename="../CommandDoc.cpp" line="621"/>
       <source>Export graph</source>
       <translation>Exportera graf</translation>
     </message>
@@ -5989,22 +5989,22 @@ Spara alla ändringar?</translation>
   <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and left mouse button</source>
       <translation>Tryck på Ctrl och vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>Tryck på musens mittknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="55"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="56"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="57"/>
       <source>Scroll mouse wheel</source>
       <translation>Scrolla mushjulet</translation>
     </message>
@@ -6115,12 +6115,12 @@ Spara alla ändringar?</translation>
       <translation>Makron</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1128"/>
+      <location filename="../Command.cpp" line="1134"/>
       <source>Macro file doesn't exist</source>
       <translation>Makrofil existerar inte</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1129"/>
+      <location filename="../Command.cpp" line="1135"/>
       <source>No such macro file: '%1'</source>
       <translation>Ingen sådan macrofil: '%1'</translation>
     </message>
@@ -6137,13 +6137,13 @@ Spara alla ändringar?</translation>
       <location filename="../MainWindow.cpp" line="407"/>
       <source>Input hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input hints</translation>
+      <translation>Inmatningstips</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="417"/>
       <source>Quick measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation type="unfinished">Quick measure</translation>
+      <translation>Snabbmätning</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="427"/>
@@ -6342,22 +6342,22 @@ Hur vill du gå vidare?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="93"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="94"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Tryck ELLER klicka på vänster musknapp.</translation>
     </message>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="95"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="96"/>
       <source>Drag screen with two fingers OR press Alt + middle mouse button.</source>
       <translation>Dra skärmen med två fingrar ELLER tryck på Alt + mellersta musknappen.</translation>
     </message>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="97"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="98"/>
       <source>Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Dra skärmen med ett finger ELLER tryck på Alt + vänster musknapp. I Sketcher och andra redigeringslägen håller du dessutom ned Alt.</translation>
     </message>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="99"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="100"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</source>
       <translation>Nyp (placera två fingrar på skärmen och dra dem från varandra eller mot varandra) ELLER scrolla med mushjulet ELLER tryck på Alt + höger musknapp ELLER PgUp/PgDown på tangentbordet.</translation>
     </message>
@@ -6373,22 +6373,22 @@ Hur vill du gå vidare?</translation>
   <context>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and middle mouse button</source>
       <translation>Tryck på Ctrl och den mellersta musknappen</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="53"/>
       <source>Press Ctrl and right mouse button</source>
       <translation>Tryck på Ctrl och höger musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="55"/>
       <source>Press Ctrl and left mouse button</source>
       <translation>Tryck på Ctrl och vänster musknapp</translation>
     </message>
@@ -6396,22 +6396,22 @@ Hur vill du gå vidare?</translation>
   <context>
     <name>Gui::OpenSCADNavigationStyle</name>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="51"/>
       <source>Press right mouse button and move mouse</source>
       <translation>Tryck på höger musknapp och flytta musen</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="53"/>
       <source>Press left mouse button and move mouse</source>
       <translation>Tryck på vänster musknapp och flytta musen</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
       <translation>Tryck på musens mittknapp eller SHIFT och höger musknapp</translation>
     </message>
@@ -6473,12 +6473,12 @@ Hur vill du gå vidare?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4509"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4510"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4509"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4510"/>
       <source>Object not found</source>
       <translation>Objektet hittades inte</translation>
     </message>
@@ -6486,113 +6486,113 @@ Hur vill du gå vidare?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="391"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
       <source>Edit</source>
       <translation>Redigera</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="403"/>
       <source>property</source>
       <translation>fastighet</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="854"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="865"/>
       <source>Expand/Collapse Properties</source>
       <translation>Expandera/fäll in egenskaper</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="856"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="867"/>
       <source>Expand to Default</source>
       <translation>Expandera till standard</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="858"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
       <source>Expand All</source>
       <translation>Expandera alla</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="860"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
       <source>Collapse All</source>
       <translation>Fäll in alla</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="866"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
       <source>Default Expand</source>
       <translation>Standardexpandering</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="880"/>
       <source>Auto Expand</source>
       <translation>Automatisk expandering</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="872"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="883"/>
       <source>Auto Collapse</source>
       <translation>Fäll in automatiskt</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="955"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="966"/>
       <source>Copy</source>
       <translation>Kopiera</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="963"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="974"/>
       <source>Add Property</source>
       <translation>Nytt objekt</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="971"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="982"/>
       <source>Rename Property Group</source>
       <translation>Byta namn på fastighetsgruppen</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="979"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="990"/>
       <source>Rename Property</source>
       <translation>Byt namn på fastighet</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="980"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1159"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="991"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
       <source>Edit Property Tooltip</source>
       <translation>Redigera verktygstips för egenskap</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
       <source>Delete Property</source>
       <translation>Radera bostadsobjekt</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Tooltip</source>
       <translation>Tips</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1186"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1197"/>
       <source>Rename property</source>
       <translation>Byt namn på fastighet</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1007"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1018"/>
       <source>Show Hidden</source>
       <translation>Visa dolda</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1024"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1035"/>
       <source>Expression</source>
       <translation>Uttryck</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1198"/>
       <source>Property name</source>
       <translation>Namn på fastighet</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1211"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
       <source>Rename property group</source>
       <translation>Byt namn på egenskapsgrupp</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1223"/>
       <source>Group name:</source>
       <translation>Gruppens namn:</translation>
     </message>
@@ -6600,12 +6600,12 @@ Hur vill du gå vidare?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
-      <location filename="../propertyeditor/PropertyModel.cpp" line="179"/>
+      <location filename="../propertyeditor/PropertyModel.cpp" line="180"/>
       <source>Property</source>
       <translation>Egenskap</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyModel.cpp" line="182"/>
+      <location filename="../propertyeditor/PropertyModel.cpp" line="183"/>
       <source>Value</source>
       <translation>Värde</translation>
     </message>
@@ -6614,13 +6614,13 @@ Hur vill du gå vidare?</translation>
     <name>Gui::PropertyView</name>
     <message>
       <location filename="../PropertyView.cpp" line="88"/>
-      <location filename="../PropertyView.cpp" line="567"/>
+      <location filename="../PropertyView.cpp" line="570"/>
       <source>View</source>
       <translation>Visa</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="93"/>
-      <location filename="../PropertyView.cpp" line="568"/>
+      <location filename="../PropertyView.cpp" line="571"/>
       <source>Data</source>
       <translation>Data</translation>
     </message>
@@ -6768,7 +6768,7 @@ Avsluta utan att spara alla data?</translation>
     <message>
       <location filename="../Action.cpp" line="940"/>
       <source>Open file %1</source>
-      <translation>Öppna fil %1</translation>
+      <translation>Öppna filen %1</translation>
     </message>
   </context>
   <context>
@@ -6787,22 +6787,22 @@ Avsluta utan att spara alla data?</translation>
   <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>Tryck på musens mittknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
       <translation>Tryck på Shift och den mellersta musknappen</translation>
     </message>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="56"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button</source>
       <translation>Bläddra mittre musknapp</translation>
     </message>
@@ -6970,7 +6970,7 @@ Ange en annan katalog?</translation>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="17"/>
-      <location filename="../TaskView/TaskAppearance.cpp" line="42"/>
+      <location filename="../TaskView/TaskAppearance.cpp" line="43"/>
       <source>Appearance</source>
       <translation>Utseende</translation>
     </message>
@@ -7003,7 +7003,7 @@ Ange en annan katalog?</translation>
   <context>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
-      <location filename="../TaskView/TaskDialog.cpp" line="99"/>
+      <location filename="../TaskView/TaskDialog.cpp" line="100"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
@@ -7024,7 +7024,7 @@ Ange en annan katalog?</translation>
       <translation>Utseende</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="42"/>
+      <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="43"/>
       <source>edit selection</source>
       <translation>redigera val</translation>
     </message>
@@ -7041,22 +7041,22 @@ Ange en annan katalog?</translation>
   <context>
     <name>Gui::TinkerCADNavigationStyle</name>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
       <translation>Tryck på musens mittknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="53"/>
       <source>Press right mouse button</source>
       <translation>Tryck på höger musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel</source>
       <translation>Scrolla mushjulet</translation>
     </message>
@@ -7064,22 +7064,22 @@ Ange en annan katalog?</translation>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="47"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="49"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="50"/>
       <source>Press Shift button</source>
       <translation>Tryck på Shift-knappen</translation>
     </message>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="51"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="52"/>
       <source>Press Alt button</source>
       <translation>Tryck på Alt-knappen</translation>
     </message>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="53"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="54"/>
       <source>Press Ctrl and Shift buttons</source>
       <translation>Tryck på Ctrl- och Shift-knapparna</translation>
     </message>
@@ -7541,11 +7541,11 @@ Ange en annan katalog?</translation>
     <message>
       <location filename="../Tree.cpp" line="1158"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
-      <translation type="unfinished">Shows a description column for items. An item's description can be set by editing the 'label2' property.</translation>
+      <translation>Visar en beskrivningskolumn för objekt. Ett objekts beskrivning kan ställas in genom att redigera egenskapen ”label2”.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3407"/>
-      <location filename="../Tree.cpp" line="5648"/>
+      <location filename="../Tree.cpp" line="5681"/>
       <source>Rename</source>
       <translation>Byt namn</translation>
     </message>
@@ -7565,12 +7565,12 @@ Ange en annan katalog?</translation>
       <translation>Öppna filens plats</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5619"/>
+      <location filename="../Tree.cpp" line="5652"/>
       <source> (but must be executed)</source>
       <translation> (men måste verkställas)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5621"/>
+      <location filename="../Tree.cpp" line="5654"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Internt namn: %2</translation>
     </message>
@@ -7823,7 +7823,7 @@ Ange en annan katalog?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="672"/>
       <source>Property View</source>
-      <translation>Utsikt över fastigheten</translation>
+      <translation>Egenskapsvy</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="701"/>
@@ -7930,12 +7930,12 @@ Kontrollera rapportvyn för mer information.</translation>
       <translation>Beräkna felet på nytt</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1791"/>
+      <location filename="../Application.cpp" line="1790"/>
       <source>Workbench failure</source>
       <translation>Fel på arbetsbänk</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1792"/>
+      <location filename="../Application.cpp" line="1791"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8130,7 +8130,7 @@ Kontrollera rapportvyn för mer information.</translation>
       <location filename="../CommandView.cpp" line="341"/>
       <location filename="../CommandView.cpp" line="581"/>
       <source>F&amp;reeze View</source>
-      <translation>F&amp;reeze Utsikt</translation>
+      <translation>F&amp;rys vy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="344"/>
@@ -8594,18 +8594,18 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Kan inte finna fil %1, varken i %2 eller i %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2002"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2003"/>
       <source>Navigation styles</source>
       <translation>Navigationsstilar</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2051"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2052"/>
       <source>Clarify Selection</source>
       <translation>Förtydliga markering</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="129"/>
       <location filename="../ViewProviderLink.cpp" line="2700"/>
+      <location filename="../ViewProviderDragger.cpp" line="129"/>
       <source>Transform</source>
       <translation>Transformera</translation>
     </message>
@@ -8718,12 +8718,12 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Misslyckades med att importera alla länkar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="843"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="904"/>
       <source>Add property</source>
       <translation>Lägg till fastighet</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="844"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="905"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Det gick inte att lägga till en egenskap i '%1': %2</translation>
     </message>
@@ -8734,8 +8734,8 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Drag &amp; släpp misslyckades</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="827"/>
       <location filename="../ViewProviderLink.cpp" line="2546"/>
+      <location filename="../MainWindow.cpp" line="827"/>
       <source>Apply to all</source>
       <translation>Ansök till alla</translation>
     </message>
@@ -8851,8 +8851,8 @@ den aktuella kopian kommer att gå förlorade.
       <translation>Växla överlägg</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="971"/>
       <location filename="../OverlayWidgets.cpp" line="2361"/>
+      <location filename="../OverlayManager.cpp" line="971"/>
       <source>Toggle floating window</source>
       <translation>Växla mellan flytande fönster</translation>
     </message>
@@ -9008,7 +9008,7 @@ den aktuella kopian kommer att gå förlorade.
       <translation>Redigera text</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskDialog.cpp" line="100"/>
+      <location filename="../TaskView/TaskDialog.cpp" line="101"/>
       <source>Close this dialog?</source>
       <translation>Stäng den här dialogen?</translation>
     </message>
@@ -9025,7 +9025,7 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="235"/>
       <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation type="unfinished">The group '%1' contains %2 object(s). Do you want to delete them as well?</translation>
+      <translation>Gruppen '%1' innehåller %2 objekt. Vill du ta bort dem också?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="240"/>
@@ -9035,18 +9035,18 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="248"/>
       <source>Delete group contents recursively?</source>
-      <translation type="unfinished">Delete group contents recursively?</translation>
+      <translation>Ta bort gruppens innehåll rekursivt?</translation>
     </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="756"/>
+      <location filename="../Selection/Selection.cpp" line="757"/>
       <source>Not allowed:</source>
       <translation>Inte tillåtet:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1052"/>
+      <location filename="../Selection/Selection.cpp" line="1053"/>
       <source>Selection not allowed by filter</source>
       <translation>Markering tillåts inte av filtret</translation>
     </message>
@@ -9284,7 +9284,7 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../CommandStd.cpp" line="694"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation>FreeCAD &amp;forum</translation>
+      <translation>FreeCAD-&amp;forum</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="695"/>
@@ -9386,8 +9386,8 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="404"/>
       <location filename="../MainWindow.cpp" line="2199"/>
+      <location filename="../DocumentRecovery.cpp" line="404"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -10041,7 +10041,7 @@ Fortsätta?
     <message>
       <location filename="../CommandView.cpp" line="740"/>
       <source>&amp;2 Points</source>
-      <translation>&amp;2 punkter</translation>
+      <translation>&amp;2 Punkter</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="745"/>
@@ -12004,7 +12004,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="232"/>
       <source>Font size override, set to 0 for the default value.</source>
-      <translation type="unfinished">Font size override, set to 0 for the default value.</translation>
+      <translation>Åsidosätt teckenstorlek, ställ in till 0 för standardvärdet.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="244"/>
@@ -12137,7 +12137,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../ModuleIO.cpp" line="45"/>
       <source>File not found</source>
-      <translation>Fil ej funnen</translation>
+      <translation>Filen hittades inte</translation>
     </message>
     <message>
       <location filename="../ModuleIO.cpp" line="46"/>
@@ -12158,7 +12158,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="324"/>
       <source>Python &amp;Modules Documentation</source>
-      <translation>Dokumentation för Python-&amp;moduler</translation>
+      <translation>Dokumentation för P&amp;ython-moduler</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
@@ -12685,22 +12685,22 @@ regionen inte är ogenomskinliga.</translation>
   <context>
     <name>Gui::SolidWorksNavigationStyle</name>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>Tryck på vänster musknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and middle mouse button</source>
       <translation>Tryck på Ctrl och den mellersta musknappen</translation>
     </message>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>Tryck på musens mittknapp</translation>
     </message>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel</source>
       <translation>Scrolla mushjulet</translation>
     </message>
@@ -13837,12 +13837,12 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
       <source>&amp;Box Zoom</source>
-      <translation>&amp;Lådzoom</translation>
+      <translation>Zooma till &amp;ruta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2720"/>
       <source>Activates the box zoom tool</source>
-      <translation>Aktiverar lådzoomverktyget</translation>
+      <translation>Aktiverar rutzoomverktyget</translation>
     </message>
   </context>
   <context>
@@ -14296,7 +14296,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="256"/>
       <source>Dock Views</source>
-      <translation>Dock utsikt</translation>
+      <translation>Docka vyer</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="257"/>
@@ -14366,9 +14366,9 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="579"/>
+      <location filename="../PropertyView.cpp" line="582"/>
       <source>Property View</source>
-      <translation>Utsikt över fastigheten</translation>
+      <translation>Egenskapsvy</translation>
     </message>
   </context>
   <context>
@@ -14522,7 +14522,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4544"/>
       <source>Changes the linked object</source>
       <translation>Ändrar det länkade objektet</translation>
     </message>
@@ -14530,12 +14530,12 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="132"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="133"/>
       <source>Yes</source>
       <translation>Ja</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="132"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="133"/>
       <source>No</source>
       <translation>Nej</translation>
     </message>
@@ -14576,7 +14576,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1115"/>
+      <location filename="../Selection/SelectionView.cpp" line="1116"/>
       <source>Whole Object</source>
       <translation>Helt objekt</translation>
     </message>

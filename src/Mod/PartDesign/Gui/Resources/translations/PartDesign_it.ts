@@ -1574,7 +1574,16 @@ Se zero, è uguale a Raggio2</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="196"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="207"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="212"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
@@ -3186,11 +3195,11 @@ misurata lungo la direzione specificata</translation>
       <translation>In questo documento non c'è nessun piano valido</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
@@ -3230,11 +3239,11 @@ misurata lungo la direzione specificata</translation>
       <translation>Nel documento non è disponibile nessuno schizzo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
@@ -3461,14 +3470,14 @@ This may lead to unexpected results.</source>
       <translation>Non è possibile creare una funzione sottrattiva senza una funzione di base disponibile</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <location filename="../../TaskTransformedParameters.cpp" line="438"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <source>Vertical sketch axis</source>
       <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <source>Horizontal sketch axis</source>
       <translation>Asse orizzontale dello schizzo</translation>
     </message>
@@ -3523,8 +3532,8 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
@@ -4276,108 +4285,108 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>WizardShaftTable</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
       <source>Length [mm]</source>
       <translation>Lunghezza [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Diameter [mm]</source>
       <translation>Diametro [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Inner diameter [mm]</source>
       <translation>Diametro interno [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
       <source>Constraint type</source>
       <translation>Tipo di vincolo</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Start edge type</source>
       <translation>Tipo di bordo iniziale</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>Start edge size</source>
       <translation>Dimensione bordo iniziale</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>End edge type</source>
       <translation>Tipo di bordo finale</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="54"/>
       <source>End edge size</source>
       <translation>Dimensione bordo finale</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="63"/>
       <source>Shaft Wizard</source>
       <translation type="unfinished">Shaft Wizard</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 1</source>
       <translation>Sezione 1</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 2</source>
       <translation>Sezione 2</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="75"/>
       <source>Add column</source>
       <translation>Aggiungi una colonna</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="121"/>
       <source>Section %s</source>
       <translation>Sezione %s</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="149"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="164"/>
       <source>None</source>
       <translation>Nessuno</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <source>Fixed</source>
       <translation>Fissa</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
       <source>Force</source>
       <translation>Forza</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
       <source>Bearing</source>
       <translation>Cuscinetto</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Gear</source>
       <translation>Ingranaggio</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Pulley</source>
       <translation>Puleggia</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>Chamfer</source>
       <translation>Smusso</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
       <source>Fillet</source>
       <translation>Raccordo</translation>
     </message>
@@ -4385,17 +4394,17 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>TaskWizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="56"/>
       <source>All</source>
       <translation>Tutti</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="103"/>
       <source>Missing Module</source>
       <translation type="unfinished">Missing Module</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
       <translation type="unfinished">The Plot add-on is not installed. Install it to enable this feature.</translation>
     </message>
@@ -4403,12 +4412,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>PartDesign_WizardShaftCallBack</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="213"/>
       <source>Shaft design wizard...</source>
       <translation>Progettazione albero assistita...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Start the shaft design wizard</source>
       <translation>Avvia la procedura guidata di progettazione dell'albero</translation>
     </message>
@@ -4467,20 +4476,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>La forma di base è nulla</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureGroove.cpp" line="231"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4529,8 +4538,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossibile creare lo smusso</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <source>Resulting shape is null</source>
       <translation>La forma risultante è nulla</translation>
     </message>
@@ -4671,9 +4680,9 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <location filename="../../../App/FeatureHelix.cpp" line="295"/>
       <location filename="../../../App/FeatureHelix.cpp" line="327"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
@@ -5161,12 +5170,12 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
   <context>
     <name>PartDesign_WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="188"/>
       <source>Shaft Design Wizard</source>
       <translation type="unfinished">Shaft Design Wizard</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Starts the shaft design wizard</source>
       <translation type="unfinished">Starts the shaft design wizard</translation>
     </message>
@@ -5439,12 +5448,12 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Direzione 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="215"/>
+      <location filename="../../TaskPatternParameters.cpp" line="216"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Selezionare un riferimento di direzione (bordo, faccia, linea di riferimento)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="295"/>
+      <location filename="../../TaskPatternParameters.cpp" line="296"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Selezione non valida. Seleziona un bordo, una faccia planare o una linea di riferimento.</translation>
     </message>

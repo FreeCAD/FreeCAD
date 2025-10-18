@@ -1574,7 +1574,16 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="196"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="207"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="212"/>
       <source>Input error</source>
       <translation>Eroare de intrare</translation>
     </message>
@@ -3186,11 +3195,11 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Nu sunt plane valabile în acest document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <source>A dialog is already open in the task panel</source>
       <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
@@ -3230,11 +3239,11 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Nicio Schița nu este disponibilă în document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
@@ -3463,14 +3472,14 @@ This may lead to unexpected results.</source>
       <translation>Nu este posibil să se creeze o funcție substractivă fără prezența unei funcții de bază</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <location filename="../../TaskTransformedParameters.cpp" line="438"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <source>Vertical sketch axis</source>
       <translation>Axa verticală a schiţei</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <source>Horizontal sketch axis</source>
       <translation>Axa orizontală a schiţei</translation>
     </message>
@@ -3525,8 +3534,8 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Editare %1</translation>
@@ -4279,108 +4288,108 @@ peste 90: rază mai mare la partea de jos</translation>
   <context>
     <name>WizardShaftTable</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
       <source>Length [mm]</source>
       <translation>Lungimea [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Diameter [mm]</source>
       <translation>Diametru [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Inner diameter [mm]</source>
       <translation>Diametrul interior [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
       <source>Constraint type</source>
       <translation>Forţa de constrângere</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Start edge type</source>
       <translation>Tip de margine de start</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>Start edge size</source>
       <translation>Mărimea marginii de început</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>End edge type</source>
       <translation>Tip margine finală</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="54"/>
       <source>End edge size</source>
       <translation>Dimensiune margine finală</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="63"/>
       <source>Shaft Wizard</source>
       <translation type="unfinished">Shaft Wizard</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 1</source>
       <translation>Secţiunea 1</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 2</source>
       <translation>Secţiunea 2</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="75"/>
       <source>Add column</source>
       <translation>Adăugare coloană</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="121"/>
       <source>Section %s</source>
       <translation>Secțiunea %s</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="149"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="164"/>
       <source>None</source>
       <translation>Niciunul</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <source>Fixed</source>
       <translation>Fixă</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
       <source>Force</source>
       <translation>Forță</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
       <source>Bearing</source>
       <translation>Rulment</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Gear</source>
       <translation>Unelte</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Pulley</source>
       <translation>Scripete</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>Chamfer</source>
       <translation>Teşitură</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
       <source>Fillet</source>
       <translation>Rotunjire</translation>
     </message>
@@ -4388,17 +4397,17 @@ peste 90: rază mai mare la partea de jos</translation>
   <context>
     <name>TaskWizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="56"/>
       <source>All</source>
       <translation>Toate</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="103"/>
       <source>Missing Module</source>
       <translation type="unfinished">Missing Module</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
       <translation type="unfinished">The Plot add-on is not installed. Install it to enable this feature.</translation>
     </message>
@@ -4406,12 +4415,12 @@ peste 90: rază mai mare la partea de jos</translation>
   <context>
     <name>PartDesign_WizardShaftCallBack</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="213"/>
       <source>Shaft design wizard...</source>
       <translation>Asistent pentru proiectarea arborelui...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Start the shaft design wizard</source>
       <translation>Începe asistentul de design al arborelui</translation>
     </message>
@@ -4470,20 +4479,20 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Forma de bază este nulă</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureGroove.cpp" line="231"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4532,8 +4541,8 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Crearea camerei a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <source>Resulting shape is null</source>
       <translation>Forma rezultată este nulă</translation>
     </message>
@@ -4674,9 +4683,9 @@ Entitățile de schiță intersectate dintr-o schiță nu sunt permise.</transla
       <translation>Eroare: Fața trebuie să fie plană</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <location filename="../../../App/FeatureHelix.cpp" line="295"/>
       <location filename="../../../App/FeatureHelix.cpp" line="327"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <source>Error: Result is not a solid</source>
       <translation>Eroare: Rezultatul nu este solid</translation>
     </message>
@@ -5164,12 +5173,12 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
   <context>
     <name>PartDesign_WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="188"/>
       <source>Shaft Design Wizard</source>
       <translation type="unfinished">Shaft Design Wizard</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Starts the shaft design wizard</source>
       <translation type="unfinished">Starts the shaft design wizard</translation>
     </message>
@@ -5442,12 +5451,12 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
       <translation type="unfinished">Direction 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="215"/>
+      <location filename="../../TaskPatternParameters.cpp" line="216"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation type="unfinished">Select a direction reference (edge, face, datum line)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="295"/>
+      <location filename="../../TaskPatternParameters.cpp" line="296"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
     </message>

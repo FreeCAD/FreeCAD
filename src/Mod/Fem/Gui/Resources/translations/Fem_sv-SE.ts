@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialog</translation>
@@ -764,14 +764,14 @@
       <translation>Välj hörnpunkter, linjer och ytor</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <source>Temperature</source>
       <translation>Temperatur</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1891,7 +1891,7 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>Välj slavgeometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
@@ -1903,12 +1903,12 @@ att "MAXKOI" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="141"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="144"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>Välj huvudgeometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
@@ -1966,12 +1966,12 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Hörnpunkt, kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
@@ -2011,12 +2011,12 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Hörnpunkt, kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
@@ -2076,7 +2076,7 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
@@ -2201,12 +2201,12 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Hörnpunkt, kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
@@ -2282,12 +2282,12 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
@@ -2329,7 +2329,7 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Välj enkel geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
@@ -2388,12 +2388,12 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
@@ -2446,7 +2446,7 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
@@ -2491,12 +2491,12 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Hörnpunkt, kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
@@ -2583,7 +2583,7 @@ att "MAXKOI" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Välj enkel geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
@@ -2811,9 +2811,9 @@ att "MAXKOI" behöver ökas.</translation>
       <translation>Inloppstryck</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Tryck</translation>
     </message>
@@ -2943,12 +2943,12 @@ att "MAXKOI" behöver ökas.</translation>
       <translation>Varvtal per sekund</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -3112,18 +3112,18 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>För att definiera skalärpotential och magnetisk vektorpotential</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Verklig</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Imaginär</translation>
     </message>
@@ -3203,8 +3203,8 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Parameter för strålsektion</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation>Tvärsnitts-parameter</translation>
     </message>
@@ -3215,14 +3215,14 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Bredd</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3243,8 +3243,8 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Yttre diameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>Tjocklek</translation>
     </message>
@@ -3322,14 +3322,14 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Normal till gräns</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Egenskaper för analysfunktion</translation>
     </message>
@@ -3339,9 +3339,9 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Värmekälla</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>Läge</translation>
     </message>
@@ -3356,8 +3356,8 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Förlusthastighet</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>Imaginärdelen används endast för ekvationer
@@ -3425,9 +3425,9 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Välj anpassat läge för att aktivera vektorströmdensitet</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3442,9 +3442,9 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Imaginär del av strömtäthetens x-komponent</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3459,9 +3459,9 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Imaginär del av strömtäthetens y-komponent</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3501,22 +3501,22 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Maximal elementstorlek</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulär</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Fält</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>Ramar</translation>
     </message>
@@ -4008,7 +4008,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis Type</source>
-      <translation>Typ av analys</translation>
+      <translation>Analystyp</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="67"/>
@@ -4291,12 +4291,12 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+      <translation>Välj huvudgeometri av typen: Yta; klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
+      <translation>Välj slavgeometri av typen: Yta; klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4339,7 +4339,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Välj geometri av typen: Hörnpunkt, Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4429,7 +4429,7 @@ som genereras av flödet
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Välj geometri av typen: Hörnpunkt, Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4457,7 +4457,7 @@ som genereras av flödet
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Välj geometri av typen: Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4562,7 +4562,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Välj geometri av typen: Hörnpunkt, Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4598,7 +4598,7 @@ normalvektorn för ytan används som riktning</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Riktningen på kanten eller riktningen på ytans
+      <translation>Riktningen på kanten eller riktningen på ytans 
 normalvektorn för ytan används som riktning</translation>
     </message>
     <message>
@@ -4617,7 +4617,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>Välj geometri av typen: Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4674,7 +4674,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Välj enkel geometri av typen: Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4692,7 +4692,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>Välj geometri av typen: Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4746,7 +4746,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Välj geometri av typen: Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4764,7 +4764,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Välj geometri av typen: Hörnpunkt, Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4807,7 +4807,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Välj enkel geometri av typen: Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5304,7 +5304,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Analysis Features Without Solver</source>
-      <translation>Analysfunktioner utan solver</translation>
+      <translation>Analysfunktioner utan lösare</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -5557,7 +5557,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1157"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Lösare Mystran</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1159"/>
@@ -5699,7 +5699,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>Välj geometri av typen: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
@@ -5826,7 +5826,7 @@ Välj en resultattyp först.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
-Correct module found in:
+Correct module found in: 
 {}</source>
       <translation>
 
@@ -5977,8 +5977,8 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Vilken del av Y-fältvektorn som ska användas för Y-axeln</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Ange om fältet ska extraheras för varje tillgänglig bildruta</translation>
     </message>
@@ -5998,14 +5998,14 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Redigera {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>Visa tomt</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>Visa data</translation>
     </message>
@@ -6497,7 +6497,7 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Välj geometri av typen: Hörnpunkt, Kant, Yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6606,12 +6606,12 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Välj geometri av typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Hörnpunkt, kant, yta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
@@ -7100,8 +7100,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Glyfens form</translation>
     </message>
@@ -7143,10 +7143,10 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Vilket vektorfält används för att orientera glyferna</translation>
     </message>
@@ -7158,8 +7158,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
@@ -7182,8 +7182,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>En konstant multiplikator som glyferna skalas med</translation>
     </message>
@@ -7199,8 +7199,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Om skalningsdata är en vektor avgör denna egenskap om glyfen skalas med vektorstorleken eller med de enskilda komponenterna</translation>
     </message>
@@ -7292,27 +7292,27 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Kumulativ</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation>Historia</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Visa</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>Etiketter</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
       <translation>Y-axel</translation>
     </message>
@@ -7322,8 +7322,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>X-axel</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>Titel</translation>
     </message>
@@ -7800,9 +7800,9 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulär</translation>
     </message>

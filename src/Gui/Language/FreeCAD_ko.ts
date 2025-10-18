@@ -4,35 +4,35 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="561"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="562"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;비어 있음&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2379"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2648"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2380"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2649"/>
       <source>Angle</source>
       <translation>각</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2383"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2652"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2384"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2653"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2657"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2658"/>
       <source>Position</source>
       <translation>위치</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="327"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2907"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="339"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2908"/>
       <source>Enum</source>
       <translation>열거형(Enum)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyModel.cpp" line="275"/>
+      <location filename="../propertyeditor/PropertyModel.cpp" line="276"/>
       <source>Base</source>
       <translation>기본</translation>
     </message>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="713"/>
       <source>Run test cases to verify console messages</source>
-      <translation>시험삼아 콘솔 메시지를 확인해보기 위해 테스용 샘플을 실행 해 보세요</translation>
+      <translation>시험삼아 명령창 메시지를 확인해보기 위해 테스용 샘플을 실행해 보세요</translation>
     </message>
   </context>
   <context>
@@ -128,10 +128,10 @@
       <translation>위치 설정</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="126"/>
-      <location filename="../TaskTransform.cpp" line="788"/>
       <location filename="../Transform.cpp" line="102"/>
       <location filename="../ViewProviderAnnotation.cpp" line="418"/>
+      <location filename="../TaskTransform.cpp" line="126"/>
+      <location filename="../TaskTransform.cpp" line="788"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
@@ -141,8 +141,8 @@
       <translation>배열 요소 전환하기</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="256"/>
       <source>Edit image</source>
       <translation>화상 편집</translation>
     </message>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../CommandView.cpp" line="923"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>투명도 전환</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1040"/>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="537"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>나무 보기</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="538"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="26"/>
       <source>Expression Editor</source>
-      <translation type="unfinished">Expression Editor</translation>
+      <translation>표현식 편집기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
@@ -335,7 +335,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set...</source>
-      <translation type="unfinished">Store in Variable Set...</translation>
+      <translation>변수 집합에 저장...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -345,7 +345,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="284"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>변수 집합</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="301"/>
@@ -424,7 +424,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../QuantitySpinBox_p.h" line="63"/>
       <source>Enter expression… (=)</source>
-      <translation type="unfinished">Enter expression… (=)</translation>
+      <translation>함수식 입력... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="64"/>
@@ -504,22 +504,22 @@ The property of this object will refer to the property of the Variable Set.</tra
   <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="51"/>
       <source>Press Shift and middle mouse button</source>
       <translation type="unfinished">Press Shift and middle mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>가운데 마우스 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/BlenderNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel</source>
       <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
@@ -527,22 +527,22 @@ The property of this object will refer to the property of the Variable Set.</tra
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
       <translation>가운데 마우스 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left or middle+right mouse button</source>
       <translation type="unfinished">Press middle+left or middle+right mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/CADNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation type="unfinished">Scroll mouse wheel or keep middle button depressed
@@ -565,22 +565,22 @@ while doing a left or right click and move the mouse up or down</translation>
   <context>
     <name>Gui::DAG::Model</name>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="123"/>
+      <location filename="../DAGView/DAGModel.cpp" line="124"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="124"/>
+      <location filename="../DAGView/DAGModel.cpp" line="125"/>
       <source>Renames the object</source>
       <translation>대상체 이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="131"/>
+      <location filename="../DAGView/DAGModel.cpp" line="132"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>편집 완료</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="132"/>
+      <location filename="../DAGView/DAGModel.cpp" line="133"/>
       <source>Finishes editing the object</source>
       <translation>대상체 편집 끝내기</translation>
     </message>
@@ -621,7 +621,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="225"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>오림판에 복사</translation>
     </message>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="261"/>
@@ -711,7 +711,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="241"/>
       <source>Clear it now?</source>
-      <translation type="unfinished">Clear it now?</translation>
+      <translation>지울까요 지금?</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="242"/>
@@ -729,7 +729,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="284"/>
       <source>Out of range</source>
-      <translation type="unfinished">Out of range</translation>
+      <translation>범위 벗어남</translation>
     </message>
   </context>
   <context>
@@ -737,7 +737,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="359"/>
       <source>Camera Settings</source>
-      <translation type="unfinished">Camera Settings</translation>
+      <translation>카메라 설정</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="366"/>
@@ -924,9 +924,9 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="474"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="498"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>속성 추가</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="37"/>
@@ -941,7 +941,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="58"/>
       <source>Tooltip</source>
-      <translation>툴팁</translation>
+      <translation>도구 설명</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="30"/>
@@ -954,39 +954,39 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="501"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="525"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="565"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="589"/>
       <source>Invalid group name</source>
-      <translation type="unfinished">Invalid group name</translation>
+      <translation>무효한 모둠 이름</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="568"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="592"/>
       <source>Invalid type name</source>
       <translation type="unfinished">Invalid type name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="598"/>
       <source>Invalid property name '%1'</source>
       <translation type="unfinished">Invalid property name '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="577"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="601"/>
       <source>Property '%1' already exists</source>
-      <translation type="unfinished">Property '%1' already exists</translation>
+      <translation>'%1' 속성이 이미 있습니다</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="580"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="604"/>
       <source>'%1' is a constant</source>
-      <translation type="unfinished">'%1' is a constant</translation>
+      <translation>'%1'은 상수입니다</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="583"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="607"/>
       <source>'%1' is a unit</source>
-      <translation type="unfinished">'%1' is a unit</translation>
+      <translation>'%1'은 단위입니다</translation>
     </message>
   </context>
   <context>
@@ -1080,7 +1080,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="159"/>
       <source>Export configuration</source>
-      <translation type="unfinished">Export configuration</translation>
+      <translation>설정 내보내기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="167"/>
@@ -1118,7 +1118,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="74"/>
       <source>Tooltip</source>
-      <translation>툴팁</translation>
+      <translation>도구 설명</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="81"/>
@@ -1128,35 +1128,35 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="88"/>
       <source>What's this</source>
-      <translation type="unfinished">What's this</translation>
+      <translation>이뭐꼬?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation type="unfinished">Accelerator</translation>
+      <translation>가속기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
-      <source>Pixmap</source>
-      <translation>Pixmap</translation>
+      <source>Icon</source>
+      <translation>아이콘</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
-      <source>Choose Icon</source>
-      <translation>아이콘 선택</translation>
+      <source>Choose an icon</source>
+      <translation type="unfinished">Choose an icon</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActions.ui" line="231"/>
+      <location filename="../Dialogs/DlgActions.ui" line="234"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActions.ui" line="238"/>
+      <location filename="../Dialogs/DlgActions.ui" line="241"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgActions.ui" line="245"/>
+      <location filename="../Dialogs/DlgActions.ui" line="248"/>
       <source>Replace</source>
       <translation>바꾸기</translation>
     </message>
@@ -1181,7 +1181,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="211"/>
       <source>Could not find macro file '%1'</source>
-      <translation type="unfinished">Could not find macro file '%1'</translation>
+      <translation>'% 1' 매크로 파일을 찾을 수 없습니다</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="235"/>
@@ -1191,7 +1191,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="235"/>
       <source>Specify the macro first</source>
-      <translation type="unfinished">Specify the macro first</translation>
+      <translation>먼저 매크로를 지정 하십시오</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="240"/>
@@ -1213,7 +1213,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="305"/>
       <source>Select a macro item first</source>
-      <translation type="unfinished">Select a macro item first</translation>
+      <translation>먼저 매크로 항목을 선택 하세요</translation>
     </message>
   </context>
   <context>
@@ -1261,7 +1261,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="100"/>
       <source>Current shortcut</source>
-      <translation type="unfinished">Current shortcut</translation>
+      <translation>현재 단축키</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="119"/>
@@ -1386,7 +1386,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="119"/>
       <source>Move Right</source>
-      <translation type="unfinished">Move Right</translation>
+      <translation>오른쪽으로 이동</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="122"/>
@@ -1396,7 +1396,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="145"/>
       <source>Move Left</source>
-      <translation type="unfinished">Move Left</translation>
+      <translation>왼쪽으로 이동</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="148"/>
@@ -1406,7 +1406,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>위로 이동</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
@@ -1416,7 +1416,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>아래로 이동</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
@@ -1606,22 +1606,22 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="14"/>
       <source>Execute Macro</source>
-      <translation type="unfinished">Execute Macro</translation>
+      <translation>매크로 실행</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="55"/>
       <source>Macro Name</source>
-      <translation type="unfinished">Macro Name</translation>
+      <translation>매크로 이름</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="85"/>
       <source>Find file</source>
-      <translation type="unfinished">Find file</translation>
+      <translation>파일 찾기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="99"/>
       <source>Find in files</source>
-      <translation type="unfinished">Find in files</translation>
+      <translation>파일에서 찾기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="122"/>
@@ -1681,7 +1681,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="321"/>
       <source>User Macros Location</source>
-      <translation type="unfinished">User Macros Location</translation>
+      <translation>사용자 매크로 위치</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="355"/>
@@ -1691,7 +1691,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="358"/>
       <source>Open Folder</source>
-      <translation type="unfinished">Open Folder</translation>
+      <translation>폴더 열기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="284"/>
@@ -1793,17 +1793,17 @@ Note: your changes will be applied when you next switch workbenches
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="450"/>
       <source>Read-Only</source>
-      <translation type="unfinished">Read-Only</translation>
+      <translation>읽기 전용</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="469"/>
       <source>Enter a file name:</source>
-      <translation type="unfinished">Enter a file name:</translation>
+      <translation>파일 이름을 입력하세요:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
       <source>Delete the macro '%1'?</source>
-      <translation type="unfinished">Delete the macro '%1'?</translation>
+      <translation>'%1' 매크로를 삭제할까요?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="630"/>
@@ -1824,7 +1824,7 @@ Note: your changes will be applied when you next switch workbenches
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="865"/>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1026"/>
       <source>Enter new name</source>
-      <translation type="unfinished">Enter new name</translation>
+      <translation>새 이름 입력</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
@@ -1869,22 +1869,22 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="14"/>
       <source>Record Macro</source>
-      <translation type="unfinished">Record Macro</translation>
+      <translation>매크로 기록</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="35"/>
       <source>Macro Name</source>
-      <translation type="unfinished">Macro Name</translation>
+      <translation>매크로 이름</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="62"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>매크로 경로</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="96"/>
       <source>Choose Folder</source>
-      <translation type="unfinished">Choose Folder</translation>
+      <translation>폴더 선택</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="123"/>
@@ -1924,7 +1924,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="127"/>
       <source>The macro '%1' already exists. Overwrite it?</source>
-      <translation type="unfinished">The macro '%1' already exists. Overwrite it?</translation>
+      <translation>'%1' 매크로가 이미 있는데 덮어 쓸까요?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="140"/>
@@ -1962,7 +1962,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="14"/>
       <source>Material Properties</source>
-      <translation type="unfinished">Material Properties</translation>
+      <translation>재료 속성</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="47"/>
@@ -2009,7 +2009,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="14"/>
       <source>Online Help</source>
-      <translation type="unfinished">Online Help</translation>
+      <translation>온라인 도움말</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="26"/>
@@ -2064,7 +2064,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="70"/>
       <source>Enter a group name to search</source>
-      <translation type="unfinished">Enter a group name to search</translation>
+      <translation>찾을 모둠 이름을 입력하세요</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="86"/>
@@ -2079,7 +2079,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="73"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>모둠 검색</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="112"/>
@@ -2185,7 +2185,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="125"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>모둠 검색</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="473"/>
@@ -2208,7 +2208,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>애드온 관리자 열기</translation>
     </message>
   </context>
   <context>
@@ -2296,42 +2296,42 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="784"/>
       <source>Reset All</source>
-      <translation type="unfinished">Reset All</translation>
+      <translation>전부 초기화</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
       <source>Clear User Settings</source>
-      <translation type="unfinished">Clear User Settings</translation>
+      <translation>사용자 설정 지우기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Clear all your user settings?</source>
-      <translation type="unfinished">Clear all your user settings?</translation>
+      <translation>당신의 모든 설정을 지울까요?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
       <source>All settings will be cleared.</source>
-      <translation type="unfinished">All settings will be cleared.</translation>
+      <translation>모든 설정이 지워집니다.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="947"/>
       <source>Restart Required</source>
-      <translation type="unfinished">Restart Required</translation>
+      <translation>재시작 필요</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="948"/>
       <source>Restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">Restart FreeCAD for changes to take effect.</translation>
+      <translation>변경된 내용을 반영하려면 프리캐드를 다시 시작해야 합니다.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="953"/>
       <source>Restart Now</source>
-      <translation type="unfinished">Restart Now</translation>
+      <translation>지금 다시 시작</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="954"/>
       <source>Restart Later</source>
-      <translation type="unfinished">Restart Later</translation>
+      <translation>나중에 다시 시작</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="780"/>
@@ -2354,7 +2354,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="14"/>
       <source>Document Information</source>
-      <translation type="unfinished">Document Information</translation>
+      <translation>문서 정보</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="26"/>
@@ -2384,7 +2384,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="142"/>
       <source>Unit system</source>
-      <translation type="unfinished">Unit system</translation>
+      <translation>단위계</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="159"/>
@@ -2414,7 +2414,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="280"/>
       <source>License information</source>
-      <translation type="unfinished">License information</translation>
+      <translation>면허 정보</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="308"/>
@@ -2473,7 +2473,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="72"/>
       <source>Create Document</source>
-      <translation type="unfinished">Create Document</translation>
+      <translation>문서 생성</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="137"/>
@@ -2522,7 +2522,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="118"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>문서 생성 실패</translation>
     </message>
   </context>
   <context>
@@ -2621,7 +2621,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="104"/>
       <source>Accept Changes</source>
-      <translation type="unfinished">Accept Changes</translation>
+      <translation>변경내용 수용</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="111"/>
@@ -2631,7 +2631,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="118"/>
       <source>Abort Program</source>
-      <translation type="unfinished">Abort Program</translation>
+      <translation>프로그램 중단</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="138"/>
@@ -2676,17 +2676,17 @@ lower right corner within opened files</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="131"/>
       <source>X-axis color</source>
-      <translation>X-축 색상</translation>
+      <translation>X축 색상</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="171"/>
       <source>Y-axis color</source>
-      <translation>Y-축 색상</translation>
+      <translation>Y축 색상</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="211"/>
       <source>Z-axis color</source>
-      <translation>Z-축 색상</translation>
+      <translation>Z축 색상</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="240"/>
@@ -2805,7 +2805,7 @@ will be shown at the lower left corner in opened files</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="64"/>
       <source>Relative size</source>
-      <translation type="unfinished">Relative size</translation>
+      <translation>상대적 크기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="74"/>
@@ -2817,7 +2817,7 @@ in the corner in % of height/width of the viewport</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="100"/>
       <source>Letter color</source>
-      <translation type="unfinished">Letter color</translation>
+      <translation>글자색</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="286"/>
@@ -2913,7 +2913,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
       <source>Camera Type</source>
-      <translation type="unfinished">Camera Type</translation>
+      <translation>카메라 유형</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="588"/>
@@ -3063,7 +3063,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="164"/>
       <source>Check Now</source>
-      <translation type="unfinished">Check Now</translation>
+      <translation>지금 확인</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="55"/>
@@ -3111,12 +3111,12 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="53"/>
       <source>White-black</source>
-      <translation type="unfinished">White-black</translation>
+      <translation>백-흑</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="58"/>
       <source>Black-white</source>
-      <translation type="unfinished">Black-white</translation>
+      <translation>흑-백</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="85"/>
@@ -3220,13 +3220,13 @@ will be displayed with transparency</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="257"/>
       <source>Number of labels besides the color bar</source>
-      <translation>색상 표시줄 이외의 레이블 수</translation>
+      <translation>색상 표시줄 이외의 이름표 개수</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="312"/>
       <source>Number of decimals for labels
 besides the color bar</source>
-      <translation>색상 표시줄 이외의 레이블에 대한 소수점 자릿수</translation>
+      <translation>색상 표시줄 이외의 이름표에 대한 소수점 이하 자릿수</translation>
     </message>
     <message>
       <source/>
@@ -3421,12 +3421,12 @@ get date suffix according to the specified format</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="580"/>
       <source>Allow objects to have same label</source>
-      <translation>객체가 동일한 레이블을 갖도록 허용하기</translation>
+      <translation>대상체가 동일한 이름표를 갖도록 허용하기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="583"/>
       <source>Allow duplicate object labels in one document</source>
-      <translation>하나의 문서에 복제된 객체 레이블 허용하기</translation>
+      <translation>하나의 문서에 중복된 대상체 이름표 허용하기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="596"/>
@@ -3444,7 +3444,7 @@ icon in the tree view to fully reload it.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
       <source>Disable partial loading of external linked objects</source>
-      <translation>외부 링크된 객체의 부분 불러오기 비활성화</translation>
+      <translation>외부 연결된 대상체의 부분 불러오기 비활성화</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="619"/>
@@ -3791,17 +3791,17 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
       <source>General Macro Settings</source>
-      <translation type="unfinished">General Macro Settings</translation>
+      <translation>일반 매크로 설정</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="48"/>
       <source>Macro Recording Settings</source>
-      <translation type="unfinished">Macro Recording Settings</translation>
+      <translation>매크로 기록 설정</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="69"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>매크로 경로</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
@@ -3836,12 +3836,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="192"/>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>매크로 스크립트에 의해 실행된 명령은 Python 콘솔에 표시됩니다</translation>
+      <translation>매크로 스크립트에 의해 실행된 명령은 파이썬 명령창에 표시됩니다</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in Python console</source>
-      <translation type="unfinished">Show script commands in Python console</translation>
+      <translation>파이썬 명령창에 명령어 보이기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
@@ -3851,7 +3851,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="243"/>
       <source>Recent Macros Menu</source>
-      <translation type="unfinished">Recent Macros Menu</translation>
+      <translation>최근 매크로 메뉴</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="224"/>
@@ -4295,13 +4295,13 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>명령창</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation>Python 콘솔에서 사용 가능한 가로 공간을 초과하면 단어가 줄 바꿈됩니다</translation>
+      <translation>파이썬 명령창에서 사용 가능한 가로 공간을 초과하면 단어가 줄 바꿈됩니다</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="30"/>
@@ -4476,17 +4476,17 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="412"/>
       <source>Color Bar</source>
-      <translation type="unfinished">Color Bar</translation>
+      <translation>색상 막대</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="459"/>
       <source>Label text color</source>
-      <translation type="unfinished">Label text color</translation>
+      <translation>꼬리표 글자색</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="495"/>
       <source>Label text size</source>
-      <translation type="unfinished">Label text size</translation>
+      <translation>꼬리표 글자 크기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="508"/>
@@ -4501,7 +4501,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="23"/>
       <source>Background Color</source>
-      <translation type="unfinished">Background Color</translation>
+      <translation>배경색</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="61"/>
@@ -4543,7 +4543,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>나무 보기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
@@ -4618,7 +4618,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="14"/>
       <source>Units Converter</source>
-      <translation type="unfinished">Units Converter</translation>
+      <translation>단위 변환기</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="35"/>
@@ -4656,7 +4656,7 @@ To add a calculation press Return in the value input field</source>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="117"/>
       <source>Unit system</source>
-      <translation type="unfinished">Unit system</translation>
+      <translation>단위계</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="124"/>
@@ -4693,7 +4693,7 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="196"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation>복사</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="203"/>
@@ -4746,7 +4746,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DocumentRecovery.ui" line="60"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>문서 이름</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="65"/>
@@ -5054,17 +5054,17 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="492"/>
       <source>Add Sub-Group</source>
-      <translation type="unfinished">Add Sub-Group</translation>
+      <translation>하위 모둠 추가</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="494"/>
       <source>Remove Group</source>
-      <translation type="unfinished">Remove Group</translation>
+      <translation>모둠 제거</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="496"/>
       <source>Rename Group</source>
-      <translation type="unfinished">Rename Group</translation>
+      <translation>모둠 이름 변경</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="498"/>
@@ -5084,7 +5084,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="648"/>
       <source>Import error</source>
-      <translation type="unfinished">Import error</translation>
+      <translation>가져오기 오류</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="669"/>
@@ -5142,7 +5142,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="686"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>값 변경</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="690"/>
@@ -5248,7 +5248,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5529,82 +5529,82 @@ originally selected prior to opening this dialog</translation>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <location filename="../ReportView.cpp" line="587"/>
+      <location filename="../ReportView.cpp" line="598"/>
       <source>Options</source>
       <translation>옵션</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="595"/>
-      <location filename="../ReportView.cpp" line="619"/>
+      <location filename="../ReportView.cpp" line="606"/>
+      <location filename="../ReportView.cpp" line="630"/>
       <source>Normal Messages</source>
-      <translation type="unfinished">Normal Messages</translation>
+      <translation>일반 메시지</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="599"/>
-      <location filename="../ReportView.cpp" line="623"/>
+      <location filename="../ReportView.cpp" line="610"/>
+      <location filename="../ReportView.cpp" line="634"/>
       <source>Log Messages</source>
-      <translation type="unfinished">Log Messages</translation>
+      <translation>로그 메시지</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="611"/>
-      <location filename="../ReportView.cpp" line="635"/>
+      <location filename="../ReportView.cpp" line="622"/>
+      <location filename="../ReportView.cpp" line="646"/>
       <source>Critical Messages</source>
-      <translation type="unfinished">Critical Messages</translation>
+      <translation>중요한 메시지</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="641"/>
+      <location filename="../ReportView.cpp" line="652"/>
       <source>Redirect Python Output</source>
-      <translation type="unfinished">Redirect Python Output</translation>
+      <translation>파이썬 출력 다시 보내기</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="645"/>
+      <location filename="../ReportView.cpp" line="656"/>
       <source>Redirect Python Errors</source>
       <translation type="unfinished">Redirect Python Errors</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="650"/>
+      <location filename="../ReportView.cpp" line="661"/>
       <source>Go to End</source>
       <translation type="unfinished">Go to End</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="671"/>
+      <location filename="../ReportView.cpp" line="682"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="680"/>
+      <location filename="../ReportView.cpp" line="691"/>
       <source>Plain text files</source>
       <translation type="unfinished">Plain text files</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="603"/>
-      <location filename="../ReportView.cpp" line="627"/>
+      <location filename="../ReportView.cpp" line="614"/>
+      <location filename="../ReportView.cpp" line="638"/>
       <source>Warnings</source>
       <translation>경고</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="592"/>
+      <location filename="../ReportView.cpp" line="603"/>
       <source>Display Message Types</source>
       <translation type="unfinished">Display Message Types</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="607"/>
-      <location filename="../ReportView.cpp" line="631"/>
+      <location filename="../ReportView.cpp" line="618"/>
+      <location filename="../ReportView.cpp" line="642"/>
       <source>Errors</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="616"/>
+      <location filename="../ReportView.cpp" line="627"/>
       <source>Show Report View On</source>
       <translation type="unfinished">Show Report View On</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="669"/>
+      <location filename="../ReportView.cpp" line="680"/>
       <source>Clear</source>
       <translation>지우기</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="679"/>
+      <location filename="../ReportView.cpp" line="690"/>
       <source>Save Report Output</source>
       <translation>보고서 출력 저장</translation>
     </message>
@@ -5621,108 +5621,108 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ReportView.cpp" line="82"/>
       <location filename="../ReportView.cpp" line="104"/>
       <source>Python Console</source>
-      <translation type="unfinished">Python Console</translation>
+      <translation>파이썬 명령창</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="65"/>
+      <location filename="../Selection/SelectionView.cpp" line="66"/>
       <source>Selection View</source>
       <translation>선택항목 보기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="72"/>
+      <location filename="../Selection/SelectionView.cpp" line="73"/>
       <source>Search</source>
       <translation>검색하기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="73"/>
+      <location filename="../Selection/SelectionView.cpp" line="74"/>
       <source>Searches object labels</source>
-      <translation>객체 레이블 검색하기</translation>
+      <translation>대상체의 이름표를 검색합니다</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="81"/>
+      <location filename="../Selection/SelectionView.cpp" line="82"/>
       <source>Clears the search field</source>
       <translation>검색 필드 지우기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="85"/>
+      <location filename="../Selection/SelectionView.cpp" line="86"/>
       <source>The number of selected items</source>
       <translation>선택한 항목 수</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="96"/>
+      <location filename="../Selection/SelectionView.cpp" line="97"/>
       <source>Picked object list</source>
       <translation>선택한 대상체 목록</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="643"/>
+      <location filename="../Selection/SelectionView.cpp" line="644"/>
       <source>Select Only</source>
       <translation type="unfinished">Select Only</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="653"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Zoom Fit</source>
       <translation type="unfinished">Zoom Fit</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Go to Selection</source>
       <translation type="unfinished">Go to Selection</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="660"/>
+      <location filename="../Selection/SelectionView.cpp" line="661"/>
       <source>Mark to Recompute</source>
       <translation type="unfinished">Mark to Recompute</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="662"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Marks this object to be recomputed</source>
       <translation type="unfinished">Marks this object to be recomputed</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="666"/>
       <source>To Python Console</source>
       <translation type="unfinished">To Python Console</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="675"/>
       <source>Duplicate Subshape</source>
       <translation type="unfinished">Duplicate Subshape</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="647"/>
+      <location filename="../Selection/SelectionView.cpp" line="648"/>
       <source>Selects only this object</source>
       <translation>이 대상체만 선택하기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="649"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Deselect</source>
       <translation>선택해제</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="651"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Deselects this object</source>
       <translation>이 대상체의 선택을 취소</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="655"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>이 대상체를 선택하고 3D 창에 맞춤</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="658"/>
+      <location filename="../Selection/SelectionView.cpp" line="659"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>나무 보기에서 이 대상체를 선택하고 찾습니다</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="668"/>
+      <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Reveals this object and its subelements in the Python console.</source>
-      <translation>파이썬 콘솔에 이 대상체와 하위 요소를 표시합니다.</translation>
+      <translation>파이썬 명령창에 이 대상체와 하위 요소를 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="677"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>문서에서 이 하위 모양의 독립 실행형 사본을 만듭니다</translation>
     </message>
@@ -5814,7 +5814,7 @@ Save all changes?</translation>
     <message>
       <location filename="../FileDialog.cpp" line="217"/>
       <source>Save As</source>
-      <translation type="unfinished">Save As</translation>
+      <translation>다른 이름으로 저장</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="293"/>
@@ -5841,22 +5841,22 @@ Save all changes?</translation>
     <message>
       <location filename="../Flag.cpp" line="160"/>
       <source>Top Left</source>
-      <translation type="unfinished">Top Left</translation>
+      <translation>왼쪽 위</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="162"/>
       <source>Bottom Left</source>
-      <translation type="unfinished">Bottom Left</translation>
+      <translation>왼쪽 아래</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="164"/>
       <source>Top Right</source>
-      <translation type="unfinished">Top Right</translation>
+      <translation>오른쪽 위</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="166"/>
       <source>Bottom Right</source>
-      <translation type="unfinished">Bottom Right</translation>
+      <translation>오른쪽 아래</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="169"/>
@@ -5867,22 +5867,22 @@ Save all changes?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="858"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="859"/>
       <source>Tap OR click left mouse button.</source>
       <translation>탭하거나 마우스 왼쪽 버튼을 클릭합니다.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="860"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="861"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>두 손가락으로 화면을 드래그하거나 마우스 오른쪽 버튼을 누릅니다.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="862"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="863"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="864"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="865"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</translation>
     </message>
@@ -5956,15 +5956,15 @@ Save all changes?</translation>
       <translation>PDF형식</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="620"/>
       <location filename="../GraphvizView.cpp" line="445"/>
+      <location filename="../CommandDoc.cpp" line="620"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="621"/>
       <location filename="../GraphvizView.cpp" line="459"/>
       <location filename="../GraphvizView.cpp" line="549"/>
+      <location filename="../CommandDoc.cpp" line="621"/>
       <source>Export graph</source>
       <translation>그래프 내보내기</translation>
     </message>
@@ -5985,22 +5985,22 @@ Save all changes?</translation>
   <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and left mouse button</source>
       <translation type="unfinished">Press Ctrl and left mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>가운데 마우스 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="55"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/InventorNavigationStyle.cpp" line="56"/>
+      <location filename="../Navigation/InventorNavigationStyle.cpp" line="57"/>
       <source>Scroll mouse wheel</source>
       <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
@@ -6111,12 +6111,12 @@ Save all changes?</translation>
       <translation>매크로</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1128"/>
+      <location filename="../Command.cpp" line="1134"/>
       <source>Macro file doesn't exist</source>
       <translation>매크로 파일이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1129"/>
+      <location filename="../Command.cpp" line="1135"/>
       <source>No such macro file: '%1'</source>
       <translation>해당 매크로 파일이 없습니다: '%1'</translation>
     </message>
@@ -6139,7 +6139,7 @@ Save all changes?</translation>
       <location filename="../MainWindow.cpp" line="417"/>
       <source>Quick measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation type="unfinished">Quick measure</translation>
+      <translation>빠른 측정</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="427"/>
@@ -6338,22 +6338,22 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="93"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="94"/>
       <source>Tap OR click left mouse button.</source>
       <translation>탭하거나 마우스 왼쪽 버튼을 클릭합니다.</translation>
     </message>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="95"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="96"/>
       <source>Drag screen with two fingers OR press Alt + middle mouse button.</source>
       <translation type="unfinished">Drag screen with two fingers OR press Alt + middle mouse button.</translation>
     </message>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="97"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="98"/>
       <source>Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation type="unfinished">Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="99"/>
+      <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="100"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</source>
       <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
@@ -6369,22 +6369,22 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and middle mouse button</source>
       <translation type="unfinished">Press Ctrl and middle mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="53"/>
       <source>Press Ctrl and right mouse button</source>
       <translation type="unfinished">Press Ctrl and right mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="55"/>
       <source>Press Ctrl and left mouse button</source>
       <translation type="unfinished">Press Ctrl and left mouse button</translation>
     </message>
@@ -6392,22 +6392,22 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::OpenSCADNavigationStyle</name>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="51"/>
       <source>Press right mouse button and move mouse</source>
       <translation>마우스 오른쪽 버튼을 누르고 마우스 이동하기</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="53"/>
       <source>Press left mouse button and move mouse</source>
       <translation>마우스 왼쪽 버튼을 누르고 마우스 이동하기</translation>
     </message>
     <message>
-      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
       <translation>마우스 가운데 버튼 누르기 또는 SHIFT 키와 마우스 오른쪽 버튼 누르기</translation>
     </message>
@@ -6427,7 +6427,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../PrefWidgets.cpp" line="727"/>
       <source>Clear List</source>
-      <translation type="unfinished">Clear List</translation>
+      <translation>목록 비우기</translation>
     </message>
   </context>
   <context>
@@ -6469,12 +6469,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4509"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4510"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4509"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4510"/>
       <source>Object not found</source>
       <translation>대상체를 찾을 수 없습니다</translation>
     </message>
@@ -6482,113 +6482,113 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="391"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="403"/>
       <source>property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="854"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="865"/>
       <source>Expand/Collapse Properties</source>
       <translation type="unfinished">Expand/Collapse Properties</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="856"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="867"/>
       <source>Expand to Default</source>
       <translation type="unfinished">Expand to Default</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="858"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
       <source>Expand All</source>
-      <translation type="unfinished">Expand All</translation>
+      <translation>모두 펼치기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="860"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
       <source>Collapse All</source>
-      <translation type="unfinished">Collapse All</translation>
+      <translation>모두 접기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="866"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
       <source>Default Expand</source>
       <translation type="unfinished">Default Expand</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="880"/>
       <source>Auto Expand</source>
-      <translation type="unfinished">Auto Expand</translation>
+      <translation>자동 펼치기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="872"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="883"/>
       <source>Auto Collapse</source>
-      <translation type="unfinished">Auto Collapse</translation>
+      <translation>자동 접기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="955"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="966"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation>복사</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="963"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="974"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>속성 추가</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="971"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="982"/>
       <source>Rename Property Group</source>
-      <translation type="unfinished">Rename Property Group</translation>
+      <translation>속성 모둠 이름 변경</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="979"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="990"/>
       <source>Rename Property</source>
       <translation type="unfinished">Rename Property</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="980"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1159"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="991"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
       <source>Edit Property Tooltip</source>
       <translation type="unfinished">Edit Property Tooltip</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
       <source>Delete Property</source>
       <translation type="unfinished">Delete Property</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Tooltip</source>
-      <translation>툴팁</translation>
+      <translation>도구 설명</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1186"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1197"/>
       <source>Rename property</source>
       <translation type="unfinished">Rename property</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1007"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1018"/>
       <source>Show Hidden</source>
       <translation type="unfinished">Show Hidden</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1024"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1035"/>
       <source>Expression</source>
       <translation>표현식</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1198"/>
       <source>Property name</source>
       <translation type="unfinished">Property name</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1211"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1222"/>
       <source>Rename property group</source>
       <translation>속성 그룹 이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1223"/>
       <source>Group name:</source>
       <translation>그룹이름:</translation>
     </message>
@@ -6596,12 +6596,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
-      <location filename="../propertyeditor/PropertyModel.cpp" line="179"/>
+      <location filename="../propertyeditor/PropertyModel.cpp" line="180"/>
       <source>Property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyModel.cpp" line="182"/>
+      <location filename="../propertyeditor/PropertyModel.cpp" line="183"/>
       <source>Value</source>
       <translation>값</translation>
     </message>
@@ -6610,13 +6610,13 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <location filename="../PropertyView.cpp" line="88"/>
-      <location filename="../PropertyView.cpp" line="567"/>
+      <location filename="../PropertyView.cpp" line="570"/>
       <source>View</source>
       <translation>보기</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="93"/>
-      <location filename="../PropertyView.cpp" line="568"/>
+      <location filename="../PropertyView.cpp" line="571"/>
       <source>Data</source>
       <translation>자료</translation>
     </message>
@@ -6646,7 +6646,7 @@ Exit without saving all data?</translation>
       <location filename="../PythonConsole.cpp" line="847"/>
       <location filename="../PythonConsole.cpp" line="850"/>
       <source>Python Console</source>
-      <translation type="unfinished">Python Console</translation>
+      <translation>파이썬 명령창</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="844"/>
@@ -6707,12 +6707,12 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../PythonConsole.cpp" line="1324"/>
       <source>Clear Console</source>
-      <translation type="unfinished">Clear Console</translation>
+      <translation>명령창 비우기</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1328"/>
       <source>Insert File Name…</source>
-      <translation type="unfinished">Insert File Name…</translation>
+      <translation>파일 이름 삽입…</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1331"/>
@@ -6750,7 +6750,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../PythonEditor.cpp" line="180"/>
       <source>Execute in Console</source>
-      <translation type="unfinished">Execute in Console</translation>
+      <translation>명령창에서 실행</translation>
     </message>
   </context>
   <context>
@@ -6759,7 +6759,7 @@ Exit without saving all data?</translation>
       <location filename="../Action.cpp" line="862"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
-      <translation type="unfinished">Clear Recent Files</translation>
+      <translation>최근 파일들 비우기</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="940"/>
@@ -6783,22 +6783,22 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>가운데 마우스 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
       <translation type="unfinished">Press Shift and middle mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/RevitNavigationStyle.cpp" line="56"/>
+      <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button</source>
       <translation>가운데 마우스 버튼 스크롤</translation>
     </message>
@@ -6944,12 +6944,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="61"/>
       <source>Remove All</source>
-      <translation type="unfinished">Remove All</translation>
+      <translation>모두 삭제</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="68"/>
       <source>Box Select</source>
-      <translation type="unfinished">Box Select</translation>
+      <translation>영역 선택</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="84"/>
@@ -6966,7 +6966,7 @@ Specify another directory?</translation>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="17"/>
-      <location filename="../TaskView/TaskAppearance.cpp" line="42"/>
+      <location filename="../TaskView/TaskAppearance.cpp" line="43"/>
       <source>Appearance</source>
       <translation>외관</translation>
     </message>
@@ -6999,7 +6999,7 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
-      <location filename="../TaskView/TaskDialog.cpp" line="99"/>
+      <location filename="../TaskView/TaskDialog.cpp" line="100"/>
       <source>A dialog is already open in the task panel</source>
       <translation>테스크 패널에 이미 다이얼로그가 열려있습니다.</translation>
     </message>
@@ -7020,7 +7020,7 @@ Specify another directory?</translation>
       <translation>외관</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="42"/>
+      <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="43"/>
       <source>edit selection</source>
       <translation>선택항목 편집하기</translation>
     </message>
@@ -7037,22 +7037,22 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TinkerCADNavigationStyle</name>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
       <translation>가운데 마우스 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="53"/>
       <source>Press right mouse button</source>
       <translation>마우스 오른쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel</source>
       <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
@@ -7060,22 +7060,22 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="47"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="49"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="50"/>
       <source>Press Shift button</source>
       <translation type="unfinished">Press Shift button</translation>
     </message>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="51"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="52"/>
       <source>Press Alt button</source>
       <translation type="unfinished">Press Alt button</translation>
     </message>
     <message>
-      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="53"/>
+      <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="54"/>
       <source>Press Ctrl and Shift buttons</source>
       <translation type="unfinished">Press Ctrl and Shift buttons</translation>
     </message>
@@ -7116,13 +7116,13 @@ Specify another directory?</translation>
       <location filename="Translator.cpp" line="185"/>
       <source>Chinese (Simplified)</source>
       <oldsource>Chinese Simplified</oldsource>
-      <translation type="unfinished">Chinese (Simplified)</translation>
+      <translation>중국어(간체)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="186"/>
       <source>Chinese (Traditional)</source>
       <oldsource>Chinese Traditional</oldsource>
-      <translation type="unfinished">Chinese (Traditional)</translation>
+      <translation>중국어 (번체)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="187"/>
@@ -7270,7 +7270,7 @@ Specify another directory?</translation>
       <location filename="Translator.cpp" line="217"/>
       <source>Spanish (Argentina)</source>
       <oldsource>Spanish, Argentina</oldsource>
-      <translation type="unfinished">Spanish (Argentina)</translation>
+      <translation>스페인어(아르헨티나)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="218"/>
@@ -7341,7 +7341,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="1133"/>
       <source>Activate Document</source>
-      <translation type="unfinished">Activate Document</translation>
+      <translation>문서 활성화</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1140"/>
@@ -7351,17 +7351,17 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="1152"/>
       <source>Tree Settings</source>
-      <translation type="unfinished">Tree Settings</translation>
+      <translation>나무 설정</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1156"/>
       <source>Show Description</source>
-      <translation type="unfinished">Show Description</translation>
+      <translation>설명 보이기</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1157"/>
       <source>Show Internal Name</source>
-      <translation type="unfinished">Show Internal Name</translation>
+      <translation>내부 이름 보이기</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1173"/>
@@ -7382,12 +7382,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="2941"/>
       <source>File does not exist.</source>
-      <translation type="unfinished">File does not exist.</translation>
+      <translation>파일이 없음.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2962"/>
       <source>Failed to open directory.</source>
-      <translation type="unfinished">Failed to open directory.</translation>
+      <translation>디렉토리를 여는데 실패했습니다.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3394"/>
@@ -7422,27 +7422,27 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3404"/>
       <source>Create Group</source>
-      <translation type="unfinished">Create Group</translation>
+      <translation>모둠 생성</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3405"/>
       <source>Creates a group</source>
-      <translation type="unfinished">Creates a group</translation>
+      <translation>갈무리하여 한 데 모아 담을 그릇을 마련합니다</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3408"/>
       <source>Renames object</source>
-      <translation type="unfinished">Renames object</translation>
+      <translation>대상체 이름 변경</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3410"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>편집 완료</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3411"/>
       <source>Finishes editing object</source>
-      <translation type="unfinished">Finishes editing object</translation>
+      <translation>대상체 편집 끝내기</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3413"/>
@@ -7452,12 +7452,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3416"/>
       <source>Close Document</source>
-      <translation type="unfinished">Close Document</translation>
+      <translation>문서 닫기</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3417"/>
       <source>Closes the document</source>
-      <translation type="unfinished">Closes the document</translation>
+      <translation>문서를 닫습니다</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3421"/>
@@ -7482,7 +7482,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3430"/>
       <source>Skip Recomputes</source>
-      <translation type="unfinished">Skip Recomputes</translation>
+      <translation>재계산 건너뛰기</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3431"/>
@@ -7541,7 +7541,7 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3407"/>
-      <location filename="../Tree.cpp" line="5648"/>
+      <location filename="../Tree.cpp" line="5681"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
     </message>
@@ -7561,12 +7561,12 @@ Specify another directory?</translation>
       <translation>파일 위치 열기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5619"/>
+      <location filename="../Tree.cpp" line="5652"/>
       <source> (but must be executed)</source>
       <translation>(단, 실행해야 함)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5621"/>
+      <location filename="../Tree.cpp" line="5654"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, 내부 이름: %2</translation>
     </message>
@@ -7622,7 +7622,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Action.cpp" line="720"/>
       <source>Selects the '%1' workbench</source>
-      <translation type="unfinished">Selects the '%1' workbench</translation>
+      <translation>'%1' 작업대를 선택합니다</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="748"/>
@@ -7809,17 +7809,17 @@ Specify another directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="621"/>
       <source>Python Console</source>
-      <translation type="unfinished">Python Console</translation>
+      <translation>파이썬 명령창</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="645"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>나무 보기</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="672"/>
       <source>Property View</source>
-      <translation type="unfinished">Property View</translation>
+      <translation>속성 보기</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="701"/>
@@ -7926,12 +7926,12 @@ Check the report view for more details.</translation>
       <translation>재계산 오류</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1791"/>
+      <location filename="../Application.cpp" line="1790"/>
       <source>Workbench failure</source>
       <translation>작업대 실패</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1792"/>
+      <location filename="../Application.cpp" line="1791"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7978,7 +7978,7 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="343"/>
       <source> → Restarting…</source>
-      <translation type="unfinished"> → Restarting…</translation>
+      <translation> → 다시 시작 중…</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="484"/>
@@ -7999,7 +7999,7 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../Application.cpp" line="1120"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>파일을 불러오는 동안 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 관련된 객체에 대한 보다 구체적인 정보는 보고서 보기에서 확인하십시오.</translation>
+      <translation>파일을 불러오는 동안 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 관련된 대상체에 대한 보다 구체적인 정보는 보고서 보기에서 확인하세요.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1132"/>
@@ -8098,12 +8098,12 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="345"/>
       <source>Restart in Safe Mode</source>
-      <translation type="unfinished">Restart in Safe Mode</translation>
+      <translation>안전 모드로 다시 시작</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="346"/>
       <source>Restart FreeCAD and enter safe mode?</source>
-      <translation type="unfinished">Restart FreeCAD and enter safe mode?</translation>
+      <translation>프리캐드를 다시 시작하고 안전모드로 들어갈까요?</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="347"/>
@@ -8248,7 +8248,7 @@ Continue?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="822"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1147"/>
       <source>Enter text:</source>
-      <translation type="unfinished">Enter text:</translation>
+      <translation>글자 입력:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="861"/>
@@ -8258,7 +8258,7 @@ Continue?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1245"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1302"/>
       <source>Enter number:</source>
-      <translation type="unfinished">Enter number:</translation>
+      <translation>숫자 입력:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="905"/>
@@ -8296,7 +8296,7 @@ Continue?</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1249"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>값 변경</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="430"/>
@@ -8588,18 +8588,18 @@ Choose 'Abort' to abort</source>
       <translation>%2 또는 %3에서 %1 파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2002"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2003"/>
       <source>Navigation styles</source>
       <translation>탐색 스타일</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2051"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2052"/>
       <source>Clarify Selection</source>
       <translation type="unfinished">Clarify Selection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDragger.cpp" line="129"/>
       <location filename="../ViewProviderLink.cpp" line="2700"/>
+      <location filename="../ViewProviderDragger.cpp" line="129"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
@@ -8662,7 +8662,7 @@ Choose 'Abort' to abort</source>
       <location filename="../CommandLink.cpp" line="95"/>
       <location filename="../CommandLink.cpp" line="112"/>
       <source>Simple Group</source>
-      <translation type="unfinished">Simple Group</translation>
+      <translation>단순 모둠</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="97"/>
@@ -8712,12 +8712,12 @@ Choose 'Abort' to abort</source>
       <translation>모든 링크를 가져오지 못했습니다</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="843"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="904"/>
       <source>Add property</source>
       <translation>속성 추가하기</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="844"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="905"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>'%1'에 속성을 추가하지 못했습니다: %2</translation>
     </message>
@@ -8728,8 +8728,8 @@ Choose 'Abort' to abort</source>
       <translation>드래그 엔 드랍 실패</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="827"/>
       <location filename="../ViewProviderLink.cpp" line="2546"/>
+      <location filename="../MainWindow.cpp" line="827"/>
       <source>Apply to all</source>
       <translation>모두에 적용하기</translation>
     </message>
@@ -8766,7 +8766,7 @@ Choose 'Abort' to abort</source>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2593"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
-      <translation>구성이 변경되면 링크된 객체의 자동 복사 활성화하기</translation>
+      <translation>구성이 변경되면 연결된 대상체의 자동 복사 활성화</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2606"/>
@@ -8845,8 +8845,8 @@ the current copy will be lost.
       <translation>오버레이 전환</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="971"/>
       <location filename="../OverlayWidgets.cpp" line="2361"/>
+      <location filename="../OverlayManager.cpp" line="971"/>
       <source>Toggle floating window</source>
       <translation>플로팅 창 전환</translation>
     </message>
@@ -9002,7 +9002,7 @@ the current copy will be lost.
       <translation type="unfinished">Edit Text</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskDialog.cpp" line="100"/>
+      <location filename="../TaskView/TaskDialog.cpp" line="101"/>
       <source>Close this dialog?</source>
       <translation>이 대화창을 닫을까요?</translation>
     </message>
@@ -9014,7 +9014,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="108"/>
       <source>Selects all objects that are children of this group</source>
-      <translation type="unfinished">Selects all objects that are children of this group</translation>
+      <translation>이 모둠의 자식인 모든 대상체를 선택합니다</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="235"/>
@@ -9035,12 +9035,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="756"/>
+      <location filename="../Selection/Selection.cpp" line="757"/>
       <source>Not allowed:</source>
       <translation>허용 되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1052"/>
+      <location filename="../Selection/Selection.cpp" line="1053"/>
       <source>Selection not allowed by filter</source>
       <translation>필터에서 허용되지 않는 선택</translation>
     </message>
@@ -9380,8 +9380,8 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="404"/>
       <location filename="../MainWindow.cpp" line="2199"/>
+      <location filename="../DocumentRecovery.cpp" line="404"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
     </message>
@@ -9478,7 +9478,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
       <source>Displays the list of recently opened files</source>
-      <translation type="unfinished">Displays the list of recently opened files</translation>
+      <translation>최근 열었던 파일 목록을 보여줍니다</translation>
     </message>
   </context>
   <context>
@@ -9530,7 +9530,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="766"/>
       <source>Saves all open documents</source>
-      <translation type="unfinished">Saves all open documents</translation>
+      <translation>열린 문서들을 모두 저장합니다</translation>
     </message>
   </context>
   <context>
@@ -9556,7 +9556,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandFeat.cpp" line="213"/>
       <source>Sends the selected object to the Python console</source>
-      <translation>선택한 대상체를 파이썬 콘솔로 보냅니다</translation>
+      <translation>선택한 대상체를 파이썬 명령창으로 보냅니다</translation>
     </message>
   </context>
   <context>
@@ -10420,12 +10420,12 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
       <source>Notifications List</source>
-      <translation type="unfinished">Notifications List</translation>
+      <translation>알림 목록</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
       <source>Maximum notification count</source>
-      <translation type="unfinished">Maximum notification count</translation>
+      <translation>최대 알림 갯수</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
@@ -10535,7 +10535,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>방향 선택</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
@@ -10545,17 +10545,17 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
       <source>XY-plane</source>
-      <translation>XY-평면</translation>
+      <translation>XY평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="36"/>
       <source>XZ-plane</source>
-      <translation>XZ-평면</translation>
+      <translation>XZ평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation>YZ-평면</translation>
+      <translation>YZ평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -10593,17 +10593,17 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-plane</source>
-      <translation>XY-평면</translation>
+      <translation>XY평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="35"/>
       <source>XZ-plane</source>
-      <translation>XZ-평면</translation>
+      <translation>XZ평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="42"/>
       <source>YZ-plane</source>
-      <translation>YZ-평면</translation>
+      <translation>YZ평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="80"/>
@@ -10623,7 +10623,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="156"/>
@@ -10724,7 +10724,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="236"/>
       <source>Sort Alphabetically</source>
-      <translation type="unfinished">Sort Alphabetically</translation>
+      <translation>알파벳 순으로 정렬</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="516"/>
@@ -11164,7 +11164,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
       <source>Number of decimals</source>
-      <translation>소수점수</translation>
+      <translation>소수점 이하 자릿수</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
@@ -11552,8 +11552,8 @@ on-screen while displaying the log message</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="507"/>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>내부 Python 출력이 Python 콘솔에서
-보고서 보기 패널로 다시 보내집니다</translation>
+      <translation>내부 파이썬 출력이 파이썬 명령창에서
+보고서 보기판으로 다시 보내집니다</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="511"/>
@@ -11564,8 +11564,8 @@ from Python console to Report view panel</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="527"/>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>내부 Python 오류 메시지는 Python 콘솔에서
-보고서 보기 패널로 다시 보내집니다</translation>
+      <translation>내부 파이썬 오류 메시지는 파이썬 명령창에서
+보고서 보기판으로 다시 보내집니다</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="531"/>
@@ -11579,7 +11579,7 @@ from Python console to Report view panel</source>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="139"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>광원</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
@@ -11980,7 +11980,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>나무 보기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12162,7 +12162,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="331"/>
       <source>Restart in Safe Mode</source>
-      <translation type="unfinished">Restart in Safe Mode</translation>
+      <translation>안전 모드로 다시 시작</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="332"/>
@@ -12245,12 +12245,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="25"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>좌표계</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="36"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>지역 좌표계</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="41"/>
@@ -12370,7 +12370,7 @@ the region are non-opaque.</translation>
       <location filename="../TaskTransform.ui" line="600"/>
       <location filename="../TaskTransform.ui" line="613"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
   </context>
   <context>
@@ -12538,7 +12538,7 @@ the region are non-opaque.</translation>
       <location filename="../InputHintWidget.cpp" line="254"/>
       <source>Print</source>
       <extracomment>Keyboard key for Print</extracomment>
-      <translation type="unfinished">Print</translation>
+      <translation>인쇄</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="256"/>
@@ -12562,7 +12562,7 @@ the region are non-opaque.</translation>
       <location filename="../InputHintWidget.cpp" line="264"/>
       <source>End</source>
       <extracomment>Keyboard key for End</extracomment>
-      <translation type="unfinished">End</translation>
+      <translation>종료</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="270"/>
@@ -12676,22 +12676,22 @@ the region are non-opaque.</translation>
   <context>
     <name>Gui::SolidWorksNavigationStyle</name>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="48"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="49"/>
       <source>Press left mouse button</source>
       <translation>마우스 왼쪽 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="50"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and middle mouse button</source>
       <translation type="unfinished">Press Ctrl and middle mouse button</translation>
     </message>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="52"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
       <translation>가운데 마우스 버튼 누르기</translation>
     </message>
     <message>
-      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="54"/>
+      <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel</source>
       <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
@@ -13061,7 +13061,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="303"/>
       <source>Skip Recomputes</source>
-      <translation type="unfinished">Skip Recomputes</translation>
+      <translation>재계산 건너뛰기</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="305"/>
@@ -13451,12 +13451,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="49"/>
       <source>New Part</source>
-      <translation type="unfinished">New Part</translation>
+      <translation>새 부품</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
       <source>Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</source>
-      <translation type="unfinished">Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</translation>
+      <translation>부품이라는 그릇을 생성합니다. 이것은 여러 대상체들을 한 데 모아 담는 다용도의 그릇입니다. 이렇게 하면 3D보기에서 그릇 안에 담은 것들을 한꺼번에 다룰 수 있습니다. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</translation>
     </message>
   </context>
   <context>
@@ -13469,7 +13469,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="105"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation type="unfinished">Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
+      <translation>모둠을 생성합니다. 모둠은 데이터 유형에 관계없이 나무 보기에서 여러 대상체들을 한 데 모아 담는 다용도의 그릇입니다. 모형에서 대상체들을 분류해 모아 두는 간단한 폴더입니다.</translation>
     </message>
   </context>
   <context>
@@ -13477,12 +13477,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="166"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>변수 집합</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="167"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
-      <translation type="unfinished">Creates a variable set, which is an object that maintains a set of properties to be used as variables</translation>
+      <translation>매개변수로 사용할 속성들을 한 데 모아 유지하는 변수집합 대상체를 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -14357,9 +14357,9 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="579"/>
+      <location filename="../PropertyView.cpp" line="582"/>
       <source>Property View</source>
-      <translation type="unfinished">Property View</translation>
+      <translation>속성 보기</translation>
     </message>
   </context>
   <context>
@@ -14367,7 +14367,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="3785"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>나무 보기</translation>
     </message>
   </context>
   <context>
@@ -14424,7 +14424,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="62"/>
       <source>Generic</source>
-      <translation type="unfinished">Generic</translation>
+      <translation>일반적</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="65"/>
@@ -14513,7 +14513,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4544"/>
       <source>Changes the linked object</source>
       <translation type="unfinished">Changes the linked object</translation>
     </message>
@@ -14521,12 +14521,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="132"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="133"/>
       <source>Yes</source>
       <translation>네</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="132"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="133"/>
       <source>No</source>
       <translation type="unfinished">No</translation>
     </message>
@@ -14567,7 +14567,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1115"/>
+      <location filename="../Selection/SelectionView.cpp" line="1116"/>
       <source>Whole Object</source>
       <translation type="unfinished">Whole Object</translation>
     </message>
@@ -14650,7 +14650,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../StatusBarLabel.cpp" line="79"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation>복사</translation>
     </message>
     <message>
       <location filename="../StatusBarLabel.cpp" line="82"/>

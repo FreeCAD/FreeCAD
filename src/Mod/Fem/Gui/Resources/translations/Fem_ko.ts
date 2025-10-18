@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>면에 용수철 경계조건을 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -716,14 +716,14 @@
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="282"/>
       <source>Edit Mirror</source>
-      <translation type="unfinished">Edit Mirror</translation>
+      <translation>대칭복사 편집</translation>
     </message>
   </context>
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>대화상자</translation>
@@ -741,7 +741,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="67"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>이름표</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
@@ -764,14 +764,14 @@
       <translation type="unfinished">Select the vertices, lines and surfaces</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <source>Temperature</source>
       <translation>온도</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1119,7 +1119,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>결과</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
@@ -1301,7 +1301,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>결과</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
@@ -2811,9 +2811,9 @@ that "MAXKOI" needs to be increased.</translation>
       <translation type="unfinished">Inlet Pressure</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>압력</translation>
     </message>
@@ -2943,12 +2943,12 @@ that "MAXKOI" needs to be increased.</translation>
       <translation type="unfinished">Revolutions per second</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>매개 변수</translation>
     </message>
@@ -3112,18 +3112,18 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation type="unfinished">Real</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation type="unfinished">Imaginary</translation>
     </message>
@@ -3155,7 +3155,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
@@ -3195,7 +3195,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>이름표</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
@@ -3203,8 +3203,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Beam Section Parameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation type="unfinished">Cross-Section Parameter</translation>
     </message>
@@ -3215,14 +3215,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>너비</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3243,8 +3243,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Outer diameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
@@ -3322,14 +3322,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>경계에 대한 법선방향</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation type="unfinished">Analysis Feature Properties</translation>
     </message>
@@ -3339,9 +3339,9 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Heat Source</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation type="unfinished">Mode</translation>
     </message>
@@ -3356,8 +3356,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Dissipation rate</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation type="unfinished">Imaginary part is only used for equations
@@ -3407,7 +3407,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
       <source>Free volume charge density</source>
-      <translation type="unfinished">Free volume charge density</translation>
+      <translation>자유 체적 전하 밀도</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="136"/>
@@ -3425,9 +3425,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Select custom mode to enable vector current density</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3442,9 +3442,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Imaginary part of current density x-component</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3459,9 +3459,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Imaginary part of current density y-component</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3501,22 +3501,22 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Maximum element size</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation type="unfinished">Field</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>틀</translation>
     </message>
@@ -3691,7 +3691,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>면</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
@@ -4107,7 +4107,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
       <source>Volume</source>
-      <translation>체적</translation>
+      <translation>부피</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="32"/>
@@ -5349,7 +5349,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>결과</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
@@ -5378,7 +5378,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Error: no post processing object selected.</source>
-      <translation>오류: 해석결과를 정리할 대상을 선택하지 않았습니다.</translation>
+      <translation>오류: 해석결과를 정리할 대상체를 선택하지 않았습니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1866"/>
@@ -5821,11 +5821,11 @@ Please select a result type first.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
-Correct module found in:
+Correct module found in: 
 {}</source>
       <translation type="unfinished">
 
-Correct module found in:
+Correct module found in: 
 {}</translation>
     </message>
     <message>
@@ -5972,8 +5972,8 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -5993,14 +5993,14 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Edit {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation type="unfinished">Show Plot</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation type="unfinished">Show Data</translation>
     </message>
@@ -6565,7 +6565,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -6684,7 +6684,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="70"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation>복사</translation>
     </message>
   </context>
   <context>
@@ -7095,8 +7095,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation type="unfinished">The form of the glyph</translation>
     </message>
@@ -7138,10 +7138,10 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
     </message>
@@ -7153,8 +7153,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
@@ -7177,8 +7177,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
     </message>
@@ -7194,8 +7194,8 @@ Leave blank to use default Python executable</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
     </message>
@@ -7287,29 +7287,29 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Cumulative</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>보여주기</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation type="unfinished">Labels</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
-      <translation>Y-축</translation>
+      <translation>Y축</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
@@ -7317,8 +7317,8 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">X Axis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>제목</translation>
     </message>
@@ -7350,7 +7350,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="148"/>
       <source>X-axis</source>
-      <translation>X-축</translation>
+      <translation>X축</translation>
     </message>
   </context>
   <context>
@@ -7795,9 +7795,9 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
     </message>

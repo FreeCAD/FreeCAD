@@ -1,0 +1,195 @@
+2025-10-18 16:11:37,860 - aqt.main - INFO - installer 139837635079040 aqtinstall(aqt) v3.1.21 on Python 3.12.12 [CPython GCC 13.3.0]
+2025-10-18 16:11:38,130 - aqt.main - INFO - installer 140420351822720 aqtinstall(aqt) v3.1.21 on Python 3.12.12 [CPython GCC 13.3.0]
+2025-10-18 16:11:38,130 - aqt.helper - DEBUG - helper 140420351822720 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/Updates.xml.sha256
+2025-10-18 16:11:39,312 - aqt.helper - DEBUG - helper 140420351822720 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/extensions/qtwebengine/683/x86_64/Updates.xml.sha256
+2025-10-18 16:11:40,538 - aqt.archives - INFO - archives 140420351822720 Found extension qtwebengine
+2025-10-18 16:11:40,538 - aqt.helper - DEBUG - helper 140420351822720 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/extensions/qtpdf/683/x86_64/Updates.xml.sha256
+2025-10-18 16:11:41,760 - aqt.archives - INFO - archives 140420351822720 Found extension qtpdf
+2025-10-18 16:11:42,305 - aqt.helper - DEBUG - helper 140542714637184 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtsvg-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha256
+2025-10-18 16:11:42,305 - aqt.helper - DEBUG - helper 140077576084352 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtbase-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha256
+2025-10-18 16:11:42,316 - aqt.helper - DEBUG - helper 140262270659456 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtdeclarative-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha256
+2025-10-18 16:11:42,319 - aqt.helper - DEBUG - helper 140580696046464 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qttools-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha256
+2025-10-18 16:11:42,781 - aqt.helper - INFO - helper 140077576084352 Downloading qtbase...
+2025-10-18 16:11:42,782 - aqt.helper - INFO - helper 140542714637184 Downloading qtsvg...
+2025-10-18 16:11:42,781 - aqt.installer - DEBUG - installer 140077576084352 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtbase-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:42,782 - aqt.installer - DEBUG - installer 140542714637184 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtsvg-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:42,889 - aqt.helper - INFO - helper 140580696046464 Downloading qttools...
+2025-10-18 16:11:42,890 - aqt.installer - DEBUG - installer 140580696046464 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qttools-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:42,961 - aqt.helper - INFO - helper 140262270659456 Downloading qtdeclarative...
+2025-10-18 16:11:42,961 - aqt.installer - DEBUG - installer 140262270659456 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtdeclarative-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:43,267 - aqt.helper - DEBUG - helper 140077576084352 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtbase-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:43,267 - aqt.helper - INFO - helper 140077576084352 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:43,268 - aqt.helper - DEBUG - helper 140542714637184 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtsvg-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:43,268 - aqt.helper - INFO - helper 140542714637184 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:43,362 - aqt.helper - DEBUG - helper 140580696046464 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qttools-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:43,362 - aqt.helper - INFO - helper 140580696046464 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:43,593 - aqt.installer - INFO - installer 140542714637184 Finished installation of qtsvg-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z in 1.29110096
+2025-10-18 16:11:43,616 - aqt.helper - DEBUG - helper 140542714637184 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qttranslations-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha256
+2025-10-18 16:11:43,633 - aqt.helper - DEBUG - helper 140262270659456 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtdeclarative-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:43,633 - aqt.helper - INFO - helper 140262270659456 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:44,207 - aqt.helper - INFO - helper 140542714637184 Downloading qttranslations...
+2025-10-18 16:11:44,207 - aqt.installer - DEBUG - installer 140542714637184 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qttranslations-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:44,715 - aqt.helper - DEBUG - helper 140542714637184 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qttranslations-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:44,716 - aqt.helper - INFO - helper 140542714637184 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:45,327 - aqt.installer - INFO - installer 140542714637184 Finished installation of qttranslations-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z in 1.71319319
+2025-10-18 16:11:45,345 - aqt.helper - DEBUG - helper 140542714637184 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtwayland-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha256
+2025-10-18 16:11:45,837 - aqt.helper - INFO - helper 140542714637184 Downloading qtwayland...
+2025-10-18 16:11:45,838 - aqt.installer - DEBUG - installer 140542714637184 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtwayland-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:46,333 - aqt.helper - DEBUG - helper 140542714637184 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345qtwayland-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z
+2025-10-18 16:11:46,333 - aqt.helper - INFO - helper 140542714637184 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:46,793 - aqt.installer - INFO - installer 140580696046464 Finished installation of qttools-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z in 4.47615247
+2025-10-18 16:11:46,806 - aqt.installer - INFO - installer 140542714637184 Finished installation of qtwayland-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z in 1.46268607
+2025-10-18 16:11:46,814 - aqt.helper - DEBUG - helper 140580696046464 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345icu-linux-Rhel8.6-x86_64.7z.sha256
+2025-10-18 16:11:47,412 - aqt.helper - INFO - helper 140580696046464 Downloading icu...
+2025-10-18 16:11:47,412 - aqt.installer - DEBUG - installer 140580696046464 Download URL: https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345icu-linux-Rhel8.6-x86_64.7z
+2025-10-18 16:11:47,904 - aqt.installer - INFO - installer 140077576084352 Finished installation of qtbase-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z in 5.60213178
+2025-10-18 16:11:47,974 - aqt.helper - DEBUG - helper 140580696046464 Asked to redirect(302) to: https://qt.mirror.constant.com/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_64/6.8.3-0-202503201345icu-linux-Rhel8.6-x86_64.7z
+2025-10-18 16:11:47,974 - aqt.helper - INFO - helper 140580696046464 Redirected: qt.mirror.constant.com
+2025-10-18 16:11:48,962 - aqt.installer - INFO - installer 140580696046464 Finished installation of icu-linux-Rhel8.6-x86_64.7z in 2.15018008
+2025-10-18 16:11:57,311 - aqt.installer - INFO - installer 140262270659456 Finished installation of qtdeclarative-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z in 14.99599519
+2025-10-18 16:11:57,401 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/bin/qmake
+2025-10-18 16:11:57,405 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Qml.pc
+2025-10-18 16:11:57,405 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2Imagine.pc
+2025-10-18 16:11:57,406 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlWorkerScript.pc
+2025-10-18 16:11:57,406 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Svg.pc
+2025-10-18 16:11:57,406 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Designer.pc
+2025-10-18 16:11:57,406 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2ImagineStyleImpl.pc
+2025-10-18 16:11:57,407 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2.pc
+2025-10-18 16:11:57,407 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsSharedImage.pc
+2025-10-18 16:11:57,407 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlMeta.pc
+2025-10-18 16:11:57,407 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsFolderListModel.pc
+2025-10-18 16:11:57,408 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2Material.pc
+2025-10-18 16:11:57,408 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlCore.pc
+2025-10-18 16:11:57,408 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlModels.pc
+2025-10-18 16:11:57,408 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2Impl.pc
+2025-10-18 16:11:57,409 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Xml.pc
+2025-10-18 16:11:57,409 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickDialogs2Utils.pc
+2025-10-18 16:11:57,409 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Core.pc
+2025-10-18 16:11:57,409 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickDialogs2QuickImpl.pc
+2025-10-18 16:11:57,410 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6SvgWidgets.pc
+2025-10-18 16:11:57,410 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickDialogs2.pc
+2025-10-18 16:11:57,410 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlAssetDownloader.pc
+2025-10-18 16:11:57,410 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickTest.pc
+2025-10-18 16:11:57,411 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2UniversalStyleImpl.pc
+2025-10-18 16:11:57,411 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Concurrent.pc
+2025-10-18 16:11:57,411 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickLayouts.pc
+2025-10-18 16:11:57,411 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2Fusion.pc
+2025-10-18 16:11:57,412 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Widgets.pc
+2025-10-18 16:11:57,412 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2MaterialStyleImpl.pc
+2025-10-18 16:11:57,412 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Linguist.pc
+2025-10-18 16:11:57,412 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2BasicStyleImpl.pc
+2025-10-18 16:11:57,413 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlNetwork.pc
+2025-10-18 16:11:57,413 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickWidgets.pc
+2025-10-18 16:11:57,413 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickVectorImage.pc
+2025-10-18 16:11:57,413 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6OpenGLWidgets.pc
+2025-10-18 16:11:57,414 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsWavefrontMesh.pc
+2025-10-18 16:11:57,414 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6OpenGL.pc
+2025-10-18 16:11:57,414 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickTemplates2.pc
+2025-10-18 16:11:57,414 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Test.pc
+2025-10-18 16:11:57,415 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2Basic.pc
+2025-10-18 16:11:57,415 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlLocalStorage.pc
+2025-10-18 16:11:57,415 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlIntegration.pc
+2025-10-18 16:11:57,415 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2FluentWinUI3StyleImpl.pc
+2025-10-18 16:11:57,416 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2FusionStyleImpl.pc
+2025-10-18 16:11:57,416 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Sql.pc
+2025-10-18 16:11:57,416 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsQmlModels.pc
+2025-10-18 16:11:57,416 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6UiPlugin.pc
+2025-10-18 16:11:57,417 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlCompiler.pc
+2025-10-18 16:11:57,417 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6DBus.pc
+2025-10-18 16:11:57,417 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsAnimation.pc
+2025-10-18 16:11:57,417 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Gui.pc
+2025-10-18 16:11:57,418 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Quick.pc
+2025-10-18 16:11:57,418 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QmlXmlListModel.pc
+2025-10-18 16:11:57,418 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6WaylandClient.pc
+2025-10-18 16:11:57,418 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Platform.pc
+2025-10-18 16:11:57,419 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Help.pc
+2025-10-18 16:11:57,419 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsPlatform.pc
+2025-10-18 16:11:57,419 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6PrintSupport.pc
+2025-10-18 16:11:57,419 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6Network.pc
+2025-10-18 16:11:57,420 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6UiTools.pc
+2025-10-18 16:11:57,420 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6LabsSettings.pc
+2025-10-18 16:11:57,420 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/pkgconfig/Qt6QuickControls2Universal.pc
+2025-10-18 16:11:57,421 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6PrintSupport.prl
+2025-10-18 16:11:57,421 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlToolingSettings.prl
+2025-10-18 16:11:57,422 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6EglFsKmsSupport.prl
+2025-10-18 16:11:57,422 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Quick.prl
+2025-10-18 16:11:57,422 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6WlShellIntegration.prl
+2025-10-18 16:11:57,423 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6EglFsKmsGbmSupport.prl
+2025-10-18 16:11:57,423 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Widgets.prl
+2025-10-18 16:11:57,423 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlLS.prl
+2025-10-18 16:11:57,423 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2Impl.prl
+2025-10-18 16:11:57,424 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsSharedImage.prl
+2025-10-18 16:11:57,424 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlDom.prl
+2025-10-18 16:11:57,424 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsWavefrontMesh.prl
+2025-10-18 16:11:57,424 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2UniversalStyleImpl.prl
+2025-10-18 16:11:57,425 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2Fusion.prl
+2025-10-18 16:11:57,425 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsQmlModels.prl
+2025-10-18 16:11:57,425 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6FbSupport.prl
+2025-10-18 16:11:57,425 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickVectorImage.prl
+2025-10-18 16:11:57,426 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Core.prl
+2025-10-18 16:11:57,426 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6DeviceDiscoverySupport.prl
+2025-10-18 16:11:57,426 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Help.prl
+2025-10-18 16:11:57,426 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlLocalStorage.prl
+2025-10-18 16:11:57,427 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6ExamplesAssetDownloader.prl
+2025-10-18 16:11:57,427 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2.prl
+2025-10-18 16:11:57,427 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6EglFSDeviceIntegration.prl
+2025-10-18 16:11:57,427 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlWorkerScript.prl
+2025-10-18 16:11:57,428 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2FusionStyleImpl.prl
+2025-10-18 16:11:57,428 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6InputSupport.prl
+2025-10-18 16:11:57,428 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickEffects.prl
+2025-10-18 16:11:57,428 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2ImagineStyleImpl.prl
+2025-10-18 16:11:57,429 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsFolderListModel.prl
+2025-10-18 16:11:57,429 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2Imagine.prl
+2025-10-18 16:11:57,429 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6ExampleIcons.prl
+2025-10-18 16:11:57,429 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2BasicStyleImpl.prl
+2025-10-18 16:11:57,430 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickTemplates2.prl
+2025-10-18 16:11:57,430 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlDebug.prl
+2025-10-18 16:11:57,430 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2MaterialStyleImpl.prl
+2025-10-18 16:11:57,430 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6OpenGL.prl
+2025-10-18 16:11:57,430 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickDialogs2.prl
+2025-10-18 16:11:57,431 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Qml.prl
+2025-10-18 16:11:57,431 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlTypeRegistrar.prl
+2025-10-18 16:11:57,431 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Xml.prl
+2025-10-18 16:11:57,431 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6XcbQpa.prl
+2025-10-18 16:11:57,432 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2Universal.prl
+2025-10-18 16:11:57,432 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlNetwork.prl
+2025-10-18 16:11:57,432 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlCompiler.prl
+2025-10-18 16:11:57,432 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlAssetDownloader.prl
+2025-10-18 16:11:57,433 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickDialogs2Utils.prl
+2025-10-18 16:11:57,433 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsAnimation.prl
+2025-10-18 16:11:57,433 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2Basic.prl
+2025-10-18 16:11:57,433 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2Material.prl
+2025-10-18 16:11:57,434 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6DesignerComponents.prl
+2025-10-18 16:11:57,434 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsSettings.prl
+2025-10-18 16:11:57,434 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Sql.prl
+2025-10-18 16:11:57,434 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlModels.prl
+2025-10-18 16:11:57,435 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6SvgWidgets.prl
+2025-10-18 16:11:57,435 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Network.prl
+2025-10-18 16:11:57,435 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6LabsPlatform.prl
+2025-10-18 16:11:57,435 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickTestUtils.prl
+2025-10-18 16:11:57,436 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControlsTestUtils.prl
+2025-10-18 16:11:57,436 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6WaylandEglClientHwIntegration.prl
+2025-10-18 16:11:57,436 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Concurrent.prl
+2025-10-18 16:11:57,436 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickWidgets.prl
+2025-10-18 16:11:57,437 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Svg.prl
+2025-10-18 16:11:57,437 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickTest.prl
+2025-10-18 16:11:57,437 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Test.prl
+2025-10-18 16:11:57,437 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6PacketProtocol.prl
+2025-10-18 16:11:57,438 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6OpenGLWidgets.prl
+2025-10-18 16:11:57,438 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickParticles.prl
+2025-10-18 16:11:57,438 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Designer.prl
+2025-10-18 16:11:57,438 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6DBus.prl
+2025-10-18 16:11:57,439 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlMeta.prl
+2025-10-18 16:11:57,439 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6UiTools.prl
+2025-10-18 16:11:57,439 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlCore.prl
+2025-10-18 16:11:57,439 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6WaylandClient.prl
+2025-10-18 16:11:57,440 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6KmsSupport.prl
+2025-10-18 16:11:57,440 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickDialogs2QuickImpl.prl
+2025-10-18 16:11:57,440 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickShapes.prl
+2025-10-18 16:11:57,440 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickVectorImageGenerator.prl
+2025-10-18 16:11:57,441 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QmlXmlListModel.prl
+2025-10-18 16:11:57,441 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickControls2FluentWinUI3StyleImpl.prl
+2025-10-18 16:11:57,441 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6Gui.prl
+2025-10-18 16:11:57,441 - aqt.updater - INFO - updater 140420351822720 Patching /home/runner/work/FreeCAD/Qt/6.8.3/gcc_64/lib/libQt6QuickLayouts.prl
+2025-10-18 16:11:57,442 - aqt.main - INFO - installer 140420351822720 Finished installation
+2025-10-18 16:11:57,442 - aqt.main - INFO - installer 140420351822720 Time elapsed: 19.31213572 second

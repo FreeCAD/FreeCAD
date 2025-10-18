@@ -2532,8 +2532,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Napravi složeni presek</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <location filename="../../TaskSectionView.cpp" line="572"/>
+      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <source>Edit Section View</source>
       <translation>Uredi pun presek</translation>
     </message>
@@ -3066,12 +3066,12 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>URL adresa veze:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="673"/>
+      <location filename="../../mrichtextedit.cpp" line="687"/>
       <source>Select an image</source>
       <translation>Izaberi sliku</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="675"/>
+      <location filename="../../mrichtextedit.cpp" line="689"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</translation>
     </message>
@@ -3079,6 +3079,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="856"/>
@@ -3124,8 +3126,6 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <location filename="../../CommandAnnotate.cpp" line="1426"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -3162,12 +3162,12 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Select exactly one view to add to clip group</source>
-      <translation type="unfinished">Select exactly one view to add to clip group</translation>
+      <translation>Izaberi jedan pogled koji želiš da dodaš u grupu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1473"/>
       <source>Select exactly one view to remove from clip group</source>
-      <translation type="unfinished">Select exactly one view to remove from clip group</translation>
+      <translation>Izaberi jedan pogled koji želiš da ukloniš iz grupe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1835"/>
@@ -3175,6 +3175,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>FreeCAD nije mogao da pronađe crtež za izvoz</translation>
     </message>
     <message>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1190"/>
       <location filename="../../Command.cpp" line="1197"/>
       <location filename="../../Command.cpp" line="1205"/>
@@ -3192,8 +3194,6 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandDecorate.cpp" line="325"/>
       <location filename="../../CommandExtensionPack.cpp" line="1860"/>
       <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -3214,9 +3214,20 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Nisu izabrani oblici, grupe ili veze</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../Command.cpp" line="739"/>
       <location filename="../../Command.cpp" line="832"/>
       <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3243,26 +3254,22 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandCreateDims.cpp" line="1850"/>
       <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <location filename="../../CommandCreateDims.cpp" line="2071"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../CommandExtensionPack.cpp" line="285"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1209"/>
       <location filename="../../CommandExtensionPack.cpp" line="1454"/>
       <location filename="../../CommandExtensionPack.cpp" line="1747"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
       <source>Task in progress</source>
       <translation>Izvršenje zadatka u toku</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="740"/>
       <location filename="../../Command.cpp" line="833"/>
       <location filename="../../Command.cpp" line="896"/>
@@ -3281,13 +3288,6 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <location filename="../../CommandAnnotate.cpp" line="1262"/>
       <location filename="../../CommandAnnotate.cpp" line="1343"/>
       <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <source>Close active task dialog and try again</source>
       <translation>Zatvori dijalog aktivnog zadatka i pokušaj ponovo</translation>
     </message>
@@ -3337,7 +3337,7 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains a BIM view which will not be exported. Continue?</translation>
+      <translation>Crtež sadrži BIM pogled koji neće biti izvezen. Nastavi?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
@@ -3476,13 +3476,13 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
       <location filename="../../CommandCreateDims.cpp" line="2193"/>
+      <location filename="../../TaskDimension.cpp" line="549"/>
       <location filename="../../CommandDecorate.cpp" line="332"/>
       <location filename="../../CommandDecorate.cpp" line="338"/>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -3517,8 +3517,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Zatvori dijalog aktivnog zadatka i pokušaj ponovo.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <source>Task In Progress</source>
       <translation>Zadatak u toku</translation>
     </message>
@@ -3528,13 +3528,13 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>TechDraw Kružnica rupe</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="286"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="985"/>
       <location filename="../../CommandExtensionPack.cpp" line="1210"/>
       <location filename="../../CommandExtensionPack.cpp" line="1455"/>
       <location filename="../../CommandExtensionPack.cpp" line="1748"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zatvori dijalog aktivnog zadatka i pokušaj ponovo.</translation>
     </message>
@@ -3799,9 +3799,9 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Izvezi crtež u PDF formatu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="159"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>Are you sure you want to continue?</source>
       <translation>Da li si siguran da želiš da nastaviš?</translation>
     </message>
@@ -3882,14 +3882,14 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Uredi složeni presek</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="228"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <source>Current View Direction</source>
       <translation>Trenutni pravac pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="229"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Pravac pogleda u koordinatama baznog pogleda</translation>
     </message>
@@ -3904,8 +3904,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Proveri normalu preseka, pravac i/ili X smer.</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <location filename="../../TaskSectionView.cpp" line="638"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>Operation Failed</source>
       <translation>Operacija nije izvršena</translation>
     </message>
@@ -3940,8 +3940,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Uredi detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="136"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
@@ -4075,8 +4075,8 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>TechDraw Prilagodi format</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <source>Selection is empty</source>
       <translation>Nisi ništa izabrao</translation>
@@ -4288,17 +4288,17 @@ ima simbol zavarivanja koji bi se pokvario.</translation>
       <translation>Ne možeš obrisati ovaj pogled jer ima jedan ili više zavisnih objekata koji će postati neispravni.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderViewPart.cpp" line="383"/>
       <location filename="../../ViewProviderViewPart.cpp" line="398"/>
+      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Međuzavisnosti objekata</translation>
@@ -5019,9 +5019,9 @@ when hatching a face with a PAT pattern</source>
 always be the right choice.  Flat or square caps are useful
 for using drawings as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps. The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-for using drawings as a 1:1 cutting guide.
+      <translation>Oblik krajeva linija. Unapred podešen (Zaobljeni) bi trebalo skoro uvek
+da bude pravi izbor. Ravni ili kvadratni krajevi su korisni 
+ako planirate da koristite crtež kao šablon za sečenje 1:1.
 </translation>
     </message>
     <message>
@@ -5717,7 +5717,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
       <source>Page Update</source>
-      <translation type="unfinished">Page Update</translation>
+      <translation>Ažuriraj crtež</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
@@ -5931,7 +5931,7 @@ parametar &apos;Ažuriraj sa 3D&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
-      <translation type="unfinished">Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</translation>
+      <translation>Označi ako želiš da prilikom prevlačenja oznaka detaljnog pogleda uhvati najbliže teme.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>

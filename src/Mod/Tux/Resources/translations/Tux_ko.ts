@@ -76,7 +76,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
       <source>Tooltip</source>
-      <translation>툴팁</translation>
+      <translation>도구 설명</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>

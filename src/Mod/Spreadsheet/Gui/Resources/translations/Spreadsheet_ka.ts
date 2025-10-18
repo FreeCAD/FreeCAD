@@ -380,8 +380,8 @@
       <translation>სვეტების ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="680"/>
       <location filename="../../SpreadsheetView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="680"/>
       <source>Clear Cells</source>
       <translation>უჯრედების გასუფთავება</translation>
     </message>
@@ -672,8 +672,8 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;ყველა (*)</translation>
     </message>

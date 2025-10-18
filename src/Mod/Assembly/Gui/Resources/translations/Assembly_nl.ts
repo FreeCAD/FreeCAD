@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1569"/>
+      <location filename="../../../JointObject.py" line="1694"/>
       <source>Distance</source>
       <translation>Afstand</translation>
     </message>
@@ -146,7 +146,6 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1571"/>
       <source>Angle</source>
       <translation>Hoek</translation>
     </message>
@@ -171,27 +170,27 @@
       <translation type="unfinished">Belt</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="641"/>
+      <location filename="../../../JointObject.py" line="759"/>
       <source>Broken link in: </source>
       <translation type="unfinished">Broken link in: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1531"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1573"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Radius 1</source>
       <translation>Straal 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1575"/>
+      <location filename="../../../JointObject.py" line="1698"/>
       <source>Thread pitch</source>
       <translation type="unfinished">Thread pitch</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1577"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Pitch radius</source>
       <translation type="unfinished">Pitch radius</translation>
     </message>
@@ -504,119 +503,124 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="183"/>
+      <location filename="../../../JointObject.py" line="186"/>
       <source>The type of the joint</source>
       <translation type="unfinished">The type of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="209"/>
+      <location filename="../../../JointObject.py" line="213"/>
       <source>The first reference of the joint</source>
       <translation type="unfinished">The first reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="225"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
+      <location filename="../../../JointObject.py" line="237"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="245"/>
-      <location filename="../../../JointObject.py" line="516"/>
+      <location filename="../../../JointObject.py" line="249"/>
+      <location filename="../../../JointObject.py" line="558"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation type="unfinished">This is the attachment offset of the first connector of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
+      <location filename="../../../JointObject.py" line="271"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="279"/>
+      <location filename="../../../JointObject.py" line="283"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
+      <location filename="../../../JointObject.py" line="295"/>
+      <location filename="../../../JointObject.py" line="569"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation type="unfinished">This is the attachment offset of the second connector of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation type="unfinished">Enable the minimum length limit of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation type="unfinished">Enable the maximum length limit of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation type="unfinished">Enable the minimum angle limit of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation type="unfinished">Enable the maximum angle limit of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="380"/>
+      <location filename="../../../JointObject.py" line="386"/>
+      <source>This is the angle of the joint. It is used only by the Angle joint.</source>
+      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="422"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation type="unfinished">This is the minimum limit for the length between both coordinate systems (along their z-axis)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="392"/>
+      <location filename="../../../JointObject.py" line="434"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation type="unfinished">This is the maximum limit for the length between both coordinate systems (along their z-axis)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="404"/>
+      <location filename="../../../JointObject.py" line="446"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation type="unfinished">This is the minimum limit for the angle between both coordinate systems (between their x-axis)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="416"/>
+      <location filename="../../../JointObject.py" line="458"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation type="unfinished">This is the maximum limit for the angle between both coordinate systems (between their x-axis)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="255"/>
+      <location filename="../../../JointObject.py" line="259"/>
       <source>The second reference of the joint</source>
       <translation type="unfinished">The second reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="435"/>
+      <location filename="../../../JointObject.py" line="477"/>
       <source>The first object of the joint</source>
       <translation type="unfinished">The first object of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="455"/>
+      <location filename="../../../JointObject.py" line="497"/>
       <source>The second object of the joint</source>
       <translation type="unfinished">The second object of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="398"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="410"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation type="unfinished">This is the second distance of the joint. It is used only by the gear joint to store the second radius.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="469"/>
+      <location filename="../../../JointObject.py" line="511"/>
       <source>The {order} reference of the joint</source>
       <translation type="unfinished">The {order} reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1037"/>
+      <location filename="../../../JointObject.py" line="1153"/>
       <source>The object to ground</source>
       <translation type="unfinished">The object to ground</translation>
     </message>
@@ -685,37 +689,37 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
   <context>
     <name>TaskAssemblyCreateJoint</name>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Distance</source>
       <translation>Afstand</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
       <source>Radius 2</source>
       <translation type="unfinished">Radius 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Offset</source>
       <translation>Verschuiving</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
       <translation>Rotatie</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
       <translation type="unfinished">Offset1</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
       <translation type="unfinished">Offset2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="191"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
       <translation type="unfinished">Show advanced offsets</translation>
     </message>
@@ -730,52 +734,57 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>Isoleer</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <source>Angle</source>
+      <translation>Hoek</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
       <translation type="unfinished">Sets the attachment offset of the joint’s first marker (coordinate system)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="179"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
       <translation type="unfinished">Sets the attachment offset of the second marker (coordinate system) of the joint</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
       <source>Reverse the direction of the joint</source>
       <translation type="unfinished">Reverse the direction of the joint</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="210"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
       <translation>Omdraaien</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="221"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
       <source>Limits</source>
       <translation type="unfinished">Limits</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="227"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
       <source>Min length</source>
       <translation>Min. lengte</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="250"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
       <source>Max length</source>
       <translation>Max. lengte</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="273"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min angle</source>
       <translation>Min. hoek</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="302"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
       <source>Max angle</source>
       <translation>Max. hoek</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="334"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
       <translation type="unfinished">Reverse rotation</translation>
     </message>
@@ -889,48 +898,48 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Onderdeel verplaatsen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1519"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1536"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
       <source>Empty Assembly</source>
       <translation type="unfinished">Empty Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1540"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
       <source>Over-constrained:</source>
       <translation>Over-bepaald:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1553"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
       <source>Redundant joints:</source>
       <translation type="unfinished">Redundant joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
       <source>Partially redundant:</source>
       <translation>Gedeeltelijk overbodig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1566"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
       <source>Solver failed to converge</source>
       <translation>Solver kon niet convergeren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1572"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
       <source>Under-constrained:</source>
       <translation>Onbepaald:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1574"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -938,7 +947,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1578"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
       <source>Fully constrained</source>
       <translation>Volledig bepaald</translation>
     </message>

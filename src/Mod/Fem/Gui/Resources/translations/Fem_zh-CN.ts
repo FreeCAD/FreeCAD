@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>轴承约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="289"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>接触约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="290"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="355"/>
       <source>Displacement Boundary Condition</source>
-      <translation type="unfinished">Displacement Boundary Condition</translation>
+      <translation>位移边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="356"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Fixed Boundary Condition</source>
-      <translation type="unfinished">Fixed Boundary Condition</translation>
+      <translation>固定边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="507"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>流体边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="509"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <source>Force Load</source>
-      <translation type="unfinished">Force Load</translation>
+      <translation>力载荷</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="560"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="616"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>齿轮约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="664"/>
       <source>Heat Flux Load</source>
-      <translation type="unfinished">Heat Flux Load</translation>
+      <translation>热通量载荷</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Initial Temperature</source>
-      <translation type="unfinished">Initial Temperature</translation>
+      <translation>初始温度</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Plane Multi-Point Constraint</source>
-      <translation type="unfinished">Plane Multi-Point Constraint</translation>
+      <translation>平面多点约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="777"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Pressure Load</source>
-      <translation type="unfinished">Pressure Load</translation>
+      <translation>压力载荷</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="828"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="938"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>滑轮约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="939"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>弹簧边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>在面上创建弹簧边界条件</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="991"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>温度边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="992"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="1043"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation type="unfinished">Creates a local coordinate system on a face</translation>
+      <translation>在面上创建局部坐标系</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1188"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>节点集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1189"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set.</translation>
+      <translation>选择单个FEM网格或节点集。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>选择单个FEM网格。</translation>
     </message>
   </context>
   <context>
@@ -314,12 +314,12 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>通过多边形选择节点集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>通过多边形选择创建节点集</translation>
     </message>
   </context>
   <context>
@@ -332,12 +332,12 @@
     <message>
       <location filename="../../Command.cpp" line="2623"/>
       <source>Apply Changes to Pipeline</source>
-      <translation type="unfinished">Apply Changes to Pipeline</translation>
+      <translation>将更改应用到管道</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2624"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
-      <translation type="unfinished">Applies changes to parameters directly and not on recompute only</translation>
+      <translation>直接应用参数更改，而不仅仅是在重新计算时</translation>
     </message>
   </context>
   <context>
@@ -350,17 +350,17 @@
     <message>
       <location filename="../../Command.cpp" line="2028"/>
       <source>Region Clip Filter</source>
-      <translation type="unfinished">Region Clip Filter</translation>
+      <translation>区域裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2030"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Defines a clip filter which uses functions to define the clipped region</translation>
+      <translation>定义一个使用函数来定义裁剪区域的裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2525"/>
       <source>Select a pipeline.</source>
-      <translation type="unfinished">Select a pipeline.</translation>
+      <translation>选择一个管道。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2524"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Command.cpp" line="2066"/>
       <source>Function Cut Filter</source>
-      <translation type="unfinished">Function Cut Filter</translation>
+      <translation>函数裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2067"/>
       <source>Cuts the data along an implicit function</source>
-      <translation type="unfinished">Cuts the data along an implicit function</translation>
+      <translation>沿隐函数裁剪数据</translation>
     </message>
   </context>
   <context>
@@ -396,12 +396,12 @@
     <message>
       <location filename="../../Command.cpp" line="2103"/>
       <source>Line Clip Filter</source>
-      <translation type="unfinished">Line Clip Filter</translation>
+      <translation>线裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2104"/>
       <source>Defines a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Defines a clip filter which clips a field along a line</translation>
+      <translation>定义一个沿线裁剪字段的裁剪过滤器</translation>
     </message>
   </context>
   <context>
@@ -414,12 +414,12 @@
     <message>
       <location filename="../../Command.cpp" line="2140"/>
       <source>Data at Point Clip Filter</source>
-      <translation type="unfinished">Data at Point Clip Filter</translation>
+      <translation>点数据裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2141"/>
       <source>Defines a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Defines a clip filter which clips a field data at point</translation>
+      <translation>定义一个在点裁剪字段数据的裁剪过滤器</translation>
     </message>
   </context>
   <context>
@@ -432,12 +432,12 @@
     <message>
       <location filename="../../Command.cpp" line="2398"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>过滤器函数</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2399"/>
       <source>Functions for use in postprocessing filter</source>
-      <translation type="unfinished">Functions for use in postprocessing filter</translation>
+      <translation>用于后处理过滤器的函数</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2576"/>
@@ -506,18 +506,18 @@
     <message>
       <location filename="../../Command.cpp" line="2178"/>
       <source>Stress Linearization Plot</source>
-      <translation type="unfinished">Stress Linearization Plot</translation>
+      <translation>应力线性化图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2179"/>
       <source>Defines a stress linearization plot</source>
-      <translation type="unfinished">Defines a stress linearization plot</translation>
+      <translation>定义一个应力线性化图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2217"/>
       <location filename="../../Command.cpp" line="2225"/>
       <source>Select a clip filter which clips a stress field along a line</source>
-      <translation type="unfinished">Select a clip filter which clips a stress field along a line</translation>
+      <translation>选择一个沿线裁剪应力场的裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2216"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../Command.cpp" line="2664"/>
       <source>Post Pipeline From Result</source>
-      <translation type="unfinished">Post Pipeline From Result</translation>
+      <translation>从结果生成后处理管道</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2665"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="2744"/>
       <source>Select a result object.</source>
-      <translation type="unfinished">Select a result object.</translation>
+      <translation>选择一个结果对象。</translation>
     </message>
   </context>
   <context>
@@ -564,12 +564,12 @@
     <message>
       <location filename="../../Command.cpp" line="2251"/>
       <source>Scalar Clip Filter</source>
-      <translation type="unfinished">Scalar Clip Filter</translation>
+      <translation>标量裁剪过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2252"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Defines a clip filter which clips a field with a scalar value</translation>
+      <translation>定义一个用标量值裁剪字段的裁剪过滤器</translation>
     </message>
   </context>
   <context>
@@ -582,12 +582,12 @@
     <message>
       <location filename="../../Command.cpp" line="2288"/>
       <source>Warp Filter</source>
-      <translation type="unfinished">Warp Filter</translation>
+      <translation>变形过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2289"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warps the geometry along a vector field by a certain factor</translation>
+      <translation>沿向量场按一定因子变形几何体</translation>
     </message>
   </context>
   <context>
@@ -655,7 +655,7 @@
     <message>
       <location filename="../../Command.cpp" line="900"/>
       <source>Make Spring Constraint</source>
-      <translation type="unfinished">Make Spring Constraint</translation>
+      <translation>创建弹簧约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="955"/>
@@ -696,7 +696,7 @@
     <message>
       <location filename="../../Command.cpp" line="1362"/>
       <source>Create Elements set</source>
-      <translation type="unfinished">Create Elements set</translation>
+      <translation>创建元素集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1875"/>
@@ -711,7 +711,7 @@
     <message>
       <location filename="../../Command.cpp" line="2715"/>
       <source>Create pipeline from result</source>
-      <translation type="unfinished">Create pipeline from result</translation>
+      <translation>从结果创建管道</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="282"/>
@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>对话框</translation>
@@ -731,7 +731,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation type="unfinished">Mesh groups detected. Choose values for the different groups.</translation>
+      <translation>检测到网格组。为不同的组选择值。</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -761,17 +761,17 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces</source>
-      <translation type="unfinished">Select the vertices, lines and surfaces</translation>
+      <translation>选择顶点、线和面</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <source>Temperature</source>
       <translation>温度</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -806,12 +806,12 @@
     <message>
       <location filename="../../Command.cpp" line="2591"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation type="unfinished">Create a cylinder function, defined by its center, axis and radius</translation>
+      <translation>创建一个圆柱函数，由其中心、轴和半径定义</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2598"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation type="unfinished">Create a box function, defined by its center, length, width and height</translation>
+      <translation>创建一个盒子函数，由其中心、长度、宽度和高度定义</translation>
     </message>
   </context>
   <context>
@@ -881,12 +881,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>初始时间增量</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>时间周期</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="331"/>
@@ -901,32 +901,32 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="492"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>最大增量数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>最小时间增量</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="629"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>最大时间增量</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="695"/>
       <source>Thermo-Mechanical Defaults</source>
-      <translation type="unfinished">Thermo-Mechanical Defaults</translation>
+      <translation>热机械默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="731"/>
       <source>Frequency Defaults</source>
-      <translation type="unfinished">Frequency Defaults</translation>
+      <translation>频率默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="841"/>
       <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <translation> 赫兹</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
@@ -936,27 +936,27 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="90"/>
       <source>Input file editor</source>
-      <translation type="unfinished">Input file editor</translation>
+      <translation>输入文件编辑器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="122"/>
       <source>External editor</source>
-      <translation type="unfinished">External editor</translation>
+      <translation>外部编辑器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
       <source>Analysis Defaults</source>
-      <translation type="unfinished">Analysis Defaults</translation>
+      <translation>分析默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="257"/>
       <source>Solver Defaults</source>
-      <translation type="unfinished">Solver Defaults</translation>
+      <translation>求解器默认值</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="308"/>
       <source>Number of CPUs to use</source>
-      <translation type="unfinished">Number of CPUs to use</translation>
+      <translation>使用的CPU数量</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
@@ -996,7 +996,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
       <source>CalculiX path</source>
-      <translation type="unfinished">CalculiX path</translation>
+      <translation>CalculiX路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="292"/>
@@ -1011,19 +1011,19 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="636"/>
       <source>Result object</source>
-      <translation type="unfinished">Result object</translation>
+      <translation>结果对象</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="643"/>
       <source>Pipeline only</source>
-      <translation type="unfinished">Pipeline only</translation>
+      <translation>仅管道</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="646"/>
       <source>Load results as pipeline instead of CCX_Results objects.
 After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</source>
-      <translation type="unfinished">Load results as pipeline instead of CCX_Results objects.
-After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</translation>
+      <translation>将结果加载为管道而不是CCX_Results对象。
+取消选中此选项后，CalculiX命令的行为类似于SolverCalculiXCcxTools</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="663"/>
@@ -1034,8 +1034,8 @@ After unchecking this option, the CalculiX command behaves like SolverCalculiXCc
       <location filename="../../DlgSettingsFemCcx.ui" line="670"/>
       <source>Save result in binary format.
 Only takes effect if 'Pipeline only' is enabled</source>
-      <translation type="unfinished">Save result in binary format.
-Only takes effect if 'Pipeline only' is enabled</translation>
+      <translation>以二进制格式保存结果。
+仅在启用“仅管道”时生效</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="674"/>
@@ -1080,7 +1080,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="151"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>未找到可执行文件“%1”</translation>
     </message>
   </context>
   <context>
@@ -1094,22 +1094,22 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="44"/>
       <source>ElmerSolver path</source>
-      <translation type="unfinished">ElmerSolver path</translation>
+      <translation>ElmerSolver路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerSolver binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerSolver binary file</translation>
+      <translation>留空以使用默认的ElmerSolver二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
       <source>ElmerGrid path</source>
-      <translation type="unfinished">ElmerGrid path</translation>
+      <translation>ElmerGrid路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
       <source>Number of processes</source>
-      <translation type="unfinished">Number of processes</translation>
+      <translation>进程数量</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
@@ -1149,7 +1149,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer Binaries</source>
-      <translation type="unfinished">Elmer Binaries</translation>
+      <translation>Elmer二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
@@ -1159,7 +1159,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>未找到可执行文件“%1”</translation>
     </message>
   </context>
   <context>
@@ -1187,17 +1187,16 @@ Highest: Only the highest elements will be exported. This means volumes for a vo
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>全部：将导出所有元素。
 
-Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
+最高：仅导出最高级别的元素。这意味着体网格的体积和壳网格的面。
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+FEM：仅导出FEM元素。这意味着仅导出不属于面的边和不属于体积的面。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>元素参数：全部：所有元素，最高：仅最高元素，FEM：仅FEM元素（仅不属于面的边和不属于体积的面）</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
@@ -1205,10 +1204,9 @@ not belonging to faces and faces not belonging to volumes.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>网格组也会被导出。
+每个分析特性，如果有不同的材料，
+材料由两个网格组组成 - 应用约束或材料的面和节点。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1286,7 +1284,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working Directory for Solving Analysis and Gmsh Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Gmsh Meshing</translation>
+      <translation>用于求解分析和Gmsh网格划分的工作目录</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
@@ -1296,7 +1294,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="279"/>
       <source>Create mesh groups for analysis reference shapes (experimental)</source>
-      <translation type="unfinished">Create mesh groups for analysis reference shapes (experimental)</translation>
+      <translation>为分析参考形状创建网格组（实验性）</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
@@ -1307,8 +1305,8 @@ the constraint or material is applied.</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
-      <translation type="unfinished">Existing result objects will be kept
-otherwise overwritten by new solver run</translation>
+      <translation>现有结果对象将被保留
+否则将被新的求解器运行覆盖</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="315"/>
@@ -1319,13 +1317,12 @@ otherwise overwritten by new solver run</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation type="unfinished">The results dialog will be opened
-with the last used dialog settings</translation>
+      <translation>结果对话框将以最后使用的对话框设置打开</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="335"/>
       <source>Restore result dialog settings</source>
-      <translation type="unfinished">Restore result dialog settings</translation>
+      <translation>恢复结果对话框设置</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
@@ -1337,7 +1334,7 @@ when the results dialog is opened</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
+      <translation>打开结果对话框时隐藏分析功能</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1353,8 +1350,7 @@ when the results dialog is opened</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation type="unfinished">Default solver to be added when
-adding an analysis container</translation>
+      <translation>添加分析容器时要添加的默认求解器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
@@ -1373,17 +1369,17 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh Binary</source>
-      <translation type="unfinished">Gmsh Binary</translation>
+      <translation>Gmsh二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="64"/>
       <source>Leave blank to use default Gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
+      <translation>留空以使用默认的Gmsh二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
       <source>Gmsh path</source>
-      <translation type="unfinished">Gmsh path</translation>
+      <translation>Gmsh路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="101"/>
@@ -1413,7 +1409,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="87"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>未找到可执行文件“%1”</translation>
     </message>
   </context>
   <context>
@@ -1445,21 +1441,18 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation type="unfinished">VTK result object: A FreeCAD FEM VTK result object will be imported
-(equals to the object which was exported).
+      <translation>VTK结果对象：将导入一个FreeCAD FEM VTK结果对象
+（等同于导出的对象）。
 
-FEM mesh object: The results in the VTK file will be omitted, only the
-mesh data will be imported and a FreeCAD FEM mesh object will be created.
+FEM网格对象：VTK文件中的结果将被忽略，仅导入网格数据并创建一个FreeCAD FEM网格对象。
 
-FreeCAD result object: The imported data will be converted into a
-FreeCAD FEM Result object. Note: this setting needs the exact result
-component names and thus it only works properly with VTK files
-exported from FreeCAD.</translation>
+FreeCAD结果对象：导入的数据将被转换为
+FreeCAD FEM结果对象。注意：此设置需要精确的结果组件名称，因此仅适用于从FreeCAD导出的VTK文件。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="53"/>
       <source>Choose in which object to import into</source>
-      <translation type="unfinished">Choose in which object to import into</translation>
+      <translation>选择导入到哪个对象中</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="66"/>
@@ -1489,7 +1482,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
       <source>Mesh element level to export</source>
-      <translation type="unfinished">Mesh element level to export</translation>
+      <translation>导出的网格元素级别</translation>
     </message>
   </context>
   <context>
@@ -1503,17 +1496,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
       <source>Mystran Binary</source>
-      <translation type="unfinished">Mystran Binary</translation>
+      <translation>Mystran二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="49"/>
       <source>Mystran path</source>
-      <translation type="unfinished">Mystran path</translation>
+      <translation>Mystran路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="80"/>
       <source>Leave blank to use default mystran binary file</source>
-      <translation type="unfinished">Leave blank to use default mystran binary file</translation>
+      <translation>留空以使用默认的Mystran二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="93"/>
@@ -1528,7 +1521,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="76"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>未找到可执行文件“%1”</translation>
     </message>
   </context>
   <context>
@@ -1542,22 +1535,22 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
       <source>Z88 Binary</source>
-      <translation type="unfinished">Z88 Binary</translation>
+      <translation>Z88二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="52"/>
       <source>z88r path</source>
-      <translation type="unfinished">z88r path</translation>
+      <translation>z88r路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="83"/>
       <source>Leave blank to use default z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default z88r binary file</translation>
+      <translation>留空以使用默认的z88r二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="110"/>
       <source>Solver Settings</source>
-      <translation type="unfinished">Solver Settings</translation>
+      <translation>求解器设置</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="121"/>
@@ -1595,15 +1588,13 @@ exported from FreeCAD.</translation>
 You might need to increase this when using the
 Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
-      <translation type="unfinished">Maximum places in the stiffness matrix.
-You might need to increase this when using the
-Cholesky solver and getting the error message
-that "MAXGS" needs to be increased.</translation>
+      <translation>刚度矩阵中的最大位置。
+使用Cholesky求解器并收到需要增加"MAXGS"的错误消息时，可能需要增加此值。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="212"/>
       <source>Maximum places in coincidence vector</source>
-      <translation type="unfinished">Maximum places in coincidence vector</translation>
+      <translation>重合向量中的最大位置</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="225"/>
@@ -1614,18 +1605,15 @@ that "MAXGS" needs to be increased.</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
+      <translation>重合向量中的最大位置。
+（每个元素的节点数乘以有限元数量）
 
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</translation>
+使用迭代求解器并收到需要增加"MAXKOI"的错误消息时，可能需要增加此值。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="102"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>未找到可执行文件“%1”</translation>
     </message>
   </context>
   <context>
@@ -1796,7 +1784,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="55"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>分析特征属性</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="182"/>
@@ -1824,7 +1812,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="169"/>
       <source>Use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Use only a single reference for bearing constraint</translation>
+      <translation>轴承约束仅使用单个参考</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
@@ -1886,12 +1874,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation type="unfinished">Only one face in object! - moved to master face</translation>
+      <translation>对象中只有一个面！- 已移至主面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>选择从属几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
@@ -1903,18 +1891,18 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="141"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="144"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>点击添加或移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>选择主几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="333"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
-      <translation type="unfinished">Only one master face and one slave face for a contact constraint!</translation>
+      <translation>接触约束只能有一个主面和一个从面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
@@ -1928,7 +1916,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="235"/>
       <source>Only one slave face for a contact constraint!</source>
-      <translation type="unfinished">Only one slave face for a contact constraint!</translation>
+      <translation>接触约束只能有一个从面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="219"/>
@@ -1942,18 +1930,18 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="227"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="244"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="378"/>
       <source>Only faces can be picked (edges in 2D models)</source>
-      <translation type="unfinished">Only faces can be picked (edges in 2D models)</translation>
+      <translation>只能选择面（2D 模型中的边）</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="344"/>
       <source>Only one master for a contact constraint!</source>
-      <translation type="unfinished">Only one master for a contact constraint!</translation>
+      <translation>接触约束只能有一个主面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="369"/>
@@ -1966,12 +1954,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>顶点、边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
@@ -1998,12 +1986,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="261"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="296"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>每个分析特征只允许一种选择类型（顶点、面或边）！</translation>
     </message>
   </context>
   <context>
@@ -2011,12 +1999,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>顶点、边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
@@ -2043,7 +2031,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="128"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="162"/>
@@ -2071,12 +2059,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
       <source>select boundary type, faces and set value</source>
-      <translation type="unfinished">select boundary type, faces and set value</translation>
+      <translation>选择边界类型、面并设置值</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
@@ -2127,7 +2115,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="634"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>选择一条边或一个面。</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
@@ -2151,12 +2139,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="672"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation type="unfinished">Only planar faces can be picked for 3D</translation>
+      <translation>3D 中只能选择平面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="680"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation type="unfinished">Only planar edges can be picked for 2D</translation>
+      <translation>2D 中只能选择平面边</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="687"/>
@@ -2188,12 +2176,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="840"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="875"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>每个分析特征只允许一种选择类型（顶点、面或边）！</translation>
     </message>
   </context>
   <context>
@@ -2201,12 +2189,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>顶点、边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
@@ -2233,12 +2221,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="145"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>每个分析特征只允许一种选择类型（顶点、面或边）！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
@@ -2249,7 +2237,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>选择一条边或一个面。</translation>
     </message>
   </context>
   <context>
@@ -2282,12 +2270,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
@@ -2315,13 +2303,13 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="285"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="296"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="361"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
+      <translation>选择必须仅包含面！（2D 模型中的边）</translation>
     </message>
   </context>
   <context>
@@ -2329,7 +2317,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>选择单个几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
@@ -2353,7 +2341,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="129"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="208"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane multi-point constraint!</translation>
+      <translation>平面多点约束只能选择一个面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="138"/>
@@ -2370,7 +2358,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="158"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
@@ -2388,12 +2376,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
@@ -2420,12 +2408,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="160"/>
       <source>Only faces (edges in 2D models) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D models) can be picked</translation>
+      <translation>只能选择面（2D 模型中的边）</translation>
     </message>
   </context>
   <context>
@@ -2446,7 +2434,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
@@ -2478,7 +2466,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="156"/>
@@ -2491,12 +2479,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>顶点、边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
@@ -2522,7 +2510,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="209"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
   </context>
   <context>
@@ -2557,22 +2545,22 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="311"/>
       <source>Only one face for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face for rectangular local coordinate system!</translation>
+      <translation>矩形局部坐标系只能有一个面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="332"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="340"/>
       <source>Only one face for local coordinate system!</source>
-      <translation type="unfinished">Only one face for local coordinate system!</translation>
+      <translation>局部坐标系只能有一个面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="396"/>
       <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</translation>
+      <translation>只能选择可变换的面！请先对面应用位移边界条件或力载荷，然后再对该面应用局部坐标系。</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="324"/>
@@ -2583,7 +2571,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>选择单个几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
@@ -2593,7 +2581,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="204"/>
       <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
-      <translation type="unfinished">The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</translation>
+      <translation>可变换的面已更改。请仅添加可变换的面并移除不可变换的面！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="347"/>
@@ -2611,7 +2599,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="662"/>
       <source>Data Along a Line Options</source>
-      <translation type="unfinished">Data Along a Line Options</translation>
+      <translation>沿直线数据选项</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1046"/>
@@ -2625,12 +2613,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1083"/>
       <source>Data at Point Options</source>
-      <translation type="unfinished">Data at Point Options</translation>
+      <translation>点数据选项</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1402"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation type="unfinished">%1 at (%2; %3; %4) is: %5 %6</translation>
+      <translation>%1 在 (%2; %3; %4) 处为：%5 %6</translation>
     </message>
   </context>
   <context>
@@ -2677,12 +2665,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM Material</source>
-      <translation type="unfinished">FEM Material</translation>
+      <translation>有限元材料</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>密度</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="91"/>
@@ -2692,32 +2680,32 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="102"/>
       <source>Young's modulus</source>
-      <translation type="unfinished">Young's modulus</translation>
+      <translation>杨氏模量</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson ratio</source>
-      <translation type="unfinished">Poisson ratio</translation>
+      <translation>泊松比</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal conductivity</source>
-      <translation type="unfinished">Thermal conductivity</translation>
+      <translation>热导率</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="303"/>
       <source>Expansion coefficient</source>
-      <translation type="unfinished">Expansion coefficient</translation>
+      <translation>膨胀系数</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="343"/>
       <source>Reference temperature</source>
-      <translation type="unfinished">Reference temperature</translation>
+      <translation>参考温度</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="386"/>
       <source>Specific heat capacity</source>
-      <translation type="unfinished">Specific heat capacity</translation>
+      <translation>比热容</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
@@ -2727,7 +2715,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="201"/>
       <source>Kinematic viscosity</source>
-      <translation type="unfinished">Kinematic viscosity</translation>
+      <translation>运动粘度</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="252"/>
@@ -2737,7 +2725,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation type="unfinished">Reference temperature for thermal expansion</translation>
+      <translation>热膨胀参考温度</translation>
     </message>
   </context>
   <context>
@@ -2766,7 +2754,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid section parameter</source>
-      <translation type="unfinished">Liquid section parameter</translation>
+      <translation>液体截面参数</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
@@ -2776,34 +2764,34 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe area</source>
-      <translation type="unfinished">Pipe area</translation>
+      <translation>管道面积</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
       <source>Hydraulic radius</source>
-      <translation type="unfinished">Hydraulic radius</translation>
+      <translation>水力半径</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning coefficient</source>
-      <translation type="unfinished">Manning coefficient</translation>
+      <translation>曼宁系数</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial area</source>
-      <translation type="unfinished">Initial area</translation>
+      <translation>初始面积</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged area</source>
-      <translation type="unfinished">Enlarged area</translation>
+      <translation>扩大面积</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted area</source>
-      <translation type="unfinished">Contracted area</translation>
+      <translation>收缩面积</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2811,9 +2799,9 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>入口压力</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>压力</translation>
     </message>
@@ -2853,27 +2841,27 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance area</source>
-      <translation type="unfinished">Entrance area</translation>
+      <translation>入口面积</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm area</source>
-      <translation type="unfinished">Diaphragm area</translation>
+      <translation>隔膜面积</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>弯曲半径 / 管道直径</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend angle</source>
-      <translation type="unfinished">Bend angle</translation>
+      <translation>弯曲角度</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump characteristic</source>
-      <translation type="unfinished">Pump characteristic</translation>
+      <translation>泵特性</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
@@ -2883,12 +2871,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas section parameter</source>
-      <translation type="unfinished">Gas section parameter</translation>
+      <translation>气体截面参数</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open channel section parameter</source>
-      <translation type="unfinished">Open channel section parameter</translation>
+      <translation>明渠截面参数</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2913,12 +2901,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="780"/>
       <source>Cross section form factor</source>
-      <translation type="unfinished">Cross section form factor</translation>
+      <translation>截面形状因子</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
       <source>Tie Parameter</source>
-      <translation type="unfinished">Tie Parameter</translation>
+      <translation>绑定参数</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="56"/>
@@ -2928,7 +2916,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
       <source>Enable adjust</source>
-      <translation type="unfinished">Enable adjust</translation>
+      <translation>启用调整</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2943,24 +2931,24 @@ that "MAXKOI" needs to be increased.</translation>
       <translation>每秒转数</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>参数</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif Parameter</source>
-      <translation type="unfinished">Centrif Parameter</translation>
+      <translation>离心参数</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation frequency</source>
-      <translation type="unfinished">Rotation frequency</translation>
+      <translation>旋转频率</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -2980,12 +2968,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
       <source>Boundary condition</source>
-      <translation type="unfinished">Boundary condition</translation>
+      <translation>边界条件</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="50"/>
       <source>Potential</source>
-      <translation type="unfinished">Potential</translation>
+      <translation>电势</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="60"/>
@@ -2995,7 +2983,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
       <source>Electromagnetic potential</source>
-      <translation type="unfinished">Electromagnetic potential</translation>
+      <translation>电磁势</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
@@ -3006,123 +2994,123 @@ with a harmonic/oscillating driving force</source>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="150"/>
       <source>Real part of scalar potential</source>
-      <translation type="unfinished">Real part of scalar potential</translation>
+      <translation>标量势实部</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="211"/>
       <source>Real part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>矢量势 X 分量实部
+注意：如果选择了实体则无效</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="234"/>
       <source>Imaginary part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>矢量势 X 分量虚部
+注意：如果选择了实体则无效</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="274"/>
       <source>Real part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>矢量势 Y 分量实部
+注意：如果选择了实体则无效</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="297"/>
       <source>Imaginary part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>矢量势 Y 分量虚部
+注意：如果选择了实体则无效</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="337"/>
       <source>Real part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>矢量势 Z 分量实部
+注意：如果选择了实体则无效</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="360"/>
       <source>Imaginary part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>矢量势 Z 分量虚部
+注意：如果选择了实体则无效</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="391"/>
       <source>Electric infinity</source>
-      <translation type="unfinished">Electric infinity</translation>
+      <translation>电无穷远</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="419"/>
       <source>Electric flux density</source>
-      <translation type="unfinished">Electric flux density</translation>
+      <translation>电通量密度</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="445"/>
       <source>Capacitance body</source>
-      <translation type="unfinished">Capacitance body</translation>
+      <translation>电容体</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="448"/>
       <source>Enabled by 'Calculate capacity matrix' in Electrostatic equation</source>
-      <translation type="unfinished">Enabled by 'Calculate capacity matrix' in Electrostatic equation</translation>
+      <translation>由静电方程中的“计算电容矩阵”启用</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="398"/>
       <source>Whether the boundary condition defines a constant potential</source>
-      <translation type="unfinished">Whether the boundary condition defines a constant potential</translation>
+      <translation>边界条件是否定义恒定电势</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="401"/>
       <source>Potential constant</source>
-      <translation type="unfinished">Potential constant</translation>
+      <translation>电势常数</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="413"/>
       <source>Neumann</source>
-      <translation type="unfinished">Neumann</translation>
+      <translation>诺伊曼</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="426"/>
       <source>Normal component of electric displacement field</source>
-      <translation type="unfinished">Normal component of electric displacement field</translation>
+      <translation>电位移场法向分量</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="439"/>
       <source>Capacitance</source>
-      <translation type="unfinished">Capacitance</translation>
+      <translation>电容</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="388"/>
       <source>Whether the boundary condition defines a farfield potential</source>
-      <translation type="unfinished">Whether the boundary condition defines a farfield potential</translation>
+      <translation>边界条件是否定义远场电势</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="39"/>
       <source>Dirichlet</source>
-      <translation type="unfinished">Dirichlet</translation>
+      <translation>狄利克雷</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="81"/>
       <source>To define scalar potential and magnetic vector potential</source>
-      <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
+      <translation>用于定义标量势和磁矢量势</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>实部</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>虚部</translation>
     </message>
@@ -3139,12 +3127,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="455"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation type="unfinished">Counter of the body (or face) with a capacitance</translation>
+      <translation>具有电容的体（或面）的计数器</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam Section Rotation</source>
-      <translation type="unfinished">Beam Section Rotation</translation>
+      <translation>梁截面旋转</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
@@ -3159,17 +3147,17 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh Boundary Layer Settings</source>
-      <translation type="unfinished">Mesh Boundary Layer Settings</translation>
+      <translation>网格边界层设置</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
       <source>Maximum layers</source>
-      <translation type="unfinished">Maximum layers</translation>
+      <translation>最大层数</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
       <source>Minimum/1st thickness</source>
-      <translation type="unfinished">Minimum/1st thickness</translation>
+      <translation>最小/第一层厚度</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
@@ -3179,12 +3167,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>网格组</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier Used for Mesh Export</source>
-      <translation type="unfinished">Identifier Used for Mesh Export</translation>
+      <translation>用于网格导出的标识符</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3199,13 +3187,13 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam Section Parameter</source>
-      <translation type="unfinished">Beam Section Parameter</translation>
+      <translation>梁截面参数</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
-      <translation type="unfinished">Cross-Section Parameter</translation>
+      <translation>横截面参数</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
@@ -3214,14 +3202,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>宽度</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3239,43 +3227,43 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>外径</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>厚度</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
       <source>Axis1 length</source>
-      <translation type="unfinished">Axis1 length</translation>
+      <translation>轴1长度</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="236"/>
       <source>Axis2 length</source>
-      <translation type="unfinished">Axis2 length</translation>
+      <translation>轴2长度</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 thickness</source>
-      <translation type="unfinished">T1 thickness</translation>
+      <translation>T1厚度</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 thickness</source>
-      <translation type="unfinished">T2 thickness</translation>
+      <translation>T2厚度</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 thickness</source>
-      <translation type="unfinished">T3 thickness</translation>
+      <translation>T3厚度</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 thickness</source>
-      <translation type="unfinished">T4 thickness</translation>
+      <translation>T4厚度</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="25"/>
@@ -3295,25 +3283,25 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
-      <translation type="unfinished">Unspecified</translation>
+      <translation>未指定</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
-      <translation type="unfinished">Velocity X</translation>
+      <translation>速度 X</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
-      <translation type="unfinished">Velocity Y</translation>
+      <translation>速度 Y</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
-      <translation type="unfinished">Velocity Z</translation>
+      <translation>速度 Z</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3321,16 +3309,16 @@ Note: has no effect if a solid was selected</translation>
       <translation>垂直于边界</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>分析特征属性</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
@@ -3338,29 +3326,28 @@ Note: has no effect if a solid was selected</translation>
       <translation>热源</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>模式</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
       <source>Total power</source>
-      <translation type="unfinished">Total power</translation>
+      <translation>总功率</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
       <source>Dissipation rate</source>
-      <translation type="unfinished">Dissipation rate</translation>
+      <translation>耗散率</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
-      <translation type="unfinished">Imaginary part is only used for equations
-with harmonic/oscillating driving current</translation>
+      <translation>虚部仅用于具有谐波/振荡驱动电流的方程</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
@@ -3395,89 +3382,89 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="50"/>
       <source>Free surface charge density</source>
-      <translation type="unfinished">Free surface charge density</translation>
+      <translation>自由表面电荷密度</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>密度</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
       <source>Free volume charge density</source>
-      <translation type="unfinished">Free volume charge density</translation>
+      <translation>自由体积电荷密度</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="136"/>
       <source>Free total charge</source>
-      <translation type="unfinished">Free total charge</translation>
+      <translation>自由总电荷</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="141"/>
       <source>Total charge</source>
-      <translation type="unfinished">Total charge</translation>
+      <translation>总电荷</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
       <source>Select custom mode to enable vector current density</source>
-      <translation type="unfinished">Select custom mode to enable vector current density</translation>
+      <translation>选择自定义模式以启用矢量电流密度</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="88"/>
       <source>Real part of current density x-component</source>
-      <translation type="unfinished">Real part of current density x-component</translation>
+      <translation>电流密度X分量的实部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="110"/>
       <source>Imaginary part of current density x-component</source>
-      <translation type="unfinished">Imaginary part of current density x-component</translation>
+      <translation>电流密度X分量的虚部</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="139"/>
       <source>Real part of current density y-component</source>
-      <translation type="unfinished">Real part of current density y-component</translation>
+      <translation>电流密度Y分量的实部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="161"/>
       <source>Imaginary part of current density y-component</source>
-      <translation type="unfinished">Imaginary part of current density y-component</translation>
+      <translation>电流密度Y分量的虚部</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="190"/>
       <source>Real part of current density z-component</source>
-      <translation type="unfinished">Real part of current density z-component</translation>
+      <translation>电流密度Z分量的实部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="212"/>
       <source>Imaginary part of current density z-component</source>
-      <translation type="unfinished">Imaginary part of current density z-component</translation>
+      <translation>电流密度Z分量的虚部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="237"/>
       <source>Current density normal to surface</source>
-      <translation type="unfinished">Current density normal to surface</translation>
+      <translation>垂直于表面的电流密度</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="263"/>
@@ -3487,64 +3474,64 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell Thickness Parameter</source>
-      <translation type="unfinished">Shell Thickness Parameter</translation>
+      <translation>壳厚度参数</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>网格细化</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Maximum element size</source>
-      <translation type="unfinished">Maximum element size</translation>
+      <translation>最大单元尺寸</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>窗体</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>场</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>框架</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
       <source>One field for each frame</source>
-      <translation type="unfinished">One field for each frame</translation>
+      <translation>每个帧一个字段</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <source>Index</source>
-      <translation type="unfinished">Index</translation>
+      <translation>索引</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
       <source>X field</source>
-      <translation type="unfinished">X field</translation>
+      <translation>X字段</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <source>Y field</source>
-      <translation type="unfinished">Y field</translation>
+      <translation>Y字段</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
-      <translation type="unfinished">One Y field for each frame</translation>
+      <translation>每个帧一个Y字段</translation>
     </message>
   </context>
   <context>
@@ -3562,22 +3549,22 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element dimension</source>
-      <translation type="unfinished">Element dimension</translation>
+      <translation>单元维度</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>最大尺寸</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="85"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>最小尺寸</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="126"/>
       <source>Element order</source>
-      <translation type="unfinished">Element order</translation>
+      <translation>单元阶数</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="172"/>
@@ -3587,7 +3574,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="198"/>
       <source>Gmsh Version</source>
-      <translation type="unfinished">Gmsh Version</translation>
+      <translation>Gmsh版本</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
@@ -3720,7 +3707,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
       <source>Edit Analysis Feature</source>
-      <translation type="unfinished">Edit Analysis Feature</translation>
+      <translation>编辑分析特征</translation>
     </message>
   </context>
   <context>
@@ -3758,7 +3745,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="229"/>
       <source>Displacement Scaling</source>
-      <translation type="unfinished">Displacement Scaling</translation>
+      <translation>位移缩放</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="276"/>
@@ -3768,17 +3755,17 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="358"/>
       <source>Animation Control</source>
-      <translation type="unfinished">Animation Control</translation>
+      <translation>动画控制</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="505"/>
       <source>Toggles between Start and Stop</source>
-      <translation type="unfinished">Toggles between Start and Stop</translation>
+      <translation>在开始和停止之间切换</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="508"/>
       <source>Start Animation</source>
-      <translation type="unfinished">Start Animation</translation>
+      <translation>开始动画</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="170"/>
@@ -3788,37 +3775,37 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="14"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>显示结果</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="26"/>
       <source>Result Type</source>
-      <translation type="unfinished">Result Type</translation>
+      <translation>结果类型</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="56"/>
       <source>Displacement magnitude</source>
-      <translation type="unfinished">Displacement magnitude</translation>
+      <translation>位移大小</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
       <source>Maximum principal stress</source>
-      <translation type="unfinished">Maximum principal stress</translation>
+      <translation>最大主应力</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Minimum principal stress</source>
-      <translation type="unfinished">Minimum principal stress</translation>
+      <translation>最小主应力</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="123"/>
       <source>Maximum shear stress (Tresca)</source>
-      <translation type="unfinished">Maximum shear stress (Tresca)</translation>
+      <translation>最大剪切应力（特雷斯卡）</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="136"/>
       <source>Equivalent plastic strain</source>
-      <translation type="unfinished">Equivalent plastic strain</translation>
+      <translation>等效塑性应变</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="143"/>
@@ -3828,7 +3815,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="163"/>
       <source>Network pressure</source>
-      <translation type="unfinished">Network pressure</translation>
+      <translation>网络压力</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="181"/>
@@ -3848,36 +3835,36 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="312"/>
       <source>Slider maximum</source>
-      <translation type="unfinished">Slider maximum</translation>
+      <translation>滑块最大值</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="382"/>
       <source>Number of steps per cycle</source>
-      <translation type="unfinished">Number of steps per cycle</translation>
+      <translation>每周期步数</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="429"/>
       <source>Number of cycles</source>
-      <translation type="unfinished">Number of cycles</translation>
+      <translation>周期数</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="467"/>
       <source>Frame rate</source>
-      <translation type="unfinished">Frame rate</translation>
+      <translation>帧率</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="522"/>
       <source>User-Defined Equation</source>
-      <translation type="unfinished">User-Defined Equation</translation>
+      <translation>用户定义方程</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
-      <translation type="unfinished">Runs the equation given in the field below,
-outputs the results to the Min and Max fields
-and colors the result mesh accordingly</translation>
+      <translation>运行下方字段中给定的方程，
+将结果输出到最小值和最大值字段，
+并相应地为结果网格着色</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="533"/>
@@ -3888,8 +3875,8 @@ and colors the result mesh accordingly</translation>
       <location filename="../ui/ResultShow.ui" line="552"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation type="unfinished">Enter here an equation to be calculated.
-For possible variables, see the description box below.</translation>
+      <translation>在此输入要计算的方程。
+有关可能的变量，请参阅下面的描述框。</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="556"/>
@@ -3914,7 +3901,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
       <source>network pressure: NP</source>
-      <translation type="unfinished">network pressure: NP</translation>
+      <translation>网络压力：NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
@@ -3924,7 +3911,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
       <source>mass flow rate: MF</source>
-      <translation type="unfinished">mass flow rate: MF</translation>
+      <translation>质量流量：MF</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="158"/>
@@ -3934,57 +3921,57 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>maximum shear stress: MS</source>
-      <translation type="unfinished">maximum shear stress: MS</translation>
+      <translation>最大剪切应力：MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>maximum princ. stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">maximum princ. stress vector: s3x, s3y, s3z</translation>
+      <translation>最大主应力矢量：s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>maximum principal stress: P1</source>
-      <translation type="unfinished">maximum principal stress: P1</translation>
+      <translation>最大主应力：P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
       <source>medium princ. stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">medium princ. stress vector: s2x, s2y, s2z</translation>
+      <translation>中间主应力矢量：s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>medium principal stress: P2</source>
-      <translation type="unfinished">medium principal stress: P2</translation>
+      <translation>中间主应力：P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>minimum princ. stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
+      <translation>最小主应力矢量：s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>minimum principal stress: P3</source>
-      <translation type="unfinished">minimum principal stress: P3</translation>
+      <translation>最小主应力：P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
       <source>Mohr-Coulomb: mc</source>
-      <translation type="unfinished">Mohr-Coulomb: mc</translation>
+      <translation>摩尔-库仑：mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation type="unfinished">reinforcement ratio: rx, ry, rz</translation>
+      <translation>配筋率：rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints User-Defined Equations</source>
-      <translation type="unfinished">Hints User-Defined Equations</translation>
+      <translation>用户定义方程提示</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="20"/>
       <source>Available Result Types</source>
-      <translation type="unfinished">Available Result Types</translation>
+      <translation>可用结果类型</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
@@ -3997,7 +3984,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="14"/>
       <source>Mechanical Analysis</source>
-      <translation type="unfinished">Mechanical Analysis</translation>
+      <translation>力学分析</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="20"/>
@@ -4007,7 +3994,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis Type</source>
-      <translation type="unfinished">Analysis Type</translation>
+      <translation>分析类型</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="67"/>
@@ -4037,12 +4024,12 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation type="unfinished">Write .inp File</translation>
+      <translation>写入.inp文件</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
       <source>Edit .inp File</source>
-      <translation type="unfinished">Edit .inp File</translation>
+      <translation>编辑.inp文件</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="151"/>
@@ -4096,7 +4083,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes</source>
-      <translation type="unfinished">Meshes</translation>
+      <translation>网格</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
@@ -4144,17 +4131,17 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-Search</source>
-      <translation type="unfinished">Angle-Search</translation>
+      <translation>角度搜索</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle</source>
-      <translation type="unfinished">Stop angle</translation>
+      <translation>停止角度</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation type="unfinished">Collect adjacent nodes</translation>
+      <translation>收集相邻节点</translation>
     </message>
   </context>
   <context>
@@ -4162,7 +4149,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>添加参考</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
@@ -4210,7 +4197,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>添加参考</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -4290,12 +4277,12 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+      <translation>选择类型为面的主几何；点击添加或移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
+      <translation>选择类型为面的从几何；点击添加或移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4305,27 +4292,27 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="157"/>
       <source>Contact stiffness</source>
-      <translation type="unfinished">Contact stiffness</translation>
+      <translation>接触刚度</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="180"/>
       <source>Clearance adjustment</source>
-      <translation type="unfinished">Clearance adjustment</translation>
+      <translation>间隙调整</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="203"/>
       <source>Enable friction</source>
-      <translation type="unfinished">Enable friction</translation>
+      <translation>启用摩擦</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="210"/>
       <source>Friction coefficient</source>
-      <translation type="unfinished">Friction coefficient</translation>
+      <translation>摩擦系数</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="233"/>
       <source>Stick slope</source>
-      <translation type="unfinished">Stick slope</translation>
+      <translation>粘附斜率</translation>
     </message>
   </context>
   <context>
@@ -4338,7 +4325,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>选择类型为顶点、边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4356,8 +4343,7 @@ For possible variables, see the description box below.</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="185"/>
       <source>Formulas are only valid
 for the Elmer solver</source>
-      <translation type="unfinished">Formulas are only valid
-for the Elmer solver</translation>
+      <translation>公式仅对Elmer求解器有效</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="123"/>
@@ -4392,35 +4378,34 @@ for the Elmer solver</translation>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation type="unfinished">Flow solution is used to determine
-surface force (and thus displacement)
-generated by the flow
-(Option only applies for Elmer solver)</translation>
+      <translation>使用流解来确定
+由流动产生的表面力（从而确定位移）
+（此选项仅适用于Elmer求解器）</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="212"/>
       <source>Surface force by flow</source>
-      <translation type="unfinished">Surface force by flow</translation>
+      <translation>流动产生的表面力</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
       <source>Rotations are only valid for beam and shell elements</source>
-      <translation type="unfinished">Rotations are only valid for beam and shell elements</translation>
+      <translation>旋转仅对梁和壳单元有效</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>旋转 X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>旋转 Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>旋转 Z</translation>
     </message>
   </context>
   <context>
@@ -4428,7 +4413,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>选择类型为顶点、边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4451,12 +4436,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="51"/>
       <source>Subtype</source>
-      <translation type="unfinished">Subtype</translation>
+      <translation>子类型</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>选择类型为面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4481,12 +4466,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="176"/>
       <source>Value [Unit]</source>
-      <translation type="unfinished">Value [Unit]</translation>
+      <translation>值 [单位]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="239"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>选择一个平面边或面，然后按下此按钮</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="242"/>
@@ -4512,8 +4497,7 @@ generated by the flow
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>边的方向或面的法向量方向被用作方向</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
@@ -4561,7 +4545,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>选择类型为顶点、边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4586,7 +4570,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>选择一个平面边或面，然后按下此按钮</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="120"/>
@@ -4597,8 +4581,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>边的方向或面的法向量方向被用作方向</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -4611,12 +4594,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>Task Heat Flux Load</source>
-      <translation type="unfinished">Task Heat Flux Load</translation>
+      <translation>任务热通量载荷</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>选择类型为边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4636,18 +4619,18 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="96"/>
       <source>Surface heat flux</source>
-      <translation type="unfinished">Surface heat flux</translation>
+      <translation>表面热通量</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>膜系数</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient temperature</source>
-      <translation type="unfinished">Ambient temperature</translation>
+      <translation>环境温度</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
@@ -4673,7 +4656,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>选择单个类型为面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4691,7 +4674,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>选择类型为边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4729,12 +4712,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="75"/>
       <source>Normal stiffness</source>
-      <translation type="unfinished">Normal stiffness</translation>
+      <translation>法向刚度</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>Stiffness used for the Elmer solver</source>
-      <translation type="unfinished">Stiffness used for the Elmer solver</translation>
+      <translation>用于Elmer求解器的刚度</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
@@ -4745,17 +4728,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>选择类型为面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
       <source>Tangential stiffness</source>
-      <translation type="unfinished">Tangential stiffness</translation>
+      <translation>切向刚度</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
       <source>Stiffness for Elmer</source>
-      <translation type="unfinished">Stiffness for Elmer</translation>
+      <translation>Elmer刚度</translation>
     </message>
   </context>
   <context>
@@ -4763,7 +4746,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>选择类型为顶点、边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4788,7 +4771,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="107"/>
       <source>Concentrated heat flux</source>
-      <translation type="unfinished">Concentrated heat flux</translation>
+      <translation>集中热通量</translation>
     </message>
   </context>
   <context>
@@ -4796,17 +4779,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="22"/>
       <source>Rectangular transform</source>
-      <translation type="unfinished">Rectangular transform</translation>
+      <translation>矩形变换</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="32"/>
       <source>Cylindrical transform</source>
-      <translation type="unfinished">Cylindrical transform</translation>
+      <translation>圆柱变换</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>选择单个类型为面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -4821,7 +4804,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
       <source>System Rotation</source>
-      <translation type="unfinished">System Rotation</translation>
+      <translation>系统旋转</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
@@ -4847,7 +4830,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintTransform.ui" line="190"/>
       <location filename="../../TaskFemConstraintTransform.ui" line="209"/>
       <source>Transformable Surfaces</source>
-      <translation type="unfinished">Transformable Surfaces</translation>
+      <translation>可变换表面</translation>
     </message>
   </context>
   <context>
@@ -4860,12 +4843,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside out</source>
-      <translation type="unfinished">Inside out</translation>
+      <translation>内外翻转</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut cells</source>
-      <translation type="unfinished">Cut cells</translation>
+      <translation>切割单元</translation>
     </message>
   </context>
   <context>
@@ -4911,7 +4894,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="184"/>
       <source>Select Points</source>
-      <translation type="unfinished">Select Points</translation>
+      <translation>选择点</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="193"/>
@@ -4969,7 +4952,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="113"/>
       <source>Select Point</source>
-      <translation type="unfinished">Select Point</translation>
+      <translation>选择点</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="169"/>
@@ -4988,7 +4971,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
       <location filename="../../TaskPostDisplay.ui" line="93"/>
       <source>Outline</source>
-      <translation type="unfinished">Outline</translation>
+      <translation>轮廓</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
@@ -5000,7 +4983,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>带边的表面</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5054,7 +5037,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>带边的表面</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
@@ -5120,12 +5103,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>最大尺寸</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="46"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>最小尺寸</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
@@ -5313,7 +5296,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>过滤器函数</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
@@ -5825,11 +5808,11 @@ Please select a result type first.</source>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
-Correct module found in:
+Correct module found in: 
 {}</source>
       <translation type="unfinished">
 
-Correct module found in:
+Correct module found in: 
 {}</translation>
     </message>
     <message>
@@ -5976,8 +5959,8 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -5997,14 +5980,14 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Edit {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation type="unfinished">Show Plot</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation type="unfinished">Show Data</translation>
     </message>
@@ -6478,7 +6461,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="902"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>网格细化</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="903"/>
@@ -6496,7 +6479,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>选择类型为顶点、边、面的几何</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6605,12 +6588,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>选择几何类型：</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>顶点、边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
@@ -6637,7 +6620,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="293"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>不支持外部对象选择</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="329"/>
@@ -6791,12 +6774,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>最大尺寸</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>最小尺寸</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
@@ -7099,8 +7082,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation type="unfinished">The form of the glyph</translation>
     </message>
@@ -7142,10 +7125,10 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
     </message>
@@ -7157,8 +7140,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>无</translation>
     </message>
@@ -7181,8 +7164,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
     </message>
@@ -7198,8 +7181,8 @@ Leave blank to use default Python executable</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
     </message>
@@ -7291,27 +7274,27 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Cumulative</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>显示</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>标签</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
       <translation>Y轴</translation>
     </message>
@@ -7321,8 +7304,8 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">X Axis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>标题</translation>
     </message>
@@ -7713,7 +7696,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="837"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>网格组</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="838"/>
@@ -7726,7 +7709,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="913"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>显示结果</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="917"/>
@@ -7799,9 +7782,9 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>窗体</translation>
     </message>

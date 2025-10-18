@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="144"/>
       <source>Inspect Appearance</source>
-      <translation type="unfinished">Inspect Appearance</translation>
+      <translation>Inspecionar aparência</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="145"/>
       <source>Inspects the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
+      <translation>Inspeciona as propriedades de aparência do objeto selecionado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="171"/>
       <source>Inspect Material</source>
-      <translation type="unfinished">Inspect Material</translation>
+      <translation>Inspecionar material</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+      <translation>Inspecionar as propriedades do material do objeto selecionado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Array2D.cpp" line="136"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Menu de Contexto</translation>
     </message>
   </context>
   <context>
@@ -72,7 +72,7 @@
       <location filename="../../Array3D.cpp" line="229"/>
       <location filename="../../Array3D.cpp" line="300"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Menu de Contexto</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="261"/>
@@ -84,7 +84,7 @@
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>Excluir linha?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
@@ -123,22 +123,22 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation type="unfinished">Display Properties</translation>
+      <translation>Exibir Propriedades</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation type="unfinished">Viewing Mode</translation>
+      <translation>Modo de Visualização</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Janela do documento</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>Modo de plotagem</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -168,12 +168,12 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot</source>
-      <translation type="unfinished">Color plot</translation>
+      <translation>Cor de plotagem</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>Aparência personalizada</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
@@ -211,12 +211,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Nome do documento</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>Rótulo / nome interno</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
@@ -246,22 +246,22 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="200"/>
       <source>Diffuse color</source>
-      <translation type="unfinished">Diffuse color</translation>
+      <translation>Cor difusa</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="209"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Cor ambiente</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="218"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Cor emissiva</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="227"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Cor especular</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="236"/>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Nome do documento</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>Rótulo / nome interno</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Copiar para área de transferência</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="149"/>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="170"/>
       <source>Internal name: </source>
-      <translation type="unfinished">Internal name: </translation>
+      <translation>Nome interno:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="188"/>
@@ -380,37 +380,37 @@
       <location filename="../../DlgInspectMaterial.cpp" line="271"/>
       <location filename="../../DlgInspectMaterial.cpp" line="344"/>
       <source>Library directory: </source>
-      <translation type="unfinished">Library directory: </translation>
+      <translation>Diretório da biblioteca: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="274"/>
       <source>Subdirectory: </source>
-      <translation type="unfinished">Subdirectory: </translation>
+      <translation>Subdiretório: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Sub directory: </source>
-      <translation type="unfinished">Sub directory: </translation>
+      <translation>Subdiretório: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="363"/>
       <source>Appearance models:</source>
-      <translation type="unfinished">Appearance models:</translation>
+      <translation>Modelos de aparência:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="369"/>
       <source>Physical models:</source>
-      <translation type="unfinished">Physical models:</translation>
+      <translation>Modelos físicos:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="375"/>
       <source>Appearance properties:</source>
-      <translation type="unfinished">Appearance properties:</translation>
+      <translation>Propriedades da aparência:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="381"/>
       <source>Physical properties:</source>
-      <translation type="unfinished">Physical properties:</translation>
+      <translation>Propriedades físicas:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="277"/>
@@ -486,27 +486,27 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card Resources</source>
-      <translation type="unfinished">Card Resources</translation>
+      <translation>Recursos do cartão</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
+      <translation>Os cartões integrados ao FreeCAD serão listados como disponíveis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation type="unfinished">Use materials added by external workbenches</translation>
+      <translation>Usar materiais adicionados por bancadas de trabalho externas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+      <translation>Os cartões do diretório de preferências do FreeCAD também serão listados como disponíveis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+      <translation>Usar materiais do diretório de preferências de Materiais</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
@@ -746,7 +746,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="534"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Menu de Contexto</translation>
     </message>
   </context>
   <context>
@@ -933,7 +933,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1318"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Menu de Contexto</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
@@ -1066,7 +1066,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Abrir…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
@@ -1173,7 +1173,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>Excluir linha?</translation>
     </message>
   </context>
   <context>

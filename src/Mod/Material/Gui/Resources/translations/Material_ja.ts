@@ -1209,7 +1209,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Materials</source>
-      <translation>マテリアル(&amp;M)</translation>
+      <translation>材料(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>

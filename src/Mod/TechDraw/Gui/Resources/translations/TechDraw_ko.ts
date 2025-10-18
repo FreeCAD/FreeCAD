@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>각도 치수</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1505"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>지름 치수</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1506"/>
@@ -1805,7 +1805,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1457"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>반지름 치수</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1458"/>
@@ -2532,8 +2532,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Create Complex Section</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <location filename="../../TaskSectionView.cpp" line="572"/>
+      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <source>Edit Section View</source>
       <translation>단면도 편집</translation>
     </message>
@@ -2877,7 +2877,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="171"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation>복사</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="194"/>
@@ -2917,7 +2917,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="145"/>
       <source>Cut (Ctrl+X)</source>
-      <translation type="unfinished">Cut (Ctrl+X)</translation>
+      <translation>잘라내기(Ctrl+X)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
@@ -3066,12 +3066,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>연결 URL</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="673"/>
+      <location filename="../../mrichtextedit.cpp" line="687"/>
       <source>Select an image</source>
       <translation type="unfinished">Select an image</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="675"/>
+      <location filename="../../mrichtextedit.cpp" line="689"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; 모두(*)</translation>
     </message>
@@ -3079,6 +3079,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="856"/>
@@ -3124,8 +3126,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <location filename="../../CommandAnnotate.cpp" line="1426"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
@@ -3175,6 +3175,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">FreeCAD could not find a page to export</translation>
     </message>
     <message>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1190"/>
       <location filename="../../Command.cpp" line="1197"/>
       <location filename="../../Command.cpp" line="1205"/>
@@ -3192,8 +3194,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandDecorate.cpp" line="325"/>
       <location filename="../../CommandExtensionPack.cpp" line="1860"/>
       <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
       <translation>부정확한 선택</translation>
     </message>
@@ -3214,9 +3214,20 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">No shapes, groups, or links in this selection</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../Command.cpp" line="739"/>
       <location filename="../../Command.cpp" line="832"/>
       <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3243,26 +3254,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1850"/>
       <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <location filename="../../CommandCreateDims.cpp" line="2071"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../CommandExtensionPack.cpp" line="285"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1209"/>
       <location filename="../../CommandExtensionPack.cpp" line="1454"/>
       <location filename="../../CommandExtensionPack.cpp" line="1747"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
       <source>Task in progress</source>
       <translation type="unfinished">Task in progress</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="740"/>
       <location filename="../../Command.cpp" line="833"/>
       <location filename="../../Command.cpp" line="896"/>
@@ -3281,13 +3288,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1262"/>
       <location filename="../../CommandAnnotate.cpp" line="1343"/>
       <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <source>Close active task dialog and try again</source>
       <translation type="unfinished">Close active task dialog and try again</translation>
     </message>
@@ -3367,7 +3367,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1615"/>
       <source>Select at least one object</source>
-      <translation type="unfinished">Select at least one object</translation>
+      <translation>최소 하나의 대상체를 선택하세요</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1690"/>
@@ -3382,7 +3382,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Select exactly one spreadsheet object</source>
-      <translation type="unfinished">Select exactly one spreadsheet object</translation>
+      <translation>스프레드시트 대상체를 하나만 선택하세요</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
@@ -3476,13 +3476,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
       <location filename="../../CommandCreateDims.cpp" line="2193"/>
+      <location filename="../../TaskDimension.cpp" line="549"/>
       <location filename="../../CommandDecorate.cpp" line="332"/>
       <location filename="../../CommandDecorate.cpp" line="338"/>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>부정확한 선택</translation>
     </message>
@@ -3517,8 +3517,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Close the active task dialog and try again.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <source>Task In Progress</source>
       <translation>작업 진행 중</translation>
     </message>
@@ -3528,13 +3528,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">TechDraw hole circle</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="286"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="985"/>
       <location filename="../../CommandExtensionPack.cpp" line="1210"/>
       <location filename="../../CommandExtensionPack.cpp" line="1455"/>
       <location filename="../../CommandExtensionPack.cpp" line="1748"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>활성화된 작업창을 닫고 다시 시도하세요.</translation>
     </message>
@@ -3799,9 +3799,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Export page as PDF</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="159"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>Are you sure you want to continue?</source>
       <translation>계속 진행 하시겠습니까?</translation>
     </message>
@@ -3882,14 +3882,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Edit Complex Section</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="228"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <source>Current View Direction</source>
       <translation type="unfinished">Current View Direction</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="229"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <source>The view direction in BaseView coordinates</source>
       <translation type="unfinished">The view direction in BaseView coordinates</translation>
     </message>
@@ -3904,8 +3904,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Check SectionNormal, Direction and/or XDirection.</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <location filename="../../TaskSectionView.cpp" line="638"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>Operation Failed</source>
       <translation type="unfinished">Operation Failed</translation>
     </message>
@@ -3940,8 +3940,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Edit Detail View</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="136"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>수정</translation>
     </message>
@@ -4075,8 +4075,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">TechDraw Customize Format</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <source>Selection is empty</source>
       <translation type="unfinished">Selection is empty</translation>
@@ -4085,7 +4085,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2137"/>
       <source>No object selected</source>
-      <translation type="unfinished">No object selected</translation>
+      <translation>선택된 대상체 없음</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="123"/>
@@ -4288,17 +4288,17 @@ it has a weld symbol that would become broken.</translation>
       <translation type="unfinished">You cannot delete this view because it has one or more dependent views that would become broken.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderViewPart.cpp" line="383"/>
       <location filename="../../ViewProviderViewPart.cpp" line="398"/>
+      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>대상체 종속성</translation>
@@ -4665,7 +4665,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="177"/>
       <source>Validate shapes</source>
-      <translation type="unfinished">Validate shapes</translation>
+      <translation>형상 검증</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="199"/>
@@ -5583,7 +5583,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>치수 도구 지름/반지름 모드</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -5666,7 +5666,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
       <source>Font for labels</source>
-      <translation type="unfinished">Font for labels</translation>
+      <translation>이름표에 사용할 글꼴</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
@@ -6335,7 +6335,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="160"/>
       <source>Rectangle</source>
-      <translation>직사각형</translation>
+      <translation>사각형</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="169"/>
@@ -6570,7 +6570,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="59"/>
       <source>Profile object</source>
-      <translation>윤곽 객체</translation>
+      <translation>윤곽 대상체</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="93"/>
@@ -7149,7 +7149,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="127"/>
       <source>Reference label</source>
-      <translation type="unfinished">Reference label</translation>
+      <translation>참조 이름표</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="140"/>
@@ -7332,7 +7332,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="52"/>
       <source>Number of decimals</source>
-      <translation>소수점수</translation>
+      <translation>소수점 이하 자릿수</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="65"/>
@@ -7477,7 +7477,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="77"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
@@ -7610,7 +7610,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="173"/>
@@ -8560,7 +8560,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="255"/>
       <source>Rotation angle</source>
-      <translation type="unfinished">Rotation angle</translation>
+      <translation>회전 각도</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="265"/>
@@ -8911,7 +8911,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="35"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>이름표</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="86"/>
@@ -9832,7 +9832,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1404"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>치수 도구</translation>
     </message>
   </context>
   <context>
@@ -9919,7 +9919,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/BalloonPropEnum.cpp" line="37"/>
       <source>Rectangle</source>
-      <translation>직사각형</translation>
+      <translation>사각형</translation>
     </message>
     <message>
       <location filename="../../../App/BalloonPropEnum.cpp" line="38"/>
@@ -10127,7 +10127,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Object label</source>
-      <translation type="unfinished">Object label</translation>
+      <translation>대상체의 이름표</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>

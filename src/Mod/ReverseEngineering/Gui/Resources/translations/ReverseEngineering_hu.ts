@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>Poisson eloszlás…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="599"/>
       <source>Performs Poisson surface reconstruction</source>
-      <translation type="unfinished">Performs Poisson surface reconstruction</translation>
+      <translation>Poisson felszín újraépítésének végrehajtása</translation>
     </message>
   </context>
   <context>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation>Iso-paraméterezés</translation>
+      <translation>Iso-parametrikus</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>

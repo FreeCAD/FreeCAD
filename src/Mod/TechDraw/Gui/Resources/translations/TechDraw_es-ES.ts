@@ -2532,8 +2532,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Create Complex Section</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <location filename="../../TaskSectionView.cpp" line="572"/>
+      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <source>Edit Section View</source>
       <translation>Editar vista de sección</translation>
     </message>
@@ -3066,12 +3066,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>URL de enlace:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="673"/>
+      <location filename="../../mrichtextedit.cpp" line="687"/>
       <source>Select an image</source>
       <translation>Seleccionar una imagen</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="675"/>
+      <location filename="../../mrichtextedit.cpp" line="689"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Todo (*)</translation>
     </message>
@@ -3079,6 +3079,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="856"/>
@@ -3124,8 +3126,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <location filename="../../CommandAnnotate.cpp" line="1426"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -3175,6 +3175,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD no pudo encontrar una página para exportar</translation>
     </message>
     <message>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1190"/>
       <location filename="../../Command.cpp" line="1197"/>
       <location filename="../../Command.cpp" line="1205"/>
@@ -3192,8 +3194,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandDecorate.cpp" line="325"/>
       <location filename="../../CommandExtensionPack.cpp" line="1860"/>
       <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -3214,9 +3214,20 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">No shapes, groups, or links in this selection</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../Command.cpp" line="739"/>
       <location filename="../../Command.cpp" line="832"/>
       <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3243,26 +3254,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1850"/>
       <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <location filename="../../CommandCreateDims.cpp" line="2071"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../CommandExtensionPack.cpp" line="285"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1209"/>
       <location filename="../../CommandExtensionPack.cpp" line="1454"/>
       <location filename="../../CommandExtensionPack.cpp" line="1747"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
       <source>Task in progress</source>
       <translation type="unfinished">Task in progress</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="740"/>
       <location filename="../../Command.cpp" line="833"/>
       <location filename="../../Command.cpp" line="896"/>
@@ -3281,13 +3288,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1262"/>
       <location filename="../../CommandAnnotate.cpp" line="1343"/>
       <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <source>Close active task dialog and try again</source>
       <translation type="unfinished">Close active task dialog and try again</translation>
     </message>
@@ -3476,13 +3476,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Todos los Archivos</translation>
     </message>
     <message>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
       <location filename="../../CommandCreateDims.cpp" line="2193"/>
+      <location filename="../../TaskDimension.cpp" line="549"/>
       <location filename="../../CommandDecorate.cpp" line="332"/>
       <location filename="../../CommandDecorate.cpp" line="338"/>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -3517,8 +3517,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Close the active task dialog and try again.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <source>Task In Progress</source>
       <translation>Tarea en progreso</translation>
     </message>
@@ -3528,13 +3528,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">TechDraw hole circle</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="286"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="985"/>
       <location filename="../../CommandExtensionPack.cpp" line="1210"/>
       <location filename="../../CommandExtensionPack.cpp" line="1455"/>
       <location filename="../../CommandExtensionPack.cpp" line="1748"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>Cerrar diálogo de tareas activo e inténtelo de nuevo.</translation>
     </message>
@@ -3799,9 +3799,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Export page as PDF</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="159"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>Are you sure you want to continue?</source>
       <translation>¿Está seguro de que desea continuar?</translation>
     </message>
@@ -3882,14 +3882,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Editar sección compleja</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="228"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <source>Current View Direction</source>
       <translation>Dirección de vista actual</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="229"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>La dirección de la vista en coordenadas BaseView</translation>
     </message>
@@ -3904,8 +3904,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Check SectionNormal, Direction and/or XDirection.</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <location filename="../../TaskSectionView.cpp" line="638"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>Operation Failed</source>
       <translation>Operación fallida</translation>
     </message>
@@ -3940,8 +3940,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Editar vista de detalles</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="136"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -4075,8 +4075,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw personalizar formato</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <source>Selection is empty</source>
       <translation>No ha seleccionado nada</translation>
@@ -4288,17 +4288,17 @@ tiene un símbolo de soldadura que se rompería.</translation>
       <translation>No se puede borrar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderViewPart.cpp" line="383"/>
       <location filename="../../ViewProviderViewPart.cpp" line="398"/>
+      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Dependencias del objeto</translation>
@@ -5940,7 +5940,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
-      <translation>Cuando arrastra una vista, si está dentro de esta fracción del tamaño de la vista de la alineación correcta, se ajustará en la alineación.</translation>
+      <translation>Cuando se arrastra una vista, si está dentro de esta fracción del tamaño de la vista de la alineación correcta, se ajustará en la alineación.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="961"/>
@@ -8319,7 +8319,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="178"/>
       <source>Input the annotation text directly or start the rich text editor</source>
-      <translation>Introduce el texto de anotación directamente o inicia el editor de texto enriquecido</translation>
+      <translation>Ingrese el texto de anotación directamente o inicie el editor de texto enriquecido</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="280"/>

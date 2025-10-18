@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="55"/>
       <source>Creates a new empty trajectory</source>
-      <translation type="unfinished">Creates a new empty trajectory</translation>
+      <translation>Crée une nouvelle trajectoire vide</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="192"/>
       <source>Inserts a Kuka IR125 robot into the scene</source>
-      <translation type="unfinished">Inserts a Kuka IR125 robot into the scene</translation>
+      <translation>Insère un Kuka IR125 dans la scène</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="97"/>
       <source>Inserts a Kuka IR16 robot into the scene</source>
-      <translation type="unfinished">Inserts a Kuka IR16 robot into the scene</translation>
+      <translation>Insère un Kuka IR16 dans la scène</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="46"/>
       <source>Inserts a Kuka IR500 into the document</source>
-      <translation type="unfinished">Inserts a Kuka IR500 into the document</translation>
+      <translation>Insère un Kuka IR500 dans le document</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Move to Home</source>
-      <translation type="unfinished">Move to Home</translation>
+      <translation>Déplacer à l'origine</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Moves to the home position</source>
-      <translation type="unfinished">Moves to the home position</translation>
+      <translation>Se déplace au point d'origine</translation>
     </message>
   </context>
   <context>
@@ -364,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>Mauvaise sélection</translation>
     </message>
@@ -388,10 +388,10 @@
       <translation>Sélectionnez un robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
       <location filename="../../CommandTrajectory.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Sélectionnez un robot et une trajectoire.</translation>
     </message>
@@ -492,8 +492,8 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
-      <source>Visit %1 and copy the files to %2</source>
-      <translation type="unfinished">Visit %1 and copy the files to %2</translation>
+      <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
+      <translation type="unfinished">Visit %1 and copy the robot VRML and CSV files to %2</translation>
     </message>
   </context>
   <context>
@@ -564,7 +564,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
       <source>Hide/Show</source>
-      <translation type="unfinished">Hide/Show</translation>
+      <translation>Masquer/Afficher</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -870,7 +870,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; acceleration</source>
-      <translation type="unfinished">Speed &amp; acceleration</translation>
+      <translation>Vitesse et accélération</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
@@ -880,7 +880,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
       <source>Acceleration</source>
-      <translation type="unfinished">Acceleration</translation>
+      <translation>Accélération</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>

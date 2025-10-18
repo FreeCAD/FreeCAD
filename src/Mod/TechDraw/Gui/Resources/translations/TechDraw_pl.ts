@@ -2569,8 +2569,8 @@ Jeśli nie wybrano żadnego obiektu, otworzy się okno przeglądarki plików w c
       <translation>Utwórz przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <location filename="../../TaskSectionView.cpp" line="572"/>
+      <location filename="../../TaskComplexSection.cpp" line="648"/>
       <source>Edit Section View</source>
       <translation>Edytuj widok przekroju</translation>
     </message>
@@ -3103,12 +3103,12 @@ Jeśli nie wybrano żadnego obiektu, otworzy się okno przeglądarki plików w c
       <translation>Łącze URL:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="673"/>
+      <location filename="../../mrichtextedit.cpp" line="687"/>
       <source>Select an image</source>
       <translation>Wybierz plik z obrazem</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="675"/>
+      <location filename="../../mrichtextedit.cpp" line="689"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Wszystkie (*)</translation>
     </message>
@@ -3116,6 +3116,8 @@ Jeśli nie wybrano żadnego obiektu, otworzy się okno przeglądarki plików w c
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="856"/>
@@ -3161,8 +3163,6 @@ Jeśli nie wybrano żadnego obiektu, otworzy się okno przeglądarki plików w c
       <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <location filename="../../CommandAnnotate.cpp" line="1426"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
@@ -3200,12 +3200,12 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Select exactly one view to add to clip group</source>
-      <translation type="unfinished">Select exactly one view to add to clip group</translation>
+      <translation>Wybierz dokładnie jeden widok do dodania do grupy wycinków</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1473"/>
       <source>Select exactly one view to remove from clip group</source>
-      <translation type="unfinished">Select exactly one view to remove from clip group</translation>
+      <translation>Wybierz dokładnie jeden widok do usunięcia z grupy wycinków</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1835"/>
@@ -3213,6 +3213,8 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
       <translation>FreeCAD nie mógł znaleźć strony do wyeksportowania</translation>
     </message>
     <message>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1190"/>
       <location filename="../../Command.cpp" line="1197"/>
       <location filename="../../Command.cpp" line="1205"/>
@@ -3230,8 +3232,6 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
       <location filename="../../CommandDecorate.cpp" line="325"/>
       <location filename="../../CommandExtensionPack.cpp" line="1860"/>
       <location filename="../../CommandExtensionPack.cpp" line="1989"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
@@ -3252,9 +3252,20 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
       <translation>Brak kształtów, grup lub odnośników w tym zaznaczeniu</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../Command.cpp" line="739"/>
       <location filename="../../Command.cpp" line="832"/>
       <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3281,26 +3292,22 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
       <location filename="../../CommandCreateDims.cpp" line="1850"/>
       <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <location filename="../../CommandCreateDims.cpp" line="2071"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <location filename="../../CommandExtensionPack.cpp" line="285"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1209"/>
       <location filename="../../CommandExtensionPack.cpp" line="1454"/>
       <location filename="../../CommandExtensionPack.cpp" line="1747"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
       <source>Task in progress</source>
       <translation>Zadania w toku</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="740"/>
       <location filename="../../Command.cpp" line="833"/>
       <location filename="../../Command.cpp" line="896"/>
@@ -3319,13 +3326,6 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
       <location filename="../../CommandAnnotate.cpp" line="1262"/>
       <location filename="../../CommandAnnotate.cpp" line="1343"/>
       <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <source>Close active task dialog and try again</source>
       <translation>Zamknij okno aktywnego zadania i spróbuj ponownie</translation>
     </message>
@@ -3375,7 +3375,8 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains a BIM view which will not be exported. Continue?</translation>
+      <translation>Strona zawiera widok BIM, który nie zostanie wyeksportowany. 
+Kontynuować?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
@@ -3514,13 +3515,13 @@ Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, aby wstawić p
       <translation>Wszystkie pliki</translation>
     </message>
     <message>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
       <location filename="../../CommandCreateDims.cpp" line="2193"/>
+      <location filename="../../TaskDimension.cpp" line="549"/>
       <location filename="../../CommandDecorate.cpp" line="332"/>
       <location filename="../../CommandDecorate.cpp" line="338"/>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Niepoprawny wybór</translation>
     </message>
@@ -3559,8 +3560,8 @@ Kontynuować?</translation>
       <translation>Zamknij okno aktywnego zadania i spróbuj ponownie.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <source>Task In Progress</source>
       <translation>Zadanie w toku</translation>
     </message>
@@ -3570,13 +3571,13 @@ Kontynuować?</translation>
       <translation>Rysunek Techniczny Okrąg otworu</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="286"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="985"/>
       <location filename="../../CommandExtensionPack.cpp" line="1210"/>
       <location filename="../../CommandExtensionPack.cpp" line="1455"/>
       <location filename="../../CommandExtensionPack.cpp" line="1748"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zamknij okno aktywnego zadania i spróbuj ponownie.</translation>
     </message>
@@ -3843,9 +3844,9 @@ Zastąpić?</translation>
       <translation>Eksportuj stronę jako PDF</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="159"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>Are you sure you want to continue?</source>
       <translation>Czy na pewno chcesz kontynuować?</translation>
     </message>
@@ -3926,14 +3927,14 @@ Zastąpić?</translation>
       <translation>Edytuj przekrój złożony</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="228"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <source>Current View Direction</source>
       <translation>Aktualny kierunek widoku</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="229"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Kierunek widoku określony współrzędnymi Widoku podstawowego</translation>
     </message>
@@ -3948,8 +3949,8 @@ Zastąpić?</translation>
       <translation>Sprawdź właściwości SectionNormal, Direction i/lub XDirection.</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <location filename="../../TaskSectionView.cpp" line="638"/>
+      <location filename="../../TaskComplexSection.cpp" line="714"/>
       <source>Operation Failed</source>
       <translation>Operacja nie powiodła się</translation>
     </message>
@@ -3984,8 +3985,8 @@ Zastąpić?</translation>
       <translation>Edytuj widok szczegółu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="136"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -4119,8 +4120,8 @@ Zastąpić?</translation>
       <translation>Rysunek Techniczny dostosuj format</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <location filename="../../CommandExtensionPack.cpp" line="2130"/>
       <source>Selection is empty</source>
       <translation>Obszar zaznaczenia nie zawiera obiektów</translation>
@@ -4335,17 +4336,17 @@ zawiera symbol spoiny który zostałby uszkodzony.</translation>
       <translation>Nie można usunąć tego widoku, ponieważ ma on co najmniej jeden obiekt zależny, który zostałby uszkodzony.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderViewPart.cpp" line="383"/>
       <location filename="../../ViewProviderViewPart.cpp" line="398"/>
+      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Zależności obiektu</translation>
@@ -5075,9 +5076,9 @@ W przeciwnym razie wyświetlane będą tylko oznaczenia zmian, strzałki i symbo
 always be the right choice.  Flat or square caps are useful
 for using drawings as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps. The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-for using drawings as a 1:1 cutting guide.
+      <translation>Kształt zakończeń linii. 
+Domyślny kształt (okrągły) jest niemal zawsze właściwym wyborem. 
+Kształty płaskie lub kwadratowe przydają się przy używaniu rysunków jako szablonu do cięcia w skali 1:1.
 </translation>
     </message>
     <message>
@@ -5781,7 +5782,7 @@ dla grup projektowych</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
       <source>Page Update</source>
-      <translation type="unfinished">Page Update</translation>
+      <translation>Aktualizuj stronę</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
@@ -5998,7 +5999,7 @@ W przeciwnym razie widoki będą tworzone jako widoki od przodu.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
-      <translation type="unfinished">Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</translation>
+      <translation>Zaznacz to pole, jeśli chcesz, aby wyróżnienia widoków szczegółowych przyciągały się do najbliższego wierzchołka podczas przeciągania.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>

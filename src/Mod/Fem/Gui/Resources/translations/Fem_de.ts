@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="289"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Kontaktbeschränkung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="290"/>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Erstellt eine Federrandbedingung auf einer Fläche</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="1043"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation type="unfinished">Creates a local coordinate system on a face</translation>
+      <translation>Erzeugte ein lokales Koordinatensystem auf einer Fläche</translation>
     </message>
   </context>
   <context>
@@ -350,12 +350,12 @@
     <message>
       <location filename="../../Command.cpp" line="2028"/>
       <source>Region Clip Filter</source>
-      <translation type="unfinished">Region Clip Filter</translation>
+      <translation>Bereich-Ausschnittsfilter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2030"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Defines a clip filter which uses functions to define the clipped region</translation>
+      <translation>Definiert einen Ausschnitts-Filter, der Funktionen zur Definition des ausgeschnittenen Bereichs verwendet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2525"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Command.cpp" line="2066"/>
       <source>Function Cut Filter</source>
-      <translation type="unfinished">Function Cut Filter</translation>
+      <translation>Funktions-Ausschnittsfilter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2067"/>
       <source>Cuts the data along an implicit function</source>
-      <translation type="unfinished">Cuts the data along an implicit function</translation>
+      <translation>Schneidet die Daten entlang einer impliziten Funktion</translation>
     </message>
   </context>
   <context>
@@ -396,12 +396,12 @@
     <message>
       <location filename="../../Command.cpp" line="2103"/>
       <source>Line Clip Filter</source>
-      <translation type="unfinished">Line Clip Filter</translation>
+      <translation>Linien-Ausschnittsfilter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2104"/>
       <source>Defines a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Defines a clip filter which clips a field along a line</translation>
+      <translation>Erstellt einen Ausschnittsfilter, der ein Feld entlang einer Linie ausschneidet</translation>
     </message>
   </context>
   <context>
@@ -414,12 +414,12 @@
     <message>
       <location filename="../../Command.cpp" line="2140"/>
       <source>Data at Point Clip Filter</source>
-      <translation type="unfinished">Data at Point Clip Filter</translation>
+      <translation>Datenpunkt-Ausschnittsfilter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2141"/>
       <source>Defines a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Defines a clip filter which clips a field data at point</translation>
+      <translation>Erstellt einen Ausschnittsfilter, der Felddaten an einemPunkt ausschneidet</translation>
     </message>
   </context>
   <context>
@@ -506,12 +506,12 @@
     <message>
       <location filename="../../Command.cpp" line="2178"/>
       <source>Stress Linearization Plot</source>
-      <translation type="unfinished">Stress Linearization Plot</translation>
+      <translation>Stress-Linearisierungsdiagramm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2179"/>
       <source>Defines a stress linearization plot</source>
-      <translation type="unfinished">Defines a stress linearization plot</translation>
+      <translation>Definiert ein Stress-Linearisierungsdiagramm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2217"/>
@@ -582,12 +582,12 @@
     <message>
       <location filename="../../Command.cpp" line="2288"/>
       <source>Warp Filter</source>
-      <translation type="unfinished">Warp Filter</translation>
+      <translation>Verformungsfilter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2289"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warps the geometry along a vector field by a certain factor</translation>
+      <translation>Verformt die Geometrie entlang eines Vektorfeldes um einen bestimmten Faktor</translation>
     </message>
   </context>
   <context>
@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialog</translation>
@@ -731,7 +731,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation type="unfinished">Mesh groups detected. Choose values for the different groups.</translation>
+      <translation>Netz-Gruppen erkannt. Werte für die verschiedenen Gruppen auswählen.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -764,14 +764,14 @@
       <translation>Knotenpunkte, Linien und Oberflächen auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <source>Temperature</source>
       <translation>Temperatur</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1205,10 +1205,10 @@ not belonging to faces and faces not belonging to volumes.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Auch Netzgruppen werden exportiert.
+Jede Analysefunktion und, falls unterschiedliche Materialien vorhanden sind,
+besteht das Material aus zwei Netzgruppen – Flächen und Knoten, auf die
+die Beschränkung oder das Material angewendet wird.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1397,7 +1397,7 @@ ein Analysebehälter angelegt wird</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="116"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Ausführlichkeitsgrad, der im Aufgabenbereich angezeigt wird</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="135"/>
@@ -1609,7 +1609,7 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Maximale Plätze im Zufallsvektor.
-(Anzahl der Knoten pro Element multipliziert
+(Anzahl der Knoten pro Element multipliziert 
 mit Anzahl der Finiten Elementen)
 
 Eventuell ist eine Erweiterung der Plätze nötig, wenn ein
@@ -1885,7 +1885,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>Abhängige Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
@@ -1897,12 +1897,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
       <location filename="../../TaskFemConstraintContact.cpp" line="141"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="144"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>Hinzufügen oder Entfernen anklicken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>Hauptgeometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
@@ -1960,12 +1960,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
@@ -2005,12 +2005,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
@@ -2070,7 +2070,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
@@ -2195,12 +2195,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
@@ -2276,12 +2276,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
@@ -2323,7 +2323,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Eine einzelne Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
@@ -2382,12 +2382,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
@@ -2440,7 +2440,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
@@ -2485,12 +2485,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
@@ -2577,7 +2577,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Eine einzelne Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
@@ -2787,7 +2787,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial area</source>
-      <translation type="unfinished">Initial area</translation>
+      <translation>Initiale Fläche</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
@@ -2797,7 +2797,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted area</source>
-      <translation type="unfinished">Contracted area</translation>
+      <translation>Verengter Bereich</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2805,9 +2805,9 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
       <translation>Eingangsdruck</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Druck</translation>
     </message>
@@ -2847,7 +2847,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance area</source>
-      <translation type="unfinished">Entrance area</translation>
+      <translation>Eingangsbereich</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
@@ -2857,7 +2857,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>Biegeradius / Rohrdurchmesser</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
@@ -2922,7 +2922,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
       <source>Enable adjust</source>
-      <translation type="unfinished">Enable adjust</translation>
+      <translation>Anpassen aktivieren</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2937,12 +2937,12 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
       <translation>Umdrehungen pro Sekunde</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -3106,18 +3106,18 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Reell</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Imaginär</translation>
     </message>
@@ -3197,10 +3197,10 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation type="unfinished">Beam Section Parameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
-      <translation type="unfinished">Cross-Section Parameter</translation>
+      <translation>Querschnitts-Parameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
@@ -3209,14 +3209,14 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation>Breite</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3237,8 +3237,8 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation>Außendurchmesser</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
@@ -3316,14 +3316,14 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation>Senkrecht zu Grenze</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Eigenschaften des Analyseelements</translation>
     </message>
@@ -3333,9 +3333,9 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation>Wärmequelle</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>Modus</translation>
     </message>
@@ -3350,8 +3350,8 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
       <translation>Verlustleistung</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation type="unfinished">Imaginary part is only used for equations
@@ -3419,9 +3419,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Select custom mode to enable vector current density</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3436,9 +3436,9 @@ with harmonic/oscillating driving current</translation>
       <translation>Imaginärteil der x-Komponente der Stromdichte</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3453,9 +3453,9 @@ with harmonic/oscillating driving current</translation>
       <translation>Imaginärteil der y-Komponente der Stromdichte</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3495,22 +3495,22 @@ with harmonic/oscillating driving current</translation>
       <translation>Maximale Elementgröße</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Feld</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>Rahmen</translation>
     </message>
@@ -3539,7 +3539,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
-      <translation type="unfinished">One Y field for each frame</translation>
+      <translation>Ein Y-Feld für jeden Rahmen</translation>
     </message>
   </context>
   <context>
@@ -4285,12 +4285,12 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+      <translation>Hauptgeometrie der folgenden Art auswählen: Fläche; dafür Hinzufügen oder Entfernen anklicken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
+      <translation>Abhängige Geometrie der folgenden Art auswählen: Fläche; dafür Hinzufügen oder Entfernen anklicken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4333,7 +4333,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4423,7 +4423,7 @@ zu ermitteln, die durch der Strömung erzeugt wurde
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4451,7 +4451,7 @@ zu ermitteln, die durch der Strömung erzeugt wurde
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Geometrie der folgenden Art auswählen: Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4556,7 +4556,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4611,7 +4611,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4668,7 +4668,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Eine einzelne Geometrie der folgenden Art auswählen: Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4686,7 +4686,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4740,7 +4740,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Geometrie der folgenden Art auswählen: Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4758,7 +4758,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4801,7 +4801,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Eine einzelne Geometrie der folgenden Art auswählen: Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5382,7 +5382,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../Command.cpp" line="1866"/>
       <source>Error: Object not in a post processing group</source>
-      <translation type="unfinished">Error: Object not in a post processing group</translation>
+      <translation>Fehler: Objekt nicht in einer Nachbearbeitungsgruppe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1867"/>
@@ -5447,7 +5447,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>Bewehrtes Material (Beton)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="666"/>
@@ -5693,12 +5693,12 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>Geometrie der folgenden Arten auswählen: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
       <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation type="unfinished">Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
+      <translation>Auf geometrische Elemente klicken und diese auswählen, um sie zur Liste hinzuzufügen.{}Die folgenden Geometrieelemente können ausgewählt werden: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="334"/>
@@ -5820,11 +5820,11 @@ Bitte zuerst einen Ergebnistyp auswählen.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
-Correct module found in:
+Correct module found in: 
 {}</source>
       <translation>
 
-Korrektes Modul gefunden in:
+Korrektes Modul gefunden in: 
 {}</translation>
     </message>
     <message>
@@ -5943,7 +5943,7 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="87"/>
       <source>The data table that stores the extracted data</source>
-      <translation type="unfinished">The data table that stores the extracted data</translation>
+      <translation>Die Datentabelle, in der die extrahierten Daten gespeichert werden</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="94"/>
@@ -5971,8 +5971,8 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
       <translation>Welcher Teil des Y-Feldvektors soll für die Y-Achse verwendet werden?</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -5992,14 +5992,14 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
       <translation>Bearbeiten {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>Diagramm anzeigen</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>Daten anzeigen</translation>
     </message>
@@ -6016,12 +6016,12 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="69"/>
       <source>Lineplot Data</source>
-      <translation type="unfinished">Lineplot Data</translation>
+      <translation>Liniendiagramm-Daten</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="76"/>
       <source>Lineplot View Settings</source>
-      <translation type="unfinished">Lineplot View Settings</translation>
+      <translation>Liniendiagramm-Ansichts-Einstellungen</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
@@ -6369,7 +6369,7 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="228"/>
       <source>Current Density Boundary Condition</source>
-      <translation type="unfinished">Current Density Boundary Condition</translation>
+      <translation>Stromdichte-Randbedingung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="232"/>
@@ -6491,7 +6491,7 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Geometrie der folgenden Arten auswählen: Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6600,12 +6600,12 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Geometrie der folgenden Arten auswählen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Knotenpunkt, Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>
@@ -6872,7 +6872,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="117"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Ausführlichkeitsgrad, der im Aufgabenbereich angezeigt wird</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="136"/>
@@ -7076,7 +7076,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM Material Reinforcement</source>
-      <translation type="unfinished">FEM Material Reinforcement</translation>
+      <translation>FEM-Material Bewehrung</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
@@ -7094,8 +7094,8 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Die Form der Glyphe</translation>
     </message>
@@ -7137,10 +7137,10 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Vektorfeld, das verwendet wird, um die Glyphen auszurichten</translation>
     </message>
@@ -7152,8 +7152,8 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>Kein</translation>
     </message>
@@ -7176,8 +7176,8 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Ein konstanter Multiplikator, mit dem die Glyphen skaliert werden</translation>
     </message>
@@ -7193,8 +7193,8 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Wenn die Skalierungsdaten aus einem Vektor bestehen, entscheidet diese Eigenschaft, ob die Glyphe mit dem Betrag des Vektors skaliert wird oder mit den einzelnen Komponenten</translation>
     </message>
@@ -7286,27 +7286,27 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
       <translation>Kumulativ</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation>Legende</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Anzeigen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>Beschriftungen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
       <translation>Y-Achse</translation>
     </message>
@@ -7316,8 +7316,8 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
       <translation>X-Achse</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>Überschrift</translation>
     </message>
@@ -7794,9 +7794,9 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Form</translation>
     </message>
@@ -7879,7 +7879,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="435"/>
       <source>Result Display Options</source>
-      <translation type="unfinished">Result Display Options</translation>
+      <translation>Ergebnisanzeigeoptionen</translation>
     </message>
   </context>
   <context>

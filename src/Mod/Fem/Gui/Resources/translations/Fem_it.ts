@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Finestra di dialogo</translation>
@@ -764,14 +764,14 @@
       <translation type="unfinished">Select the vertices, lines and surfaces</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <source>Temperature</source>
       <translation>Temperatura</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
+      <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <source>ºC</source>
       <translation>º C</translation>
     </message>
@@ -1596,8 +1596,8 @@ You might need to increase this when using the
 Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Numero massimo di punti in una matrice di rigidità.
-Potrebbe essere necessario aumentare questo valore
-quando si utilizza il risolutore Cholesky e si ottiene il
+Potrebbe essere necessario aumentare questo valore 
+quando si utilizza il risolutore Cholesky e si ottiene il 
 messaggio di errore che "MAXGS" deve essere aumentato.</translation>
     </message>
     <message>
@@ -2811,9 +2811,9 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
       <translation>Pressione all'ingresso</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Pressione</translation>
     </message>
@@ -2943,12 +2943,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
       <translation>Rivoluzioni al secondo</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametro</translation>
     </message>
@@ -3112,18 +3112,18 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Reale</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Immaginario</translation>
     </message>
@@ -3203,8 +3203,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Beam Section Parameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation type="unfinished">Cross-Section Parameter</translation>
     </message>
@@ -3215,14 +3215,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>Larghezza</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3243,8 +3243,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Outer diameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>Spessore</translation>
     </message>
@@ -3322,14 +3322,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>Normale al limite</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation type="unfinished">Analysis Feature Properties</translation>
     </message>
@@ -3339,9 +3339,9 @@ Note: has no effect if a solid was selected</translation>
       <translation>Fonte di calore</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>Modalità</translation>
     </message>
@@ -3356,8 +3356,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Dissipation rate</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation type="unfinished">Imaginary part is only used for equations
@@ -3425,9 +3425,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Select custom mode to enable vector current density</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3442,9 +3442,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Imaginary part of current density x-component</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3459,9 +3459,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Imaginary part of current density y-component</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3501,22 +3501,22 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Maximum element size</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Modulo</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Campo</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>Telai</translation>
     </message>
@@ -4393,7 +4393,7 @@ per il risolutore Elmer</translation>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>La soluzione del flusso è utilizzata per determinare
+      <translation>La soluzione del flusso è utilizzata per determinare 
 la forza di superficie (e quindi lo spostamento)
 generata dal flusso
 (l'opzione si applica solo per il solutore Elmer)</translation>
@@ -5826,11 +5826,11 @@ Per favore seleziona prima un tipo di risultato.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>
 
-Correct module found in:
+Correct module found in: 
 {}</source>
       <translation type="unfinished">
 
-Correct module found in:
+Correct module found in: 
 {}</translation>
     </message>
     <message>
@@ -5977,8 +5977,8 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -5998,14 +5998,14 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Edit {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation type="unfinished">Show Plot</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation type="unfinished">Show Data</translation>
     </message>
@@ -7100,8 +7100,8 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>La forma del glifo</translation>
     </message>
@@ -7143,10 +7143,10 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Quale campo vettore è usato per orientare i glifi</translation>
     </message>
@@ -7158,8 +7158,8 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>Nessuno</translation>
     </message>
@@ -7182,8 +7182,8 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Un moltiplicatore costante per scalare i glifi</translation>
     </message>
@@ -7199,8 +7199,8 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Se i dati della scala sono un vettore, questa proprietà decide se il glifo è ridimensionato dall'ampiezza vettoriale o dai singoli componenti</translation>
     </message>
@@ -7292,29 +7292,29 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
       <translation type="unfinished">Cumulative</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Mostra</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>Etichette</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
-      <translation>Asse Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
@@ -7322,8 +7322,8 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
       <translation type="unfinished">X Axis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>Titolo</translation>
     </message>
@@ -7355,7 +7355,7 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="148"/>
       <source>X-axis</source>
-      <translation>Asse X</translation>
+      <translation>X</translation>
     </message>
   </context>
   <context>
@@ -7800,9 +7800,9 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Modulo</translation>
     </message>
