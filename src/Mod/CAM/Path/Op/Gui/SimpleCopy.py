@@ -118,4 +118,3 @@ class CommandPathSimpleCopy:
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_SimpleCopy", CommandPathSimpleCopy())
-
