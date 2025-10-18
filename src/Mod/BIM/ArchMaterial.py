@@ -778,6 +778,7 @@ class _ViewProviderArchMultiMaterial:
 
     def doubleClicked(self, vobj):
         self.edit()
+        return True
 
     def setupContextMenu(self, vobj, menu):
         if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
