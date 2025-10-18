@@ -712,7 +712,7 @@ def removeShape(objs, mark=True):
                     str.Placement = dims[0]
                 elif tp == "Wall":
                     FreeCAD.ActiveDocument.removeObject(name)
-                    import ArchWall
+                    import Arch
 
                     length = dims[1]
                     width = dims[2]
@@ -721,7 +721,7 @@ def removeShape(objs, mark=True):
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1, v2)
-                    ArchWall.makeWall(line, width=width, height=dims[3], name=name)
+                    Arch.makeWall(line, width=width, height=dims[3], name=name)
         else:
             if mark:
                 obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
