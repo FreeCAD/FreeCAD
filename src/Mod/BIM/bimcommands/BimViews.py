@@ -463,7 +463,7 @@ class BIM_Views:
 
     @staticmethod
     def activate(dialog=None):
-        from draftutils.utils import toggle_working_plane
+        from draftutils.gui_utils import toggle_working_plane
 
         vm = findWidget()
         if vm:
