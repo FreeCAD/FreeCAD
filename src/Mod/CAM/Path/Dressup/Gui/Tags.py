@@ -28,6 +28,7 @@ import Path
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 
 
 if False:
@@ -527,6 +528,12 @@ class PathDressupTagViewProvider:
             i = self.tagAtPoint(point, sub is None)
             self.panel.selectTagWithId(i)
         FreeCADGui.updateGui()
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 def Create(baseObject, name="DressupTag"):
