@@ -406,11 +406,6 @@ void DlgSettingsGeneral::saveThemes()
         }
     }
 
-    // Set the StyleSheet
-    QString sheet = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
-    bool tiledBackground = hGrp->GetBool("TiledBackground", false);
-    Application::Instance->setStyleSheet(sheet, tiledBackground);
-
     themeChanged = false;
 }
 
