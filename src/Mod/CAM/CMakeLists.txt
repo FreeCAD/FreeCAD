@@ -479,16 +479,12 @@ SET(Tools_Shape_SRCS
 SET(Tests_SRCS
     CAMTests/__init__.py
     CAMTests/boxtest.fcstd
-    CAMTests/boxtest1.fcstd
     CAMTests/dressuptest.FCStd
     CAMTests/Drilling_1.FCStd
-    CAMTests/drill_test1.FCStd
     CAMTests/FilePathTestUtils.py
     CAMTests/PathTestUtils.py
     CAMTests/test_adaptive.fcstd
     CAMTests/test_profile.fcstd
-    CAMTests/test_centroid_00.ngc
-    CAMTests/test_filenaming.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestCAMSanity.py
