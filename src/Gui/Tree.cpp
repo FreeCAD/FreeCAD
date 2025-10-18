@@ -579,11 +579,6 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::DocumentObject* obj = item->object()->getObject();
     auto& prop = index.column() ? obj->Label2 : obj->Label;
 
-    std::ostringstream str;
-    str << "Change " << obj->getNameInDocument() << '.' << prop.getName();
-    App::GetApplication().setActiveTransaction(str.str().c_str());
-    FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
-
     DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
         DynamicQLineEdit *le = new DynamicQLineEdit(parent);
@@ -5986,3 +5981,4 @@ void DocumentObjectItem::applyExpandedSnapshot(const std::vector<bool>& snapshot
 }
 
 #include "moc_Tree.cpp"
+
