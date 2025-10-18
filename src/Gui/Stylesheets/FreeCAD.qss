@@ -1178,7 +1178,7 @@ QPushButton {
   border: 1px solid @ButtonBorderColor;
   border-radius: @InputFieldBorderRadius;
   padding: 3px 12px;
-  min-width: 64px;
+  min-width: 80px; /* changed from 64px to fix issue  #24604 and align with setting from 1.0.x */
 }
 
 QPushButton:default {
