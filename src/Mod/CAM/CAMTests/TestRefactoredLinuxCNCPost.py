@@ -20,18 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-# ***************************************************************************
-# *  Note: TestRefactoredMassoG3Post.py is a modified clone of this file    *
-# *        any changes to this file should be applied to the other          *
-# *                                                                         *
-# *                                                                         *
-# ***************************************************************************
-
-
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
+import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 
 
@@ -40,7 +33,11 @@ Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestRefactoredLinuxCNCPost(PathTestUtils.PathTestBase):
-    """Test the refactored_linuxcnc_post.py postprocessor."""
+    """Test LinuxCNC-specific features of the refactored_linuxcnc_post.py postprocessor.
+    
+    This test suite focuses on LinuxCNC-specific functionality such as path blending modes.
+    Generic postprocessor functionality is tested in TestGenericPost.
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -54,16 +51,15 @@ class TestRefactoredLinuxCNCPost(PathTestUtils.PathTestBase):
         is able to call static methods within this same class.
         """
 
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_linuxcnc")
-        # locate the operation named "Profile"
-        for op in cls.job.Operations.Group:
-            if op.Label == "Profile":
-                # remember the "Profile" operation
-                cls.profile_op = op
-                return
+        # Create mock job with default operation and tool controller
+        cls.job, cls.profile_op, cls.tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
+        
+        # Create postprocessor using the mock job
+        cls.post = PostProcessorFactory.get_post_processor(
+            cls.job, "refactored_linuxcnc"
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -75,8 +71,8 @@ class TestRefactoredLinuxCNCPost(PathTestUtils.PathTestBase):
         have access to the class `self` reference.  This method
         is able to call static methods within this same class.
         """
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+        # No cleanup needed for mock objects
+        pass
 
     # Setup and tear down methods called before and after each unit test
 
@@ -99,250 +95,84 @@ class TestRefactoredLinuxCNCPost(PathTestUtils.PathTestBase):
         """
         pass
 
-    def test000(self):
-        """Test Output Generation.
-        Empty path.  Produces only the preamble and postable.
-        """
-        nl = "\n"
-
+    def test_blend_mode_exact_path(self):
+        """Test EXACT_PATH blend mode outputs G61."""
         self.profile_op.Path = Path.Path([])
-
-        # Test generating with header
-        # Header contains a time stamp that messes up unit testing.
-        # Only test length of result.
-        self.job.PostProcessorArgs = "--no-show-editor"
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode EXACT_PATH --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertTrue(len(gcode.splitlines()) == 26)
+        
+        # G61 should be in the preamble
+        self.assertIn("G61", gcode)
+        # Should not have G64
+        self.assertNotIn("G64", gcode)
+        # Should not have G61.1
+        self.assertNotIn("G61.1", gcode)
 
-        # Test without header
-        expected = """(Begin preamble)
-G17 G54 G40 G49 G80 G90
-G21
-(Begin operation: Fixture)
-(Machine units: mm/min)
-G54
-(Finish operation: Fixture)
-(Begin operation: TC: Default Tool)
-(Machine units: mm/min)
-(TC: Default Tool)
-(Begin toolchange)
-M5
-M6 T1
-G43 H1
-(Finish operation: TC: Default Tool)
-(Begin operation: Profile)
-(Machine units: mm/min)
-(Finish operation: Profile)
-(Begin postamble)
-M05
-G17 G54 G90 G80 G40
-M2
-"""
-
+    def test_blend_mode_exact_stop(self):
+        """Test EXACT_STOP blend mode outputs G61.1."""
         self.profile_op.Path = Path.Path([])
-
-        # args = ("--no-header --no-comments --no-show-editor --precision=2")
-        self.job.PostProcessorArgs = "--no-header --no-show-editor"
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode EXACT_STOP --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode, expected)
+        
+        # G61.1 should be in the preamble
+        self.assertIn("G61.1", gcode)
+        # Should not have G64
+        self.assertNotIn("G64", gcode)
 
-        # test without comments
-        expected = """G17 G54 G40 G49 G80 G90
-G21
-G54
-M5
-M6 T1
-G43 H1
-M05
-G17 G54 G90 G80 G40
-M2
-"""
-
-        # args = ("--no-header --no-comments --no-show-editor --precision=2")
-        self.job.PostProcessorArgs = "--no-header --no-comments --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode, expected)
-
-    def test010(self):
-        """Test command Generation.
-        Test Precision
-        """
-        nl = "\n"
-
-        c = Path.Command("G0 X10 Y20 Z30")
-
-        self.profile_op.Path = Path.Path([c])
-
-        self.job.PostProcessorArgs = "--no-header --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[17]
-        expected = "G0 X10.000 Y20.000 Z30.000"
-        self.assertEqual(result, expected)
-
-        self.job.PostProcessorArgs = "--no-header --precision=2 --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[17]
-        expected = "G0 X10.00 Y20.00 Z30.00"
-        self.assertEqual(result, expected)
-
-    def test020(self):
-        """
-        Test Line Numbers
-        """
-        nl = "\n"
-
-        c = Path.Command("G0 X10 Y20 Z30")
-
-        self.profile_op.Path = Path.Path([c])
-
-        self.job.PostProcessorArgs = "--no-header --line-numbers --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[17]
-        expected = "N270 G0 X10.000 Y20.000 Z30.000"
-        self.assertEqual(result, expected)
-
-    def test030(self):
-        """
-        Test Pre-amble
-        """
-        nl = "\n"
-
+    def test_blend_mode_blend_default(self):
+        """Test BLEND mode with default tolerance (0) outputs G64."""
         self.profile_op.Path = Path.Path([])
-
-        self.job.PostProcessorArgs = (
-            "--no-header --no-comments --preamble='G18 G55' --no-show-editor"
-        )
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[0]
-        self.assertEqual(result, "G18 G55")
+        
+        # G64 should be in the preamble (without P parameter)
+        lines = gcode.splitlines()
+        has_g64 = any("G64" in line and "P" not in line for line in lines)
+        self.assertTrue(has_g64, "Expected G64 without P parameter")
 
-    def test040(self):
-        """
-        Test Post-amble
-        """
-        nl = "\n"
-
+    def test_blend_mode_blend_with_tolerance(self):
+        """Test BLEND mode with tolerance outputs G64 P<tolerance>."""
         self.profile_op.Path = Path.Path([])
-
-        self.job.PostProcessorArgs = (
-            "--no-header --no-comments --postamble='G0 Z50\nM2' --no-show-editor"
-        )
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.05 --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[-2]
-        self.assertEqual(result, "G0 Z50")
-        self.assertEqual(gcode.splitlines()[-1], "M2")
+        
+        # G64 P0.05 should be in the preamble
+        self.assertIn("G64 P0.0500", gcode)
 
-    def test050(self):
-        """
-        Test inches
-        """
-        nl = "\n"
-
-        c = Path.Command("G0 X10 Y20 Z30")
-
-        self.profile_op.Path = Path.Path([c])
-
-        self.job.PostProcessorArgs = "--no-header --inches --no-show-editor"
+    def test_blend_mode_blend_with_custom_tolerance(self):
+        """Test BLEND mode with custom tolerance value."""
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.02 --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[2], "G20")
+        
+        # G64 P0.02 should be in the preamble
+        self.assertIn("G64 P0.0200", gcode)
 
-        result = gcode.splitlines()[17]
-        expected = "G0 X0.3937 Y0.7874 Z1.1811"
-        self.assertEqual(result, expected)
-
-        self.job.PostProcessorArgs = "--no-header --inches --precision=2 --no-show-editor"
+    def test_blend_mode_in_preamble_position(self):
+        """Test that blend mode command appears in correct position in preamble."""
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.1 --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[17]
-        expected = "G0 X0.39 Y0.79 Z1.18"
-        self.assertEqual(result, expected)
+        lines = gcode.splitlines()
+        
+        # Find G64 P line
+        g64_line_idx = None
+        for i, line in enumerate(lines):
+            if "G64 P" in line:
+                g64_line_idx = i
+                break
+        
+        self.assertIsNotNone(g64_line_idx, "G64 P command not found")
+        # Should be early in output (within first few lines of preamble)
+        self.assertLess(g64_line_idx, 5, "G64 command should be in preamble")
 
-    def test060(self):
-        """
-        Test test modal
-        Suppress the command name if the same as previous
-        """
-        nl = "\n"
-
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-
-        self.profile_op.Path = Path.Path([c, c1])
-
-        self.job.PostProcessorArgs = "--no-header --modal --no-show-editor"
+    def test_blend_tolerance_zero_equals_no_tolerance(self):
+        """Test that blend tolerance of 0 outputs G64 without P parameter."""
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0 --no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[18]
-        expected = "X10.000 Y30.000 Z30.000"
-        self.assertEqual(result, expected)
-
-    def test070(self):
-        """
-        Test axis modal
-        Suppress the axis coordinate if the same as previous
-        """
-        nl = "\n"
-
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-
-        self.profile_op.Path = Path.Path([c, c1])
-
-        self.job.PostProcessorArgs = "--no-header --axis-modal --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[18]
-        expected = "G0 Y30.000"
-        self.assertEqual(result, expected)
-
-    def test080(self):
-        """
-        Test tool change
-        """
-        nl = "\n"
-
-        c = Path.Command("M6 T2")
-        c2 = Path.Command("M3 S3000")
-
-        self.profile_op.Path = Path.Path([c, c2])
-
-        self.job.PostProcessorArgs = "--no-header --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        split_gcode = gcode.splitlines()
-        self.assertEqual(split_gcode[18], "M5")
-        self.assertEqual(split_gcode[19], "M6 T2")
-        self.assertEqual(split_gcode[20], "G43 H2")
-        self.assertEqual(split_gcode[21], "M3 S3000")
-
-        # suppress TLO
-        self.job.PostProcessorArgs = "--no-header --no-tlo --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[19], "M3 S3000")
-
-    def test090(self):
-        """
-        Test comment
-        """
-        nl = "\n"
-
-        c = Path.Command("(comment)")
-
-        self.profile_op.Path = Path.Path([c])
-
-        self.job.PostProcessorArgs = "--no-header --no-show-editor"
-        gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[17]
-        expected = "(comment)"
-        self.assertEqual(result, expected)
+        
+        # Should have G64 without P
+        lines = gcode.splitlines()
+        has_g64_without_p = any("G64" in line and "P" not in line for line in lines)
+        self.assertTrue(has_g64_without_p, "Expected G64 without P parameter when tolerance is 0")
