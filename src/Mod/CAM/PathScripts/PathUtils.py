@@ -626,7 +626,8 @@ def sort_locations_tsp(locations, keys, attractors=None, startPoint=None, endPoi
     - endPoint: Optional ending point [x, y]
 
     Returns the sorted list of locations in TSP order.
-    If startPoint is None, path starts from the first point in the original order.
+    If startPoint is None, the path is optimized to start near the first point in the original list,
+    but may not start exactly at that point.
     """
     # Extract points from locations
     points = [(loc[keys[0]], loc[keys[1]]) for loc in locations]

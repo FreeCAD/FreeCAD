@@ -28,7 +28,15 @@
 
 namespace
 {
-// Euclidean distance between two points
+/**
+ * @brief Calculate Euclidean distance between two points
+ *
+ * Used for 2-opt and relocation steps where actual distance matters for path length optimization.
+ *
+ * @param a First point
+ * @param b Second point
+ * @return Actual distance: sqrt(dx² + dy²)
+ */
 double dist(const TSPPoint& a, const TSPPoint& b)
 {
     double dx = a.x - b.x;
@@ -36,22 +44,251 @@ double dist(const TSPPoint& a, const TSPPoint& b)
     return std::sqrt(dx * dx + dy * dy);
 }
 
-// Calculate total path length
-double pathLength(const std::vector<TSPPoint>& points, const std::vector<int>& path)
+/**
+ * @brief Calculate squared distance between two points (no sqrt)
+ *
+ * Used for nearest neighbor selection for performance (avoids expensive sqrt operation).
+ * Since we only need to compare distances, squared distance preserves ordering:
+ * if dist(A,B) < dist(A,C), then distSquared(A,B) < distSquared(A,C)
+ *
+ * @param a First point
+ * @param b Second point
+ * @return Squared distance: dx² + dy²
+ */
+double distSquared(const TSPPoint& a, const TSPPoint& b)
 {
-    double total = 0.0;
-    size_t n = path.size();
-    for (size_t i = 0; i < n - 1; ++i) {
-        total += dist(points[path[i]], points[path[i + 1]]);
-    }
-    // Optionally, close the loop: total += dist(points[path[n-1]], points[path[0]]);
-    return total;
+    double dx = a.x - b.x;
+    double dy = a.y - b.y;
+    return dx * dx + dy * dy;
 }
 
-// 2-Opt swap
-void twoOptSwap(std::vector<int>& path, size_t i, size_t k)
+/**
+ * @brief Core TSP solver implementation using nearest neighbor + iterative improvement
+ *
+ * Algorithm steps:
+ * 1. Add temporary start/end points if specified
+ * 2. Build initial route using nearest neighbor heuristic
+ * 3. Optimize route with 2-opt and relocation moves
+ * 4. Remove temporary points and map back to original indices
+ *
+ * @param points Input points to visit
+ * @param startPoint Optional starting location constraint
+ * @param endPoint Optional ending location constraint
+ * @return Vector of indices representing optimized visit order
+ */
+std::vector<int> solve_impl(const std::vector<TSPPoint>& points,
+                            const TSPPoint* startPoint,
+                            const TSPPoint* endPoint)
 {
-    std::reverse(path.begin() + static_cast<long>(i), path.begin() + static_cast<long>(k) + 1);
+    // ========================================================================
+    // STEP 1: Prepare point set with temporary start/end markers
+    // ========================================================================
+    // We insert temporary points to enforce start/end constraints.
+    // These will be removed after optimization and won't appear in final result.
+    std::vector<TSPPoint> pts = points;
+    int tempStartIdx = -1, tempEndIdx = -1;
+
+    if (startPoint) {
+        // Insert user-specified start point at beginning
+        pts.insert(pts.begin(), TSPPoint(startPoint->x, startPoint->y));
+        tempStartIdx = 0;
+    }
+    else if (!pts.empty()) {
+        // No start specified: duplicate first point as anchor
+        pts.insert(pts.begin(), TSPPoint(pts[0].x, pts[0].y));
+        tempStartIdx = 0;
+    }
+
+    if (endPoint) {
+        // Add user-specified end point at the end
+        pts.push_back(TSPPoint(endPoint->x, endPoint->y));
+        tempEndIdx = static_cast<int>(pts.size()) - 1;
+    }
+
+    // ========================================================================
+    // STEP 2: Build initial route using Nearest Neighbor algorithm
+    // ========================================================================
+    // Greedy approach: always visit the closest unvisited point next.
+    // This gives a decent initial solution quickly (O(n²) complexity).
+    //
+    // Tie-breaking rule:
+    // - If distances are within ±0.1, prefer point with y-value closer to start
+    // - This provides deterministic results when points are nearly equidistant
+    std::vector<int> route;
+    std::vector<bool> visited(pts.size(), false);
+    route.push_back(0);  // Start from temp start point (index 0)
+    visited[0] = true;
+
+    for (size_t step = 1; step < pts.size(); ++step) {
+        double minDist = std::numeric_limits<double>::max();
+        int next = -1;
+        double nextYDiff = std::numeric_limits<double>::max();
+
+        // Find nearest unvisited neighbor
+        for (size_t i = 0; i < pts.size(); ++i) {
+            if (!visited[i]) {
+                // Use squared distance for speed (no sqrt needed for comparison)
+                double d = distSquared(pts[route.back()], pts[i]);
+                double yDiff = std::abs(pts[route.front()].y - pts[i].y);
+
+                // Tie-breaking logic:
+                if (d > minDist + 0.1) {
+                    continue;  // Clearly farther, skip
+                }
+                else if (d < minDist - 0.1) {
+                    // Clearly closer, use it
+                    minDist = d;
+                    next = static_cast<int>(i);
+                    nextYDiff = yDiff;
+                }
+                else if (yDiff < nextYDiff) {
+                    // Tie: prefer point closer to start in Y-axis
+                    minDist = d;
+                    next = static_cast<int>(i);
+                    nextYDiff = yDiff;
+                }
+            }
+        }
+
+        if (next == -1) {
+            break;  // No more unvisited points
+        }
+        route.push_back(next);
+        visited[next] = true;
+    }
+
+    // Ensure temporary end point is at the end of route
+    if (tempEndIdx != -1 && route.back() != tempEndIdx) {
+        auto it = std::find(route.begin(), route.end(), tempEndIdx);
+        if (it != route.end()) {
+            route.erase(it);
+        }
+        route.push_back(tempEndIdx);
+    }
+
+    // ========================================================================
+    // STEP 3: Iterative improvement using 2-Opt and Relocation
+    // ========================================================================
+    // Repeatedly apply local optimizations until no improvement is possible.
+    // This typically converges quickly (a few iterations) to a near-optimal solution.
+    //
+    // Two optimization techniques:
+    // 1. 2-Opt: Reverse segments of the route to eliminate crossing paths
+    // 2. Relocation: Move individual points to better positions in the route
+    bool improvementFound = true;
+    while (improvementFound) {
+        improvementFound = false;
+
+        // --- 2-Opt Optimization ---
+        // Try reversing every possible segment of the route.
+        // If reversing segment [i+1...j-1] reduces total distance, keep it.
+        //
+        // Example: Route A-B-C-D-E becomes A-D-C-B-E if reversing B-C-D is better
+        bool reorderFound = true;
+        while (reorderFound) {
+            reorderFound = false;
+            for (size_t i = 0; i + 3 < route.size(); ++i) {
+                for (size_t j = i + 3; j < route.size(); ++j) {
+                    // Current edges: i→(i+1) and (j-1)→j
+                    double curLen = dist(pts[route[i]], pts[route[i + 1]])
+                        + dist(pts[route[j - 1]], pts[route[j]]);
+
+                    // New edges after reversal: (i+1)→j and i→(j-1)
+                    // Add epsilon to prevent cycles from floating point errors
+                    double newLen = dist(pts[route[i + 1]], pts[route[j]])
+                        + dist(pts[route[i]], pts[route[j - 1]]) + 1e-5;
+
+                    if (newLen < curLen) {
+                        // Reverse the segment between i+1 and j (exclusive)
+                        std::reverse(route.begin() + i + 1, route.begin() + j);
+                        reorderFound = true;
+                        improvementFound = true;
+                    }
+                }
+            }
+        }
+
+        // --- Relocation Optimization ---
+        // Try moving each point to a different position in the route.
+        // If moving point i to position j improves the route, do it.
+        bool relocateFound = true;
+        while (relocateFound) {
+            relocateFound = false;
+            for (size_t i = 1; i + 1 < route.size(); ++i) {
+
+                // Try moving point i backward (to positions before i)
+                for (size_t j = 1; j + 2 < i; ++j) {
+                    // Current cost: edges around point i and edge j→(j+1)
+                    double curLen = dist(pts[route[i - 1]], pts[route[i]])
+                        + dist(pts[route[i]], pts[route[i + 1]])
+                        + dist(pts[route[j]], pts[route[j + 1]]);
+
+                    // New cost: bypass i, insert i after j
+                    double newLen = dist(pts[route[i - 1]], pts[route[i + 1]])
+                        + dist(pts[route[j]], pts[route[i]])
+                        + dist(pts[route[i]], pts[route[j + 1]]) + 1e-5;
+
+                    if (newLen < curLen) {
+                        // Move point i to position after j
+                        int node = route[i];
+                        route.erase(route.begin() + i);
+                        route.insert(route.begin() + j + 1, node);
+                        relocateFound = true;
+                        improvementFound = true;
+                    }
+                }
+
+                // Try moving point i forward (to positions after i)
+                for (size_t j = i + 1; j + 1 < route.size(); ++j) {
+                    double curLen = dist(pts[route[i - 1]], pts[route[i]])
+                        + dist(pts[route[i]], pts[route[i + 1]])
+                        + dist(pts[route[j]], pts[route[j + 1]]);
+
+                    double newLen = dist(pts[route[i - 1]], pts[route[i + 1]])
+                        + dist(pts[route[j]], pts[route[i]])
+                        + dist(pts[route[i]], pts[route[j + 1]]) + 1e-5;
+
+                    if (newLen < curLen) {
+                        int node = route[i];
+                        route.erase(route.begin() + i);
+                        route.insert(route.begin() + j, node);
+                        relocateFound = true;
+                        improvementFound = true;
+                    }
+                }
+            }
+        }
+    }
+
+    // ========================================================================
+    // STEP 4: Remove temporary start/end points
+    // ========================================================================
+    // The temporary markers served their purpose during optimization.
+    // Now remove them so they don't appear in the final result.
+    if (tempEndIdx != -1 && !route.empty() && route.back() == tempEndIdx) {
+        route.pop_back();
+    }
+    if (tempStartIdx != -1 && !route.empty() && route.front() == tempStartIdx) {
+        route.erase(route.begin());
+    }
+
+    // ========================================================================
+    // STEP 5: Map route indices back to original point array
+    // ========================================================================
+    // Since we inserted a temp start point at index 0, all subsequent indices
+    // are offset by 1. Adjust them back to match the original points array.
+    std::vector<int> result;
+    for (int idx : route) {
+        // Adjust for temp start offset
+        if (tempStartIdx != -1) {
+            --idx;
+        }
+        // Only include valid indices from the original points array
+        if (idx >= 0 && idx < static_cast<int>(points.size())) {
+            result.push_back(idx);
+        }
+    }
+    return result;
 }
 }  // namespace
 
@@ -64,194 +301,11 @@ void twoOptSwap(std::vector<int>& path, size_t i, size_t k)
  * - If both are provided, the path will respect both constraints while optimizing the middle path
  * - The algorithm ensures all points are visited exactly once
  */
+
+
 std::vector<int> TSPSolver::solve(const std::vector<TSPPoint>& points,
                                   const TSPPoint* startPoint,
                                   const TSPPoint* endPoint)
 {
-    size_t n = points.size();
-    if (n == 0) {
-        return {};
-    }
-
-    // Start with a simple nearest neighbor path
-    std::vector<bool> visited(n, false);
-    std::vector<int> path;
-
-    // If startPoint provided, find the closest point to it
-    size_t current = 0;
-    if (startPoint) {
-        double minDist = std::numeric_limits<double>::max();
-        for (size_t i = 0; i < n; ++i) {
-            double d = dist(points[i], *startPoint);
-            if (d < minDist) {
-                minDist = d;
-                current = i;
-            }
-        }
-    }
-
-    path.push_back(static_cast<int>(current));
-    visited[current] = true;
-    for (size_t step = 1; step < n; ++step) {
-        double min_dist = std::numeric_limits<double>::max();
-        size_t next = n;  // Use n as an invalid index
-        for (size_t i = 0; i < n; ++i) {
-            if (!visited[i]) {
-                double d = dist(points[current], points[i]);
-                if (d < min_dist) {
-                    min_dist = d;
-                    next = i;
-                }
-            }
-        }
-        current = next;
-        path.push_back(static_cast<int>(current));
-        visited[current] = true;
-    }
-
-    // 2-Opt optimization
-    bool improved = true;
-    while (improved) {
-        improved = false;
-        for (size_t i = 1; i < n - 1; ++i) {
-            for (size_t k = i + 1; k < n; ++k) {
-                double delta = dist(points[path[i - 1]], points[path[k]])
-                    + dist(points[path[i]], points[path[(k + 1) % n]])
-                    - dist(points[path[i - 1]], points[path[i]])
-                    - dist(points[path[k]], points[path[(k + 1) % n]]);
-                if (delta < -Base::Precision::Confusion()) {
-                    twoOptSwap(path, i, k);
-                    improved = true;
-                }
-            }
-        }
-    }
-
-    // Handle end point constraint if specified
-    if (endPoint) {
-        // If both start and end points are specified, we need to handle them differently
-        if (startPoint) {
-            // Find the closest points to start and end
-            size_t startIdx = 0;
-            size_t endIdx = 0;
-            double minStartDist = std::numeric_limits<double>::max();
-            double minEndDist = std::numeric_limits<double>::max();
-
-            // Find the indices of the closest points to both start and end points
-            for (size_t i = 0; i < n; ++i) {
-                // Find closest to start
-                double dStart = dist(points[i], *startPoint);
-                if (dStart < minStartDist) {
-                    minStartDist = dStart;
-                    startIdx = i;
-                }
-
-                // Find closest to end
-                double dEnd = dist(points[i], *endPoint);
-                if (dEnd < minEndDist) {
-                    minEndDist = dEnd;
-                    endIdx = i;
-                }
-            }
-
-            // If start and end are different points, create a new path
-            if (startIdx != endIdx) {
-                // Create a new path starting with the start point and ending with the end point
-                // This ensures both constraints are met
-                std::vector<bool> visited(n, false);
-                std::vector<int> newPath;
-
-                // Add start point
-                newPath.push_back(static_cast<int>(startIdx));
-                visited[startIdx] = true;
-
-                // Add all other points except end point using nearest neighbor algorithm
-                // This builds a path that starts at startIdx and visits all intermediate points
-                size_t current = startIdx;
-                for (size_t step = 1; step < n - 1; ++step) {
-                    double minDist = std::numeric_limits<double>::max();
-                    size_t next = n;  // Invalid index (n is out of bounds)
-
-                    for (size_t i = 0; i < n; ++i) {
-                        if (!visited[i] && i != endIdx) {
-                            double d = dist(points[current], points[i]);
-                            if (d < minDist) {
-                                minDist = d;
-                                next = i;
-                            }
-                        }
-                    }
-
-                    if (next == n) {
-                        break;  // No more points to add
-                    }
-
-                    current = next;
-                    newPath.push_back(static_cast<int>(current));
-                    visited[current] = true;
-                }
-
-                // Add end point as the final stop in the path
-                newPath.push_back(static_cast<int>(endIdx));
-
-                // Apply 2-opt optimization while preserving the start and end points
-                // The algorithm only swaps edges between interior points
-                bool improved = true;
-                while (improved) {
-                    improved = false;
-                    // Start from 1 and end before the last point to preserve start/end constraints
-                    for (size_t i = 1; i < newPath.size() - 1; ++i) {
-                        for (size_t k = i + 1; k < newPath.size() - 1; ++k) {
-                            // Calculate improvement in distance if we swap these edges
-                            double delta = dist(points[newPath[i - 1]], points[newPath[k]])
-                                + dist(points[newPath[i]], points[newPath[k + 1]])
-                                - dist(points[newPath[i - 1]], points[newPath[i]])
-                                - dist(points[newPath[k]], points[newPath[k + 1]]);
-
-                            // If the swap reduces the total distance, make the swap
-                            if (delta < -Base::Precision::Confusion()) {
-                                std::reverse(newPath.begin() + static_cast<long>(i),
-                                             newPath.begin() + static_cast<long>(k) + 1);
-                                improved = true;
-                            }
-                        }
-                    }
-                }
-
-                path = newPath;
-            }
-            // If start and end are the same point, keep path as is
-        }
-        else {
-            // Only end point specified (no start point constraint)
-            // Find the point in the current path that's closest to the desired end point
-            double minDist = std::numeric_limits<double>::max();
-            size_t endIdx = 0;
-            for (size_t i = 0; i < n; ++i) {
-                double d = dist(points[path[i]], *endPoint);
-                if (d < minDist) {
-                    minDist = d;
-                    endIdx = i;
-                }
-            }
-
-            // Rotate the path so that endIdx is at the end
-            // This preserves the relative order of points while ensuring the path ends
-            // at the point closest to the specified end coordinates
-            if (endIdx != n - 1) {
-                std::vector<int> newPath;
-                // Start with points after endIdx
-                for (size_t i = endIdx + 1; i < n; ++i) {
-                    newPath.push_back(path[i]);
-                }
-                // Then add points from beginning up to and including endIdx
-                for (size_t i = 0; i <= endIdx; ++i) {
-                    newPath.push_back(path[i]);
-                }
-                path = newPath;
-            }
-        }
-    }
-
-    return path;
+    return solve_impl(points, startPoint, endPoint);
 }
