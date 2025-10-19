@@ -577,6 +577,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 if prop in ["ScanType", "CutPattern"]:
                     self.setEditorProperties(obj)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
         job = PathUtils.findParentJob(obj)

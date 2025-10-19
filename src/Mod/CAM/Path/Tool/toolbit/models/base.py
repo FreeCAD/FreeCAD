@@ -297,6 +297,7 @@ class ToolBit(Asset, ABC):
         """
         Updates the toolbit properties for backward compatibility.
         Ensure obj.ShapeID and obj.ToolBitID are set, handling legacy cases.
+        Also promotes embedded toolbits to correct shape type if needed.
         """
         Path.Log.track(f"Promoting tool bit {self.obj.Label}")
 
@@ -336,6 +337,17 @@ class ToolBit(Asset, ABC):
             raise ValueError(f"Failed to identify shape of ToolBit from '{thetype}'")
         self.obj.ShapeType = shape_class.name
 
+        # Promote embedded toolbits to correct shape type if still Custom
+        if self.obj.ShapeType == "Custom":
+            shape_id = getattr(self.obj, "ShapeID", None)
+            if shape_id:
+                shape_class = ToolBitShape.get_subclass_by_name(shape_id)
+                if shape_class and shape_class.name != "Custom":
+                    self.obj.ShapeType = shape_class.name
+                    self._tool_bit_shape = shape_class(shape_id)
+                    Path.Log.info(
+                        f"Promoted embedded toolbit '{self.obj.Label}' to shape '{shape_class.name}' via ShapeID"
+                    )
         # Ensure ToolBitID is set
         if hasattr(self.obj, "File"):
             self.id = pathlib.Path(self.obj.File).stem
