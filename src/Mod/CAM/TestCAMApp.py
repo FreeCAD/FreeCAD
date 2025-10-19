@@ -95,6 +95,7 @@ from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
 
 from CAMTests.TestCentroidPost import TestCentroidPost
+from CAMTests.TestGenericPost import TestGenericPost 
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post

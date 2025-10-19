@@ -483,12 +483,14 @@ SET(Tests_SRCS
     CAMTests/Drilling_1.FCStd
     CAMTests/FilePathTestUtils.py
     CAMTests/PathTestUtils.py
+    CAMTests/PostTestMocks.py
     CAMTests/test_adaptive.fcstd
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidPost.py
+    CAMTests/TestGenericPost.py
     CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestMach3Mach4Post.py
