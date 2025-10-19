@@ -995,7 +995,7 @@ bool StdCmdAnnotationLabel::isActive()
 
 void StdCmdAnnotationLabel::activated(int)
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
+    auto* doc = App::GetApplication().getActiveDocument();
     if (!doc) {
         return;
     }
@@ -1006,10 +1006,10 @@ void StdCmdAnnotationLabel::activated(int)
     }
 
     // Use first selected item in active 3D view
-    const Gui::SelectionObject& sel = selEx.front();
+    const auto& sel = selEx.front();
 
-    const App::DocumentObject* support = sel.getObject();
-    App::DocumentObject* supportObj = const_cast<App::DocumentObject*>(support);
+    const auto* support = sel.getObject();
+    const auto* supportObj = freecad_cast<App::DocumentObject*>(support);
 
     // Compute base position. Fallback: object placement position, else origin
     Base::Vector3d basePos;
@@ -1018,25 +1018,25 @@ void StdCmdAnnotationLabel::activated(int)
         basePos = picked.front();
     }
     else if (auto* gf = freecad_cast<App::GeoFeature*>(supportObj); supportObj && gf) {
-        const Base::Placement& gp = gf->globalPlacement();
+        const auto& gp = gf->globalPlacement();
         basePos = gp.getPosition();
     }
 
     // Create the label object
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation Label"));
-    App::DocumentObject* obj = doc->addObject("App::AnnotationLabel", "Label");
+    auto* obj = doc->addObject("App::AnnotationLabel", "Label");
     if (!obj) {
         abortCommand();
         return;
     }
 
     // Set basic properties
-    auto* label = static_cast<App::AnnotationLabel*>(obj);
+    auto* label = freecad_cast<App::AnnotationLabel*>(obj);
     label->LabelText.setValue(std::vector<std::string> {"Annotation"});
 
     // BasePosition at anchor, TextPosition slightly offset for visibility
     label->BasePosition.setValue(basePos);
-    Base::Vector3d textPos = basePos + Base::Vector3d(10, 10, 10);
+    const auto textPos = basePos + Base::Vector3d(10, 10, 10);
     label->TextPosition.setValue(textPos);
 
     commitCommand();
