@@ -66,6 +66,11 @@ std::string UnitsApi::getBasicLengthUnit()
     return schemas->currentSchema()->getBasicLengthUnit();
 }
 
+std::string UnitsApi::getUnitText(const Quantity& quant)
+{
+    return schemas->currentSchema()->getUnitText(quant);
+}
+
 void UnitsApi::setDecimals(const int prec)
 {
     decimals = prec;
