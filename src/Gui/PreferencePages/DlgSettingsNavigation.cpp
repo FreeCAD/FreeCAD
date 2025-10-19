@@ -94,6 +94,8 @@ void DlgSettingsNavigation::saveSettings()
     ui->spinBoxZoomStep->onSave();
     ui->spinBoxAnimationDuration->onSave();
     ui->checkBoxSpinningAnimations->onSave();
+    ui->checkBoxEnableLongPressClarifySelection->onSave();
+    ui->spinBoxLongPressTimeout->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
     ui->naviCubeCorner->onSave();
@@ -144,6 +146,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->spinBoxZoomStep->onRestore();
     ui->spinBoxAnimationDuration->onRestore();
     ui->checkBoxSpinningAnimations->onRestore();
+    ui->checkBoxEnableLongPressClarifySelection->onRestore();
+    ui->spinBoxLongPressTimeout->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
     ui->naviCubeCorner->onRestore();
