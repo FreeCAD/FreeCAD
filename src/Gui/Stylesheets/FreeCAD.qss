@@ -1202,7 +1202,7 @@ QPushButton:disabled {
 }
 
 QPushButton:checked {
-  background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @ButtonTopBackgroundColor, stop:0.6 @ButtonBottomBackgroundColor);
+  background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @CheckedButtonTopBackgroundColor, stop:1 @CheckedButtonBottomBackgroundColor);
 }
 
 QPushButton:focus, QAbstractButton[flat="true"]:focus {
@@ -1588,7 +1588,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor );
+  background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @CheckedButtonTopBackgroundColor, stop:1 @CheckedButtonBottomBackgroundColor);
 }
 
 /* hide the empty line between header and content */
