@@ -62,3 +62,6 @@ jobs:
           title: "Update translations from Crowdin"
           body: "Automatic Crowdin update."
           labels: "translations, automated"
+          delete-branch: true
+          add-paths: |
+            src
