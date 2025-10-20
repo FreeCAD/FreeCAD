@@ -311,7 +311,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/fangling_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
-    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_post.py
     Path/Post/scripts/jtech_post.py
     Path/Post/scripts/KineticNCBeamicon2_post.py
@@ -323,7 +323,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/opensbp_pre.py
     Path/Post/scripts/philips_post.py
     Path/Post/scripts/refactored_centroid_post.py
-    Path/Post/scripts/refactored_grbl_post.py
+    Path/Post/scripts/grbl_post.py
     Path/Post/scripts/refactored_linuxcnc_post.py
     Path/Post/scripts/refactored_mach3_mach4_post.py
     Path/Post/scripts/refactored_masso_g3_post.py
@@ -546,7 +546,7 @@ SET(Tests_SRCS
     CAMTests/TestPathVcarve.py
     CAMTests/TestPathVoronoi.py
     CAMTests/TestRefactoredCentroidPost.py
-    CAMTests/TestRefactoredGrblPost.py
+    CAMTests/TestGrblLegacyPost.py
     CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestRefactoredMach3Mach4Post.py
     CAMTests/TestRefactoredMassoG3Post.py

@@ -94,14 +94,16 @@ from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
 
-from CAMTests.TestCentroidPost import TestCentroidPost
 from CAMTests.TestGenericPost import TestGenericPost 
-from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestGrblPost import TestGrblPost
+
 from CAMTests.TestLinuxCNCLegacyPost import TestLinuxCNCLegacyPost
+from CAMTests.TestGrblLegacyPost import TestGrblLegacyPost
+
+from CAMTests.TestCentroidPost import TestCentroidPost
 from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
 from CAMTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
-from CAMTests.TestRefactoredGrblPost import TestRefactoredGrblPost
 from CAMTests.TestRefactoredMassoG3Post import TestRefactoredMassoG3Post
 from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
 from CAMTests.TestRefactoredTestDressupPost import TestRefactoredTestDressupPost
