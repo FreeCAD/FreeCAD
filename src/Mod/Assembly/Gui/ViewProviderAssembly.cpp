@@ -628,6 +628,12 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
 
+    if (auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(obj)) {
+        if (!asmLink->isRigid()) {
+            return false;
+        }
+    }
+
     auto* assemblyPart = getObject<AssemblyObject>();
 
     // Check if the selected object is a child of the assembly
