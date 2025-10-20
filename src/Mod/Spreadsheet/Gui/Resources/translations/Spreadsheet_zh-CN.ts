@@ -380,8 +380,8 @@
       <translation>插入列</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="680"/>
       <location filename="../../SpreadsheetView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="680"/>
       <source>Clear Cells</source>
       <translation>清除单元格</translation>
     </message>
@@ -674,8 +674,8 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.cSV);;所有 (*)</translation>
     </message>
@@ -736,7 +736,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="813"/>
       <source>Copy &amp; Paste Failed</source>
-      <translation type="unfinished">Copy &amp; Paste Failed</translation>
+      <translation>复制粘贴失败</translation>
     </message>
   </context>
   <context>
@@ -890,7 +890,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Bind Cells</source>
-      <translation type="unfinished">Bind Cells</translation>
+      <translation>绑定单元格</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="223"/>
@@ -916,7 +916,7 @@ Continue?</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="299"/>
       <source>Unbind Cells</source>
-      <translation type="unfinished">Unbind Cells</translation>
+      <translation>解绑单元格</translation>
     </message>
   </context>
   <context>
@@ -1102,7 +1102,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="207"/>
       <location filename="../../SheetTableView.cpp" line="665"/>
       <source>Split Cell</source>
-      <translation type="unfinished">Split Cell</translation>
+      <translation>拆分单元格</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
@@ -1197,7 +1197,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="337"/>
       <source>Unsetup Configuration Table</source>
-      <translation type="unfinished">Unsetup Configuration Table</translation>
+      <translation>取消设置配置表</translation>
     </message>
   </context>
 </TS>

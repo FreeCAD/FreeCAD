@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation>Échecs et erreurs</translation>
+      <translation>Échecs et Erreurs</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>

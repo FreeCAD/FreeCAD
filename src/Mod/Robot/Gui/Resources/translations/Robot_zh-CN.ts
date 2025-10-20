@@ -364,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
@@ -388,10 +388,10 @@
       <translation>选择一个机器人</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
       <location filename="../../CommandTrajectory.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>选择一个机器人和一个轨迹对象.</translation>
     </message>
@@ -491,8 +491,8 @@
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
-      <source>Visit %1 and copy the files to %2</source>
-      <translation>访问 %1 并将文件复制到 %2</translation>
+      <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
+      <translation>访问 %1 并将机器人 VRML 和 CSV 文件复制到 %2</translation>
     </message>
   </context>
   <context>
@@ -904,7 +904,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Do not change position &amp; orientation</source>
-      <translation type="unfinished">Do not change position &amp; orientation</translation>
+      <translation>不要改变位置和方向</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>

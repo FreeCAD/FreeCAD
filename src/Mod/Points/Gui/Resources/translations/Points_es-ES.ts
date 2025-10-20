@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="235"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Convertir a puntos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Convertir a puntos</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Export Points…</source>
-      <translation type="unfinished">Export Points…</translation>
+      <translation>Exportar puntos…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
@@ -48,7 +48,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Import Points…</source>
-      <translation type="unfinished">Import Points…</translation>
+      <translation>Importar puntos…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation type="unfinished">Special Lines</translation>
+      <translation>Líneas especiales</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
       <source>First Line</source>
-      <translation type="unfinished">First Line</translation>
+      <translation>Primera línea</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation type="unfinished">Number separator</translation>
+      <translation>Separador de números</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
@@ -269,12 +269,12 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation type="unfinished">I (gray value)</translation>
+      <translation>I (valor gris)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines</source>
-      <translation type="unfinished">Number of previewed lines</translation>
+      <translation>Número de líneas de vista previa</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../Command.cpp" line="256"/>
       <source>Enter maximum distance:</source>
-      <translation>Pon la distancia máxima:</translation>
+      <translation>Ingrese la distancia máxima:</translation>
     </message>
   </context>
   <context>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>Points Tools</source>
-      <translation type="unfinished">Points Tools</translation>
+      <translation>Herramientas de puntos</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>

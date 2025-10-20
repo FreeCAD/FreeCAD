@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;将组件插入到活动装配体中。这将创建指向零件、实体、图元和装配体的动态链接。要插入外部组件，请确保文件&lt;b&gt;在当前会话中打开&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;通过左键单击列表中的项目进行插入。&lt;/li&gt;&lt;li&gt;通过右键单击列表中的项目进行移除。&lt;/li&gt;&lt;li&gt;按住 Shift 键并单击视图即可添加组件的多个实例。&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1569"/>
+      <location filename="../../../JointObject.py" line="1694"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
@@ -146,7 +146,6 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1571"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -171,27 +170,27 @@
       <translation>皮带</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="641"/>
+      <location filename="../../../JointObject.py" line="759"/>
       <source>Broken link in: </source>
       <translation>失效链接：</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1531"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>从两个独立的零件中选择两个元素</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1573"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Radius 1</source>
       <translation>半径 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1575"/>
+      <location filename="../../../JointObject.py" line="1698"/>
       <source>Thread pitch</source>
       <translation>螺距</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1577"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Pitch radius</source>
       <translation>节距半径</translation>
     </message>
@@ -504,119 +503,124 @@ SLOPE 定义了在 time = T1 和 T2 附近，从 0 到 H1、从 H2 到 0 之间�
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="183"/>
+      <location filename="../../../JointObject.py" line="186"/>
       <source>The type of the joint</source>
       <translation>接头类型</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="209"/>
+      <location filename="../../../JointObject.py" line="213"/>
       <source>The first reference of the joint</source>
       <translation>配合的第一参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="225"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation/>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
+      <location filename="../../../JointObject.py" line="237"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>这将阻止 Placement1 重新计算，从而允许对其位置进行自定义设置</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="245"/>
-      <location filename="../../../JointObject.py" line="516"/>
+      <location filename="../../../JointObject.py" line="249"/>
+      <location filename="../../../JointObject.py" line="558"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>这是配合的第一个连接器的附着偏移</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
+      <location filename="../../../JointObject.py" line="271"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>这是 参考2 对象内将被用于配合的局部坐标系</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="279"/>
+      <location filename="../../../JointObject.py" line="283"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>这可以防止 Placement2 重新计算，从而实现对放置（Placement）的自定义定位</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
+      <location filename="../../../JointObject.py" line="295"/>
+      <location filename="../../../JointObject.py" line="569"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>这是配合的第二个连接器的附着偏移</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>启用此配合的最小长度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>启用此配合的最大长度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>启用此配合的最小角度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>启用此配合的最大角度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="380"/>
+      <location filename="../../../JointObject.py" line="386"/>
+      <source>This is the angle of the joint. It is used only by the Angle joint.</source>
+      <translation>这是关节的接合点，它仅由角度接合点使用。</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="422"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>这是两个坐标系之间长度的最小限制（沿其 Z 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="392"/>
+      <location filename="../../../JointObject.py" line="434"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>这是两个坐标系之间长度的最大限制（沿其 Z 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="404"/>
+      <location filename="../../../JointObject.py" line="446"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>这是两个坐标系之间角度的最小限制（沿其 X 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="416"/>
+      <location filename="../../../JointObject.py" line="458"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>这是两个坐标系之间角度的最大限制（沿其 X 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="255"/>
+      <location filename="../../../JointObject.py" line="259"/>
       <source>The second reference of the joint</source>
       <translation>配合的第二参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="435"/>
+      <location filename="../../../JointObject.py" line="477"/>
       <source>The first object of the joint</source>
       <translation>配合的第一个对象</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="455"/>
+      <location filename="../../../JointObject.py" line="497"/>
       <source>The second object of the joint</source>
       <translation>配合的第二个对象</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="398"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>这是配合的距离。仅在距离配合、齿轮条配合（节距半径）、螺纹配合、齿轮和皮带配合（半径1）中使用</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="410"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>这是配合的第二个距离。仅在齿轮配合中作为第二半径。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="469"/>
+      <location filename="../../../JointObject.py" line="511"/>
       <source>The {order} reference of the joint</source>
       <translation>配合的第 {order} 参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1037"/>
+      <location filename="../../../JointObject.py" line="1153"/>
       <source>The object to ground</source>
       <translation>要固定的对象</translation>
     </message>
@@ -685,37 +689,37 @@ SLOPE 定义了在 time = T1 和 T2 附近，从 0 到 H1、从 H2 到 0 之间�
   <context>
     <name>TaskAssemblyCreateJoint</name>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
       <source>Radius 2</source>
       <translation>半径 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Offset</source>
       <translation>偏移</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
       <translation>旋转</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
       <translation>偏移1</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
       <translation>偏移2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="191"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
       <translation>显示高级偏移量</translation>
     </message>
@@ -730,52 +734,57 @@ SLOPE 定义了在 time = T1 和 T2 附近，从 0 到 H1、从 H2 到 0 之间�
       <translation>隔离</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
-      <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation type="unfinished">Sets the attachment offset of the joint’s first marker (coordinate system)</translation>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <source>Angle</source>
+      <translation>角度</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="179"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
+      <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
+      <translation>设置接合点第一个标记（坐标系）的附着偏移量</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
       <translation>设置连接件第二个标记点（坐标系）的附着偏移量</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
       <source>Reverse the direction of the joint</source>
       <translation>反转配合方向</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="210"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
       <translation>反转</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="221"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
       <source>Limits</source>
       <translation>限位</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="227"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
       <source>Min length</source>
       <translation>最小长度</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="250"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
       <source>Max length</source>
       <translation>最大长度</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="273"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min angle</source>
       <translation>最小角度</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="302"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
       <source>Max angle</source>
       <translation>最大角度</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="334"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
       <translation>反向旋转</translation>
     </message>
@@ -892,55 +901,55 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>移动零件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1519"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation/>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1536"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
       <source>Empty Assembly</source>
       <translation>空装配体</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1540"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
       <source>Over-constrained:</source>
       <translation>过度约束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
       <source>Malformed joints:</source>
       <translation>错误配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1553"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
       <source>Redundant joints:</source>
       <translation>冗余配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
       <source>Partially redundant:</source>
       <translation>部分冗余：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1566"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
       <source>Solver failed to converge</source>
       <translation>求解器未能收敛</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1572"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
       <source>Under-constrained:</source>
       <translation>约束不足：</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1574"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1578"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
       <source>Fully constrained</source>
       <translation>完全约束</translation>
     </message>
@@ -955,7 +964,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建一个螺纹接合点，将带有滑动接合点的零件与带有旋转接合点的零件连接起来&lt;/p&gt;&lt;p&gt;选择与旋转接合点和滑动接合点相同的坐标系。节距半径定义了旋转螺纹和滑动零件之间的运动比率。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -968,7 +977,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="396"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建将两个旋转齿轮连接在一起的齿轮或皮带接合点&lt;/p&gt;&lt;p&gt;选择与旋转接合点相同的坐标系。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1031,7 +1040,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation type="unfinished">Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</translation>
+      <translation>仅将零件容器和子装配体添加到物料清单。不包括实体（例如实体、紧固件、图元）。</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1069,7 +1078,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建当前装配体的物料清单。如果装配体处于活动状态，它将作为该装配体的物料清单 (BOM)。否则，它将作为整个文档的物料清单。&lt;/p&gt;&lt;p&gt;BOM 对象是一个文档对象，用于存储物料清单的设置。它也是一个电子表格对象，因此您可以轻松查看物料清单。如果您不需要将 BOM 对象保存为文档对象，只需导出并取消任务即可。&lt;/p&gt;&lt;p&gt;“索引”、“名称”、“文件名”和“数量”列会在重新计算时自动生成。“说明”和自定义列不会被覆盖。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1265,7 +1274,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - 如果装配体处于活动状态：创建一个接合点，将两个零件永久锁定在一起，防止任何移动或旋转&lt;/p&gt;&lt;p&gt;2 - 如果零件处于活动状态：通过匹配选定的坐标系来定位子零件。选定的第二个零件将会移动。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1330,7 +1339,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="203"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建一个距离接合点，用于固定所选对象之间的距离&lt;/p&gt;&lt;p&gt;根据选择创建多个不同接合点中的一个。例如，当平面和圆柱体之间的距离为 0 时，将创建一个切线接合点。当平面之间的距离为 0 时，将使它们共面。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1382,7 +1391,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建一个齿条齿轮接合点，将带有滑动接合点的零件与带有旋转接合点的零件连接起来&lt;/p&gt;&lt;p&gt;选择与旋转接合点和滑动接合点相同的坐标系。节距半径定义了齿条和小齿轮之间的运动比率。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1395,7 +1404,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="348"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建一个齿轮接合点，将两个旋转的齿轮连接在一起。它们的旋转方向相反。&lt;/p&gt;&lt;p&gt;选择与旋转接合点相同的坐标系。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1408,7 +1417,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;创建一个皮带接合点，将两个旋转对象连接在一起。它们的旋转方向相同。&lt;/p&gt;&lt;p&gt;选择与旋转接合点相同的坐标系。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1416,12 +1425,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="429"/>
       <source>Toggle Grounded</source>
-      <translation type="unfinished">Toggle Grounded</translation>
+      <translation>切换固定</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="435"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <translation>&lt;p&gt;切换零件的固定状态。&lt;/p&gt;&lt;p&gt;将零件固定可永久锁定其在装配体中的位置，防止其发生任何移动或旋转。开始装配前，您需要固定至少一个零件。</translation>
     </message>
   </context>
   <context>

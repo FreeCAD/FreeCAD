@@ -87,8 +87,8 @@ of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled 
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
       <translation>Strani dokumentacije se pridobijo s samodejno Markdownovo pretvorbo FreeCADove vikistrani,
-ki gostuje na FreeCADovem GitHub računu. S spodnjimi slogovniki po meri se lahko
-složi iziris strani, da je lepši, kot na vikistrani. Za boljši učinek je treba namestiti
+ki gostuje na FreeCADovem GitHub računu. S spodnjimi slogovniki po meri se lahko 
+složi iziris strani, da je lepši, kot na vikistrani. Za boljši učinek je treba namestiti 
 pythonov modul "Markdown" ali "Pandoc".</translation>
     </message>
     <message>
@@ -159,27 +159,27 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="73"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="77"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebengineWidgets modul ni na voljo. Pomoč izpisuje sistemov brskalnik</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Na vašem sistemu ni nameščenega nobenega izrisovalnika Markdowna, zato je stran pomoči prikazana tako, kot je. Za izboljšanje izrisovanja te strani namestite modul Markdown ali Pandoc Python.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>Pomoč</translation>
     </message>
@@ -187,7 +187,7 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>Splošno</translation>
     </message>
