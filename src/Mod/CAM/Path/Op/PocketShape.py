@@ -57,43 +57,43 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def removeHoles(self, solid, face, tolerance=1e-6):
         """removeHoles(solid, face, tolerance) ... Remove hole wires from a face, keeping outer wire and boss wires.
-        
+
         Args:
             solid: The parent solid object
             face: The face to process
             tolerance: Z-tolerance for comparisons
-            
+
         Returns:
             New face with outer wire and boss wires only
         """
         Path.Log.debug("Removing holes from face")
         outer_wire = face.OuterWire
         all_wires = face.Wires
-        
+
         # Get candidate wires (all except outer wire)
         candidate_wires = [w for w in all_wires if not w.isSame(outer_wire)]
         Path.Log.debug("Candidate wires: {}".format(len(candidate_wires)))
-        
+
         # Get the Z-level of the original face for comparison
         face_center = face.CenterOfMass
         face_z = face_center.z
-        
+
         boss_wires = []
-        
+
         # Test each candidate wire
         for wire in candidate_wires:
             is_boss = True  # Assume it's a boss until proven otherwise
-            
+
             # Find faces in the solid that share edges with this wire
             wire_edges = wire.Edges
             adjacent_faces = []
-            
+
             for edge in wire_edges:
                 for solid_face in solid.Shape.Faces:
                     # Skip if it's the same as the original face
                     if solid_face.isSame(face):
                         continue
-                    
+
                     # Check if this face shares the edge
                     for face_edge in solid_face.Edges:
                         if edge.isSame(face_edge):
@@ -106,30 +106,30 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             if not is_duplicate:
                                 adjacent_faces.append(solid_face)
                             break
-            
+
             # Check each adjacent face
             for adj_face in adjacent_faces:
                 # Use the highest point of the adjacent face (ZMax) for comparison
                 # If even the highest point is below the original face plane, it's a hole
                 adj_z_max = adj_face.BoundBox.ZMax
-                
+
                 # If the highest point of the face is below or at the original face plane (within tolerance), it's a hole
                 if adj_z_max < face_z + tolerance:
                     Path.Log.debug("Adjacent face is below original face plane")
                     is_boss = False
                     break
-            
+
             # If all adjacent faces are at or above the original face Z-level, it's a boss
             if is_boss:
                 boss_wires.append(wire)
 
-        Path.Log.debug("Boss wires: {}".format(len(boss_wires))) 
+        Path.Log.debug("Boss wires: {}".format(len(boss_wires)))
         # Construct new face from outer wire and boss wires
         if boss_wires:
             new_face = Part.Face([outer_wire] + boss_wires)
         else:
             new_face = Part.Face(outer_wire)
-        
+
         return new_face
 
     def initPocketOp(self, obj):
