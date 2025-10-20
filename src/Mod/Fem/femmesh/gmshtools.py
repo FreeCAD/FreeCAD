@@ -206,6 +206,9 @@ class GmshTools:
         self.dist_setting_list = []     # list of dict, each item map to MeshBoundaryLayer object
         self.dist_element_set = set()   # set to remove duplicated element edge or faces
 
+        # mesh shapes
+        self.shape_setting_list = []     # list of dict, each item map to MeshBoundaryLayer object
+
         # transfinite meshes
         self.transfinite_curve_settings = []       # list of dict, one entry per curve definition
         self.transfinite_curve_elements = set()    # set to remove duplicated element edge or faces
@@ -230,6 +233,7 @@ class GmshTools:
         self.get_region_data()
         self.get_boundary_layer_data()
         self.get_distance_data()
+        self.get_shape_data()
         self.get_transfinite_data()
 
     def write_gmsh_input_files(self):
@@ -801,6 +805,64 @@ class GmshTools:
                         "because the reference list is empty.\n".format(mr_obj.Name)
                     )
 
+    def get_shape_data(self):
+        # mesh sphere
+        for sphere in self._get_definitions_of_type("Fem::MeshSphere"):
+
+            if sphere.Suppressed:
+                continue
+
+            settings = {"Field": "Ball", "Data": {}}
+            settings["Data"]["Radius"] = Units.Quantity(sphere.Radius).Value
+            settings["Data"]["XCenter"] = Units.Quantity(sphere.Center.x).Value
+            settings["Data"]["YCenter"] = Units.Quantity(sphere.Center.y).Value
+            settings["Data"]["ZCenter"] = Units.Quantity(sphere.Center.z).Value
+            settings["Data"]["Thickness"] = Units.Quantity(sphere.Thickness).Value
+            settings["Data"]["VIn"] = Units.Quantity(sphere.SizeIn).Value
+            settings["Data"]["VOut"] = Units.Quantity(sphere.SizeOut).Value
+
+            self.shape_setting_list.append(settings)
+
+        # mesh cylinder
+        for cylinder in self._get_definitions_of_type("Fem::MeshCylinder"):
+
+            if cylinder.Suppressed:
+                continue
+
+            settings = {"Field": "Cylinder", "Data": {}}
+            settings["Data"]["Radius"] = Units.Quantity(cylinder.Radius).Value
+            settings["Data"]["XCenter"] = Units.Quantity(cylinder.Center.x).Value
+            settings["Data"]["YCenter"] = Units.Quantity(cylinder.Center.y).Value
+            settings["Data"]["ZCenter"] = Units.Quantity(cylinder.Center.z).Value
+            settings["Data"]["XAxis"] = Units.Quantity(cylinder.Axis.x).Value*1000
+            settings["Data"]["YAxis"] = Units.Quantity(cylinder.Axis.y).Value*1000
+            settings["Data"]["ZAxis"] = Units.Quantity(cylinder.Axis.z).Value*1000
+            #settings["Data"]["Thickness"] = Units.Quantity(cylinder.Thickness).Value
+            settings["Data"]["VIn"] = Units.Quantity(cylinder.SizeIn).Value
+            settings["Data"]["VOut"] = Units.Quantity(cylinder.SizeOut).Value
+
+            self.shape_setting_list.append(settings)
+
+        # mesh box
+        for box in self._get_definitions_of_type("Fem::MeshBox"):
+
+            if box.Suppressed:
+                continue
+
+            settings = {"Field": "Box", "Data": {}}
+            settings["Data"]["XMin"] = Units.Quantity(box.Center.x) - Units.Quantity(box.Length/2).Value
+            settings["Data"]["XMax"] = Units.Quantity(box.Center.x) + Units.Quantity(box.Length/2).Value
+            settings["Data"]["YMin"] = Units.Quantity(box.Center.y) - Units.Quantity(box.Width/2).Value
+            settings["Data"]["YMax"] = Units.Quantity(box.Center.y) + Units.Quantity(box.Width/2).Value
+            settings["Data"]["ZMin"] = Units.Quantity(box.Center.z) - Units.Quantity(box.Height/2).Value
+            settings["Data"]["ZMax"] = Units.Quantity(box.Center.z) + Units.Quantity(box.Height/2).Value
+            settings["Data"]["Thickness"] = Units.Quantity(box.Thickness).Value
+            settings["Data"]["VIn"] = Units.Quantity(box.SizeIn).Value
+            settings["Data"]["VOut"] = Units.Quantity(box.SizeOut).Value
+
+            self.shape_setting_list.append(settings)
+
+
 
     def get_transfinite_data(self):
 
@@ -1093,6 +1155,27 @@ class GmshTools:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no distance settings for this mesh\n")
 
+    def write_shapes(self, geo):
+        if self.shape_setting_list:
+            geo.write("// shape based refinements\n")
+
+            for shape in self.shape_setting_list:
+                field_number = self._next_field_number()
+                prefix = "Field[" + str(field_number) + "]"
+                geo.write(prefix + " = " + shape["Field"] +";\n")
+
+                for name, data in shape["Data"].items():
+                    line = prefix + "." + str(name) + " = " + str(data) + ";\n"
+                    geo.write(line)
+
+                geo.write("\n")
+
+            geo.write("// end of shape refinements \n")
+            geo.write("\n")
+            geo.flush()
+
+        else:
+            geo.write("// no shape based refinements for this mesh\n")
 
     def write_transfinite(self, geo):
 
@@ -1171,6 +1254,9 @@ class GmshTools:
 
         # Distance size fields
         self.write_distances(geo)
+
+        # Shape size fields
+        self.write_shapes(geo)
 
         # boundary layer generation may need special setup
         # of Gmsh properties, set them in Gmsh TaskPanel
