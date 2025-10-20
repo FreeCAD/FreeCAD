@@ -31,10 +31,10 @@
 #include <vtkSmartPointer.h>
 #include <vtkSphere.h>
 
-#include <App/PropertyUnits.h>
+#include <App/Property.h>
 #include <App/DocumentObjectGroup.h>
 
-#include "FemPostObject.h"
+#include "FemShapeExtension.h"
 
 
 namespace Fem
@@ -101,18 +101,13 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostBoxFunction: public FemPostFunction
+class FemExport FemPostBoxFunction: public FemPostFunction, public BoxExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostBoxFunction);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostBoxFunction);
 
 public:
     FemPostBoxFunction();
     ~FemPostBoxFunction() override;
-
-    App::PropertyVectorDistance Center;
-    App::PropertyDistance Length;
-    App::PropertyDistance Width;
-    App::PropertyDistance Height;
 
     const char* getViewProviderName() const override
     {
@@ -129,17 +124,13 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostCylinderFunction: public FemPostFunction
+class FemExport FemPostCylinderFunction: public FemPostFunction, public CylinderExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostCylinderFunction);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostCylinderFunction);
 
 public:
     FemPostCylinderFunction();
     ~FemPostCylinderFunction() override;
-
-    App::PropertyVector Axis;
-    App::PropertyVectorDistance Center;
-    App::PropertyDistance Radius;
 
     const char* getViewProviderName() const override
     {
@@ -156,16 +147,13 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostPlaneFunction: public FemPostFunction
+class FemExport FemPostPlaneFunction: public FemPostFunction, public PlaneExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPlaneFunction);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostPlaneFunction);
 
 public:
     FemPostPlaneFunction();
     ~FemPostPlaneFunction() override;
-
-    App::PropertyVector Normal;
-    App::PropertyVectorDistance Origin;
 
     const char* getViewProviderName() const override
     {
@@ -182,16 +170,13 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostSphereFunction: public FemPostFunction
+class FemExport FemPostSphereFunction: public FemPostFunction, public SphereExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostSphereFunction);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostSphereFunction);
 
 public:
     FemPostSphereFunction();
     ~FemPostSphereFunction() override;
-
-    App::PropertyDistance Radius;
-    App::PropertyVectorDistance Center;
 
     const char* getViewProviderName() const override
     {
