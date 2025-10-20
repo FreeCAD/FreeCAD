@@ -693,6 +693,66 @@
  */
 
 /**
+ * @defgroup LinksGroup Links
+ * @ingroup APP
+ * @brief Links determine relations between document objects and documents.
+ *
+ * App::Link document objects are special document objects that create links to
+ * other document objects, potentially in other documents.  Links are special
+ * document objects that inherit most properties from the object they are
+ * linked to, but they can override some properties as well, such as the
+ * placement, color, or scale.  More precisely, the properties that can be
+ * overridden typically apply simple transforms on the shape of the linked
+ * object.
+ *
+ * The most visible part of links to users is App::Link.  It inherits from @ref
+ * App::DocumentObject "DocumentObject" and from @ref App::LinkExtension
+ * "LinkExtension" which gives it the functionality to link to other document
+ * objects.  @ref App::LinkExtension "LinkExtension" inherits from @ref
+ * App::LinkBaseExtension "LinkBaseExtension" and gets most of its
+ * functionality from that class.
+ *
+ * There are two other classes that inherit from @ref App::LinkBaseExtension
+ * "LinkBaseExtension", namely @ref App::LinkGroup "LinkGroup" and @ref
+ * App::LinkElement "LinkElement".  A %LinkGroup is a group of document objects
+ * or links with, for example, a common placement.
+ *
+ * A @ref App::LinkElement "LinkElement" is a container for link elements to
+ * form a special kind of group based on only one link.  This can be achieved
+ * by creating an App::Link to an object and increase the element count to
+ * greater than 0.  Each link is then represented by a @ref App::LinkElement
+ * "LinkElement".
+ *
+ * Links are very cheap in the sense that there is no copy of the object it
+ * links to, although it does have its own shape.  The view provider of the
+ * link also simply makes use the document objects in the original linked
+ * object.  Changing a property in the link (unless it is one of the overridden
+ * ones) will typically also affect the original linked object.
+ *
+ * @section SecCopyOnChange Copy-on-change links
+ *
+ * Links can be created as "copy-on-change" links.  To create copy-on-change
+ * links, the source object needs to have a property that is marked as
+ * "copy-on-change".  Creating an App::Link from this source objects creates a
+ * normal link where the property `LinkedObject` points to the source object.
+ *
+ * The user can then change the property `LinkCopyOnChange` to `Enabled` which
+ * provides the user with copy-on-link behavior although the link is still a
+ * regular link.  What is special, is that the link adopts the copy-on-change
+ * property from the source object in order for users to change the value in
+ * the link.  As soon as the adopted copy-on-change property is changed, a
+ * special hidden document object is created inside the link will contain a
+ * copy of the source object.  The link's `LinkedObject` property is then
+ * changed to point to this hidden object, the changed property is applied on
+ * this hidden object and the link is now a variant of the original source
+ * object.
+ *
+ * Instead of changing the property `LinkCopyOnChange` to `Enabled`, the user
+ * can also set it to `Tracking` which means that changes in the original
+ * object are tracked and applied on the copy.
+ */
+
+/**
  * @namespace App
  * @ingroup APP
  * @brief The namespace for the part of FreeCAD that works without GUI.
