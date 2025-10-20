@@ -380,8 +380,8 @@
       <translation>Infoga kolumner</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="680"/>
       <location filename="../../SpreadsheetView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="680"/>
       <source>Clear Cells</source>
       <translation>Klara celler</translation>
     </message>
@@ -680,8 +680,8 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Alla (*)</translation>
     </message>
@@ -1211,7 +1211,7 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="337"/>
       <source>Unsetup Configuration Table</source>
-      <translation type="unfinished">Unsetup Configuration Table</translation>
+      <translation>Avkonfigurera konfigurationstabell</translation>
     </message>
   </context>
 </TS>

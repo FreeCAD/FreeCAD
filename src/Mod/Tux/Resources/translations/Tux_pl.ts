@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="652"/>
       <source>Orbit style</source>
-      <translation>Technika orbitalna</translation>
+      <translation>Technika obrotu widokiem</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="653"/>
