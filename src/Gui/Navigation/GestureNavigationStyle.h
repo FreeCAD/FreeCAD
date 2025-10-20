@@ -42,6 +42,7 @@ public:
     GestureNavigationStyle();
     ~GestureNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
+    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
 
 protected:
     SbBool processSoEvent(const SoEvent* const ev) override;

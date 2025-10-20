@@ -186,23 +186,13 @@ private:
             return false;
         }
 
-        // for navigation styles that use primarily LMB for rotation, we require
-        // to get CTRL+LMB combo to toggle long press
         auto* navStyle = viewer->navigationStyle();
         if (navStyle) {
-            Base::Type navType = navStyle->getTypeId();
-            if (navType == InventorNavigationStyle::getClassTypeId() ||
-                navType == GestureNavigationStyle::getClassTypeId() ||
-                navType == OpenSCADNavigationStyle::getClassTypeId()) {
-                if (!ctrlPressed) {
-                    return false;
-                }
+            // reject if navigation style requires ctrl and it's not pressed or we're under a dragger
+            if ((navStyle->clarifySelectionMode() == NavigationStyle::ClarifySelectionMode::Ctrl && !ctrlPressed) ||
+                navStyle->isDraggerUnderCursor(SbVec2s(pos.x(), pos.y()))) {
+                return false;
             }
-        }
-
-        // finally, discard long press if we are under a dragger
-        if (navStyle && navStyle->isDraggerUnderCursor(SbVec2s(pos.x(), pos.y()))) {
-            return false;
         }
 
         return true;
