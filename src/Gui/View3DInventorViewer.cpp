@@ -186,8 +186,7 @@ private:
             return false;
         }
 
-        auto* navStyle = viewer->navigationStyle();
-        if (navStyle) {
+        if (auto* navStyle = viewer->navigationStyle()) {
             // reject if navigation style requires ctrl and it's not pressed or we're under a dragger
             if ((navStyle->clarifySelectionMode() == NavigationStyle::ClarifySelectionMode::Ctrl && !ctrlPressed) ||
                 navStyle->isDraggerUnderCursor(SbVec2s(pos.x(), pos.y()))) {
