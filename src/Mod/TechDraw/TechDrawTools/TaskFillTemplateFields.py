@@ -91,11 +91,11 @@ keyLst = []
 
 class TaskFillTemplateFields:
     def __init__(self):
-        objs = App.ActiveDocument.Objects
+        objs = App.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
+
         for obj in objs:
             if (
-                obj.TypeId == "TechDraw::DrawPage"
-                and os.path.exists(file_path)
+                os.path.exists(file_path)
                 and listofkeys == reader.fieldnames
             ):
                 self.page = obj
@@ -117,10 +117,14 @@ class TaskFillTemplateFields:
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    if pageObj.isDerivedFrom("TechDraw::DrawViewPart"):
+                    if (
+                        pageObj.isDerivedFrom("TechDraw::DrawViewPart") 
+                        or pageObj.isDerivedFrom("TechDraw::DrawProjGroup")
+                    ):
+                        # should this not be pageObj? this is looking for any DVP or DPG on the page?
+                        # Views[0] could be an annotation or symbol or ??? - WF
                         projgrp_view = self.page.Views[0]
-                    elif pageObj.isDerivedFrom("TechDraw::DrawProjGroup"):
-                        projgrp_view = self.page.Views[0]
+                        break
 
                 self.texts = self.page.Template.EditableTexts
 
