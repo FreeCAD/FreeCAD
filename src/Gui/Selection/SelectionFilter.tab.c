@@ -936,7 +936,7 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 # endif
       char *yyfmt;
       char const *yyf;
-      static char const yyunexpected[] = "syntax error, unexpected %s";
+      static char const yyunexpected[] = "Selection Filter: syntax error, unexpected %s";
       static char const yyexpecting[] = ", expecting %s";
       static char const yyor[] = " or %s";
       char yyformat[sizeof yyunexpected
@@ -1464,7 +1464,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (YY_("syntax error"));
+      yyerror (YY_("Selection Filter: syntax error"));
 #else
       {
 	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
@@ -1492,7 +1492,7 @@ yyerrlab:
 	  }
 	else
 	  {
-	    yyerror (YY_("syntax error"));
+	    yyerror (YY_("Selection Filter: syntax error"));
 	    if (yysize != 0)
 	      goto yyexhaustedlab;
 	  }
@@ -1642,5 +1642,4 @@ yyreturn:
 
 /* Line 1684 of yacc.c  */
 #line 61 "SelectionFilter.y"
-
 
