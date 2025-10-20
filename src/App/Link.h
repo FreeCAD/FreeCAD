@@ -53,6 +53,7 @@ namespace App
 
 /**
  * @brief The base class of the link extension.
+ * @ingroup LinksGroup
  *
  * The functionality in this class is reused in LinkExtension, LinkElement, and
  * LinkGroup.
@@ -841,6 +842,7 @@ using LinkBaseExtensionPython = ExtensionPythonT<LinkBaseExtension>;
 
 /**
  * @brief The link extension class.
+ * @ingroup LinksGroup
  *
  * This class implements the link extension functionality and is the extension
  * that makes @ref App::Link "Link" a link.
@@ -963,7 +965,8 @@ using LinkExtensionPython = ExtensionPythonT<LinkExtension>;
 
 
 /**
- * @brief The Link class.
+ * @brief The %Link class.
+ * @ingroup LinksGroup
  *
  * Instances of this class represent links to other objects in the document or
  * even to objects in other documents.
@@ -1027,6 +1030,7 @@ using LinkPython = App::FeaturePythonT<Link>;
 
 /**
  * @brief A class that represents an element of a link.
+ * @ingroup LinksGroup
  *
  * A link with an element count greater than 0 will contain multiple links to
  * the linked object, all with their own placement, scale, and visibility.
@@ -1094,6 +1098,7 @@ using LinkElementPython = App::FeaturePythonT<LinkElement>;
 
 /**
  * @brief A class that represents a group of links.
+ * @ingroup LinksGroup
  *
  * Other than "upgrading" a normal Link to having multiple @ref
  * App::LinkElement "LinkElements", a link group is a grouping for document
