@@ -151,7 +151,7 @@ bool Preferences::useGlobalDecimals()
 
 int Preferences::projectionAngle()
 {
-    return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
+    return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First angle
 }
 
 bool Preferences::groupAutoDistribute()
