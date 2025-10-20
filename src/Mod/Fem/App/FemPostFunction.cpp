@@ -81,15 +81,12 @@ DocumentObjectExecReturn* FemPostFunction::execute()
 
 // ***************************************************************************
 // box function
-PROPERTY_SOURCE(Fem::FemPostBoxFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostBoxFunction, Fem::FemPostFunction)
 
 FemPostBoxFunction::FemPostBoxFunction()
-    : FemPostFunction()
+    : FemPostFunction(), BoxExtension()
 {
-    ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
-    ADD_PROPERTY(Length, (10.0));
-    ADD_PROPERTY(Width, (10.0));
-    ADD_PROPERTY(Height, (10.0));
+    BoxExtension::initExtension(this);
 
     m_box = vtkSmartPointer<vtkBox>::New();
     m_implicit = m_box;
@@ -128,14 +125,12 @@ void FemPostBoxFunction::onDocumentRestored()
 
 // ***************************************************************************
 // cylinder function
-PROPERTY_SOURCE(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
 
 FemPostCylinderFunction::FemPostCylinderFunction()
-    : FemPostFunction()
+    : FemPostFunction(), CylinderExtension()
 {
-    ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
-    ADD_PROPERTY(Axis, (Base::Vector3d(0.0, 0.0, 1.0)));
-    ADD_PROPERTY(Radius, (5.0));
+    CylinderExtension::initExtension(this);
 
     m_cylinder = vtkSmartPointer<vtkCylinder>::New();
     m_implicit = m_cylinder;
@@ -173,14 +168,13 @@ void FemPostCylinderFunction::onDocumentRestored()
 
 // ***************************************************************************
 // plane function
-PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
 
 FemPostPlaneFunction::FemPostPlaneFunction()
-    : FemPostFunction()
+    : FemPostFunction(), PlaneExtension()
 {
 
-    ADD_PROPERTY(Origin, (Base::Vector3d(0.0, 0.0, 0.0)));
-    ADD_PROPERTY(Normal, (Base::Vector3d(0.0, 0.0, 1.0)));
+    PlaneExtension::initExtension(this);
 
     m_plane = vtkSmartPointer<vtkPlane>::New();
     m_implicit = m_plane;
@@ -215,14 +209,12 @@ void FemPostPlaneFunction::onDocumentRestored()
 
 // ***************************************************************************
 // sphere function
-PROPERTY_SOURCE(Fem::FemPostSphereFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostSphereFunction, Fem::FemPostFunction)
 
 FemPostSphereFunction::FemPostSphereFunction()
-    : FemPostFunction()
+    : FemPostFunction(), SphereExtension()
 {
-
-    ADD_PROPERTY(Radius, (5.0));
-    ADD_PROPERTY(Center, (Base::Vector3d(1.0, 0.0, 0.0)));
+    SphereExtension::initExtension(this);
 
     m_sphere = vtkSmartPointer<vtkSphere>::New();
     m_implicit = m_sphere;

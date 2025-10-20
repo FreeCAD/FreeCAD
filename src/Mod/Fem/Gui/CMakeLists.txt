@@ -23,12 +23,15 @@ generate_from_py(ViewProviderFemConstraint)
 generate_from_py(ViewProviderFemMesh)
 generate_from_py(ViewProviderFemPostPipeline)
 generate_from_py(ViewProviderFemPostFilter)
+generate_from_py(ViewProviderShapeExtension)
 
 SET(Python_SRCS
     ViewProviderFemConstraint.pyi
     ViewProviderFemConstraintPyImp.cpp
     ViewProviderFemMesh.pyi
     ViewProviderFemMeshPyImp.cpp
+    ViewProviderShapeExtension.pyi
+    ViewProviderShapeExtensionPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
@@ -244,6 +247,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintTransform.h
     ViewProviderResult.cpp
     ViewProviderResult.h
+    ViewProviderShapeExtension.h
+    ViewProviderShapeExtension.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
