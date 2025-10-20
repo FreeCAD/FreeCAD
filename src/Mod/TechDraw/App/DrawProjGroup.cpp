@@ -594,7 +594,6 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
     if (strcmp(viewTypeCStr, "Front") == 0) {// Front!
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
-
     const int idxCount = MAXPROJECTIONCOUNT;
     std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT> viewPtrs;
     arrangeViewPointers(viewPtrs);
@@ -633,7 +632,6 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
     double bigWidthMiddle = getMaxColWidth(middleColBoxes, bboxes);
     double bigWidthRight = getMaxColWidth(rightColBoxes, bboxes);
     double bigWidthFarRight = 0.0;
-
     if (bboxes[6].IsValid()) {
         bigWidthFarRight = bboxes[6].LengthX();
     }
