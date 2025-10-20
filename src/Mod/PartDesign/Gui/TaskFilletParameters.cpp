@@ -31,13 +31,13 @@
 #include <Base/Converter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
