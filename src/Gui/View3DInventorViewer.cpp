@@ -115,6 +115,8 @@
 #include "Multisample.h"
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/GestureNavigationStyle.h"
+#include "Navigation/SiemensNXNavigationStyle.h"
 #include "Selection.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
@@ -171,6 +173,30 @@ private:
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
     }
 
+    bool shouldEnableLongPress(View3DInventorViewer* viewer, const QPoint& pos, bool ctrlPressed) const {
+        bool enabled = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                           ->GetBool("EnableLongPressClarifySelection", true);
+        if (!enabled) {
+            return false;
+        }
+
+        // check edit mode and view provider editing (for example transform manipulator)
+        if (viewer->isEditing() || viewer->isEditingViewProvider()) {
+            return false;
+        }
+
+        if (auto* navStyle = viewer->navigationStyle()) {
+            // reject if navigation style requires ctrl and it's not pressed or we're under a dragger
+            if ((navStyle->clarifySelectionMode() == NavigationStyle::ClarifySelectionMode::Ctrl && !ctrlPressed) ||
+                navStyle->isDraggerUnderCursor(SbVec2s(pos.x(), pos.y()))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     QTimer* longPressTimer;
     QPoint pressPosition;
     View3DInventorViewer* currentViewer = nullptr;
@@ -223,12 +249,15 @@ public:
             if (mouseEvent->button() == Qt::LeftButton) {
                 currentViewer = static_cast<View3DInventorViewer*>(obj);
                 pressPosition = mouseEvent->pos();
+                bool ctrlPressed = (mouseEvent->modifiers() & Qt::ControlModifier) != 0;
 
-                int longPressTimeout = App::GetApplication()
-                                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                                           ->GetInt("LongPressTimeout", 1000);
-                longPressTimer->setInterval(longPressTimeout);
-                longPressTimer->start();
+                if (shouldEnableLongPress(currentViewer, pressPosition, ctrlPressed)) {
+                    double longPressTimeout = App::GetApplication()
+                                               .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                               ->GetFloat("LongPressTimeout", 1.0);
+                    longPressTimer->setInterval(static_cast<int>(longPressTimeout * 1000));
+                    longPressTimer->start();
+                }
             }
         }
         else if (event->type() == QEvent::MouseButtonRelease) {
