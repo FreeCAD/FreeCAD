@@ -547,7 +547,7 @@ SET(Tests_SRCS
     CAMTests/TestPathVoronoi.py
     CAMTests/TestRefactoredCentroidPost.py
     CAMTests/TestRefactoredGrblPost.py
-    CAMTests/TestRefactoredLinuxCNCPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestRefactoredMach3Mach4Post.py
     CAMTests/TestRefactoredMassoG3Post.py
     CAMTests/TestRefactoredTestDressupPost.py
