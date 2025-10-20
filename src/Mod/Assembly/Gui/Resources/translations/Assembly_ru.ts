@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Вставляет компонент в активную сборку. При этом создаются динамические ссылки на детали, тела, примитивы и сборки. Чтобы вставить внешние компоненты, убедитесь, что файл &lt;b&gt;открыт в текущей сессии&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Вставьте, щёлкнув левой кнопкой мыши по элементам в списке.&lt;/li&gt;&lt;li&gt;Удалите, щёлкнув правой кнопкой мыши по элементам в списке.&lt;/li&gt;&lt;li&gt;Нажмите клавишу Shift, чтобы добавить несколько экземпляров компонента, щёлкая по виду.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1569"/>
+      <location filename="../../../JointObject.py" line="1694"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
@@ -146,7 +146,6 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1571"/>
       <source>Angle</source>
       <translation>Угловое</translation>
     </message>
@@ -171,27 +170,27 @@
       <translation>Ремённое/Цепное</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="641"/>
+      <location filename="../../../JointObject.py" line="759"/>
       <source>Broken link in: </source>
       <translation>Неисправная ссылка в: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1531"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Выберите 2 элемента из 2 отдельных деталей</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1573"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Radius 1</source>
       <translation>Радиус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1575"/>
+      <location filename="../../../JointObject.py" line="1698"/>
       <source>Thread pitch</source>
       <translation>Шаг резьбы/витков</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1577"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Pitch radius</source>
       <translation>Радиус шага</translation>
     </message>
@@ -504,119 +503,124 @@ H2 — высота в точке T2 в конце ската.
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="183"/>
+      <location filename="../../../JointObject.py" line="186"/>
       <source>The type of the joint</source>
       <translation>Тип соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="209"/>
+      <location filename="../../../JointObject.py" line="213"/>
       <source>The first reference of the joint</source>
       <translation>Первая ссылка соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="225"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Это локальная система координат внутри объекта Reference1 (Источник1), которая будет использоваться для создания соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
+      <location filename="../../../JointObject.py" line="237"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Это предотвращает пересчёт Placement1 (Размещение1), позволяя настроить индивидуальное расположение размещения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="245"/>
-      <location filename="../../../JointObject.py" line="516"/>
+      <location filename="../../../JointObject.py" line="249"/>
+      <location filename="../../../JointObject.py" line="558"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Это смещение присоединения (attachment) первого коннектора соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
+      <location filename="../../../JointObject.py" line="271"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Это локальная система координат внутри объекта Reference2 (Источник2), которая будет использоваться для создания соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="279"/>
+      <location filename="../../../JointObject.py" line="283"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Это предотвращает пересчёт Placement2 (Размещение2), позволяя настроить индивидуальное расположение размещения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
+      <location filename="../../../JointObject.py" line="295"/>
+      <location filename="../../../JointObject.py" line="569"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Это смещение присоединения (attachment) второго коннектора соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Включить ограничение минимальной длины соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Включить ограничение максимальной длины соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Включить ограничение минимального угла соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Включить ограничение максимального угла соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="380"/>
+      <location filename="../../../JointObject.py" line="386"/>
+      <source>This is the angle of the joint. It is used only by the Angle joint.</source>
+      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="422"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Это минимальный предел длины между обеими системами координат (вдоль их осей z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="392"/>
+      <location filename="../../../JointObject.py" line="434"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Это максимальный предел длины между обеими системами координат (вдоль их осей z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="404"/>
+      <location filename="../../../JointObject.py" line="446"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Это минимальный допустимый угол между двумя системами координат (между их осями x)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="416"/>
+      <location filename="../../../JointObject.py" line="458"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Это максимальный допустимый угол между двумя системами координат (между их осями x)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="255"/>
+      <location filename="../../../JointObject.py" line="259"/>
       <source>The second reference of the joint</source>
       <translation>Второй источник соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="435"/>
+      <location filename="../../../JointObject.py" line="477"/>
       <source>The first object of the joint</source>
       <translation>Первый объект соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="455"/>
+      <location filename="../../../JointObject.py" line="497"/>
       <source>The second object of the joint</source>
       <translation>Второй объект соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="398"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Это расстояние в сопряжении. Оно используется только в сопряжениях "Дистанционное", "Реечное" (радиус шага), "Резьбовое", "Шестерёнчатое" и "Ремённое/Цепное" (radius1 - радиус1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="410"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Это второе расстояние в сопряжении. Оно используется только в "Шестерёнчатом" сопряжении для хранения радиуса второго колеса.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="469"/>
+      <location filename="../../../JointObject.py" line="511"/>
       <source>The {order} reference of the joint</source>
       <translation>Ссылка {order} на сопряжение</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1037"/>
+      <location filename="../../../JointObject.py" line="1153"/>
       <source>The object to ground</source>
       <translation>Объект для фиксации</translation>
     </message>
@@ -685,37 +689,37 @@ H2 — высота в точке T2 в конце ската.
   <context>
     <name>TaskAssemblyCreateJoint</name>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Distance</source>
       <translation>Дистанционное</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
       <source>Radius 2</source>
       <translation>Радиус 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Offset</source>
       <translation>Смещение</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
       <translation>Поворот</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
       <translation>Смещение1</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
       <translation>Смещение2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="191"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
       <translation>Показать дополнительные смещения</translation>
     </message>
@@ -730,52 +734,57 @@ H2 — высота в точке T2 в конце ската.
       <translation>‎Изолировать‎</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
+      <source>Angle</source>
+      <translation>Угол</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
       <translation>Устанавливает смещение привязки первого маркера соединения (системы координат)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="179"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
       <translation>Устанавливает смещение привязки второго маркера соединения (системы координат)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
       <source>Reverse the direction of the joint</source>
       <translation>Развернуть направление соединения</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="210"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
       <translation>Развернуть</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="221"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
       <source>Limits</source>
       <translation>Пределы</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="227"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
       <source>Min length</source>
       <translation>Мин. длина</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="250"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
       <source>Max length</source>
       <translation>Макс. длина</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="273"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min angle</source>
       <translation>Мин. угол</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="302"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
       <source>Max angle</source>
       <translation>Макс. угол</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="334"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
       <translation>Обратное вращение</translation>
     </message>
@@ -889,48 +898,48 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Переместить деталь</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1519"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Поставщик Вида для Сборки</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1536"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
       <source>Empty Assembly</source>
       <translation>Пустая сборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1540"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
       <source>Over-constrained:</source>
       <translation>Конфликтующие ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
       <source>Malformed joints:</source>
       <translation>Неверные сопряжения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1553"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
       <source>Redundant joints:</source>
       <translation>Избыточные сопряжения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
       <source>Partially redundant:</source>
       <translation>Частично избыточны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1566"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
       <source>Solver failed to converge</source>
       <translation>Решатель не смог свести решение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1572"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
       <source>Under-constrained:</source>
       <translation>Недостаточно ограничен:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1574"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Степень свободы</numerusform>
@@ -940,7 +949,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1578"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
       <source>Fully constrained</source>
       <translation>Полностью ограничен</translation>
     </message>
@@ -955,7 +964,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создает винтовое сопряжение, которое соединяет деталь со скользящим сопряжением с деталью с поворотным сопряжением&lt;/p&gt;&lt;p&gt;Выберите те же системы координат, что и для поворотных и скользящих сопряжений. Радиус шага определяет соотношение движения между вращающимся винтом и скользящей деталью.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -968,7 +977,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="396"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создает шестерёнчатое или ремённое сопряжение, которое соединяет две вращающиеся шестерни между собой&lt;/p&gt;&lt;p&gt;Выберите те же системы координат, что и для шарнирных сопряжений.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1069,7 +1078,16 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создаёт спецификацию текущей сборки. Если сборка активна, это 
+будет спецификация этой сборки. В противном случае это будет 
+спецификация всего документа.&lt;/p&gt;&lt;p&gt;Объект BOM — это объект 
+документа, в котором хранятся настройки вашей спецификации. Это 
+также объект электронной таблицы, поэтому вы можете легко 
+визуализировать спецификацию. Если вам не нужно сохранять объект
+ BOM как объект документа, вы можете просто экспортировать и 
+отменить задачу. &lt;/p&gt;&lt;p&gt;Столбцы "Индекс", "Имя", "Имя файла" и 
+"Количество" автоматически генерируются при пересчёте. Столбцы 
+"Описание" и пользовательские столбцы не перезаписываются.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1077,7 +1095,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../App/AssemblyLink.cpp" line="584"/>
       <source>Joints</source>
-      <translation>Соединения</translation>
+      <translation>Сопряжения</translation>
     </message>
   </context>
   <context>
@@ -1265,7 +1283,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Если сборка активна: Создаёт сопряжение, постоянно фиксирующее две детали вместе, предотвращая любое движение или вращение.&lt;/p&gt;&lt;p&gt;2 - Если деталь активна: Располагает подузлы, сопоставляя выбранные системы координат. Вторая выбранная деталь будет перемещена.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1330,7 +1348,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="203"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создаёт сопряжение на расстоянии, которое фиксирует расстояние между выбранными объектами.&lt;/p&gt;&lt;p&gt;Создаёт одно из нескольких различных сопряжений в зависимости от выбора. Например, расстояние 0 между плоскостью и цилиндром создаст сопряжение по касательной. Расстояние 0 между плоскостями сделает их копланарными.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1382,7 +1400,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создаёт реечное сопряжение, которое соединяет деталь со скользящим сопряжением с деталью с поворотным сопряжением.&lt;/p&gt;&lt;p&gt; Выберите те же системы координат, что и для поворотного и скользящего сопряжений. Радиус шага определяет соотношение движения между рейкой и шестернёй.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1395,7 +1413,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="348"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создаёт шестерёнчатое сопряжение, которое связывает две вращающиеся шестерни/ролика. Они будут иметь взаимно обратное направление вращения.&lt;/p&gt;&lt;p&gt;Выберите те же системы координат, что и для поворотных сопряжений.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1408,7 +1426,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создает ремённое/цепное сопряжение, которое связывает два вращающихся объекта. Они будут иметь одно и то же направление вращения.&lt;/p&gt;&lt;p&gt;Выберите те же системы координат, что и для поворотных сопряжений.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1421,7 +1439,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="435"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <translation>&lt;p&gt;Переключает глобальную фиксацию детали&lt;/p&gt;&lt;p&gt;Фиксированная деталь постоянно удерживается в неизменном положении в сборке, блокируется любое её движение или вращение. Перед началом сборки необходимо зафиксировать как минимум одну деталь.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

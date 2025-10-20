@@ -538,7 +538,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1099"/>
       <source>Pad</source>
-      <translation>Block</translation>
+      <translation>Aufpolsterung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1100"/>
@@ -1575,7 +1575,16 @@ Wenn Null, ist er gleich Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="196"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="207"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Please adjust the parameters and try again.</source>
+      <translation>Das Formelement konnte mit den angegebenen Parametern nicht erstellt werden.
+Die Geometrie ist möglicherweise ungültig oder die Parameter sind möglicherweise nicht kompatibel.
+Bitte die Parameter anpassen und erneut versuchen.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="212"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -2282,7 +2291,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="38"/>
       <source>Pad Parameters</source>
-      <translation>Parameter des Blocks</translation>
+      <translation>Parameter der Aufpolsterung</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="40"/>
@@ -2861,7 +2870,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
       <source>Two angles</source>
-      <translation type="unfinished">Two angles</translation>
+      <translation>Zwei Winkel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="460"/>
@@ -3187,11 +3196,11 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Keine gültigen Ebenen in diesem Dokument</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Im Aufgaben-Fenster ist bereits ein Dialog geöffnet</translation>
     </message>
@@ -3231,11 +3240,11 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Keine Skizze im Dokument vorhanden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <source>Close this dialog?</source>
       <translation>Diesen Dialog schließen?</translation>
     </message>
@@ -3466,14 +3475,14 @@ This may lead to unexpected results.</source>
       <translation>Es ist nicht möglich, ein abziehendes Formelement ohne ein Basiselement zu erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <location filename="../../TaskTransformedParameters.cpp" line="438"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontale Skizzenachse</translation>
     </message>
@@ -3528,8 +3537,8 @@ Für veraltete Dokumente mit Part Design Objekten ohne Körper wird in Part Desi
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
@@ -3621,7 +3630,7 @@ If you refuse to migrate you won't be able to use new PartDesign features like B
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Hinweis: Bei Entscheidung für die Migrierung kann die Datei nicht mehr mit einer älteren FreeCAD-Version bearbeitet werden.
 Bei Ablehnung der Migration, können keine neuen Part Design Funktionen wie Körper und Bauteile verwendet werden. Die Teile können dann auch nicht im Arbeitsbereich Assembly verwendet werden.
-Es kann später jederzeit mit 'Part Design -&gt; Migrieren...' migriert werden.</translation>
+Es kann später jederzeit mit 'Part Design -&gt; Migrieren ...' migriert werden.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="159"/>
@@ -4281,108 +4290,108 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
   <context>
     <name>WizardShaftTable</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
       <source>Length [mm]</source>
       <translation>Länge in mm</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Diameter [mm]</source>
       <translation>Durchmesser in mm</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Inner diameter [mm]</source>
       <translation>Innendurchmesser in mm</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
       <source>Constraint type</source>
       <translation>Art der Randbedingung</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Start edge type</source>
       <translation>Art der Anfangskante</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>Start edge size</source>
       <translation>Größe der Anfangskante</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>End edge type</source>
       <translation>Art der Endkante</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="54"/>
       <source>End edge size</source>
       <translation>Größe der Endkante</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="63"/>
       <source>Shaft Wizard</source>
       <translation>Entwurfsassistent für Wellen</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 1</source>
       <translation>Abschnitt 1</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="71"/>
       <source>Section 2</source>
       <translation>Abschnitt 2</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="75"/>
       <source>Add column</source>
       <translation>Spalte hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="121"/>
       <source>Section %s</source>
       <translation>Abschnitt %s</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="149"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="164"/>
       <source>None</source>
       <translation>Kein</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <source>Fixed</source>
       <translation>Starr</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
       <source>Force</source>
       <translation>Kraft</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
       <source>Bearing</source>
       <translation>Lager</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Gear</source>
       <translation>Zahnrad</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Pulley</source>
       <translation>Rolle</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>Chamfer</source>
       <translation>Fase</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
       <source>Fillet</source>
       <translation>Verrundung</translation>
     </message>
@@ -4390,17 +4399,17 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
   <context>
     <name>TaskWizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="56"/>
       <source>All</source>
       <translation>Alle</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="103"/>
       <source>Missing Module</source>
       <translation>Fehlendes Modul</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
       <translation>Das Plot-Addon ist nicht installiert. Um diese Funktion zu aktivieren, muss es installiert werden.</translation>
     </message>
@@ -4408,12 +4417,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
   <context>
     <name>PartDesign_WizardShaftCallBack</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="213"/>
       <source>Shaft design wizard...</source>
-      <translation>Entwurfsassistent für Wellen...</translation>
+      <translation>Entwurfsassistent für Wellen ...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Start the shaft design wizard</source>
       <translation>Entwurfsassistent für Wellen starten</translation>
     </message>
@@ -4472,20 +4481,20 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Grundform ist NULL</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureGroove.cpp" line="231"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Ergebnis hat mehrere Festkörper: aktiviere 'Verbund erlauben' im aktiven Körper.</translation>
     </message>
@@ -4534,8 +4543,8 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Fase konnte nicht erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="289"/>
       <source>Resulting shape is null</source>
       <translation>Die resultierende Form ist leer</translation>
     </message>
@@ -4609,7 +4618,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
       <source>Angles of groove nullify each other</source>
-      <translation type="unfinished">Angles of groove nullify each other</translation>
+      <translation>Die Winkel der Nut heben sich gegenseitig auf</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
@@ -4675,9 +4684,9 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
       <translation>Fehler: Fläche muss eben sein</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <location filename="../../../App/FeatureHelix.cpp" line="295"/>
       <location filename="../../../App/FeatureHelix.cpp" line="327"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2538"/>
       <source>Error: Result is not a solid</source>
       <translation>Fehler: Ergebnis ist kein Festkörper</translation>
     </message>
@@ -5074,7 +5083,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="104"/>
       <source>Angles of revolution nullify each other</source>
-      <translation type="unfinished">Angles of revolution nullify each other</translation>
+      <translation>Die Winkel des Drehteils heben sich gegenseitig auf</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="131"/>
@@ -5165,12 +5174,12 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
   <context>
     <name>PartDesign_WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="188"/>
       <source>Shaft Design Wizard</source>
       <translation>Entwurfsassistent für Wellen</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Starts the shaft design wizard</source>
       <translation>Startet den Entwurfsassistenten für Wellen</translation>
     </message>
@@ -5313,7 +5322,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="835"/>
       <source>Revolution Parameters</source>
-      <translation>Drehkörper-Parameter</translation>
+      <translation>Parameter des Drehteils</translation>
     </message>
   </context>
   <context>
@@ -5321,7 +5330,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="843"/>
       <source>Groove Parameters</source>
-      <translation>Nut-Parameter</translation>
+      <translation>Parameter der Nut</translation>
     </message>
   </context>
   <context>
@@ -5443,12 +5452,12 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Richtung 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="215"/>
+      <location filename="../../TaskPatternParameters.cpp" line="216"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Wähle eine Richtungs-Referenz (Kante, Fläche oder Bezugslinie)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="295"/>
+      <location filename="../../TaskPatternParameters.cpp" line="296"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Ungültige Auswahl. Wählen Sie eine Kante, eine flache Fläche oder eine Bezugslinie.</translation>
     </message>

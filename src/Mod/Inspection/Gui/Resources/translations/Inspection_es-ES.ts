@@ -110,7 +110,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="561"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Salir del modo de información</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="692"/>

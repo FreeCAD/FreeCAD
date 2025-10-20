@@ -305,11 +305,6 @@ private:
             gCircle->setRadius(circle.Radius());
             gCircle->setCenter(Base::Vector3d(cnt.X(), cnt.Y(), cnt.Z()));
 
-            if (edge.Orientation() == TopAbs_REVERSED) {
-                Handle(Geom_Circle) hCircle = Handle(Geom_Circle)::DownCast(gCircle->handle());
-                hCircle->Reverse();
-            }
-
             GeometryFacade::setConstruction(gCircle, false);
             return gCircle;
         }
@@ -319,16 +314,11 @@ private:
             double u1 = curve.FirstParameter();
             double u2 = curve.LastParameter();
 
-            if (edge.Orientation() == TopAbs_REVERSED) {
-                hCircle->Reverse();  // Reverses the axis of the underlying circle
-                std::swap(u1, u2);
-                u1 = -u1;
-                u2 = -u2;
-            }
-
             auto* gArc = new Part::GeomArcOfCircle();
             Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, u1, u2);
             gArc->setHandle(tCurve);
+
+            gArc->reverseIfReversed();
 
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
@@ -345,11 +335,10 @@ private:
             auto* gEllipse = new Part::GeomEllipse();
             Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
 
-            if (edge.Orientation() == TopAbs_REVERSED) {
-                hEllipse->Reverse();
-            }
-
             gEllipse->setHandle(hEllipse);
+
+            gEllipse->reverseIfReversed();
+
             GeometryFacade::setConstruction(gEllipse, false);
             return gEllipse;
         }
@@ -359,16 +348,11 @@ private:
             double u1 = curve.FirstParameter();
             double u2 = curve.LastParameter();
 
-            if (edge.Orientation() == TopAbs_REVERSED) {
-                hEllipse->Reverse();  // Reverses the axis of the underlying ellipse
-                std::swap(u1, u2);
-                u1 = -u1;
-                u2 = -u2;
-            }
-
             Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hEllipse, u1, u2);
             auto* gArc = new Part::GeomArcOfEllipse();
             gArc->setHandle(tCurve);
+
+            gArc->reverseIfReversed();
 
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
@@ -386,7 +370,6 @@ private:
         TopExp_Explorer expl(offsetShape, TopAbs_EDGE);
         int geoIdToAdd = firstCurveCreated;
         for (; expl.More(); expl.Next(), geoIdToAdd++) {
-
             const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
             BRepAdaptor_Curve curve(edge);
             if (curve.GetType() == GeomAbs_Line) {
@@ -977,8 +960,19 @@ private:
 
         for (auto& CC : vCC) {
             BRepBuilderAPI_MakeWire mkWire;
-            for (auto& curve : CC) {
-                mkWire.Add(TopoDS::Edge(Obj->getGeometry(curve)->toShape()));
+            if (CC.size() > 1) {
+                // The element to become the new first element is the last one.
+                // The iterator to this element is one before the end.
+                std::rotate(CC.begin(), CC.end() - 1, CC.end());
+            }
+            for (auto& curveId : CC) {
+                const Part::Geometry* pGeo = Obj->getGeometry(curveId);
+                auto geoCopy = std::unique_ptr<Part::Geometry>(pGeo->copy());
+                Part::Geometry* geo = geoCopy.get();
+                geo->reverseIfReversed();  // make sure we don't have reversed conics
+
+                // Use the normalized copy to create the edge for the wire
+                mkWire.Add(TopoDS::Edge(geo->toShape()));
             }
 
             // Here we make sure that if possible the first wire is not a single line.

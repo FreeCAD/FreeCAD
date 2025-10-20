@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation>Obtenir la documentació de les pàgines renderitzades a GitHub.
-Actualment aquesta opció no està disponible.</translation>
+      <translation>Obté la documentació de les pàgines renderitzades a GitHub.
+Actualment no està disponible.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -41,7 +41,7 @@ la ubicació per defecte ($USERAPPDATADIR/Mod/offline-documentation).</translati
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation>FreeCAD Wiki (en línia)</translation>
+      <translation>Wiki FreeCAD (en línia)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
@@ -105,7 +105,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation>El document s'obrirà amb el navegador per defecte</translation>
+      <translation>El document s'obrirà al navegador per defecte</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
@@ -133,7 +133,7 @@ Necessita el component QtWebengineWidgets de PySide.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation>Especifica la ruta d'un fitxer CSS alternatiu per a estilitzar les pàgines en Markdown.
+      <translation>Especifica el camí d'un fitxer CSS alternatiu per a estilitzar les pàgines en Markdown.
 Només aplica si s'ha seleccionat Markdown a sobre.</translation>
     </message>
     <message>
@@ -155,27 +155,27 @@ Només aplica si s'ha seleccionat Markdown a sobre.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="73"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>No s'ha pogut obtenir el contingut d'aquesta pàgina. Si us plau, comprovi les preferències al menú Edita → Preferències → General → Ajuda</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="77"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>No s'ha pogut determinar la ubicació dels fitxers d'ajuda. Si us plau, comprovi les preferències en el menú Editar- Preferències - General - Ajuda</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>El mòdul QtWebEngineWidgets de PySide no està disponible. La renderització de l'ajuda s'efectua mitjançant el navegador web del sistema</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>No hi ha cap renderitzador de Markdown instal·lat al vostre sistema, de manera que aquesta pàgina d'ajuda es representa tal qual. Instal·leu els mòduls Python Markdown o Pandoc per millorar la representació d'aquesta pàgina.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
@@ -183,7 +183,7 @@ Només aplica si s'ha seleccionat Markdown a sobre.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>General</translation>
     </message>

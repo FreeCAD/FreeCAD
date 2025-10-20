@@ -112,7 +112,7 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Introduzca el nombre de un objeto llamable que, al ser llamado, devolverá un caso de prueba.
+      <translation>Ingrese el nombre de un objeto llamable que, al ser llamado, devolverá un caso de prueba.
 Haga clic en "Inicio", y se llevará a cabo la prueba producida.
 
 Haga doble clic en un error en la vista de árbol para ver más información sobre él, incluyendo el seguimiento de la pila.</translation>
@@ -127,7 +127,7 @@ Haga doble clic en un error en la vista de árbol para ver más información sob
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Copyright (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer 
 
 FreeCAD UnitTest es parte de FreeCAD y soporta la escritura de pruebas unitarias para módulos propios.</translation>
     </message>

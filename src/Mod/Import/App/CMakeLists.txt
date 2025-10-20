@@ -1,5 +1,6 @@
 set(Import_LIBS
     Part
+    PartDesign
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )

@@ -166,6 +166,7 @@ void ViewProviderBoolean::updatePreview()
         }
 
         Part::TopoShape toolShape = feature->Shape.getShape();
+        toolShape.setPlacement(toolShape.getPlacement().inverse() * feature->globalPlacement());
 
         auto pcToolPreview = new PartGui::SoPreviewShape;
         updatePreviewShape(toolShape, pcToolPreview);
