@@ -297,68 +297,14 @@ private:
                 auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->copy());
                 Part::Geometry* geo = geoUniquePtr.get();
 
+                if (!onlyeditoutline) {
+                    geo->reverseIfReversed();  // make sure we don't have reversed conics
+                }
+
                 double angle = individualAngle * i;
 
-                if (isCircle(*geo)) {
-                    auto* circle = static_cast<Part::GeomCircle*>(geo);  // NOLINT
-                    circle->setCenter(getRotatedPoint(circle->getCenter(), centerPoint, angle));
-                }
-                else if (isArcOfCircle(*geo)) {
-                    auto* arcOfCircle = static_cast<Part::GeomArcOfCircle*>(geo);  // NOLINT
-                    arcOfCircle->setCenter(
-                        getRotatedPoint(arcOfCircle->getCenter(), centerPoint, angle));
-                    double arcStartAngle, arcEndAngle;  // NOLINT
-                    arcOfCircle->getRange(arcStartAngle, arcEndAngle, /*emulateCCWXY=*/true);
-                    arcOfCircle->setRange(arcStartAngle + angle,
-                                          arcEndAngle + angle,
-                                          /*emulateCCWXY=*/true);
-                }
-                else if (isLineSegment(*geo)) {
-                    auto* line = static_cast<Part::GeomLineSegment*>(geo);  // NOLINT
-                    line->setPoints(getRotatedPoint(line->getStartPoint(), centerPoint, angle),
-                                    getRotatedPoint(line->getEndPoint(), centerPoint, angle));
-                }
-                else if (isEllipse(*geo)) {
-                    auto* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
-                    ellipse->setCenter(getRotatedPoint(ellipse->getCenter(), centerPoint, angle));
-                    ellipse->setMajorAxisDir(
-                        getRotatedPoint(ellipse->getMajorAxisDir(), Base::Vector2d(0., 0.), angle));
-                }
-                else if (isArcOfEllipse(*geo)) {
-                    auto* arcOfEllipse = static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
-                    arcOfEllipse->setCenter(
-                        getRotatedPoint(arcOfEllipse->getCenter(), centerPoint, angle));
-                    arcOfEllipse->setMajorAxisDir(getRotatedPoint(arcOfEllipse->getMajorAxisDir(),
-                                                                  Base::Vector2d(0., 0.),
-                                                                  angle));
-                }
-                else if (isArcOfHyperbola(*geo)) {
-                    auto* arcOfHyperbola = static_cast<Part::GeomArcOfHyperbola*>(geo);  // NOLINT
-                    arcOfHyperbola->setCenter(
-                        getRotatedPoint(arcOfHyperbola->getCenter(), centerPoint, angle));
-                    arcOfHyperbola->setMajorAxisDir(
-                        getRotatedPoint(arcOfHyperbola->getMajorAxisDir(),
-                                        Base::Vector2d(0., 0.),
-                                        angle));
-                }
-                else if (isArcOfParabola(*geo)) {
-                    auto* arcOfParabola = static_cast<Part::GeomArcOfParabola*>(geo);  // NOLINT
-                    arcOfParabola->setCenter(
-                        getRotatedPoint(arcOfParabola->getCenter(), centerPoint, angle));
-                    arcOfParabola->setAngleXU(arcOfParabola->getAngleXU() + angle);
-                }
-                else if (isBSplineCurve(*geo)) {
-                    auto* bSpline = static_cast<Part::GeomBSplineCurve*>(geo);  // NOLINT
-                    std::vector<Base::Vector3d> poles = bSpline->getPoles();
-                    for (size_t p = 0; p < poles.size(); p++) {
-                        poles[p] = getRotatedPoint(std::move(poles[p]), centerPoint, angle);
-                    }
-                    bSpline->setPoles(poles);
-                }
-                else if (isPoint(*geo)) {
-                    auto* point = static_cast<Part::GeomPoint*>(geo);  // NOLINT
-                    point->setPoint(getRotatedPoint(point->getPoint(), centerPoint, angle));
-                }
+                Base::Matrix4D matrix(toVector3d(centerPoint), Base::Vector3d(0, 0, 1), angle);
+                geo->transform(matrix);
 
                 ShapeGeometry.emplace_back(std::move(geoUniquePtr));
             }
@@ -472,24 +418,6 @@ private:
                 }
             }
         }
-    }
-
-    Base::Vector3d
-    getRotatedPoint(Base::Vector3d&& pointToRotate, const Base::Vector2d& centerPoint, double angle)
-    {
-        Base::Vector2d pointToRotate2D = Base::Vector2d(pointToRotate.x, pointToRotate.y);
-
-        double initialAngle = (pointToRotate2D - centerPoint).Angle();
-        double lengthToCenter = (pointToRotate2D - centerPoint).Length();
-
-        pointToRotate2D = centerPoint
-            + lengthToCenter * Base::Vector2d(cos(angle + initialAngle), sin(angle + initialAngle));
-
-
-        pointToRotate.x = pointToRotate2D.x;
-        pointToRotate.y = pointToRotate2D.y;
-
-        return pointToRotate;
     }
 };
 
