@@ -110,7 +110,7 @@ class _ViewProviderArchMaterialContainer:
         """
         FreeCADGui.runCommand("BIM_Material")
         return True
-    
+
     def mergeByName(self):
         if hasattr(self, "Object"):
             mats = [o for o in self.Object.Group if o.isDerivedFrom("App::MaterialObject")]
