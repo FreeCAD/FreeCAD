@@ -342,7 +342,10 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <item row="0" column="1">
        <widget class="QComboBox" name="ovpVisibility">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose a visibility mode for the On-View-Parameters:&lt;/p&gt;&lt;p&gt;'Disabled': On-View-Parameters are completely disabled.&lt;/p&gt;&lt;p&gt;'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.&lt;/p&gt;&lt;p&gt;'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Choose a visibility mode for the On-View-Parameters:
+'Disabled': On-View-Parameters are completely disabled.
+'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
+'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</string>
         </property>
        </widget>
       </item>
