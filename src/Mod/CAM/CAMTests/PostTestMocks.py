@@ -25,7 +25,6 @@ This module provides mock objects that simulate FreeCAD CAM job structure
 without requiring disk I/O or loading actual FreeCAD documents.
 """
 
-import FreeCAD
 import Path
 
 

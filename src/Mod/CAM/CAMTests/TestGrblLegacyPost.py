@@ -91,7 +91,7 @@ class TestGrblLegacyPost(PathTestUtils.PathTestBase):
         # length of result.
         args = "--no-show-editor"
         gcode = postprocessor.export(postables, "-", args)
-        self.assertTrue(len(gcode.splitlines()) == 13)
+        self.assertEqual(len(gcode.splitlines()), 13)
 
         # Test without header
         expected = """(Begin preamble)
@@ -215,45 +215,6 @@ M2
         # expected = "G0 X0.39 Y0.78 Z1.18 "
         # self.assertEqual(result, expected)
 
-    def test060(self):
-        """
-        Test test modal
-        Suppress the command name if the same as previous
-        """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-
-        self.docobj.Path = Path.Path([c, c1])
-        postables = [self.docobj]
-
-        #
-        # The grbl postprocessor does not have a --modal option.
-        #
-        # args = "--no-header --modal --no-show-editor"
-        # gcode = postprocessor.export(postables, "-", args)
-        # result = gcode.splitlines()[6]
-        # expected = "X10.000 Y30.000 Z30.000 "
-        # self.assertEqual(result, expected)
-
-    def test070(self):
-        """
-        Test axis modal
-        Suppress the axis coordinate if the same as previous
-        """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-
-        self.docobj.Path = Path.Path([c, c1])
-        postables = [self.docobj]
-
-        #
-        # The grbl postprocessor does not have a --axis-modal option.
-        #
-        # args = "--no-header --axis-modal --no-show-editor"
-        # gcode = postprocessor.export(postables, "-", args)
-        # result = gcode.splitlines()[6]
-        # expected = "G0 Y30.000 "
-        # self.assertEqual(result, expected)
 
     def test080(self):
         """

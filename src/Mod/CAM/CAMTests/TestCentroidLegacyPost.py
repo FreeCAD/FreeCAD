@@ -25,7 +25,7 @@ from importlib import reload
 import FreeCAD
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
+from CAMTests import PathTestUtils
 from Path.Post.scripts import centroid_legacy_post as postprocessor
 
 
@@ -34,6 +34,26 @@ Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestCentroidLegacyPost(PathTestUtils.PathTestBase):
+    """Test suite for the Centroid legacy postprocessor.
+
+    This class verifies the functionality of the centroid_legacy_post postprocessor,
+    which generates G-code for Centroid CNC controllers. Tests cover:
+
+    - Output generation with various options (header, comments, editor suppression)
+    - Command formatting and coordinate precision control
+    - Line numbering
+    - Preamble and postamble generation
+    - Unit conversion (metric/imperial)
+    - Modal command suppression
+    - Axis modal (coordinate suppression for unchanged axes)
+    - Tool change command generation with tool length offset (TLO)
+    - Comment formatting and conversion
+
+    The legacy postprocessor has limited configurability compared to newer
+    postprocessors, and some command-line options are tested to verify they
+    don't break the default behavior.
+    """
+
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
@@ -93,7 +113,7 @@ class TestCentroidLegacyPost(PathTestUtils.PathTestBase):
         # Only test length of result.
         args = "--no-show-editor"
         gcode = postprocessor.export(postables, "-", args)
-        self.assertTrue(len(gcode.splitlines()) == 16)
+        self.assertEqual(len(gcode.splitlines()), 16)
 
         # Test without header
         expected = """G90 G80 G40 G49

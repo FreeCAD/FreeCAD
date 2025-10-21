@@ -26,7 +26,7 @@ import os
 import FreeCAD
 from FreeCAD import Units
 import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import datetime
 import Path
 from builtins import open as pyopen
@@ -257,7 +257,6 @@ def parse(pathobj):
     lastcommand = None
     axis_precision_string = "." + str(AXIS_PRECISION) + "f"
     feed_precision_string = "." + str(FEED_PRECISION) + "f"
-    # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
     # centroid doesn't want K properties on XY plane  Arcs need work.
     params = ["X", "Y", "Z", "A", "B", "I", "J", "F", "S", "T", "Q", "R", "L", "H"]
@@ -274,9 +273,6 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        # if OUTPUT_COMMENTS:
-        #     out += linenumber() + "(" + pathobj.Label + ")\n"
-
         for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name  # command M or G code or comment string
@@ -285,8 +281,6 @@ def parse(pathobj):
                 command = PostUtils.fcoms(command, COMMENT)
 
             commandlist.append(command)
-            # if modal: only print the command if it is not the same as the
-            # last one
             if MODAL is True:
                 if command == lastcommand:
                     commandlist.pop(0)
@@ -335,18 +329,11 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == "M6":
-                # if OUTPUT_COMMENTS:
-                #     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
                 if USE_TLO:
                     out += linenumber() + "G43 H" + str(int(c.Parameters["T"])) + "\n"
 
-            # if command == "message":
-            #     if OUTPUT_COMMENTS is False:
-            #         out = []
-            #     else:
-            #         commandlist.pop(0)  # remove the command
 
             # prepend a line number and append a newline
             if len(commandlist) >= 1:
