@@ -85,7 +85,7 @@ class BIM_Material:
         w = PARAMS.GetInt("BimMaterialDialogWidth", 230)
         h = PARAMS.GetInt("BimMaterialDialogHeight", 350)
         self.dlg.resize(w, h)
-        self.dlg.setWindowTitle(translate("BIM", "Select material"))
+        self.dlg.setWindowTitle(translate("BIM", "Select Material"))
         self.dlg.setWindowIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
         mw = FreeCADGui.getMainWindow()
         self.dlg.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.dlg.rect().center())
