@@ -234,9 +234,9 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation>Необязательная пользовательская папка, которая будет
+      <translation>Необязательная пользовательская папка, которая будет 
 отображаться на начальной странице.
-Можно добавить несколько папок, используя ";;" для
+Можно добавить несколько папок, используя ";;" для 
 разделения путей.</translation>
     </message>
     <message>

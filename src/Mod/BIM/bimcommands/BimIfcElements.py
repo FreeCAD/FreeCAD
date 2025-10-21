@@ -102,7 +102,7 @@ class BIM_IfcElements:
         else:  # Qt version < 6.7.0
             self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)  # also triggered by self.form.buttonBox.rejected
         self.form.globalMode.currentIndexChanged.connect(self.onObjectTypeChanged)
         self.form.globalMaterial.currentIndexChanged.connect(self.onMaterialChanged)
 
@@ -442,41 +442,43 @@ class BIM_IfcElements:
         import Draft
         from PySide import QtCore, QtGui
 
+        if getattr(self, "form", None) is None:
+            return
         if FreeCADGui.Control.activeDialog():
             QtCore.QTimer.singleShot(500, self.checkMatChanged)
-        else:
-            mats = [
-                o.Name
-                for o in FreeCAD.ActiveDocument.Objects
-                if (o.isDerivedFrom("App::MaterialObject") or (Draft.getType(o) == "MultiMaterial"))
-            ]
-            if len(mats) != len(self.materials):
-                newmats = [m for m in mats if not m in self.materials]
-                self.materials = mats
-                self.form.globalMaterial.clear()
-                self.form.globalMaterial.addItem(" ")
-                self.form.globalMaterial.addItem(translate("BIM", "Create new material"))
-                self.form.globalMaterial.addItem(translate("BIM", "Create new multi-material"))
-                for m in self.materials:
-                    o = FreeCAD.ActiveDocument.getObject(m)
-                    if o:
-                        self.form.globalMaterial.addItem(
-                            o.Label, QtGui.QIcon(":/icons/Arch_Material.svg")
-                        )
-                changed = False
-                sel = self.form.tree.selectedIndexes()
-                for index in sel:
-                    if index.column() == 2:
-                        for mat in newmats:
-                            mobj = FreeCAD.ActiveDocument.getObject(mat)
-                            if mobj:
-                                item = self.model.itemFromIndex(index)
-                                if item.toolTip() != mat:
-                                    item.setText(mobj.Label)
-                                    item.setToolTip(mat)
-                                    changed = True
-                if changed:
-                    self.update()
+            return
+        mats = [
+            o.Name
+            for o in FreeCAD.ActiveDocument.Objects
+            if (o.isDerivedFrom("App::MaterialObject") or (Draft.getType(o) == "MultiMaterial"))
+        ]
+        if len(mats) != len(self.materials):
+            newmats = [m for m in mats if not m in self.materials]
+            self.materials = mats
+            self.form.globalMaterial.clear()
+            self.form.globalMaterial.addItem(" ")
+            self.form.globalMaterial.addItem(translate("BIM", "Create new material"))
+            self.form.globalMaterial.addItem(translate("BIM", "Create new multi-material"))
+            for m in self.materials:
+                o = FreeCAD.ActiveDocument.getObject(m)
+                if o:
+                    self.form.globalMaterial.addItem(
+                        o.Label, QtGui.QIcon(":/icons/Arch_Material.svg")
+                    )
+            changed = False
+            sel = self.form.tree.selectedIndexes()
+            for index in sel:
+                if index.column() == 2:
+                    for mat in newmats:
+                        mobj = FreeCAD.ActiveDocument.getObject(mat)
+                        if mobj:
+                            item = self.model.itemFromIndex(index)
+                            if item.toolTip() != mat:
+                                item.setText(mobj.Label)
+                                item.setToolTip(mat)
+                                changed = True
+            if changed:
+                self.update()
 
     def accept(self):
         # get current state of tree

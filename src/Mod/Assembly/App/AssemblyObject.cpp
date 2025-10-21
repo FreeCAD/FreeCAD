@@ -781,6 +781,11 @@ std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
         if (propObj) {
             App::DocumentObject* objToGround = propObj->getValue();
             if (objToGround) {
+                if (auto* asmLink = dynamic_cast<AssemblyLink*>(objToGround)) {
+                    if (!asmLink->isRigid()) {
+                        continue;
+                    }
+                }
                 groundedSet.insert(objToGround);
             }
         }

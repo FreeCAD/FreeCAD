@@ -364,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -388,10 +388,10 @@
       <translation>Изабери једног Робота</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
       <location filename="../../CommandTrajectory.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Изабери једног Робота и један објекат Путање.</translation>
     </message>
@@ -491,8 +491,8 @@
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
-      <source>Visit %1 and copy the files to %2</source>
-      <translation>Посетите %1 и копирајте датотеке у %2</translation>
+      <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
+      <translation>Посети %1 и копирај VMRL и CSV робот датотеке у %2</translation>
     </message>
   </context>
   <context>

@@ -361,9 +361,6 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
             Gui::ToolBarManager* pToolbarMgr = Gui::ToolBarManager::getInstance();
             pToolbarMgr->restoreState();
 
-            // We need to reload stylesheet to apply any changed style parameters
-            Gui::Application::Instance->reloadStyleSheet();
-
             // TODO: Are there other things that have to be manually triggered?
         }
         return wasApplied;
