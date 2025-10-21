@@ -211,7 +211,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>문서 이름</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>문서 이름</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>오림판에 복사</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="149"/>
@@ -1070,7 +1070,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
@@ -1085,7 +1085,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>속성 추가</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>

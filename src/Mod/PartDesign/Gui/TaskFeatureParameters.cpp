@@ -164,6 +164,10 @@ bool TaskDlgFeatureParameters::accept()
             // object was already computed, nothing more to do with it...
             Gui::cmdAppDocument(feature, "purgeTouched()");
 
+            if (!feature->isValid()) {
+              throw Base::RuntimeError(getObject()->getStatusString());
+            }
+
             // ...but touch parents to signal the change...
             for (auto obj : feature->getInList()){
                 obj->touch();
@@ -191,12 +195,23 @@ bool TaskDlgFeatureParameters::accept()
         Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
-        // Generally the only thing that should fail is feature->isValid() others should be fine
-        QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what());
-        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
-        return false;
-    }
 
+      QString errorText = QString::fromUtf8(e.what());
+      QString statusText = QString::fromUtf8(getObject()->getStatusString());
+
+      // generic, fallback error message
+      if (errorText == QStringLiteral("Error") || errorText.isEmpty()) {
+        if (!statusText.isEmpty() && statusText != QStringLiteral("Error")) {
+          errorText = statusText;
+        } else {
+          errorText = tr("The feature could not be created with the given parameters.\n"
+              "The geometry may be invalid or the parameters may be incompatible.\n"
+              "Please adjust the parameters and try again.");
+        }
+      }
+      QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
+      return false;
+    }
     return true;
 }
 

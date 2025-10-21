@@ -431,9 +431,18 @@ class _Stairs(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The width of the stringers"),
                 locked=True,
             )
-        if not "StructureOffset" in pl:
+        # Allow negative value: App::PropertyDistance instead of App::PropertyLength (2025.10.11)
+        if (
+            not "StructureOffset" in pl
+            or obj.getTypeIdOfProperty("StructureOffset") != "App::PropertyDistance"
+        ):
+            value = 0.0
+            if "StructureOffset" in pl:
+                value = obj.StructureOffset
+                obj.setPropertyStatus("StructureOffset", "-LockDynamic")
+                obj.removeProperty("StructureOffset")
             obj.addProperty(
-                "App::PropertyLength",
+                "App::PropertyDistance",
                 "StructureOffset",
                 "Structure",
                 QT_TRANSLATE_NOOP(
@@ -441,6 +450,8 @@ class _Stairs(ArchComponent.Component):
                 ),
                 locked=True,
             )
+            if value:
+                obj.StructureOffset = value
         if not "StringerOverlap" in pl:
             obj.addProperty(
                 "App::PropertyLength",
@@ -1937,7 +1948,7 @@ class _Stairs(ArchComponent.Component):
                 if structureOffset:
                     mvec = DraftVecUtils.scaleTo(vWidth, structureOffset)
                     struct.translate(mvec)
-                    evec = DraftVecUtils.scaleTo(evec, evec.Length - (2 * mvec.Length))
+                    evec = vWidth - (2 * mvec)
                 struct = struct.extrude(evec)
 
         elif structure in ["One stringer", "Two stringers"]:
@@ -1959,21 +1970,34 @@ class _Stairs(ArchComponent.Component):
                 )
                 p1 = vBase.add(l1).add(h1)
                 p1 = self.align(p1, align, vWidth)
-                if stringerOverlap <= float(hgt) / numOfSteps:
+                overlapDiff = (float(hgt) / numOfSteps + vTreadThickness.Length) - stringerOverlap
+                strOverlapMax = (structureThickness / vLength.Length) * hyp
+                strucHorLen = structureThickness * (hyp / vHeight.Length)
+                p1a = p1b = None
+                if overlapDiff > 0:
                     lProfile.append(p1)
+                    lProfile.append(p1.add(Vector(0, 0, -strOverlapMax)))
                 else:
-                    p1b = vBase.add(l1).add(Vector(0, 0, float(h)))
-                    p1a = p1b.add(Vector(vLength).multiply((p1b.z - p1.z) / vHeight.Length))
-                    lProfile.append(p1a)
-                    lProfile.append(p1b)
-                h2 = (structureThickness / vLength.Length) * hyp
-                lProfile.append(p1.add(Vector(0, 0, -abs(h2))))
+                    if (strOverlapMax + overlapDiff) > 0:  # overlapDiff is -ve
+                        vLenDiffP1b = (vLength.Length / vHeight.Length) * overlapDiff
+                        vLenDiffP1c = (structureThickness / vLength.Length) * hyp
+                        p1b = p1.add(Vector(0, 0, overlapDiff))  # overlapDiff is -ve
+                        p1a = p1b.add(Vector(vLenDiffP1b, 0, 0))
+                        p1c = p1.add(Vector(0, 0, -vLenDiffP1c))
+                        lProfile.append(p1a)
+                        lProfile.append(p1b)
+                        lProfile.append(p1c)
+                    else:
+                        vLenDiffP1a = (vLength.Length / vHeight.Length) * (overlapDiff)
+                        p1a = p1.add(Vector(vLenDiffP1a, 0, overlapDiff))
+                        p1b = p1a.add(Vector(strucHorLen, 0, 0))
+                        lProfile.append(p1a)
+                        lProfile.append(p1b)
                 h3 = lProfile[-1].z - vBase.z
                 l3 = (h3 / vHeight.Length) * vLength.Length
                 v3 = DraftVecUtils.scaleTo(vLength, -l3)
                 lProfile.append(lProfile[-1].add(Vector(0, 0, -abs(h3))).add(v3))
-                l4 = (structureThickness / vHeight.Length) * hyp
-                v4 = DraftVecUtils.scaleTo(vLength, -l4)
+                v4 = DraftVecUtils.scaleTo(vLength, -strucHorLen)
                 lProfile.append(lProfile[-1].add(v4))
                 lProfile.append(lProfile[0])
                 # print(lProfile)

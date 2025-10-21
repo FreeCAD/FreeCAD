@@ -77,6 +77,26 @@ class CallableComboBox:
             if (cbox is not None):
                 QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
+
+class CallableCheckExemptionDialog:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        dialog = QApplication.activeModalWidget()
+        if dialog is not None:
+            dialogcheck = CallableCheckExemptionDialogWasClosed(self.test)
+            QtCore.QTimer.singleShot(100, dialogcheck)
+            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
+
+class CallableCheckExemptionDialogWasClosed:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        dialog = QApplication.activeModalWidget()
+        self.test.assertIsNone(dialog, "Dialog box was not closed by accept()")
+
+
+
 App = FreeCAD
 Gui = FreeCADGui
 #---------------------------------------------------------------------------
@@ -219,8 +239,16 @@ class PartDesignTransformed(unittest.TestCase):
         #not adding box to the body to imitate undertermined workflow
         tempDir = tempfile.gettempdir()
         self.TempDoc = os.path.join(tempDir, 'PartDesignTransformed.FCStd')
+        if os.path.exists(self.TempDoc):
+            os.remove(self.TempDoc)
         App.ActiveDocument.saveAs(self.TempDoc)
         App.closeDocument("PartDesignTransformed")
+
+    def tearDown(self):
+        #closing doc
+        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
+            App.closeDocument("PartDesignTransformed")
+        #print ("omit closing document for debugging")
 
     def testMultiTransformCase(self):
         App.Console.PrintMessage('Testing applying MultiTransform to the Box outside the body\n')
@@ -234,11 +262,33 @@ class PartDesignTransformed(unittest.TestCase):
 
         App.closeDocument("PartDesignTransformed")
 
-    def tearDown(self):
-        #closing doc
-        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
-            App.closeDocument("PartDesignTransformed")
-        #print ("omit closing document for debugging")
+
+class CreateSketch(unittest.TestCase):
+
+    def testPDCreateSketch(self):
+        App.Console.PrintMessage("Testing the creation of a sketch\n")
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+        useAttachmentSaved = param.GetBool("NewSketchUseAttachmentDialog", False)
+        param.SetBool("NewSketchUseAttachmentDialog", False)
+        App.newDocument()
+        App.activeDocument().addObject("PartDesign::Body", "Body")
+        App.ActiveDocument.getObject("Body").Label = "Body"
+        App.ActiveDocument.getObject("Body").AllowCompound = True
+        FreeCADGui.activateView("Gui::View3DInventor", True)
+        FreeCADGui.activeView().setActiveObject("pdbody", App.activeDocument().Body)
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(App.ActiveDocument.Body)
+        FreeCADGui.runCommand("Std_OrthographicCamera", 1)
+        mw = FreeCADGui.getMainWindow()
+        workflowcheck = CallableCheckExemptionDialog(self)
+        QtCore.QTimer.singleShot(100, workflowcheck)
+        FreeCADGui.runCommand("PartDesign_CompSketches", 0)
+        taskspanel = mw.findChild(QtGui.QWidget,"PartDesignGui__TaskFeaturePick")
+        self.assertTrue(taskspanel is not None)
+        if taskspanel is not None:
+            QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
+        App.closeDocument(App.ActiveDocument.Name)
+        param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
 
 #class PartDesignGuiTestCases(unittest.TestCase):
 #   def setUp(self):
@@ -338,3 +388,4 @@ class TestDatumPlane(unittest.TestCase):
         color = int(r * 255.0 + 0.5) << 24 | int(g * 255.0 + 0.5) << 16 | int(b * 255.0 + 0.5) << 8 | int(a * 255.0 + 0.5)
 
         self.assertEqual(packed_color, color)
+

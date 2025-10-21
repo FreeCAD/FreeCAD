@@ -2264,10 +2264,12 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::MultiTransform','"<<FeatName<<"')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(trFeat);
-        FCMD_OBJ_CMD(Feat,"OriginalSubs = "<<objCmd<<".OriginalSubs");
+        FCMD_OBJ_CMD(Feat,"Originals = "<<objCmd<<".Originals");
+        FCMD_OBJ_CMD(Feat,"TransformMode = "<<objCmd<<".TransformMode");
         FCMD_OBJ_CMD(Feat,"BaseFeature = "<<objCmd<<".BaseFeature");
-        FCMD_OBJ_CMD(trFeat,"OriginalSubs = []");
         FCMD_OBJ_CMD(Feat,"Transformations = ["<<objCmd<<"]");
+
+        FCMD_OBJ_CMD(trFeat,"Originals = []");
 
         // Add the MultiTransform into the Body at the current insert point
         finishFeature(this, Feat);

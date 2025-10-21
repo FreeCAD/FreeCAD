@@ -2371,7 +2371,7 @@ Siehe https://openscad.org/, um es zu installieren.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Boolean</source>
-      <translation>Boolesche Netzverknüpfung</translation>
+      <translation>Netz aus Boolescher Operation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

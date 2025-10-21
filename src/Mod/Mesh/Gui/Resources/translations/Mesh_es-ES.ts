@@ -2208,7 +2208,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="466"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Introduce la tolerancia para la geometría de la malla:</translation>
+      <translation>Ingrese la tolerancia para la geometría de la malla:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1272"/>
@@ -2248,7 +2248,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1795"/>
       <source>Enter scaling factor:</source>
-      <translation>Introduce el factor de la escala:</translation>
+      <translation>Ingrese el factor de escala:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="76"/>
@@ -2274,7 +2274,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../ViewProvider.cpp" line="1678"/>
       <location filename="../../ViewProviderCurvature.cpp" line="537"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Salir del modo de información</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1745"/>

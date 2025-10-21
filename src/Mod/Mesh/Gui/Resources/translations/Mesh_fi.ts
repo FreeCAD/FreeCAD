@@ -1359,7 +1359,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen
+      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen 
 käytössä kirjoitettaessa tiedostoa AMF muodossa</translation>
     </message>
   </context>

@@ -151,15 +151,15 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
     lz = obj.StartDepth.Value
 
     for region in adaptiveResults:
-        passStartDepth = region["TopDepth"]
+        passStartDepth = region.get("TopDepth", obj.StartDepth.Value)
 
         depthParams = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
             safe_height=obj.SafeHeight.Value,
-            start_depth=region["TopDepth"],
+            start_depth=passStartDepth,
             step_down=stepDown,
             z_finish_step=finishStep,
-            final_depth=region["BottomDepth"],
+            final_depth=region.get("BottomDepth", obj.FinalDepth.Value),
             user_depths=None,
         )
 
@@ -523,6 +523,168 @@ def Execute(op, obj):
     # hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
 
+    oldObjVisibility = oldJobVisibility = False
+    if FreeCAD.GuiUp:
+        # store old visibility state
+        job = op.getJob(obj)
+        oldObjVisibility = obj.ViewObject.Visibility
+        oldJobVisibility = job.ViewObject.Visibility
+
+        obj.ViewObject.Visibility = False
+        job.ViewObject.Visibility = False
+
+        FreeCADGui.updateGui()
+
+    try:
+        helixDiameter = obj.HelixDiameterLimit.Value
+        topZ = op.stock.Shape.BoundBox.ZMax
+        obj.Stopped = False
+        obj.StopProcessing = False
+        if obj.Tolerance < 0.001:
+            obj.Tolerance = 0.001
+
+        # Get list of working edges for adaptive algorithm
+        pathArray = op.pathArray
+        if not pathArray:
+            msg = translate(
+                "CAM",
+                "Adaptive operation couldn't determine the boundary wire. Did you select base geometry?",
+            )
+            FreeCAD.Console.PrintUserWarning(msg)
+            return
+
+        path2d = convertTo2d(pathArray)
+
+        # Use the 2D outline of the stock as the stock
+        # FIXME: This does not account for holes in the middle of stock!
+        outer_wire = TechDraw.findShapeOutline(op.stock.Shape, 1, FreeCAD.Vector(0, 0, 1))
+        stockPaths = [[discretize(outer_wire)]]
+
+        stockPath2d = convertTo2d(stockPaths)
+
+        # opType = area.AdaptiveOperationType.ClearingInside  # Commented out per LGTM suggestion
+        if obj.OperationType == "Clearing":
+            if obj.Side == "Outside":
+                opType = area.AdaptiveOperationType.ClearingOutside
+
+            else:
+                opType = area.AdaptiveOperationType.ClearingInside
+
+        else:  # profiling
+            if obj.Side == "Outside":
+                opType = area.AdaptiveOperationType.ProfilingOutside
+
+            else:
+                opType = area.AdaptiveOperationType.ProfilingInside
+
+        keepToolDownRatio = 3.0
+        if hasattr(obj, "KeepToolDownRatio"):
+            keepToolDownRatio = float(obj.KeepToolDownRatio)
+
+        # put here all properties that influence calculation of adaptive base paths,
+
+        inputStateObject = {
+            "tool": float(op.tool.Diameter),
+            "tolerance": float(obj.Tolerance),
+            "geometry": path2d,
+            "stockGeometry": stockPath2d,
+            "stepover": float(obj.StepOver),
+            "effectiveHelixDiameter": float(helixDiameter),
+            "operationType": obj.OperationType,
+            "side": obj.Side,
+            "forceInsideOut": obj.ForceInsideOut,
+            "finishingProfile": obj.FinishingProfile,
+            "keepToolDownRatio": keepToolDownRatio,
+            "stockToLeave": float(obj.StockToLeave),
+            "modelAwareExperiment": obj.ModelAwareExperiment,
+        }
+
+        inputStateChanged = False
+        adaptiveResults = None
+
+        if obj.AdaptiveOutputState is not None and obj.AdaptiveOutputState != "":
+            adaptiveResults = obj.AdaptiveOutputState
+
+        if json.dumps(obj.AdaptiveInputState) != json.dumps(inputStateObject):
+            inputStateChanged = True
+            adaptiveResults = None
+
+        # progress callback fn, if return true it will stop processing
+        def progressFn(tpaths):
+            if FreeCAD.GuiUp:
+                for (
+                    path
+                ) in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
+                    if path[0] == area.AdaptiveMotionType.Cutting:
+                        sceneDrawPath(path[1], (0, 0, 1))
+
+                    else:
+                        sceneDrawPath(path[1], (1, 0, 1))
+
+                FreeCADGui.updateGui()
+
+            return obj.StopProcessing
+
+        start = time.time()
+
+        if inputStateChanged or adaptiveResults is None:
+            a2d = area.Adaptive2d()
+            a2d.stepOverFactor = 0.01 * obj.StepOver
+            a2d.toolDiameter = float(op.tool.Diameter)
+            a2d.helixRampDiameter = helixDiameter
+            a2d.keepToolDownDistRatio = keepToolDownRatio
+            a2d.stockToLeave = float(obj.StockToLeave)
+            a2d.tolerance = float(obj.Tolerance)
+            a2d.forceInsideOut = obj.ForceInsideOut
+            a2d.finishingProfile = obj.FinishingProfile
+            a2d.opType = opType
+
+            # EXECUTE
+            results = a2d.Execute(stockPath2d, path2d, progressFn)
+
+            # need to convert results to python object to be JSON serializable
+            adaptiveResults = []
+            for result in results:
+                adaptiveResults.append(
+                    {
+                        "HelixCenterPoint": result.HelixCenterPoint,
+                        "StartPoint": result.StartPoint,
+                        "AdaptivePaths": result.AdaptivePaths,
+                        "ReturnMotionType": result.ReturnMotionType,
+                    }
+                )
+
+        # GENERATE
+        GenerateGCode(op, obj, adaptiveResults, helixDiameter)
+
+        if not obj.StopProcessing:
+            Path.Log.info("*** Done. Elapsed time: %f sec\n\n" % (time.time() - start))
+            obj.AdaptiveOutputState = adaptiveResults
+            obj.AdaptiveInputState = inputStateObject
+
+        else:
+            Path.Log.info("*** Processing cancelled (after: %f sec).\n\n" % (time.time() - start))
+
+    finally:
+        if FreeCAD.GuiUp:
+            obj.ViewObject.Visibility = oldObjVisibility
+            job.ViewObject.Visibility = oldJobVisibility
+            sceneClean()
+
+
+def ExecuteModelAware(op, obj):
+    global sceneGraph
+    global topZ
+
+    if FreeCAD.GuiUp:
+        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+
+    Path.Log.info("*** Adaptive toolpath processing started...\n")
+
+    # hide old toolpaths during recalculation
+    obj.Path = Path.Path("(Calculating...)")
+
+    oldObjVisibility = oldJobVisibility = False
     if FreeCAD.GuiUp:
         # store old visibility state
         job = op.getJob(obj)
@@ -637,6 +799,7 @@ def Execute(op, obj):
             "stockToLeave": obj.StockToLeave.Value,
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
+            "modelAwareExperiment": obj.ModelAwareExperiment,
         }
 
         inputStateObject = [outsideInputStateObject, insideInputStateObject]
@@ -1178,8 +1341,75 @@ def _workingEdgeHelperManual(op, obj, depths):
     return insideRegions, outsideRegions
 
 
-def _getWorkingEdges(op, obj):
-    """_getWorkingEdges(op, obj)...
+def _get_working_edges(op, obj):
+    """_get_working_edges(op, obj)...
+    Compile all working edges from the Base Geometry selection (obj.Base)
+    for the current operation.
+    Additional modifications to selected region(face), such as extensions,
+    should be placed within this function.
+    """
+    all_regions = list()
+    edge_list = list()
+    avoidFeatures = list()
+    rawEdges = list()
+
+    # Get extensions and identify faces to avoid
+    extensions = FeatureExtensions.getExtensions(obj)
+    for e in extensions:
+        if e.avoid:
+            avoidFeatures.append(e.feature)
+
+    # Get faces selected by user
+    for base, subs in obj.Base:
+        for sub in subs:
+            if sub.startswith("Face"):
+                if sub not in avoidFeatures:
+                    if obj.UseOutline:
+                        face = base.Shape.getElement(sub)
+                        # get outline with wire_A method used in PocketShape, but it does not play nicely later
+                        # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
+                        wire_B = face.OuterWire
+                        shape = Part.Face(wire_B)
+                    else:
+                        shape = base.Shape.getElement(sub)
+                    all_regions.append(shape)
+            elif sub.startswith("Edge"):
+                # Save edges for later processing
+                rawEdges.append(base.Shape.getElement(sub))
+    # Efor
+
+    # Process selected edges
+    if rawEdges:
+        edgeWires = DraftGeomUtils.findWires(rawEdges)
+        if edgeWires:
+            for w in edgeWires:
+                for e in w.Edges:
+                    edge_list.append([discretize(e)])
+
+    # Apply regular Extensions
+    op.exts = []
+    for ext in extensions:
+        if not ext.avoid:
+            wire = ext.getWire()
+            if wire:
+                for f in ext.getExtensionFaces(wire):
+                    op.exts.append(f)
+                    all_regions.append(f)
+
+    # Second face-combining method attempted
+    horizontal = Path.Geom.combineHorizontalFaces(all_regions)
+    if horizontal:
+        obj.removalshape = Part.makeCompound(horizontal)
+        for f in horizontal:
+            for w in f.Wires:
+                for e in w.Edges:
+                    edge_list.append([discretize(e)])
+
+    return edge_list
+
+
+def _getWorkingEdgesModelAware(op, obj):
+    """_getWorkingEdgesModelAware(op, obj)...
     Compile all working edges from the Base Geometry selection (obj.Base)
     for the current operation (or the entire model if no selections).
     Additional modifications to selected region(face), such as extensions,
@@ -1492,7 +1722,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave along the Z axis (eg for finishing operation)",
+                "How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.",
             ),
         )
         obj.addProperty(
@@ -1601,7 +1831,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Orders cuts by region instead of depth.",
+                "Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.",
             ),
         )
         obj.addProperty(
@@ -1610,6 +1840,17 @@ class PathAdaptive(PathOp.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", ""),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ModelAwareExperiment",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs",
+            ),
+        )
+        obj.setEditorMode("OrderCutsByRegion", 2)
+        obj.setEditorMode("ZStockToLeave", 2)
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -1640,6 +1881,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.UseHelixArcs = False
         obj.UseOutline = False
         obj.OrderCutsByRegion = False
+        obj.ModelAwareExperiment = False
         FeatureExtensions.set_default_property_values(obj, job)
 
     def opExecute(self, obj):
@@ -1647,15 +1889,22 @@ class PathAdaptive(PathOp.ObjectOp):
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
 
-        # Contains both geometry to machine and the applicable depths
-        # NOTE: Reminder that stock is formatted differently than inside/outside!
-        inside, outside, stock = _getWorkingEdges(self, obj)
+        obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
+        obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
 
-        self.insidePathArray = inside
-        self.outsidePathArray = outside
-        self.stockPathArray = stock
+        if obj.ModelAwareExperiment:
+            # Contains both geometry to machine and the applicable depths
+            # NOTE: Reminder that stock is formatted differently than inside/outside!
+            inside, outside, stock = _getWorkingEdgesModelAware(self, obj)
 
-        Execute(self, obj)
+            self.insidePathArray = inside
+            self.outsidePathArray = outside
+            self.stockPathArray = stock
+
+            ExecuteModelAware(self, obj)
+        else:
+            self.pathArray = _get_working_edges(self, obj)
+            Execute(self, obj)
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "HelixConeAngle"):
@@ -1695,6 +1944,19 @@ class PathAdaptive(PathOp.ObjectOp):
                     "How much stock to leave along the Z axis (eg for finishing operation)",
                 ),
             )
+
+        if not hasattr(obj, "ModelAwareExperiment"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ModelAwareExperiment",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs",
+                ),
+            )
+        obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
+        obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
 
         if not hasattr(obj, "removalshape"):
             obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
