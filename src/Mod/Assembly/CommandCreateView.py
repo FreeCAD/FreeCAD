@@ -163,11 +163,11 @@ class ExplodedView:
         """
         final_placements = {}
         line_positions = []
-    
+
         assembly = self.getAssembly(viewObj)
         # Get a snapshot of the assembly's current, un-exploded state
         calculated_placements = UtilsAssembly.saveAssemblyPartsPlacements(assembly)
-    
+
         com, size = UtilsAssembly.getComAndSize(assembly)
 
         for move in viewObj.Group:
@@ -182,13 +182,13 @@ class ExplodedView:
             for sub in subs:
                 ref = [move.References[0], [sub]]
                 obj = UtilsAssembly.getObject(ref)
-                if not obj or not hasattr(obj, 'Placement'):
+                if not obj or not hasattr(obj, "Placement"):
                     continue
-            
+
                 # Use the placement from our calculation dictionary, which tracks
                 # changes from previous steps.
                 current_placement = calculated_placements.get(obj.Name, obj.Placement)
-            
+
                 # Use the part's bounding box center relative to its own coordinate system
                 # and transform it by the current placement to get the world start position.
                 local_center = obj.Shape.BoundBox.Center
@@ -201,14 +201,14 @@ class ExplodedView:
                     new_placement = App.Placement(new_base, current_placement.Rotation)
                 else:
                     new_placement = move.MovementTransform * current_placement
-            
+
                 # Store the newly calculated placement for this part
                 calculated_placements[obj.Name] = new_placement
                 final_placements[obj] = new_placement
-            
+
                 endPos = new_placement.multVec(local_center)
                 line_positions.append([startPos, endPos])
-            
+
         return final_placements, line_positions
 
     def getExplodedShape(self, viewObj):
@@ -217,21 +217,23 @@ class ExplodedView:
         without modifying the document. Returns a single Part.Compound.
         """
         final_placements, line_positions = self._calculateExplodedPlacements(viewObj)
-    
+
         exploded_shapes = []
-    
+
         # We need to include ALL parts of the assembly, not just the moved ones.
         assembly = self.getAssembly(viewObj)
-        all_parts = UtilsAssembly.getMovablePartsWithin(assembly, True) # Or however you get all parts
+        all_parts = UtilsAssembly.getMovablePartsWithin(
+            assembly, True
+        )  # Or however you get all parts
 
         for part in all_parts:
             # Get the original shape. It's crucial to use .copy()
             shape_copy = part.Shape.copy()
-        
+
             # If the part was moved, use its calculated final placement.
             # Otherwise, use its current placement from the document.
             final_plc = final_placements.get(part, part.Placement)
-        
+
             shape_copy.transformShape(final_plc.toMatrix())
             exploded_shapes.append(shape_copy)
 
