@@ -104,7 +104,7 @@ class BIM_Material:
             searchLayout = QtGui.QHBoxLayout()
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
-            searchBox.setPlaceholderText(translate("BIM", "Search Materials"))
+            searchBox.setPlaceholderText(translate("BIM", "Search materials"))
             searchBox.setToolTip(translate("BIM", "Searches for materials in the tree"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
