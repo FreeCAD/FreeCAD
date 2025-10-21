@@ -105,6 +105,11 @@ public:
         Clip        = 4,  /**< Clip objects using a lasso. */
     };
 
+    enum class ClarifySelectionMode {
+        Default,    /**< Long press with LMB to trigger clarify selection */
+        Ctrl        /**< Long press with Ctrl+LMB to trigger clarify selection */
+    };
+
     enum OrbitStyle {
         Turntable,
         Trackball,
@@ -191,6 +196,8 @@ public:
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
 
     bool isDraggerUnderCursor(const SbVec2s pos) const;
+
+    virtual ClarifySelectionMode clarifySelectionMode() const { return ClarifySelectionMode::Default; }
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -353,6 +360,7 @@ public:
     ~InventorNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
     std::string userFriendlyName() const override;
+    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
@@ -492,6 +500,7 @@ public:
     OpenSCADNavigationStyle();
     ~OpenSCADNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
+    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;

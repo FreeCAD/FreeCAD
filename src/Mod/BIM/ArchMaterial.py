@@ -101,6 +101,16 @@ class _ViewProviderArchMaterialContainer:
         actionReorder.triggered.connect(self.reorder)
         menu.addAction(actionReorder)
 
+    def doubleClicked(self, vobj):
+        """Handle double-click on the materials group in the Tree View.
+
+        Open the BIM Materials dialog and return True to indicate the event was handled
+        (prevents the tree from starting inline label editing, Qt's default behavior if the event
+        is not handled).
+        """
+        FreeCADGui.runCommand("BIM_Material")
+        return True
+
     def mergeByName(self):
         if hasattr(self, "Object"):
             mats = [o for o in self.Object.Group if o.isDerivedFrom("App::MaterialObject")]
