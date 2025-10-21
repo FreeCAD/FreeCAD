@@ -183,7 +183,6 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
             int geoId = ret - int(numGeo - i);
             tuple.setItem(i, Py::Long(geoId));
         }
-
         return Py::new_reference_to(tuple);
     }
 
@@ -238,10 +237,8 @@ PyObject* SketchObjectPy::delGeometries(PyObject* args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return nullptr;
         }
-
         Py_Return;
     }
-
     std::string error = std::string("type must be list of GeoIds, not ");
     error += pcObj->ob_type->tp_name;
     throw Py::TypeError(error);
@@ -261,7 +258,6 @@ PyObject* SketchObjectPy::deleteAllGeometry(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -271,7 +267,6 @@ PyObject* SketchObjectPy::detectDegeneratedGeometries(PyObject* args)
     if (!PyArg_ParseTuple(args, "d", &tolerance)) {
         return nullptr;
     }
-
     SketchAnalysis analyse(this->getSketchObjectPtr());
     int count = analyse.detectDegeneratedGeometries(tolerance);
     return Py::new_reference_to(Py::Long(count));
@@ -301,7 +296,6 @@ PyObject* SketchObjectPy::deleteAllConstraints(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -319,7 +313,6 @@ PyObject* SketchObjectPy::toggleConstruction(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -337,7 +330,6 @@ PyObject* SketchObjectPy::setConstruction(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -453,7 +445,6 @@ PyObject* SketchObjectPy::delConstraint(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 PyObject* SketchObjectPy::delConstraints(PyObject* args)
@@ -540,7 +531,6 @@ PyObject* SketchObjectPy::renameConstraint(PyObject* args)
             }
         }
     }
-
     this->getSketchObjectPtr()->renameConstraint(Index, Name);
 
     Py_Return;
@@ -567,7 +557,6 @@ PyObject* SketchObjectPy::getIndexByName(PyObject* args) const
             return Py_BuildValue("i", i);
         }
     }
-
     PyErr_SetString(PyExc_LookupError, "No such constraint found");
     return nullptr;
 }
@@ -604,7 +593,6 @@ PyObject* SketchObjectPy::carbonCopy(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -652,7 +640,6 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -993,7 +980,6 @@ PyObject* SketchObjectPy::toggleDriving(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1039,7 +1025,6 @@ PyObject* SketchObjectPy::setVirtualSpace(PyObject* args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return nullptr;
         }
-
         Py_Return;
     }
 
@@ -1112,7 +1097,6 @@ PyObject* SketchObjectPy::getVirtualSpace(PyObject* args)
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return nullptr;
     }
-
     return Py::new_reference_to(Py::Boolean(invirtualspace));
 }
 
@@ -1130,7 +1114,6 @@ PyObject* SketchObjectPy::toggleVirtualSpace(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1150,7 +1133,6 @@ PyObject* SketchObjectPy::setActive(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1167,7 +1149,6 @@ PyObject* SketchObjectPy::getActive(PyObject* args) const
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return nullptr;
     }
-
     return Py::new_reference_to(Py::Boolean(isactive));
 }
 
@@ -1185,7 +1166,6 @@ PyObject* SketchObjectPy::toggleActive(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1202,7 +1182,6 @@ PyObject* SketchObjectPy::getLabelPosition(PyObject* args) const
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return nullptr;
     }
-
     return Py::new_reference_to(Py::Float(pos));
 }
 
@@ -1219,7 +1198,6 @@ PyObject* SketchObjectPy::setLabelPosition(PyObject* args)
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1236,7 +1214,6 @@ PyObject* SketchObjectPy::getLabelDistance(PyObject* args) const
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return nullptr;
     }
-
     return Py::new_reference_to(Py::Float(dist));
 }
 
@@ -1253,7 +1230,6 @@ PyObject* SketchObjectPy::setLabelDistance(PyObject* args)
         PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1305,7 +1281,6 @@ PyObject* SketchObjectPy::moveGeometries(PyObject* args)
         PyErr_SetString(PyExc_ValueError, "Failed to move geometries.");
         return nullptr;
     }
-
     Py_RETURN_NONE;
 }
 
@@ -1337,7 +1312,6 @@ PyObject* SketchObjectPy::moveGeometry(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -1539,7 +1513,6 @@ PyObject* SketchObjectPy::split(PyObject* args)
     catch (const Base::ValueError& e) {
         throw Py::ValueError(e.getMessage());
     }
-
     Py_Return;
 }
 
@@ -1565,7 +1538,6 @@ PyObject* SketchObjectPy::join(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 
@@ -2254,7 +2226,6 @@ void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
 
         constraints.push_back(c);
     }
-
     this->getSketchObjectPtr()->setMissingPointOnPointConstraints(constraints);
 }
 
@@ -2310,7 +2281,6 @@ void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
 
         constraints.push_back(c);
     }
-
     this->getSketchObjectPtr()->setMissingVerticalHorizontalConstraints(constraints);
 }
 
@@ -2365,7 +2335,6 @@ void SketchObjectPy::setMissingLineEqualityConstraints(Py::List arg)
 
         constraints.push_back(c);
     }
-
     this->getSketchObjectPtr()->setMissingLineEqualityConstraints(constraints);
 }
 
@@ -2420,7 +2389,6 @@ void SketchObjectPy::setMissingRadiusConstraints(Py::List arg)
 
         constraints.push_back(c);
     }
-
     this->getSketchObjectPtr()->setMissingRadiusConstraints(constraints);
 }
 
@@ -2551,7 +2519,6 @@ PyObject* SketchObjectPy::setGeometryId(PyObject* args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
-
     Py_Return;
 }
 PyObject* SketchObjectPy::setGeometryIds(PyObject* args)
@@ -2614,7 +2581,6 @@ Py::List SketchObjectPy::getConflictingConstraints() const
     for (auto cid : conflictinglist) {
         conflicting.append(Py::Long(cid));
     }
-
     return conflicting;
 }
 
@@ -2627,7 +2593,6 @@ Py::List SketchObjectPy::getRedundantConstraints() const
     for (auto cid : redundantlist) {
         redundant.append(Py::Long(cid));
     }
-
     return redundant;
 }
 
@@ -2640,7 +2605,6 @@ Py::List SketchObjectPy::getPartiallyRedundantConstraints() const
     for (auto cid : redundantlist) {
         redundant.append(Py::Long(cid));
     }
-
     return redundant;
 }
 
@@ -2653,7 +2617,6 @@ Py::List SketchObjectPy::getMalformedConstraints() const
     for (auto cid : malformedlist) {
         malformed.append(Py::Long(cid));
     }
-
     return malformed;
 }
 
@@ -2680,9 +2643,7 @@ int SketchObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
         if (strcmp(attr, "Geometry") == 0) {
             getSketchObjectPtr()->rebuildVertexIndex();
         }
-
         return 1;
     }
-
     return 0;
 }
