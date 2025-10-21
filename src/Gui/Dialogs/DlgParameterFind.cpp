@@ -306,26 +306,18 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            int ret = QMessageBox::warning(this, tr("Not found"), tr("%1 not found. Would you like to start from the beginning?").arg(opt.text),
+            auto ret = QMessageBox::warning(this, tr("Not found"), tr("%1 not found. Would you like to start from the beginning?").arg(opt.text),
                 QMessageBox::Yes| QMessageBox::No);
+            if (ret == QMessageBox::Yes) {
+                opt.text = "BaseApp";
+                opt.group = ui->checkGroups->isChecked();
+                opt.name = ui->checkNames->isChecked();
+                opt.value = ui->checkValues->isChecked();
+                opt.match = ui->checkMatch->isChecked();
 
-            switch (ret) {
-                case QMessageBox::No:
-                    break;
-                case QMessageBox::Yes:
-                    opt.text = "BaseApp";
-                    opt.group = ui->checkGroups->isChecked();
-                    opt.name = ui->checkNames->isChecked();
-                    opt.value = ui->checkValues->isChecked();
-                    opt.match = ui->checkMatch->isChecked();
-
-                    groupTree->setCurrentItem(top);
-                    DlgParameterFind::findItem(current, opt);
-                    break;
-                default:
-                    // should never be reached
-                    break;
-                }
+                groupTree->setCurrentItem(top);
+                DlgParameterFind::findItem(current, opt);
+            }
             
         }
     }
