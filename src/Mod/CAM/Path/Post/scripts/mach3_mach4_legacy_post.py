@@ -19,7 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
+# ***************************************************************************/
 
 import FreeCAD
 from FreeCAD import Units
@@ -35,17 +35,17 @@ from builtins import open as pyopen
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-G-code fragment outputted by a Path object, and output
-real G-code suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
+real G-code suitable for a mach3_4 3 axis mill. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
-import linuxcnc_legacy_post
-linuxcnc_legacy_post.export(object,"/path/to/file.ncc","")
+import mach3_4_legacy_post
+mach3_4_legacy_post.export(object,"/path/to/file.ncc","")
 """
 
 now = datetime.datetime.now()
 
-parser = argparse.ArgumentParser(prog="linuxcnc", add_help=False)
+parser = argparse.ArgumentParser(prog="mach3_4", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
 parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
@@ -96,7 +96,7 @@ UNITS = "G21"  # G21 for metric, G20 for us standard
 UNIT_SPEED_FORMAT = "mm/min"
 UNIT_FORMAT = "mm"
 
-MACHINE_NAME = "LinuxCNC"
+MACHINE_NAME = "mach3_4"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 PRECISION = 3
@@ -202,6 +202,7 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
+
         # Skip inactive operations
         if not PathUtil.activeForOp(obj):
             continue
@@ -209,7 +210,10 @@ def export(objectslist, filename, argstring):
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine units: %s)\n" % (UNIT_SPEED_FORMAT)
+            gcode += linenumber() + "(machine: %s, %s)\n" % (
+                MACHINE_NAME,
+                UNIT_SPEED_FORMAT,
+            )
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -247,15 +251,13 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + line + "\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
-        final = gcode
-        if len(gcode) > 100000:
-            print("Skipping editor since output is greater than 100kb")
+        dia = PostUtils.GCodeEditorDialog()
+        dia.editor.setText(gcode)
+        result = dia.exec_()
+        if result:
+            final = dia.editor.toPlainText()
         else:
-            dia = PostUtils.GCodeEditorDialog()
-            dia.editor.setText(gcode)
-            result = dia.exec_()
-            if result:
-                final = dia.editor.toPlainText()
+            final = gcode
     else:
         final = gcode
 
@@ -290,7 +292,7 @@ def parse(pathobj):
     currLocation = {}  # keep track for no doubles
 
     # the order of parameters
-    # linuxcnc doesn't want K properties on XY plane  Arcs need work.
+    # mach3_4 doesn't want K properties on XY plane  Arcs need work.
     params = [
         "X",
         "Y",
@@ -320,6 +322,7 @@ def parse(pathobj):
             out += parse(p)
         return out
     else:  # parsing simple path
+
         # groups might contain non-path things like stock.
         if not hasattr(pathobj, "Path"):
             return out
@@ -327,16 +330,48 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        # The following "for" statement was fairly recently added
-        # but seems to be using the A, B, and C parameters in ways
-        # that don't appear to be compatible with how the PATH code
-        # uses the A, B, and C parameters.  I have reverted the
-        # change here until we can figure out what it going on.
-        #
-        # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-        for c in pathobj.Path.Commands:
+        adaptiveOp = False
+        opHorizRapid = 0
+        opVertRapid = 0
+
+        if "Adaptive" in pathobj.Name:
+            adaptiveOp = True
+            if hasattr(pathobj, "ToolController"):
+                if (
+                    hasattr(pathobj.ToolController, "HorizRapid")
+                    and pathobj.ToolController.HorizRapid > 0
+                ):
+                    opHorizRapid = Units.Quantity(
+                        pathobj.ToolController.HorizRapid, FreeCAD.Units.Velocity
+                    )
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Tool Controller Horizontal Rapid Values are unset" + "\n"
+                    )
+
+                if (
+                    hasattr(pathobj.ToolController, "VertRapid")
+                    and pathobj.ToolController.VertRapid > 0
+                ):
+                    opVertRapid = Units.Quantity(
+                        pathobj.ToolController.VertRapid, FreeCAD.Units.Velocity
+                    )
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Tool Controller Vertical Rapid Values are unset" + "\n"
+                    )
+
+        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+
             outstring = []
             command = c.Name
+
+            if adaptiveOp and c.Name in ["G0", "G00"]:
+                if opHorizRapid and opVertRapid:
+                    command = "G1"
+                else:
+                    outstring.append("(Tool Controller Rapid Values are unset)" + "\n")
+
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
@@ -347,34 +382,6 @@ def parse(pathobj):
             if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
-            # Handle G84/G74 tapping cycles
-            if command in ("G84", "G74") and "F" in c.Parameters:
-                pitch_mm = float(c.Parameters["F"])
-                c.Parameters.pop("F")  # Remove F from output, we'll handle it
-
-                # Get spindle speed (from S param or last known value)
-                spindle_speed = None
-                if "S" in c.Parameters:
-                    spindle_speed = float(c.Parameters["S"])
-                    c.Parameters.pop("S")
-
-                # Convert pitch to inches if needed
-                if UNITS == "G20":  # imperial
-                    pitch = pitch_mm / 25.4
-                else:
-                    pitch = pitch_mm
-
-                # Calculate feed rate
-                if spindle_speed is not None:
-                    feed_rate = pitch * spindle_speed
-                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
-                    outstring.append(
-                        "F" + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
-                    )
-                else:
-                    # No spindle speed found, output pitch as F
-                    outstring.append("F" + format(pitch, precision_string))
-
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
@@ -384,7 +391,7 @@ def parse(pathobj):
                         if c.Name not in [
                             "G0",
                             "G00",
-                        ]:  # linuxcnc doesn't use rapid speeds
+                        ]:  # mach3_4 doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 outstring.append(
@@ -394,8 +401,8 @@ def parse(pathobj):
                                         precision_string,
                                     )
                                 )
-                        else:
-                            continue
+                            else:
+                                continue
                     elif param == "T":
                         outstring.append(param + str(int(c.Parameters["T"])))
                     elif param == "H":
@@ -412,16 +419,29 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            if param in ("A", "B", "C"):
-                                outstring.append(
-                                    param + format(float(c.Parameters[param]), precision_string)
-                                )
-                            else:
-                                pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                                outstring.append(
-                                    param
-                                    + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                                )
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            outstring.append(
+                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                            )
+
+            if adaptiveOp and c.Name in ["G0", "G00"]:
+                if opHorizRapid and opVertRapid:
+                    if "Z" not in c.Parameters:
+                        outstring.append(
+                            "F"
+                            + format(
+                                float(opHorizRapid.getValueAs(UNIT_SPEED_FORMAT)),
+                                precision_string,
+                            )
+                        )
+                    else:
+                        outstring.append(
+                            "F"
+                            + format(
+                                float(opVertRapid.getValueAs(UNIT_SPEED_FORMAT)),
+                                precision_string,
+                            )
+                        )
 
             # store the latest command
             lastcommand = command
@@ -453,7 +473,7 @@ def parse(pathobj):
                 # append the line to the final output
                 for w in outstring:
                     out += w + COMMAND_SPACE
-                out += "\n"
+                out = out.strip() + "\n"
 
         return out
 

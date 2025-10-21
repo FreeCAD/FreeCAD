@@ -2,6 +2,7 @@
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
 # *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -43,16 +44,15 @@ else:
 # Define some types that are used throughout this file.
 #
 Values = Dict[str, Any]
-Visible = Dict[str, bool]
 
 
-class Refactored_Test(PostProcessor):
-    """The Refactored Test post processor class."""
+class Masso_G3(PostProcessor):
+    """The Masso G3 post processor class."""
 
     def __init__(
         self,
         job,
-        tooltip=translate("CAM", "Refactored Test post processor"),
+        tooltip=translate("CAM", "Masso G3 post processor"),
         tooltipargs=[""],
         units="Metric",
     ) -> None:
@@ -62,69 +62,46 @@ class Refactored_Test(PostProcessor):
             tooltipargs=tooltipargs,
             units=units,
         )
-        Path.Log.debug("Refactored Test post processor initialized")
+        Path.Log.debug("Masso G3 post processor initialized.")
 
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
-        #
         super().init_values(values)
-        #
-        # Set any values here that need to override the default values set
-        # in the parent routine.
-        #
-        # Used in the argparser code as the "name" of the postprocessor program.
-        #
-        values["MACHINE_NAME"] = "test"
-        #
-        # Don't output comments by default.
-        #
-        values["OUTPUT_COMMENTS"] = False
-        #
-        # Don't output the header by default.
-        #
-        values["OUTPUT_HEADER"] = False
-        #
-        # Convert M56 tool change commands to comments,
-        # which are then suppressed by default.
-        #
-        values["OUTPUT_TOOL_CHANGE"] = False
+        values["ENABLE_COOLANT"] = True
+        values["PARAMETER_ORDER"] = [
+            "X",
+            "Y",
+            "Z",
+            "A",
+            "B",
+            "C",
+            "I",
+            "J",
+            "F",
+            "S",
+            "T",
+            "Q",
+            "R",
+            "L",
+            "H",
+            "D",
+            "P",
+        ]
+        values[
+            "POSTAMBLE"
+        ] = """M05
+G17 G54 G90 G80 G40
+M2"""
+        values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
+        values["MACHINE_NAME"] = "Masso G3"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Do not show the editor by default since we are testing.
-        #
-        values["SHOW_EDITOR"] = False
-        #
-        # Don't show the current machine units by default.
-        #
-        values["SHOW_MACHINE_UNITS"] = False
-        #
-        # Don't show the current operation label by default.
-        #
-        values["SHOW_OPERATION_LABELS"] = False
-        #
-        # Don't output an M5 command to stop the spindle after an M6 tool change by default.
-        #
-        values["STOP_SPINDLE_FOR_TOOL_CHANGE"] = False
-        #
-        # Don't output a G43 tool length command following tool changes by default.
-        #
-        values["USE_TLO"] = False
-
-    def init_arguments_visible(self, arguments_visible: Visible) -> None:
-        """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
-        super().init_arguments_visible(arguments_visible)
-        #
-        # Modify the visibility of any arguments from the defaults here.
-        #
-        # Make all arguments invisible by default.
-        #
-        for key in iter(arguments_visible):
-            arguments_visible[key] = False
+        values["TOOL_BEFORE_CHANGE"] = True
 
     @property
     def tooltip(self):
         tooltip: str = """
-        This is a postprocessor file for the CAM workbench.  It is used
-        to test the postprocessor code.  It probably isn't useful for "real" gcode.
+        This is a postprocessor file for the CAM workbench.
+        It is used to take a pseudo-gcode fragment from a CAM object
+        and output 'real' GCode suitable for a Masso G3 3 axis mill.
         """
         return tooltip
