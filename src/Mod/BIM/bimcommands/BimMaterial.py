@@ -105,7 +105,7 @@ class BIM_Material:
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
             searchBox.setPlaceholderText(translate("BIM", "Search materials"))
-            searchBox.setToolTip(translate("BIM", "Searches for materials in the tree"))
+            searchBox.setToolTip(translate("BIM", "Searches for materials in the list"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
             searchBox.textChanged.connect(self.onSearch)
