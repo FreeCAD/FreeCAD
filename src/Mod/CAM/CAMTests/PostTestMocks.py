@@ -57,9 +57,7 @@ class MockToolController:
 class MockOperation:
     """Mock Operation object for testing postprocessors."""
 
-    def __init__(
-        self, name="Operation", label=None, tool_controller=None, active=True
-    ):
+    def __init__(self, name="Operation", label=None, tool_controller=None, active=True):
         self.Name = name
         self.Label = label or name
         self.Active = active
@@ -76,9 +74,7 @@ class MockOperation:
 class MockStock:
     """Mock Stock object with BoundBox."""
 
-    def __init__(
-        self, xmin=0.0, xmax=100.0, ymin=0.0, ymax=100.0, zmin=0.0, zmax=10.0
-    ):
+    def __init__(self, xmin=0.0, xmax=100.0, ymin=0.0, ymax=100.0, zmin=0.0, zmax=10.0):
         self.Shape = type(
             "obj",
             (object,),
@@ -142,20 +138,18 @@ class MockJob:
 
 def create_default_job_with_operation():
     """Create a mock job with a default tool controller and operation.
-    
+
     This is a convenience function for common test scenarios.
     Returns: (job, operation, tool_controller)
     """
     job = MockJob()
-    
+
     # Create default tool controller
-    tc = MockToolController(
-        tool_number=1, label="TC: Default Tool", spindle_speed=1000
-    )
+    tc = MockToolController(tool_number=1, label="TC: Default Tool", spindle_speed=1000)
     job.Tools.Group = [tc]
-    
+
     # Create default operation
     op = MockOperation(name="Profile", label="Profile", tool_controller=tc)
     job.Operations.Group = [op]
-    
+
     return job, op, tc

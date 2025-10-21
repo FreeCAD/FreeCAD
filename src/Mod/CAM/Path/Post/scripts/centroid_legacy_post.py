@@ -334,7 +334,6 @@ def parse(pathobj):
                 if USE_TLO:
                     out += linenumber() + "G43 H" + str(int(c.Parameters["T"])) + "\n"
 
-
             # prepend a line number and append a newline
             if len(commandlist) >= 1:
                 if OUTPUT_LINE_NUMBERS:
