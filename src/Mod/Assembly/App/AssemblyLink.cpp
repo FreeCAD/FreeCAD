@@ -116,7 +116,7 @@ void AssemblyLink::onChanged(const App::Property* prop)
                 groundedObj = linkElt->getLinkGroup();
             }
 
-            if (groundedObj == this && !Rigid.getValue() || hasObject(groundedObj)) {
+            if (Rigid.getValue() ? hasObject(groundedObj) : groundedObj == this) {
                 getDocument()->removeObject(joint->getNameInDocument());
             }
         }
