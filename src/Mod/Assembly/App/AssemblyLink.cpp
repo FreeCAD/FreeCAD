@@ -101,6 +101,26 @@ void AssemblyLink::onChanged(const App::Property* prop)
     if (prop == &Rigid) {
         Base::Placement movePlc;
 
+        // A flexible sub-assembly cannot be grounded.
+        // If a rigid sub-assembly has an object that is grounded, we also remove it.
+        auto groundedJoints = getParentAssembly()->getGroundedJoints();
+        for (auto* joint : groundedJoints) {
+            auto* propObj =
+                dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("ObjectToGround"));
+            if (!propObj) {
+                continue;
+            }
+            auto* groundedObj = propObj->getValue();
+            if (auto* linkElt = dynamic_cast<App::LinkElement*>(groundedObj)) {
+                // hasObject does not handle link groups so we must handle it manually.
+                groundedObj = linkElt->getLinkGroup();
+            }
+
+            if (Rigid.getValue() ? hasObject(groundedObj) : groundedObj == this) {
+                getDocument()->removeObject(joint->getNameInDocument());
+            }
+        }
+
         if (Rigid.getValue()) {
             // movePlc needs to be computed before updateContents.
             App::DocumentObject* firstLink = nullptr;
