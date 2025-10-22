@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
  *                                                                         *
@@ -76,9 +78,11 @@ double distSquared(const TSPPoint& a, const TSPPoint& b)
  * @param endPoint Optional ending location constraint
  * @return Vector of indices representing optimized visit order
  */
-std::vector<int> solve_impl(const std::vector<TSPPoint>& points,
-                            const TSPPoint* startPoint,
-                            const TSPPoint* endPoint)
+std::vector<int> solve_impl(
+    const std::vector<TSPPoint>& points,
+    const TSPPoint* startPoint,
+    const TSPPoint* endPoint
+)
 {
     // ========================================================================
     // STEP 1: Prepare point set with temporary start/end markers
@@ -303,9 +307,280 @@ std::vector<int> solve_impl(const std::vector<TSPPoint>& points,
  */
 
 
-std::vector<int> TSPSolver::solve(const std::vector<TSPPoint>& points,
-                                  const TSPPoint* startPoint,
-                                  const TSPPoint* endPoint)
+std::vector<int> TSPSolver::solve(
+    const std::vector<TSPPoint>& points,
+    const TSPPoint* startPoint,
+    const TSPPoint* endPoint
+)
 {
     return solve_impl(points, startPoint, endPoint);
+}
+
+std::vector<TSPTunnel> TSPSolver::solveTunnels(
+    std::vector<TSPTunnel> tunnels,
+    bool allowFlipping,
+    const TSPPoint* routeStartPoint,
+    const TSPPoint* routeEndPoint
+)
+{
+    if (tunnels.empty()) {
+        return tunnels;
+    }
+
+    // Set original indices
+    for (size_t i = 0; i < tunnels.size(); ++i) {
+        tunnels[i].originalIdx = static_cast<int>(i);
+    }
+
+    // STEP 1: Add the routeStartPoint (will be deleted at the end)
+    if (routeStartPoint) {
+        tunnels.insert(
+            tunnels.begin(),
+            TSPTunnel(routeStartPoint->x, routeStartPoint->y, routeStartPoint->x, routeStartPoint->y, false)
+        );
+    }
+    else {
+        tunnels.insert(tunnels.begin(), TSPTunnel(0.0, 0.0, 0.0, 0.0, false));
+    }
+
+    // STEP 2: Apply nearest neighbor algorithm
+    std::vector<TSPTunnel> potentialNeighbours(tunnels.begin() + 1, tunnels.end());
+    std::vector<TSPTunnel> route;
+    route.push_back(tunnels[0]);
+
+    while (!potentialNeighbours.empty()) {
+        double costCurrent = std::numeric_limits<double>::max();
+        bool toBeFlipped = false;
+        auto nearestNeighbour = potentialNeighbours.begin();
+
+        // Check normal orientation
+        for (auto it = potentialNeighbours.begin(); it != potentialNeighbours.end(); ++it) {
+            double dx = route.back().endX - it->startX;
+            double dy = route.back().endY - it->startY;
+            double costNew = dx * dx + dy * dy;
+
+            if (costNew < costCurrent) {
+                costCurrent = costNew;
+                toBeFlipped = false;
+                nearestNeighbour = it;
+            }
+        }
+
+        // Check flipped orientation if allowed
+        if (allowFlipping) {
+            for (auto it = potentialNeighbours.begin(); it != potentialNeighbours.end(); ++it) {
+                if (it->isOpen) {
+                    double dx = route.back().endX - it->endX;
+                    double dy = route.back().endY - it->endY;
+                    double costNew = dx * dx + dy * dy;
+
+                    if (costNew < costCurrent) {
+                        costCurrent = costNew;
+                        toBeFlipped = true;
+                        nearestNeighbour = it;
+                    }
+                }
+            }
+        }
+
+        // Apply flipping if needed
+        if (toBeFlipped) {
+            nearestNeighbour->flipped = !nearestNeighbour->flipped;
+            std::swap(nearestNeighbour->startX, nearestNeighbour->endX);
+            std::swap(nearestNeighbour->startY, nearestNeighbour->endY);
+        }
+
+        route.push_back(*nearestNeighbour);
+        potentialNeighbours.erase(nearestNeighbour);
+    }
+
+    // STEP 3: Add the routeEndPoint (will be deleted at the end)
+    if (routeEndPoint) {
+        route.push_back(
+            TSPTunnel(routeEndPoint->x, routeEndPoint->y, routeEndPoint->x, routeEndPoint->y, false)
+        );
+    }
+
+    // STEP 4: Additional improvement of the route
+    bool improvementFound = true;
+    while (improvementFound) {
+        improvementFound = false;
+
+        if (allowFlipping) {
+            // STEP 4.1: Apply 2-opt
+            bool improvementReorderFound = true;
+            while (improvementReorderFound) {
+                improvementReorderFound = false;
+                for (size_t i = 0; i + 3 < route.size(); ++i) {
+                    for (size_t j = i + 3; j < route.size(); ++j) {
+                        double subRouteLengthCurrent = std::sqrt(
+                            std::pow(route[i].endX - route[i + 1].startX, 2)
+                            + std::pow(route[i].endY - route[i + 1].startY, 2)
+                        );
+                        subRouteLengthCurrent += std::sqrt(
+                            std::pow(route[j - 1].endX - route[j].startX, 2)
+                            + std::pow(route[j - 1].endY - route[j].startY, 2)
+                        );
+
+                        double subRouteLengthNew = std::sqrt(
+                            std::pow(route[i + 1].startX - route[j].startX, 2)
+                            + std::pow(route[i + 1].startY - route[j].startY, 2)
+                        );
+                        subRouteLengthNew += std::sqrt(
+                            std::pow(route[i].endX - route[j - 1].endX, 2)
+                            + std::pow(route[i].endY - route[j - 1].endY, 2)
+                        );
+                        subRouteLengthNew += 1e-6;
+
+                        if (subRouteLengthNew < subRouteLengthCurrent) {
+                            // Flip direction of each tunnel between i-th and j-th element
+                            for (size_t k = i + 1; k < j; ++k) {
+                                if (route[k].isOpen) {
+                                    route[k].flipped = !route[k].flipped;
+                                    std::swap(route[k].startX, route[k].endX);
+                                    std::swap(route[k].startY, route[k].endY);
+                                }
+                            }
+                            // Reverse the order of tunnels between i-th and j-th element
+                            std::reverse(route.begin() + i + 1, route.begin() + j);
+                            improvementReorderFound = true;
+                            improvementFound = true;
+                        }
+                    }
+                }
+            }
+
+            // STEP 4.2: Apply flipping
+            bool improvementFlipFound = true;
+            while (improvementFlipFound) {
+                improvementFlipFound = false;
+                for (size_t i = 1; i + 1 < route.size(); ++i) {
+                    if (route[i].isOpen) {
+                        double subRouteLengthCurrent = std::sqrt(
+                            std::pow(route[i - 1].endX - route[i].startX, 2)
+                            + std::pow(route[i - 1].endY - route[i].startY, 2)
+                        );
+                        subRouteLengthCurrent += std::sqrt(
+                            std::pow(route[i].endX - route[i + 1].startX, 2)
+                            + std::pow(route[i].endY - route[i + 1].startY, 2)
+                        );
+
+                        double subRouteLengthNew = std::sqrt(
+                            std::pow(route[i - 1].endX - route[i].endX, 2)
+                            + std::pow(route[i - 1].endY - route[i].endY, 2)
+                        );
+                        subRouteLengthNew += std::sqrt(
+                            std::pow(route[i].startX - route[i + 1].startX, 2)
+                            + std::pow(route[i].startY - route[i + 1].startY, 2)
+                        );
+                        subRouteLengthNew += 1e-6;
+
+                        if (subRouteLengthNew < subRouteLengthCurrent) {
+                            // Flip direction of i-th tunnel
+                            route[i].flipped = !route[i].flipped;
+                            std::swap(route[i].startX, route[i].endX);
+                            std::swap(route[i].startY, route[i].endY);
+                            improvementFlipFound = true;
+                            improvementFound = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // STEP 4.3: Apply relocation
+        bool improvementRelocateFound = true;
+        while (improvementRelocateFound) {
+            improvementRelocateFound = false;
+            for (size_t i = 1; i + 1 < route.size(); ++i) {
+                // Try relocating backward
+                for (size_t j = 1; j + 2 < i; ++j) {
+                    double subRouteLengthCurrent = std::sqrt(
+                        std::pow(route[i - 1].endX - route[i].startX, 2)
+                        + std::pow(route[i - 1].endY - route[i].startY, 2)
+                    );
+                    subRouteLengthCurrent += std::sqrt(
+                        std::pow(route[i].endX - route[i + 1].startX, 2)
+                        + std::pow(route[i].endY - route[i + 1].startY, 2)
+                    );
+                    subRouteLengthCurrent += std::sqrt(
+                        std::pow(route[j].endX - route[j + 1].startX, 2)
+                        + std::pow(route[j].endY - route[j + 1].startY, 2)
+                    );
+
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[i - 1].endX - route[i + 1].startX, 2)
+                        + std::pow(route[i - 1].endY - route[i + 1].startY, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[j].endX - route[i].startX, 2)
+                        + std::pow(route[j].endY - route[i].startY, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[i].endX - route[j + 1].startX, 2)
+                        + std::pow(route[i].endY - route[j + 1].startY, 2)
+                    );
+                    subRouteLengthNew += 1e-6;
+
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Relocate the i-th tunnel backward (after j-th element)
+                        TSPTunnel temp = route[i];
+                        route.erase(route.begin() + i);
+                        route.insert(route.begin() + j + 1, temp);
+                        improvementRelocateFound = true;
+                        improvementFound = true;
+                    }
+                }
+
+                // Try relocating forward
+                for (size_t j = i + 1; j + 1 < route.size(); ++j) {
+                    double subRouteLengthCurrent = std::sqrt(
+                        std::pow(route[i - 1].endX - route[i].startX, 2)
+                        + std::pow(route[i - 1].endY - route[i].startY, 2)
+                    );
+                    subRouteLengthCurrent += std::sqrt(
+                        std::pow(route[i].endX - route[i + 1].startX, 2)
+                        + std::pow(route[i].endY - route[i + 1].startY, 2)
+                    );
+                    subRouteLengthCurrent += std::sqrt(
+                        std::pow(route[j].endX - route[j + 1].startX, 2)
+                        + std::pow(route[j].endY - route[j + 1].startY, 2)
+                    );
+
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[i - 1].endX - route[i + 1].startX, 2)
+                        + std::pow(route[i - 1].endY - route[i + 1].startY, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[j].endX - route[i].startX, 2)
+                        + std::pow(route[j].endY - route[i].startY, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[i].endX - route[j + 1].startX, 2)
+                        + std::pow(route[i].endY - route[j + 1].startY, 2)
+                    );
+                    subRouteLengthNew += 1e-6;
+
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Relocate the i-th tunnel forward (after j-th element)
+                        TSPTunnel temp = route[i];
+                        route.erase(route.begin() + i);
+                        route.insert(route.begin() + j, temp);
+                        improvementRelocateFound = true;
+                        improvementFound = true;
+                    }
+                }
+            }
+        }
+    }
+
+    // STEP 5: Delete temporary start and end point
+    if (!route.empty()) {
+        route.erase(route.begin());  // Remove temp start
+    }
+    if (routeEndPoint && !route.empty()) {
+        route.pop_back();  // Remove temp end
+    }
+
+    return route;
 }
