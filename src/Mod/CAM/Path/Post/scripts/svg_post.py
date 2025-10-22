@@ -40,10 +40,11 @@ LAYER_COLORS = {"CUT": "red", "ENGRAVE": "blue", "FILL": "green", "DEFAULT": "bl
 
 
 class Svg(PostProcessor):
-    def __init__(self, job):
+    def __init__(self, job, operations):
 
         super().__init__(
             job,
+            operations=operations,
             tooltip=translate("CAM", "SVG post processor"),
             tooltipargs=[],
             units="mm",

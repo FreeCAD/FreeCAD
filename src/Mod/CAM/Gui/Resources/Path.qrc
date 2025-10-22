@@ -7,6 +7,7 @@
         <file>icons/CAM_Area_Workplane.svg</file>
         <file>icons/CAM_Area.svg</file>
         <file>icons/CAM_Array.svg</file>
+        <file>icons/CAM_ArrayMTC.svg</file>
         <file>icons/CAM_BFastForward.svg</file>
         <file>icons/CAM_BPause.svg</file>
         <file>icons/CAM_BPlay.svg</file>
@@ -39,6 +40,7 @@
         <file>icons/CAM_OperationB.svg</file>
         <file>icons/CAM_Pocket.svg</file>
         <file>icons/CAM_Post.svg</file>
+        <file>icons/CAM_PostSelected.svg</file>
         <file>icons/CAM_Probe.svg</file>
         <file>icons/CAM_Profile_Edges.svg</file>
         <file>icons/CAM_Profile_Face.svg</file>

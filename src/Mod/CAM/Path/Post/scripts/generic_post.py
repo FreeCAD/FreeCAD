@@ -37,9 +37,10 @@ else:
 
 
 class Generic(PostProcessor):
-    def __init__(self, job):
+    def __init__(self, job, operations):
         super().__init__(
             job,
+            operations,
             tooltip=translate("CAM", "Generic post processor"),
             tooltipargs=["arg1", "arg2"],
             units="kg",
