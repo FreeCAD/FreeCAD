@@ -63,7 +63,7 @@ void StdCmdDlgMacroRecord::activated(int iMsg)
         Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
         if (cDlg.exec() && getAction()) {
             getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-playback-stop"));
-            getAction()->setText(QCoreApplication::translate("StdCmdDlgMacroRecord", "S&top macro recording"));
+            getAction()->setText(QCoreApplication::translate("StdCmdDlgMacroRecord", "S&top Macro Recording"));
             getAction()->setToolTip(QCoreApplication::translate("StdCmdDlgMacroRecord", "Stop the macro recording session"));
         }
     }
