@@ -276,7 +276,7 @@ class JobPreferencesPage:
 
     def getPostProcessor(self, name):
         if not name in self.processor:
-            processor = PostProcessorFactory.get_post_processor(None, name)
+            processor = PostProcessorFactory.get_post_processor(None, name, None)
             self.processor[name] = processor
             return processor
         return self.processor[name]
