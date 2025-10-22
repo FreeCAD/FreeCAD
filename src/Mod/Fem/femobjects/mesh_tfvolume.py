@@ -31,7 +31,9 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshTransfiniteVolume(base_femmeshelement.BaseFemMeshElement):
     """
@@ -42,12 +44,14 @@ class MeshTransfiniteVolume(base_femmeshelement.BaseFemMeshElement):
 
     def _get_properties(self):
 
-        props = [_PropHelper(
+        props = [
+            _PropHelper(
                 type="App::PropertyBool",
                 name="MixedElements",
                 group="Transfinite",
                 doc="Creates mixt element types when the bounding surfaces mix quads and triangels",
                 value=False,
-            ),]
+            ),
+        ]
 
         return super()._get_properties() + props

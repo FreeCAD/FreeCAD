@@ -57,7 +57,6 @@
 #include "ui_SphereWidget.h"
 
 
-
 using namespace FemGui;
 namespace sp = std::placeholders;
 
@@ -67,11 +66,16 @@ EXTENSION_PROPERTY_SOURCE(FemGui::ViewProviderCylinderExtension, FemGui::ViewPro
 EXTENSION_PROPERTY_SOURCE(FemGui::ViewProviderSphereExtension, FemGui::ViewProviderShapeExtension)
 EXTENSION_PROPERTY_SOURCE(FemGui::ViewProviderPlaneExtension, FemGui::ViewProviderShapeExtension)
 
-namespace Gui {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderBoxExtensionPython, FemGui::ViewProviderBoxExtension)
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderCylinderExtensionPython, FemGui::ViewProviderCylinderExtension)
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderSphereExtensionPython, FemGui::ViewProviderSphereExtension)
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPlaneExtensionPython, FemGui::ViewProviderPlaneExtension)
+namespace Gui
+{
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderBoxExtensionPython,
+                                   FemGui::ViewProviderBoxExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderCylinderExtensionPython,
+                                   FemGui::ViewProviderCylinderExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderSphereExtensionPython,
+                                   FemGui::ViewProviderSphereExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPlaneExtensionPython,
+                                   FemGui::ViewProviderPlaneExtension)
 
 
 // explicit template instantiation
@@ -110,10 +114,10 @@ ViewProviderShapeExtension::ViewProviderShapeExtension()
     m_scale = new SoScale();
     m_scale->ref();
     m_scale->scaleFactor = SbVec3f(1, 1, 1);
-
 }
 
-ViewProviderShapeExtension::~ViewProviderShapeExtension() {
+ViewProviderShapeExtension::~ViewProviderShapeExtension()
+{
 
     m_geometrySeperator->unref();
     m_manip->unref();
@@ -553,7 +557,8 @@ void CylinderWidget::axisChanged(double)
 void CylinderWidget::radiusChanged(double)
 {
     if (!blockObjectUpdates()) {
-        getObjectExtension<Fem::CylinderExtension>()->Radius.setValue(ui->radius->value().getValue());
+        getObjectExtension<Fem::CylinderExtension>()->Radius.setValue(
+            ui->radius->value().getValue());
     }
 }
 
@@ -764,7 +769,6 @@ ShapeWidget* ViewProviderSphereExtension::createShapeWidget()
 {
     return new SphereWidget();
 }
-
 
 
 // Plane Manipulation
@@ -986,8 +990,6 @@ ShapeWidget* ViewProviderPlaneExtension::createShapeWidget()
 }
 
 
-
-
 namespace FemGui
 {
 
@@ -1141,5 +1143,5 @@ SoGroup* postSphere()
 }
 
 
-}
-}
+}  // namespace ShapeNodes
+}  // namespace FemGui

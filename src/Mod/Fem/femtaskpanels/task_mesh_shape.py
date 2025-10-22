@@ -36,6 +36,7 @@ import FreeCADGui
 
 from . import base_femtaskpanel
 
+
 class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of FemMeshRegion objects
@@ -80,7 +81,6 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
             ui.Thickness.hide()
             ui.ThicknessLabel.hide()
 
-
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeInChanged(self, value):
         self.obj.SizeIn = value
@@ -99,10 +99,12 @@ class _TaskPanelSphere(_TaskPanelShape):
     def __init__(self, obj):
         super().__init__(obj, "Sphere", ":icons/FEM_MeshSphere.svg")
 
+
 class _TaskPanelBox(_TaskPanelShape):
 
     def __init__(self, obj):
         super().__init__(obj, "Box", ":icons/FEM_MeshBox.svg")
+
 
 class _TaskPanelCylinder(_TaskPanelShape):
 
