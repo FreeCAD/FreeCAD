@@ -56,6 +56,8 @@ lead_styles = (
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retract"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 )
 
@@ -226,7 +228,7 @@ class ObjectDressup:
             obj.AngleOut = limit_angle_out
 
         hideModes = {
-            "Angle": ("No Retract", "Vertical"),
+            "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
             "Invert": ("No Retract", "ArcZ", "LineZ", "Vertical"),
             "Offset": ("No Retract"),
             "Radius": ("No Retract", "Vertical"),
@@ -301,17 +303,11 @@ class ObjectDressup:
             if styleOn == "Arc":
                 obj.StyleIn = "Arc"
                 obj.AngleIn = 90
-            elif styleOn in ("Perpendicular", "Tangent"):
-                obj.StyleIn = "Line"
-                obj.AngleIn = 90 if styleOn == "Perpendicular" else 0
 
         if styleOff:
             if styleOff == "Arc":
                 obj.StyleOut = "Arc"
                 obj.AngleOut = 90
-            elif styleOff in ("Perpendicular", "Tangent"):
-                obj.StyleOut = "Line"
-                obj.AngleOut = 90 if styleOff == "Perpendicular" else 0
 
         for prop in ("Length", "LengthIn"):
             if hasattr(obj, prop):
@@ -604,7 +600,13 @@ class ObjectDressup:
         beginZ = move.positionBegin().z  # do not change this variable below
 
         if obj.StyleIn not in ("No Retract", "Vertical"):
-            angleIn = math.radians(obj.AngleIn.Value)
+            if obj.StyleIn == "Perpendicular":
+                angleIn = math.pi / 2
+            elif obj.StyleIn == "Tangent":
+                angleIn = 0
+            else:
+                angleIn = math.radians(obj.AngleIn.Value)
+
             length = obj.RadiusIn.Value
             angleTangent = move.anglesOfTangents()[0]
             normalMax = (
@@ -633,7 +635,7 @@ class ObjectDressup:
 
             # prepend "Line" style lead-in - line in XY
             # Line3d the same as Line, but increased Z start point
-            elif obj.StyleIn in ("Line", "Line3d"):
+            elif obj.StyleIn in ("Line", "Line3d", "Perpendicular", "Tangent"):
                 # tangent and normal vectors in XY plane
                 tangentLength = math.cos(angleIn) * length
                 normalLength = math.sin(angleIn) * length
@@ -737,7 +739,13 @@ class ObjectDressup:
         end = move.positionEnd()
 
         if obj.StyleOut not in ("No Retract", "Vertical"):
-            angleOut = math.radians(obj.AngleOut.Value)
+            if obj.StyleOut == "Perpendicular":
+                angleOut = math.pi / 2
+            elif obj.StyleOut == "Tangent":
+                angleOut = 0
+            else:
+                angleOut = math.radians(obj.AngleOut.Value)
+
             length = obj.RadiusOut.Value
             angleTangent = move.anglesOfTangents()[1]
             normalMax = (
@@ -764,7 +772,7 @@ class ObjectDressup:
 
             # append "Line" style lead-out
             # Line3d the same as Line, but increased Z start point
-            elif obj.StyleOut in ("Line", "Line3d"):
+            elif obj.StyleOut in ("Line", "Line3d", "Perpendicular", "Tangent"):
                 # tangent and normal vectors in XY plane
                 tangentLength = math.cos(angleOut) * length
                 normalLength = math.sin(angleOut) * length
