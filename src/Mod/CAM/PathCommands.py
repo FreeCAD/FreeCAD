@@ -24,6 +24,8 @@ import Part
 import Path
 import traceback
 
+import Path.Dressup.Utils as PathDressup
+
 from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import tangentEdgeLoop
@@ -218,20 +220,42 @@ class _CopyOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
-        try:
-            for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
-                    return False
-            return True
-        except (IndexError, AttributeError):
+        if any([not hasattr(sel, "Path") for sel in selection]):
+            return False
+        if any([sel.Name.startswith("Job") for sel in selection]):
             return False
 
+        return True
+
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            jobname = findParentJob(sel.Object).Name
-            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
+        def getRecursiveOperationsList(obj, recursiveList):
+            if obj.isDerivedFrom("Path::Feature"):
+                recursiveList.append(obj)
+            else:
+                return None
+            baseOp = PathDressup.baseOp(obj)
+            if obj != baseOp:
+                return getRecursiveOperationsList(obj.Base, recursiveList)
+            return None
+
+        selection = FreeCADGui.Selection.getSelection()
+        for sel in selection:
+            job = findParentJob(sel)
+            recursiveList = []
+            getRecursiveOperationsList(sel, recursiveList)
+            prevObj = None
+            for obj in reversed(recursiveList):
+                newObj = FreeCAD.ActiveDocument.copyObject(obj, False)
+                if prevObj:
+                    # set Base for all objects, except first
+                    newObj.Base = prevObj
+                prevObj = newObj
+
+            # add to Job only last object
+            addToJob(newObj, job.Name)
 
 
 if FreeCAD.GuiUp:
