@@ -1391,7 +1391,8 @@ void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* curren
             for (auto* child : inList) {
                 if (child->isDerivedFrom<App::Link>() && child->getLinkedObject() == current) {
                     // In this case we need to reverse isolate this!
-                    auto* childVp = freecad_cast<Gui::ViewProviderLink*>(Gui::Application::Instance->getViewProvider(child));
+                    auto* childVp = freecad_cast<Gui::ViewProviderLink*>(
+                        Gui::Application::Instance->getViewProvider(child));
 
                     // we give the child the color the current had before we changed it
                     childVp->OverrideMaterial.setValue(true);
