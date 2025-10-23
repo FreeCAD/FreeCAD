@@ -25,8 +25,6 @@
 """GUI tests for the ArchWall module."""
 
 import FreeCAD
-import FreeCADGui
-import Arch
 import Draft
 import WorkingPlane
 from bimtests import TestArchBaseGui
@@ -109,7 +107,6 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
     def test_create_draft_line_baseline_wall_interactive(self):
         """Tests the interactive creation of a wall with a Draft.Line baseline."""
         from draftguitools import gui_trackers
-        import Draft
 
         self.printTestMessage("Testing interactive creation of a Draft.Line based wall...")
 
