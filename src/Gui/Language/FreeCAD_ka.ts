@@ -6131,9 +6131,9 @@ Save all changes?</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="407"/>
-      <source>Input hints</source>
+      <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input hints</translation>
+      <translation type="unfinished">Input Hints</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="417"/>

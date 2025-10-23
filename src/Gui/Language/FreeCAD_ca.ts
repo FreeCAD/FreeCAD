@@ -6122,7 +6122,7 @@ Voleu desar tots els canvis?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="407"/>
-      <source>Input hints</source>
+      <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>Pistes d'entrada</translation>
     </message>

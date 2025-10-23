@@ -6158,7 +6158,7 @@ bądź przyciskami PgUp / PgDown na klawiaturze.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="407"/>
-      <source>Input hints</source>
+      <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>Podpowiedzi wprowadzania</translation>
     </message>

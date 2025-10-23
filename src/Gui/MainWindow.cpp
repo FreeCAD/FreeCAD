@@ -405,7 +405,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->hintLabel = new InputHintWidget(statusBar());
     d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
     //: A context menu action used to show or hide the input hints in the status bar
-    d->hintLabel->setWindowTitle(tr("Input hints"));
+    d->hintLabel->setWindowTitle(tr("Input Hints"));
 
     statusBar()->addWidget(d->hintLabel);
 
