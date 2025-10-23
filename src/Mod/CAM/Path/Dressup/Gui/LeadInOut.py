@@ -599,10 +599,17 @@ class ObjectDressup:
         begin = move.positionBegin()
         beginZ = move.positionBegin().z  # do not change this variable below
 
-        if obj.StyleIn not in ("No Retract", "Vertical"):
-            if obj.StyleIn == "Perpendicular":
+        if not obj.LeadIn and obj.LeadOut:
+            # can not skip leadin if leadout
+            # override style to get correct move to next step down
+            styleIn = "Vertical"
+        else:
+            styleIn = obj.StyleIn
+
+        if styleIn not in ("No Retract", "Vertical"):
+            if styleIn == "Perpendicular":
                 angleIn = math.pi / 2
-            elif obj.StyleIn == "Tangent":
+            elif styleIn == "Tangent":
                 angleIn = 0
             else:
                 angleIn = math.radians(obj.AngleIn.Value)
@@ -618,7 +625,7 @@ class ObjectDressup:
 
             # prepend "Arc" style lead-in - arc in XY
             # Arc3d the same as Arc, but increased Z start point
-            if obj.StyleIn in ("Arc", "Arc3d", "Helix"):
+            if styleIn in ("Arc", "Arc3d", "Helix"):
                 # tangent and normal vectors in XY plane
                 arcRadius = length
                 tangentLength = math.sin(angleIn) * arcRadius
@@ -635,7 +642,7 @@ class ObjectDressup:
 
             # prepend "Line" style lead-in - line in XY
             # Line3d the same as Line, but increased Z start point
-            elif obj.StyleIn in ("Line", "Line3d", "Perpendicular", "Tangent"):
+            elif styleIn in ("Line", "Line3d", "Perpendicular", "Tangent"):
                 # tangent and normal vectors in XY plane
                 tangentLength = math.cos(angleIn) * length
                 normalLength = math.sin(angleIn) * length
@@ -649,7 +656,7 @@ class ObjectDressup:
 
             # prepend "LineZ" style lead-in - vertical inclined line
             # Should be apply only on straight Path segment
-            elif obj.StyleIn == "LineZ":
+            elif styleIn == "LineZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
                 normalLengthMax = self.baseOp.SafeHeight.Value - begin.z
@@ -664,7 +671,7 @@ class ObjectDressup:
 
             # prepend "ArcZ" style lead-in - vertical Arc
             # Should be apply only on straight Path segment
-            elif obj.StyleIn == "ArcZ":
+            elif styleIn == "ArcZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
                 arcRadius = length
@@ -684,7 +691,7 @@ class ObjectDressup:
             # replace 'begin' position by first lead-in command
             begin = lead[0].positionBegin()
 
-            if obj.StyleIn in ("Arc3d", "Line3d"):
+            if styleIn in ("Arc3d", "Line3d"):
                 # up Z start point for Arc3d and Line3d
                 if inInstrPrev and inInstrPrev.z() > begin.z:
                     begin.z = inInstrPrev.z()
@@ -692,7 +699,7 @@ class ObjectDressup:
                     begin.z = self.baseOp.StartDepth.Value
                 lead[0].setPositionBegin(begin)
 
-            elif obj.StyleIn == "Helix":
+            elif styleIn == "Helix":
                 # change Z for current helix lead-in
                 posPrevZ = None
                 if outInstrPrev:
@@ -715,7 +722,7 @@ class ObjectDressup:
                 outInstrPrev.param["Z"] = posPrevZ - halfStepZ
 
         # get complete start travel moves
-        if obj.StyleIn != "No Retract":
+        if styleIn != "No Retract":
             travelToStart = self.getTravelStart(obj, begin, first, outInstrPrev)
         else:
             # exclude any lead-in commands
@@ -1053,10 +1060,12 @@ class ObjectDressup:
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)
-                    if not obj.LeadIn and (moveDir in ("Down", "Hor") or first):
+                    if (not obj.LeadIn and not obj.LeadOut) and (
+                        moveDir in ("Down", "Hor") or first
+                    ):
                         # keep original Lead-in movements
                         commands.append(instr)
-                    elif not obj.LeadOut and moveDir == "Up" and not first:
+                    if not obj.LeadOut and moveDir == "Up" and not first:
                         # keep original Lead-out movements
                         commands.append(instr)
                 # skip travel and plunge moves if LeadInOut will be process
@@ -1069,7 +1078,9 @@ class ObjectDressup:
 
             # Process Lead-In
             if first or not self.isCuttingMove(source[i - 1 - skipCounter]):
-                if obj.LeadIn:
+                if obj.LeadIn or obj.LeadOut:
+                    # can not skip leadin if leadout
+
                     # Process negative Offset Lead-In (cut travel from begin)
                     if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retract":
                         if measuredLength <= abs(obj.OffsetIn.Value):
@@ -1241,10 +1252,15 @@ class CommandPathDressupLeadInOut:
         }
 
     def IsActive(self):
-        op = PathDressup.selection()
-        if op:
-            return not PathDressup.hasEntryMethod(op)
-        return False
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) != 1:
+            return False
+        if not selection[0].isDerivedFrom("Path::Feature"):
+            return False
+        if selection.Name.startswith("Job"):
+            return False
+
+        return True
 
     def Activated(self):
         # check that the selection contains exactly what we want
