@@ -41,6 +41,18 @@ class DrawPage(DocumentObject):
     def requestPaint(self) -> Any:
         """Ask the Gui to redraw this page"""
         ...
+
+    def exportToPDF(self, path: str) -> bool:
+        """exportToPDF(path) -> bool: render the page to a PDF file at ``path``"""
+        ...
+
+    def exportToSVG(self, path: str) -> bool:
+        """exportToSVG(path) -> bool: render the page to an SVG file at ``path``"""
+        ...
+
+    def renderToSVGString(self) -> str:
+        """renderToSVGString() -> str: return the page render as SVG markup"""
+        ...
     PageWidth: Final[float]
     """Returns the width of this page"""
 
