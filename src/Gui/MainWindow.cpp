@@ -415,7 +415,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     statusBar()->addPermanentWidget(d->rightSideLabel);
     d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
     //: A context menu action used to enable or disable quick measure in the status bar
-    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
+    d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 

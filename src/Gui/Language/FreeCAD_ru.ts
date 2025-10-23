@@ -6128,7 +6128,7 @@ Save all changes?</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="417"/>
-      <source>Quick measure</source>
+      <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>Быстрое измерение</translation>
     </message>
