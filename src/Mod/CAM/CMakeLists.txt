@@ -93,6 +93,7 @@ SET(PathPythonMain_SRCS
 SET(PathPythonMainGui_SRCS
     Path/Main/Gui/__init__.py
     Path/Main/Gui/Camotics.py
+    Path/Main/Gui/Editor.py
     Path/Main/Gui/Fixture.py
     Path/Main/Gui/Inspect.py
     Path/Main/Gui/Job.py
