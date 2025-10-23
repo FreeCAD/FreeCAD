@@ -11563,7 +11563,7 @@ Comproveu la instal·lació de FreeCAD o proporcioneu una plantilla personalitza
     <name>BIMStatusWidget</name>
     <message>
       <location filename="../../BimStatus.py" line="129"/>
-      <source>BIM status widget</source>
+      <source>BIM Status Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
       <translation>Giny d'estat BIM</translation>
     </message>
