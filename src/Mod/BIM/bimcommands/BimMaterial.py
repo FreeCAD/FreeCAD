@@ -138,7 +138,7 @@ class BIM_Material:
             buttonCreate.clicked.connect(self.onCreate)
 
             # create multi
-            buttonMulti = QtGui.QPushButton(translate("BIM", "Create new Multi-Material"), self.dlg)
+            buttonMulti = QtGui.QPushButton(translate("BIM", "New Multi-Material"), self.dlg)
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
             createButtonsLayout.addWidget(buttonMulti, 0, 1)
             buttonMulti.clicked.connect(self.onMulti)
