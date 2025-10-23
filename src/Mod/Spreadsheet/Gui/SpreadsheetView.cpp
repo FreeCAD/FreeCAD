@@ -181,10 +181,12 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     }
     else if (strcmp("Save", pMsg) == 0) {
         getGuiDocument()->save();
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
         getGuiDocument()->saveAs();
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         return true;
     }
     else if (strcmp("Std_Delete", pMsg) == 0) {

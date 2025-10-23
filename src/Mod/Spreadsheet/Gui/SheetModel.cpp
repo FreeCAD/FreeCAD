@@ -577,7 +577,7 @@ void SheetModel::setCellData(QModelIndex index, QString str)
 
         sheet->setContent(address, str.toUtf8().constData());
         Gui::Command::commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        
     }
     catch (const Base::Exception& e) {
         e.reportException();
