@@ -6145,13 +6145,13 @@ Save all changes?</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="407"/>
-      <source>Input Hints</source>
+      <source>Input hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>Увясці падказку</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="417"/>
-      <source>Quick Measure</source>
+      <source>Quick measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>Хуткая мера</translation>
     </message>

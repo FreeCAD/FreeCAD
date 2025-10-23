@@ -11658,9 +11658,9 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <name>BIMStatusWidget</name>
     <message>
       <location filename="../../BimStatus.py" line="129"/>
-      <source>BIM Status Widget</source>
+      <source>BIM status widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation type="unfinished">BIM Status Widget</translation>
+      <translation type="unfinished">BIM status widget</translation>
     </message>
   </context>
   <context>

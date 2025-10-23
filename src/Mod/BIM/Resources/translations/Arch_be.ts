@@ -11840,7 +11840,7 @@ IfcOpenShell неабходны для імпартавання ці экспа�
     <name>BIMStatusWidget</name>
     <message>
       <location filename="../../BimStatus.py" line="129"/>
-      <source>BIM Status Widget</source>
+      <source>BIM status widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
       <translation>Фішка стану BIM</translation>
     </message>
