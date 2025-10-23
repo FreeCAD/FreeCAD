@@ -433,7 +433,7 @@ class TaskFillTemplateFields:
                     self.dialog.show()
                     self.dialog.exec_()
 
-                    App.setActiveTransaction("Fill template fields")
+#                    App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -524,17 +524,20 @@ class TaskFillTemplateFields:
             self.button.setEnabled(False)
 
     def proceed(self):
+        transactionName = QtCore.QT_TRANSLATE_NOOP("Techdraw_FillTemplateFields", "Fill template fields")
+        App.setActiveTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
             if cb.isChecked():
                 self.texts[keyLst[i]] = self.lineTextList[i].text()
             i += 1
         self.page.Template.EditableTexts = self.texts
+        App.closeActiveTransaction(False)
         self.close()
 
         App.closeActiveTransaction()
 
     def close(self):
         self.dialog.hide()
-        App.closeActiveTransaction(True)
+#        App.closeActiveTransaction(True)
         return True
