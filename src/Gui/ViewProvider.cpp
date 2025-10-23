@@ -239,7 +239,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                         DockWindowManager* pDockMgr = DockWindowManager::instance();
                         if (QWidget* widget = pDockMgr->getDockWindow("Tasks")) {
                             QKeyEvent ev(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
-                            qApp->sendEvent(widget, &ev);
+                            qApp->postEvent(widget, &ev);
                         }
 
                         auto func = new Gui::TimerFunction();
