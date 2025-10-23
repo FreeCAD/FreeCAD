@@ -29,7 +29,7 @@
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QKeyEvent>
 # include <QMessageBox>
-
+# include <QString>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -46,6 +46,8 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/MDIView.h>
+#include "Utils.h"
 
 #include <Mod/Part/App/Part2DObject.h>
 
@@ -446,6 +448,7 @@ void DlgExtrusion::accept()
     };
 }
 
+
 void DlgExtrusion::apply()
 {
     try{
@@ -488,6 +491,8 @@ void DlgExtrusion::apply()
             }
 
             FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Extrusion','" << name << "')");
+            QString qname=QString::fromUtf8(name.c_str());
+            Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(qname).toUtf8());
             auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
             this->writeParametersToFeature(*newObj, sourceObj);
