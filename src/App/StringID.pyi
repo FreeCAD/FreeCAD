@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod, class_declarations
 from Base.BaseClass import BaseClass
 from typing import Any, Final, List
@@ -10,8 +14,7 @@ from typing import Any, Final, List
 @class_declarations("""private:
     friend class StringID;
     int _index = 0;
-        """
-)
+        """)
 class StringID(BaseClass):
     """
     This is the StringID class
@@ -21,7 +24,7 @@ class StringID(BaseClass):
     """
 
     @constmethod
-    def isSame(self, other: "StringID") -> bool:
+    def isSame(self, other: "StringID", /) -> bool:
         """
         Check if two StringIDs are the same
         """

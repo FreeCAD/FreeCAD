@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Vector import Vector
 from TrimmedCurve import TrimmedCurve
@@ -22,7 +26,8 @@ class ArcOfConic(TrimmedCurve):
     """
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     Location: Vector = ...
     """Center of the conic."""

@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from GeometrySurface import GeometrySurface
 from typing import Final, List, Any
@@ -182,6 +186,7 @@ class BSplineSurface(GeometrySurface):
         dX: float = ...,
         Y0: float = ...,
         dY: float = ...,
+        /,
     ) -> None:
         """
         increase(Int=UDegree, int=VDegree)
@@ -219,31 +224,31 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def insertUKnot(self, U: float, Index: int, Tolerance: float) -> None:
+    def insertUKnot(self, U: float, Index: int, Tolerance: float, /) -> None:
         """
         insertUKnote(float U, int Index, float Tolerance) - Insert or override a knot
         """
         ...
 
-    def insertUKnots(self, U: List[float], Mult: List[float], Tolerance: float) -> None:
+    def insertUKnots(self, U: List[float], Mult: List[float], Tolerance: float, /) -> None:
         """
         insertUKnote(List of float U, List of float Mult, float Tolerance) - Inserts knots.
         """
         ...
 
-    def insertVKnot(self, V: float, Index: int, Tolerance: float) -> None:
+    def insertVKnot(self, V: float, Index: int, Tolerance: float, /) -> None:
         """
         insertUKnote(float V, int Index, float Tolerance) - Insert or override a knot.
         """
         ...
 
-    def insertVKnots(self, V: List[float], Mult: List[float], Tolerance: float) -> None:
+    def insertVKnots(self, V: List[float], Mult: List[float], Tolerance: float, /) -> None:
         """
         insertUKnote(List of float V, List of float Mult, float Tolerance) - Inserts knots.
         """
         ...
 
-    def removeUKnot(self, M: int, Index: int, Tolerance: float) -> bool:
+    def removeUKnot(self, M: int, Index: int, Tolerance: float, /) -> bool:
         """
         Reduces to M the multiplicity of the knot of index Index in the given
         parametric direction. If M is 0, the knot is removed.
@@ -261,7 +266,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def removeVKnot(self, M: int, Index: int, Tolerance: float) -> bool:
+    def removeVKnot(self, M: int, Index: int, Tolerance: float, /) -> bool:
         """
         Reduces to M the multiplicity of the knot of index Index in the given
         parametric direction. If M is 0, the knot is removed.
@@ -279,7 +284,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def segment(self, U1: float, U2: float, V1: float, V2: float) -> None:
+    def segment(self, U1: float, U2: float, V1: float, V2: float, /) -> None:
         """
         Modifies this B-Spline surface by segmenting it between U1 and U2 in the
         u parametric direction and between V1 and V2 in the v parametric direction.
@@ -293,7 +298,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setUKnot(self, K: float, UIndex: int, M: int = ...) -> None:
+    def setUKnot(self, K: float, UIndex: int, M: int = ..., /) -> None:
         """
         Modifies this B-Spline surface by assigning the value K to the knot of index
         UIndex of the knots table corresponding to the u parametric direction.
@@ -305,7 +310,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setVKnot(self, K: float, VIndex: int, M: int = ...) -> None:
+    def setVKnot(self, K: float, VIndex: int, M: int = ..., /) -> None:
         """
         Modifies this B-Spline surface by assigning the value K to the knot of index
         VIndex of the knots table corresponding to the v parametric direction.
@@ -318,7 +323,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getUKnot(self, UIndex: int) -> Any:
+    def getUKnot(self, UIndex: int, /) -> Any:
         """
         Returns, for this B-Spline surface, in the u parametric direction
         the knot of index UIndex of the knots table.
@@ -326,21 +331,21 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getVKnot(self, VIndex: int) -> Any:
+    def getVKnot(self, VIndex: int, /) -> Any:
         """
         Returns, for this B-Spline surface, in the v parametric direction
         the knot of index VIndex of the knots table.
         """
         ...
 
-    def setUKnots(self, knots: List[Any]) -> None:
+    def setUKnots(self, knots: List[Any], /) -> None:
         """
         Changes all knots of this B-Spline surface in the u parametric
         direction. The multiplicity of the knots is not modified.
         """
         ...
 
-    def setVKnots(self, knots: List[Any]) -> None:
+    def setVKnots(self, knots: List[Any], /) -> None:
         """
         Changes all knots of this B-Spline surface in the v parametric
         direction. The multiplicity of the knots is not modified.
@@ -363,7 +368,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setPole(self, P: Any, UIndex: int, VIndex: int, Weight: float = ...) -> None:
+    def setPole(self, P: Any, UIndex: int, VIndex: int, Weight: float = ..., /) -> None:
         """
         Modifies this B-Spline surface by assigning P to the pole of
         index (UIndex, VIndex) in the poles table.
@@ -375,9 +380,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setPoleCol(
-        self, VIndex: int, values: List[Any], CPoleWeights: List[float]
-    ) -> None:
+    def setPoleCol(self, VIndex: int, values: List[Any], CPoleWeights: List[float], /) -> None:
         """
         Modifies this B-Spline surface by assigning values to all or part
         of the column of poles of index VIndex, of this B-Spline surface.
@@ -387,9 +390,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setPoleRow(
-        self, UIndex: int, values: List[Any], CPoleWeights: List[float]
-    ) -> None:
+    def setPoleRow(self, UIndex: int, values: List[Any], CPoleWeights: List[float], /) -> None:
         """
         Modifies this B-Spline surface by assigning values to all or part
         of the row of poles of index UIndex, of this B-Spline surface.
@@ -400,7 +401,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getPole(self, UIndex: int, VIndex: int) -> Any:
+    def getPole(self, UIndex: int, VIndex: int, /) -> Any:
         """
         Returns the pole of index (UIndex,VIndex) of this B-Spline surface.
         """
@@ -413,7 +414,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setWeight(self, Weight: float, UIndex: int, VIndex: int) -> None:
+    def setWeight(self, Weight: float, UIndex: int, VIndex: int, /) -> None:
         """
         Modifies this B-Spline surface by assigning the value Weight to the weight
         of the pole of index (UIndex, VIndex) in the poles tables of this B-Spline
@@ -423,7 +424,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setWeightCol(self, VIndex: int, CPoleWeights: List[float]) -> None:
+    def setWeightCol(self, VIndex: int, CPoleWeights: List[float], /) -> None:
         """
         Modifies this B-Spline surface by assigning values to all or part of the
         weights of the column of poles of index VIndex of this B-Spline surface.
@@ -435,7 +436,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setWeightRow(self, UIndex: int, CPoleWeights: List[float]) -> None:
+    def setWeightRow(self, UIndex: int, CPoleWeights: List[float], /) -> None:
         """
         Modifies this B-Spline surface by assigning values to all or part of the
         weights of the row of poles of index UIndex of this B-Spline surface.
@@ -448,7 +449,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getWeight(self, UIndex: int, VIndex: int) -> float:
+    def getWeight(self, UIndex: int, VIndex: int, /) -> float:
         """
         Return the weight of the pole of index (UIndex,VIndex)
         in the poles table for this B-Spline surface.
@@ -470,7 +471,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getResolution(self, Tolerance3D: float) -> Any:
+    def getResolution(self, Tolerance3D: float, /) -> Any:
         """
         Computes two tolerance values for this B-Spline surface, based on the
         given tolerance in 3D space Tolerance3D. The tolerances computed are:
@@ -494,6 +495,7 @@ class BSplineSurface(GeometrySurface):
         UIndex2: int = ...,
         VIndex1: int = ...,
         VIndex2: int = ...,
+        /,
     ) -> Any:
         """
         Moves the point of parameters (U, V) of this B-Spline surface to P.
@@ -543,7 +545,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setUPeriodic(self, I1: int, I2: int) -> None:
+    def setUPeriodic(self, I1: int, I2: int, /) -> None:
         """
         Modifies this surface to be periodic in the u parametric direction.
         To become periodic in a given parametric direction a surface must
@@ -561,7 +563,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setVPeriodic(self, I1: int, I2: int) -> None:
+    def setVPeriodic(self, I1: int, I2: int, /) -> None:
         """
         Modifies this surface to be periodic in the v parametric direction.
         To become periodic in a given parametric direction a surface must
@@ -579,7 +581,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setUOrigin(self, Index: int) -> None:
+    def setUOrigin(self, Index: int, /) -> None:
         """
         Assigns the knot of index Index in the knots table
         in the u parametric direction to be the origin of
@@ -588,7 +590,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setVOrigin(self, Index: int) -> None:
+    def setVOrigin(self, Index: int, /) -> None:
         """
         Assigns the knot of index Index in the knots table
         in the v parametric direction to be the origin of
@@ -598,7 +600,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getUMultiplicity(self, UIndex: int) -> Any:
+    def getUMultiplicity(self, UIndex: int, /) -> Any:
         """
         Returns, for this B-Spline surface, the multiplicity of
         the knot of index UIndex in the u parametric direction.
@@ -606,7 +608,7 @@ class BSplineSurface(GeometrySurface):
         ...
 
     @constmethod
-    def getVMultiplicity(self, VIndex: int) -> Any:
+    def getVMultiplicity(self, VIndex: int, /) -> Any:
         """
         Returns, for this B-Spline surface, the multiplicity of
         the knot of index VIndex in the v parametric direction.
@@ -663,7 +665,7 @@ class BSplineSurface(GeometrySurface):
         ParamType: str = ...,
         LengthWeight: float = ...,
         CurvatureWeight: float = ...,
-        TorsionWeight: float = ...
+        TorsionWeight: float = ...,
     ) -> None:
         """
         Replaces this B-Spline surface by approximating a set of points.
@@ -694,6 +696,7 @@ class BSplineSurface(GeometrySurface):
         dX: float = ...,
         Y0: float = ...,
         dY: float = ...,
+        /,
     ) -> None:
         """
         interpolate(points)
@@ -723,7 +726,7 @@ class BSplineSurface(GeometrySurface):
         vperiodic: bool = ...,
         udegree: int = ...,
         vdegree: int = ...,
-        weights: List[List[float]] = ...
+        weights: List[List[float]] = ...,
     ) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults and Knots
@@ -731,13 +734,13 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def buildFromNSections(self, control_curves: Any) -> None:
+    def buildFromNSections(self, control_curves: Any, /) -> None:
         """
         Builds a B-Spline from a list of control curves
         """
         ...
 
-    def scaleKnotsToBounds(self, u0: float, u1: float, v0: float, v1: float) -> None:
+    def scaleKnotsToBounds(self, u0: float, u1: float, v0: float, v1: float, /) -> None:
         """
         Scales the U and V knots lists to fit the specified bounds.
         The shape of the surface is not modified.

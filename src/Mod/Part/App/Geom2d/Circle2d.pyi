@@ -1,6 +1,11 @@
-from Metadata import export, constmethod
-from typing import Final, overload, Tuple
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Metadata import export
+from typing import overload, Tuple
 from Part.Geom2d import Conic2d
+
 
 @export(
     PythonName="Part.Geom2d.Circle2d",
@@ -37,19 +42,26 @@ class Circle2d(Conic2d):
     """The radius of the circle."""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, circle: "Circle2d") -> None: ...
+    def __init__(self, circle: "Circle2d") -> None:
+        ...
 
     @overload
-    def __init__(self, circle: "Circle2d", Distance: float) -> None: ...
+    def __init__(self, circle: "Circle2d", Distance: float) -> None:
+        ...
 
     @overload
-    def __init__(self, Center: Tuple[float, float], Radius: float) -> None: ...
+    def __init__(self, Center: Tuple[float, float], Radius: float) -> None:
+        ...
 
     @overload
-    def __init__(self, Point1: Tuple[float, float], Point2: Tuple[float, float], Point3: Tuple[float, float]) -> None: ...
+    def __init__(
+        self, Point1: Tuple[float, float], Point2: Tuple[float, float], Point3: Tuple[float, float]
+    ) -> None:
+        ...
 
     @overload
     def __init__(self, *args, **kwargs) -> None:

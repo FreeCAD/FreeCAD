@@ -1,6 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export
-from typing import Final
 from Part.Geom2d import Curve2d
+
 
 @export(
     Name="OffsetCurve2dPy",
