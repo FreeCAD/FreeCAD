@@ -99,7 +99,7 @@ protected Q_SLOTS:
 
     void customDirectionClicked();
 
-    void projectionTypeChanged(QString qText);
+    void projectionTypeChanged(int index);
     void scaleTypeChanged(int index);
     void AutoDistributeClicked(bool clicked);
     /// Updates item spacing
@@ -127,7 +127,7 @@ private:
     QPushButton* m_btnCancel{nullptr};
 
     std::vector<App::DocumentObject*> m_saveSource;
-    std::string    m_saveProjType;
+    long           m_saveProjType;
     std::string    m_saveScaleType;
     double         m_saveScale{1};
     bool           m_saveAutoDistribute{false};
