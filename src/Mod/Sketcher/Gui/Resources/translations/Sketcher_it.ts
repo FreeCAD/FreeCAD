@@ -5987,7 +5987,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation translation type="unfinished">Vincola la distanza verticale tra gli elementi selezionati</translation>
+      <translation type="unfinished">Vincola la distanza verticale tra gli elementi selezionati</translation>
     </message>
   </context>
   <context>

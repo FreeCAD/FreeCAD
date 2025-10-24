@@ -5992,7 +5992,7 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation translation type="unfinished">Kotiraj vertikalno rastojanje između izabranih elemenata</translation>
+      <translation type="unfinished">Kotiraj vertikalno rastojanje između izabranih elemenata</translation>
     </message>
   </context>
   <context>

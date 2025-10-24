@@ -5981,7 +5981,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation translation type="unfinished">選択した要素間の垂直距離を拘束</translation>
+      <translation type="unfinished">選択した要素間の垂直距離を拘束</translation>
     </message>
   </context>
   <context>
