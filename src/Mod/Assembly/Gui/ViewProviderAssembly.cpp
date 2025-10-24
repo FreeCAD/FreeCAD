@@ -1383,6 +1383,22 @@ void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* curren
         vpg->Selectable.setValue(isolate);
         if (!isolate) {
             vpg->ShapeAppearance.setValue(mat);
+
+            // Note, this geometric object could have a link linking to it in the assembly
+            // and this link may be in isolate set! If so it will inherit the isolation
+            // from 'current'! So we need to manually handle it to visible.
+            const std::vector<App::DocumentObject*> inList = current->getInList();
+            for (auto* child : inList) {
+                if (child->isDerivedFrom<App::Link>() && child->getLinkedObject() == current) {
+                    // In this case we need to reverse isolate this!
+                    auto* childVp = freecad_cast<Gui::ViewProviderLink*>(
+                        Gui::Application::Instance->getViewProvider(child));
+
+                    // we give the child the color the current had before we changed it
+                    childVp->OverrideMaterial.setValue(true);
+                    childVp->ShapeMaterial.setValue(state.shapeMaterial);
+                }
+            }
         }
     }
 }

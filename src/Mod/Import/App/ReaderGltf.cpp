@@ -153,7 +153,12 @@ TopoDS_Shape ReaderGltf::fixShape(TopoDS_Shape shape)  // NOLINT
 
     if (cleanup()) {
         sh.sewShape();
-        return sh.removeSplitter();
+        try {
+            return sh.removeSplitter();
+        }
+        catch (const Standard_Failure& e) {
+            return sh.getShape();
+        }
     }
 
     return sh.getShape();
