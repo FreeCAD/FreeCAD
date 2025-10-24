@@ -5990,7 +5990,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation translation type="unfinished">Legt den vertikalen Abstand zwischen den ausgewählten Elementen fest</translation>
+      <translation type="unfinished">Legt den vertikalen Abstand zwischen den ausgewählten Elementen fest</translation>
     </message>
   </context>
   <context>
