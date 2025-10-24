@@ -3894,6 +3894,9 @@ TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
             FC_THROWM(Base::CADKernelError, "No shells or compsolids found in shape");
         }
 
+        if (!mkSolid.IsDone())
+            FC_THROWM(Base::CADKernelError, "Failed to create a solid in makeElementSolid!");
+
         makeElementShape(mkSolid, shape, op);
 
         TopoDS_Solid solid = TopoDS::Solid(_Shape);
