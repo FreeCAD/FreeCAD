@@ -27,92 +27,132 @@
 #pragma warning(disable : 4251)
 #endif
 
-#include <Mod/Part/App/TopoShape.h>
-#include <QWindow>
-#include <QOpenGLExtraFunctions>
+#include <queue>
+#include <functional>
+#include <chrono>
+
+#include <QOpenGLWidget>
 #include <QPainter>
+#include <QTimer>
 #include <QExposeEvent>
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QOpenGLContext>
 
-namespace MillSim
+#include <Mod/Part/App/TopoShape.h>
+
+class SoCamera;
+
+namespace Gui
 {
-// use short declaration as using 'include' causes a header loop
-class MillSimulation;
-struct Vertex;
-}  // namespace MillSim
+class MDIView;
+}
 
 namespace CAMSimulator
 {
 
-struct SimStock
+// use short declaration as using 'include' causes a header loop
+class MillSimulation;
+class MillSimulationState;
+struct Vertex;
+class ViewCAMSimulator;
+class GuiDisplay;
+class Dummy3DViewer;
+
+struct SimShape
 {
 public:
-    SimStock(float px, float py, float pz, float lx, float ly, float lz, float res);
-    ~SimStock();
+    float maxDimension() const;
 
 public:
-    float mPx, mPy, mPz;  // stock zero position
-    float mLx, mLy, mLz;  // stock dimensions
+    std::vector<Vertex> verts;
+    std::vector<GLushort> indices;
+    bool needsUpdate = false;
 };
 
-class DlgCAMSimulator: public QWindow, public QOpenGLExtraFunctions
+struct SimTool
+{
+public:
+    std::vector<float> profile;
+    int id;
+    float diameter;
+    float resolution;
+};
+
+class DlgCAMSimulator: public QOpenGLWidget
 {
     Q_OBJECT
+
+    typedef std::chrono::steady_clock clock;
+
 public:
-    explicit DlgCAMSimulator(QWindow* parent = nullptr);
+    explicit DlgCAMSimulator(QWidget* parent = nullptr);
     ~DlgCAMSimulator() override;
 
-    virtual void render(QPainter* painter);
-    virtual void render();
-    virtual void initialize();
+    void connectTo(GuiDisplay& gui, Dummy3DViewer& dv);
+    void cloneFrom(const DlgCAMSimulator& from);
+
+    static DlgCAMSimulator* instance();
 
     void setAnimating(bool animating);
-    static DlgCAMSimulator* GetInstance();
-    void SetStockShape(const Part::TopoShape& tshape, float resolution);
-    void SetBaseShape(const Part::TopoShape& tshape, float resolution);
-
-public:  // slots:
-    void renderLater();
-    void renderNow();
     void startSimulation(const Part::TopoShape& stock, float quality);
     void resetSimulation();
+
     void addGcodeCommand(const char* cmd);
     void addTool(const std::vector<float>& toolProfilePoints,
                  int toolNumber,
                  float diameter,
                  float resolution);
 
+    void setStockShape(const Part::TopoShape& shape, float resolution);
+    void setStockVisible(bool b);
+    void setBaseShape(const Part::TopoShape& shape, float resolution);
+    void setBaseVisible(bool b);
+
+    void setBackgroundColor(const QColor& c);
+    void setPathColor(const QColor& normal, const QColor& rapid);
+
+Q_SIGNALS:
+    void simulationStarted();
+
 protected:
-    bool event(QEvent* event) override;
-    void checkInitialization();
-    void doGlCleanup();
-    void exposeEvent(QExposeEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* ev) override;
-    void mousePressEvent(QMouseEvent* ev) override;
-    void mouseReleaseEvent(QMouseEvent* ev) override;
-    void wheelEvent(QWheelEvent* ev) override;
-    void hideEvent(QHideEvent* ev) override;
-    void resizeEvent(QResizeEvent* event) override;
-    void GetMeshData(const Part::TopoShape& tshape,
-                     float resolution,
-                     std::vector<MillSim::Vertex>& verts,
-                     std::vector<GLushort>& indices);
+    void timerEvent(QTimerEvent* event) override;
+
+    void updateResources();
+    void updateWindowScale();
+    void updateCamera();
+
+    void initializeGL() override;
+    void paintGL() override;
+    void resizeGL(int w, int h) override;
+
+    void updateGui();
 
 private:
-    bool mAnimating = false;
     bool mNeedsInitialize = false;
+    bool mNeedsClear = false;
+    bool mAnimating = false;
+    int mAnimatingTimer = 0;
 
-    QOpenGLContext* mContext = nullptr;
-    QOpenGLContext* mLastContext = nullptr;
-    MillSim::MillSimulation* mMillSimulator = nullptr;
-    static DlgCAMSimulator* mInstance;
+    std::unique_ptr<MillSimulation> mMillSimulator;
     float mQuality = 10;
+
+    std::vector<std::string> mGCode;
+    std::size_t mLastGCode = 0;
+
+    std::vector<SimTool> mTools;
+
+    const SoCamera* mCamera = nullptr;
+    SimShape mStock;
+    SimShape mBase;
+
+    std::unique_ptr<MillSimulationState> mState;
+    clock::time_point mLastProcessSim = clock::time_point::min();
+
+    GuiDisplay* mGui = nullptr;
+    Dummy3DViewer* mDummyViewer = nullptr;
 };
 
-
 }  // namespace CAMSimulator
-
 
 #endif  // PATHSIMULATOR_PathSim_H
