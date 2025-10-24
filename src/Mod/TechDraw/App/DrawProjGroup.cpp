@@ -49,6 +49,8 @@
 
 using namespace TechDraw;
 
+// this needs to be kept in the same sequence as the enum in the h file and with the QComboBox
+// in TaskProjGroup.ui.
 const char* DrawProjGroup::ProjectionTypeEnums[] = {"First angle", "Third angle",
                                                     "Default",//Use Page setting
                                                     nullptr};

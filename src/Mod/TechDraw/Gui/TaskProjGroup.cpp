@@ -109,8 +109,8 @@ void TaskProjGroup::connectWidgets()
     connect(ui->sbScaleDen,   qOverload<int>(&QSpinBox::valueChanged), this, &TaskProjGroup::scaleManuallyChanged);
 
     // Slot for Projection Type (layout)
-    connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
-        projectionTypeChanged(ui->projection->itemText(index));
+    connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [this]() {
+        projectionTypeChanged(ui->projection->currentIndex());
     });
 
     // Spacing
@@ -211,7 +211,7 @@ void TaskProjGroup::saveGroupState()
 
     if (multiView) {
         m_saveSource = multiView->Source.getValues();
-        m_saveProjType = multiView->ProjectionType.getValueAsString();
+        m_saveProjType = multiView->ProjectionType.getValue();
         m_saveAutoDistribute = multiView->AutoDistribute.getValue();
         m_saveSpacingX = multiView->spacingX.getValue();
         m_saveSpacingY = multiView->spacingY.getValue();
@@ -238,7 +238,7 @@ void TaskProjGroup::restoreGroupState()
     view->Scale.setValue(m_saveScale);
 
     if (multiView) {
-        multiView->ProjectionType.setValue(m_saveProjType.c_str());
+        multiView->ProjectionType.setValue(m_saveProjType);
         multiView->AutoDistribute.setValue(m_saveAutoDistribute);
         multiView->spacingX.setValue(m_saveSpacingX);
         multiView->spacingY.setValue(m_saveSpacingY);
@@ -484,20 +484,13 @@ void TaskProjGroup::rotateButtonClicked()
     }
 }
 
-//void TaskProjGroup::projectionTypeChanged(int index)
-void TaskProjGroup::projectionTypeChanged(QString qText)
+void TaskProjGroup::projectionTypeChanged(int index)
 {
     if(blockUpdate || !multiView) {
         return;
     }
 
-    if (qText == QStringLiteral("Page")) {
-        multiView->ProjectionType.setValue("Default");
-    }
-    else {
-        std::string text = qText.toStdString();
-        multiView->ProjectionType.setValue(text.c_str());
-    }
+    multiView->ProjectionType.setValue((long)index);
 
     // Update checkboxes so checked state matches the drawing
     blockCheckboxes = true;
@@ -687,18 +680,19 @@ bool TaskProjGroup::useThirdAngle()
         return false;
     }
 
-    bool thirdAngle = (bool) Preferences::projectionAngle();
-    if (!multiView) {
-        return thirdAngle;
+   if (!multiView) {
+        return Preferences::projectionAngle();
     }
 
-    if (multiView->usedProjectionType().isValue("Third angle")) {
-        thirdAngle = true;
-    } else if (multiView->usedProjectionType().isValue("Default") &&
-        page->ProjectionType.isValue("Third angle")) {
-        thirdAngle = true;
+    if (multiView->ProjectionType.getValue() == (long)DrawProjGroup::ViewProjectionConvention::ThirdAngle) {
+        return true;
     }
-    return thirdAngle;
+
+    if (multiView->ProjectionType.getValue() == (long)DrawProjGroup::ViewProjectionConvention::Page &&
+        page->ProjectionType.getValue() == (long)DrawPage::PageProjectionConvention::ThirdAngle) {
+        return true;
+    }
+    return false;
 }
 
 void TaskProjGroup::setupViewCheckboxes(bool addConnections)
