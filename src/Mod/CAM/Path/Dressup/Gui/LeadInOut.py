@@ -27,6 +27,7 @@ import Path
 import Path.Base.Language as PathLanguage
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
+import Path.Base.Gui.Util as PathGuiUtil
 from Path.Base.Util import toolControllerForOp
 import copy
 import math
@@ -49,15 +50,16 @@ lead_styles = (
     # common options first
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
     # additional options, alphabetical order
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ2"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retract"),
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 )
 
@@ -159,6 +161,7 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
+
         obj.Proxy = self
 
     def dumps(self):
@@ -167,11 +170,15 @@ class ObjectDressup:
     def loads(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def setup(self, obj):
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.AngleIn = 45
-        obj.AngleOut = 45
+        obj.AngleIn = 90
+        obj.AngleOut = 90
         obj.InvertIn = False
         obj.InvertOut = False
         obj.RapidPlunge = False
@@ -227,13 +234,8 @@ class ObjectDressup:
         if obj.AngleOut < limit_angle_out:
             obj.AngleOut = limit_angle_out
 
-        hideModes = {
-            "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
-            "Invert": ("No Retract", "ArcZ", "LineZ", "Vertical"),
-            "Offset": ("No Retract"),
-            "Radius": ("No Retract", "Vertical"),
-        }
-        for k, v in hideModes.items():
+        # Use shared hideModes from TaskDressupLeadInOut
+        for k, v in TaskDressupLeadInOut.hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
@@ -249,8 +251,15 @@ class ObjectDressup:
             )
             return
 
+        self.invertAlt = False
+        self.job = PathUtils.findParentJob(obj)
         self.horizFeed = self.toolController.HorizFeed.Value
         self.vertFeed = self.toolController.VertFeed.Value
+        self.side = self.baseOp.Side if hasattr(self.baseOp, "Side") else "Inside"
+        if hasattr(self.baseOp, "Direction") and self.baseOp.Direction in ("CW", "CCW"):
+            self.direction = self.baseOp.Direction
+        else:
+            self.direction = "CCW"
 
         obj.Path = self.generateLeadInOutCurve(obj)
 
@@ -268,7 +277,12 @@ class ObjectDressup:
             )
             obj.StyleIn = lead_styles
             obj.removeProperty("StyleOn")
-            obj.StyleIn = "Arc"
+            # Set previous value if possible
+            if styleOn in lead_styles:
+                obj.StyleIn = styleOn
+            elif styleOn == "Arc":
+                obj.StyleIn = "Arc"
+                obj.AngleIn = 90
         if hasattr(obj, "StyleOff"):
             # Replace StyleOff by StyleOut
             styleOff = obj.StyleOff
@@ -280,7 +294,12 @@ class ObjectDressup:
             )
             obj.StyleOut = lead_styles
             obj.removeProperty("StyleOff")
-            obj.StyleOut = "Arc"
+            # Set previous value if possible
+            if styleOff in lead_styles:
+                obj.StyleOut = styleOff
+            elif styleOff == "Arc":
+                obj.StyleOut = "Arc"
+                obj.AngleOut = 90
 
         if not hasattr(obj, "AngleIn"):
             obj.addProperty(
@@ -289,7 +308,7 @@ class ObjectDressup:
                 "Path Lead-in",
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
             )
-            obj.AngleIn = 45
+            obj.AngleIn = 90
         if not hasattr(obj, "AngleOut"):
             obj.addProperty(
                 "App::PropertyAngle",
@@ -297,7 +316,7 @@ class ObjectDressup:
                 "Path Lead-out",
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
             )
-            obj.AngleOut = 45
+            obj.AngleOut = 90
 
         if styleOn:
             if styleOn == "Arc":
@@ -402,24 +421,36 @@ class ObjectDressup:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
 
+        # Ensure correct initial visibility of fields after defaults are set
+        for k, v in TaskDressupLeadInOut.hideModes.items():
+            obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
+            obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
+
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
         output = math.pi / 2
-        side = self.baseOp.Side if hasattr(self.baseOp, "Side") else "Inside"
-        direction = self.baseOp.Direction if hasattr(self.baseOp, "Direction") else "CCW"
+        side = self.side
+        direction = self.direction
         if (side == "Inside" and direction == "CW") or (side == "Outside" and direction == "CCW"):
             output = -output
         if invert:
+            output = -output
+        if self.invertAlt:
             output = -output
 
         return output
 
     # Get direction of original path
-    def getPathDir(self, obj):
-        # only CW or CCW is matter
-        direction = self.baseOp.Direction if hasattr(self.baseOp, "Direction") else "CCW"
+    def getArcPathDir(self, obj, cmdName):
+        # only CW/CCW and G2/G3 is matter
+        direction = self.direction
         output = math.pi / 2
         if direction == "CW":
+            output = -output
+
+        if cmdName == "G2" and direction == "CCW":
+            output = -output
+        elif cmdName == "G3" and direction == "CW":
             output = -output
 
         return output
@@ -517,8 +548,7 @@ class ObjectDressup:
 
     # Get optimal step angle for iteration ArcZ
     def getStepAngleArcZ(self, obj, radius):
-        job = PathUtils.findParentJob(obj)
-        minArcLength = job.GeometryTolerance.Value * 2
+        minArcLength = self.job.GeometryTolerance.Value * 2
         maxArcLength = 1
         stepAngle = math.pi / 60
         stepArcLength = stepAngle * radius
@@ -586,8 +616,46 @@ class ObjectDressup:
 
         return commands
 
-    def getLeadStart(self, obj, move, first, inInstrPrev, outInstrPrev):
+    # Create vertical arc with move Down and follow profile
+    def createArcZ2MoveDown(self, obj, begin, end, radius):
+        commands = []
+        angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
+        stepAngle = self.getStepAngleArcZ(obj, radius)
+        iters = math.ceil(angle / stepAngle)
+        distance = abs(radius * math.sin(angle)) + obj.OffsetIn.Value
+        print()
+        print(self.firstMillIndex, self.lastMillIndex)
+        print("  distance", round(distance, 2), "angle", round(math.degrees(angle), 2))
+        overtravelIn = self.getOvertravelIn(obj, distance)
+        print(overtravelIn)
+        print("  commnds", len(overtravelIn))
+        for cmd in overtravelIn:
+            print("  length", round(cmd.pathLength(), 2))
+        iterBegin = overtravelIn[0].positionBegin()  # start point
+        iterBegin.z = end.z + radius * (1 - math.cos(angle))
+        print("  start point", iterBegin)
+        iter = 1
+        while iter <= iters:
+            if iter < iters:
+                angle -= stepAngle
+                distance = abs(radius * math.sin(angle))
+                overtravelIn = self.getOvertravelIn(obj, distance)
+                # print(overtravelIn)
+                iterEnd = overtravelIn[0].positionBegin()
+                # print("  distance", round(distance,2), "angle", round(math.degrees(angle),2))
+                # print(iterEnd)
+                iterEnd.z = end.z + radius * (1 - math.cos(angle))
+            else:
+                # exclude error of calculations for the last iteration
+                iterEnd = copy.copy(end)
+            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": self.horizFeed}
+            commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+            iterBegin = copy.copy(iterEnd)
+            iter += 1
 
+        return commands
+
+    def getLeadStart(self, obj, move, first, inInstrPrev, outInstrPrev):
         #    tangent  begin      move
         #    <----_-----x-------------------x
         #       /       |
@@ -670,8 +738,9 @@ class ObjectDressup:
                 lead.append(self.createStraightMove(obj, lineBegin, begin))
 
             # prepend "ArcZ" style lead-in - vertical Arc
-            # Should be apply only on straight Path segment
+            # Should be apply only on straight Path segment or open profle
             elif styleIn == "ArcZ":
+                print(" arcZ begin", begin)
                 # tangent vector in XY plane
                 # normal vector is vertical
                 arcRadius = length
@@ -688,8 +757,30 @@ class ObjectDressup:
                 arcBegin = begin + tangent + normal
                 lead.extend(self.createArcZMoveDown(obj, arcBegin, begin, arcRadius))
 
+            elif styleIn == "ArcZ2":
+                print(" arcZ2 begin", begin)
+                # tangent vector in XY plane
+                # normal vector is vertical
+                arcRadius = length
+                normalLengthMax = self.baseOp.SafeHeight.Value - begin.z
+                normalLength = arcRadius * (1 - math.cos(angleIn))
+                if normalLength > normalLengthMax:
+                    # do not exceed Normal vector max length
+                    normalLength = normalLengthMax
+                    # recalculate angle for limited normal length
+                    angleIn = math.acos((arcRadius - normalLength) / arcRadius)
+                tangentLength = arcRadius * math.sin(angleIn)
+                tangent = -self.angleToVector(angleTangent) * tangentLength
+                normal = App.Vector(0, 0, normalLength)
+                pseudoArcBegin = begin + tangent + normal
+                lead.extend(self.createArcZ2MoveDown(obj, pseudoArcBegin, begin, arcRadius))
+                # import pprint
+                # pprint.pprint(lead)
+
             # replace 'begin' position by first lead-in command
+            print(" < begin", begin)
             begin = lead[0].positionBegin()
+            print(" > begin", begin)
 
             if styleIn in ("Arc3d", "Line3d"):
                 # up Z start point for Arc3d and Line3d
@@ -734,7 +825,6 @@ class ObjectDressup:
         return lead
 
     def getLeadEnd(self, obj, move, last, outInstrPrev):
-
         #            move       end   tangent
         #    x-------------------x-----_---->
         #                        |       \
@@ -856,43 +946,46 @@ class ObjectDressup:
             return None
 
     # Get last index of mill command in whole Path
-    def findLastCuttingMoveIndex(self, source):
-        for i in range(len(source) - 1, -1, -1):
-            if self.isCuttingMove(source[i]):
+    def findLastCuttingMoveIndex(self):
+        for i in range(len(self.source) - 1, -1, -1):
+            if self.isCuttingMove(self.source[i]):
                 return i
 
         return None
 
     # Get finish index of mill command for one profile
-    def findLastCutMultiProfileIndex(self, source, startIndex):
-        if startIndex >= len(source):
-            return len(source) - 1
-        for i in range(startIndex, len(source), +1):
-            if not self.isCuttingMove(source[i]):
+    def findLastCutMultiProfileIndex(self):
+        startIndex = self.firstMillIndex
+        if startIndex >= len(self.source):
+            return len(self.source) - 1
+        for i in range(startIndex, len(self.source), +1):
+            if not self.isCuttingMove(self.source[i]):
                 return i - 1
 
         return i
 
     # Increase travel length from begin
-    def getOvertravelIn(self, obj, source, length, start, end):
-        startPoint = source[start].positionBegin()
-        endPoint = source[end].positionEnd()
+    def getOvertravelIn(self, obj, length):
+        start = self.firstMillIndex
+        end = self.lastMillIndex
+        startPoint = self.source[start].positionBegin()
+        endPoint = self.source[end].positionEnd()
 
         if Path.Geom.pointsCoincide(startPoint, endPoint):
             # closed profile
             # get extra commands from end of the closed profile
             measuredLength = 0
-            for i, instr in enumerate(reversed(source[start : end + 1])):
+            for i, instr in enumerate(reversed(self.source[start : end + 1])):
                 instrLength = instr.pathLength()
 
-                if Path.Geom.isRoughly(measuredLength + instrLength, length, 1):
+                if Path.Geom.isRoughly(measuredLength + instrLength, length):
                     # get needed length and not need to cut last command
-                    commands = source[end - i : end + 1]
+                    commands = self.source[end - i : end + 1]
                     return commands
 
                 elif measuredLength + instrLength > length:
                     # measured length exceed needed length and need cut command
-                    commands = source[end - i + 1 : end + 1]
+                    commands = self.source[end - i + 1 : end + 1]
                     newLength = length - measuredLength
                     newInstr = self.cutInstrBegin(obj, instr, newLength)
                     commands.insert(0, newInstr)
@@ -903,7 +996,7 @@ class ObjectDressup:
         else:
             # open profile
             # extend first move
-            instr = source[start]
+            instr = self.source[start]
             newLength = length + instr.pathLength()
             newInstr = self.cutInstrBegin(obj, instr, newLength)
             return [newInstr]
@@ -911,25 +1004,25 @@ class ObjectDressup:
         return None
 
     # Increase travel length from end
-    def getOvertravelOut(self, obj, source, length, start, end):
-        startPoint = source[start].positionBegin()
-        endPoint = source[end].positionEnd()
+    def getOvertravelOut(self, obj, length, start, end):
+        startPoint = self.source[start].positionBegin()
+        endPoint = self.source[end].positionEnd()
 
         if Path.Geom.pointsCoincide(startPoint, endPoint):
             # closed profile
             # get extra commands from begin of the closed profile
             measuredLength = 0
-            for i, instr in enumerate(source[start:end]):
+            for i, instr in enumerate(self.source[start : end + 1]):
                 instrLength = instr.pathLength()
 
-                if Path.Geom.isRoughly(measuredLength + instrLength, length, 1):
+                if Path.Geom.isRoughly(measuredLength + instrLength, length):
                     # get needed length and not need to cut last command
-                    commands = source[start : start + i + 1]
+                    commands = self.source[start : start + i + 1]
                     return commands
 
                 elif measuredLength + instrLength > length:
                     # measured length exceed needed length and need cut command
-                    commands = source[start : start + i]
+                    commands = self.source[start : start + i]
                     newLength = length - measuredLength
                     newInstr = self.cutInstrEnd(obj, instr, newLength)
                     commands.append(newInstr)
@@ -940,7 +1033,7 @@ class ObjectDressup:
         else:
             # open profile
             # extend last move
-            instr = source[end]
+            instr = self.source[end]
             newLength = length + instr.pathLength()
             newInstr = self.cutInstrEnd(obj, instr, newLength)
             return [newInstr]
@@ -948,25 +1041,29 @@ class ObjectDressup:
         return None
 
     # Cut travel end by distance (negative overtravel out)
-    def cutTravelEnd(self, obj, source, cutLength):
+    def cutTravelEnd(self, obj, commands, cutLength):
         measuredLength = 0
+        for i, instr in enumerate(reversed(commands)):
+            if instr.positionBegin() is None:
+                # workaround if cut whole path
+                cmds = commands[:-i]
+                newInstr = self.cutInstrEnd(obj, commands[-i], 0.1)
+                cmds.append(newInstr)
+                return cmds
 
-        for i, instr in enumerate(reversed(source)):
             instrLength = instr.pathLength()
             measuredLength += instrLength
-
             if Path.Geom.isRoughly(measuredLength, cutLength):
                 # get needed length and not need to cut any command
-                commands = source[: -i - 1]
-                return commands
+                return commands[: -i - 1]
 
             elif measuredLength > cutLength:
                 # measured length exceed needed cut length and need cut command
-                commands = source[: -i - 1]
+                cmds = commands[: -i - 1]
                 newLength = measuredLength - cutLength
                 newInstr = self.cutInstrEnd(obj, instr, newLength)
-                commands.append(newInstr)
-                return commands
+                cmds.append(newInstr)
+                return cmds
 
         return None
 
@@ -985,6 +1082,7 @@ class ObjectDressup:
 
         # Cut arc move from begin
         elif instr.isArc():
+            cmdName = instr.cmd
             angleTangent = instr.anglesOfTangents()[0]
             arcBegin = instr.positionBegin()
             arcOffset = App.Vector(instr.i(), instr.j(), instr.k())
@@ -993,9 +1091,10 @@ class ObjectDressup:
             tangentLength = math.sin(arcAngle) * arcRadius
             normalLength = arcRadius * (1 - math.cos(arcAngle))
             tangent = self.angleToVector(angleTangent) * tangentLength
-            normal = self.angleToVector(angleTangent + self.getPathDir(obj)) * normalLength
+            normal = (
+                self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
+            )
             arcEnd = arcBegin + tangent + normal
-            cmdName = "G2" if instr.isCW() else "G3"
             command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName)
 
         return command
@@ -1015,6 +1114,7 @@ class ObjectDressup:
 
         # Cut arc move from begin
         elif instr.isArc():
+            cmdName = instr.cmd
             angleTangent = instr.anglesOfTangents()[1]
             arcEnd = instr.positionEnd()
             arcCenter = instr.xyCenter()
@@ -1023,10 +1123,11 @@ class ObjectDressup:
             tangentLength = math.sin(arcAngle) * arcRadius
             normalLength = arcRadius * (1 - math.cos(arcAngle))
             tangent = -self.angleToVector(angleTangent) * tangentLength
-            normal = self.angleToVector(angleTangent + self.getPathDir(obj)) * normalLength
+            normal = (
+                self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
+            )
             arcBegin = arcEnd + tangent + normal
             arcOffset = arcCenter - arcBegin
-            cmdName = "G2" if instr.isCW() else "G3"
             command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName)
             return command
 
@@ -1034,24 +1135,27 @@ class ObjectDressup:
 
     def generateLeadInOutCurve(self, obj):
         source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
+        self.source = source
         maneuver = PathLanguage.Maneuver()
 
         # Knowing weather a given instruction is the first cutting move is easy,
         # we just use a flag and set it to false afterwards. To find the last
         # cutting move we need to search the list in reverse order.
 
+        commands = []
         first = True  # prepare first move at clearance height
-        firstMillIndex = None  # Index start mill instruction for one profile
-        lastCuttingMoveIndex = self.findLastCuttingMoveIndex(source)
-        inInstrPrev = None
-        outInstrPrev = None
+        self.firstMillIndex = None  # Index start mill instruction for one profile
+        self.lastMillIndex = None  # Index end mill instruction for one profile
+        self.lastCuttingMoveIndex = self.findLastCuttingMoveIndex()
+        inInstrPrev = None  # for RetractThreshold
+        outInstrPrev = None  # for RetractThreshold
         measuredLength = 0  # for negative OffsetIn
         skipCounter = 0  # for negative OffsetIn
-        commands = []
         moveDir = None
 
         # Process all instructions
         for i, instr in enumerate(source):
+            print(i, instr)
 
             # Process not mill instruction
             if not self.isCuttingMove(instr):
@@ -1078,11 +1182,20 @@ class ObjectDressup:
 
             # Process Lead-In
             if first or not self.isCuttingMove(source[i - 1 - skipCounter]):
+                print("  >>> lead-in")
                 if obj.LeadIn or obj.LeadOut:
                     # can not skip leadin if leadout
 
-                    # Process negative Offset Lead-In (cut travel from begin)
+                    self.firstMillIndex = i if self.firstMillIndex is None else self.firstMillIndex
+                    self.lastMillIndex = (
+                        self.findLastCutMultiProfileIndex()
+                        if self.lastMillIndex is None
+                        else self.lastMillIndex
+                    )
+
+                    overtravelIn = None
                     if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retract":
+                        # Process negative Offset Lead-In (cut travel from begin)
                         if measuredLength <= abs(obj.OffsetIn.Value):
                             # skip mill instruction
                             skipCounter += 1  # count skipped instructions
@@ -1093,18 +1206,9 @@ class ObjectDressup:
                             newLength = measuredLength - abs(obj.OffsetIn.Value)
                             instr = self.cutInstrBegin(obj, instr, newLength)
 
-                    # Process positive offset Lead-In (overtravel)
-                    firstMillIndex = i
-                    lastMillIndex = self.findLastCutMultiProfileIndex(source, i + 1)
-                    overtravelIn = None
-                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retract":
-                        overtravelIn = self.getOvertravelIn(
-                            obj,
-                            source,
-                            obj.OffsetIn.Value,
-                            firstMillIndex,
-                            lastMillIndex,
-                        )
+                    elif obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retract":
+                        # Process positive offset Lead-In (overtravel)
+                        overtravelIn = self.getOvertravelIn(obj, obj.OffsetIn.Value)
                     if overtravelIn:
                         commands.extend(
                             self.getLeadStart(
@@ -1116,7 +1220,6 @@ class ObjectDressup:
                         commands.extend(
                             self.getLeadStart(obj, instr, first, inInstrPrev, outInstrPrev)
                         )
-                    firstMillIndex = i if not firstMillIndex else firstMillIndex
                     inInstrPrev = commands[-1]
                 first = False
 
@@ -1124,10 +1227,10 @@ class ObjectDressup:
             commands.append(instr)
 
             # Process Lead-Out
-            last = bool(i == lastCuttingMoveIndex)
+            last = bool(i == self.lastCuttingMoveIndex)
             if (last or not self.isCuttingMove(source[i + 1])) and obj.LeadOut:
+                print("  lead-out <<<")
                 measuredLength = 0  # reset measured length for last profile
-                lastMillIndex = i  # index last mill instruction for last profile
 
                 # Process negative Offset Lead-Out (cut travel from end)
                 if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retract":
@@ -1137,12 +1240,10 @@ class ObjectDressup:
                 if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
                     overtravelOut = self.getOvertravelOut(
                         obj,
-                        source,
                         obj.OffsetOut.Value,
-                        firstMillIndex,
-                        lastMillIndex,
+                        self.firstMillIndex,
+                        self.lastMillIndex,
                     )
-                    firstMillIndex = None
                     if overtravelOut:
                         commands.extend(overtravelOut)
 
@@ -1156,6 +1257,11 @@ class ObjectDressup:
                 else:
                     outInstrPrev = instr
 
+                self.firstMillIndex = None
+                self.lastMillIndex = None
+                self.invertAlt = not self.invertAlt if getattr(obj, "InvertAlt", None) else False
+                print("invertAlt", self.invertAlt)
+
         maneuver.addInstructions(commands)
         return maneuver.toPath()
 
@@ -1165,28 +1271,123 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     _ui_file = ":/panels/DressUpLeadInOutEdit.ui"
 
     def setupUi(self):
+        self.setupSpinBoxes()
+        self.setupGroupBoxes()
+        self.setupDynamicVisibility()
+        self.setFields()
+        self.pageRegisterSignalHandlers()
+
+    def setupSpinBoxes(self):
         self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
-        self.connectWidget("RadiusIn", self.form.dspRadiusIn)
-        self.connectWidget("RadiusOut", self.form.dspRadiusOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
-        self.connectWidget("AngleIn", self.form.dspAngleIn)
-        self.connectWidget("AngleOut", self.form.dspAngleOut)
-        self.connectWidget("OffsetIn", self.form.dspOffsetIn)
-        self.connectWidget("OffsetOut", self.form.dspOffsetOut)
+        self.radiusIn = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")
+        self.radiusOut = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusOut, self.obj, "RadiusOut")
+        self.angleIn = PathGuiUtil.QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn")
+        self.angleOut = PathGuiUtil.QuantitySpinBox(self.form.dspAngleOut, self.obj, "AngleOut")
+        self.offsetIn = PathGuiUtil.QuantitySpinBox(self.form.dspOffsetIn, self.obj, "OffsetIn")
+        self.offsetOut = PathGuiUtil.QuantitySpinBox(self.form.dspOffsetOut, self.obj, "OffsetOut")
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.connectWidget("RetractThreshold", self.form.dspRetractThreshold)
-        self.setFields()
+        self.retractThreshold = PathGuiUtil.QuantitySpinBox(
+            self.form.dspRetractThreshold, self.obj, "RetractThreshold"
+        )
 
-        def handleGroupBoxCheck():
-            self.obj.LeadIn = self.form.groupBoxIn.isChecked()
-            self.obj.LeadOut = self.form.groupBoxOut.isChecked()
+        self.radiusIn.updateWidget()
+        self.radiusOut.updateWidget()
+        self.angleIn.updateWidget()
+        self.angleOut.updateWidget()
+        self.offsetIn.updateWidget()
+        self.offsetOut.updateWidget()
+        self.retractThreshold.updateWidget()
 
+    def setupGroupBoxes(self):
         self.form.groupBoxIn.setChecked(self.obj.LeadIn)
         self.form.groupBoxOut.setChecked(self.obj.LeadOut)
-        self.form.groupBoxIn.clicked.connect(handleGroupBoxCheck)
-        self.form.groupBoxOut.clicked.connect(handleGroupBoxCheck)
+        self.form.groupBoxIn.clicked.connect(self.handleGroupBoxCheck)
+        self.form.groupBoxOut.clicked.connect(self.handleGroupBoxCheck)
+
+    def handleGroupBoxCheck(self):
+        self.obj.LeadIn = self.form.groupBoxIn.isChecked()
+        self.obj.LeadOut = self.form.groupBoxOut.isChecked()
+
+    def setupDynamicVisibility(self):
+        self.form.cboStyleIn.currentIndexChanged.connect(self.updateLeadInVisibility)
+        self.form.cboStyleOut.currentIndexChanged.connect(self.updateLeadOutVisibility)
+        self.updateLeadInVisibility()
+        self.updateLeadOutVisibility()
+
+    def getSignalsForUpdate(self):
+        signals = []
+        signals.append(self.form.dspRadiusIn.editingFinished)
+        signals.append(self.form.dspRadiusOut.editingFinished)
+        signals.append(self.form.dspAngleIn.editingFinished)
+        signals.append(self.form.dspAngleOut.editingFinished)
+        signals.append(self.form.dspOffsetIn.editingFinished)
+        signals.append(self.form.dspOffsetOut.editingFinished)
+        signals.append(self.form.dspRetractThreshold.editingFinished)
+        return signals
+
+    def pageGetFields(self):
+        PathGuiUtil.updateInputField(self.obj, "RadiusIn", self.form.dspRadiusIn)
+        PathGuiUtil.updateInputField(self.obj, "RadiusOut", self.form.dspRadiusOut)
+        PathGuiUtil.updateInputField(self.obj, "AngleIn", self.form.dspAngleIn)
+        PathGuiUtil.updateInputField(self.obj, "AngleOut", self.form.dspAngleOut)
+        PathGuiUtil.updateInputField(self.obj, "OffsetIn", self.form.dspOffsetIn)
+        PathGuiUtil.updateInputField(self.obj, "OffsetOut", self.form.dspOffsetOut)
+        PathGuiUtil.updateInputField(self.obj, "RetractThreshold", self.form.dspRetractThreshold)
+
+    def pageRegisterSignalHandlers(self):
+        for signal in self.getSignalsForUpdate():
+            signal.connect(self.pageGetFields)
+
+    # Shared hideModes for both LeadIn and LeadOut
+    hideModes = {
+        "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
+        "Invert": ("No Retract", "ArcZ", "LineZ", "Vertical", "Perpendicular", "Tangent"),
+        "Offset": ("No Retract"),
+        "Radius": ("No Retract", "Vertical"),
+    }
+
+    def updateLeadVisibility(self, style, angleWidget, invertWidget, angleLabel, radiusLabel=None):
+        # Dynamic label for Radius/Length
+        arc_styles = ("Arc", "Arc3d", "ArcZ", "Helix")
+        if radiusLabel and hasattr(self.form, radiusLabel):
+            if style in arc_styles:
+                getattr(self.form, radiusLabel).setText("Radius")
+                # Will do translation later
+                # getattr(self.form, radiusLabel).setText(translate("CAM_DressupLeadInOut", "Radius"))
+            else:
+                getattr(self.form, radiusLabel).setText("Length")
+                # Will do translation later
+                # getattr(self.form, radiusLabel).setText(translate("CAM_DressupLeadInOut", "Length"))
+
+        # Angle
+        if style in self.hideModes["Angle"]:
+            angleWidget.hide()
+            if hasattr(self.form, angleLabel):
+                getattr(self.form, angleLabel).hide()
+        else:
+            angleWidget.show()
+            if hasattr(self.form, angleLabel):
+                getattr(self.form, angleLabel).show()
+        # Invert Direction
+        if style in self.hideModes["Invert"]:
+            invertWidget.hide()
+        else:
+            invertWidget.show()
+
+    def updateLeadInVisibility(self):
+        style = self.form.cboStyleIn.currentText()
+        self.updateLeadVisibility(
+            style, self.form.dspAngleIn, self.form.chkInvertDirectionIn, "label_1", "label_5"
+        )
+
+    def updateLeadOutVisibility(self):
+        style = self.form.cboStyleOut.currentText()
+        self.updateLeadVisibility(
+            style, self.form.dspAngleOut, self.form.chkInvertDirectionOut, "label_11", "label_15"
+        )
 
 
 class ViewProviderDressup:
@@ -1239,6 +1440,12 @@ class ViewProviderDressup:
     def clearTaskPanel(self):
         self.panel = None
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 class CommandPathDressupLeadInOut:
     def GetResources(self):
@@ -1257,7 +1464,11 @@ class CommandPathDressupLeadInOut:
             return False
         if not selection[0].isDerivedFrom("Path::Feature"):
             return False
-        if selection.Name.startswith("Job"):
+        if not hasattr(selection[0], "ClearanceHeight"):
+            return False
+        if not hasattr(selection[0], "SafeHeight"):
+            return False
+        if not hasattr(selection[0], "StartDepth"):
             return False
 
         return True
