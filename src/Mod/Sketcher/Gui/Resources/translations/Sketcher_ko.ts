@@ -5981,8 +5981,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
-      <source>Constrains the vertical distance between the selected elements</source>
-      <translation>선택한 요소들 사이에 수직 거리를 구속합니다</translation>
+      <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
+      <translation translation type="unfinished">선택한 요소들 사이에 수직 거리를 구속합니다</translation>
     </message>
   </context>
   <context>

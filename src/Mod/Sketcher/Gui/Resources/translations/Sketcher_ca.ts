@@ -5981,8 +5981,8 @@ Els punts s’han d’establir més a prop que una cinquena part de l'espaiat de
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
-      <source>Constrains the vertical distance between the selected elements</source>
-      <translation>Restringeix la distància vertical entre els elements seleccionats</translation>
+      <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
+      <translation type="unfinished">Restringeix la distància vertical entre els elements seleccionats</translation>
     </message>
   </context>
   <context>
