@@ -479,6 +479,7 @@ void View3DInventorViewer::init()
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;
     pcBackGround->ref();
+    pcBackGround->setViewer(this);
 
     // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
