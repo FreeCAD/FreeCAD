@@ -342,12 +342,12 @@ for ProjectionGroups</string>
           </property>
           <item>
            <property name="text">
-            <string>First-angle</string>
+            <string>First angle</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Third-angle</string>
+            <string>Third angle</string>
            </property>
           </item>
           <item>
