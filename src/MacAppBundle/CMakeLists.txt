@@ -1,18 +1,10 @@
-
 #
 # Build and install QuickLook for FCStd files (org.freecad.fcstd)
 # This is used by Homebrew and Conda/Mamba scripts alike.
 #
 if(FREECAD_CREATE_MAC_APP OR (APPLE AND BUILD_WITH_CONDA))
     add_subdirectory(QuickLook)
-    install(
-        DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/QuickLook/QuicklookFCStd.qlgenerator"
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook"
-    )
-    install(
-        PROGRAMS "${PROJECT_BINARY_DIR}/src/MacAppBundle/QuickLook/QuicklookFCStd.framework/Versions/A/QuicklookFCStd"
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/"
-    )
+    # Installation handled by QuickLook/CMakeLists.txt
 endif()
 
 
@@ -24,13 +16,21 @@ if(FREECAD_CREATE_MAC_APP)
 
 set(PYTHON_DIR_BASENAME python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
 
-if(PYTHON_LIBRARY MATCHES "(.*Python\\.framework).*")
-    #framework
-    set(PYTHON_DIR ${CMAKE_MATCH_1}/Versions/${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/lib/${PYTHON_DIR_BASENAME})
+if(Python3_LIBRARY_DIRS)
+    # Get first library directory
+    list(GET Python3_LIBRARY_DIRS 0 FIRST_PYTHON_LIB_DIR)
+    if(FIRST_PYTHON_LIB_DIR MATCHES "(.*Python\\.framework).*")
+        #framework
+        set(PYTHON_DIR ${CMAKE_MATCH_1}/Versions/${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/lib/${PYTHON_DIR_BASENAME})
+    else()
+        #unix
+        set(PYTHON_DIR ${FIRST_PYTHON_LIB_DIR}/${PYTHON_DIR_BASENAME})
+    endif()
 else()
-    #unix
-    get_filename_component(PYTHON_DIR ${PYTHON_LIBRARY} PATH)
-    set(PYTHON_DIR ${PYTHON_DIR}/${PYTHON_DIR_BASENAME})
+    # Fallback: derive from Python3_EXECUTABLE
+    get_filename_component(PYTHON_BIN_DIR ${Python3_EXECUTABLE} DIRECTORY)
+    get_filename_component(PYTHON_PREFIX ${PYTHON_BIN_DIR} DIRECTORY)
+    set(PYTHON_DIR ${PYTHON_PREFIX}/lib/${PYTHON_DIR_BASENAME})
 endif()
 
 message(" PYTHON_DIR is ${PYTHON_DIR} --------------------ipatch--")
@@ -50,7 +50,7 @@ if(HOMEBREW_PREFIX)
 
   message(" PYTHON_DIR is ${PYTHON_DIR} --------------------ipatch--")
 
-  file(GLOB HOMEBREW_PTH_FILES "${HOMEBREW_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/freecad*.pth")
+  file(GLOB HOMEBREW_PTH_FILES "${HOMEBREW_PREFIX}/lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/freecad*.pth")
 
   message(STATUS "HOMEBREW_PTH_FILES are ${HOMEBREW_PTH_FILES} -----------------------ipatch--")
 
@@ -119,13 +119,13 @@ if(HOMEBREW_PREFIX)
 
             if(IS_DIRECTORY "${CONTENT_ITEM}")
               # Install directory
-              install(DIRECTORY "${CONTENT_ITEM}/" 
+              install(DIRECTORY "${CONTENT_ITEM}/"
                 DESTINATION "${BUNDLE_SITE_PACKAGES_DIR}/${ITEM_NAME}"
                 USE_SOURCE_PERMISSIONS)
               message(STATUS "  Installing directory: ${ITEM_NAME}")
             else()
               # Install file
-              install(FILES "${CONTENT_ITEM}" 
+              install(FILES "${CONTENT_ITEM}"
                 DESTINATION "${BUNDLE_SITE_PACKAGES_DIR}")
               message(STATUS "  Installing file: ${ITEM_NAME}")
             endif()
