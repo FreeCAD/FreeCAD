@@ -1621,6 +1621,7 @@ void ExpLineEdit::finishFormulaDialog()
     else if (box->discardedFormula())
         setExpression(std::shared_ptr<Expression>());
 
+    onChange();
     box->deleteLater();
 
     if(autoClose)
