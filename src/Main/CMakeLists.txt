@@ -31,6 +31,13 @@ if(BUILD_GUI)
         target_compile_warn_error(FreeCADMain)
     endif()
 
+    # CI Integration: Add QuickLook extensions as dependencies for macOS builds
+    # This ensures CI systems automatically build QuickLook extensions with FreeCAD
+    if(APPLE AND FREECAD_CREATE_MAC_APP AND TARGET FreeCADQuickLookHost)
+        add_dependencies(FreeCADMain FreeCADQuickLookHost)
+        message(STATUS "QuickLook extensions will be built automatically with FreeCAD")
+    endif()
+
     SET_BIN_DIR(FreeCADMain FreeCAD)
 
     if(WIN32)

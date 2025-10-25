@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Basic Bundle Information -->
+    <key>CFBundleExecutable</key>
+    <string>FreeCADQuickLookHost</string>
+    <key>CFBundleIdentifier</key>
+    <string>org.freecad.quicklook.host</string>
+    <key>CFBundleName</key>
+    <string>FreeCAD QuickLook</string>
+    <key>CFBundleDisplayName</key>
+    <string>FreeCAD QuickLook</string>
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>FCQL</string>
+
+    <!-- Development Region -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+
+    <!-- Platform Support -->
+    <key>CFBundleSupportedPlatforms</key>
+    <array>
+        <string>MacOSX</string>
+    </array>
+
+    <!-- Minimum System Version - Updated for macOS 15.0 -->
+    <key>LSMinimumSystemVersion</key>
+    <string>15.0</string>
+
+    <!-- Application Category -->
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
+
+    <!-- Hide from Applications folder and Dock -->
+    <key>LSUIElement</key>
+    <true/>
+    <key>LSBackgroundOnly</key>
+    <true/>
+
+    <!-- Don't show in recent applications -->
+    <key>LSItemContentTypes</key>
+    <array/>
+
+    <!-- Copyright and Description -->
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2024 FreeCAD Team. All rights reserved.</string>
+    <key>CFBundleGetInfoString</key>
+    <string>FreeCAD QuickLook Extensions Host</string>
+
+    <!-- High Resolution Support -->
+    <key>NSHighResolutionCapable</key>
+    <true/>
+
+    <!-- Principal Class (for minimal host app) -->
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <!-- App Transport Security -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+    </dict>
+
+    <!-- Bundle URL Types (for .FCStd files) -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>FreeCAD Document</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>freecad</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Document Types - Reference FreeCAD's FCStd files -->
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>FreeCAD Document</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>org.freecad.fcstd</string>
+            </array>
+            <key>LSHandlerRank</key>
+            <string>None</string>
+        </dict>
+    </array>
+
+    <!-- Uniform Type Identifier Declarations -->
+    <key>UTImportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+                <string>public.archive</string>
+                <string>public.composite-content</string>
+            </array>
+            <key>UTTypeDescription</key>
+            <string>FreeCAD Document</string>
+            <key>UTTypeIdentifier</key>
+            <string>org.freecad.fcstd</string>
+            <key>UTTypeReferenceURL</key>
+            <string>https://wiki.freecad.org/File_Format_FCStd</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>FCStd</string>
+                    <string>fcstd</string>
+                </array>
+                <key>public.mime-type</key>
+                <array>
+                    <string>application/x-freecad</string>
+                </array>
+            </dict>
+        </dict>
+    </array>
+
+    <!-- Code Signing and Sandboxing -->
+    <key>com.apple.security.app-sandbox</key>
+    <true/>
+    <key>com.apple.security.files.user-selected.read-only</key>
+    <true/>
+    <key>com.apple.security.files.downloads.read-only</key>
+    <true/>
+    <key>com.apple.security.network.client</key>
+    <false/>
+
+    <!-- Disable unwanted features for host app -->
+    <key>LSMultipleInstancesProhibited</key>
+    <true/>
+    <key>NSSupportsAutomaticTermination</key>
+    <true/>
+    <key>NSSupportsSuddenTermination</key>
+    <true/>
+
+    <!-- FreeCAD Integration Metadata -->
+    <key>FreeCADQuickLookVersion</key>
+    <string>1.0</string>
+    <key>FreeCADQuickLookDescription</key>
+    <string>Host application for FreeCAD QuickLook thumbnail and preview extensions</string>
+    <key>FreeCADQuickLookExtensions</key>
+    <array>
+        <string>org.freecad.quicklook.thumbnail</string>
+        <string>org.freecad.quicklook.preview</string>
+    </array>
+</dict>
+</plist>
