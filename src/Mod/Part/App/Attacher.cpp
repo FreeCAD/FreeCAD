@@ -1438,10 +1438,12 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                                        "subshapes (need one face and one vertex).");
             }
 
+            App::DocumentObject* objPlane = objs[0];
             bool bThruVertex = false;
             if (shapes[0]->shapeType() == TopAbs_VERTEX) {
                 std::swap(shapes[0], shapes[1]);
                 bThruVertex = true;
+                objPlane = objs[1];
             }
 
             TopoDS_Face face;
@@ -1501,6 +1503,46 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 gp_Dir dirY;
                 prop.TangentV(dirY);
                 dirX = dirY.Crossed(SketchNormal);
+            }
+
+            // Compatibility fallback: emulate legacy behavior (see issue #24254)
+            if (objPlane->isDerivedFrom(App::Plane::getClassTypeId())) {
+                gp_Dir globalX(1, 0, 0);
+                gp_Dir globalY(0, 1, 0);
+                gp_Dir globalZ(0, 0, 1);
+                double cosNX = SketchNormal.Dot(globalX);
+                double cosNY = SketchNormal.Dot(globalY);
+                double cosNZ = SketchNormal.Dot(globalZ);
+                std::vector<double> cosXYZ;
+                cosXYZ.push_back(fabs(cosNX));
+                cosXYZ.push_back(fabs(cosNY));
+                cosXYZ.push_back(fabs(cosNZ));
+
+                int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
+
+                double cosUX = dirX.Dot(globalX);
+                double cosUY = dirX.Dot(globalY);
+                double cosUZ = dirX.Dot(globalZ);
+
+                switch (pos) {
+                    case 0: // normal mostly X
+                        if (fabs(cosUY) > fabs(cosUZ)) {
+                            dirX = SketchNormal.Crossed(dirX);
+                        }
+                        break;
+                    case 1: // normal mostly Y
+                        if (fabs(cosUX) > fabs(cosUZ)) {
+                            dirX = SketchNormal.Crossed(dirX).Reversed();
+                        }
+                        break;
+                    case 2: // normal mostly Z
+                        if (fabs(cosUY) > fabs(cosUX)) {
+                            dirX = SketchNormal.Crossed(dirX);
+                        }
+                        break;
+                    default: // cannot happen
+                        break;
+                }
             }
 
             SketchXAxis = gp_Vec(dirX).Reversed();  // yields upside-down sketches less often.
