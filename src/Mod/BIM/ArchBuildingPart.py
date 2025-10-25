@@ -411,9 +411,11 @@ class BuildingPart(ArchIFC.IfcProduct):
             area = 0
             if hasattr(obj, "Group"):
                 for child in obj.Group:
-                    if Draft.get_type(child) in ["Space", "BuildingPart"] \
-                            and hasattr(child, "IfcType") \
-                            and hasattr(child, "Area"):
+                    if (
+                        Draft.get_type(child) in ["Space", "BuildingPart"]
+                        and hasattr(child, "IfcType")
+                        and hasattr(child, "Area")
+                    ):
                         area += child.Area.Value
                     else:
                         area += _getArea(child)
