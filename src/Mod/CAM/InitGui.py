@@ -140,6 +140,7 @@ class CAMWorkbench(Workbench):
             "CAM_Profile",
             "CAM_Pocket_Shape",
             "CAM_MillFace",
+            "CAM_MillFacing",
             "CAM_Helix",
             "CAM_Adaptive",
             "CAM_Slot",
