@@ -91,11 +91,11 @@ keyLst = []
 
 class TaskFillTemplateFields:
     def __init__(self):
-        objs = App.ActiveDocument.Objects
+        objs = App.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
+
         for obj in objs:
             if (
-                obj.TypeId == "TechDraw::DrawPage"
-                and os.path.exists(file_path)
+                os.path.exists(file_path)
                 and listofkeys == reader.fieldnames
             ):
                 self.page = obj
@@ -117,10 +117,14 @@ class TaskFillTemplateFields:
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    if pageObj.isDerivedFrom("TechDraw::DrawViewPart"):
+                    if (
+                        pageObj.isDerivedFrom("TechDraw::DrawViewPart") 
+                        or pageObj.isDerivedFrom("TechDraw::DrawProjGroup")
+                    ):
+                        # should this not be pageObj? this is looking for any DVP or DPG on the page?
+                        # Views[0] could be an annotation or symbol or ??? - WF
                         projgrp_view = self.page.Views[0]
-                    elif pageObj.isDerivedFrom("TechDraw::DrawProjGroup"):
-                        projgrp_view = self.page.Views[0]
+                        break
 
                 self.texts = self.page.Template.EditableTexts
 
@@ -429,7 +433,7 @@ class TaskFillTemplateFields:
                     self.dialog.show()
                     self.dialog.exec_()
 
-                    App.setActiveTransaction("Fill template fields")
+#                    App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -520,17 +524,20 @@ class TaskFillTemplateFields:
             self.button.setEnabled(False)
 
     def proceed(self):
+        transactionName = QtCore.QT_TRANSLATE_NOOP("Techdraw_FillTemplateFields", "Fill template fields")
+        App.setActiveTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
             if cb.isChecked():
                 self.texts[keyLst[i]] = self.lineTextList[i].text()
             i += 1
         self.page.Template.EditableTexts = self.texts
+        App.closeActiveTransaction(False)
         self.close()
 
         App.closeActiveTransaction()
 
     def close(self):
         self.dialog.hide()
-        App.closeActiveTransaction(True)
+#        App.closeActiveTransaction(True)
         return True

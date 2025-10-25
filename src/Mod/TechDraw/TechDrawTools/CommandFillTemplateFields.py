@@ -62,37 +62,39 @@ class CommandFillTemplateFields:
         """Return True when the command should be active
         or False when it should be disabled (greyed)."""
         if App.ActiveDocument:
-            objs = App.ActiveDocument.Objects
+            objs = App.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
+            if not objs:
+                return false
+
             for obj in objs:
-                if obj.TypeId == "TechDraw::DrawPage":
-                    file_path = (
-                        App.getResourceDir()
-                        + "Mod/TechDraw/CSVdata/FillTemplateFields.csv"
-                    )
-                    if os.path.exists(file_path):
-                        listofkeys = [
-                            "CreatedByChkLst",
-                            "ScaleChkLst",
-                            "LabelChkLst",
-                            "CommentChkLst",
-                            "CompanyChkLst",
-                            "LicenseChkLst",
-                            "CreatedDateChkLst",
-                            "LastModifiedDateChkLst",
-                        ]
-                        with codecs.open(file_path, encoding="utf-8") as fp:
-                            reader = csv.DictReader(fp)
-                            page = obj
-                            texts = page.Template.EditableTexts
-                            if (
-                                texts
-                                and os.path.exists(file_path)
-                                and listofkeys == reader.fieldnames
-                                and obj.Views != []
-                            ):
-                                return True
-        else:
-            return False
+                file_path = (
+                    App.getResourceDir()
+                    + "Mod/TechDraw/CSVdata/FillTemplateFields.csv"
+                )
+                if os.path.exists(file_path):
+                    listofkeys = [
+                        "CreatedByChkLst",
+                        "ScaleChkLst",
+                        "LabelChkLst",
+                        "CommentChkLst",
+                        "CompanyChkLst",
+                        "LicenseChkLst",
+                        "CreatedDateChkLst",
+                        "LastModifiedDateChkLst",
+                    ]
+                    with codecs.open(file_path, encoding="utf-8") as fp:
+                        reader = csv.DictReader(fp)
+                        page = obj
+                        texts = page.Template.EditableTexts
+                        if (
+                            texts
+                            and os.path.exists(file_path)
+                            and listofkeys == reader.fieldnames
+                            and obj.Views != []
+                        ):
+                            return True
+            return false
+
 
 
 #
