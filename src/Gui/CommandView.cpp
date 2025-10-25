@@ -3973,10 +3973,11 @@ StdCmdClarifySelection::StdCmdClarifySelection()
     sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Clarify Selection");
     sToolTipText = QT_TR_NOOP("Displays a context menu at the mouse cursor to select overlapping "
-                              "or obstructed geometry in the 3D view.\n");
+                              "or obstructed geometry in the 3D view");
     sWhatsThis    = "Std_ClarifySelection";
     sStatusTip    = sToolTipText;
     sAccel        = "G, G";
+    sPixmap       = "tree-pre-sel";
     eType         = NoTransaction | AlterSelection;
 }
 
