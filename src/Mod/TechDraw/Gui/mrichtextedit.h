@@ -56,6 +56,8 @@ public:
     int getDefFontSizeNum();
     QFont getDefFont();
 
+    void setMinimalMode(bool on);
+
 public Q_SLOTS:
     void setText(const QString &text);
 
