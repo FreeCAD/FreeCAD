@@ -332,7 +332,7 @@ def load_token():
             token = file.read().strip()
             if token:
                 return token
-    # if file doesn't exists, read from CROWDIN_TOKEN
+    # if file doesn't exist, read from CROWDIN_TOKEN
     return os.environ.get("CROWDIN_TOKEN")
 
 
