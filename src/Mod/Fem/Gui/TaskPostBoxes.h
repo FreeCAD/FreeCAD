@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
+#include <Mod/Fem/App/FemPostObject.h>
 #include "ViewProviderFemPostFunction.h"
 
 class QComboBox;
@@ -450,7 +451,7 @@ private:
 
     // App::PropertyLink* m_functionProperty;
     std::unique_ptr<Ui_TaskPostClip> ui;
-    FunctionWidget* fwidget;
+    ShapeWidget* fwidget;
 };
 
 
@@ -512,7 +513,7 @@ private:
 
     // App::PropertyLink* m_functionProperty;
     std::unique_ptr<Ui_TaskPostCut> ui;
-    FunctionWidget* fwidget;
+    ShapeWidget* fwidget;
 };
 
 
