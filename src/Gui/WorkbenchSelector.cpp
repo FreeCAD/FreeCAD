@@ -141,7 +141,6 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     tabBar->setDocumentMode(true);
     tabBar->setUsesScrollButtons(true);
     tabBar->setDrawBase(true);
-    tabBar->setIconSize(QSize(16, 16));
 
     updateWorkbenchList();
 
