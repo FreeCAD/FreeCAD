@@ -1,0 +1,17 @@
+FROM ubuntu:rolling
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+ENV UTC=true
+ENV ARC=false
+
+COPY ubuntuQt6.sh /tmp
+
+RUN apt-get update && \
+    apt-get upgrade --yes && \
+    sh /tmp/ubuntuQt6.sh && \
+    mkdir -p /builds
+
+WORKDIR /builds
+
+VOLUME [ "/builds" ]
