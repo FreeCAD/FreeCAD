@@ -36,6 +36,8 @@ SET(MeasureModule_SRCS
     MeasureLength.h
     MeasureArea.cpp
     MeasureArea.h
+    MeasureDiameter.cpp
+    MeasureDiameter.h
     MeasureRadius.cpp
     MeasureRadius.h
 
