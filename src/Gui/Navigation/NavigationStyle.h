@@ -254,8 +254,8 @@ protected:
     virtual void openPopupMenu(const SbVec2s& position);
 
 private:
-    void spin_internal(const SbVec2f & pointerpos, const SbVec2f & lastpos);
-    void spin_simplified_internal(const SbVec2f curpos, const SbVec2f prevpos);
+    void spinInternal(const SbVec2f & pointerpos, const SbVec2f & lastpos);
+    void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
     bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
     QWidget* findView3DInventorWidget() const;
     void applyNavigationStyleChange(QAction* selectedAction);

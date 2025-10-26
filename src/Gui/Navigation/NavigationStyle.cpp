@@ -1061,11 +1061,11 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
 
     if (getOrbitStyle() == FreeTurntable) {
         SbVec2f midpos(lastpos[0], pointerpos[1]);
-        spin_internal(pointerpos, midpos);
-        spin_internal(midpos, lastpos);
+        spinInternal(pointerpos, midpos);
+        spinInternal(midpos, lastpos);
     }
     else {
-        spin_internal(pointerpos, lastpos);
+        spinInternal(pointerpos, lastpos);
     }
 
     if (this->currentmode != NavigationStyle::IDLE) {
@@ -1073,7 +1073,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     }
 }
 
-void NavigationStyle::spin_internal(const SbVec2f & pointerpos, const SbVec2f & lastpos)
+void NavigationStyle::spinInternal(const SbVec2f & pointerpos, const SbVec2f & lastpos)
 {
     float sensitivity = getSensitivity();
 
@@ -1158,17 +1158,17 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 
     if (getOrbitStyle() == FreeTurntable) {
         SbVec2f midpos(prevpos[0], curpos[1]);
-        spin_simplified_internal(curpos, midpos);
-        spin_simplified_internal(midpos, prevpos);
+        spinSimplifiedInternal(curpos, midpos);
+        spinSimplifiedInternal(midpos, prevpos);
     }
     else {
-        spin_simplified_internal(curpos, prevpos);
+        spinSimplifiedInternal(curpos, prevpos);
     }
 
     hasDragged = true;
 }
 
-void NavigationStyle::spin_simplified_internal(SbVec2f curpos, SbVec2f prevpos)
+void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
 {
     // 0000333: Turntable camera rotation
     SbMatrix mat;
