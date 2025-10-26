@@ -6031,7 +6031,7 @@ jeśli wybrano tylko jeden punkt.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation type="unfinished">Stosuje wiązanie odległości pionowej między zaznaczonymi elementami</translation>
+      <translation translation type="unfinished">Stosuje wiązanie odległości pionowej między zaznaczonymi elementami</translation>
     </message>
   </context>
   <context>
