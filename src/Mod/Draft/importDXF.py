@@ -4599,6 +4599,8 @@ class DxfDraftPostProcessor:
             end_point = FreeCAD.Vector(part_obj.X2.Value, part_obj.Y2.Value, part_obj.Z2.Value)
             new_obj.Points = [start_point, end_point]
 
+            new_obj.MakeFace = False
+
             obj_type_str = "Line"
 
         elif part_obj.isDerivedFrom("Part::Circle"):
@@ -4636,6 +4638,8 @@ class DxfDraftPostProcessor:
                 abs(new_obj.FirstAngle.Value - 0.0) < 1e-7
                 and abs(new_obj.LastAngle.Value - 360.0) < 1e-7
             )
+
+            new_obj.MakeFace = False
 
             obj_type_str = "Circle" if is_full_circle else "Arc"
 
@@ -4700,6 +4704,9 @@ class DxfDraftPostProcessor:
                 # Assign the un-transformed shape and the separate placement.
                 new_obj.Shape = shape_at_origin
                 new_obj.Placement = part_obj.Placement
+
+                new_obj.MakeFace = False
+
                 obj_type_str = "Shape"
 
         # --- Handle generic Part::Feature objects (from C++ importer, wrapping TopoDS_Shapes like Wires, Splines, Ellipses) ---
@@ -4741,6 +4748,9 @@ class DxfDraftPostProcessor:
                 new_obj.Closed = (
                     shape.isClosed()
                 )  # Transfer specific properties expected by Draft.Wire.
+
+                new_obj.MakeFace = False
+
                 obj_type_str = "Wire"
 
             # Fallback for other Part::Feature shapes (e.g., 3DFACE, SOLID, or unsupported Edge types).
