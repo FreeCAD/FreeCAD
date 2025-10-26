@@ -294,38 +294,43 @@ TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices
     if (is_closed && vertices.size() > 1) {
         const VertexInfo& start_vertex = vertices.back();
         const VertexInfo& end_vertex = vertices.front();
-        TopoDS_Edge edge;
 
-        if (start_vertex.bulge == 0.0) {
-            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
-                                           makePoint(end_vertex.location))
-                       .Edge();
-        }
-        else {
-            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
-            double center_x = ((start_vertex.location.x + end_vertex.location.x)
-                               - (end_vertex.location.y - start_vertex.location.y) * cot)
-                / 2.0;
-            double center_y = ((start_vertex.location.y + end_vertex.location.y)
-                               + (end_vertex.location.x - start_vertex.location.x) * cot)
-                / 2.0;
-            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
-            Base::Vector3d center(center_x, center_y, center_z);
+        // check if the vertices are coincident (distance < tolerance)
+        // if they are, the polyline is already closed and we don't need a closing edge
+        gp_Pnt p0 = makePoint(start_vertex.location);
+        gp_Pnt p1 = makePoint(end_vertex.location);
+        double distance = p0.Distance(p1);
 
-            gp_Pnt p0 = makePoint(start_vertex.location);
-            gp_Pnt p1 = makePoint(end_vertex.location);
-            gp_Dir up(0, 0, 1);
-            if (start_vertex.bulge < 0) {
-                up.Reverse();
+        if (distance > Precision::Confusion()) {
+            TopoDS_Edge edge;
+
+            if (start_vertex.bulge == 0.0) {
+                edge = BRepBuilderAPI_MakeEdge(p0, p1).Edge();
             }
-            gp_Pnt pc = makePoint(center);
-            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-            if (circle.Radius() > 1e-9) {
-                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+            else {
+                double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+                double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                                   - (end_vertex.location.y - start_vertex.location.y) * cot)
+                    / 2.0;
+                double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                                   + (end_vertex.location.x - start_vertex.location.x) * cot)
+                    / 2.0;
+                double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+                Base::Vector3d center(center_x, center_y, center_z);
+
+                gp_Dir up(0, 0, 1);
+                if (start_vertex.bulge < 0) {
+                    up.Reverse();
+                }
+                gp_Pnt pc = makePoint(center);
+                gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+                if (circle.Radius() > 1e-9) {
+                    edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+                }
             }
-        }
-        if (!edge.IsNull()) {
-            wireBuilder.Add(edge);
+            if (!edge.IsNull()) {
+                wireBuilder.Add(edge);
+            }
         }
     }
 
