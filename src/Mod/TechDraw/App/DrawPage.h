@@ -48,7 +48,7 @@ public:
     App::PropertyBool KeepUpdated;
 
     App::PropertyFloatConstraint Scale;
-    App::PropertyEnumeration ProjectionType;// First or Third Angle
+    App::PropertyEnumeration ProjectionType;// First or Third angle
 
     App::PropertyInteger NextBalloonIndex;
 
