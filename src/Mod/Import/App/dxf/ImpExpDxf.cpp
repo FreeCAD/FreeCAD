@@ -58,6 +58,7 @@
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Trsf.hxx>
+#include <Precision.hxx>
 #include <gp_Vec.hxx>
 
 #include <fstream>
@@ -2028,9 +2029,10 @@ void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)
     writeLine(start, end);
 }
 
-void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve& c)
+// Helper function to discretize a curve into polyline vertices
+// Returns true if discretization was successful and pd was populated
+bool ImpExpDxfWrite::discretizeCurveToPolyline(BRepAdaptor_Curve& c, LWPolyDataOut& pd) const
 {
-    LWPolyDataOut pd;
     pd.Flag = c.IsClosed();
     pd.Elev = 0.0;
     pd.Thick = 0.0;
@@ -2041,14 +2043,35 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve& c)
 
     GCPnts_UniformAbscissa discretizer;
     discretizer.Initialize(c, optionMaxLength);
-    std::vector<point3D> points;
-    if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
-        int nbPoints = discretizer.NbPoints();
-        for (int i = 1; i <= nbPoints; i++) {
-            gp_Pnt p = c.Value(discretizer.Parameter(i));
-            pd.Verts.push_back(gPntTopoint3D(p));
+
+    if (!discretizer.IsDone() || discretizer.NbPoints() <= 0) {
+        return false;
+    }
+
+    int nbPoints = discretizer.NbPoints();
+    // for closed curves, don't include the last point if it duplicates the first
+    int endIndex = nbPoints;
+    if (pd.Flag && nbPoints > 1) {
+        gp_Pnt pFirst = c.Value(discretizer.Parameter(1));
+        gp_Pnt pLast = c.Value(discretizer.Parameter(nbPoints));
+        if (pFirst.Distance(pLast) < Precision::Confusion()) {
+            endIndex = nbPoints - 1;
         }
-        pd.nVert = discretizer.NbPoints();
+    }
+
+    for (int i = 1; i <= endIndex; i++) {
+        gp_Pnt p = c.Value(discretizer.Parameter(i));
+        pd.Verts.push_back(gPntTopoint3D(p));
+    }
+    pd.nVert = static_cast<int>(pd.Verts.size());
+
+    return true;
+}
+
+void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve& c)
+{
+    LWPolyDataOut pd;
+    if (discretizeCurveToPolyline(c, pd)) {
         writeLWPolyLine(pd);
     }
 }
@@ -2056,24 +2079,7 @@ void ImpExpDxfWrite::exportLWPoly(BRepAdaptor_Curve& c)
 void ImpExpDxfWrite::exportPolyline(BRepAdaptor_Curve& c)
 {
     LWPolyDataOut pd;
-    pd.Flag = c.IsClosed();
-    pd.Elev = 0.0;
-    pd.Thick = 0.0;
-    pd.Extr.x = 0.0;
-    pd.Extr.y = 0.0;
-    pd.Extr.z = 1.0;
-    pd.nVert = 0;
-
-    GCPnts_UniformAbscissa discretizer;
-    discretizer.Initialize(c, optionMaxLength);
-    std::vector<point3D> points;
-    if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
-        int nbPoints = discretizer.NbPoints();
-        for (int i = 1; i <= nbPoints; i++) {
-            gp_Pnt p = c.Value(discretizer.Parameter(i));
-            pd.Verts.push_back(gPntTopoint3D(p));
-        }
-        pd.nVert = discretizer.NbPoints();
+    if (discretizeCurveToPolyline(c, pd)) {
         writePolyline(pd);
     }
 }
