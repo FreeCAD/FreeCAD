@@ -1703,7 +1703,6 @@ class _Stairs(ArchComponent.Component):
 
         "builds a simple, straight staircase from a straight edge"
 
-
         """
         edge                  : Edge defining the flight/landing like stairs' direction, run, rise/height etc. (mandatory)
                                 (makeStraightStairsWithLanding() should have provided edge with z information)
@@ -2254,7 +2253,7 @@ class _Stairs(ArchComponent.Component):
                     numOfSteps - landingStep,
                     "HorizontalVerticalCut",
                     None,
-                    #hgt=h,
+                    # hgt=h,
                     vWidth=-vWidth,
                     align=align,
                     vLength=-vLength,
@@ -2277,7 +2276,7 @@ class _Stairs(ArchComponent.Component):
                     numOfSteps - landingStep,
                     "HorizontalVerticalCut",
                     None,
-                    #hgt=h,
+                    # hgt=h,
                     vWidth=vWidth,
                     align=align,
                     vLength=vLength,
