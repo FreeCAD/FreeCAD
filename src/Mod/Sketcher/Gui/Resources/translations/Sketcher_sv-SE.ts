@@ -5988,8 +5988,8 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
-      <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation translation type="unfinished">Begränsar det vertikala avståndet mellan de valda elementen</translation>
+      <source>Constrains the vertical distance between the selected elements</source>
+      <translation>Begränsar det vertikala avståndet mellan de valda elementen</translation>
     </message>
   </context>
   <context>

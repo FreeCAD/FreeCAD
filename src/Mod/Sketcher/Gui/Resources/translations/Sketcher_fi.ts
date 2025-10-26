@@ -5994,8 +5994,8 @@ Pisteen täyty olla lähempänä kuin ruudukkovälin viidesosa, jotta tarttumine
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
-      <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if only one is selected</translation>
+      <source>Constrains the vertical distance between the selected elements</source>
+      <translation type="unfinished">Constrains the vertical distance between the selected elements</translation>
     </message>
   </context>
   <context>

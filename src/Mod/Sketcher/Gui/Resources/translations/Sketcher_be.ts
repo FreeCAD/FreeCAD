@@ -6014,8 +6014,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
-      <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation type="unfinished">Абмяжоўвае адлегласць па вертыкалі паміж абранымі элементамі</translation>
+      <source>Constrains the vertical distance between the selected elements</source>
+      <translation>Абмяжоўвае адлегласць па вертыкалі паміж абранымі элементамі</translation>
     </message>
   </context>
   <context>
