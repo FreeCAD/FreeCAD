@@ -1648,7 +1648,7 @@ point3D gPntTopoint3D(gp_Pnt& p)
 ImpExpDxfWrite::ImpExpDxfWrite(std::string filepath)
     : CDxfWrite(filepath.c_str())
 {
-    setOptionSource("User parameter:BaseApp/Preferences/Mod/Import");
+    setOptionSource("User parameter:BaseApp/Preferences/Mod/Draft");
     setOptions();
 }
 
