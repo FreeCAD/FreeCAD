@@ -177,6 +177,13 @@ class _ToggleOperation:
         if not selection:
             return False
 
+        if len(selection) == 1:
+            sel = selection[0]
+            if sel.Name.startswith("Job"):
+                return True
+            if hasattr(sel, "Group") and sel.Name.startswith("Operations"):
+                return True
+
         for sel in selection:
             baseOp = Path.Dressup.Utils.baseOp(sel)
             if not hasattr(baseOp, "Active"):
@@ -186,18 +193,32 @@ class _ToggleOperation:
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelection()
-        for sel in selection:
-            baseOp = Path.Dressup.Utils.baseOp(sel)
-            baseOp.Active = not baseOp.Active
-            if sel == baseOp:
-                # selected not a Dressup
-                baseOp.ViewObject.Visibility = baseOp.Active
-            elif not baseOp.Active:
-                # only hide operation under Dressup
-                baseOp.ViewObject.Visibility = False
-            elif baseOp.Active:
-                # only unhide Dressup
-                sel.ViewObject.Visibility = True
+        if (len(selection) == 1 and hasattr(selection[0], "Group")) and (
+            selection[0].Name.startswith("Job") or selection[0].Name.startswith("Operations")
+        ):
+            # 'Job' or 'Operations' group selected
+            sel = selection[0]
+            # process all Operations
+            if sel.Name.startswith("Job"):
+                selection = sel.Operations.Group
+            elif sel.Name.startswith("Operations"):
+                selection = sel.Group
+
+            states = [Path.Dressup.Utils.baseOp(sel).Active for sel in selection]
+            if all(states) or all([not st for st in states]):
+                for sel in selection:
+                    baseOp = Path.Dressup.Utils.baseOp(sel)
+                    baseOp.Active = not baseOp.Active
+            else:
+                for sel in selection:
+                    baseOp = Path.Dressup.Utils.baseOp(sel)
+                    baseOp.Active = True
+
+        else:
+            # operations selected
+            for sel in selection:
+                baseOp = Path.Dressup.Utils.baseOp(sel)
+                baseOp.Active = not baseOp.Active
 
         FreeCAD.ActiveDocument.recompute()
 
@@ -218,20 +239,41 @@ class _CopyOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+        if not len(selection):
             return False
-        try:
-            for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
-                    return False
-            return True
-        except (IndexError, AttributeError):
+        if any([not hasattr(sel, "Path") for sel in selection]):
+            return False
+        if any([sel.Name.startswith("Job") for sel in selection]):
             return False
 
+        return True
+
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            jobname = findParentJob(sel.Object).Name
-            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
+        def getRecursiveOperationsList(obj, recursiveList):
+            if not hasattr(obj, "Base"):
+                return None
+            elif obj.isDerivedFrom("Path::Feature"):
+                recursiveList.append(obj)
+                return getRecursiveOperationsList(obj.Base, recursiveList)
+
+            return None
+
+        selection = FreeCADGui.Selection.getSelection()
+        for sel in selection:
+            job = findParentJob(sel)
+            recursiveList = []
+            getRecursiveOperationsList(sel, recursiveList)
+            prevObj = None
+            for obj in reversed(recursiveList):
+                newObj = FreeCAD.ActiveDocument.copyObject(obj, False)
+                if prevObj:
+                    # set Base for all objects, except first
+                    newObj.Base = prevObj
+                prevObj = newObj
+            else:
+                # add to Job only last object
+                addToJob(newObj, job.Name)
 
 
 if FreeCAD.GuiUp:
