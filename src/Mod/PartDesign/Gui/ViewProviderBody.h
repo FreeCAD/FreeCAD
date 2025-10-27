@@ -27,8 +27,11 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Gui/ViewProviderPart.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+
+#include <Base/Console.h>
 
 class SoGroup;
 class SoSeparator;
@@ -91,6 +94,8 @@ public:
     bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
     /* Check whether the object accept reordering of its children during drop.*/
     bool acceptReorderingObjects() const override { return true; };
+
+    void setVisible(bool visible);
 
 protected:
     /// Copy over all visual properties to the child features
