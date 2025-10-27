@@ -27,6 +27,7 @@ import Path
 import Path.Base.Language as PathLanguage
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
+import Path.Base.Gui.Util as PathGuiUtil
 from Path.Base.Util import toolControllerForOp
 import copy
 import math
@@ -49,6 +50,8 @@ lead_styles = (
     # common options first
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
     # additional options, alphabetical order
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
@@ -56,8 +59,6 @@ lead_styles = (
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retract"),
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 )
 
@@ -170,8 +171,8 @@ class ObjectDressup:
     def setup(self, obj):
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.AngleIn = 45
-        obj.AngleOut = 45
+        obj.AngleIn = 90
+        obj.AngleOut = 90
         obj.InvertIn = False
         obj.InvertOut = False
         obj.RapidPlunge = False
@@ -227,13 +228,8 @@ class ObjectDressup:
         if obj.AngleOut < limit_angle_out:
             obj.AngleOut = limit_angle_out
 
-        hideModes = {
-            "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
-            "Invert": ("No Retract", "ArcZ", "LineZ", "Vertical"),
-            "Offset": ("No Retract"),
-            "Radius": ("No Retract", "Vertical"),
-        }
-        for k, v in hideModes.items():
+        # Use shared hideModes from TaskDressupLeadInOut
+        for k, v in TaskDressupLeadInOut.hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
@@ -268,7 +264,12 @@ class ObjectDressup:
             )
             obj.StyleIn = lead_styles
             obj.removeProperty("StyleOn")
-            obj.StyleIn = "Arc"
+            # Set previous value if possible
+            if styleOn in lead_styles:
+                obj.StyleIn = styleOn
+            elif styleOn == "Arc":
+                obj.StyleIn = "Arc"
+                obj.AngleIn = 90
         if hasattr(obj, "StyleOff"):
             # Replace StyleOff by StyleOut
             styleOff = obj.StyleOff
@@ -280,7 +281,12 @@ class ObjectDressup:
             )
             obj.StyleOut = lead_styles
             obj.removeProperty("StyleOff")
-            obj.StyleOut = "Arc"
+            # Set previous value if possible
+            if styleOff in lead_styles:
+                obj.StyleOut = styleOff
+            elif styleOff == "Arc":
+                obj.StyleOut = "Arc"
+                obj.AngleOut = 90
 
         if not hasattr(obj, "AngleIn"):
             obj.addProperty(
@@ -289,7 +295,7 @@ class ObjectDressup:
                 "Path Lead-in",
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
             )
-            obj.AngleIn = 45
+            obj.AngleIn = 90
         if not hasattr(obj, "AngleOut"):
             obj.addProperty(
                 "App::PropertyAngle",
@@ -297,7 +303,7 @@ class ObjectDressup:
                 "Path Lead-out",
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
             )
-            obj.AngleOut = 45
+            obj.AngleOut = 90
 
         if styleOn:
             if styleOn == "Arc":
@@ -401,6 +407,11 @@ class ObjectDressup:
             if obj.KeepToolDown:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
+
+        # Ensure correct initial visibility of fields after defaults are set
+        for k, v in TaskDressupLeadInOut.hideModes.items():
+            obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
+            obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
@@ -587,7 +598,6 @@ class ObjectDressup:
         return commands
 
     def getLeadStart(self, obj, move, first, inInstrPrev, outInstrPrev):
-
         #    tangent  begin      move
         #    <----_-----x-------------------x
         #       /       |
@@ -734,7 +744,6 @@ class ObjectDressup:
         return lead
 
     def getLeadEnd(self, obj, move, last, outInstrPrev):
-
         #            move       end   tangent
         #    x-------------------x-----_---->
         #                        |       \
@@ -1052,7 +1061,6 @@ class ObjectDressup:
 
         # Process all instructions
         for i, instr in enumerate(source):
-
             # Process not mill instruction
             if not self.isCuttingMove(instr):
                 if not instr.isMove():
@@ -1165,28 +1173,123 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     _ui_file = ":/panels/DressUpLeadInOutEdit.ui"
 
     def setupUi(self):
+        self.setupSpinBoxes()
+        self.setupGroupBoxes()
+        self.setupDynamicVisibility()
+        self.setFields()
+        self.pageRegisterSignalHandlers()
+
+    def setupSpinBoxes(self):
         self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
-        self.connectWidget("RadiusIn", self.form.dspRadiusIn)
-        self.connectWidget("RadiusOut", self.form.dspRadiusOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
-        self.connectWidget("AngleIn", self.form.dspAngleIn)
-        self.connectWidget("AngleOut", self.form.dspAngleOut)
-        self.connectWidget("OffsetIn", self.form.dspOffsetIn)
-        self.connectWidget("OffsetOut", self.form.dspOffsetOut)
+        self.radiusIn = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")
+        self.radiusOut = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusOut, self.obj, "RadiusOut")
+        self.angleIn = PathGuiUtil.QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn")
+        self.angleOut = PathGuiUtil.QuantitySpinBox(self.form.dspAngleOut, self.obj, "AngleOut")
+        self.offsetIn = PathGuiUtil.QuantitySpinBox(self.form.dspOffsetIn, self.obj, "OffsetIn")
+        self.offsetOut = PathGuiUtil.QuantitySpinBox(self.form.dspOffsetOut, self.obj, "OffsetOut")
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.connectWidget("RetractThreshold", self.form.dspRetractThreshold)
-        self.setFields()
+        self.retractThreshold = PathGuiUtil.QuantitySpinBox(
+            self.form.dspRetractThreshold, self.obj, "RetractThreshold"
+        )
 
-        def handleGroupBoxCheck():
-            self.obj.LeadIn = self.form.groupBoxIn.isChecked()
-            self.obj.LeadOut = self.form.groupBoxOut.isChecked()
+        self.radiusIn.updateWidget()
+        self.radiusOut.updateWidget()
+        self.angleIn.updateWidget()
+        self.angleOut.updateWidget()
+        self.offsetIn.updateWidget()
+        self.offsetOut.updateWidget()
+        self.retractThreshold.updateWidget()
 
+    def setupGroupBoxes(self):
         self.form.groupBoxIn.setChecked(self.obj.LeadIn)
         self.form.groupBoxOut.setChecked(self.obj.LeadOut)
-        self.form.groupBoxIn.clicked.connect(handleGroupBoxCheck)
-        self.form.groupBoxOut.clicked.connect(handleGroupBoxCheck)
+        self.form.groupBoxIn.clicked.connect(self.handleGroupBoxCheck)
+        self.form.groupBoxOut.clicked.connect(self.handleGroupBoxCheck)
+
+    def handleGroupBoxCheck(self):
+        self.obj.LeadIn = self.form.groupBoxIn.isChecked()
+        self.obj.LeadOut = self.form.groupBoxOut.isChecked()
+
+    def setupDynamicVisibility(self):
+        self.form.cboStyleIn.currentIndexChanged.connect(self.updateLeadInVisibility)
+        self.form.cboStyleOut.currentIndexChanged.connect(self.updateLeadOutVisibility)
+        self.updateLeadInVisibility()
+        self.updateLeadOutVisibility()
+
+    def getSignalsForUpdate(self):
+        signals = []
+        signals.append(self.form.dspRadiusIn.editingFinished)
+        signals.append(self.form.dspRadiusOut.editingFinished)
+        signals.append(self.form.dspAngleIn.editingFinished)
+        signals.append(self.form.dspAngleOut.editingFinished)
+        signals.append(self.form.dspOffsetIn.editingFinished)
+        signals.append(self.form.dspOffsetOut.editingFinished)
+        signals.append(self.form.dspRetractThreshold.editingFinished)
+        return signals
+
+    def pageGetFields(self):
+        PathGuiUtil.updateInputField(self.obj, "RadiusIn", self.form.dspRadiusIn)
+        PathGuiUtil.updateInputField(self.obj, "RadiusOut", self.form.dspRadiusOut)
+        PathGuiUtil.updateInputField(self.obj, "AngleIn", self.form.dspAngleIn)
+        PathGuiUtil.updateInputField(self.obj, "AngleOut", self.form.dspAngleOut)
+        PathGuiUtil.updateInputField(self.obj, "OffsetIn", self.form.dspOffsetIn)
+        PathGuiUtil.updateInputField(self.obj, "OffsetOut", self.form.dspOffsetOut)
+        PathGuiUtil.updateInputField(self.obj, "RetractThreshold", self.form.dspRetractThreshold)
+
+    def pageRegisterSignalHandlers(self):
+        for signal in self.getSignalsForUpdate():
+            signal.connect(self.pageGetFields)
+
+    # Shared hideModes for both LeadIn and LeadOut
+    hideModes = {
+        "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
+        "Invert": ("No Retract", "ArcZ", "LineZ", "Vertical", "Perpendicular", "Tangent"),
+        "Offset": ("No Retract"),
+        "Radius": ("No Retract", "Vertical"),
+    }
+
+    def updateLeadVisibility(self, style, angleWidget, invertWidget, angleLabel, radiusLabel=None):
+        # Dynamic label for Radius/Length
+        arc_styles = ("Arc", "Arc3d", "ArcZ", "Helix")
+        if radiusLabel and hasattr(self.form, radiusLabel):
+            if style in arc_styles:
+                getattr(self.form, radiusLabel).setText("Radius")
+                # Will do translation later
+                # getattr(self.form, radiusLabel).setText(translate("CAM_DressupLeadInOut", "Radius"))
+            else:
+                getattr(self.form, radiusLabel).setText("Length")
+                # Will do translation later
+                # getattr(self.form, radiusLabel).setText(translate("CAM_DressupLeadInOut", "Length"))
+
+        # Angle
+        if style in self.hideModes["Angle"]:
+            angleWidget.hide()
+            if hasattr(self.form, angleLabel):
+                getattr(self.form, angleLabel).hide()
+        else:
+            angleWidget.show()
+            if hasattr(self.form, angleLabel):
+                getattr(self.form, angleLabel).show()
+        # Invert Direction
+        if style in self.hideModes["Invert"]:
+            invertWidget.hide()
+        else:
+            invertWidget.show()
+
+    def updateLeadInVisibility(self):
+        style = self.form.cboStyleIn.currentText()
+        self.updateLeadVisibility(
+            style, self.form.dspAngleIn, self.form.chkInvertDirectionIn, "label_1", "label_5"
+        )
+
+    def updateLeadOutVisibility(self):
+        style = self.form.cboStyleOut.currentText()
+        self.updateLeadVisibility(
+            style, self.form.dspAngleOut, self.form.chkInvertDirectionOut, "label_11", "label_15"
+        )
 
 
 class ViewProviderDressup:
