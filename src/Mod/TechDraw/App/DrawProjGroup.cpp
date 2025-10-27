@@ -49,7 +49,7 @@
 
 using namespace TechDraw;
 
-const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle", "Third Angle",
+const char* DrawProjGroup::ProjectionTypeEnums[] = {"First angle", "Third angle",
                                                     "Default",//Use Page setting
                                                     nullptr};
 
@@ -582,11 +582,11 @@ gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
 Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
 {
     //    Base::Console().message("DPG::getXYPosition(%s)\n", Label.getValue());
-    //   Third Angle:  FTL  T  FTRight          0  1  2
+    //   Third angle:  FTL  T  FTRight          0  1  2
     //                  L   F   Right   Rear    3  4  5  6
     //                 FBL  B  FBRight          7  8  9
     //
-    //   First Angle:  FBRight  B  FBL          0  1  2
+    //   First angle:  FBRight  B  FBL          0  1  2
     //                  Right   F   L  Rear     3  4  5  6
     //                 FTRight  T  FTL          7  8  9
 
@@ -740,7 +740,7 @@ double DrawProjGroup::getMaxColWidth(std::array<int, 3> list,
 
 int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
 {
-    // Determine layout - should be either "First Angle" or "Third Angle"
+    // Determine layout - should be either "First angle" or "Third angle"
     const char* projType;
     DrawPage* dp = findParentPage();
     if (ProjectionType.isValue("Default")) {
@@ -759,19 +759,19 @@ int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
         projType = ProjectionType.getValueAsString();
     }
 
-    if (strcmp(projType, "Third Angle") != 0 && strcmp(projType, "First Angle") != 0) {
+    if (strcmp(projType, "Third angle") != 0 && strcmp(projType, "First angle") != 0) {
         throw Base::ValueError("Unknown Projection convention in DrawProjGroup::getViewIndex()");
     }
 
-    //   Third Angle:  FTL  T  FTRight          0  1  2
+    //   Third angle:  FTL  T  FTRight          0  1  2
     //                  L   F   Right   Rear    3  4  5  6
     //                 FBL  B  FBRight          7  8  9
     //
-    //   First Angle:  FBRight  B  FBL          0  1  2
+    //   First angle:  FBRight  B  FBL          0  1  2
     //                  Right   F   L  Rear     3  4  5  6
     //                 FTRight  T  FTL          7  8  9
 
-    bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
+    bool thirdAngle = (strcmp(projType, "Third angle") == 0);
     if (strcmp(viewTypeCStr, "Front") == 0) {
         return 4;
     }
@@ -814,7 +814,7 @@ void DrawProjGroup::arrangeViewPointers(
         viewPtrs[i] = nullptr;
     }
 
-    // Determine layout - should be either "First Angle" or "Third Angle"
+    // Determine layout - should be either "First angle" or "Third angle"
     const char* projType;
     if (ProjectionType.isValue("Default")) {
         DrawPage* dp = findParentPage();
@@ -836,22 +836,22 @@ void DrawProjGroup::arrangeViewPointers(
     }
 
     // Iterate through views and populate viewPtrs
-    if (strcmp(projType, "Third Angle") != 0 && strcmp(projType, "First Angle") != 0) {
+    if (strcmp(projType, "Third angle") != 0 && strcmp(projType, "First angle") != 0) {
         Base::Console().warning("DPG: %s - unknown Projection convention: %s\n",
                                 getNameInDocument(), projType);
         throw Base::ValueError(
             "Unknown Projection convention in DrawProjGroup::arrangeViewPointers");
     }
 
-    //   Third Angle:  FTL  T  FTRight          0  1  2
+    //   Third angle:  FTL  T  FTRight          0  1  2
     //                  L   F   Right   Rear    3  4  5  6
     //                 FBL  B  FBRight          7  8  9
     //
-    //   First Angle:  FBRight  B  FBL          0  1  2
+    //   First angle:  FBRight  B  FBL          0  1  2
     //                  Right   F   L  Rear     3  4  5  6
     //                 FTRight  T  FTL          7  8  9
 
-    bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
+    bool thirdAngle = (strcmp(projType, "Third angle") == 0);
     for (auto it : Views.getValues()) {
         auto oView(freecad_cast<DrawProjGroupItem*>(it));
         if (!oView) {
