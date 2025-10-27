@@ -121,9 +121,9 @@ class TaskFillTemplateFields:
                         pageObj.isDerivedFrom("TechDraw::DrawViewPart") 
                         or pageObj.isDerivedFrom("TechDraw::DrawProjGroup")
                     ):
-                        # should this not be pageObj? this is looking for any DVP or DPG on the page?
-                        # Views[0] could be an annotation or symbol or ??? - WF
-                        projgrp_view = self.page.Views[0]
+                        # use the scale from the first DVP or DPG encountered to fill the template's
+                        # Scale editable text. 
+                        projgrp_view = pageObj
                         break
 
                 self.texts = self.page.Template.EditableTexts
@@ -539,5 +539,4 @@ class TaskFillTemplateFields:
 
     def close(self):
         self.dialog.hide()
-#        App.closeActiveTransaction(True)
         return True
