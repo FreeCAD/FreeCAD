@@ -1205,6 +1205,7 @@ def aggregate(obj, parent, mode=None):
     if not ifcfile:
         return
     product = None
+    objecttype = None
     new = False
     stepid = getattr(obj, "StepId", None)
     if stepid:
@@ -1217,13 +1218,12 @@ def aggregate(obj, parent, mode=None):
             pass
     if product:
         # this object already has an associated IFC product
-        print("DEBUG:", obj.Label, "is already part of the IFC document")
+        # print("DEBUG:", obj.Label, "is already part of the IFC document")
         newobj = obj
     else:
         ifcclass = None
         if mode == "opening":
             ifcclass = "IfcOpeningElement"
-        objecttype = None
         if ifc_export.is_annotation(obj):
             product = ifc_export.create_annotation(obj, ifcfile)
             if Draft.get_type(obj) in ["DraftText", "Text"]:
@@ -1234,9 +1234,13 @@ def aggregate(obj, parent, mode=None):
         else:
             product = ifc_export.create_product(obj, parent, ifcfile, ifcclass)
     if product:
-        shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
-        newobj = create_object(product, obj.Document, ifcfile, shapemode, objecttype)
-        new = True
+        exobj = get_object(product, obj.Document)
+        if exobj is None:
+            shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
+            newobj = create_object(product, obj.Document, ifcfile, shapemode, objecttype)
+            new = True
+        else:
+            newobj = exobj
         create_relationship(obj, newobj, parent, product, ifcfile, mode)
     base = getattr(obj, "Base", None)
     if base:

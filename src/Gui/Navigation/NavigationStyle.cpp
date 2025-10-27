@@ -201,11 +201,8 @@ public:
     SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
     {
         SbRotation rot = inherited::getRotation(point1, point2);
-        if (orbit == Turntable) {
+        if (orbit == Turntable || orbit == FreeTurntable) {
             return getTurntable(rot, point1, point2);
-        }
-        if (orbit == FreeTurntable) {
-            return getFreeTurntable(point1, point2);
         }
         if (orbit == TrackballClassic) {
             return getTrackballClassic(point1, point2);
@@ -256,23 +253,6 @@ private:
         }
 
         return rot;
-    }
-
-    SbRotation getFreeTurntable(const SbVec3f &point1, const SbVec3f &point2) const
-    {
-        // Turntable without constraints
-        SbRotation zrot;
-        SbRotation xrot;
-        SbVec3f dif = point1 - point2;
-
-        SbVec3f zaxis(1,0,0);
-        zrot.setValue(zaxis, dif[1]);
-
-        SbVec3f xaxis(0,0,1);
-        this->worldToScreen.multDirMatrix(xaxis, xaxis);
-        xrot.setValue(xaxis, -dif[0]);
-
-        return zrot * xrot;
     }
 
     SbRotation getTrackballClassic(const SbVec3f &point1, const SbVec3f &point2) const
@@ -1079,6 +1059,22 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
 
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(lastpos[0], pointerpos[1]);
+        spinInternal(pointerpos, midpos);
+        spinInternal(midpos, lastpos);
+    }
+    else {
+        spinInternal(pointerpos, lastpos);
+    }
+
+    if (this->currentmode != NavigationStyle::IDLE) {
+        hasDragged = true;
+    }
+}
+
+void NavigationStyle::spinInternal(const SbVec2f & pointerpos, const SbVec2f & lastpos)
+{
     float sensitivity = getSensitivity();
 
     // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
@@ -1144,10 +1140,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // when the user quickly trigger (as in "click-drag-release") a spin
     // animation.
     if (this->spinsamplecounter > 3) this->spinsamplecounter = 3;
-
-    if (this->currentmode != NavigationStyle::IDLE) {
-        hasDragged = true;
-    }
 }
 
 /*!
@@ -1164,6 +1156,20 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 {
     assert(this->spinprojector);
 
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(prevpos[0], curpos[1]);
+        spinSimplifiedInternal(curpos, midpos);
+        spinSimplifiedInternal(midpos, prevpos);
+    }
+    else {
+        spinSimplifiedInternal(curpos, prevpos);
+    }
+
+    hasDragged = true;
+}
+
+void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
+{
     // 0000333: Turntable camera rotation
     SbMatrix mat;
     viewer->getSoRenderManager()->getCamera()->orientation.getValue().getValue(mat);
@@ -1188,8 +1194,6 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
     else {
         this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
     }
-
-    hasDragged = true;
 }
 
 SbBool NavigationStyle::doSpin()

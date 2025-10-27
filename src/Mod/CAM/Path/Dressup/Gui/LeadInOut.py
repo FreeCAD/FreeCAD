@@ -1257,7 +1257,7 @@ class CommandPathDressupLeadInOut:
             return False
         if not selection[0].isDerivedFrom("Path::Feature"):
             return False
-        if selection.Name.startswith("Job"):
+        if selection[0].Name.startswith("Job"):
             return False
 
         return True
