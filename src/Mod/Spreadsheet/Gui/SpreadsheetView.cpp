@@ -198,7 +198,6 @@ bool SheetView::onMsg(const char* pMsg, const char**)
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
             }
             Gui::Command::commitCommand();
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         return true;
     }
