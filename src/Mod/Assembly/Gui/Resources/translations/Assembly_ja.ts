@@ -567,7 +567,7 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>ジョイントの角度です。角度ジョイントでのみ使用されます。</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="422"/>

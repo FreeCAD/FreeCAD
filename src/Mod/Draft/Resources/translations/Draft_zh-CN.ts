@@ -4218,7 +4218,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_rotate.py" line="203"/>
       <location filename="../../draftguitools/gui_rotate.py" line="322"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>旋转</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="215"/>
@@ -7930,7 +7930,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="516"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>三点圆弧</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="519"/>
@@ -8055,7 +8055,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="61"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>切换网格</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="64"/>
@@ -8249,12 +8249,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Working Plane Proxy</source>
-      <translation type="unfinished">Working Plane Proxy</translation>
+      <translation>工作平面代理</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="50"/>
       <source>Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects</translation>
+      <translation>从当前工作平面创建代理对象，可用于恢复相机位置和对象可见性</translation>
     </message>
   </context>
   <context>
@@ -8262,12 +8262,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="68"/>
       <source>Point Array</source>
-      <translation type="unfinished">Point Array</translation>
+      <translation>点阵列</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="72"/>
       <source>Creates copies of the selected object at the points of a point object</source>
-      <translation type="unfinished">Creates copies of the selected object at the points of a point object</translation>
+      <translation>在点对象的各个点处创建选定对象的副本</translation>
     </message>
   </context>
   <context>
@@ -8275,12 +8275,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="146"/>
       <source>Point Link Array</source>
-      <translation type="unfinished">Point Link Array</translation>
+      <translation>点链接阵列</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="150"/>
       <source>Creates linked copies of the selected object at the points of a point object</source>
-      <translation type="unfinished">Creates linked copies of the selected object at the points of a point object</translation>
+      <translation>在点对象的各个点处创建选定对象的链接副本</translation>
     </message>
   </context>
   <context>
@@ -8293,7 +8293,7 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="59"/>
       <source>Creates copies of the selected object in a polar pattern</source>
-      <translation type="unfinished">Creates copies of the selected object in a polar pattern</translation>
+      <translation>以极坐标模式创建选定对象的副本</translation>
     </message>
   </context>
   <context>
@@ -8301,12 +8301,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="59"/>
       <source>Working Plane</source>
-      <translation type="unfinished">Working Plane</translation>
+      <translation>工作平面</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="63"/>
       <source>Defines the working plane from 3 vertices, 1 or more shapes, or an object</source>
-      <translation type="unfinished">Defines the working plane from 3 vertices, 1 or more shapes, or an object</translation>
+      <translation>从3个顶点、1个或多个形状或一个对象定义工作平面</translation>
     </message>
   </context>
   <context>
@@ -8314,12 +8314,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="65"/>
       <source>Set Style</source>
-      <translation type="unfinished">Set Style</translation>
+      <translation>设置样式</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="68"/>
       <source>Sets the default style and can apply the style to objects</source>
-      <translation type="unfinished">Sets the default style and can apply the style to objects</translation>
+      <translation>设置默认样式并可将样式应用于对象</translation>
     </message>
   </context>
   <context>
@@ -8333,8 +8333,8 @@ straight Draft lines that are drawn on the XY-plane.</source>
       <location filename="../../draftguitools/gui_shape2dview.py" line="64"/>
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY-plane.
-The initial projection direction is the opposite of the current active view direction.</translation>
+      <translation>在XY平面上创建选定对象的二维投影。
+初始投影方向与当前活动视图方向相反。</translation>
     </message>
   </context>
   <context>
@@ -8347,7 +8347,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="64"/>
       <source>Creates a shape from a text string and a specified font</source>
-      <translation type="unfinished">Creates a shape from a text string and a specified font</translation>
+      <translation>从文本字符串和指定字体创建形状</translation>
     </message>
   </context>
   <context>
@@ -8355,12 +8355,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="67"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>捕捉锁定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="70"/>
       <source>Enables or disables snapping globally</source>
-      <translation type="unfinished">Enables or disables snapping globally</translation>
+      <translation>全局启用或禁用捕捉</translation>
     </message>
   </context>
   <context>
@@ -8368,12 +8368,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="88"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>捕捉中点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="89"/>
       <source>Snaps to the midpoint of edges</source>
-      <translation type="unfinished">Snaps to the midpoint of edges</translation>
+      <translation>捕捉到边的中点</translation>
     </message>
   </context>
   <context>
@@ -8381,12 +8381,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="104"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>捕捉垂足</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="107"/>
       <source>Snaps to the perpendicular points on faces and edges</source>
-      <translation type="unfinished">Snaps to the perpendicular points on faces and edges</translation>
+      <translation>捕捉到面和边上的垂直点</translation>
     </message>
   </context>
   <context>
@@ -8394,12 +8394,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="122"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>捕捉网格</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="125"/>
       <source>Snaps to the intersections of grid lines</source>
-      <translation type="unfinished">Snaps to the intersections of grid lines</translation>
+      <translation>捕捉到网格线的交点</translation>
     </message>
   </context>
   <context>
@@ -8407,12 +8407,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="140"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>捕捉交点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="144"/>
       <source>Snaps to the intersection of 2 edges, and the intersection of a face and an edge</source>
-      <translation type="unfinished">Snaps to the intersection of 2 edges, and the intersection of a face and an edge</translation>
+      <translation>捕捉到2条边的交点，以及面与边的交点</translation>
     </message>
   </context>
   <context>
@@ -8420,12 +8420,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="159"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>捕捉平行</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="162"/>
       <source>Snaps to an imaginary line parallel to straight edges</source>
-      <translation type="unfinished">Snaps to an imaginary line parallel to straight edges</translation>
+      <translation>捕捉到与直边平行的假想线</translation>
     </message>
   </context>
   <context>
@@ -8433,12 +8433,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="177"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>捕捉端点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="178"/>
       <source>Snaps to the endpoints of edges</source>
-      <translation type="unfinished">Snaps to the endpoints of edges</translation>
+      <translation>捕捉到边的端点</translation>
     </message>
   </context>
   <context>
@@ -8446,12 +8446,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="193"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>捕捉角度</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="197"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°</source>
-      <translation type="unfinished">Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°</translation>
+      <translation>捕捉到圆形边上的特殊基点，在30°和45°的倍数处</translation>
     </message>
   </context>
   <context>
@@ -8459,12 +8459,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="212"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>捕捉中心</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="216"/>
       <source>Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</source>
-      <translation type="unfinished">Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</translation>
+      <translation>捕捉到面和圆形边的中心点，以及工作平面代理和建筑部件的放置点</translation>
     </message>
   </context>
   <context>
@@ -8472,12 +8472,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="231"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>捕捉延伸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="235"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges</source>
-      <translation type="unfinished">Snaps to an imaginary line that extends beyond the endpoints of straight edges</translation>
+      <translation>捕捉到超出直边端点的假想延伸线</translation>
     </message>
   </context>
   <context>
@@ -8485,12 +8485,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="250"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>捕捉最近点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="253"/>
       <source>Snaps to the nearest point on faces and edges</source>
-      <translation type="unfinished">Snaps to the nearest point on faces and edges</translation>
+      <translation>捕捉到面和边上的最近点</translation>
     </message>
   </context>
   <context>
@@ -8498,12 +8498,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="268"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>捕捉正交</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="272"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°</source>
-      <translation type="unfinished">Snaps to imaginary lines that cross the previous point at multiples of 45°</translation>
+      <translation>捕捉到与前一点成45°倍数的假想正交线</translation>
     </message>
   </context>
   <context>
@@ -8511,12 +8511,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="287"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>捕捉特殊点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="290"/>
       <source>Snaps to special points defined by the object</source>
-      <translation type="unfinished">Snaps to special points defined by the object</translation>
+      <translation>捕捉到对象定义的特殊点</translation>
     </message>
   </context>
   <context>
@@ -8524,12 +8524,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="305"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>捕捉尺寸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="308"/>
       <source>Shows temporary X and Y dimensions</source>
-      <translation type="unfinished">Shows temporary X and Y dimensions</translation>
+      <translation>显示临时的X和Y尺寸</translation>
     </message>
   </context>
   <context>
@@ -8537,12 +8537,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="323"/>
       <source>Snap Working Plane</source>
-      <translation type="unfinished">Snap Working Plane</translation>
+      <translation>捕捉工作平面</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="326"/>
       <source>Projects snap points onto the current working plane</source>
-      <translation type="unfinished">Projects snap points onto the current working plane</translation>
+      <translation>将捕捉点投影到当前工作平面上</translation>
     </message>
   </context>
   <context>
@@ -8550,12 +8550,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="341"/>
       <source>Show Snap Toolbar</source>
-      <translation type="unfinished">Show Snap Toolbar</translation>
+      <translation>显示捕捉工具栏</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="344"/>
       <source>Shows the snap toolbar if it is hidden</source>
-      <translation type="unfinished">Shows the snap toolbar if it is hidden</translation>
+      <translation>如果捕捉工具栏被隐藏，则显示它</translation>
     </message>
   </context>
   <context>
@@ -8568,7 +8568,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="62"/>
       <source>Creates a multiple-point B-spline</source>
-      <translation type="unfinished">Creates a multiple-point B-spline</translation>
+      <translation>创建多点B样条曲线</translation>
     </message>
   </context>
   <context>
@@ -8576,12 +8576,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="48"/>
       <source>Apply Current Style</source>
-      <translation type="unfinished">Apply Current Style</translation>
+      <translation>应用当前样式</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="51"/>
       <source>Applies the current style to the selected objects and groups</source>
-      <translation type="unfinished">Applies the current style to the selected objects and groups</translation>
+      <translation>将当前样式应用于选定的对象和组</translation>
     </message>
   </context>
   <context>
@@ -8589,12 +8589,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="63"/>
       <source>Highlight Subelements</source>
-      <translation type="unfinished">Highlight Subelements</translation>
+      <translation>高亮显示子元素</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="67"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
-      <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
+      <translation>高亮显示选定对象的子元素，以便能够移动、旋转和缩放它们</translation>
     </message>
   </context>
   <context>
@@ -8602,12 +8602,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="101"/>
       <source>Toggle Construction Mode</source>
-      <translation type="unfinished">Toggle Construction Mode</translation>
+      <translation>切换构造模式</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="105"/>
       <source>Toggles the construction mode</source>
-      <translation type="unfinished">Toggles the construction mode</translation>
+      <translation>切换构造模式</translation>
     </message>
   </context>
   <context>
@@ -8615,12 +8615,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="141"/>
       <source>Toggle Wireframe</source>
-      <translation type="unfinished">Toggle Wireframe</translation>
+      <translation>切换线框模式</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="145"/>
       <source>Switches the view style of the selected objects from Flat Lines to Wireframe and back</source>
-      <translation type="unfinished">Switches the view style of the selected objects from Flat Lines to Wireframe and back</translation>
+      <translation>将选定对象的视图样式从平面线条切换到线框模式，或反之</translation>
     </message>
   </context>
   <context>
@@ -8628,12 +8628,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="65"/>
       <source>Convert Wire/B-Spline</source>
-      <translation type="unfinished">Convert Wire/B-Spline</translation>
+      <translation>转换多段线/B样条曲线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="69"/>
       <source>Converts the selected polyline to a B-spline, or the selected B-spline to a polyline</source>
-      <translation type="unfinished">Converts the selected polyline to a B-spline, or the selected B-spline to a polyline</translation>
+      <translation>将选定的多段线转换为B样条曲线，或将选定的B样条曲线转换为多段线</translation>
     </message>
   </context>
   <context>
@@ -8641,7 +8641,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="14"/>
       <source>DXF Import</source>
-      <translation type="unfinished">DXF Import</translation>
+      <translation>DXF导入</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="20"/>
@@ -8654,15 +8654,12 @@ The initial projection direction is the opposite of the current active view dire
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench.</translation>
+      <translation>创建完全参数化的Draft对象。块定义被导入为可重用对象（零件复合体），实例成为`App::Link`对象，保持块结构。最适合与Draft工作台完全集成。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="32"/>
       <source>Editable Draft objects</source>
-      <translation type="unfinished">Editable Draft objects</translation>
+      <translation>可编辑的Draft对象</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="39"/>
@@ -8670,15 +8667,12 @@ workbench.</translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing.</translation>
+      <translation>创建参数化零件对象（例如，Part::Line，Part::Circle）。块定义被导入为可重用对象（零件复合体），实例成为`App::Link`对象，保持块结构。最适合基于脚本的后处理。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="45"/>
       <source>Editable Part primitives</source>
-      <translation type="unfinished">Editable Part primitives</translation>
+      <translation>可编辑的零件图元</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="52"/>
@@ -8692,26 +8686,24 @@ objects, maintaining the block structure. Good for referencing and measuring.</s
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>
       <source>Individual Part shapes (recommended)</source>
-      <translation type="unfinished">Individual Part shapes (recommended)</translation>
+      <translation>单独的零件形状（推荐）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="64"/>
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for viewing very large files with maximum performance.</translation>
+      <translation>将每个图层的所有几何图形合并为单个不可编辑的形状。块结构不被保留；它们的几何图形成为图层形状的一部分。最适合以最佳性能查看非常大的文件。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="69"/>
       <source>Fused Part shapes (fastest)</source>
-      <translation type="unfinished">Fused Part shapes (fastest)</translation>
+      <translation>融合的零件形状（最快）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="100"/>
       <source>File summary</source>
-      <translation type="unfinished">File summary</translation>
+      <translation>文件摘要</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
@@ -8721,7 +8713,7 @@ shape. Best for viewing very large files with maximum performance.</translation>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>不再显示此对话框</translation>
     </message>
   </context>
 </TS>

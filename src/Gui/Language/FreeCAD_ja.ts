@@ -1143,7 +1143,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>アイコンを選択</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>

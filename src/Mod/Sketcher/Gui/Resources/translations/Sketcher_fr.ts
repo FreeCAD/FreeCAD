@@ -3604,7 +3604,7 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="43"/>
       <source>Sketch Edit</source>
-      <translation>Editer l'esquisse</translation>
+      <translation>Éditer l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="65"/>
@@ -4492,7 +4492,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid auto-spacing</source>
-      <translation>Espacement automatique de la grille</translation>
+      <translation>Espacer automatiquement la grille</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
@@ -5688,7 +5688,7 @@ Ceci effacera la propriété AttachmentSupport.</translation>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Grid auto-spacing</source>
-      <translation>Espacement automatique de la grille</translation>
+      <translation>Espacer automatiquement la grille</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1178"/>
@@ -5792,7 +5792,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1720"/>
       <source>Rendering order</source>
-      <translation>Ordre de rendu </translation>
+      <translation>Configurer l'ordre des rendus</translation>
     </message>
   </context>
   <context>
@@ -5800,7 +5800,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1807"/>
       <source>Rendering Order</source>
-      <translation>Ordre de rendu</translation>
+      <translation>Configurer l'ordre des rendus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1808"/>

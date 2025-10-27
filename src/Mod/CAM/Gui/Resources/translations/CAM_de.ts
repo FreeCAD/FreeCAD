@@ -301,7 +301,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
       <source>Displays available post processors. FreeCAD includes several pre-installed post processors. At least one post processor must be enabled in preferences.</source>
-      <translation type="unfinished">Displays available post processors. FreeCAD includes several pre-installed post processors. At least one post processor must be enabled in preferences.</translation>
+      <translation>Zeigt verfügbare Post-Prozessoren an. FreeCAD enthält mehrere vorinstallierte Post-Prozessoren. Mindestens ein Post-Prozessor muss in den Einstellungen aktiviert sein.</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
@@ -497,7 +497,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Processor Selection</source>
-      <translation type="unfinished">Processor Selection</translation>
+      <translation>Prozessor-Auswahl</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
@@ -1326,7 +1326,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension. The default value is half the tool diameter.</source>
-      <translation type="unfinished">Set the extent of the dimension. The default value is half the tool diameter.</translation>
+      <translation>Legt den Umfang der Abmessung fest. Der Standardwert entspricht der Hälfte des Werkzeugdurchmessers.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="139"/>
@@ -1597,7 +1597,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
-      <translation type="unfinished">The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</translation>
+      <translation>Die Anzahl der auszuführenden Durchläufe. Bei mehr als einem Durchlauf muss für „Pass stepover“ ein Wert ungleich Null angegeben werden.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="145"/>
@@ -1833,7 +1833,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
       <source>Planar: flat, 3D surface scan. Rotational: 4th-axis rotational scan.</source>
-      <translation type="unfinished">Planar: flat, 3D surface scan. Rotational: 4th-axis rotational scan.</translation>
+      <translation>Planar: flacher 3D-Oberflächenscan. Rotationsscan: Rotationsscan um die 4. Achse.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
@@ -1906,7 +1906,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="261"/>
       <source>Set to true if specifying a start point</source>
-      <translation type="unfinished">Set to true if specifying a start point</translation>
+      <translation>Auf Wahr setzen, wenn ein Startpunkt angegeben werden soll</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="274"/>
@@ -2137,7 +2137,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="198"/>
       <source>Lead in/out</source>
-      <translation type="unfinished">Lead in/out</translation>
+      <translation>An-/Abfahrt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
@@ -2555,7 +2555,7 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="207"/>
       <source>File save policy</source>
-      <translation type="unfinished">File save policy</translation>
+      <translation>Dateispeicherungsrichtlinie</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="228"/>
@@ -3214,7 +3214,7 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <source>Activate/resume simulation</source>
-      <translation type="unfinished">Activate/resume simulation</translation>
+      <translation>Simulation Aktivieren/Fortsetzen</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -4278,19 +4278,19 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="115"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="254"/>
       <source>Angle of the Lead-In (1..90)</source>
-      <translation type="unfinished">Angle of the Lead-In (1..90)</translation>
+      <translation>Winkel der Anfahrt (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="121"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="262"/>
       <source>Angle of the Lead-Out (1..90)</source>
-      <translation type="unfinished">Angle of the Lead-Out (1..90)</translation>
+      <translation>Winkel der Abfahrt (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="127"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="294"/>
       <source>Determine length of the Lead-In</source>
-      <translation type="unfinished">Determine length of the Lead-In</translation>
+      <translation>Bestimmt die Länge der Anfahrt</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="133"/>
@@ -5539,7 +5539,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Gui/Array.py" line="83"/>
       <location filename="../../../Path/Dressup/Array.py" line="78"/>
       <source>Total angle in polar pattern</source>
-      <translation type="unfinished">Total angle in polar pattern</translation>
+      <translation>Gesamtwinkel im polaren Muster</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="91"/>
@@ -7907,7 +7907,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="429"/>
       <source>Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</source>
-      <translation>Sollen die ausgewählten Werkzeugbits wirklich gelöscht werden? Dieser Vorgang kann nicht rückgängig gemacht werden. Die Werkzeugbits werden aus dem Speicher und aus allen Bibliotheken, die sie enthalten, entfernt.</translation>
+      <translation>Sollen die ausgewählten Werkzeugbits wirklich gelöscht werden? Dieser Vorgang kann nicht rückgängig gemacht werden. Die Werkzeugbits werden von der Festplatte und aus allen Bibliotheken, die sie enthalten, entfernt.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="217"/>

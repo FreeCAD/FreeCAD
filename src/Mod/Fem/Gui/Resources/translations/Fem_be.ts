@@ -832,7 +832,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="97"/>
       <source>Use internal editor for *.inp files</source>
-      <translation>Ужываць унутраны рэдактар для файлаў *.inp</translation>
+      <translation>Ужыць унутраны сродак праўкі для файлаў *.inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="142"/>
@@ -5428,12 +5428,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Material Editor</source>
-      <translation>Рэдактар матэрыялу</translation>
+      <translation>Сродак праўкі матэрыялу</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="569"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation>Адчыняе рэдактар матэрыялу FreeCAD</translation>
+      <translation>Адчыняе сродак праўкі матэрыялу FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -5788,7 +5788,7 @@ normal vector of the face is used as direction</source>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Гістаграма недаступная.
-Калі ласка, спачатку абярыце тып выніку.</translation>
+Спачатку абярыце тып выніку.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="610"/>
@@ -6942,9 +6942,9 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Абраць уваходныхя дадзеные, даччыны фільтр атрымае:
-Паслядоўны: першы фільтр у галіны атрымае ўваходныя дадзеныя галін як свой уласны ўклад. Затым наступны фільтр атрымае выходныя дадзеныя першых фільтраў у якасці ўваходных дадзеных і гэтак далей.
-Паралельны: усе фільтры ў галіны будуць атрымліваць ўваходныя дадзеныя галін у якасці сваіх уласных ўваходных дадзеных.</translation>
+      <translation>Абраць уваходныя дадзеныя, даччыны фільтр атрымае:
+ - паслядоўны: першы фільтр у галіны атрымае ўваходныя дадзеныя галін як свой уласны ўклад; потым наступны фільтр атрымае выходныя дадзеныя першых фільтраў у якасці ўваходных дадзеных і гэтак далей;
+ - паралельны: усе фільтры ў галіны будуць атрымліваць уваходныя дадзеныя галін у якасці сваіх уласных уваходных дадзеных.</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -6954,9 +6954,9 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Абраць уваходныхя дадзеные, даччыныя фільтры атрымаюць:
-Паслядоўны: першы фільтр у галіны атрымае ўваходныя дадзеныя галін як свой уласны ўклад. Затым наступны фільтр атрымае выходныя дадзеныя першых фільтраў у якасці ўваходных дадзеных і гэтак далей.
-Паралельны: усе фільтры ў галіны будуць атрымліваць ўваходныя дадзеныя галін у якасці сваіх уласных ўваходных дадзеных.</translation>
+      <translation>Абраць уваходныя дадзеныя, даччыныя фільтры атрымаюць:
+ - паслядоўныя: першы фільтр у галіны атрымае ўваходныя дадзеныя галін як свой уласны ўклад; потым наступны фільтр атрымае выходныя дадзеныя першых фільтраў у якасці ўваходных дадзеных і гэтак далей;
+ - паралельныя: усе фільтры ў галіны будуць атрымліваць уваходныя дадзеныя галін у якасці сваіх уласных уваходных дадзеных.</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
@@ -6973,8 +6973,8 @@ Leave blank to use default Python executable</source>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Абраць спосаб вызначэння выходных дадзеных галіны:
-Скразны пераход: выхадныя дадзеныя галіны супадаюць з яе ўваходнымі дадзенымі, незалежна ад таго, што робіць даччыны фільтр галіны.
-Дадаць: выхадныя дадзеныя галін ўяўляюць сабой набор усіх даччыных фільтраў: яны аб'ядноўваюць даччыныя выходныя дадзеныя і прапануюць іх у якасці выходных дадзеных галіны.</translation>
+ - скразны пераход: выхадныя дадзеныя галіны супадаюць з яе ўваходнымі дадзенымі, незалежна ад таго, што робіць даччыны фільтр галіны;
+ - дадаць: выхадныя дадзеныя галін ўяўляюць сабой набор усіх даччыных фільтраў: яны аб'ядноўваюць даччыныя выходныя дадзеныя і прапануюць іх у якасці выходных дадзеных галіны.</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>

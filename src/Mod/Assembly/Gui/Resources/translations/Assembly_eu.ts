@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="46"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>ASMT Fitxategia esportatu</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="50"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation type="unfinished">Export currently active assembly as a ASMT file.</translation>
+      <translation>Jardunean dagoen mihiztaketa ASMT fitxategia bezala esportatu.</translation>
     </message>
   </context>
   <context>
@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Txertatu osagaia jardunean dagoen mihiztaketan. Honek lotura dinamikoak piezekin, gorputzekin, jatorrizkoekin eta mihiztaketekin sortuko ditu. Kanpoko osagaiak txertatzeko, ziurtatu fitxategia &lt;b&gt;unean irekita dagoela saio honetan&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Txertatu elementuak zerrendan ezkerreko klik eginez.&lt;/li&gt;&lt;li&gt;Kendu elementuak eskuineko klik eginez.&lt;/li&gt;&lt;li&gt;Sakatu Shift tekla ikuspegian klik egiterakoan osagaiaren instantzia bat baino gehiago gehitzeko.&lt;/li&gt; &lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -32,12 +32,12 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="50"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>Mihiztaketa ebatzi</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="55"/>
       <source>Solves the currently active assembly.</source>
-      <translation type="unfinished">Solves the currently active assembly.</translation>
+      <translation>Jardunean dauden mihiztaketak ebatzi</translation>
     </message>
   </context>
   <context>
@@ -55,32 +55,32 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
       <source>Turn flexible</source>
-      <translation type="unfinished">Turn flexible</translation>
+      <translation>Malgua bilakatu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation type="unfinished">Your sub-assembly is currently rigid. This will make it flexible instead.</translation>
+      <translation>Zure azpi-mihiztaketa zurruna da. Honek malgua bilakatuko du.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
       <source>Turn rigid</source>
-      <translation type="unfinished">Turn rigid</translation>
+      <translation>Zurrun bilakatu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation type="unfinished">Your sub-assembly is currently flexible. This will make it rigid instead.</translation>
+      <translation>Zure azpi-mihiztaketa malgua da. Honek zurrun bilakatuko du.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="270"/>
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>E/E</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="294"/>
       <source>Not supported</source>
-      <translation type="unfinished">Not supported</translation>
+      <translation>Ez da onartzen</translation>
     </message>
   </context>
   <context>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../../InitGui.py" line="110"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>Mihiztaketaren Giltzadurak</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="113"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>&amp;Mihiztaketa</translation>
     </message>
   </context>
   <context>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Labaingarria</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../../JointObject.py" line="59"/>
       <source>RackPinion</source>
-      <translation type="unfinished">RackPinion</translation>
+      <translation>Pinioi-kremailera</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="60"/>
@@ -172,27 +172,27 @@
     <message>
       <location filename="../../../JointObject.py" line="759"/>
       <source>Broken link in: </source>
-      <translation type="unfinished">Broken link in: </translation>
+      <translation>Apurtutako lotura: </translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1531"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
+      <translation>Aukeratutako 2 elementuak 2 pieza ezberdinetakoak</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1696"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Erradioa 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1698"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Hariaren urratsa</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1700"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Urrats-zirkulu erradioa</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -212,12 +212,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Aurkibide (automatikoa)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Izena (automatikoa)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Fitxategi izena (automatikoa)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Kantitatea (automatikoa)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="190"/>
@@ -242,7 +242,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="286"/>
       <source>Duplicate Name</source>
-      <translation type="unfinished">Duplicate Name</translation>
+      <translation>Bikoiztu izena</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="287"/>
@@ -302,7 +302,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="85"/>
       <source>Part name</source>
-      <translation type="unfinished">Part name</translation>
+      <translation>Piezaren izena</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="90"/>
@@ -312,12 +312,12 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="95"/>
       <source>Create part in new file</source>
-      <translation type="unfinished">Create part in new file</translation>
+      <translation>Sortu pieza fitxategi berrian</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="102"/>
       <source>Joint new part origin</source>
-      <translation type="unfinished">Joint new part origin</translation>
+      <translation>Elkartu pieza berriaren jatorria</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="138"/>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="139"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>Gorde dokumentua</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="141"/>
@@ -337,42 +337,42 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="144"/>
       <source>Do not Link</source>
-      <translation type="unfinished">Do not Link</translation>
+      <translation>Ez lotu</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="488"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>Sartu zure formula...</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <translation>Ordezkatu beharreko aldagaiak letra larriz idatzita daude. Argibide gehiago adibide bakoitzerako aholku-laguntza honetan.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Linear: C + VEL*time</source>
-      <translation type="unfinished"> - Linear: C + VEL*time</translation>
+      <translation> - Lineala: C + ABIADURA*denbora</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
-      <translation type="unfinished"> - Quadratic: C + VEL*time + ACC*time^2</translation>
+      <translation> - Koadratikoa: C + ABIADURA*denbora + AZELERAZIO*denbora^2</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="549"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
-      <translation type="unfinished"> - Harmonic: C + AMP*sin(VEL*time - PHASE)</translation>
+      <translation> - Harmonikoa: C + ANPLITUDEA*sin(ABIADURA*denbora - FASEA)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="552"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
-      <translation type="unfinished"> - Exponential: C*exp(time/TIMEC)</translation>
+      <translation> - Esponentziala: C*exp(denbora/TIMEC)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="558"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
-      <translation type="unfinished"> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="565"/>
@@ -433,10 +433,10 @@ SLOPE defines the steepness of the transition between L1 and L2 about time = T0.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">H is the height of the impulse.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>H bultzadaren altuera da.
+T1 bultzadaren hasiera da.
+T2 Bultzadaren amaiera da.
+MALDA definitzen du 0-tik H-ra doan trantsizioaren malda, T1 eta T2 denbora tartean. Balio handiagoek angelu zorrotzeko inpultsuak sortzen dituzte. MALDA = 1.000 edo handiagoa izatea gomendagarria izan daiteke.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="634"/>

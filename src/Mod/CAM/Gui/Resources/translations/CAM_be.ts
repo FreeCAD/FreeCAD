@@ -312,12 +312,12 @@ FreeCAD уключае ў сябе некалькі прадусталяваны
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation>Рэдактар кантролера інструментаў</translation>
+      <translation>Сродак праўкі кантролера інструментаў</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation>Рэдактар інструментаў</translation>
+      <translation>Сродак праўкі інструментаў</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
@@ -359,7 +359,7 @@ FreeCAD уключае ў сябе некалькі прадусталяваны
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation>val1,val2,val3,...</translation>
+      <translation>val1,val2,val3,…</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -2519,27 +2519,28 @@ The following example stores all files with the same name as the document in the
 See the file save policy below on how to deal with name conflicts.</source>
       <translation>Увядзіце шлях і неабавязковае імя файла (глядзіце ніжэй), якія будуць ужытыя як першапачатковае значэнне для экспартавання ў пасляапрацоўку.
 
-Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі:
+Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі.
 Падстаноўка дазваляе наступнае:
-%D ... шлях да бягучага дакументу
-%d ... імя бягучага дакументу (з пашырэннем)
-%M ... каталог макрасаў карыстальніка
-%j ... назва бягучага аб'екта задання
+%D … шлях да бягучага дакументу
+%d … імя бягучага дакументу (з пашырэннем)
+%M … каталог макрасаў карыстальніка
+%j … назва бягучага аб'екта задання
 
 Пры падзеле выходных дадзеных можна ўжываць наступныя налады (калі выходныя дадзеныя не падзеленыя, яны будуць прапушчаныя):
-%T ... нумар інструмента
-%t ... метка кантролера інструмента
+%T … нумар інструмента
+%t … метка кантролера інструмента
 
-%W ... працоўная сістэма каардынат
-%O ... метка аперацыі
+%W … працоўная сістэма каардынат
+%O … метка аперацыі
 
 Пры падзеле выходных дадзеных заўсёды будзе дададзены парадкавы нумар.
 
-Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік. Без гэтага лік будзе дададзены ў канцы радка.
+Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік.
+Без гэтага лік будзе дададзены ў канцы радка.
 
 %S ... парадкавы нумар
 
-У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (калі ласка, прыбярыце двукоссі):
+У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (прыбярыце двукоссі):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 
 Глядзіце ніжэй палітыку захавання файлаў пра тое, як змагацца з канфліктамі імёнаў.</translation>
@@ -2557,7 +2558,7 @@ See the file save policy below on how to deal with name conflicts.</source>
       <location filename="../preferences/PathJob.ui" line="275"/>
       <source>It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
       <translation>Падобна на тое, што там не ўсталяваныя якія-небудзь сцэнары пасляапрацоўкі.
-Калі ласка, дадайце некаторыя з іх у свой каталог макрасаў і пераканайцеся, што імя файла заканчваецца на &apos;_post.py&amp;quot;.</translation>
+Дадайце некаторыя з іх у свой каталог макрасаў і пераканайцеся, што імя файла заканчваецца на &apos;_post.py&amp;quot;.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="347"/>
@@ -3017,8 +3018,8 @@ See the file save policy below on how to deal with name conflicts.</source>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Абярыце патрэбны стыль афармлення аздаблення:
-&lt;span style="font-weight:600; font-style:italic;">Форма косткі&lt;/span> ... абярыце самую кароткую траекторыю, каб пакрыць кут,
-&lt;span style="font-weight:600; font-style:italic;">Т-вобразная костка&lt;/span> ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты</translation>
+ - форма косткі … абярыце самую кароткую траекторыю, каб пакрыць кут;
+ - Т-вобразная костка … выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -3075,9 +3076,9 @@ See the file save policy below on how to deal with name conflicts.</source>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... lets you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Вызначае даўжыню надрэзу косткі, якая будзе ўстаўленая ў профіль.
-&lt;span style=" font-weight:600; font-style:italic;">адаптыўны&lt;/span> ... даўжыня, якая адаптаваная для пакрыцця кута на аснове вугла яго рэбраў з улікам бягучага радыусу інструмента (першапачаткова)
-&lt;span style=" font-weight:600; font-style:italic;">выпраўлены&lt;/span> ... гэта тое ж самае, што адаптыўнае для прамых вуглоў. Для Т-вобразных костак гэта радыус інструмента (R), а для сабачых костак гэта R * (2/√2 - 1).
-&lt;span style=" font-weight:600; font-style:italic;">карыстальніцкі&lt;/span> ... пакажыце карыстальніцкую (фіксаваную) даўжыню ніжэй</translation>
+ - адаптыўны … даўжыня, якая адаптаваная для пакрыцця кута на аснове вугла яго рэбраў з улікам бягучага радыусу інструмента (першапачаткова);
+ - выпраўлены … гэта тое ж самае, што адаптыўнае для прамых вуглоў. Для Т-вобразных костак гэта радыус інструмента (R), а для сабачых костак гэта R * (2/√2 - 1);
+ - карыстальніцкі … пакажыце карыстальніцкую (фіксаваную) даўжыню ніжэй</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -3097,14 +3098,14 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Incision&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Калі ласка, увядзіце даўжыню для кожнай косткі, калі &lt;span style="font-weight:600;">Надрэз&lt;/span> зададзены ў &lt;span style="font-weight:600;">карыстальніцкі&lt;/span>, у адваротным выпадку прапускаюцца.</translation>
+      <translation>Увядзіце даўжыню для кожнай косткі, калі 'Надрэз' зададзены як 'карыстальніцкі', у адваротным выпадку прапускаюцца.</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Спіс месцазнаходжання костак (з усімі косткамі ў гэтым месцы), якія з'яўляюцца часткай гэтага аздаблення. Спіс вызначаецца кутамі ў профілі і абраным &lt;span style=" font-weight:600;">бокам&lt;/span> для костак.
-Вы можаце пазначыць &lt;span style=" font-weight:600;">не птушка&lt;/span> да костак, якія вы не хочаце прыбіраць.
-Калі костка выдзелена &lt;span style=" font-weight:600;">шэрым колерам&lt;/span>, гэта азначае, што ён ужо быў скончаны. Ці іншымі словамі, калі вы зноў скончыце гэты вуглавы надрэз, вы зможаце выбраць толькі тыя надрэзы, якія тут не адзначаныя.
+      <translation>Спіс месцазнаходжання костак (з усімі косткамі ў гэтым месцы), якія з'яўляюцца часткай гэтага аздаблення. Спіс вызначаецца кутамі ў профілі і абраным бокам для костак.
+Вы можаце пазначыць 'не птушка' да костак, якія вы не хочаце прыбіраць.
+Калі костка выдзелена 'шэрым колерам', гэта азначае, што ён ужо быў скончаны. Ці іншымі словамі, калі вы зноў скончыце гэты вуглавы надрэз, вы зможаце выбраць толькі тыя надрэзы, якія тут не адзначаныя.
 Калі гэты спіс пусты, гэта, верагодна, азначае, што вы спрабуеце стварыць надрэзы не з таго боку профілю.</translation>
     </message>
     <message>
@@ -3425,28 +3426,29 @@ The following example stores all files with the same name as the document in the
 See the file save policy below on how to deal with name conflicts.</source>
       <translation>Увядзіце шлях і неабавязковае імя файла (глядзіце ніжэй), якія будуць ужытыя як першапачатковае значэнне для экспартавання ў пасляапрацоўку.
 
-Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі:
+Наступныя падстаноўкі выконваюцца да дазволу імя падчас пасляапрацоўкі.
 Падстаноўка дазваляе наступнае:
-%D ... шлях да бягучага дакументу
-%d ... імя бягучага дакументу (з пашырэннем)
-%M ... каталог макрасаў карыстальніка
-%j ... назва бягучага аб'екта задання
+%D … шлях да бягучага дакументу
+%d … імя бягучага дакументу (з пашырэннем)
+%M … каталог макрасаў карыстальніка
+%j … назва бягучага аб'екта задання
 
 Пры падзеле выходных дадзеных можна ўжываць наступныя налады (калі выходныя дадзеныя не падзеленыя, яны будуць прапушчаныя):
-%T ... нумар інструмента
-%t ... метка кантролера інструмента
+%T … нумар інструмента
+%t … метка кантролера інструмента
 
-%W ... працоўная сістэма каардынат
-%O ... метка аперацыі
+%W … працоўная сістэма каардынат
+%O … метка аперацыі
 
 Пры падзеле выходных дадзеных заўсёды будзе дададзены парадкавы нумар.
 
-Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік. Без гэтага лік будзе дададзены ў канцы радка.
+Калі дададзены %S, вы можаце паказаць, дзе будзе ўстаўлены гэты лік.
+Без гэтага лік будзе дададзены ў канцы радка.
 
-%S ... парадкавы нумар
+%S … парадкавы нумар
 
-У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (калі ласка, прыбярыце двукоссі):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
+У наступным прыкладзе ўсе файлы з тым жа іменем, што і ў дакумента, захоўваюцца ў каталогу /home/freecad (прыбярыце двукоссі):
+'/home/cnc/%d.g-code'
 
 Глядзіце ніжэй палітыку захавання файлаў пра тое, як змагацца з канфліктамі імёнаў.</translation>
     </message>
@@ -3493,10 +3495,10 @@ Ordering by operation will do each operation in all coordinate systems before mo
       <location filename="../panels/PathEdit.ui" line="1041"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;span style=" font-style:italic;">Працоўная сістэма каардынат&lt;/span> таксама называюцца &lt;span style=" font-style:italic;">Працоўныя зрухі&lt;/span>, &lt;span style=" font-style:italic;">Зрухі прыстасавання&lt;/span> ці &lt;span style=" font-style:italic;">Прыстасаванні&lt;/span>, якія карысныя для стварэння эфектыўных вытворчых заданняў, дзе адна і тая ж дэталь выконваецца шмат разоў на станку.
+      <translation>Працоўная сістэма каардынат, таксама называюцца 'Працоўныя зрухі', 'Зрухі прыстасавання' ці 'Прыстасаванні', якія карысныя для стварэння эфектыўных вытворчых заданняў, дзе адна і тая ж дэталь выконваецца шмат разоў на станку.
 FreeCAD не ведае, дзе існуе пэўная сістэма каардынат у сістэмы каардынат станка, таму даданне дадатковых сістэм каардынат да вашай працы не прывядзе да візуальных змен у вашай працы.
 Аднак гэтае зменіць вывад G-code.
-Дакладны спосаб уплыву на вывад кантралюецца наладай "парадкаваць па".</translation>
+Дакладны спосаб уплыву на вывад кантралюецца наладай 'парадкаваць па'.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1196"/>
@@ -3759,9 +3761,9 @@ For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/s
 
 
 If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Калі True, пасляапрацоўка стварае некалькі выходных файлаў на аснове налады &lt;span style="font-style:italic;">парадкаваць па&lt;/span>.
-Напрыклад, калі &lt;span style="font-style:italic;">ўпарадкаваць па&lt;/span> зададзена значэнне Інструмент, першы выходны файл будзе ўтрымліваць першая змена інструмента і ўсе аперацыі, ва ўсіх сістэмах каардынат, якія можна выканаць з гэтым інструментам перад выклікам наступнай змены інструмента.
-Калі &lt;span style="font-style:italic;">ўпарадкаваць па&lt;/span> зададзены ў &lt;span style="font-style:italic;">аперацыя&lt;/span> і &lt;span style="font-style:italic;">падзелены вывад&lt;/span> зададзены ў true, кожная аперацыя будзе запісвацца ў асобны файл.</translation>
+      <translation>Калі True, пасляапрацоўка стварае некалькі выходных файлаў на аснове налады 'парадкаваць па.
+Напрыклад, калі 'парадкаваць па' зададзена значэнне "інструмент", першы выходны файл будзе ўтрымліваць першую змену інструмента і ўсе аперацыі, ва ўсіх сістэмах каардынат, якія можна выканаць з гэтым інструментам перад выклікам наступнай змены інструмента.
+Калі 'парадкаваць па' зададзена значэнне "аперацыя" і птушка "падзелены вывад", кожная аперацыя будзе запісвацца ў асобны файл.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="345"/>
@@ -4644,13 +4646,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1835"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation type="unfinished">Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</translation>
+      <translation>Парадкуе разрэзы па рэгіёнах, а не па глыбіні.
+Ужываецца толькі калі ўключаная эксперыментальная функцыя з улікам мадэлі (ModelAwareExperiment).</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1850"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1956"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation type="unfinished">Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</translation>
+      <translation>Уключыць функцыю азнаямлення з эксперыментальнай мадэллю, каб улічваць трохмерную геаметрыю і прадухіляць рэзанне пад навісямі</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1945"/>
@@ -4665,7 +4668,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1726"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation type="unfinished">How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</translation>
+      <translation>Колькі запасу трэба пакінуць наўздоўж восі Z (напрыклад, для завяршальнай аперацыі).
+Ужываецца толькі пры ўключэнні эксперыментальнага рэжыму з улікам мадэлі (ModelAwareExperiment).</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1744"/>
@@ -5782,7 +5786,7 @@ Use property KeepToolDown to change this</source>
       <source>Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</source>
       <translation>Уласцівасць матэрыялу загатоўкі састарэла.
 Выдаленне ўласцівасці матэрыялу.
-Калі ласка, ужывайце ўласную сістэму матэрыялаў для прызначэння матэрыялу фігуры</translation>
+Ужывайце ўласную сістэму матэрыялаў для прызначэння матэрыялу фігуры</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="597"/>
@@ -6266,7 +6270,7 @@ Use property KeepToolDown to change this</source>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Канчатковая глыбіня не можа быць зменена для гэтай аперацыі.
-Калі неабходна задаць канчатковую глыбіню ўручную, калі ласка, абярыце іншую аперацыю.</translation>
+Калі неабходна задаць канчатковую глыбіню ўручную - абярыце іншую аперацыю.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1028"/>
@@ -6619,7 +6623,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="277"/>
       <source>Please select one toolpath object</source>
-      <translation>Калі ласка, абярыце адзін аб'ект траекторыі руху інструмента</translation>
+      <translation>Абярыце адзін аб'ект траекторыі руху інструмента</translation>
     </message>
   </context>
   <context>
@@ -6658,7 +6662,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="566"/>
       <source>Please select one toolpath object</source>
-      <translation>Калі ласка, абярыце адзін аб'ект траекторыі руху інструмента</translation>
+      <translation>Абярыце адзін аб'ект траекторыі руху інструмента</translation>
     </message>
   </context>
   <context>
@@ -6953,7 +6957,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1660"/>
       <source>Please add one.</source>
-      <translation>Калі ласка, дадайце адзін.</translation>
+      <translation>Дадайце адзін.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
@@ -7652,7 +7656,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="147"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
-      <translation>Характарыстыка %s.%s не можа быць апрацавана як круглая адтуліна - калі ласка, выдаліце яе з спісу асноўнай геаметрыі.</translation>
+      <translation>Характарыстыка %s.%s не можа быць апрацавана як круглая адтуліна - выдаліце яе з спісу асноўнай геаметрыі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="188"/>
@@ -7991,7 +7995,8 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="553"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>У выніку адаптыўнай аперацыі не атрымалася вызначыць межавую лінію.
+Ці абралі асноўную геаметрыю?</translation>
     </message>
   </context>
   <context>

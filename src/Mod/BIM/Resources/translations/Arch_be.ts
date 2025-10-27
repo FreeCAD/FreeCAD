@@ -1920,7 +1920,7 @@ FreeCAD створыць радок у аркушу з дадзенымі зна
     <message>
       <location filename="../ui/dialogLibrary.ui" line="229"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc...)</source>
-      <translation>Паказаць даступныя альтэрнатыўныя фарматы файлаў для элементаў бібліятэкі (STEP, IFC і іншыя...)</translation>
+      <translation>Паказаць даступныя альтэрнатыўныя фарматы файлаў для элементаў бібліятэкі (STEP, IFC і іншыя…)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="232"/>
@@ -2053,14 +2053,14 @@ FreeCAD створыць радок у аркушу з дадзенымі зна
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Наступны тэст праверыць мадэль ці абраныя аб'екты і іх даччыныя элементы на адпаведнасць некаторым стандартам IFC.
 
-&lt;span style=" font-weight:600;"&gt;Увага&lt;/span&gt;: ні адзін з апісаных ніжэй няўдалых тэстаў не прадухіліць экспартаванне файлаў IFC, і гэтыя тэсты не гарантуюць, што файлы IFC адпавядаюць якім-небудзь вызначаным патрабаванням да якасці ці стандарту.
+Увага: ні адзін з апісаных ніжэй няўдалых тэстаў не прадухіліць экспартаванне файлаў IFC, і гэтыя тэсты не гарантуюць, што файлы IFC адпавядаюць якім-небудзь вызначаным патрабаванням да якасці ці стандарту.
 Яны прызначаны для ацэнкі таго, якія элементы ўключаныя ці выключаныя з экспартаванага файла. 
 Выберыце, які элемент важным, уручную.
 Калі навесці паказальнік на кожнае апісанне, адлюстроўваецца дадатковая інфармацыя для прыняцця рашэння.
 
 Пасля запуску тэсту, калі націсніце адпаведную кнопку, будзе атрымана дадатковая інфармацыя, якая дапаможа ліквідаваць непаладкі.
 
-Спасылка на &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;афіцыйны сайт IFC&lt;/span&gt;&lt;/a&gt; змяшчае шмат карыснай інфармацыі пра стандарты IFC.</translation>
+Спасылка на &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;афіцыйны сайт IFC&lt;/a&gt; змяшчае шмат карыснай інфармацыі пра стандарты IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
@@ -2242,7 +2242,7 @@ FreeCAD створыць радок у аркушу з дадзенымі зна
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Пры экспартаванні мадэлі ў IFC усе аб'екты BIM, якія ўяўляюць сабой выдушванне прастакутнага профілю, будуць ужываць аб'ект IfcRectangleProfileDef у якасці профілю выдушвання.
 Аднак Revit не будзе карэктна імпартаваць іх.
-Калі збіраецеся ўжываць файл IFC у Revit, рэкамендуецца адключыць гэтыя паводзіны, калі птушка ў меню &lt;span style=" font-weight:600;"&gt;Праўка -&gt; Налады -&gt; BIM -&gt; Уласны IFC -&gt; Адключыць IfcRectangularProfileDef&lt;/span&gt;.
+Калі збіраецеся ўжываць файл IFC у Revit, рэкамендуецца адключыць гэтыя паводзіны, калі птушка ў меню Праўка -&gt; Налады -&gt; BIM -&gt; Уласны IFC -&gt; Адключыць IfcRectangularProfileDef.
 
 Калі птушка, усе профілі выдушвання будуць экспартаваныя як агульныя аб'екты IfcArbitraryProfileDef, незалежна ад таго, прастакутныя яны ці не, якія будуць утрымліваць трохі менш інфармацыі, але будуць карэктна адлюстроўвацца ў Revit.</translation>
     </message>
@@ -2302,7 +2302,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Fira Sans'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Загрузка зместу навучальнага дапаможніка з wiki FreeCAD. Калі ласка пачакайце…&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Загрузка зместу навучальнага дапаможніка з wiki FreeCAD. Пачакайце…&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Калі вы навучальны дапаможнік праглядаеце ўпершыню, гэта можа заняць некаторы час. Наступныя запускі будуць выкананыя хутчэй.&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;</translation>
@@ -4265,7 +4265,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../bimcommands/BimRoof.py" line="93"/>
       <location filename="../../bimcommands/BimSpace.py" line="70"/>
       <source>Please select a base object</source>
-      <translation>Калі ласка, абярыце асноўны аб'ект</translation>
+      <translation>Абярыце асноўны аб'ект</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1068"/>
@@ -5597,7 +5597,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="2431"/>
       <source>New...</source>
-      <translation>Новы...</translation>
+      <translation>Новы…</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2582"/>
@@ -8113,7 +8113,8 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchRebar.py" line="138"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
-      <translation>Агульная адлегласць, на якое павінны быць перакінутая арматура. Пакіньце 0, каб аўтаматычна ўжыць памер вузла фігуры.</translation>
+      <translation>Агульная адлегласць, на якое павінны быць перакінутая арматура.
+Пакіньце 0, каб аўтаматычна ўжыць памер вузла фігуры.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="149"/>
@@ -9374,7 +9375,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="90"/>
       <source>Search...</source>
-      <translation>Пошук...</translation>
+      <translation>Пошук…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="91"/>
@@ -9620,7 +9621,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="670"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
-      <translation>Калі ласка, спачатку абярыце ці стварыце набор аб'ектаў, у які варта змясціць новы аб'ект.</translation>
+      <translation>Спачатку абярыце ці стварыце набор аб'ектаў, у які варта змясціць новы аб'ект.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
@@ -9655,7 +9656,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
       <source>Add quantity set...</source>
-      <translation>Дадаць набор велічыні...</translation>
+      <translation>Дадаць набор велічыні…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
@@ -10454,12 +10455,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation>Дадаць уласцівасць IFC...</translation>
+      <translation>Дадаць уласцівасць IFC…</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation>Дадаць стандартны набор уласцівасцяў IFC...</translation>
+      <translation>Дадаць стандартны набор уласцівасцяў IFC…</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="140"/>
@@ -11451,7 +11452,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Першапачатковая шырыня радка.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Адлюстраваць &amp;gt; Колеры дэталі &amp;gt; Першапачатковая шырыня лініі, Чарнавік &amp;gt; Налады візуалізацыі &amp;gt; Першапачатковая шырыня лініі&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Адлюстраваць -&gt; Колеры дэталі -&gt; Першапачатковая шырыня лініі, Чарнавік -&gt; Налады візуалізацыі -&gt; Першапачатковая шырыня лініі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="293"/>
@@ -11492,13 +11493,13 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="556"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Першапачатковы шрыфт.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Тэксты і вымярэнні &amp;gt; Сямейства шрыфтоў, Тэхнічны чарцёж &amp;gt; Тэхнічны чарцёж 1 &amp;gt; Метка шрыфту&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Тэксты і вымярэнні -&gt; Сямейства шрыфтоў, Тэхнічны чарцёж -&gt; Тэхнічны чарцёж 1 -&gt; Метка шрыфту</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Першапачатковы памер стрэлкі вымярэння.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Тэхнічны чарцёж &amp;gt; Тэхнічны чарцёж 2 &amp;gt; Памер стрэлкі, Чарнавік &amp;gt; Тэксты і вымярэнні &amp;gt; Памер стрэлкі&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Тэхнічны чарцёж -&gt; Тэхнічны чарцёж 2 -&gt; Памер стрэлкі, Чарнавік -&gt; Тэксты і вымярэнні -&gt; Памер стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
@@ -11564,7 +11565,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Першапачатковы стыль вымярэння.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Тэксты і вымярэнні &amp;gt; Стыль стрэлкі, Тэхнічны чарцёж &amp;gt; Тэхнічны чарцёж 2 &amp;gt; Стыль стрэлкі&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Тэксты і вымярэнні -&gt; Стыль стрэлкі, Тэхнічны чарцёж -&gt; Тэхнічны чарцёж 2 -&gt; Стыль стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="193"/>
@@ -11673,7 +11674,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Колькі маленькіх квадратаў паміж кожнымі асноўнымі лініямі сеткі.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Сетка і прывязка &amp;gt; Галоўная лінія кожныя&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Сетка і прывязка -&gt; Галоўная лінія кожныя</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="179"/>
@@ -11684,7 +11685,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="303"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Колькасць файлаў рэзервовых копій, якія неабходна пакінуць пры захаванні файла.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Агульныя &amp;gt; Дакумент &amp;gt; Найбольшая колькасць файлаў рэзервовых копій&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Агульныя -&gt; Дакумент -&gt; Найбольшая колькасць файлаў рэзервовых копій</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="510"/>
@@ -11700,19 +11701,19 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Памер найменшага квадрата сеткі.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Сетка і прывязка &amp;gt; Інтэрвал паміж сеткамі&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Сетка і прывязка -&gt; Інтэрвал паміж сеткамі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Першапачатковы колер геаметрыі.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Агульныя &amp;gt; Колер будаўнічай геаметрыі&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Агульныя -&gt; Колер будаўнічай геаметрыі</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Першапачатковы памер тэксту і тэксты вымярэння.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Тэксты і вымярэнні &amp;gt; Памер шрыфту, Тэхнічны чарцёж &amp;gt; Тэхнічны чарцёж 2 &amp;gt; Памер шрыфту&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Тэксты і вымярэнні -&gt; Памер шрыфту, Тэхнічны чарцёж -&gt; Тэхнічны чарцёж 2 -&gt; Памер шрыфту</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="499"/>
@@ -11729,7 +11730,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="613"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: The currently installed FreeCAD version is %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Парада: у бягучы час усталявана FreeCAD версіі %1.
-Ужывайце &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;апошнюю версія распрацоўкі %2&lt;/span&gt;&lt;/a&gt;, якая змяшчае ўсе апошнія паляпшэнні ў FreeCAD</translation>
+Ужывайце &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;апошнюю версія распрацоўкі %2&lt;/a&gt;, якая змяшчае ўсе апошнія паляпшэнні ў FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="626"/>
@@ -11762,7 +11763,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at startup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Птушка, каб запусціць FreeCAD з новым пустым дакументам.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Агульныя &amp;gt; Дакумент &amp;gt; Стварыць новы дакумент пры запуску&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Агульныя -&gt; Дакумент -&gt; Стварыць новы дакумент пры запуску</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="405"/>
@@ -11773,19 +11774,19 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="412"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Верхні колер градыенту фону трохмернага выгляду.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Адлюстраванне &amp;gt; Колеры &amp;gt; Каляровы градыент&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Адлюстраванне -&gt; Колеры -&gt; Каляровы градыент</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="426"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Ніжнік колер градыенту фону трохмернага выгляду.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Адлюстраванне &amp;gt; Колеры &amp;gt; Каляровы градыент&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Адлюстраванне -&gt; Колеры -&gt; Каляровы градыент</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Дзе адлюстроўваецца сетка пры запуску FreeCAD.
-Размяшчэнне ў наладах: &lt;span style=" font-weight:600;"&gt;Чарнавік &amp;gt; Агульныя &amp;gt; Першапачатковая працоўная плоскасць&lt;/span&gt;</translation>
+Размяшчэнне ў наладах: Чарнавік -&gt; Агульныя -&gt; Першапачатковая працоўная плоскасць</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="454"/>

@@ -332,7 +332,7 @@
     <message>
       <location filename="../../Command.cpp" line="2623"/>
       <source>Apply Changes to Pipeline</source>
-      <translation>Änderungen auf Rohrleitung anwenden</translation>
+      <translation>Änderungen auf Ergebnis-Pipeline anwenden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2624"/>
@@ -360,7 +360,7 @@
     <message>
       <location filename="../../Command.cpp" line="2525"/>
       <source>Select a pipeline.</source>
-      <translation>Wähle eine Rohrleitung.</translation>
+      <translation>Eine Ergebnis-Pipeline auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2524"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../Command.cpp" line="2664"/>
       <source>Post Pipeline From Result</source>
-      <translation type="unfinished">Post Pipeline From Result</translation>
+      <translation>Nachbereitungs-Pipeline aus Ergebnis</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2665"/>
@@ -6289,7 +6289,7 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="26"/>
@@ -7380,7 +7380,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../Command.cpp" line="2764"/>
       <source>Pipeline Branch</source>
-      <translation type="unfinished">Pipeline Branch</translation>
+      <translation>Pipeline-Verzweigung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2765"/>

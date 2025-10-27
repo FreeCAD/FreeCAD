@@ -255,7 +255,7 @@
       <location filename="../../../CommandCreateBom.py" line="287"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Назва ўжо ўжываецца.
-Калі ласка, абярыце іншую назву.</translation>
+Абярыце іншую назву.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="366"/>
@@ -308,7 +308,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="394"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
-      <translation>Аўтаматычныя слупкі: (індэкс, колькасць, назва...) запаўняюцца аўтаматычна.
+      <translation>Аўтаматычныя слупкі: (індэкс, колькасць, назва…) запаўняюцца аўтаматычна.
 Любыя ўнесеныя вамі змяненні будуць адмененыя.
 Дадзеныя слупкі нельга пераназваць.</translation>
     </message>
@@ -355,7 +355,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="488"/>
       <source>Enter your formula...</source>
-      <translation>Увод вашую формулу...</translation>
+      <translation>Увесці вашую формулу…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
@@ -582,7 +582,8 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>Вугал злучэння.
+Ужываецца толькі для вуглавнога злучэння.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="422"/>

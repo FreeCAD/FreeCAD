@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="636"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation>Brytyjskie dla inżynierii lądowej (ft, lb, mph)</translation>
+      <translation>Brytyjski dla inżynierii lądowej (ft, lb, mph)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>

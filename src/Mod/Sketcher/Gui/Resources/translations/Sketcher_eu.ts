@@ -2595,12 +2595,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>X ardatza</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="36"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Y ardatza</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="43"/>
@@ -2623,17 +2623,17 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY planoa</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="36"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ planoa</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ planoa</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
@@ -3628,7 +3628,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="115"/>
       <source>Auto-update</source>
-      <translation type="unfinished">Auto-update</translation>
+      <translation>Automatikoki-eguneratu</translation>
     </message>
   </context>
   <context>

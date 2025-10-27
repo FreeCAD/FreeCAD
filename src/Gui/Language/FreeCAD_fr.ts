@@ -4948,12 +4948,12 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="571"/>
       <source>Add or remove custom icon folders</source>
-      <translation>Ajouter ou supprimer des dossiers d'icônes personnalisés</translation>
+      <translation>Ajouter ou supprimer des répertoires d'icônes personnalisées</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="621"/>
       <source>Remove folder</source>
-      <translation>Supprimer le dossier</translation>
+      <translation>Supprimer un répertoire</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="622"/>

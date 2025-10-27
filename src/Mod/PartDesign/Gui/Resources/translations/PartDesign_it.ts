@@ -2869,7 +2869,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
       <source>Two angles</source>
-      <translation type="unfinished">Two angles</translation>
+      <translation>Due angoli</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="460"/>
@@ -4614,7 +4614,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
       <source>Angles of groove nullify each other</source>
-      <translation type="unfinished">Angles of groove nullify each other</translation>
+      <translation>Gli angoli di scanalatura si annullano a vicenda</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
@@ -5079,7 +5079,7 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="104"/>
       <source>Angles of revolution nullify each other</source>
-      <translation type="unfinished">Angles of revolution nullify each other</translation>
+      <translation>Gli angoli di rivoluzione si annullano a vicenda</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="131"/>

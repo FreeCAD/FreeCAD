@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="712"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>Kontsola-irteerako Testa</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="713"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="176"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Aldatu Izozketa</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="330"/>
@@ -164,17 +164,17 @@
     <message>
       <location filename="../CommandView.cpp" line="889"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Aldatu Ikusgaitasuna</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="923"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>Aldatu Gardentasuna</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1040"/>
       <source>Toggle Selectability</source>
-      <translation type="unfinished">Toggle Selectability</translation>
+      <translation>Aldatu Aukeragarritasuna</translation>
     </message>
   </context>
   <context>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="537"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Zuhaitz-bista</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="538"/>
@@ -270,22 +270,22 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
       <source>Global sensitivity</source>
-      <translation type="unfinished">Global sensitivity</translation>
+      <translation>Sentikortasun globala</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="54"/>
       <source>Dominant mode</source>
-      <translation type="unfinished">Dominant mode</translation>
+      <translation>Menderatzaile moduan</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="72"/>
       <source>Enable translations</source>
-      <translation type="unfinished">Enable translations</translation>
+      <translation>Traslazioak gaitu</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="82"/>
       <source>Enable rotations</source>
-      <translation type="unfinished">Enable rotations</translation>
+      <translation>Biraketak gaitu</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="107"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="26"/>
       <source>Expression Editor</source>
-      <translation type="unfinished">Expression Editor</translation>
+      <translation>Adierazpen-Editorea</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
@@ -335,7 +335,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set...</source>
-      <translation type="unfinished">Store in Variable Set...</translation>
+      <translation>Aldagai-multzoan gorde...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -345,7 +345,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="284"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Aldagai-multzoa</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="301"/>
@@ -381,7 +381,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="283"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Lehenetsia</translation>
     </message>
     <message>
       <location filename="../Application.h" line="284"/>
@@ -391,12 +391,12 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="288"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Trans&amp;formatu</translation>
     </message>
     <message>
       <location filename="../Application.h" line="293"/>
       <source>Cu&amp;tting</source>
-      <translation type="unfinished">Cu&amp;tting</translation>
+      <translation>&amp;Ebaki</translation>
     </message>
     <message>
       <location filename="../Application.h" line="298"/>
@@ -424,7 +424,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../QuantitySpinBox_p.h" line="63"/>
       <source>Enter expression… (=)</source>
-      <translation type="unfinished">Enter expression… (=)</translation>
+      <translation>Sartu adierazpen bat... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="64"/>
@@ -511,7 +511,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="51"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>Sakatu Shift tekla eta poraguaren erdiko botoia</translation>
     </message>
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="53"/>
@@ -539,7 +539,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left or middle+right mouse button</source>
-      <translation type="unfinished">Press middle+left or middle+right mouse button</translation>
+      <translation>Sakatu xaguaren erdiko+ezkerreko edo erdiko+eskuineko botoia</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
@@ -572,12 +572,12 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="125"/>
       <source>Renames the object</source>
-      <translation type="unfinished">Renames the object</translation>
+      <translation>Objektua berrizendatzen du</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="132"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>Amaitu edizioa</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="133"/>
@@ -976,17 +976,17 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="601"/>
       <source>Property '%1' already exists</source>
-      <translation type="unfinished">Property '%1' already exists</translation>
+      <translation>'%1' ezaugarria existitzen da dagoeneko</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="604"/>
       <source>'%1' is a constant</source>
-      <translation type="unfinished">'%1' is a constant</translation>
+      <translation>'%1' konstante bat da</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="607"/>
       <source>'%1' is a unit</source>
-      <translation type="unfinished">'%1' is a unit</translation>
+      <translation>'%1' unitatea da</translation>
     </message>
   </context>
   <context>
@@ -1049,7 +1049,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgChooseIcon.ui" line="38"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Karpeta Ikono</translation>
     </message>
   </context>
   <context>
@@ -1067,7 +1067,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Arakatu</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePack.ui" line="60"/>
@@ -1113,7 +1113,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="67"/>
       <source>Menu text</source>
-      <translation type="unfinished">Menu text</translation>
+      <translation>Menu-testua</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="74"/>
@@ -1123,17 +1123,17 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="81"/>
       <source>Status text</source>
-      <translation type="unfinished">Status text</translation>
+      <translation>Egoera-testua</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="88"/>
       <source>What's this</source>
-      <translation type="unfinished">What's this</translation>
+      <translation>Zer da hau</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation type="unfinished">Accelerator</translation>
+      <translation>Azeleragailua</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
@@ -2419,7 +2419,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="308"/>
       <source>Open in Browser</source>
-      <translation type="unfinished">Open in Browser</translation>
+      <translation>Ireki nabigatzailean</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="317"/>
@@ -4546,7 +4546,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Zuhaitz-bista</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
@@ -4947,7 +4947,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="457"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Karpeta Ikono</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="594"/>
@@ -6798,7 +6798,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>Sakatu Shift tekla eta poraguaren erdiko botoia</translation>
     </message>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
@@ -7440,7 +7440,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3410"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>Amaitu edizioa</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3411"/>
@@ -7817,7 +7817,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="645"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Zuhaitz-bista</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="672"/>
@@ -10550,17 +10550,17 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY planoa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="36"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ planoa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ planoa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -10598,17 +10598,17 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY planoa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="35"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ planoa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="42"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ planoa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="80"/>
@@ -11988,7 +11988,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Zuhaitz-bista</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12235,7 +12235,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1618"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Trans&amp;formatu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1619"/>
@@ -13485,7 +13485,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="166"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Aldagai-multzoa</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="167"/>
@@ -14375,7 +14375,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="3785"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Zuhaitz-bista</translation>
     </message>
   </context>
   <context>

@@ -2215,13 +2215,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1634"/>
       <source>Create DraftView</source>
-      <translation>Вид из верстака Набросок</translation>
+      <translation>Создать Draft Вид</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <location filename="../../Command.cpp" line="1760"/>
       <source>Create spreadsheet view</source>
-      <translation>Фрагмент из электронной таблицы</translation>
+      <translation>Фрагмент из верстака spreadsheet</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="334"/>
@@ -2545,7 +2545,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="239"/>
       <source>TechDraw Remove Prefix</source>
-      <translation>Удалить префикс Чертежа</translation>
+      <translation>TechDraw. Удалить префикс</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="243"/>
@@ -2640,12 +2640,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="370"/>
       <source>TechDraw Thread Hole Side</source>
-      <translation>Чертёж Резьбовое отверстие вид сбоку</translation>
+      <translation>TechDraw Резьбовое отверстие вид сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="373"/>
       <source>Cosmetic Thread Hole Side</source>
-      <translation>Вспомогательное резьбовое отверстие со стороны</translation>
+      <translation>Схематическое резьбовое отверстие вид сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="421"/>
@@ -2655,7 +2655,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="424"/>
       <source>Cosmetic Thread Bolt Side</source>
-      <translation>Вспомогательная болтовая резьба сбоку</translation>
+      <translation>Схематическая резьба болта вид сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="473"/>
@@ -2760,7 +2760,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1587"/>
       <source>TechDraw Extend/Shorten Line</source>
-      <translation>Чертёж Удлинить/укоротить линию</translation>
+      <translation>TechDraw Удлинить/укоротить линию</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1590"/>
@@ -4563,7 +4563,7 @@ at the kink in the leader line</source>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="266"/>
       <source>Alternating</source>
-      <translation>Альтернативно</translation>
+      <translation>Прерывистый</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="290"/>
@@ -4763,7 +4763,7 @@ Increase the limit if necessary.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
       <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
-      <translation>Если этот флажок установлен, то двойной щелчок по листу чертежа в дереве проекта автоматически активирует верстак Технического Чертежа, и страница станет видимой.</translation>
+      <translation>Если этот флажок установлен, то двойной щелчок на странице в дереве просмотра автоматически переключится на верстак TechDraw и страница будет отображена.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>

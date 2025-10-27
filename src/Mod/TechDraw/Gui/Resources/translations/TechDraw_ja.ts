@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Centerline Between 2 Lines</source>
-      <translation type="unfinished">Centerline Between 2 Lines</translation>
+      <translation>2線間の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="792"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>選択した2線間に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Centerline Between 2 Points</source>
-      <translation type="unfinished">Centerline Between 2 Points</translation>
+      <translation>2点間の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="867"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>選択した2点間に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Cosmetic Line Through 2 Points</source>
-      <translation type="unfinished">Cosmetic Line Through 2 Points</translation>
+      <translation>2点を通過する表示用の線</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="980"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Add a cosmetic line that passes through 2 selected points</translation>
+      <translation>2つの選択点を通過する表示用の線を追加</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1743"/>
       <source>Angle Dimension From 3 Points</source>
-      <translation type="unfinished">Angle Dimension From 3 Points</translation>
+      <translation>3点からの角度寸法</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1744"/>
       <source>Inserts an angle dimension between 3 selected points</source>
-      <translation type="unfinished">Inserts an angle dimension between 3 selected points</translation>
+      <translation>3つの選択点の間に角度寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="697"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>アクティブビュー</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
       <source>Inserts an angle dimension between two edges</source>
-      <translation type="unfinished">Inserts an angle dimension between two edges</translation>
+      <translation>2つ線の間に角度寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -114,12 +114,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="527"/>
       <source>Text Annotation</source>
-      <translation type="unfinished">Text Annotation</translation>
+      <translation>テキスト注釈</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="528"/>
       <source>Inserts an editable text block annotation to the current page</source>
-      <translation type="unfinished">Inserts an editable text block annotation to the current page</translation>
+      <translation>編集可能なテキストブロック注釈を現在のページに挿入</translation>
     </message>
   </context>
   <context>
@@ -132,12 +132,12 @@
     <message>
       <location filename="../../Command.cpp" line="1662"/>
       <source>BIM View</source>
-      <translation type="unfinished">BIM View</translation>
+      <translation>BIMビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1663"/>
       <source>Inserts a view of a BIM section plane</source>
-      <translation type="unfinished">Inserts a view of a BIM section plane</translation>
+      <translation>BIMの断面平面のビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -150,12 +150,12 @@
     <message>
       <location filename="../../Command.cpp" line="1275"/>
       <source>Balloon Annotation</source>
-      <translation type="unfinished">Balloon Annotation</translation>
+      <translation>バルーン注釈</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1276"/>
       <source>Inserts a new balloon annotation in the selected view</source>
-      <translation type="unfinished">Inserts a new balloon annotation in the selected view</translation>
+      <translation>選択したビューに新しいバルーン注釈を挿入</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="578"/>
       <source>Inserts a centerline to a face, or between 2 lines or edges</source>
-      <translation type="unfinished">Inserts a centerline to a face, or between 2 lines or edges</translation>
+      <translation>面、または2つの線やエッジの間に中心線を挿入</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Centerline Faces</source>
-      <translation type="unfinished">Centerline Faces</translation>
+      <translation>面の中心線</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Clip Group</source>
-      <translation type="unfinished">Clip Group</translation>
+      <translation>クリップグループ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1340"/>
       <source>Inserts a new clip group for the selected view</source>
-      <translation type="unfinished">Inserts a new clip group for the selected view</translation>
+      <translation>選択したビューに新しいクリップグループを挿入</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Add View To Clip Group</source>
-      <translation type="unfinished">Add View To Clip Group</translation>
+      <translation>クリップグループにビューを追加</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Adds the selected view to a clip group</source>
-      <translation type="unfinished">Adds the selected view to a clip group</translation>
+      <translation>選択したビューをクリップグループに追加</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Remove From Clip Group</source>
-      <translation type="unfinished">Remove From Clip Group</translation>
+      <translation>クリップグループから削除</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>Removes a view based on the selected clip group</source>
-      <translation type="unfinished">Removes a view based on the selected clip group</translation>
+      <translation>選択したクリップグループにあるビューを削除</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Complex Section View</source>
-      <translation type="unfinished">Complex Section View</translation>
+      <translation>複雑な断面ビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
-      <translation type="unfinished">Inserts a complex section view based on the selected view in the current page</translation>
+      <translation>現在のページに選択したビューに基づく複雑な断面ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1131"/>
       <source>Removes the selected cosmetic object from the page</source>
-      <translation type="unfinished">Removes the selected cosmetic object from the page</translation>
+      <translation>選択した表示用オブジェクトをページから削除</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="389"/>
       <source>Adds a cosmetic vertex</source>
-      <translation type="unfinished">Adds a cosmetic vertex</translation>
+      <translation>表示用の頂点を追加</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="202"/>
       <source>Inserts a cosmetic vertex</source>
-      <translation type="unfinished">Inserts a cosmetic vertex</translation>
+      <translation>表示用の頂点を挿入</translation>
     </message>
   </context>
   <context>
@@ -318,12 +318,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1248"/>
       <source>Edit Line Appearance</source>
-      <translation type="unfinished">Edit Line Appearance</translation>
+      <translation>線の外観を編集</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1249"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
-      <translation type="unfinished">Opens the &apos;Line decoration&apos; dialog to edit the selected lines</translation>
+      <translation>選択した線を編集するための &apos;線装飾&apos; ダイアログを開く</translation>
     </message>
   </context>
   <context>
@@ -336,12 +336,12 @@
     <message>
       <location filename="../../Command.cpp" line="1009"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>詳細ビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
-      <translation type="unfinished">Inserts a new detail view based on the selected view in the current page</translation>
+      <translation>現在のページに選択したビューに基づく新しい詳細ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1506"/>
       <source>Inserts a diameter dimension of a circular edge or arc</source>
-      <translation type="unfinished">Inserts a diameter dimension of a circular edge or arc</translation>
+      <translation>円形エッジまたは円弧の直径寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -379,9 +379,9 @@
       <source>Inserts new contextual dimensions to the selection.
 Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
 Left clicking on empty space will validate the current dimension. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Inserts new contextual dimensions to the selection.
-Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
-Left clicking on empty space will validate the current dimension. Right clicking or pressing Esc will cancel.</translation>
+      <translation>選択対象に基づく新しい寸法を挿入します。
+選択対象に応じて複数の寸法が利用できる場合があります。Mキーを使うと循環的にそれらを選択できます。
+何も無いところで左クリックすると現在の寸法を確認できます。右クリックまたはESCキーでキャンセルします。</translation>
     </message>
   </context>
   <context>
@@ -394,13 +394,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1598"/>
       <source>Draft View</source>
-      <translation type="unfinished">Draft View</translation>
+      <translation>ドラフトビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1600"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
-      <translation type="unfinished">Inserts a view of a Draft object</translation>
+      <translation>ドラフトオブジェクトのビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -418,7 +418,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1852"/>
       <source>Exports the current page as a DXF</source>
-      <translation type="unfinished">Exports the current page as a DXF</translation>
+      <translation>現在のページをDXFとしてエクスポート</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
@@ -441,7 +441,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1809"/>
       <source>Exports the current page as an SVG</source>
-      <translation type="unfinished">Exports the current page as an SVG</translation>
+      <translation>現在のページをSVGとしてエクスポート</translation>
     </message>
   </context>
   <context>
@@ -459,7 +459,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1737"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation type="unfinished">Extends a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
+      <translation>選択した表示用線または中心線を両端から指定された距離だけ延長</translation>
     </message>
   </context>
   <context>
@@ -472,12 +472,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1831"/>
       <source>Area Annotation</source>
-      <translation type="unfinished">Area Annotation</translation>
+      <translation>面積注釈</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1832"/>
       <source>Calculates the area of multiple selected faces</source>
-      <translation type="unfinished">Calculates the area of multiple selected faces</translation>
+      <translation>選択した複数の面の面積を計算</translation>
     </message>
   </context>
   <context>
@@ -495,7 +495,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1121"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>選択した水平寸法を均等間隔に配置します:&lt;br&gt;- カスケード間隔を指定 (オプション)&lt;br&gt;- 2つ以上の水平寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -515,7 +515,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="943"/>
       <location filename="../../CommandExtensionDims.cpp" line="1197"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>選択した水平寸法を均等間隔に配置します:&lt;br&gt;- カスケード間隔を指定 (オプション)&lt;br&gt;- 2つ以上の水平寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -535,7 +535,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1085"/>
       <location filename="../../CommandExtensionDims.cpp" line="1215"/>
       <source>Evenly spaces the selected oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly spaces the selected oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>選択した斜め寸法を均等間隔に配置します:&lt;br&gt;- カスケード間隔を指定 (オプション)&lt;br&gt;- 2つ以上の平行な斜め寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -555,7 +555,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1010"/>
       <location filename="../../CommandExtensionDims.cpp" line="1206"/>
       <source>Evenly spaces the selected vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly spaces the selected vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>選択した垂直寸法を均等間隔に配置します:&lt;br&gt;- カスケード間隔を指定 (オプション)&lt;br&gt;- 2つ以上の垂直寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -568,12 +568,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2102"/>
       <source>Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Horizontal Chamfer Dimension</translation>
+      <translation>水平方向の面取り寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2103"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
-      <translation type="unfinished">Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</translation>
+      <translation>2つの選択頂点から面取り用の水平方向サイズと角度寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -586,12 +586,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="737"/>
       <source>Change Line Attributes</source>
-      <translation>線属性の変更</translation>
+      <translation>線の属性を変更</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="738"/>
       <source>Changes the selected cosmetic lines and centerlines to the specified attributes</source>
-      <translation type="unfinished">Changes the selected cosmetic lines and centerlines to the specified attributes</translation>
+      <translation>選択した表示用の線と中心線を指定した属性に変更</translation>
     </message>
   </context>
   <context>
@@ -610,12 +610,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="245"/>
       <source>Adds centerlines to the selected circles and arcs</source>
-      <translation type="unfinished">Adds centerlines to the selected circles and arcs</translation>
+      <translation>選択した円や円弧に中心線を追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="342"/>
       <source>Adds centerlines to selected circles and arcs:</source>
-      <translation type="unfinished">Adds centerlines to selected circles and arcs:</translation>
+      <translation>選択した円や円弧に中心線を追加:</translation>
     </message>
   </context>
   <context>
@@ -633,7 +633,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="276"/>
       <source>Adds centerlines to selected circles and arcs</source>
-      <translation type="unfinished">Adds centerlines to selected circles and arcs</translation>
+      <translation>選択した円や円弧に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -646,12 +646,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1494"/>
       <source>Horizontal Chain Dimension</source>
-      <translation type="unfinished">Horizontal Chain Dimension</translation>
+      <translation>水平方向の連鎖寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1495"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>最低3つの選択頂点に対して連続する整列した水平寸法を挿入します。最初の2頂点で方向が定義されます。</translation>
     </message>
   </context>
   <context>
@@ -664,12 +664,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Horizontal Coordinate Dimension</source>
-      <translation type="unfinished">Horizontal Coordinate Dimension</translation>
+      <translation>水平方向の座標寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1865"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>3つ以上の頂点の間に共有基準線に揃えた均等間隔の水平方向の寸法を追加</translation>
     </message>
   </context>
   <context>
@@ -683,17 +683,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
       <location filename="../../CommandExtensionDims.cpp" line="1567"/>
       <source>Horizontal Chain Dimension</source>
-      <translation type="unfinished">Horizontal Chain Dimension</translation>
+      <translation>水平方向の連鎖寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1275"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</source>
-      <translation type="unfinished">Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</translation>
+      <translation>3つ以上の選択頂点に連続する整列した水平寸法を挿入</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1568"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>最低3つの選択頂点に対して連続する整列した水平寸法を挿入します。最初の2頂点で方向が定義されます。</translation>
     </message>
   </context>
   <context>
@@ -707,13 +707,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="2005"/>
       <location filename="../../CommandExtensionDims.cpp" line="2167"/>
       <source>Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Horizontal Chamfer Dimension</translation>
+      <translation>水平方向の面取り寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2006"/>
       <location filename="../../CommandExtensionDims.cpp" line="2168"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
-      <translation type="unfinished">Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</translation>
+      <translation>2つの選択頂点から面取り用の水平方向サイズと角度寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -727,13 +727,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1639"/>
       <location filename="../../CommandExtensionDims.cpp" line="1936"/>
       <source>Horizontal Coordinate Dimension</source>
-      <translation type="unfinished">Horizontal Coordinate Dimension</translation>
+      <translation>水平方向の座標寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1640"/>
       <location filename="../../CommandExtensionDims.cpp" line="1937"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>3つ以上の頂点の間に共有基準線に揃えた均等間隔の水平方向の寸法を追加</translation>
     </message>
   </context>
   <context>
@@ -746,12 +746,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2196"/>
       <source>Arc Length Dimension</source>
-      <translation type="unfinished">Arc Length Dimension</translation>
+      <translation>円弧の長さ寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2197"/>
       <source>Inserts an arc length dimension to the selected arc</source>
-      <translation type="unfinished">Inserts an arc length dimension to the selected arc</translation>
+      <translation>選択した円弧に円弧長さ寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -765,13 +765,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1462"/>
       <location filename="../../CommandExtensionDims.cpp" line="1577"/>
       <source>Oblique Chain Dimension</source>
-      <translation type="unfinished">Oblique Chain Dimension</translation>
+      <translation>斜め方向の連鎖寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1463"/>
       <location filename="../../CommandExtensionDims.cpp" line="1578"/>
       <source>Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>最低3つの選択頂点に対して連続する整列した斜め寸法を挿入します。最初の2頂点で方向が定義されます。</translation>
     </message>
   </context>
   <context>
@@ -785,13 +785,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1833"/>
       <location filename="../../CommandExtensionDims.cpp" line="1946"/>
       <source>Oblique Coordinate Dimension</source>
-      <translation type="unfinished">Oblique Coordinate Dimension</translation>
+      <translation>斜め方向の座標寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1834"/>
       <location filename="../../CommandExtensionDims.cpp" line="1947"/>
       <source>Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>3つ以上の頂点の間に共有基準線に揃えた均等間隔の斜め方向の寸法を追加</translation>
     </message>
   </context>
   <context>
@@ -805,17 +805,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1340"/>
       <location filename="../../CommandExtensionDims.cpp" line="1572"/>
       <source>Vertical Chain Dimension</source>
-      <translation type="unfinished">Vertical Chain Dimension</translation>
+      <translation>垂直方向の連鎖寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1341"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices</source>
-      <translation type="unfinished">Inserts a sequence of aligned vertical dimensions to at least three selected vertices</translation>
+      <translation>3つ以上の選択頂点に連続する整列した垂直寸法を挿入</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1573"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>最低3つの選択頂点に対して連続する整列した垂直寸法を挿入します。最初の2頂点で方向が定義されます。</translation>
     </message>
   </context>
   <context>
@@ -829,13 +829,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="2071"/>
       <location filename="../../CommandExtensionDims.cpp" line="2172"/>
       <source>Vertical Chamfer Dimension</source>
-      <translation type="unfinished">Vertical Chamfer Dimension</translation>
+      <translation>垂直方向の面取り寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2072"/>
       <location filename="../../CommandExtensionDims.cpp" line="2173"/>
       <source>Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</source>
-      <translation type="unfinished">Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</translation>
+      <translation>2つの選択頂点から面取り用の垂直方向サイズと角度寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -849,13 +849,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1708"/>
       <location filename="../../CommandExtensionDims.cpp" line="1941"/>
       <source>Vertical Coordinate Dimension</source>
-      <translation type="unfinished">Vertical Coordinate Dimension</translation>
+      <translation>垂直方向の座標寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1709"/>
       <location filename="../../CommandExtensionDims.cpp" line="1942"/>
       <source>Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>3つ以上の頂点の間に共有基準線に揃えた均等間隔の垂直方向の寸法を追加</translation>
     </message>
   </context>
   <context>
@@ -873,7 +873,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2246"/>
       <source>Customizes the format label of a selected dimension or balloon</source>
-      <translation type="unfinished">Customizes the format label of a selected dimension or balloon</translation>
+      <translation>選択した寸法またはバルーンの書式ラベルをカスタマイズ</translation>
     </message>
   </context>
   <context>
@@ -893,7 +893,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="478"/>
       <location filename="../../CommandExtensionDims.cpp" line="579"/>
       <source>Decreases the number of decimal places of the dimension</source>
-      <translation type="unfinished">Decreases the number of decimal places of the dimension</translation>
+      <translation>寸法の小数点以下の桁数を減らす</translation>
     </message>
   </context>
   <context>
@@ -906,12 +906,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1198"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>表示用の1点円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1199"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
+      <translation>2つの頂点に基づいて表示用の円を追加します。最初の選択対象は中心点で、2番目の選択対象は半径です。</translation>
     </message>
   </context>
   <context>
@@ -925,17 +925,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1044"/>
       <location filename="../../CommandExtensionPack.cpp" line="1300"/>
       <source>Cosmetic Arc</source>
-      <translation type="unfinished">Cosmetic Arc</translation>
+      <translation>表示用の円弧</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1045"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</source>
-      <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</translation>
+      <translation>3つの頂点に基づいて反時計回りに表示用の円弧を追加します。最初の選択対象は中心点で、2番目の選択対象は半径と開始点です。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1301"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</source>
-      <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</translation>
+      <translation>3つの頂点に基づいて反時計回りに表示用の円弧を追加します。最初の選択対象は中心点で、2番目の選択対象は半径と開始点です。</translation>
     </message>
   </context>
   <context>
@@ -949,17 +949,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1104"/>
       <location filename="../../CommandExtensionPack.cpp" line="1285"/>
       <source>Cosmetic 2 Point Circle</source>
-      <translation type="unfinished">Cosmetic 2 Point Circle</translation>
+      <translation>表示用の2点円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1105"/>
       <source>Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</translation>
+      <translation>選択した2つの頂点に基づいて表示用の円を追加します。最初は中心点で、2番目は半径です。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
+      <translation>2つの頂点に基づいて表示用の円を追加します。最初の選択対象は中心点で、2番目の選択対象は半径です。</translation>
     </message>
   </context>
   <context>
@@ -973,13 +973,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1167"/>
       <location filename="../../CommandExtensionPack.cpp" line="1295"/>
       <source>Adds a cosmetic circle that passes through 3 selected perimeter points</source>
-      <translation type="unfinished">Adds a cosmetic circle that passes through 3 selected perimeter points</translation>
+      <translation>選択した周上の3つの点を通過する表示用の円を追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1166"/>
       <location filename="../../CommandExtensionPack.cpp" line="1293"/>
       <source>Cosmetic 3 Point Circle</source>
-      <translation type="unfinished">Cosmetic 3 Point Circle</translation>
+      <translation>表示用の3点円</translation>
     </message>
   </context>
   <context>
@@ -999,7 +999,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <location filename="../../CommandExtensionPack.cpp" line="1803"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation type="unfinished">Extends a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
+      <translation>選択した表示用線または中心線を両端から指定された距離だけ延長</translation>
     </message>
   </context>
   <context>
@@ -1013,17 +1013,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="171"/>
       <location filename="../../CommandExtensionPack.cpp" line="347"/>
       <source>Bolt Circle Centerlines</source>
-      <translation type="unfinished">Bolt Circle Centerlines</translation>
+      <translation>ボルト円の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of three or more selected circles</translation>
+      <translation>選択した3つ以上の円の円形パターンに中心線を追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of selected circles</translation>
+      <translation>選択した円の円形パターンに中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -1043,7 +1043,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="447"/>
       <location filename="../../CommandExtensionDims.cpp" line="574"/>
       <source>Increases the number of decimal places of the dimension</source>
-      <translation type="unfinished">Increases the number of decimal places of the dimension</translation>
+      <translation>寸法の小数点以下の桁数を増やす</translation>
     </message>
   </context>
   <context>
@@ -1061,7 +1061,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="509"/>
       <source>Increases the number of decimal places of the dimension</source>
-      <translation type="unfinished">Increases the number of decimal places of the dimension</translation>
+      <translation>寸法の小数点以下の桁数を増やす</translation>
     </message>
   </context>
   <context>
@@ -1081,7 +1081,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="150"/>
       <location filename="../../CommandExtensionDims.cpp" line="379"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</source>
-      <translation type="unfinished">Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</translation>
+      <translation>寸法の先頭に「⌀」記号を挿入</translation>
     </message>
   </context>
   <context>
@@ -1099,7 +1099,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="300"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</source>
-      <translation type="unfinished">Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</translation>
+      <translation>寸法テキストの先頭に「⌀」記号を挿入</translation>
     </message>
   </context>
   <context>
@@ -1119,7 +1119,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="181"/>
       <location filename="../../CommandExtensionDims.cpp" line="384"/>
       <source>Inserts a &apos;□&apos; symbol at the beginning of the dimension</source>
-      <translation type="unfinished">Inserts a &apos;□&apos; symbol at the beginning of the dimension</translation>
+      <translation>寸法の先頭に「□」記号を挿入</translation>
     </message>
   </context>
   <context>
@@ -1132,12 +1132,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1443"/>
       <source>Cosmetic Parallel Line</source>
-      <translation type="unfinished">Cosmetic Parallel Line</translation>
+      <translation>表示用の平行線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1444"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
+      <translation>選択した頂点を通る選択線に平行な表示用の線を追加</translation>
     </message>
   </context>
   <context>
@@ -1151,17 +1151,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1380"/>
       <location filename="../../CommandExtensionPack.cpp" line="1510"/>
       <source>Cosmetic Parallel Line</source>
-      <translation type="unfinished">Cosmetic Parallel Line</translation>
+      <translation>表示用の平行線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1381"/>
       <source>Adds a cosmetic circle to 3 selected vertices</source>
-      <translation type="unfinished">Adds a cosmetic circle to 3 selected vertices</translation>
+      <translation>3つの選択頂点に表示用の円を追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1512"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
+      <translation>選択した頂点を通る選択線に平行な表示用の線を追加</translation>
     </message>
   </context>
   <context>
@@ -1175,13 +1175,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1411"/>
       <location filename="../../CommandExtensionPack.cpp" line="1516"/>
       <source>Cosmetic Perpendicular Line</source>
-      <translation type="unfinished">Cosmetic Perpendicular Line</translation>
+      <translation>表示用の垂直線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1413"/>
       <location filename="../../CommandExtensionPack.cpp" line="1518"/>
       <source>Adds a cosmetic line perpendicular to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line perpendicular to the selected line through the selected vertex</translation>
+      <translation>選択した頂点を通る選択線に垂直な表示用の線を追加</translation>
     </message>
   </context>
   <context>
@@ -1194,12 +1194,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1542"/>
       <source>Toggle View Lock</source>
-      <translation type="unfinished">Toggle View Lock</translation>
+      <translation>ビューの固定状態を切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1543"/>
       <source>Locks or unlocks the position of the selected views</source>
-      <translation type="unfinished">Locks or unlocks the position of the selected views</translation>
+      <translation>選択したビューの位置を固定、または固定解除</translation>
     </message>
   </context>
   <context>
@@ -1212,12 +1212,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="793"/>
       <source>Align Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Align Horizontal Chain Dimensions</translation>
+      <translation>水平方向の連鎖寸法を位置合わせ</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="794"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>連鎖寸法を作成するために水平寸法を揃えます:&lt;br&gt;- 2つ以上の水平寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1230,13 +1230,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="629"/>
       <source>Align Chain Dimensions Horizontally</source>
-      <translation type="unfinished">Align Chain Dimensions Horizontally</translation>
+      <translation>連鎖寸法を水平方向に位置合わせ</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="630"/>
       <location filename="../../CommandExtensionDims.cpp" line="869"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>連鎖寸法を作成するために水平寸法を揃えます:&lt;br&gt;- 2つ以上の水平寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="868"/>
@@ -1254,13 +1254,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="758"/>
       <source>Align Oblique Chain Dimensions</source>
-      <translation type="unfinished">Align Oblique Chain Dimensions</translation>
+      <translation>斜め方向の連鎖寸法を位置合わせ</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="759"/>
       <location filename="../../CommandExtensionDims.cpp" line="885"/>
       <source>Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>連鎖寸法を作成するために斜め寸法を揃えます:&lt;br&gt;- 2つ以上の平行な斜め寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="884"/>
@@ -1278,13 +1278,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="691"/>
       <source>Align Chain Dimensions Vertically</source>
-      <translation type="unfinished">Align Chain Dimensions Vertically</translation>
+      <translation>連鎖寸法を垂直方向に位置合わせ</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="692"/>
       <location filename="../../CommandExtensionDims.cpp" line="877"/>
       <source>Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>連鎖寸法を作成するために垂直寸法を揃えます:&lt;br&gt;- 2つ以上の垂直寸法を選択&lt;br&gt;- 最初の寸法で位置が定義されます。&lt;br&gt;- このツールをクリック</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="876"/>
@@ -1307,7 +1307,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="269"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
-      <translation type="unfinished">Removes the prefix symbols at the beginning of the dimension</translation>
+      <translation>寸法の先頭にある接頭記号を削除</translation>
     </message>
   </context>
   <context>
@@ -1320,12 +1320,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="705"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
-      <translation>線属性、カスケード間隔、デルタ距離を選択</translation>
+      <translation>線の属性、カスケード間隔、デルタ距離を選択</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="706"/>
       <source>Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</source>
-      <translation type="unfinished">Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</translation>
+      <translation>カスケード間隔とデルタ距離を含む、表示用の線と中心線のデフォルト属性を設定</translation>
     </message>
   </context>
   <context>
@@ -1345,7 +1345,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1705"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</source>
-      <translation type="unfinished">Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
+      <translation>選択した表示用線または中心線を両端から指定された距離だけ短縮</translation>
     </message>
   </context>
   <context>
@@ -1359,13 +1359,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="545"/>
       <location filename="../../CommandExtensionPack.cpp" line="679"/>
       <source>Cosmetic Thread Bolt Bottom View</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Bottom View</translation>
+      <translation>表示用のねじボルト底面ビュー</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="547"/>
       <location filename="../../CommandExtensionPack.cpp" line="681"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</translation>
+      <translation>選択したボルト/ねじ/ロッドの上面ビューまたは下面ビューに表示用のネジ山を追加</translation>
     </message>
   </context>
   <context>
@@ -1379,13 +1379,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="442"/>
       <location filename="../../CommandExtensionPack.cpp" line="671"/>
       <source>Cosmetic Thread Bolt Side View</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Side View</translation>
+      <translation>表示用のねじボルト側面ビュー</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="443"/>
       <location filename="../../CommandExtensionPack.cpp" line="674"/>
       <source>Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</translation>
+      <translation>選択した2つの平行線の間のボルト/ねじ/ロッドの側面ビューに表示用のねじ山を追加</translation>
     </message>
   </context>
   <context>
@@ -1399,17 +1399,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="494"/>
       <location filename="../../CommandExtensionPack.cpp" line="664"/>
       <source>Cosmetic Thread Hole Bottom View</source>
-      <translation type="unfinished">Cosmetic Thread Hole Bottom View</translation>
+      <translation>表示用のねじ穴底面ビュー</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <source>Adds a cosmetic thread to the top or bottom view of selected holes or circles</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of selected holes or circles</translation>
+      <translation>選択した穴または円の上面ビューまたは下面ビューに表示用のねじ山を追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="667"/>
       <source>Adds a cosmetic thread to the top or bottom view of holes or circles</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of holes or circles</translation>
+      <translation>穴または円の上面ビューまたは下面ビューに表示用のねじ山を追加</translation>
     </message>
   </context>
   <context>
@@ -1423,17 +1423,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="391"/>
       <location filename="../../CommandExtensionPack.cpp" line="657"/>
       <source>Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Cosmetic Thread Hole Side View</translation>
+      <translation>表示用のねじ穴側面ビュー</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="392"/>
       <source>Adds a cosmetic thread to the side view of a hole or circle</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a hole or circle</translation>
+      <translation>穴または円の側面ビューに表示用のねじ山を追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="659"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</translation>
+      <translation>選択した2つの平行線の間の選択した穴の側面ビューに表示用のねじ山を追加</translation>
     </message>
   </context>
   <context>
@@ -1446,12 +1446,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="577"/>
       <source>Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Cosmetic Thread Hole Side View</translation>
+      <translation>表示用のねじ穴側面ビュー</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="578"/>
       <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</translation>
+      <translation>選択した2つの平行線の間の選択した穴の側面ビューに表示用のねじ山を追加</translation>
     </message>
   </context>
   <context>
@@ -1464,12 +1464,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="795"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation type="unfinished">Cosmetic Intersection Vertices</translation>
+      <translation>表示用の交差頂点</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>Adds cosmetic vertices at the intersections of selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the intersections of selected edges</translation>
+      <translation>選択したエッジの交点に表示用の頂点を追加</translation>
     </message>
   </context>
   <context>
@@ -1482,22 +1482,22 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1838"/>
       <source>Extent Dimension</source>
-      <translation type="unfinished">Extent Dimension</translation>
+      <translation>範囲寸法</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1839"/>
       <source>Inserts a dimension showing the extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the extent (overall length) of an object or feature</translation>
+      <translation>オブジェクトまたはフィーチャーの範囲（全体長さ）を示す寸法を挿入</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1905"/>
       <source>Horizontal extent</source>
-      <translation type="unfinished">Horizontal extent</translation>
+      <translation>水平範囲</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1910"/>
       <source>Vertical extent</source>
-      <translation type="unfinished">Vertical extent</translation>
+      <translation>垂直範囲</translation>
     </message>
   </context>
   <context>
@@ -1510,12 +1510,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Centerline Between 2 Faces</source>
-      <translation type="unfinished">Centerline Between 2 Faces</translation>
+      <translation>2面間の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="681"/>
       <source>Adds a centerline to selected faces</source>
-      <translation type="unfinished">Adds a centerline to selected faces</translation>
+      <translation>選択した面に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -1528,12 +1528,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="170"/>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>幾何ハッチング</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="171"/>
       <source>Applies a geometric hatch pattern to the selected faces</source>
-      <translation type="unfinished">Applies a geometric hatch pattern to the selected faces</translation>
+      <translation>選択した面に幾何ハッチングパターンを適用</translation>
     </message>
   </context>
   <context>
@@ -1546,12 +1546,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
       <source>Image Hatch</source>
-      <translation type="unfinished">Image Hatch</translation>
+      <translation>画像ハッチング</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="76"/>
       <source>Applies a hatch pattern to the selected faces using an image file</source>
-      <translation type="unfinished">Applies a hatch pattern to the selected faces using an image file</translation>
+      <translation>画像ファイルを使用して、選択した面にハッチングパターンを適用</translation>
     </message>
   </context>
   <context>
@@ -1564,12 +1564,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1600"/>
       <source>Horizontal Length Dimension</source>
-      <translation type="unfinished">Horizontal Length Dimension</translation>
+      <translation>水平方向の長さ寸法</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1601"/>
       <source>Inserts a horizontal length dimension of an edge or distance between two points</source>
-      <translation type="unfinished">Inserts a horizontal length dimension of an edge or distance between two points</translation>
+      <translation>エッジまたは2点間の距離の水平方向の長さ寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -1582,12 +1582,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1932"/>
       <source>Horizontal Extent Dimension</source>
-      <translation type="unfinished">Horizontal Extent Dimension</translation>
+      <translation>水平方向の範囲寸法</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1933"/>
       <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature.</source>
-      <translation type="unfinished">Inserts a dimension showing the horizontal extent (overall length) of an object or feature.</translation>
+      <translation>オブジェクトまたはフィーチャーの水平方向の範囲（全体長さ）を示す寸法を挿入します。</translation>
     </message>
   </context>
   <context>
@@ -1600,22 +1600,22 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>Bitmap Image</source>
-      <translation type="unfinished">Bitmap Image</translation>
+      <translation>ビットマップ画像</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>Inserts a bitmap from a file into the current page</source>
-      <translation type="unfinished">Inserts a bitmap from a file into the current page</translation>
+      <translation>現在のページにファイルからビットマップを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="244"/>
       <source>Insert bitmap from a file into a page</source>
-      <translation type="unfinished">Insert bitmap from a file into a page</translation>
+      <translation>ファイルからページにビットマップを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="259"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>画像ファイルを選択</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="261"/>
@@ -1638,7 +1638,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="88"/>
       <source>Adds a leader line</source>
-      <translation type="unfinished">Adds a leader line</translation>
+      <translation>引き出し線を追加</translation>
     </message>
   </context>
   <context>
@@ -1656,7 +1656,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1554"/>
       <source>Inserts a length dimension of an edge or distance between two points</source>
-      <translation type="unfinished">Inserts a length dimension of an edge or distance between two points</translation>
+      <translation>エッジまたは2点間の距離の長さ寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -1669,12 +1669,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="449"/>
       <source>Midpoint Vertices</source>
-      <translation type="unfinished">Midpoint Vertices</translation>
+      <translation>中点</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="450"/>
       <source>Adds cosmetic vertices at the midpoint of the selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the midpoint of the selected edges</translation>
+      <translation>選択したエッジの中点に表示用の頂点を追加</translation>
     </message>
   </context>
   <context>
@@ -1687,12 +1687,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>新しいページ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Creates a new page with the default template</source>
-      <translation type="unfinished">Creates a new page with the default template</translation>
+      <translation>デフォルトのテンプレートで新しいページを作成</translation>
     </message>
   </context>
   <context>
@@ -1705,17 +1705,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>New Page From Template</source>
-      <translation type="unfinished">New Page From Template</translation>
+      <translation>テンプレートから新しいページ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="169"/>
       <source>Creates a new page from a custom template</source>
-      <translation type="unfinished">Creates a new page from a custom template</translation>
+      <translation>カスタムテンプレートから新しいページを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Select a template file</source>
-      <translation type="unfinished">Select a template file</translation>
+      <translation>テンプレートファイルを選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="182"/>
@@ -1738,7 +1738,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Prints all pages with the print dialog</source>
-      <translation type="unfinished">Prints all pages with the print dialog</translation>
+      <translation>印刷ダイアログですべてのページを印刷</translation>
     </message>
   </context>
   <context>
@@ -1751,12 +1751,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1915"/>
       <source>Project Shape</source>
-      <translation type="unfinished">Project Shape</translation>
+      <translation>形状を投影</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1916"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
-      <translation type="unfinished">Creates a projected geometry of the selected object in the 3D view from the current camera angle</translation>
+      <translation>現在のカメラ角度から、3Dビューで選択したオブジェクトの投影ジオメトリーを作成</translation>
     </message>
   </context>
   <context>
@@ -1774,7 +1774,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
-      <translation type="unfinished">Inserts multiple new linked views of the selected objects in the current page</translation>
+      <translation>現在のページに、選択したオブジェクトの複数の新しいリンクビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -1787,12 +1787,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="488"/>
       <source>Quadrant Vertices</source>
-      <translation type="unfinished">Quadrant Vertices</translation>
+      <translation>四分点</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="489"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation type="unfinished">Adds cosmetic vertices at the quadrant points of the selected circles</translation>
+      <translation>選択した円の四分点に表示用の頂点を追加</translation>
     </message>
   </context>
   <context>
@@ -1810,7 +1810,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1458"/>
       <source>Inserts a radius dimension of a circular edge or arc</source>
-      <translation type="unfinished">Inserts a radius dimension of a circular edge or arc</translation>
+      <translation>円形エッジまたは円弧の半径寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -1828,7 +1828,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Redraws the current page</source>
-      <translation type="unfinished">Redraws the current page</translation>
+      <translation>現在のページを再描画</translation>
     </message>
   </context>
   <context>
@@ -1841,12 +1841,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="149"/>
       <source>Rich Text Annotation</source>
-      <translation type="unfinished">Rich Text Annotation</translation>
+      <translation>リッチテキスト注釈</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="150"/>
       <source>Inserts a rich text annotation in the current page</source>
-      <translation type="unfinished">Inserts a rich text annotation in the current page</translation>
+      <translation>現在のページにリッチテキスト注釈を挿入</translation>
     </message>
   </context>
   <context>
@@ -1859,12 +1859,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="728"/>
       <source>Section View (Simple or Complex)</source>
-      <translation type="unfinished">Section View (Simple or Complex)</translation>
+      <translation>断面ビュー（シンプルまたは複雑）</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="729"/>
       <source>Inserts a simple or complex section view in the current page</source>
-      <translation type="unfinished">Inserts a simple or complex section view in the current page</translation>
+      <translation>現在のページに単純または複雑な断面ビューを挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="793"/>
@@ -1874,7 +1874,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="797"/>
       <source>Complex Section View</source>
-      <translation type="unfinished">Complex Section View</translation>
+      <translation>複雑な断面ビュー</translation>
     </message>
   </context>
   <context>
@@ -1892,7 +1892,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="821"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
-      <translation type="unfinished">Inserts a new section view based on the selected view in the current page</translation>
+      <translation>現在のページに選択したビューに基づく新しい断面ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -1905,12 +1905,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>Toggle Edge Visibility</source>
-      <translation type="unfinished">Toggle Edge Visibility</translation>
+      <translation>エッジの表示/非表示を切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1331"/>
       <source>Toggles the visibility of the selected edges</source>
-      <translation type="unfinished">Toggles the visibility of the selected edges</translation>
+      <translation>選択したエッジの表示を切り替え</translation>
     </message>
   </context>
   <context>
@@ -1923,12 +1923,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1735"/>
       <source>Spreadsheet View</source>
-      <translation type="unfinished">Spreadsheet View</translation>
+      <translation>スプレッドシートビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1736"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
-      <translation type="unfinished">Inserts a view of a spreadsheet in the current page</translation>
+      <translation>現在のページにスプレッドシートのビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -1946,7 +1946,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="237"/>
       <source>Moves the selected view to the bottom of the stack</source>
-      <translation type="unfinished">Moves the selected view to the bottom of the stack</translation>
+      <translation>選択したビューをスタックの一番下に移動</translation>
     </message>
   </context>
   <context>
@@ -1964,7 +1964,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="357"/>
       <source>Moves the selected view down 1 level in the view stack</source>
-      <translation type="unfinished">Moves the selected view down 1 level in the view stack</translation>
+      <translation>選択したビューをビュースタックの1段階下に移動</translation>
     </message>
   </context>
   <context>
@@ -1977,12 +1977,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="63"/>
       <source>View Stacking Order</source>
-      <translation type="unfinished">View Stacking Order</translation>
+      <translation>ビューのスタック順序</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>Adjusts the stacking order of the selected views</source>
-      <translation type="unfinished">Adjusts the stacking order of the selected views</translation>
+      <translation>選択したビューのスタック順序を調整</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="141"/>
@@ -2020,7 +2020,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="177"/>
       <source>Moves the selected view to the top of the stack</source>
-      <translation type="unfinished">Moves the selected view to the top of the stack</translation>
+      <translation>選択したビューをスタックの一番上に移動</translation>
     </message>
   </context>
   <context>
@@ -2038,7 +2038,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="297"/>
       <source>Moves the selected view up 1 level in the view stack</source>
-      <translation type="unfinished">Moves the selected view up 1 level in the view stack</translation>
+      <translation>選択したビューをビュースタックの1段階上に移動</translation>
     </message>
   </context>
   <context>
@@ -2051,12 +2051,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>Surface Finish Symbol</source>
-      <translation type="unfinished">Surface Finish Symbol</translation>
+      <translation>表面仕上げ記号</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1460"/>
       <source>Adds a surface finish symbol in the selected view</source>
-      <translation type="unfinished">Adds a surface finish symbol in the selected view</translation>
+      <translation>選択したビューに表面仕上げ記号を追加</translation>
     </message>
   </context>
   <context>
@@ -2069,12 +2069,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1533"/>
       <source>Insert SVG</source>
-      <translation type="unfinished">Insert SVG</translation>
+      <translation>SVGを挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1534"/>
       <source>Inserts a symbol from an SVG file</source>
-      <translation type="unfinished">Inserts a symbol from an SVG file</translation>
+      <translation>SVGファイルから記号を挿入</translation>
     </message>
   </context>
   <context>
@@ -2087,12 +2087,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1648"/>
       <source>Vertical Length Dimension</source>
-      <translation type="unfinished">Vertical Length Dimension</translation>
+      <translation>垂直長さ寸法</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1649"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
-      <translation type="unfinished">Inserts a vertical length dimension of an edge or distance between two points</translation>
+      <translation>エッジまたは2点間の距離の垂直方向の長さ寸法を挿入</translation>
     </message>
   </context>
   <context>
@@ -2105,12 +2105,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2057"/>
       <source>Vertical Extent Dimension</source>
-      <translation type="unfinished">Vertical Extent Dimension</translation>
+      <translation>垂直範囲寸法</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2058"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
-      <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature.</translation>
+      <translation>オブジェクトまたはフィーチャーの垂直方向の範囲（全体長さ）を示す寸法を挿入します。</translation>
     </message>
   </context>
   <context>
@@ -2123,14 +2123,14 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>新しいビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
       <source>Inserts a new view into the current page based on the selected object in the tree view or 3D view.
 If no object is selected, a file browser opens to select an SVG or image file.</source>
-      <translation type="unfinished">Inserts a new view into the current page based on the selected object in the tree view or 3D view.
-If no object is selected, a file browser opens to select an SVG or image file.</translation>
+      <translation>ツリー ビューや3Dビューで選択したオブジェクトに基づいて、現在のページに新しいビューを挿入します。
+オブジェクトが選択されていない場合、SVGや画像ファイルを選択するためのファイルブラウザが開きます。</translation>
     </message>
   </context>
   <context>
@@ -2143,12 +2143,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>Weld Symbol</source>
-      <translation type="unfinished">Weld Symbol</translation>
+      <translation>溶接記号</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1396"/>
       <source>Adds welding information to the selected leader line</source>
-      <translation type="unfinished">Adds welding information to the selected leader line</translation>
+      <translation>選択した引き出し線に溶接情報を追加</translation>
     </message>
   </context>
   <context>
@@ -2168,7 +2168,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="480"/>
       <source>Create image</source>
-      <translation type="unfinished">Create image</translation>
+      <translation>画像を作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="498"/>
@@ -2195,12 +2195,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1136"/>
       <source>Create projection group</source>
-      <translation type="unfinished">Create projection group</translation>
+      <translation>投影グループを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1356"/>
       <source>Create clip</source>
-      <translation type="unfinished">Create clip</translation>
+      <translation>クリップを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1428"/>
@@ -2226,12 +2226,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="334"/>
       <source>Add midpoint vertices</source>
-      <translation type="unfinished">Add midpoint vertices</translation>
+      <translation>中点を追加</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="361"/>
       <source>Quadrant vertices</source>
-      <translation type="unfinished">Quadrant vertices</translation>
+      <translation>四分点</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="544"/>
@@ -2282,31 +2282,31 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="243"/>
       <source>Insert dimension</source>
-      <translation type="unfinished">Insert dimension</translation>
+      <translation>寸法を挿入</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="758"/>
       <source>Add area dimension</source>
-      <translation type="unfinished">Add area dimension</translation>
+      <translation>面積寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="769"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1165"/>
       <source>Add distance dimension</source>
-      <translation type="unfinished">Add distance dimension</translation>
+      <translation>距離寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="778"/>
       <location filename="../../CommandCreateDims.cpp" line="884"/>
       <location filename="../../CommandCreateDims.cpp" line="1145"/>
       <source>Add distanceX chamfer dimension</source>
-      <translation type="unfinished">Add distanceX chamfer dimension</translation>
+      <translation>距離X面取り寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="831"/>
       <source>Add point to line distance dimension</source>
-      <translation type="unfinished">Add point to line distance dimension</translation>
+      <translation>点から線までの距離寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="847"/>
@@ -2318,73 +2318,73 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="998"/>
       <location filename="../../CommandCreateDims.cpp" line="1019"/>
       <source>Add extent dimension</source>
-      <translation type="unfinished">Add extent dimension</translation>
+      <translation>範囲寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="895"/>
       <source>Add angle dimension</source>
-      <translation type="unfinished">Add angle dimension</translation>
+      <translation>角度寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="910"/>
       <source>Add circle to line distance dimension</source>
-      <translation type="unfinished">Add circle to line distance dimension</translation>
+      <translation>円から線までの距離寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="925"/>
       <source>Add ellipse to line distance dimension</source>
-      <translation type="unfinished">Add ellipse to line distance dimension</translation>
+      <translation>楕円から線までの距離寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="949"/>
       <location filename="../../CommandCreateDims.cpp" line="983"/>
       <source>Add arc length dimension</source>
-      <translation type="unfinished">Add arc length dimension</translation>
+      <translation>円弧の長さ寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="959"/>
       <source>Add circle to circle distance dimension</source>
-      <translation type="unfinished">Add circle to circle distance dimension</translation>
+      <translation>円から円までの距離寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="993"/>
       <source>Add ellipse to ellipse distance dimension</source>
-      <translation type="unfinished">Add ellipse to ellipse distance dimension</translation>
+      <translation>楕円から楕円までの距離寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>Add radius dimension</source>
-      <translation type="unfinished">Add radius dimension</translation>
+      <translation>半径寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1053"/>
       <source>Add diameter dimension</source>
-      <translation type="unfinished">Add diameter dimension</translation>
+      <translation>直径寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1148"/>
       <source>Add distanceX dimension</source>
-      <translation type="unfinished">Add distanceX dimension</translation>
+      <translation>距離X寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1155"/>
       <source>Add distanceY chamfer dimension</source>
-      <translation type="unfinished">Add distanceY chamfer dimension</translation>
+      <translation>距離Y面取り寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1158"/>
       <source>Add distanceY dimension</source>
-      <translation type="unfinished">Add distanceY dimension</translation>
+      <translation>距離Y寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1203"/>
       <source>Add distanceX extent dimension</source>
-      <translation type="unfinished">Add distanceX extent dimension</translation>
+      <translation>距離X範囲寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1208"/>
       <source>Add distanceY extent dimension</source>
-      <translation type="unfinished">Add distanceY extent dimension</translation>
+      <translation>距離Y範囲寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1250"/>
@@ -2419,17 +2419,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1963"/>
       <source>Create Dimension DistanceX</source>
-      <translation type="unfinished">Create Dimension DistanceX</translation>
+      <translation>寸法距離Xを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1965"/>
       <source>Create Dimension DistanceY</source>
-      <translation type="unfinished">Create Dimension DistanceY</translation>
+      <translation>寸法距離Yを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2252"/>
       <source>Create dimension</source>
-      <translation type="unfinished">Create dimension</translation>
+      <translation>寸法を作成</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="200"/>
@@ -2444,7 +2444,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="121"/>
       <source>Remove old hatch</source>
-      <translation type="unfinished">Remove old hatch</translation>
+      <translation>古いハッチングを削除</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="199"/>
@@ -2484,7 +2484,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="251"/>
       <source>Update Cosmetic Line</source>
-      <translation type="unfinished">Update Cosmetic Line</translation>
+      <translation>表示用の線を更新</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="229"/>
@@ -2494,12 +2494,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="301"/>
       <source>Update Cosmetic Circle</source>
-      <translation type="unfinished">Update Cosmetic Circle</translation>
+      <translation>表示用の円を更新</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="433"/>
       <source>Create Detail view</source>
-      <translation type="unfinished">Create Detail view</translation>
+      <translation>詳細ビューを作成</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="475"/>
@@ -2529,7 +2529,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskComplexSection.cpp" line="553"/>
       <source>Create Complex Section</source>
-      <translation type="unfinished">Create Complex Section</translation>
+      <translation>複雑な断面を作成</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="572"/>
@@ -2560,77 +2560,77 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="602"/>
       <source>Position Horizontal Chain Dimension</source>
-      <translation type="unfinished">Position Horizontal Chain Dimension</translation>
+      <translation>水平方向の連鎖寸法を位置調整</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="663"/>
       <source>Position Vert Chain Dimension</source>
-      <translation type="unfinished">Position Vert Chain Dimension</translation>
+      <translation>垂直方向の連鎖寸法を位置調整</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="725"/>
       <source>Position Oblique Chain Dimension</source>
-      <translation type="unfinished">Position Oblique Chain Dimension</translation>
+      <translation>斜め方向の連鎖寸法を位置調整</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="911"/>
       <source>Cascade Horizontal Dimension</source>
-      <translation type="unfinished">Cascade Horizontal Dimension</translation>
+      <translation>カスケード水平寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="977"/>
       <source>Cascade Vertical Dimension</source>
-      <translation type="unfinished">Cascade Vertical Dimension</translation>
+      <translation>カスケード垂直寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1044"/>
       <source>Cascade Oblique Dimension</source>
-      <translation type="unfinished">Cascade Oblique Dimension</translation>
+      <translation>カスケード斜め寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1243"/>
       <source>Create Horizontal Chain Dimension</source>
-      <translation type="unfinished">Create Horizontal Chain Dimension</translation>
+      <translation>水平方向の連鎖寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1308"/>
       <source>Create Vert Chain dimension</source>
-      <translation type="unfinished">Create Vert Chain dimension</translation>
+      <translation>垂直方向の連鎖寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1373"/>
       <source>Create oblique chain dimension</source>
-      <translation type="unfinished">Create oblique chain dimension</translation>
+      <translation>斜め方向の連鎖寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1602"/>
       <source>Create Horizontal Coord Dimension</source>
-      <translation type="unfinished">Create Horizontal Coord Dimension</translation>
+      <translation>水平方向の座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1670"/>
       <source>Create vert coord dimension</source>
-      <translation type="unfinished">Create vert coord dimension</translation>
+      <translation>垂直方向の座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1740"/>
       <source>Create oblique coord dimension</source>
-      <translation type="unfinished">Create oblique coord dimension</translation>
+      <translation>斜め方向の座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1971"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>水平方向の面取り寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2037"/>
       <source>Create Vert Chamfer Dimension</source>
-      <translation type="unfinished">Create Vert Chamfer Dimension</translation>
+      <translation>垂直方向の面取り寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2212"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>円弧の長さ寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="204"/>
@@ -2675,57 +2675,57 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="105"/>
       <source>TechDraw hole circle</source>
-      <translation type="unfinished">TechDraw hole circle</translation>
+      <translation>TechDraw 穴の円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="126"/>
       <source>Bolt circle centerlines</source>
-      <translation type="unfinished">Bolt circle centerlines</translation>
+      <translation>ボルト円の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="201"/>
       <source>TechDraw circle centerlines</source>
-      <translation type="unfinished">TechDraw circle centerlines</translation>
+      <translation>TechDraw 円の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="476"/>
       <source>Cosmetic thread hole bottom</source>
-      <translation type="unfinished">Cosmetic thread hole bottom</translation>
+      <translation>表示用のねじ穴底面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="750"/>
       <source>TechDraw change line attributes</source>
-      <translation type="unfinished">TechDraw change line attributes</translation>
+      <translation>TechDraw 線の属性を変更</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="753"/>
       <source>Change line attributes</source>
-      <translation type="unfinished">Change line attributes</translation>
+      <translation>線の属性を変更</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="809"/>
       <source>TechDraw cosmetic intersection vertices</source>
-      <translation type="unfinished">TechDraw cosmetic intersection vertices</translation>
+      <translation>TechDraw 表示用の交差頂点</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="812"/>
       <source>Cosmetic intersection vertices</source>
-      <translation type="unfinished">Cosmetic intersection vertices</translation>
+      <translation>表示用の交差頂点</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1006"/>
       <source>TechDraw cosmetic arc</source>
-      <translation type="unfinished">TechDraw cosmetic arc</translation>
+      <translation>TechDraw 表示用の円弧</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1009"/>
       <source>Cosmetic arc</source>
-      <translation type="unfinished">Cosmetic arc</translation>
+      <translation>表示用の円弧</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1075"/>
       <source>TechDraw cosmetic circle</source>
-      <translation type="unfinished">TechDraw cosmetic circle</translation>
+      <translation>TechDraw 表示用の円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1078"/>
@@ -2765,17 +2765,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1590"/>
       <source>Extend/shorten line</source>
-      <translation type="unfinished">Extend/shorten line</translation>
+      <translation>線を延長/短縮</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1844"/>
       <source>TechDraw Calculate Selected Area</source>
-      <translation type="unfinished">TechDraw Calculate Selected Area</translation>
+      <translation>TechDraw 選択した面積の計算</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1975"/>
       <source>TechDraw Calculate Selected Arc Length</source>
-      <translation type="unfinished">TechDraw Calculate Selected Arc Length</translation>
+      <translation>TechDraw 選択した円弧の長さを計算</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1886"/>
@@ -2810,12 +2810,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="558"/>
       <source>Create Weld Symbol</source>
-      <translation type="unfinished">Create Weld Symbol</translation>
+      <translation>溶接記号を作成</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="566"/>
       <source>Edit Weld Symbol</source>
-      <translation type="unfinished">Edit Weld Symbol</translation>
+      <translation>溶接記号を編集</translation>
     </message>
   </context>
   <context>
@@ -2912,72 +2912,72 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="96"/>
       <source>Undo (Ctrl+Z)</source>
-      <translation type="unfinished">Undo (Ctrl+Z)</translation>
+      <translation>元に戻す (Ctrl+Z)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="145"/>
       <source>Cut (Ctrl+X)</source>
-      <translation type="unfinished">Cut (Ctrl+X)</translation>
+      <translation>切り取り (Ctrl+X)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
       <source>Copy (Ctrl+C)</source>
-      <translation type="unfinished">Copy (Ctrl+C)</translation>
+      <translation>コピー (Ctrl+C)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
       <source>Paste (Ctrl+V)</source>
-      <translation type="unfinished">Paste (Ctrl+V)</translation>
+      <translation>貼り付け (Ctrl+V)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="221"/>
       <source>Link (Ctrl+L)</source>
-      <translation type="unfinished">Link (Ctrl+L)</translation>
+      <translation>リンク (Ctrl+L)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="280"/>
       <source>Italic (Ctrl+I)</source>
-      <translation type="unfinished">Italic (Ctrl+I)</translation>
+      <translation>斜体 (Ctrl + I)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="306"/>
       <source>Underline (Ctrl+U)</source>
-      <translation type="unfinished">Underline (Ctrl+U)</translation>
+      <translation>下線 (Ctrl+U)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="329"/>
       <source>Strikethrough text</source>
-      <translation type="unfinished">Strikethrough text</translation>
+      <translation>取り消し線</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
       <source>Bullet list (Ctrl+-)</source>
-      <translation type="unfinished">Bullet list (Ctrl+-)</translation>
+      <translation>番号なしリスト (Ctrl+-)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (Ctrl+=)</source>
-      <translation type="unfinished">Ordered list (Ctrl+=)</translation>
+      <translation>番号付きリスト (Ctrl+=)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
       <source>Decrease indentation (Ctrl+,)</source>
-      <translation type="unfinished">Decrease indentation (Ctrl+,)</translation>
+      <translation>インデントを減らす (Ctrl+,)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="417"/>
       <source>Decrease Indentation</source>
-      <translation type="unfinished">Decrease Indentation</translation>
+      <translation>インデントを減らす</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="437"/>
       <source>Increase indentation (Ctrl+.)</source>
-      <translation type="unfinished">Increase indentation (Ctrl+.)</translation>
+      <translation>インデントを増やす (Ctrl+.)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="440"/>
       <source>Increase Indentation</source>
-      <translation type="unfinished">Increase Indentation</translation>
+      <translation>インデントを増やす</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
@@ -3137,7 +3137,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</source>
-      <translation type="unfinished">To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</translation>
+      <translation>既存のオブジェクトからビューを挿入するには、このツールを起動する前にビューを選択してください。 何も選択されていない場合にはSVGまたは画像ファイルを挿入するためのファイルブラウザが開きます。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
@@ -3162,12 +3162,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Select exactly one view to add to clip group</source>
-      <translation type="unfinished">Select exactly one view to add to clip group</translation>
+      <translation>クリップグループに追加するビューを1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1473"/>
       <source>Select exactly one view to remove from clip group</source>
-      <translation type="unfinished">Select exactly one view to remove from clip group</translation>
+      <translation>クリップグループから取り除くビューを1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1835"/>
@@ -3200,18 +3200,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="591"/>
       <source>Select objects to break or a base view and break definition objects</source>
-      <translation type="unfinished">Select objects to break or a base view and break definition objects</translation>
+      <translation>破断するオブジェクト、またはベースビューと破断定義オブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="630"/>
       <source>No break objects found in this selection</source>
-      <translation type="unfinished">No break objects found in this selection</translation>
+      <translation>破断オブジェクトが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <location filename="../../Command.cpp" line="1123"/>
       <source>No shapes, groups, or links in this selection</source>
-      <translation type="unfinished">No shapes, groups, or links in this selection</translation>
+      <translation>シェイプ、グループ、リンクが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="310"/>
@@ -3260,7 +3260,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="1454"/>
       <location filename="../../CommandExtensionPack.cpp" line="1747"/>
       <source>Task in progress</source>
-      <translation type="unfinished">Task in progress</translation>
+      <translation>進行中のタスク</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
@@ -3289,23 +3289,23 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1343"/>
       <location filename="../../CommandAnnotate.cpp" line="1409"/>
       <source>Close active task dialog and try again</source>
-      <translation type="unfinished">Close active task dialog and try again</translation>
+      <translation>アクティブなタスクダイアログを閉じて、もう一度やり直してください</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="857"/>
       <location filename="../../Command.cpp" line="1024"/>
       <source>Select at least 1 DrawViewPart object as base</source>
-      <translation type="unfinished">Select at least 1 DrawViewPart object as base</translation>
+      <translation>ベースとして少なくとも1つのDrawViewPartオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="974"/>
       <source>No base view selected</source>
-      <translation type="unfinished">No base view selected</translation>
+      <translation>ベースビューが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="981"/>
       <source>No base view, shapes, groups, or links in this selection</source>
-      <translation type="unfinished">No base view, shapes, groups, or links in this selection</translation>
+      <translation>ベースビュー、シェイプ、グループ、リンクが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1191"/>
@@ -3322,42 +3322,42 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1206"/>
       <source>Create a page first</source>
-      <translation type="unfinished">Create a page first</translation>
+      <translation>最初にページを作成してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1218"/>
       <source>No view of a part in selection</source>
-      <translation type="unfinished">No view of a part in selection</translation>
+      <translation>パートのビューが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1389"/>
       <source>Select one clip group and one view</source>
-      <translation type="unfinished">Select one clip group and one view</translation>
+      <translation>クリップグループ、ビューを1つずつ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains a BIM view which will not be exported. Continue?</translation>
+      <translation>ページにはエクスポートされないBIMビューが含まれています。続行しますか？</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
       <source>Select exactly one clip group</source>
-      <translation type="unfinished">Select exactly one clip group</translation>
+      <translation>クリップグループを1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1420"/>
       <source>Clip and view must be from same page</source>
-      <translation type="unfinished">Clip and view must be from same page</translation>
+      <translation>クリップとビューは同じページにある必要があります。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1492"/>
       <source>View does not belong to a clip</source>
-      <translation type="unfinished">View does not belong to a clip</translation>
+      <translation>ビューはクリップに属していません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1554"/>
       <source>Scalable vector graphic</source>
-      <translation type="unfinished">Scalable vector graphic</translation>
+      <translation>スケーラブル・ベクター・グラフィック</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1554"/>
@@ -3367,32 +3367,32 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1615"/>
       <source>Select at least one object</source>
-      <translation type="unfinished">Select at least one object</translation>
+      <translation>少なくとも1つのオブジェクトを選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1690"/>
       <source>Select only 1 BIM section plane</source>
-      <translation type="unfinished">Select only 1 BIM section plane</translation>
+      <translation>BIM断面平面を1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>No BIM section plane in selection</source>
-      <translation type="unfinished">No BIM section plane in selection</translation>
+      <translation>BIM断面平面が選択されていません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Select exactly one spreadsheet object</source>
-      <translation type="unfinished">Select exactly one spreadsheet object</translation>
+      <translation>スプレッドシートオブジェクトを1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
       <source>No drawing page</source>
-      <translation type="unfinished">No drawing page</translation>
+      <translation>図面ページがありません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1870"/>
       <source>Cannot export selection</source>
-      <translation type="unfinished">Cannot export selection</translation>
+      <translation>選択対象をエクスポートできません。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1471"/>
@@ -3407,58 +3407,58 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1947"/>
       <location filename="../../CommandCreateDims.cpp" line="2072"/>
       <source>Close the active task dialog and try again</source>
-      <translation type="unfinished">Close the active task dialog and try again</translation>
+      <translation>アクティブなタスクダイアログを閉じて、もう一度やり直してください</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1973"/>
       <location filename="../../CommandCreateDims.cpp" line="2163"/>
       <source>No view of a part in selection.</source>
-      <translation type="unfinished">No view of a part in selection.</translation>
+      <translation>パートのビューが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2015"/>
       <source>Cannot make 2D extent dimension from selection</source>
-      <translation type="unfinished">Cannot make 2D extent dimension from selection</translation>
+      <translation>選択対象から2Dの範囲寸法を作ることはできません。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2031"/>
       <source>Cannot make 3D extent dimension from selection</source>
-      <translation type="unfinished">Cannot make 3D extent dimension from selection</translation>
+      <translation>選択対象から3Dの範囲寸法を作ることはできません。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2111"/>
       <source>There is no dimension in your selection</source>
-      <translation type="unfinished">There is no dimension in your selection</translation>
+      <translation>寸法が選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2178"/>
       <source>Cannot make 2D dimension from selection</source>
-      <translation type="unfinished">Cannot make 2D dimension from selection</translation>
+      <translation>選択対象からは2D寸法を作成できません</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2194"/>
       <source>Cannot make 3D dimension from selection</source>
-      <translation type="unfinished">Cannot make 3D dimension from selection</translation>
+      <translation>選択対象からは3D寸法を作成できません</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2207"/>
       <source>Ellipse curve warning</source>
-      <translation type="unfinished">Ellipse curve warning</translation>
+      <translation>楕円曲線の警告</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2218"/>
       <source>B-spline curve warning</source>
-      <translation type="unfinished">B-spline curve warning</translation>
+      <translation>B-スプライン曲線の警告</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2229"/>
       <source>B-spline curve error</source>
-      <translation type="unfinished">B-spline curve error</translation>
+      <translation>B-スプライン曲線のエラー</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2230"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
-      <translation type="unfinished">Selected edge is a B-spline and a radius/diameter cannot be calculated.</translation>
+      <translation>選択されたエッジはB-スプラインで、半径/直径は計算できません。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2347"/>
@@ -3490,7 +3490,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAlign.cpp" line="54"/>
       <source>You must select 2 vertices or 1 edge
 </source>
-      <translation type="unfinished">You must select 2 vertices or 1 edge
+      <translation>2つの頂点、または1つのエッジを選択する必要があります。
 </translation>
     </message>
     <message>
@@ -3514,7 +3514,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandStack.cpp" line="250"/>
       <location filename="../../CommandStack.cpp" line="310"/>
       <source>Close the active task dialog and try again.</source>
-      <translation type="unfinished">Close the active task dialog and try again.</translation>
+      <translation>アクティブなタスクダイアログを閉じて、もう一度やり直してください。</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="369"/>
@@ -3525,7 +3525,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="122"/>
       <source>TechDraw hole circle</source>
-      <translation type="unfinished">TechDraw hole circle</translation>
+      <translation>TechDraw 穴の円</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="370"/>
@@ -3541,42 +3541,42 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="884"/>
       <source>Selection is empty.</source>
-      <translation type="unfinished">Selection is empty.</translation>
+      <translation>何も選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="907"/>
       <source>You must select a base View for the circle.</source>
-      <translation type="unfinished">You must select a base View for the circle.</translation>
+      <translation>円のためのベースビューを選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="929"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+      <translation>選択対象は表示用の円、表示用の円弧ではありません。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="965"/>
       <source>Please select a center for the circle.</source>
-      <translation type="unfinished">Please select a center for the circle.</translation>
+      <translation>円の中心を選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1861"/>
       <source>No faces in selection</source>
-      <translation type="unfinished">No faces in selection</translation>
+      <translation>面が選択されていません</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1990"/>
       <source>No edges in selection</source>
-      <translation type="unfinished">No edges in selection</translation>
+      <translation>エッジが選択されていません</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2215"/>
       <source>TechDraw thread hole side</source>
-      <translation type="unfinished">TechDraw thread hole side</translation>
+      <translation>TechDraw ねじ穴の断面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2216"/>
       <source>Select 2 straight lines</source>
-      <translation type="unfinished">Select 2 straight lines</translation>
+      <translation>2直線を選択</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="769"/>
@@ -3597,7 +3597,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="116"/>
       <source>Cannot attach leader. No base view selected.</source>
-      <translation type="unfinished">Cannot attach leader. No base view selected.</translation>
+      <translation>引き出し線をアタッチできません。ベースビューが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
@@ -3605,64 +3605,64 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="907"/>
       <location filename="../../CommandAnnotate.cpp" line="1046"/>
       <source>You must select a base view for the line</source>
-      <translation type="unfinished">You must select a base view for the line</translation>
+      <translation>線のためのベースビューを選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="721"/>
       <location filename="../../CommandAnnotate.cpp" line="914"/>
       <source>No base view in selection</source>
-      <translation type="unfinished">No base view in selection</translation>
+      <translation>ベースビューが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="754"/>
       <source>You must select faces or an existing centerline</source>
-      <translation type="unfinished">You must select faces or an existing centerline</translation>
+      <translation>面または既存の中心線を選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="764"/>
       <source>No CenterLine in selection</source>
-      <translation type="unfinished">No CenterLine in selection</translation>
+      <translation>中心線が選択されていません</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="770"/>
       <location filename="../../CommandAnnotate.cpp" line="953"/>
       <source>Selection is not a centerline</source>
-      <translation type="unfinished">Selection is not a centerline</translation>
+      <translation>選択対象が中心線ではありません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="841"/>
       <source>Selection is not a Centerline</source>
-      <translation type="unfinished">Selection is not a Centerline</translation>
+      <translation>選択対象が中心線ではありません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="850"/>
       <source>Selection not understood</source>
-      <translation type="unfinished">Selection not understood</translation>
+      <translation>選択対象が理解できません</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="941"/>
       <source>You must select 2 vertices or an existing centerline</source>
-      <translation type="unfinished">You must select 2 vertices or an existing centerline</translation>
+      <translation>2頂点または既存の中心線を選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="963"/>
       <source>Select 2 vertices or 1 centerline</source>
-      <translation type="unfinished">Select 2 vertices or 1 centerline</translation>
+      <translation>2頂点または1本の中心線が必要です。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1054"/>
       <source>Not enough points in the selection</source>
-      <translation type="unfinished">Not enough points in the selection</translation>
+      <translation>選択点が足りません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1074"/>
       <source>Selection is not a cosmetic line</source>
-      <translation type="unfinished">Selection is not a cosmetic line</translation>
+      <translation>選択対象が表示用の線ではありません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1110"/>
       <source>You must select 2 vertices</source>
-      <translation type="unfinished">You must select 2 vertices</translation>
+      <translation>2頂点を選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1156"/>
@@ -3683,22 +3683,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1274"/>
       <source>You must select a view and/or lines</source>
-      <translation type="unfinished">You must select a view and/or lines</translation>
+      <translation>ビューおよび/または線を選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1294"/>
       <source>No view in selection</source>
-      <translation type="unfinished">No view in selection</translation>
+      <translation>ビューが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1363"/>
       <source>No part views in this selection</source>
-      <translation type="unfinished">No part views in this selection</translation>
+      <translation>パートビューが選択されていません</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1427"/>
       <source>Select exactly one leader line or one weld symbol</source>
-      <translation type="unfinished">Select exactly one leader line or one weld symbol</translation>
+      <translation>引き出し線または溶接記号を1つだけ選択して下さい。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1486"/>
@@ -3708,22 +3708,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1487"/>
       <source>Selected object is not a part view, nor a leader line</source>
-      <translation>選択されたオブジェクトは部品ビューでも引出線でもありません</translation>
+      <translation>選択されたオブジェクトは部品ビューでも引き出し線でもありません</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="109"/>
       <source>Replace hatch?</source>
-      <translation type="unfinished">Replace hatch?</translation>
+      <translation>ハッチングを置き換えますか？</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="110"/>
       <source>Some faces in the selection are already hatched. Replace?</source>
-      <translation type="unfinished">Some faces in the selection are already hatched. Replace?</translation>
+      <translation>選択中の面はすでにハッチングされています。置き換えますか？</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="312"/>
       <source>Select a face first</source>
-      <translation type="unfinished">Select a face first</translation>
+      <translation>最初に面を選択してください</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="319"/>
@@ -3733,13 +3733,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="326"/>
       <source>Create a page to insert</source>
-      <translation type="unfinished">Create a page to insert</translation>
+      <translation>挿入するページを作成</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="333"/>
       <location filename="../../CommandDecorate.cpp" line="339"/>
       <source>No faces to hatch in this selection</source>
-      <translation type="unfinished">No faces to hatch in this selection</translation>
+      <translation>ハッチングする面が選択されていません。</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="307"/>
@@ -3775,7 +3775,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../MDIViewPage.cpp" line="314"/>
       <source>Export Page as PDF</source>
-      <translation type="unfinished">Export Page as PDF</translation>
+      <translation>ページをPDFとしてエクスポート</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="488"/>
@@ -3808,7 +3808,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../ViewProviderPage.cpp" line="226"/>
       <source>Show Drawing</source>
-      <translation type="unfinished">Show Drawing</translation>
+      <translation>図面を表示</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="228"/>
@@ -3844,7 +3844,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskActiveView.cpp" line="216"/>
       <source>Insert Active View</source>
-      <translation type="unfinished">Insert Active View</translation>
+      <translation>アクティブなビューを挿入</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="245"/>
@@ -3896,7 +3896,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskComplexSection.cpp" line="524"/>
       <source>Possible coordinate system error</source>
-      <translation type="unfinished">Possible coordinate system error</translation>
+      <translation>座標系エラーの可能性があります</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="525"/>
@@ -3948,17 +3948,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>TechDraw プレフィックスを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="116"/>
       <source>Repeat count</source>
-      <translation type="unfinished">Repeat count</translation>
+      <translation>繰り返し回数</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="128"/>
       <source>Insert Prefix</source>
-      <translation type="unfinished">Insert Prefix</translation>
+      <translation>プレフィックスを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="413"/>
@@ -4037,17 +4037,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1598"/>
       <source>TechDraw Create Horizontal Coordinate Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Coordinate Dimension</translation>
+      <translation>TechDraw 水平方向の座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1667"/>
       <source>TechDraw Create Vertical Coord dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Coord dimension</translation>
+      <translation>TechDraw 垂直方向の座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2365"/>
       <source>No sub-elements selected</source>
-      <translation type="unfinished">No sub-elements selected</translation>
+      <translation>サブ要素が選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1736"/>
@@ -4102,17 +4102,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TaskDimension.cpp" line="196"/>
       <location filename="../../TaskDimension.cpp" line="211"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
-      <translation type="unfinished">Dimension not found. Was it deleted? Cannot continue.</translation>
+      <translation>寸法が見つかりません。削除していませんか？　続行できません。</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="550"/>
       <source>Select 2 vertices or 1 edge</source>
-      <translation type="unfinished">Select 2 vertices or 1 edge</translation>
+      <translation>2つの頂点、または1つのエッジを選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="229"/>
       <source>Select a line group</source>
-      <translation type="unfinished">Select a line group</translation>
+      <translation>線グループを選択</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="240"/>
@@ -4183,13 +4183,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskDimRepair.cpp" line="123"/>
       <source>This will change the dimension&apos;s owner view. Continue?</source>
-      <translation type="unfinished">This will change the dimension&apos;s owner view. Continue?</translation>
+      <translation>寸法の所有者であるビューを変更します。続行しますか？</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
       <source>Cannot make dimension from selection</source>
-      <translation type="unfinished">Cannot make dimension from selection</translation>
+      <translation>選択対象から寸法を作成できません。</translation>
     </message>
     <message>
       <location filename="../../AppTechDrawGui.cpp" line="169"/>
@@ -4230,17 +4230,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskProjGroup.cpp" line="186"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>新しいビュー</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="88"/>
       <source>No part view in selection</source>
-      <translation type="unfinished">No part view in selection</translation>
+      <translation>パートビューが選択されていません</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="101"/>
       <source>No %1 in selection</source>
-      <translation type="unfinished">No %1 in selection</translation>
+      <translation>%1 が選択されていません。</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="165"/>
@@ -4250,22 +4250,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskCenterLine.cpp" line="208"/>
       <source>Edit Centerline</source>
-      <translation type="unfinished">Edit Centerline</translation>
+      <translation>中心線を編集</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="99"/>
       <source>Rich Text Editor</source>
-      <translation type="unfinished">Rich Text Editor</translation>
+      <translation>リッチテキストエディター</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="137"/>
       <source>Rich Text Creator</source>
-      <translation type="unfinished">Rich Text Creator</translation>
+      <translation>リッチテキストクリエイター</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="54"/>
       <source>Click to update text</source>
-      <translation type="unfinished">Click to update text</translation>
+      <translation>クリックしてテキストを更新</translation>
     </message>
   </context>
   <context>
@@ -4279,7 +4279,7 @@ it has a weld symbol that would become broken.</source>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="379"/>
       <source>Close open dialog before deleting detail object</source>
-      <translation type="unfinished">Close open dialog before deleting detail object</translation>
+      <translation>詳細オブジェクトを削除する前に開いているダイアログを閉じてください。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="394"/>
@@ -4357,12 +4357,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="26"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>アクティブビュー</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="44"/>
       <source>Crops captured image to this width</source>
-      <translation type="unfinished">Crops captured image to this width</translation>
+      <translation>キャプチャした画像をこの幅に切り取り</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="73"/>
@@ -4372,37 +4372,37 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="93"/>
       <source>Crop to height</source>
-      <translation type="unfinished">Crop to height</translation>
+      <translation>高さまで切り詰め</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="100"/>
       <source>Use 3D background</source>
-      <translation type="unfinished">Use 3D background</translation>
+      <translation>3D背景を使用</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="116"/>
       <source>Crops captured image to this height</source>
-      <translation type="unfinished">Crops captured image to this height</translation>
+      <translation>キャプチャした画像をこの高さに切り取り</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="139"/>
       <source>Solid background</source>
-      <translation type="unfinished">Solid background</translation>
+      <translation>単色背景</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="149"/>
       <source>No background</source>
-      <translation type="unfinished">No background</translation>
+      <translation>背景なし</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="162"/>
       <source>Crop to width</source>
-      <translation type="unfinished">Crop to width</translation>
+      <translation>幅まで切り詰め</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="169"/>
       <source>Crop image</source>
-      <translation type="unfinished">Crop image</translation>
+      <translation>画像を切り取り</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="136"/>
@@ -4425,12 +4425,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From page</source>
-      <translation type="unfinished">From page</translation>
+      <translation>ページから</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To page</source>
-      <translation type="unfinished">To page</translation>
+      <translation>ページへ</translation>
     </message>
   </context>
   <context>
@@ -4522,35 +4522,33 @@ Angle, surface finish, root</source>
       <location filename="../../TaskWeldingSymbol.ui" line="241"/>
       <source>Adds the &apos;Field weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;Field weld&apos; symbol (flag)
-at the kink in the leader line</translation>
+      <translation>引き出し線の基線に &apos;現場溶接&apos; 記号（旗）を追加</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="245"/>
       <source>Field weld</source>
-      <translation type="unfinished">Field weld</translation>
+      <translation>現場溶接</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="252"/>
       <source>Adds the &apos;All around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;All around&apos; symbol (circle)
-at the kink in the leader line</translation>
+      <translation>引き出し線の基線に &apos;全周溶接&apos; 記号 (円) を追加</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="256"/>
       <source>All around</source>
-      <translation type="unfinished">All around</translation>
+      <translation>全周溶接</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="277"/>
       <source>Tail text</source>
-      <translation type="unfinished">Tail text</translation>
+      <translation>末尾テキスト</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="297"/>
       <source>Symbol directory</source>
-      <translation type="unfinished">Symbol directory</translation>
+      <translation>記号ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="263"/>
@@ -4585,12 +4583,12 @@ This directory will be used for the symbol selection.</source>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which page to use. Select a page.</source>
-      <translation type="unfinished">FreeCAD could not determine which page to use. Select a page.</translation>
+      <translation>FreeCADは使用するページを決定できませんでした。ページを選択してください。</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a page that should be used</source>
-      <translation type="unfinished">Select a page that should be used</translation>
+      <translation>使用するページを選択</translation>
     </message>
   </context>
   <context>
@@ -4604,42 +4602,42 @@ This directory will be used for the symbol selection.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="37"/>
       <source>Switch workbench on click</source>
-      <translation type="unfinished">Switch workbench on click</translation>
+      <translation>クリックでワークベンチを切り替え</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="59"/>
       <source>Dump intermediate results during section view processing</source>
-      <translation type="unfinished">Dump intermediate results during section view processing</translation>
+      <translation>断面ビューの処理中に中間結果をダンプ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="62"/>
       <source>Debug section</source>
-      <translation type="unfinished">Debug section</translation>
+      <translation>断面をデバッグ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="75"/>
       <source>Edge fuzz</source>
-      <translation type="unfinished">Edge fuzz</translation>
+      <translation>エッジの誤差</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="82"/>
       <source>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</source>
-      <translation type="unfinished">If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</translation>
+      <translation>チェックされている場合、FreeCADは新しい面検出アルゴリズムを使用します。チェックされていない場合、FreeCADは旧来の面検出アルゴリズムを使用します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="85"/>
       <source>Use new face finder algorithm</source>
-      <translation type="unfinished">Use new face finder algorithm</translation>
+      <translation>新しい面検出アルゴリズムを使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="107"/>
       <source>Dump intermediate results during detail view processing</source>
-      <translation type="unfinished">Dump intermediate results during detail view processing</translation>
+      <translation>詳細ビューの処理中に中間結果をダンプ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="110"/>
       <source>Debug detail</source>
-      <translation type="unfinished">Debug detail</translation>
+      <translation>詳細をデバッグ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="129"/>
@@ -4653,88 +4651,88 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="135"/>
       <source>Detect faces</source>
-      <translation type="unfinished">Detect faces</translation>
+      <translation>面を検出</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="177"/>
       <source>Validate shapes</source>
-      <translation type="unfinished">Validate shapes</translation>
+      <translation>形状を検証</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="199"/>
       <source>Allow crazy edges</source>
-      <translation type="unfinished">Allow crazy edges</translation>
+      <translation>おかしなエッジを許可</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="212"/>
       <source>Issue progress messages while building view geometry</source>
-      <translation type="unfinished">Issue progress messages while building view geometry</translation>
+      <translation>ビュージオメトリー構築中に進捗状況メッセージを表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="215"/>
       <source>Report progress</source>
-      <translation type="unfinished">Report progress</translation>
+      <translation>進捗状況をレポート</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="228"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
-      <translation type="unfinished">The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</translation>
+      <translation>FreeCADが、隠線除去アルゴリズムによって返された重なり合ったエッジの削除を試みる回数です。 0は除去なし、1は単一パス、2は第2パスを実行することを意味します。 2より大きな値は一般に効果的ではありません。各パスごとに図面生成に必要な時間が増加します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="258"/>
       <source>Overlap edges scrub passes</source>
-      <translation type="unfinished">Overlap edges scrub passes</translation>
+      <translation>重複エッジ除去回数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="265"/>
       <source>Mark fuzz</source>
-      <translation type="unfinished">Mark fuzz</translation>
+      <translation>記号の誤差</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="301"/>
       <source>Max SVG hatch tiles</source>
-      <translation type="unfinished">Max SVG hatch tiles</translation>
+      <translation>SVGハッチングタイルの最大数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
       <source>Debug bad shape</source>
-      <translation type="unfinished">Debug bad shape</translation>
+      <translation>不正な形状をデバッグ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="335"/>
       <source>Perform a fuse operation on input shapes before section view processing</source>
-      <translation type="unfinished">Perform a fuse operation on input shapes before section view processing</translation>
+      <translation>断面ビュー処理の前に入力形状に対して結合操作を実行</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="338"/>
       <source>Fuse before section</source>
-      <translation type="unfinished">Fuse before section</translation>
+      <translation>切断前に結合</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="411"/>
       <source>Size of selection area around edges
 Each unit is approximately 0.1mm wide</source>
-      <translation type="unfinished">Size of selection area around edges
-Each unit is approximately 0.1mm wide</translation>
+      <translation>エッジ周囲の選択領域のサイズ
+1単位の幅は約0.1mmです。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="443"/>
       <source>Show section edges</source>
-      <translation type="unfinished">Show section edges</translation>
+      <translation>断面エッジを表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="459"/>
       <source>Maximum PAT hatch segments</source>
-      <translation type="unfinished">Maximum PAT hatch segments</translation>
+      <translation>PATハッチング断片の最大数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="466"/>
       <source>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
 For large scales, errors may occur due to excessive tiling.
 Increase the limit if necessary.</source>
-      <translation type="unfinished">Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
-For large scales, errors may occur due to excessive tiling.
-Increase the limit if necessary.</translation>
+      <translation>1つの面をハッチングするために使用する64×64ピクセルのSVGタイルの数を制限します。
+大規模な場合、過剰なタイル処理によってエラーが発生する可能性があります。
+必要に応じて上限を増やしてください。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
@@ -4744,17 +4742,17 @@ Increase the limit if necessary.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
       <source>Use default</source>
-      <translation type="unfinished">Use default</translation>
+      <translation>デフォルトを使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="532"/>
       <source>Balloon drag</source>
-      <translation type="unfinished">Balloon drag</translation>
+      <translation>バルーン・ドラッグ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="440"/>
       <source>Highlights border of section cut in section views</source>
-      <translation>セクションビューでカットされたセクションの境界線をハイライトさせます</translation>
+      <translation>断面ビューで切断境界を強調表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
@@ -4769,7 +4767,7 @@ Increase the limit if necessary.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="157"/>
       <source>Auto-correct dimension references</source>
-      <translation type="unfinished">Auto-correct dimension references</translation>
+      <translation>寸法参照の自動修正</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="173"/>
@@ -4868,42 +4866,42 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="43"/>
       <source>Print center marks</source>
-      <translation type="unfinished">Print center marks</translation>
+      <translation>中心マークを印刷</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="70"/>
       <source>Show center marks</source>
-      <translation type="unfinished">Show center marks</translation>
+      <translation>中心マークを表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="91"/>
       <source>Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</source>
-      <translation type="unfinished">Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</translation>
+      <translation>切断の注釈が元のビューに表示されます。 設定されていない場合、元のビューに切断線、矢印、記号は表示されません。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="94"/>
       <source>Show section line in source view</source>
-      <translation type="unfinished">Show section line in source view</translation>
+      <translation>元のビューに切断線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="134"/>
       <source>Draws a cut line on the source view. Otherwise, only the change marks, arrows and symbols will be displayed.</source>
-      <translation type="unfinished">Draws a cut line on the source view. Otherwise, only the change marks, arrows and symbols will be displayed.</translation>
+      <translation>元のビューに切断線を描画します。設定されていない場合は、変更マーク、矢印、記号のみが表示されます。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="137"/>
       <source>Include cut line in section annotation</source>
-      <translation type="unfinished">Include cut line in section annotation</translation>
+      <translation>断面注釈に切断線を含める</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="177"/>
       <source>Length of horizontal portion of balloon leader</source>
-      <translation type="unfinished">Length of horizontal portion of balloon leader</translation>
+      <translation>バルーン引き出し線の水平部の長さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="180"/>
       <source>Balloon leader kink length</source>
-      <translation type="unfinished">Balloon leader kink length</translation>
+      <translation>バルーン引き出し線の基線長さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="192"/>
@@ -4933,32 +4931,32 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="242"/>
       <source>Solid color</source>
-      <translation type="unfinished">Solid color</translation>
+      <translation>単色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="247"/>
       <source>SVG hatch</source>
-      <translation type="unfinished">SVG hatch</translation>
+      <translation>SVGハッチング</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="252"/>
       <source>PAT hatch</source>
-      <translation type="unfinished">PAT hatch</translation>
+      <translation>PATハッチング</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="260"/>
       <source>Displays the outline around a detail view</source>
-      <translation type="unfinished">Displays the outline around a detail view</translation>
+      <translation>詳細ビューの周りに輪郭線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="263"/>
       <source>Detail view show matting</source>
-      <translation type="unfinished">Detail view show matting</translation>
+      <translation>詳細ビューで枠を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="279"/>
       <source>Highlights the detail area in the source view of the detail</source>
-      <translation type="unfinished">Highlights the detail area in the source view of the detail</translation>
+      <translation>詳細の元のビューで詳細領域を強調表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="282"/>
@@ -4973,32 +4971,32 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="324"/>
       <source>Leader line auto horizontal</source>
-      <translation type="unfinished">Leader line auto horizontal</translation>
+      <translation>引き出し線を自動で水平にする</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="358"/>
       <source>Balloon leader end</source>
-      <translation type="unfinished">Balloon leader end</translation>
+      <translation>バルーン引き出し線の終端</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="375"/>
       <source>No break lines</source>
-      <translation type="unfinished">No break lines</translation>
+      <translation>非破断線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="380"/>
       <source>Zigzag lines</source>
-      <translation type="unfinished">Zigzag lines</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="385"/>
       <source>Simple lines</source>
-      <translation type="unfinished">Simple lines</translation>
+      <translation>単純線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="398"/>
       <source>Balloon shape</source>
-      <translation type="unfinished">Balloon shape</translation>
+      <translation>バルーン形状</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="410"/>
@@ -5019,27 +5017,27 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="768"/>
       <source>Line width group</source>
-      <translation type="unfinished">Line width group</translation>
+      <translation>線幅グループ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="780"/>
       <source>Line end cap shape</source>
-      <translation type="unfinished">Line end cap shape</translation>
+      <translation>線の端点の形状</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="787"/>
       <source>Hidden line style</source>
-      <translation type="unfinished">Hidden line style</translation>
+      <translation>かくれ線のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="812"/>
       <source>Break line style</source>
-      <translation type="unfinished">Break line style</translation>
+      <translation>破断線のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="819"/>
       <source>Style of line to be used in broken view.</source>
-      <translation type="unfinished">Style of line to be used in broken view.</translation>
+      <translation>破断ビューで使用する線のスタイル。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="509"/>
@@ -5079,27 +5077,27 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
       <source>Enforce ISO 8601 date format</source>
-      <translation type="unfinished">Enforce ISO 8601 date format</translation>
+      <translation>ISO8601日付フォーマットを強制適用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="550"/>
       <source>Center line style</source>
-      <translation type="unfinished">Center line style</translation>
+      <translation>中心線のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="631"/>
       <source>Detail highlight style</source>
-      <translation type="unfinished">Detail highlight style</translation>
+      <translation>詳細の注目位置のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="643"/>
       <source>Section line style</source>
-      <translation type="unfinished">Section line style</translation>
+      <translation>切断線のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="680"/>
       <source>Line standard</source>
-      <translation type="unfinished">Line standard</translation>
+      <translation>線の規格</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="716"/>
@@ -5119,7 +5117,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="159"/>
       <source>Style for balloon leader line ends</source>
-      <translation>吹き出しの引出線の終端スタイル</translation>
+      <translation>バルーン引き出し線の終端スタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="466"/>
@@ -5173,7 +5171,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
       <source>Hidden line</source>
-      <translation type="unfinished">Hidden line</translation>
+      <translation>かくれ線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="616"/>
@@ -5228,12 +5226,12 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="60"/>
       <source>Geometric hatch</source>
-      <translation type="unfinished">Geometric hatch</translation>
+      <translation>幾何ハッチング</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
       <source>Use a single colour for all text and lines</source>
-      <translation type="unfinished">Use a single colour for all text and lines</translation>
+      <translation>すべてのテキストと線に単一の色を使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="112"/>
@@ -5243,27 +5241,27 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="170"/>
       <source>Section face</source>
-      <translation type="unfinished">Section face</translation>
+      <translation>切断面</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Leader line</source>
-      <translation type="unfinished">Leader line</translation>
+      <translation>引き出し線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
       <source>Color of dimension lines and text</source>
-      <translation type="unfinished">Color of dimension lines and text</translation>
+      <translation>寸法線とテキストの色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="300"/>
       <source>Use a light color for dark text and dark color for light text</source>
-      <translation type="unfinished">Use a light color for dark text and dark color for light text</translation>
+      <translation>暗いテキストには明るい色、明るいテキストには暗い色を使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="392"/>
       <source>Detail highlight</source>
-      <translation type="unfinished">Detail highlight</translation>
+      <translation>詳細の注目位置</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="404"/>
@@ -5288,7 +5286,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
       <source>Geometric hatch pattern color</source>
-      <translation>幾何学的ハッチングパターンの色</translation>
+      <translation>幾何ハッチングパターンの色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="177"/>
@@ -5303,12 +5301,12 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
       <source>Page color</source>
-      <translation type="unfinished">Page color</translation>
+      <translation>ページの色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
       <source>Section line</source>
-      <translation type="unfinished">Section line</translation>
+      <translation>切断線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
@@ -5422,32 +5420,32 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="67"/>
       <source>Dimension format</source>
-      <translation type="unfinished">Dimension format</translation>
+      <translation>寸法フォーマット</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="96"/>
       <source>Diameter symbol</source>
-      <translation type="unfinished">Diameter symbol</translation>
+      <translation>直径記号</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
       <source>ISO oriented</source>
-      <translation type="unfinished">ISO oriented</translation>
+      <translation>ISO指向</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="124"/>
       <source>ISO referencing</source>
-      <translation type="unfinished">ISO referencing</translation>
+      <translation>ISO参照</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="129"/>
       <source>ASME inlined</source>
-      <translation type="unfinished">ASME inlined</translation>
+      <translation>ASMEインライン</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="134"/>
       <source>ASME referencing</source>
-      <translation type="unfinished">ASME referencing</translation>
+      <translation>ASME参照</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
@@ -5457,12 +5455,12 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="168"/>
       <source>Show units</source>
-      <translation type="unfinished">Show units</translation>
+      <translation>単位を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="186"/>
       <source>Standard and style</source>
-      <translation type="unfinished">Standard and style</translation>
+      <translation>規格とスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="220"/>
@@ -5472,19 +5470,19 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="232"/>
       <source>Arrow style</source>
-      <translation type="unfinished">Arrow style</translation>
+      <translation>矢印のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="257"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font size&apos;</source>
-      <translation type="unfinished">Tolerance text scale
-Multiplier of &apos;Font size&apos;</translation>
+      <translation>公差テキストの拡大縮小率
+ &apos;フォントサイズ&apos; に対する倍数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="291"/>
       <source>Tolerance text scale</source>
-      <translation type="unfinished">Tolerance text scale</translation>
+      <translation>公差テキストの拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="307"/>
@@ -5494,17 +5492,17 @@ Multiplier of &apos;Font size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="364"/>
       <source>Use global decimals</source>
-      <translation type="unfinished">Use global decimals</translation>
+      <translation>グローバルな小数点を使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="398"/>
       <source>Alternate decimals</source>
-      <translation type="unfinished">Alternate decimals</translation>
+      <translation>代替の小数点</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="410"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions</source>
-      <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions</translation>
+      <translation>ISO寸法での寸法点と延長線の始点の間隔を調整</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="413"/>
@@ -5557,7 +5555,7 @@ Multiplier of &apos;Font size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
       <source>Dimensioning tools</source>
-      <translation type="unfinished">Dimensioning tools</translation>
+      <translation>寸法記入ツール</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="555"/>
@@ -5583,10 +5581,10 @@ This affects only the toolbar; all tools remain available via the menu and short
 &apos;Auto&apos;: The tool will apply radius to arcs and diameter to circles.
 &apos;Diameter&apos;: The tool will apply diameter to all.
 &apos;Radius&apos;: The tool will apply radius to all.</source>
-      <translation type="unfinished">While using the dimension tool you may choose how to handle circles and arcs:
-&apos;Auto&apos;: The tool will apply radius to arcs and diameter to circles.
-&apos;Diameter&apos;: The tool will apply diameter to all.
-&apos;Radius&apos;: The tool will apply radius to all.</translation>
+      <translation>寸法ツール使用時の円や円弧の扱い方を選択します。
+自動：円弧には半径、円には直径を適用します。
+直径：円弧と円の両方に直径を適用します。
+半径：円弧と円の両方に半径を適用します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="526"/>
@@ -5713,12 +5711,12 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
       <source>Page Update</source>
-      <translation type="unfinished">Page Update</translation>
+      <translation>ページの更新</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
       <source>Update with 3D (global policy)</source>
-      <translation type="unfinished">Update with 3D (global policy)</translation>
+      <translation>3Dと同時に更新（グローバルな設定）</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
@@ -5787,22 +5785,22 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
       <source>Preferred SVG or bitmap file for hatching. This value will also control the initial directory for choosing hatch patterns. You can use this to get hatch files from a local directory.</source>
-      <translation type="unfinished">Preferred SVG or bitmap file for hatching. This value will also control the initial directory for choosing hatch patterns. You can use this to get hatch files from a local directory.</translation>
+      <translation>ハッチングにはSVGまたはビットマップファイルを使用します。この値はハッチングパターンを選択するための初期ディレクトリも制御します。 これを使用すると、ローカルディレクトリからハッチングファイルを取得できます。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="513"/>
       <source>Welding directory</source>
-      <translation type="unfinished">Welding directory</translation>
+      <translation>溶接ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
       <source>Starting directory for &apos;Insert Page From Template&apos; tool</source>
-      <translation type="unfinished">Starting directory for &apos;Insert Page From Template&apos; tool</translation>
+      <translation>「テンプレートを使用してページを挿入」ツールの開始ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
       <source>Template directory</source>
-      <translation type="unfinished">Template directory</translation>
+      <translation>テンプレートディレクトリ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="590"/>
@@ -5812,27 +5810,27 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="608"/>
       <source>Hatch pattern file</source>
-      <translation type="unfinished">Hatch pattern file</translation>
+      <translation>ハッチングパターンファイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="615"/>
       <source>Default template</source>
-      <translation type="unfinished">Default template</translation>
+      <translation>デフォルトのテンプレート</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
       <source>Symbol directory</source>
-      <translation type="unfinished">Symbol directory</translation>
+      <translation>記号ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="714"/>
       <source>Set &apos;Show grid&apos; property to true on new pages</source>
-      <translation type="unfinished">Set &apos;Show grid&apos; property to true on new pages</translation>
+      <translation>新しいページで「グリッドを表示」プロパティを true に設定</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="717"/>
       <source>Show grid</source>
-      <translation type="unfinished">Show grid</translation>
+      <translation>グリッドを表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="738"/>
@@ -5842,12 +5840,12 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="745"/>
       <source>Distance between page grid lines</source>
-      <translation type="unfinished">Distance between page grid lines</translation>
+      <translation>ページのグリッド線間の距離</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="789"/>
       <source>Enable multi-selection mode</source>
-      <translation type="unfinished">Enable multi-selection mode</translation>
+      <translation>複数選択モードを有効にする</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="835"/>
@@ -5857,7 +5855,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="838"/>
       <source>Use 3D camera direction</source>
-      <translation type="unfinished">Use 3D camera direction</translation>
+      <translation>3Dカメラ方向を使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="856"/>
@@ -5877,7 +5875,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
       <source>Snap detail highlights</source>
-      <translation type="unfinished">Snap detail highlights</translation>
+      <translation>詳細注目位置をスナップ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
@@ -5887,12 +5885,12 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="664"/>
       <source>Line group file</source>
-      <translation type="unfinished">Line group file</translation>
+      <translation>ライングループファイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
       <source>Pattern name</source>
-      <translation type="unfinished">Pattern name</translation>
+      <translation>パターン名</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
@@ -5942,12 +5940,12 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="968"/>
       <source>Highlight snapping factor</source>
-      <translation type="unfinished">Highlight snapping factor</translation>
+      <translation>注目位置のスナップ係数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="975"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
-      <translation type="unfinished">Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</translation>
+      <translation>注目位置のスナップ半径を制御します。頂点はスナップ対象の注目位置のサイズとこの係数をかけた範囲内にある必要があります。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1024"/>
@@ -5982,38 +5980,38 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="140"/>
       <source>Shows hard and outline edges (always shown)</source>
-      <translation type="unfinished">Shows hard and outline edges (always shown)</translation>
+      <translation>実線エッジと輪郭線エッジを表示（常に表示）</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show hard lines</source>
-      <translation type="unfinished">Show hard lines</translation>
+      <translation>実線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
       <source>Shows hidden hard and outline edges</source>
-      <translation type="unfinished">Shows hidden hard and outline edges</translation>
+      <translation>非表示の実線エッジと輪郭線エッジを表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Shows smooth lines</source>
-      <translation type="unfinished">Shows smooth lines</translation>
+      <translation>平滑線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
       <source>Shows hidden smooth edges</source>
-      <translation type="unfinished">Shows hidden smooth edges</translation>
+      <translation>非表示の平滑エッジを表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="257"/>
       <source>Shows seam lines</source>
-      <translation type="unfinished">Shows seam lines</translation>
+      <translation>縫い目線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="287"/>
       <source>Shows hidden seam lines</source>
-      <translation type="unfinished">Shows hidden seam lines</translation>
+      <translation>非表示の縫い目線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="314"/>
@@ -6034,7 +6032,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="368"/>
       <source>ISO count</source>
-      <translation type="unfinished">ISO count</translation>
+      <translation>ISOの数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
@@ -6085,7 +6083,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="73"/>
       <source>Page scale</source>
-      <translation type="unfinished">Page scale</translation>
+      <translation>ページの拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="85"/>
@@ -6130,22 +6128,22 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
       <source>Legacy symbol scaling</source>
-      <translation type="unfinished">Legacy symbol scaling</translation>
+      <translation>旧来の記号の拡大縮小</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="259"/>
       <source>Size adjustments</source>
-      <translation type="unfinished">Size adjustments</translation>
+      <translation>サイズ調整</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="267"/>
       <source>Vertex scale</source>
-      <translation type="unfinished">Vertex scale</translation>
+      <translation>頂点の拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="313"/>
       <source>Center mark scale</source>
-      <translation type="unfinished">Center mark scale</translation>
+      <translation>中心マークの拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="370"/>
@@ -6155,7 +6153,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="405"/>
       <source>Welding symbol scale</source>
-      <translation type="unfinished">Welding symbol scale</translation>
+      <translation>溶接記号の拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="286"/>
@@ -6253,12 +6251,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../SymbolChooser.ui" line="48"/>
       <source>Symbol directory</source>
-      <translation type="unfinished">Symbol directory</translation>
+      <translation>記号ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="55"/>
       <source>Directory to welding symbols</source>
-      <translation type="unfinished">Directory to welding symbols</translation>
+      <translation>溶接記号のディレクトリ</translation>
     </message>
   </context>
   <context>
@@ -6276,7 +6274,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Color for text</source>
-      <translation type="unfinished">Color for text</translation>
+      <translation>テキストの色</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
@@ -6286,7 +6284,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Font size for text</source>
-      <translation type="unfinished">Font size for text</translation>
+      <translation>テキストのフォントサイズ</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
@@ -6336,17 +6334,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="181"/>
       <source>Shape scale</source>
-      <translation type="unfinished">Shape scale</translation>
+      <translation>シェイプの拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="213"/>
       <source>End symbol</source>
-      <translation type="unfinished">End symbol</translation>
+      <translation>終端記号</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="227"/>
       <source>End symbol scale</source>
-      <translation type="unfinished">End symbol scale</translation>
+      <translation>終端記号の拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="259"/>
@@ -6366,7 +6364,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="324"/>
       <source>Leader kink length</source>
-      <translation type="unfinished">Leader kink length</translation>
+      <translation>引き出し線の基線の長さ</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="194"/>
@@ -6386,7 +6384,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble shape</source>
-      <translation type="unfinished">Bubble shape</translation>
+      <translation>バブル形状</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
@@ -6474,17 +6472,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="29"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ベースビュー</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="89"/>
       <source>Top to bottom line</source>
-      <translation type="unfinished">Top to bottom line</translation>
+      <translation>上から下への線</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="108"/>
       <source>Left to right line</source>
-      <translation type="unfinished">Left to right line</translation>
+      <translation>左から右への線</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="124"/>
@@ -6512,22 +6510,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="209"/>
       <source>Shift horizontal</source>
-      <translation type="unfinished">Shift horizontal</translation>
+      <translation>水平方向移動</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="222"/>
       <source>Move line +up or -down</source>
-      <translation type="unfinished">Move line +up or -down</translation>
+      <translation>プラスで上、マイナスで下に線を移動</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="241"/>
       <source>Move line -left or +right</source>
-      <translation type="unfinished">Move line -left or +right</translation>
+      <translation>マイナスで左、プラスで右に線を移動</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="254"/>
       <source>Shift vertical</source>
-      <translation type="unfinished">Shift vertical</translation>
+      <translation>垂直方向移動</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="290"/>
@@ -6611,7 +6609,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="232"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ベースビュー</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="274"/>
@@ -6711,7 +6709,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.ui" line="26"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ベースビュー</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="66"/>
@@ -6866,7 +6864,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="307"/>
       <source>Least inscribed geometry element</source>
-      <translation type="unfinished">Least inscribed geometry element</translation>
+      <translation>最小内接ジオメトリー要素</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="382"/>
@@ -6876,7 +6874,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
       <source>Most inscribed geometry element</source>
-      <translation type="unfinished">Most inscribed geometry element</translation>
+      <translation>最大内接ジオメトリー要素</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="489"/>
@@ -6901,12 +6899,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="625"/>
       <source>Greek letters</source>
-      <translation type="unfinished">Greek letters</translation>
+      <translation>ギリシャ文字</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>フォーマット</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
@@ -7125,12 +7123,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="55"/>
       <source>Detail view</source>
-      <translation type="unfinished">Detail view</translation>
+      <translation>詳細ビュー</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="86"/>
       <source>Enables dragging of the detail highlight to a new position</source>
-      <translation type="unfinished">Enables dragging of the detail highlight to a new position</translation>
+      <translation>詳細の注目位置の新しい位置へのドラッグを有効にする</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="120"/>
@@ -7145,27 +7143,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="140"/>
       <source>Scale factor for detail view</source>
-      <translation type="unfinished">Scale factor for detail view</translation>
+      <translation>詳細ビューの拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="168"/>
       <source>Y-position of detail highlight within view</source>
-      <translation type="unfinished">Y-position of detail highlight within view</translation>
+      <translation>ビュー内での詳細の注目位置のY位置</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="184"/>
       <source>Scale factor</source>
-      <translation type="unfinished">Scale factor</translation>
+      <translation>拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="197"/>
       <source>Size of detail view</source>
-      <translation type="unfinished">Size of detail view</translation>
+      <translation>詳細ビューのサイズ</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="229"/>
       <source>X position of detail highlight within view</source>
-      <translation type="unfinished">X position of detail highlight within view</translation>
+      <translation>ビュー内での詳細の注目位置のX位置</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="256"/>
@@ -7367,7 +7365,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="272"/>
       <source>Font size for text</source>
-      <translation type="unfinished">Font size for text</translation>
+      <translation>テキストのフォントサイズ</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="291"/>
@@ -7377,22 +7375,22 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="302"/>
       <source>ISO oriented</source>
-      <translation type="unfinished">ISO oriented</translation>
+      <translation>ISO指向</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="307"/>
       <source>ISO referencing</source>
-      <translation type="unfinished">ISO referencing</translation>
+      <translation>ISO参照</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="312"/>
       <source>ASME inlined</source>
-      <translation type="unfinished">ASME inlined</translation>
+      <translation>ASMEインライン</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="317"/>
       <source>ASME referencing</source>
-      <translation type="unfinished">ASME referencing</translation>
+      <translation>ASME参照</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
@@ -7428,7 +7426,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="374"/>
       <location filename="../../TaskDimension.ui" line="417"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>デフォルトを使用</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="381"/>
@@ -7472,7 +7470,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>幾何ハッチング</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
@@ -7497,7 +7495,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
       <source>Pattern name</source>
-      <translation type="unfinished">Pattern name</translation>
+      <translation>パターン名</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
@@ -7545,7 +7543,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Geometric Hatch</source>
-      <translation type="unfinished">Apply Geometric Hatch</translation>
+      <translation>幾何ハッチングを適用</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
@@ -7628,7 +7626,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ベースビュー</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="113"/>
@@ -7642,12 +7640,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="149"/>
       <source>Start symbol</source>
-      <translation type="unfinished">Start symbol</translation>
+      <translation>開始端記号</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="169"/>
       <source>End symbol</source>
-      <translation type="unfinished">End symbol</translation>
+      <translation>終端記号</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="199"/>
@@ -7782,7 +7780,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="145"/>
       <source>Thickness of pattern lines</source>
-      <translation type="unfinished">Thickness of pattern lines</translation>
+      <translation>パターン線の太さ</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="52"/>
@@ -7835,27 +7833,27 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
       <source>Feature1</source>
-      <translation type="unfinished">Feature1</translation>
+      <translation>フィーチャー1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
       <source>Geometry1</source>
-      <translation type="unfinished">Geometry1</translation>
+      <translation>ジオメトリー1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
       <source>Feature2</source>
-      <translation type="unfinished">Feature2</translation>
+      <translation>フィーチャー2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
       <source>Geometry2</source>
-      <translation type="unfinished">Geometry2</translation>
+      <translation>ジオメトリー2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
       <source>To these dimensions</source>
-      <translation type="unfinished">To these dimensions</translation>
+      <translation>これらの寸法に対して</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="55"/>
@@ -7878,12 +7876,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="76"/>
       <source>Scale numerator</source>
-      <translation type="unfinished">Scale numerator</translation>
+      <translation>拡大縮小率の分子</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="99"/>
       <source>Scale denominator</source>
-      <translation type="unfinished">Scale denominator</translation>
+      <translation>拡大縮小率の分母</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="120"/>
@@ -7949,22 +7947,22 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clockwise</source>
-      <translation type="unfinished">Spin clockwise</translation>
+      <translation>時計回りに回転</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="174"/>
       <source>Spin counter-clockwise</source>
-      <translation type="unfinished">Spin counter-clockwise</translation>
+      <translation>反時計回りに回転</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="252"/>
       <source>Sets the document front view as primary direction</source>
-      <translation type="unfinished">Sets the document front view as primary direction</translation>
+      <translation>ドキュメントの前面ビューを主方向に設定</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="303"/>
       <source>Sets the direction of the camera, or selected face if any, as the primary direction</source>
-      <translation type="unfinished">Sets the direction of the camera, or selected face if any, as the primary direction</translation>
+      <translation>カメラ方向、または選択面がある場合はそれを主方向に設定</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="333"/>
@@ -8033,34 +8031,33 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="559"/>
       <source>First or third angle</source>
-      <translation type="unfinished">First or third angle</translation>
+      <translation>第一角法または第三角法</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="563"/>
       <source>First angle</source>
-      <translation type="unfinished">First angle</translation>
+      <translation>第一角法</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="568"/>
       <source>Third angle</source>
-      <translation type="unfinished">Third angle</translation>
+      <translation>第三角法</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="583"/>
       <source>Distributes projections automatically
 using the given X/Y spacings</source>
-      <translation type="unfinished">Distributes projections automatically
-using the given X/Y spacings</translation>
+      <translation>指定したX/Y比率を使用して投影を自動配置</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="587"/>
       <source>Auto distribute</source>
-      <translation type="unfinished">Auto distribute</translation>
+      <translation>自動配置</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="608"/>
       <source>X spacing</source>
-      <translation type="unfinished">X spacing</translation>
+      <translation>X方向スペーシング</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="640"/>
@@ -8070,7 +8067,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="668"/>
       <source>Y spacing</source>
-      <translation type="unfinished">Y spacing</translation>
+      <translation>Y方向スペーシング</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="687"/>
@@ -8112,7 +8109,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="14"/>
       <source>Project Shapes</source>
-      <translation type="unfinished">Project Shapes</translation>
+      <translation>形状を投影</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="22"/>
@@ -8238,12 +8235,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="67"/>
       <source>Max width</source>
-      <translation type="unfinished">Max width</translation>
+      <translation>最大幅</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="121"/>
       <source>Show frame</source>
-      <translation type="unfinished">Show frame</translation>
+      <translation>フレームを表示</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="138"/>
@@ -8336,7 +8333,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="28"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ベースビュー</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="81"/>
@@ -8416,7 +8413,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="468"/>
       <source>Live update</source>
-      <translation type="unfinished">Live update</translation>
+      <translation>自動更新</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="447"/>
@@ -8456,7 +8453,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="26"/>
       <source>Line Attributes</source>
-      <translation type="unfinished">Line Attributes</translation>
+      <translation>線の属性</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
@@ -8501,7 +8498,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.cpp" line="114"/>
       <source>Select Line Attributes</source>
-      <translation type="unfinished">Select Line Attributes</translation>
+      <translation>線の属性を選択</translation>
     </message>
   </context>
   <context>
@@ -8545,7 +8542,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="248"/>
       <source>Symbol angle</source>
-      <translation type="unfinished">Symbol angle</translation>
+      <translation>記号の角度</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="255"/>
@@ -8652,7 +8649,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="394"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
-      <translation type="unfinished">Removes the prefix symbols at the beginning of the dimension</translation>
+      <translation>寸法の先頭にある接頭記号を削除</translation>
     </message>
   </context>
   <context>
@@ -8818,12 +8815,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="107"/>
       <source>Select from page.</source>
-      <translation type="unfinished">Select from page.</translation>
+      <translation>移動元ページを選択</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="130"/>
       <source>Select to page.</source>
-      <translation type="unfinished">Select to page.</translation>
+      <translation>移動先ページを選択</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="108"/>
@@ -8862,12 +8859,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="108"/>
       <source>Select from page.</source>
-      <translation type="unfinished">Select from page.</translation>
+      <translation>移動元ページを選択</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="132"/>
       <source>Select to page.</source>
-      <translation type="unfinished">Select to page.</translation>
+      <translation>移動先ページを選択</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="86"/>
@@ -9005,12 +9002,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="31"/>
       <source>Filled arrow</source>
-      <translation type="unfinished">Filled arrow</translation>
+      <translation>塗りつぶされた矢印</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="32"/>
       <source>Open arrow</source>
-      <translation type="unfinished">Open arrow</translation>
+      <translation>白抜き矢印</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="33"/>
@@ -9025,12 +9022,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="35"/>
       <source>Open circle</source>
-      <translation type="unfinished">Open circle</translation>
+      <translation>白抜き円</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="37"/>
       <source>Filled triangle</source>
-      <translation type="unfinished">Filled triangle</translation>
+      <translation>塗りつぶされた三角形</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>
@@ -9274,7 +9271,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
       <source>2D point</source>
-      <translation type="unfinished">2D point</translation>
+      <translation>2D点</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
@@ -9353,7 +9350,7 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionPack.cpp" line="855"/>
       <location filename="../../CommandExtensionPack.cpp" line="1278"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>表示用の1点円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="856"/>
@@ -9400,12 +9397,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>X-offset</source>
-      <translation type="unfinished">X-offset</translation>
+      <translation>Xオフセット</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
       <source>Y-offset</source>
-      <translation type="unfinished">Y-offset</translation>
+      <translation>Xオフセット</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
@@ -9423,7 +9420,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="81"/>
       <source>Offset Vertex</source>
-      <translation type="unfinished">Offset Vertex</translation>
+      <translation>頂点をオフセット</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="84"/>
@@ -9667,7 +9664,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="97"/>
       <source>Leader</source>
-      <translation>引出線</translation>
+      <translation>引き出し線</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="98"/>
@@ -9725,7 +9722,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="55"/>
       <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
+      <translation>選択した断面ビューを元のビューと直角に揃えます。または断面ビューで選択したエッジをベースビューで選択した頂点に揃えます。</translation>
     </message>
   </context>
   <context>
@@ -9834,7 +9831,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1790"/>
       <source>Area Annotation</source>
-      <translation type="unfinished">Area Annotation</translation>
+      <translation>面積注釈</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1791"/>
@@ -9986,7 +9983,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="60"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation type="unfinished">Cosmetic Intersection Vertices</translation>
+      <translation>表示用の交差頂点</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="63"/>
@@ -9999,7 +9996,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Inserts a simple section view</source>
-      <translation type="unfinished">Inserts a simple section view</translation>
+      <translation>単純な断面ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -10007,7 +10004,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../Command.cpp" line="799"/>
       <source>Inserts a complex section view</source>
-      <translation type="unfinished">Inserts a complex section view</translation>
+      <translation>複雑な断面ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -10015,7 +10012,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="277"/>
       <source>Inserts a cosmetic vertex into a view</source>
-      <translation type="unfinished">Inserts a cosmetic vertex into a view</translation>
+      <translation>ビューに表示用の頂点を挿入</translation>
     </message>
   </context>
   <context>
@@ -10023,7 +10020,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="281"/>
       <source>Inserts cosmetic vertices at the midpoint of the selected edges</source>
-      <translation type="unfinished">Inserts cosmetic vertices at the midpoint of the selected edges</translation>
+      <translation>選択したエッジの中点に表示用の頂点を挿入</translation>
     </message>
   </context>
   <context>
@@ -10031,7 +10028,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation type="unfinished">Inserts cosmetic vertices at the quadrant points of the selected circles</translation>
+      <translation>選択した円の四分点に表示用の頂点を挿入</translation>
     </message>
   </context>
   <context>
@@ -10039,7 +10036,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Adds a centerline to selected faces</source>
-      <translation type="unfinished">Adds a centerline to selected faces</translation>
+      <translation>選択した面に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -10047,7 +10044,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>選択した2線間に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -10055,7 +10052,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="659"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>選択した2点間に中心線を追加</translation>
     </message>
   </context>
   <context>
@@ -10079,7 +10076,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandStack.cpp" line="142"/>
       <source>Moves the view to the top of the stack</source>
-      <translation type="unfinished">Moves the view to the top of the stack</translation>
+      <translation>ビューをスタックの一番上に移動</translation>
     </message>
   </context>
   <context>
@@ -10087,7 +10084,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandStack.cpp" line="146"/>
       <source>Moves the view to the bottom of the stack</source>
-      <translation type="unfinished">Moves the view to the bottom of the stack</translation>
+      <translation>ビューをスタックの一番下に移動</translation>
     </message>
   </context>
   <context>
@@ -10095,7 +10092,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandStack.cpp" line="150"/>
       <source>Moves the view up one level</source>
-      <translation type="unfinished">Moves the view up one level</translation>
+      <translation>ビューを1段階上に移動</translation>
     </message>
   </context>
   <context>
@@ -10103,7 +10100,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandStack.cpp" line="154"/>
       <source>Moves the view down one level</source>
-      <translation type="unfinished">Moves the view down one level</translation>
+      <translation>ビューを1段階下に移動</translation>
     </message>
   </context>
   <context>
@@ -10111,22 +10108,22 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Object name</source>
-      <translation type="unfinished">Object name</translation>
+      <translation>オブジェクト名</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Object label</source>
-      <translation type="unfinished">Object label</translation>
+      <translation>オブジェクトラベル</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Sub-element</source>
-      <translation type="unfinished">Sub-element</translation>
+      <translation>サブ要素</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="245"/>
       <source>Repair dimension</source>
-      <translation type="unfinished">Repair dimension</translation>
+      <translation>寸法を修復</translation>
     </message>
   </context>
   <context>
@@ -10134,7 +10131,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskLineDecor.cpp" line="463"/>
       <source>Restore invisible lines</source>
-      <translation type="unfinished">Restore invisible lines</translation>
+      <translation>非表示の線を元に戻す</translation>
     </message>
   </context>
   <context>
@@ -10142,7 +10139,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Midpoint Vertices</source>
-      <translation type="unfinished">Midpoint Vertices</translation>
+      <translation>中点</translation>
     </message>
   </context>
   <context>
@@ -10150,7 +10147,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Quadrant Vertices</source>
-      <translation type="unfinished">Quadrant Vertices</translation>
+      <translation>四分点</translation>
     </message>
   </context>
   <context>
@@ -10158,7 +10155,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Centerline 2 Lines</source>
-      <translation type="unfinished">Centerline 2 Lines</translation>
+      <translation>2線の中心線</translation>
     </message>
   </context>
   <context>
@@ -10166,7 +10163,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Centerline 2 Points</source>
-      <translation type="unfinished">Centerline 2 Points</translation>
+      <translation>2点の中心線</translation>
     </message>
   </context>
 </TS>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="235"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../Command.cpp" line="236"/>

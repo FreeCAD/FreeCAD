@@ -1578,9 +1578,9 @@ If zero, it is equal to Radius2</source>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
+      <translation>指定されたパラメーターでフィーチャーを作成できませんでした。
+ジオメトリーが無効であるか、パラメーターがおかしい可能性があります。
+パラメーターを調整し再度実行してください。</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="212"/>

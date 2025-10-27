@@ -4591,13 +4591,13 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1835"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation type="unfinished">Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</translation>
+      <translation>Ordena els talls per regió, en contres per la profunditat. Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1850"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1956"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation type="unfinished">Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</translation>
+      <translation>Habilita la característica de reconeixement del model experimental per respectar la geometria 3D i evitar talls sota els voladissos</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1945"/>
@@ -4612,7 +4612,7 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1726"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation type="unfinished">How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</translation>
+      <translation>Quant de brut cal deixar al llarg de l'eix Z (per exemple, per a l'operació d'acabat). Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1744"/>
@@ -7924,7 +7924,7 @@ Això no suprimirà les broques que conté.</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="553"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>L'operació adaptativa no ha pogut determinar el fil delimitant. Heu seleccionat la geometria base?</translation>
     </message>
   </context>
   <context>

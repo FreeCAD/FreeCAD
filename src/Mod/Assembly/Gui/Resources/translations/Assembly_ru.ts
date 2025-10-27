@@ -567,7 +567,7 @@ H2 — высота в точке T2 в конце ската.
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>Это угол сопряжения. Используется только в угловом сопряжении.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="422"/>

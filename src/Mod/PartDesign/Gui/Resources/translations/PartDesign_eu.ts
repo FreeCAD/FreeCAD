@@ -1167,7 +1167,7 @@ Select a body from below, or create a new body.</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="797"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1016"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Erradioa 1</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="485"/>

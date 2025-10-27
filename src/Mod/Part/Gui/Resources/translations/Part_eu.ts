@@ -3533,7 +3533,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="975"/>
       <location filename="../../DlgPrimitives.ui" line="1184"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Erradioa 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="663"/>
@@ -4452,17 +4452,17 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
     <message>
       <location filename="../../Mirroring.ui" line="106"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY planoa</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="111"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ planoa</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="116"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ planoa</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>

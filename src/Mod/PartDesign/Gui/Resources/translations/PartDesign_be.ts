@@ -1104,7 +1104,7 @@ Select a body from below, or create a new body.</source>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
       <source>Please select</source>
-      <translation>Калі ласка, абярыце</translation>
+      <translation>Абярыце</translation>
     </message>
   </context>
   <context>
@@ -1371,7 +1371,9 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Вы абралі геаметрыю, якая не з'яўляецца часткай бягучага цела. Калі ласка, вызначыце, як спраўляцца з гэтымі выбаркамі. Калі вам не патрэбныя гэтыя апоры, адмяніце каманду.</translation>
+      <translation>Вы абралі геаметрыю, якая не з'яўляецца часткай бягучага цела.
+Вызначыце, як спраўляцца з гэтымі выбаркамі.
+Калі вам не патрэбныя гэтыя апоры, адмяніце каманду.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1580,9 +1582,9 @@ If zero, it is equal to Radius2</source>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
+      <translation>Аб'ект не атрымалася стварыць з зададзенымі наладамі.
+Магчыма, геаметрыя няправільная, альбо налады несумяшчальныя.
+Змяніце налады і паспрабуйце яшчэ раз.</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="212"/>
@@ -3295,7 +3297,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="1977"/>
       <source>Please select only one feature in an active body.</source>
-      <translation>Калі ласка, абярыце толькі адзін элемент у бягучым целе.</translation>
+      <translation>Абярыце толькі адзін элемент у бягучым целе.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="67"/>
@@ -3406,7 +3408,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="506"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Калі ласка, змяніце '%1' і перавызначыце яго, каб ужыць асноўную ці апорную плоскасць у якасці плоскасці эскізу.</translation>
+      <translation>Змяніце '%1' і перавызначце яго, каб ужыць асноўную ці апорную плоскасць у якасці плоскасці эскізу.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="568"/>
@@ -4426,7 +4428,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="213"/>
       <source>Shaft design wizard...</source>
-      <translation>Майстар праектавання валу...</translation>
+      <translation>Майстар праектавання валу…</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
