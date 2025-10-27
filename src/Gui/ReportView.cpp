@@ -478,12 +478,18 @@ ReportOutput::ReportOutput(QWidget* parent)
     searchBar->setLayout(searchLayout);
     searchBar->hide();
 
-    connect(searchLineEdit, &QLineEdit::returnPressed, this, &ReportOutput::findNext);
-    connect(searchLineEdit, &QLineEdit::textChanged, this, [this]() {
-        findNext();
+    connect(searchLineEdit, &QLineEdit::returnPressed, this, [this]() {
+        performSearch(SearchDirection::Forward);
     });
-    connect(findNextButton, &QPushButton::clicked, this, &ReportOutput::findNext);
-    connect(findPreviousButton, &QPushButton::clicked, this, &ReportOutput::findPrevious);
+    connect(searchLineEdit, &QLineEdit::textChanged, this, [this]() {
+        performSearch(SearchDirection::Forward);
+    });
+    connect(findNextButton, &QPushButton::clicked, this, [this]() {
+        performSearch(SearchDirection::Forward);
+    });
+    connect(findPreviousButton, &QPushButton::clicked, this, [this]() {
+        performSearch(SearchDirection::Backward);
+    });
     connect(closeSearchButton, &QPushButton::clicked, this, &ReportOutput::hideSearchBar);
 }
 
@@ -973,16 +979,17 @@ void ReportOutput::hideSearchBar()
     setFocus();
 }
 
-void ReportOutput::findNext()
+void ReportOutput::performSearch(SearchDirection direction)
 {
     if (!searchLineEdit || searchLineEdit->text().isEmpty()) {
         return;
     }
 
     QString searchText = searchLineEdit->text();
-    QTextDocument::FindFlags flags;
+    QTextDocument::FindFlags flags = direction == SearchDirection::Forward 
+        ? QTextDocument::FindFlags() 
+        : QTextDocument::FindBackward;
 
-    // start search from current cursor position
     QTextCursor cursor = textCursor();
     QTextCursor found = document()->find(searchText, cursor, flags);
 
@@ -991,36 +998,10 @@ void ReportOutput::findNext()
         ensureCursorVisible();
     }
     else {
-        // wrap to beginning
-        cursor.movePosition(QTextCursor::Start);
-        found = document()->find(searchText, cursor, flags);
-        if (!found.isNull()) {
-            setTextCursor(found);
-            ensureCursorVisible();
-        }
-    }
-}
-
-void ReportOutput::findPrevious()
-{
-    if (!searchLineEdit || searchLineEdit->text().isEmpty()) {
-        return;
-    }
-
-    QString searchText = searchLineEdit->text();
-    QTextDocument::FindFlags flags = QTextDocument::FindBackward;
-
-    // staart from cursor pos
-    QTextCursor cursor = textCursor();
-    QTextCursor found = document()->find(searchText, cursor, flags);
-
-    if (!found.isNull()) {
-        setTextCursor(found);
-        ensureCursorVisible();
-    }
-    else {
-        // wrap to end
-        cursor.movePosition(QTextCursor::End);
+        // wrap around
+        cursor.movePosition(direction == SearchDirection::Forward 
+            ? QTextCursor::Start 
+            : QTextCursor::End);
         found = document()->find(searchText, cursor, flags);
         if (!found.isNull()) {
             setTextCursor(found);

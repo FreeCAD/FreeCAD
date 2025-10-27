@@ -209,12 +209,14 @@ public Q_SLOTS:
     void showSearchBar() const;
     /** Hides the search bar. */
     void hideSearchBar();
-    /** Finds the next occurrence of the search text. */
-    void findNext();
-    /** Finds the previous occurrence of the search text. */
-    void findPrevious();
 
 private:
+    enum class SearchDirection {
+        Forward,
+        Backward
+    };
+    /** Perform text search with given direction. */
+    void performSearch(SearchDirection direction);
     class Data;
     Data* d;
     bool gotoEnd;
