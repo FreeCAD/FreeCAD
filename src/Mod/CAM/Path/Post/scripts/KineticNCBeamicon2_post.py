@@ -130,7 +130,8 @@ POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """M05
-M09"""
+M09
+"""
 
 
 def processArguments(argstring):
