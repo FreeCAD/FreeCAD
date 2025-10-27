@@ -124,6 +124,11 @@ class Draft_Hatch_TaskPanel:
 
     def onFileChanged(self, filename):
 
+        if filename[0] == "." and self.baseobj:
+            # File path relative to the FreeCAD file directory.
+            filename = os.path.join(os.path.dirname(self.baseobj.Document.FileName), filename)
+            filename = os.path.abspath(filename)
+
         pat = self.form.Pattern.currentText()
         self.form.Pattern.clear()
         patterns = self.getPatterns(filename)
