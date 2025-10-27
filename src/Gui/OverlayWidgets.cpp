@@ -757,7 +757,9 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
     }
     if (!parentWidget())
         return;
-    std::string widgets = handle->GetASCII("Widgets","");
+
+    std::string widgets = handle->GetASCII("Widgets", getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : "");
+
     for(auto &name : QString::fromUtf8(widgets.c_str()).split(QLatin1Char(','))) {
         if(name.isEmpty())
             continue;
@@ -766,14 +768,14 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         if(dock)
             addWidget(dock, dock->windowTitle());
     }
-    int width = handle->GetInt("Width", 0);
+    int width = handle->GetInt("Width", getDockArea() == Qt::RightDockWidgetArea ? 400 : 0);
     int height = handle->GetInt("Height", 0);
     int offset1 = handle->GetInt("Offset1", 0);
     int offset2 = handle->GetInt("Offset3", 0);
     setOffset(QSize(offset1,offset2));
     setSizeDelta(handle->GetInt("Offset2", 0));
-    if(width && height) {
-        QRect rect(0, 0, width, height);
+    if (width || height) {
+        QRect rect(0, 0, width > 0 ? width : this->width(), height > 0 ? height : this->height());
         switch(dockArea) {
         case Qt::RightDockWidgetArea:
             rect.moveRight(parentWidget()->size().width());
@@ -792,12 +794,12 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         setAutoMode(AutoMode::EditHide);
     else if (handle->GetBool("EditShow", false))
         setAutoMode(AutoMode::EditShow);
-    else if (handle->GetBool("TaskShow", false))
+    else if (handle->GetBool("TaskShow", getDockArea() == Qt::RightDockWidgetArea))
         setAutoMode(AutoMode::TaskShow);
     else
         setAutoMode(AutoMode::NoAutoMode);
 
-    setTransparent(handle->GetBool("Transparent", false));
+    setTransparent(handle->GetBool("Transparent", getDockArea() == Qt::RightDockWidgetArea));
 
     _sizemap.clear();
     std::string savedSizes = handle->GetASCII("Sizes","");
