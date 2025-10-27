@@ -461,20 +461,20 @@ class TestPostProcessorFactory(unittest.TestCase):
 
     def test020(self):
         # test creation of postprocessor object
-        post = PostProcessorFactory.get_post_processor(self.job, "generic", None)
+        post = PostProcessorFactory.get_post_processor(self.job, "generic")
         self.assertTrue(post is not None)
         self.assertTrue(hasattr(post, "export"))
         self.assertTrue(hasattr(post, "_buildPostList"))
 
     def test030(self):
         # test wrapping of old school postprocessor scripts
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc", None)
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
         self.assertTrue(post is not None)
         self.assertTrue(hasattr(post, "_buildPostList"))
 
     def test040(self):
         """Test that the __name__ of the postprocessor is correct."""
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc", None)
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
         self.assertEqual(post.script_module.__name__, "linuxcnc_post")
 
 
@@ -595,7 +595,7 @@ class TestBuildPostList(unittest.TestCase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def setUp(self):
-        self.pp = PathPost.PostProcessor(self.job, None, "generic", "", "")
+        self.pp = PathPost.PostProcessor(self.job, "generic", "", "")
 
     def tearDown(self):
         pass

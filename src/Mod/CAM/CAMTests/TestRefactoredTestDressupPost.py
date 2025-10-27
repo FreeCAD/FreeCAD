@@ -49,7 +49,7 @@ class TestRefactoredTestDressupPost(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/dressuptest.FCStd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_test", None)
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_test")
 
         # there are 4 operations in dressuptest.FCStd
         # every operation uses a different ToolController

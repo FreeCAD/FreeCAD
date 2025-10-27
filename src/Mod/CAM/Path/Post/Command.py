@@ -110,11 +110,11 @@ class CommandPathPost:
         }
 
     def IsActive(self):
-        selected = FreeCADGui.Selection.getSelection()
-        if len(selected) == 0:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
 
-        self.candidate = PathUtils.findParentJob(selected[0])
+        self.candidate = PathUtils.findParentJob(selection[0])
 
         return self.candidate is not None
 
@@ -209,7 +209,8 @@ class CommandPathPost:
 
         # get a postprocessor
         postprocessor = PostProcessorFactory.get_post_processor(
-            self.candidate, postprocessor_name, None
+            self.candidate,
+            postprocessor_name,
         )
 
         post_data = postprocessor.export()
@@ -267,11 +268,11 @@ class CommandPathPostSelected(CommandPathPost):
         }
 
     def IsActive(self):
-        selected = FreeCADGui.Selection.getSelection()
-        if len(selected) == 0:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
 
-        return all(hasattr(op, "Path") and not op.Name.startswith("Job") for op in selected)
+        return all(hasattr(op, "Path") and not op.Name.startswith("Job") for op in selection)
 
     def Activated(self):
         """
@@ -280,19 +281,19 @@ class CommandPathPostSelected(CommandPathPost):
         """
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected operations")
 
-        selected = FreeCADGui.Selection.getSelection()
-        job = PathUtils.findParentJob(selected[0])
+        selection = FreeCADGui.Selection.getSelection()
+        job = PathUtils.findParentJob(selection[0])
         if (
             not job
-            and hasattr(selected[0], "Base")
-            and isinstance(selected[0].Base, list)
-            and selected[0].Base
+            and hasattr(selection[0], "Base")
+            and isinstance(selection[0].Base, list)
+            and selection[0].Base
         ):
             # find 'job' for operation inside 'Array' with multi tool controller
-            baseOp = FreeCAD.ActiveDocument.getObject(selected[0].Base[0])
+            baseOp = FreeCAD.ActiveDocument.getObject(selection[0].Base[0])
             job = PathUtils.findParentJob(baseOp)
 
-        opCandidates = [op for op in selected if hasattr(op, "Path") and "Job" not in op.Name]
+        opCandidates = [op for op in selection if hasattr(op, "Path") and "Job" not in op.Name]
         operations = []
         if opCandidates and job.Operations.Group != opCandidates:
             msgBox = QtGui.QMessageBox()
@@ -321,7 +322,9 @@ class CommandPathPostSelected(CommandPathPost):
             return
 
         # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(job, postprocessor_name, operations)
+        postprocessor = PostProcessorFactory.get_post_processor(
+            {"job": job, "operations": operations}, postprocessor_name
+        )
 
         post_data = postprocessor.export()
         # None is returned if there was an error during argument processing

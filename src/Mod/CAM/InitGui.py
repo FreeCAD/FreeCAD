@@ -401,7 +401,7 @@ class CAMWorkbench(Workbench):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
 
-        if len(selection) >= 1:
+        if selection:
             for obj in selection:
                 if not obj.isDerivedFrom("Path::Feature"):
                     break

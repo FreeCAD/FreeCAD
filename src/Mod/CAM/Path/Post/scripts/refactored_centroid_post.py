@@ -52,14 +52,12 @@ class Refactored_Centroid(PostProcessor):
     def __init__(
         self,
         job,
-        operations,
         tooltip=translate("CAM", "Refactored Centroid post processor"),
         tooltipargs=[""],
         units="Metric",
     ) -> None:
         super().__init__(
             job=job,
-            operations=operations,
             tooltip=tooltip,
             tooltipargs=tooltipargs,
             units=units,
