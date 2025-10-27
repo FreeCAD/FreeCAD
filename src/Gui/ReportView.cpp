@@ -24,11 +24,14 @@
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QGridLayout>
+# include <QHBoxLayout>
+# include <QKeyEvent>
+# include <QLineEdit>
 # include <QMenu>
+# include <QPushButton>
 # include <QTextCursor>
 # include <QTextStream>
 # include <QTime>
-
 
 #include <Base/Interpreter.h>
 #include <Base/Color.h>
@@ -423,6 +426,11 @@ ReportOutput::ReportOutput(QWidget* parent)
   , d(new Data)
   , gotoEnd(false)
   , blockStart(true)
+  , searchBar(nullptr)
+  , searchLineEdit(nullptr)
+  , findNextButton(nullptr)
+  , findPreviousButton(nullptr)
+  , closeSearchButton(nullptr)
 {
     bLog = false;
     reportHl = new ReportHighlighter(this);
@@ -447,6 +455,36 @@ ReportOutput::ReportOutput(QWidget* parent)
 
     // scroll to bottom at startup to make sure that last appended text is visible
     ensureCursorVisible();
+
+    // create search bar
+    searchBar = new QWidget(this);
+    auto searchLayout = new QHBoxLayout(searchBar);
+    searchLayout->setContentsMargins(2, 2, 2, 2);
+    searchLayout->setSpacing(4);
+
+    searchLineEdit = new QLineEdit(searchBar);
+    searchLineEdit->setPlaceholderText(tr("Search..."));
+    searchLayout->addWidget(searchLineEdit);
+
+    findPreviousButton = new QPushButton(tr("Previous"), searchBar);
+    searchLayout->addWidget(findPreviousButton);
+
+    findNextButton = new QPushButton(tr("Next"), searchBar);
+    searchLayout->addWidget(findNextButton);
+
+    closeSearchButton = new QPushButton(tr("Close"), searchBar);
+    searchLayout->addWidget(closeSearchButton);
+
+    searchBar->setLayout(searchLayout);
+    searchBar->hide();
+
+    connect(searchLineEdit, &QLineEdit::returnPressed, this, &ReportOutput::findNext);
+    connect(searchLineEdit, &QLineEdit::textChanged, this, [this]() {
+        findNext();
+    });
+    connect(findNextButton, &QPushButton::clicked, this, &ReportOutput::findNext);
+    connect(findPreviousButton, &QPushButton::clicked, this, &ReportOutput::findPrevious);
+    connect(closeSearchButton, &QPushButton::clicked, this, &ReportOutput::hideSearchBar);
 }
 
 /**
@@ -890,6 +928,115 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "LogMessageSize") == 0) {
         messageSize = rclGrp.GetInt(sReason, d->logMessageSize);
+    }
+}
+
+void ReportOutput::keyPressEvent(QKeyEvent* event)
+{
+    if (event->matches(QKeySequence::Find)) {
+        showSearchBar();
+        event->accept();
+        return;
+    }
+
+    if (event->key() == Qt::Key_Escape && searchBar && searchBar->isVisible()) {
+        hideSearchBar();
+        event->accept();
+        return;
+    }
+
+    QTextEdit::keyPressEvent(event);
+}
+
+void ReportOutput::showSearchBar() const
+{
+    if (!searchBar) {
+        return;
+    }
+
+    searchBar->show();
+    searchLineEdit->setFocus();
+    searchLineEdit->selectAll();
+
+    QRect rect = this->rect();
+    int height = searchBar->sizeHint().height();
+    searchBar->setGeometry(0, rect.height() - height, rect.width(), height);
+}
+
+void ReportOutput::hideSearchBar()
+{
+    if (!searchBar) {
+        return;
+    }
+
+    searchBar->hide();
+    setFocus();
+}
+
+void ReportOutput::findNext()
+{
+    if (!searchLineEdit || searchLineEdit->text().isEmpty()) {
+        return;
+    }
+
+    QString searchText = searchLineEdit->text();
+    QTextDocument::FindFlags flags;
+
+    // start search from current cursor position
+    QTextCursor cursor = textCursor();
+    QTextCursor found = document()->find(searchText, cursor, flags);
+
+    if (!found.isNull()) {
+        setTextCursor(found);
+        ensureCursorVisible();
+    }
+    else {
+        // wrap to beginning
+        cursor.movePosition(QTextCursor::Start);
+        found = document()->find(searchText, cursor, flags);
+        if (!found.isNull()) {
+            setTextCursor(found);
+            ensureCursorVisible();
+        }
+    }
+}
+
+void ReportOutput::findPrevious()
+{
+    if (!searchLineEdit || searchLineEdit->text().isEmpty()) {
+        return;
+    }
+
+    QString searchText = searchLineEdit->text();
+    QTextDocument::FindFlags flags = QTextDocument::FindBackward;
+
+    // staart from cursor pos
+    QTextCursor cursor = textCursor();
+    QTextCursor found = document()->find(searchText, cursor, flags);
+
+    if (!found.isNull()) {
+        setTextCursor(found);
+        ensureCursorVisible();
+    }
+    else {
+        // wrap to end
+        cursor.movePosition(QTextCursor::End);
+        found = document()->find(searchText, cursor, flags);
+        if (!found.isNull()) {
+            setTextCursor(found);
+            ensureCursorVisible();
+        }
+    }
+}
+
+void ReportOutput::resizeEvent(QResizeEvent* event)
+{
+    QTextEdit::resizeEvent(event);
+
+    if (searchBar && searchBar->isVisible()) {
+        QRect rect = this->rect();
+        int height = searchBar->sizeHint().height();
+        searchBar->setGeometry(0, rect.height() - height, rect.width(), height);
     }
 }
 
