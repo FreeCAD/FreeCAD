@@ -151,6 +151,8 @@ void ViewProviderBody::toggleActiveBody()
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
     } else {
 
+        this->setVisible(!  this->isActiveBody()); // TEST TO TRIGGER THE FUNCTION...
+
         // assure the PartDesign workbench
         if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToWB", true))
             Gui::Command::assureWorkbench("PartDesignWorkbench");
@@ -171,8 +173,6 @@ void ViewProviderBody::toggleActiveBody()
 
 bool ViewProviderBody::doubleClicked()
 {
-    this->setVisible(this->isActiveBody()); // TEST TO TRIGGER THE FUNCTION...
-
     toggleActiveBody();
     return true;
 }
@@ -517,8 +517,8 @@ void ViewProviderBody::setVisible(bool visible)
 
     if (!visible)
         return;
-
-    Base::Console().warning("\nUnhiding %s\n", getObject()->getNameInDocument());
+    
+    Base::Console().warning("Setting %s to visible \n", getObject()->getNameInDocument());
 
     auto body = static_cast<PartDesign::Body*>(getObject());
     if (!body)
@@ -526,7 +526,7 @@ void ViewProviderBody::setVisible(bool visible)
 
     auto tip = body->Tip.getValue();
     if (!tip || tip->Visibility.getValue()) {
-        Base::Console().message("Tip already visible (or missing)\n");
+        Base::Console().message("- Tip already visible (or missing).\n");
         return;
     }
 
@@ -539,13 +539,13 @@ void ViewProviderBody::setVisible(bool visible)
     for (auto f : features) {
         if (f && f->Visibility.getValue()) {
             foundVisible = true;
-            Base::Console().message("Visible feature inside Body: %s (%s)\n", f->getNameInDocument(), f->getTypeId().getName());
+            Base::Console().message("- Feature %s (%s) was visible.\n",  f->Label.getValue(), f->getNameInDocument());
             break;
         }
     }
 
     if (!foundVisible) {
-        Base::Console().message("No features were visible, showing tip (the magic happens here)\n");
+        Base::Console().message("- No features were visible, showing tip.\n");
         tip->Visibility.setValue(true);
     }
 }
