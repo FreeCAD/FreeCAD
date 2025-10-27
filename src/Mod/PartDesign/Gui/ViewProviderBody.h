@@ -28,8 +28,11 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Gui/ViewProviderPart.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+
+#include <Base/Console.h>
 
 class SoGroup;
 class SoSeparator;
@@ -100,6 +103,8 @@ public:
 
     /// Override to return the color of the tip instead of the body, which doesn't really have color
     std::map<std::string, Base::Color> getElementColors(const char* element) const override;
+
+    void setVisible(bool visible);
 
 protected:
     /// Copy over all visual properties to the child features

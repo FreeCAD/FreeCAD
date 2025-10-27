@@ -216,13 +216,14 @@ void ViewProviderBody::toggleActiveBody()
 
 bool ViewProviderBody::doubleClicked()
 {
+    this->setVisible(this->isActiveBody()); // TEST TO TRIGGER THE FUNCTION...
+
     toggleActiveBody();
     return true;
 }
 
-
 // TODO To be deleted (2015-09-08, Fat-Zer)
-// void ViewProviderBody::updateTree()
+//void ViewProviderBody::updateTree()
 //{
 //    if (ActiveGuiDoc == NULL) return;
 //
@@ -410,6 +411,50 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode)
     }
 }
 
+// void ViewProviderBody::setVisualBodyMode(bool bodymode)
+// {
+//     Gui::Document* gdoc = Gui::Application::Instance->getDocument(pcObject->getDocument());
+
+//     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+//     if (!body)
+//         return;
+
+//     auto features = body->Group.getValues();
+//     for (auto feature : features) {
+
+//         if (!feature->isDerivedFrom<PartDesign::Feature>())
+//             continue;
+
+//         auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
+//         if (vp) vp->setBodyMode(bodymode);
+//     }
+
+//     // --- Optimize: Tip visibility check when body becomes visible ---
+//     if (!bodymode)
+//         return;  // Only apply logic when showing the body
+
+//     App::DocumentObject* tip = body->Tip.getValue();
+//     if (!tip)
+//         return;
+
+//     // Fast exit if Tip is already visible
+//     if (tip->Visibility.getValue())
+//         return;
+
+//     // Only now iterate through features if necessary
+//     bool anyVisible = false;
+//     for (auto feature : features) {
+//         if (feature && feature->Visibility.getValue()) {
+//             anyVisible = true;
+//             break;
+//         }
+//     }
+
+//     // If none are visible, show the Tip
+//     if (!anyVisible)
+//         tip->Visibility.setValue(true);
+// }
+
 std::vector<std::string> ViewProviderBody::getDisplayModes() const
 {
 
@@ -540,6 +585,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         }
     }
 }
+
 bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const
 {
     if (obj->isDerivedFrom<PartDesign::Feature>()) {
@@ -547,4 +593,43 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::Docu
     }
 
     return ViewProviderPart::canDragObjectToTarget(obj, target);
+}
+
+void ViewProviderBody::setVisible(bool visible)
+{
+    PartGui::ViewProviderPart::setVisible(visible);
+
+    if (!visible)
+        return;
+
+    Base::Console().warning("\nUnhiding %s\n", getObject()->getNameInDocument());
+
+    auto body = static_cast<PartDesign::Body*>(getObject());
+    if (!body)
+        return;
+
+    auto tip = body->Tip.getValue();
+    if (!tip || tip->Visibility.getValue()) {
+        Base::Console().message("Tip already visible (or missing)\n");
+        return;
+    }
+
+    auto features = body->Group.getValues();
+    if (features.empty()) {
+        return;
+    }
+
+    bool foundVisible = false;
+    for (auto f : features) {
+        if (f && f->Visibility.getValue()) {
+            foundVisible = true;
+            Base::Console().message("Visible feature inside Body: %s (%s)\n", f->getNameInDocument(), f->getTypeId().getName());
+            break;
+        }
+    }
+
+    if (!foundVisible) {
+        Base::Console().message("No features were visible, showing tip (the magic happens here)\n");
+        tip->Visibility.setValue(true);
+    }
 }
