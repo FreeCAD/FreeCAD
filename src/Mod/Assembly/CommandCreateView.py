@@ -159,10 +159,11 @@ class ExplodedView:
         applying them.
         Returns:
             - A dictionary mapping {part_object: final_placement}.
-            - A list of [startPos, endPos] for explosion lines.
+            - A list of [start_pos, end_pos] for explosion lines.
         """
         final_placements = {}
         line_positions = []
+        factor = 1
 
         assembly = self.getAssembly(viewObj)
         # Get a snapshot of the assembly's current, un-exploded state
@@ -192,11 +193,11 @@ class ExplodedView:
                 # Use the part's bounding box center relative to its own coordinate system
                 # and transform it by the current placement to get the world start position.
                 local_center = obj.Shape.BoundBox.Center
-                startPos = current_placement.multVec(local_center)
+                start_pos = current_placement.multVec(local_center)
 
                 if move.MoveType == "Radial":
-                    objCom, objSize = UtilsAssembly.getComAndSize(obj)
-                    init_vec = objCom - com
+                    obj_com, obj_size = UtilsAssembly.getComAndSize(obj)
+                    init_vec = obj_com - com
                     new_base = current_placement.Base + init_vec * factor
                     new_placement = App.Placement(new_base, current_placement.Rotation)
                 else:
@@ -206,8 +207,8 @@ class ExplodedView:
                 calculated_placements[obj.Name] = new_placement
                 final_placements[obj] = new_placement
 
-                endPos = new_placement.multVec(local_center)
-                line_positions.append([startPos, endPos])
+                end_pos = new_placement.multVec(local_center)
+                line_positions.append([start_pos, end_pos])
 
         return final_placements, line_positions
 
@@ -238,8 +239,8 @@ class ExplodedView:
             exploded_shapes.append(shape_copy)
 
         # Add shapes for the explosion lines
-        for startPos, endPos in line_positions:
-            line = LineSegment(startPos, endPos).toShape()
+        for start_pos, end_pos in line_positions:
+            line = LineSegment(start_pos, end_pos).toShape()
             exploded_shapes.append(line)
 
         if exploded_shapes:
