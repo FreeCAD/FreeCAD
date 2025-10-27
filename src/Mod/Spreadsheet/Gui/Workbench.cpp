@@ -148,7 +148,6 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
                                             color.blueF());
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -182,7 +181,6 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
                                             color.blueF());
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
