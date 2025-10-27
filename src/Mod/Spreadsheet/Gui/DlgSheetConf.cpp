@@ -327,7 +327,7 @@ void DlgSheetConf::onDiscard()
             }
         }
 
-        
+
         Gui::Command::commitCommand();
         QDialog::accept();
     }
