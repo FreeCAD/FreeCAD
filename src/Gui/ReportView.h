@@ -206,7 +206,7 @@ public Q_SLOTS:
     /** Toggles the report to go to the end if new messages appear. */
     void onToggleGoToEnd();
     /** Shows the search bar. */
-    void showSearchBar() const;
+    void showSearchBar();
     /** Hides the search bar. */
     void hideSearchBar();
 

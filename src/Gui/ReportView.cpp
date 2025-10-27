@@ -959,7 +959,7 @@ void ReportOutput::keyPressEvent(QKeyEvent* event)
     QTextEdit::keyPressEvent(event);
 }
 
-void ReportOutput::showSearchBar() const
+void ReportOutput::showSearchBar()
 {
     if (!searchBar) {
         return;
@@ -972,6 +972,9 @@ void ReportOutput::showSearchBar() const
     QRect rect = this->rect();
     int height = searchBar->sizeHint().height();
     searchBar->setGeometry(0, rect.height() - height, rect.width(), height);
+
+    // adjust viewport margins to prevent text from being hidden under search bar
+    setViewportMargins(0, 0, 0, height);
 }
 
 void ReportOutput::hideSearchBar()
@@ -982,6 +985,9 @@ void ReportOutput::hideSearchBar()
 
     searchBar->hide();
     setFocus();
+
+    // reset viewport margins
+    setViewportMargins(0, 0, 0, 0);
 }
 
 void ReportOutput::performSearch(SearchDirection direction)
