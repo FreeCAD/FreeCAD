@@ -1143,7 +1143,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>Абраць гузік</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>
@@ -1443,7 +1443,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="346"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Заўвага:&lt;/span&gt; Змены стануць актыўнымі ў наступнай загрузцы адпаведнага варштату&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Заўвага: змены стануць актыўнымі ў наступнай загрузцы адпаведнага варштату.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="83"/>
@@ -2063,7 +2063,7 @@ Specify another directory.</source>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="17"/>
       <source>Parameter Editor</source>
-      <translation>Рэдактар налад</translation>
+      <translation>Сродак праўкі налад</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="53"/>
@@ -4057,7 +4057,7 @@ Free Turntable: the part will be rotated around the Z-axis.
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="535"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation>Вярчэнне ў трохмерным прадстаўленні будзе ўжываць бягучае становішча курсора ў якасці цэнтру для вярчэння</translation>
+      <translation>Вярчэнне ў трохмерным прадстаўленні будзе ўжываць бягучае становішча паказальніка ў якасці цэнтру для вярчэння</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="542"/>
@@ -5771,7 +5771,7 @@ originally selected prior to opening this dialog</source>
 This has been modified outside of the source editor. Reload it?</source>
       <translation>%1.
 
-Файл быў зменены за межамі рэдактара зыходнага кода.
+Файл быў зменены за межамі сродку праўкі зыходнага коду.
 Ці перазагрузіць яго?</translation>
     </message>
     <message>
@@ -5804,7 +5804,7 @@ Save all changes?</source>
     <message>
       <location filename="../EditorView.cpp" line="550"/>
       <source> - Editor</source>
-      <translation> - Рэдактар</translation>
+      <translation> - Сродак праўкі</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="610"/>
@@ -8978,7 +8978,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="439"/>
       <source>Activate on hover</source>
-      <translation>Задзейнічаць пры навядзенні курсора</translation>
+      <translation>Задзейнічаць пры навядзенні паказальніка</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="401"/>
@@ -10512,7 +10512,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Вы можаце змяніць парадак размяшчэння варштатаў перацягваннем.
-Дадатковыя варштаты можна ўсталяваць з дапамогай Кіравання дадаткамі.
+Дадатковыя варштаты можна ўсталяваць з дапамогай кіравання дадаткамі.
 
 У бягучы час усталяваныя наступныя варштаты:</translation>
     </message>
@@ -10927,7 +10927,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="14"/>
       <source>Editor</source>
-      <translation>Рэдактар</translation>
+      <translation>Сродак праўкі</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="35"/>
@@ -11695,7 +11695,7 @@ from Python console to Report view panel</source>
       <location filename="../OverlayParams.cpp" line="400"/>
       <source>Show auto hidden dock overlay on mouse over.
 If disabled, then show on mouse click.</source>
-      <translation>Паказаць аўтаматычнае схаванне накладанне прымацавання пры навядзенні курсора мышы.
+      <translation>Паказаць аўтаматычнае схаванне накладанне прымацавання пры навядзенні паказальніка мышы.
 Калі адключана, то паказваць, калі пстрыкнуць мышшу.</translation>
     </message>
     <message>
@@ -11725,7 +11725,7 @@ previously handled by other widget.</source>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation>Калі ўключаная аўтаматычная пстрычка мышшу, то гэты радыус вызначае вобласць альфа-тэставанні пад курсорам мышы.
+      <translation>Калі ўключаная аўтаматычная пстрычка мышшу, то гэты радыус вызначае вобласць альфа-тэставанні пад паказальнікам мышы.
 Аўтаматычны пераход задзейнічае, калі ўсе пікселі ў межах вобласці будуць непразрыстыя.</translation>
     </message>
     <message>
@@ -11790,7 +11790,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../OverlayParams.cpp" line="854"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Паказаць панэль укладак пры навядзенні курсора мышы пры аўтаматычным утойванні</translation>
+      <translation>Паказаць панэль укладак пры навядзенні паказальніка мышы пры аўтаматычным утойванні</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="882"/>
@@ -12108,7 +12108,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="420"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Паказаць панэль укладак пры навядзенні курсора мышы пры аўтаматычным утойванні</translation>
+      <translation>Паказаць панэль укладак пры навядзенні паказальніка мышы пры аўтаматычным утойванні</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="423"/>

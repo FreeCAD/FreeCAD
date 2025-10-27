@@ -366,7 +366,7 @@ ungültigen Randbedingungen und degenerierter Geometrie</translation>
       <location filename="../../CommandConstraints.cpp" line="1967"/>
       <location filename="../../CommandConstraints.cpp" line="3152"/>
       <source>Dimension</source>
-      <translation>Maß</translation>
+      <translation>Maße</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2215"/>
@@ -3982,7 +3982,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="399"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="400"/>
@@ -4796,7 +4796,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="189"/>
       <source>Failed to trim edge</source>
-      <translation>Kante trimmen fehlgeschlagen</translation>
+      <translation>Kante zuschneiden ist fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1221"/>
@@ -4899,7 +4899,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../CommandConstraints.cpp" line="1561"/>
       <source>Dimension</source>
-      <translation>Maß</translation>
+      <translation>Maßangabe gemäß Auswahl</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1562"/>
@@ -5446,7 +5446,7 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="516"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="517"/>
@@ -5472,7 +5472,7 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="481"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="482"/>
@@ -6674,12 +6674,12 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1623"/>
       <source>Trim Edge</source>
-      <translation>Kante verkürzen</translation>
+      <translation>Kante zuschneiden</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1624"/>
       <source>Trims an edge with respect to the selected position</source>
-      <translation>Verkürzt eine Kante in Bezug auf die ausgewählte Position</translation>
+      <translation>Schneidet einen Abschnitt einer Kante ab bzw. aus, entsprechend der ausgewählten Position</translation>
     </message>
   </context>
   <context>
@@ -7882,7 +7882,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
       <location filename="../../DrawSketchHandlerTrimming.h" line="217"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
-      <translation>%1 Kante zum Kürzen auswählen</translation>
+      <translation>%1 Kante zum Zuschneiden auswählen</translation>
     </message>
   </context>
   <context>

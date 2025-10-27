@@ -1891,7 +1891,7 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>Seleziona la geometria secondaria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
@@ -1903,12 +1903,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="141"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="144"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>fare clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>Seleziona la geometria principale del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
@@ -1966,12 +1966,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Vertice, Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="243"/>
@@ -2011,12 +2011,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Vertice, Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
@@ -2076,7 +2076,7 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
@@ -2201,12 +2201,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Vertice, Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
@@ -2282,12 +2282,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="268"/>
@@ -2329,7 +2329,7 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Seleziona la geometria singola del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
@@ -2388,12 +2388,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
@@ -2446,7 +2446,7 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
@@ -2491,12 +2491,12 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Vertice, Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="191"/>
@@ -2583,7 +2583,7 @@ messaggio di errore che "MAXKOI" deve essere aumentato.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Seleziona la geometria singola del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
@@ -4291,12 +4291,12 @@ Per le variabili possibili, vedere la casella di descrizione qui sotto.</transla
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+      <translation>Seleziona la geometria principale del tipo: Faccia; fare clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
+      <translation>Seleziona la geometria secondaria del tipo: Faccia; fare clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4339,7 +4339,7 @@ Per le variabili possibili, vedere la casella di descrizione qui sotto.</transla
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: vertice, bordo, faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4429,7 +4429,7 @@ generata dal flusso
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: vertice, bordo, faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4457,7 +4457,7 @@ generata dal flusso
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Seleziona la geometria del tipo: Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4562,7 +4562,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: vertice, bordo, faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4617,7 +4617,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4674,7 +4674,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Seleziona la singola geometria del tipo: Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4692,7 +4692,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4746,7 +4746,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Seleziona la geometria del tipo: Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4764,7 +4764,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: vertice, bordo, faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4807,7 +4807,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Seleziona la singola geometria del tipo: Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5699,7 +5699,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>Seleziona la geometria del tipo: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
@@ -6497,7 +6497,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Seleziona la geometria del tipo: vertice, bordo, faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6606,12 +6606,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Seleziona la geometria del tipo: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Vertice, Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="276"/>

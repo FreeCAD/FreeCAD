@@ -3014,7 +3014,7 @@ Si les deux longueurs sont nulles, la dimension de la direction est utilisée.</
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Chamfer parameters</source>
-      <translation>Paramètres du chanfrein</translation>
+      <translation>Paramètres des chanfreins</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>

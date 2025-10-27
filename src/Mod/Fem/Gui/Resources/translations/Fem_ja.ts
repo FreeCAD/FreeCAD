@@ -886,7 +886,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>時間刻み幅</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="331"/>
@@ -1877,7 +1877,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="139"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>以下の種類の従ジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
@@ -1894,7 +1894,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>以下の種類の主ジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
@@ -1952,7 +1952,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="164"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="165"/>
@@ -1997,7 +1997,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="85"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="86"/>
@@ -2062,7 +2062,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="373"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="374"/>
@@ -2113,7 +2113,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="634"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>エッジまたは面を選択してください。</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
@@ -2187,7 +2187,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="89"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="90"/>
@@ -2235,7 +2235,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
       <source>Select an edge or a face.</source>
-      <translation>エッジまたは面を選択</translation>
+      <translation>エッジまたは面を選択してください。</translation>
     </message>
   </context>
   <context>
@@ -2268,7 +2268,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="148"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="149"/>
@@ -2315,7 +2315,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="95"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>以下の種類の単一ジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="96"/>
@@ -2374,7 +2374,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="73"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="74"/>
@@ -2432,7 +2432,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="102"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="103"/>
@@ -2477,7 +2477,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="100"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
@@ -2569,7 +2569,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="156"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>以下の種類の単一ジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
@@ -4273,12 +4273,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Face; click Add or Remove</translation>
+      <translation>以下の種類の主ジオメトリーを選択: 面; 追加または削除をクリック</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Face; click Add or Remove</translation>
+      <translation>以下の種類の従ジオメトリーを選択: 面; 追加または削除をクリック</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4321,7 +4321,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 頂点、エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4407,7 +4407,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 頂点、エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4435,7 +4435,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4539,7 +4539,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 頂点、エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4593,7 +4593,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4650,7 +4650,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>以下の種類の単一ジオメトリーを選択: 面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4668,7 +4668,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4722,7 +4722,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4740,7 +4740,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 頂点、エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4783,7 +4783,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>以下の種類の単一ジオメトリーを選択: 面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5195,7 +5195,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>M&amp;odel</source>
-      <translation>モデル(&amp;o)</translation>
+      <translation>モデル(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -5315,7 +5315,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>M&amp;esh</source>
-      <translation>メッシュ(&amp;e)</translation>
+      <translation>メッシュ(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
@@ -5675,7 +5675,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>以下の種類のジオメトリーを選択: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
@@ -6473,7 +6473,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>以下の種類のジオメトリーを選択: 頂点、エッジ、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6582,7 +6582,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="251"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>以下の種類のジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="252"/>

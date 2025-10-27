@@ -4588,13 +4588,14 @@ A nagyobb értékek (tovább jobbra) gyorsabb számításokat eredményeznek; a 
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1835"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation type="unfinished">Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</translation>
+      <translation>A vágásokat régiók szerint rendezi a mélység helyett. 
+Ez a tulajdonság csak akkor használható, ha az 'Kísérleti modell bevonása' funkció bekapcsolt.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1850"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1956"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation type="unfinished">Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</translation>
+      <translation>Kapcsolja be a kísérleti modellfelismerést, hogy figyelembe vegye a 3D-s geometriát és elkerülje a túlnyúlások alatt történő vágást</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1945"/>
@@ -4609,7 +4610,8 @@ A nagyobb értékek (tovább jobbra) gyorsabb számításokat eredményeznek; a 
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1726"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation type="unfinished">How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</translation>
+      <translation>Mennyi ráhagyást hagyjon a Z tengely mentén (pl. végső megmunkáláshoz).
+Ezt a tulajdonságot csak akkor használják, ha az kísérleti modellfelismerés mód engedélyezett.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1744"/>
@@ -7921,7 +7923,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="553"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>Az adaptív művelet nem tudta meghatározni a határvonalat. Kiválasztotta az alapgeometriát?</translation>
     </message>
   </context>
   <context>

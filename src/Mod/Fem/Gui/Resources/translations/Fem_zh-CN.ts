@@ -1114,7 +1114,7 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
+      <translation>并行任务数。如果 Elmer 未使用 MPI，请设置为 `1`。&lt;br&gt;建议使用偶数个核心以利用网格对称性&lt;br&gt;（使用 8 个核心可能比 9 个核心更快）。&lt;br&gt;在极端情况下，如果核心数过高，ElmerSolver 可能无法收敛。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
@@ -1239,7 +1239,7 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
       <source>sdfsdfsdfds</source>
-      <translation type="unfinished">sdfsdfsdfds</translation>
+      <translation>sdfsdfsdfds</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
@@ -4994,7 +4994,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
       <source>Coloring</source>
-      <translation type="unfinished">Coloring</translation>
+      <translation>着色</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
@@ -5047,17 +5047,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
       <source>Minimum scalar</source>
-      <translation type="unfinished">Minimum scalar</translation>
+      <translation>最小标量</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Maximum scalar</source>
-      <translation type="unfinished">Maximum scalar</translation>
+      <translation>最大标量</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
-      <translation type="unfinished">Clip scalar</translation>
+      <translation>裁剪标量</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
@@ -5075,22 +5075,22 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="42"/>
       <source>warp vectors</source>
-      <translation type="unfinished">warp vectors</translation>
+      <translation>扭曲向量</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="98"/>
       <source>Minimum warp</source>
-      <translation type="unfinished">Minimum warp</translation>
+      <translation>最小扭曲</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="118"/>
       <source>Maximum warp</source>
-      <translation type="unfinished">Maximum warp</translation>
+      <translation>最大扭曲</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="105"/>
       <source>Warp factor</source>
-      <translation type="unfinished">Warp factor</translation>
+      <translation>扭曲因子</translation>
     </message>
   </context>
   <context>
@@ -5148,12 +5148,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>增长率</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Number of segments per edge</source>
-      <translation type="unfinished">Number of segments per edge</translation>
+      <translation>每边分段数</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
@@ -5163,17 +5163,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="184"/>
       <source>Node count</source>
-      <translation type="unfinished">Node count</translation>
+      <translation>节点数</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count</source>
-      <translation type="unfinished">Triangle count</translation>
+      <translation>三角形数</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count</source>
-      <translation type="unfinished">Tetrahedron count</translation>
+      <translation>四面体数</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5226,7 +5226,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Electrostatic Boundary Conditions</source>
-      <translation type="unfinished">Electrostatic Boundary Conditions</translation>
+      <translation>静电边界条件</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -5236,7 +5236,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Fluid Boundary Conditions</source>
-      <translation type="unfinished">Fluid Boundary Conditions</translation>
+      <translation>流体边界条件</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -5246,7 +5246,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>电磁边界条件</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -5256,7 +5256,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Geometrical Analysis Features</source>
-      <translation type="unfinished">Geometrical Analysis Features</translation>
+      <translation>几何分析特征</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -5266,7 +5266,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">Mechanical Boundary Conditions and Loads</translation>
+      <translation>机械边界条件与载荷</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
@@ -5276,7 +5276,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">Thermal Boundary Conditions and Loads</translation>
+      <translation>热边界条件与载荷</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -5286,7 +5286,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Analysis Features Without Solver</source>
-      <translation type="unfinished">Analysis Features Without Solver</translation>
+      <translation>无求解器的分析特征</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -5354,13 +5354,13 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Command.cpp" line="1836"/>
       <source>Error: A filter can only be applied to a single object.</source>
-      <translation type="unfinished">Error: A filter can only be applied to a single object.</translation>
+      <translation>错误：过滤器只能应用于单个对象。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1838"/>
       <location filename="../../Command.cpp" line="1849"/>
       <source>The filter could not be set up.</source>
-      <translation type="unfinished">The filter could not be set up.</translation>
+      <translation>无法设置过滤器。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
@@ -5370,12 +5370,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Command.cpp" line="1866"/>
       <source>Error: Object not in a post processing group</source>
-      <translation type="unfinished">Error: Object not in a post processing group</translation>
+      <translation>错误：对象不在后处理组中</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1867"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
-      <translation type="unfinished">The filter could not be set up: Object not in a post processing group.</translation>
+      <translation>无法设置过滤器：对象不在后处理组中。</translation>
     </message>
   </context>
   <context>
@@ -5383,7 +5383,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="61"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>新建分析</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="65"/>
@@ -5396,12 +5396,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="161"/>
       <source>Remove All Clipping Planes</source>
-      <translation type="unfinished">Remove All Clipping Planes</translation>
+      <translation>移除所有裁剪平面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="164"/>
       <source>Removes all clipping planes</source>
-      <translation type="unfinished">Removes all clipping planes</translation>
+      <translation>移除所有裁剪平面</translation>
     </message>
   </context>
   <context>
@@ -5409,12 +5409,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="551"/>
       <source>FEM Examples</source>
-      <translation type="unfinished">FEM Examples</translation>
+      <translation>有限元示例</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="552"/>
       <source>Opens the FEM examples</source>
-      <translation type="unfinished">Opens the FEM examples</translation>
+      <translation>打开有限元示例</translation>
     </message>
   </context>
   <context>
@@ -5435,12 +5435,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>增强材料（混凝土）</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>为增强基体材料（如混凝土）创建材料</translation>
     </message>
   </context>
   <context>
@@ -5448,12 +5448,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="688"/>
       <source>FEM Mesh to Mesh</source>
-      <translation type="unfinished">FEM Mesh to Mesh</translation>
+      <translation>有限元网格转换为网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="691"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Converts the surface of a FEM mesh to a mesh</translation>
+      <translation>将有限元网格的表面转换为网格</translation>
     </message>
   </context>
   <context>
@@ -5461,12 +5461,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="763"/>
       <source>Display Mesh Info</source>
-      <translation type="unfinished">Display Mesh Info</translation>
+      <translation>显示网格信息</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="764"/>
       <source>Displays FEM mesh information</source>
-      <translation type="unfinished">Displays FEM mesh information</translation>
+      <translation>显示有限元网格信息</translation>
     </message>
   </context>
   <context>
@@ -5474,12 +5474,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="787"/>
       <source>Mesh From Shape by Gmsh</source>
-      <translation type="unfinished">Mesh From Shape by Gmsh</translation>
+      <translation>通过 Gmsh 从形状生成网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="790"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Creates a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>通过 Gmsh 网格生成器从形状创建有限元网格</translation>
     </message>
   </context>
   <context>
@@ -5487,12 +5487,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="848"/>
       <source>Mesh From Shape by Netgen</source>
-      <translation type="unfinished">Mesh From Shape by Netgen</translation>
+      <translation>通过 Netgen 从形状生成网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="852"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Creates a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>通过 Netgen 内部网格生成器从实体或面形状创建有限元网格</translation>
     </message>
   </context>
   <context>
@@ -5513,12 +5513,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1101"/>
       <source>Solver Job Control</source>
-      <translation type="unfinished">Solver Job Control</translation>
+      <translation>求解器作业控制</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1106"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>更改求解器属性并为所选求解器运行计算</translation>
     </message>
   </context>
   <context>
@@ -5531,7 +5531,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1120"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>创建 Elmer 有限元求解器</translation>
     </message>
   </context>
   <context>
@@ -5552,7 +5552,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1169"/>
       <source>Run Solver</source>
-      <translation type="unfinished">Run Solver</translation>
+      <translation>运行求解器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1173"/>
@@ -5645,7 +5645,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="161"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>选择面/边/顶点</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="162"/>
@@ -5681,17 +5681,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>选择几何类型：{}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
       <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation type="unfinished">Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
+      <translation>点击并选择几何元素以将其添加到列表中。{}可以选择以下几何元素：{}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="334"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}如果未向列表添加任何几何图形，则将使用所有剩余的几何图形。</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="310"/>
@@ -5701,7 +5701,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
       <source>Geometry Reference Selector</source>
-      <translation type="unfinished">Geometry Reference Selector</translation>
+      <translation>几何参考选择器</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
@@ -5759,7 +5759,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="414"/>
       <source>Network Pressure</source>
-      <translation type="unfinished">Network Pressure</translation>
+      <translation>网络压力</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="426"/>
@@ -5796,7 +5796,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
       <source>Result mesh is empty</source>
-      <translation type="unfinished">Result mesh is empty</translation>
+      <translation>结果网格为空</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
@@ -5810,9 +5810,9 @@ Please select a result type first.</source>
 
 Correct module found in: 
 {}</source>
-      <translation type="unfinished">
+      <translation>
 
-Correct module found in: 
+在以下位置找到正确的模块：
 {}</translation>
     </message>
     <message>
@@ -5820,78 +5820,78 @@ Correct module found in:
       <source>
 
 Should this module be loaded instead?</source>
-      <translation type="unfinished">
+      <translation>
 
-Should this module be loaded instead?</translation>
+是否应改为加载此模块？</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>
 
 No matching module was found in the current Python path.</source>
-      <translation type="unfinished">
+      <translation>
 
-No matching module was found in the current Python path.</translation>
+在当前 Python 路径中未找到匹配的模块。</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python module conflict</source>
-      <translation type="unfinished">VTK Python module conflict</translation>
+      <translation>VTK Python 模块冲突</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="253"/>
       <source>VTK Python Module Conflict</source>
-      <translation type="unfinished">VTK Python Module Conflict</translation>
+      <translation>VTK Python 模块冲突</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="256"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
-      <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
+      <translation>由于 VTK Python 模块冲突，此功能不可用</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="56"/>
       <source>New {}</source>
-      <translation type="unfinished">New {}</translation>
+      <translation>新建 {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="63"/>
       <source>with {}</source>
-      <translation type="unfinished">with {}</translation>
+      <translation>使用 {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="98"/>
       <source>Add {}</source>
-      <translation type="unfinished">Add {}</translation>
+      <translation>添加 {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="114"/>
       <source>From {}</source>
-      <translation type="unfinished">From {}</translation>
+      <translation>来自 {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="123"/>
       <source>add {}</source>
-      <translation type="unfinished">add {}</translation>
+      <translation>添加 {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="371"/>
       <source>{}: Data source not available</source>
-      <translation type="unfinished">{}: Data source not available</translation>
+      <translation>{}：数据源不可用</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="530"/>
       <source>Data used in:</source>
-      <translation type="unfinished">Data used in:</translation>
+      <translation>数据用于：</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="532"/>
       <source>Data used from:</source>
-      <translation type="unfinished">Data used from:</translation>
+      <translation>数据来自：</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="541"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>添加数据到</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="546"/>
@@ -5901,197 +5901,197 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="553"/>
       <source>Add data from</source>
-      <translation type="unfinished">Add data from</translation>
+      <translation>从...添加数据</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="109"/>
       <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
+      <translation>数据可视化</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="112"/>
       <source>Different visualizations to show post processing data in</source>
-      <translation type="unfinished">Different visualizations to show post processing data in</translation>
+      <translation>用于显示后处理数据的不同可视化方式</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="175"/>
       <source>Export to CSV</source>
-      <translation type="unfinished">Export to CSV</translation>
+      <translation>导出为 CSV</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="213"/>
       <source>Save as csv file</source>
-      <translation type="unfinished">Save as csv file</translation>
+      <translation>另存为 csv 文件</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="218"/>
       <source>CSV file export aborted: no filename selected</source>
-      <translation type="unfinished">CSV file export aborted: no filename selected</translation>
+      <translation>CSV 文件导出已中止：未选择文件名</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="87"/>
       <source>The data table that stores the extracted data</source>
-      <translation type="unfinished">The data table that stores the extracted data</translation>
+      <translation>存储提取数据的数据表</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="94"/>
       <source>The data source from which the data is extracted</source>
-      <translation type="unfinished">The data source from which the data is extracted</translation>
+      <translation>从中提取数据的数据源</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="147"/>
       <source>The field to use as X data</source>
-      <translation type="unfinished">The field to use as X data</translation>
+      <translation>用作 X 数据的字段</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="156"/>
       <source>Which part of the X field vector to use for the X axis</source>
-      <translation type="unfinished">Which part of the X field vector to use for the X axis</translation>
+      <translation>使用 X 字段向量的哪一部分作为 X 轴</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="286"/>
       <source>The field to use as Y data</source>
-      <translation type="unfinished">The field to use as Y data</translation>
+      <translation>用作 Y 数据的字段</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="295"/>
       <source>Which part of the Y field vector to use for the Y axis</source>
-      <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
+      <translation>使用 Y 字段向量的哪一部分作为 Y 轴</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
-      <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
+      <translation>指定是否为每个可用帧提取字段</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract1D.py" line="140"/>
       <source>Specify for which index the data should be extracted</source>
-      <translation type="unfinished">Specify for which index the data should be extracted</translation>
+      <translation>指定应为哪个索引提取数据</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract2D.py" line="155"/>
       <source>Specify for which point index the data should be extracted</source>
-      <translation type="unfinished">Specify for which point index the data should be extracted</translation>
+      <translation>指定应为哪个点索引提取数据</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/base_fempostpanel.py" line="69"/>
       <source>Edit {}</source>
-      <translation type="unfinished">Edit {}</translation>
+      <translation>编辑 {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
-      <translation type="unfinished">Show Plot</translation>
+      <translation>显示图表</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
-      <translation type="unfinished">Show Data</translation>
+      <translation>显示数据</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="69"/>
       <source>Histogram Data</source>
-      <translation type="unfinished">Histogram Data</translation>
+      <translation>直方图数据</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="76"/>
       <source>Histogram View Settings</source>
-      <translation type="unfinished">Histogram View Settings</translation>
+      <translation>直方图视图设置</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="69"/>
       <source>Lineplot Data</source>
-      <translation type="unfinished">Lineplot Data</translation>
+      <translation>线图数据</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="76"/>
       <source>Lineplot View Settings</source>
-      <translation type="unfinished">Lineplot View Settings</translation>
+      <translation>线图视图设置</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
       <source>Show Table</source>
-      <translation type="unfinished">Show Table</translation>
+      <translation>显示表格</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="64"/>
       <source>Table Data</source>
-      <translation type="unfinished">Table Data</translation>
+      <translation>表格数据</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
       <source>The name used in the plots legend</source>
-      <translation type="unfinished">The name used in the plots legend</translation>
+      <translation>在图表图例中使用的名称</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="274"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="295"/>
       <source>The color the data bin area is drawn with</source>
-      <translation type="unfinished">The color the data bin area is drawn with</translation>
+      <translation>数据条区域绘制的颜色</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="281"/>
       <source>The hatch pattern drawn in the bar</source>
-      <translation type="unfinished">The hatch pattern drawn in the bar</translation>
+      <translation>在条柱中绘制的填充图案</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="288"/>
       <source>The line width of the hatch)</source>
-      <translation type="unfinished">The line width of the hatch)</translation>
+      <translation>填充图案的线宽）</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="304"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="416"/>
       <source>The width of the bar, between 0 and 1 (1 being without gaps)</source>
-      <translation type="unfinished">The width of the bar, between 0 and 1 (1 being without gaps)</translation>
+      <translation>条柱的宽度，介于 0 和 1 之间（1 表示无间隙）</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
       <source>The style the line is drawn in</source>
-      <translation type="unfinished">The style the line is drawn in</translation>
+      <translation>线条绘制的样式</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="400"/>
       <source>If the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If the bars should show the cumulative sum left to right</translation>
+      <translation>条柱是否应显示从左到右的累积和</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="407"/>
       <source>The type of histogram plotted</source>
-      <translation type="unfinished">The type of histogram plotted</translation>
+      <translation>绘制的直方图类型</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="423"/>
       <source>The line width of all drawn hatch patterns</source>
-      <translation type="unfinished">The line width of all drawn hatch patterns</translation>
+      <translation>所有绘制的填充图案的线宽</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="430"/>
       <source>The number of bins the data is split into</source>
-      <translation type="unfinished">The number of bins the data is split into</translation>
+      <translation>数据划分的条柱数</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
       <source>The histogram plot title</source>
-      <translation type="unfinished">The histogram plot title</translation>
+      <translation>直方图标题</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
       <source>The label shown for the histogram X axis</source>
-      <translation type="unfinished">The label shown for the histogram X axis</translation>
+      <translation>直方图 X 轴显示的标签</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
       <source>The label shown for the histogram Y axis</source>
-      <translation type="unfinished">The label shown for the histogram Y axis</translation>
+      <translation>直方图 Y 轴显示的标签</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
@@ -6099,42 +6099,42 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
       <source>Determines if the legend is plotted</source>
-      <translation type="unfinished">Determines if the legend is plotted</translation>
+      <translation>决定是否绘制图例</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="290"/>
       <source>The color the line and the markers are drawn with</source>
-      <translation type="unfinished">The color the line and the markers are drawn with</translation>
+      <translation>线条和标记绘制的颜色</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="304"/>
       <source>The width the line is drawn with</source>
-      <translation type="unfinished">The width the line is drawn with</translation>
+      <translation>线条绘制的宽度</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="311"/>
       <source>The style the data markers are drawn with</source>
-      <translation type="unfinished">The style the data markers are drawn with</translation>
+      <translation>数据标记绘制的样式</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="318"/>
       <source>The size the data markers are drawn in</source>
-      <translation type="unfinished">The size the data markers are drawn in</translation>
+      <translation>数据标记绘制的大小</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="407"/>
       <source>If be the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If be the bars should show the cumulative sum left to right</translation>
+      <translation>条柱是否应显示从左到右的累积和</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="414"/>
       <source>The scale the axis are drawn in</source>
-      <translation type="unfinished">The scale the axis are drawn in</translation>
+      <translation>坐标轴绘制的比例</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="188"/>
       <source>The name used in the table header. Default name is used if empty</source>
-      <translation type="unfinished">The name used in the table header. Default name is used if empty</translation>
+      <translation>表头中使用的名称。如果为空则使用默认名称</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
@@ -6152,7 +6152,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1398"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>电磁边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1399"/>
@@ -6195,7 +6195,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
       <source>No Color</source>
-      <translation type="unfinished">No Color</translation>
+      <translation>无颜色</translation>
     </message>
   </context>
   <context>
@@ -6208,7 +6208,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1541"/>
       <source>Electromagnetic Equations</source>
-      <translation type="unfinished">Electromagnetic Equations</translation>
+      <translation>电磁方程</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1542"/>
@@ -6226,7 +6226,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="2325"/>
       <source>Contours Filter</source>
-      <translation type="unfinished">Contours Filter</translation>
+      <translation>等值线过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2326"/>
@@ -6318,7 +6318,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
       <source>Mechanical Equations</source>
-      <translation type="unfinished">Mechanical Equations</translation>
+      <translation>力学方程</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1710"/>
@@ -6331,7 +6331,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="201"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>体热源</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="204"/>
@@ -6344,7 +6344,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="214"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>离心载荷</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="215"/>
@@ -6357,7 +6357,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="228"/>
       <source>Current Density Boundary Condition</source>
-      <translation type="unfinished">Current Density Boundary Condition</translation>
+      <translation>电流密度边界条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="232"/>
@@ -6370,7 +6370,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Electrostatic Potential Boundary Condition</source>
-      <translation type="unfinished">Electrostatic Potential Boundary Condition</translation>
+      <translation>静电势边界条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="265"/>
@@ -6383,12 +6383,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="277"/>
       <source>Flow Velocity Boundary Condition</source>
-      <translation type="unfinished">Flow Velocity Boundary Condition</translation>
+      <translation>流速边界条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a flow velocity boundary condition</source>
-      <translation type="unfinished">Creates a flow velocity boundary condition</translation>
+      <translation>创建流速边界条件</translation>
     </message>
   </context>
   <context>
@@ -6396,12 +6396,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Initial Pressure Condition</source>
-      <translation type="unfinished">Initial Pressure Condition</translation>
+      <translation>初始压力条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="311"/>
       <source>Creates an initial pressure condition</source>
-      <translation type="unfinished">Creates an initial pressure condition</translation>
+      <translation>创建初始压力条件</translation>
     </message>
   </context>
   <context>
@@ -6409,7 +6409,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="323"/>
       <source>Magnetization Boundary Condition</source>
-      <translation type="unfinished">Magnetization Boundary Condition</translation>
+      <translation>磁化边界条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="326"/>
@@ -6435,7 +6435,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>重力载荷</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="350"/>
@@ -6448,7 +6448,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="360"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>绑定约束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="361"/>
@@ -6552,7 +6552,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>旋转</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -6575,7 +6575,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="455"/>
       <source>Rigid Body Constraint</source>
-      <translation type="unfinished">Rigid Body Constraint</translation>
+      <translation>刚体约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="456"/>
@@ -6625,7 +6625,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="329"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
+      <translation>每个约束只允许一种选择类型（顶点、面或边）！</translation>
     </message>
   </context>
   <context>
@@ -6651,17 +6651,17 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase elements by polygon</source>
-      <translation type="unfinished">Erase elements by polygon</translation>
+      <translation>通过多边形擦除元素</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete new meshes</source>
-      <translation type="unfinished">Delete new meshes</translation>
+      <translation>删除新网格</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy result mesh</source>
-      <translation type="unfinished">Copy result mesh</translation>
+      <translation>复制结果网格</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6679,7 +6679,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>擦除元素</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
@@ -6693,29 +6693,29 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="229"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
+      <translation>无法将 ResultMesh 复制到 ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="239"/>
       <source>Mesh must be a ResultMesh</source>
-      <translation type="unfinished">Mesh must be a ResultMesh</translation>
+      <translation>网格必须是 ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="561"/>
       <source>No Data To Restore
 </source>
-      <translation type="unfinished">No Data To Restore
+      <translation>无数据可恢复
 </translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="756"/>
       <source>Erased Elements</source>
-      <translation type="unfinished">Erased Elements</translation>
+      <translation>已擦除的元素</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="757"/>
       <source>All Elements Erased - no mesh generated.</source>
-      <translation type="unfinished">All Elements Erased - no mesh generated.</translation>
+      <translation>所有元素已擦除 - 未生成网格。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
@@ -6725,7 +6725,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation type="unfinished">Creates a FEM mesh elements set</translation>
+      <translation>创建有限元网格元素集</translation>
     </message>
   </context>
   <context>
@@ -6733,7 +6733,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="438"/>
       <source>Elements set</source>
-      <translation type="unfinished">Elements set</translation>
+      <translation>元素集</translation>
     </message>
   </context>
   <context>
@@ -6746,12 +6746,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
       <source>Element Set From Polygon</source>
-      <translation type="unfinished">Element Set From Polygon</translation>
+      <translation>来自多边形的元素集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>Creates a collection of elements selected by a polygon</source>
-      <translation type="unfinished">Creates a collection of elements selected by a polygon</translation>
+      <translation>创建由多边形选择的元素集合</translation>
     </message>
   </context>
   <context>
@@ -6759,7 +6759,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>Netgen 有限元网格</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
@@ -6789,12 +6789,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="124"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>增长率</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="147"/>
       <source>Curvature safety</source>
-      <translation type="unfinished">Curvature safety</translation>
+      <translation>曲率安全系数</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="164"/>
@@ -6809,7 +6809,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Netgen 版本</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="192"/>
@@ -6838,14 +6838,14 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Python 路径</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>已安装 Netgen Python 绑定的 Python 可执行文件。
+留空以使用默认 Python 可执行文件</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -6878,12 +6878,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1071"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>求解器 CalculiX</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1076"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>创建有限元求解器 CalculiX</translation>
     </message>
   </context>
   <context>
@@ -6891,22 +6891,22 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="28"/>
       <source>Field name</source>
-      <translation type="unfinished">Field name</translation>
+      <translation>字段名称</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="41"/>
       <source>Mathematical expression</source>
-      <translation type="unfinished">Mathematical expression</translation>
+      <translation>数学表达式</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="54"/>
       <source>Available fields</source>
-      <translation type="unfinished">Available fields</translation>
+      <translation>可用字段</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation type="unfinished">Scalars</translation>
+      <translation>标量</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -6916,17 +6916,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
       <source>Operators</source>
-      <translation type="unfinished">Operators</translation>
+      <translation>运算符</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
       <source>Replace invalid data</source>
-      <translation type="unfinished">Replace invalid data</translation>
+      <translation>替换无效数据</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
       <source>Replacement value for invalid operations</source>
-      <translation type="unfinished">Replacement value for invalid operations</translation>
+      <translation>无效操作的替换值</translation>
     </message>
   </context>
   <context>
@@ -6934,7 +6934,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;选择子过滤器将接收的输入：&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;串行：&lt;/span&gt;分支中的第一个过滤器将分支的输入作为其自身的输入。下一个过滤器将接收第一个过滤器的输出作为输入，依此类推。&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;并行：&lt;/span&gt;分支中的所有过滤器都将分支的输入作为其自身的输入。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -6944,12 +6944,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;选择子过滤器将接收的输入：&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;串行：&lt;/span&gt;分支中的第一个过滤器将分支的输入作为其自身的输入。下一个过滤器将接收第一个过滤器的输出作为输入，依此类推。&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;并行：&lt;/span&gt;分支中的所有过滤器都将分支的输入作为其自身的输入。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
       <source>Serial</source>
-      <translation type="unfinished">Serial</translation>
+      <translation>串行</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="59"/>
@@ -6960,17 +6960,17 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;选择分支输出的确定方式：&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;直通：&lt;/span&gt;分支的输出与其输入相同，无论分支子过滤器做什么。&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;附加：&lt;/span&gt;分支的输出是所有子过滤器的集合：它将子输出附加在一起，并将其作为分支输出提供。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
       <source>Passthrough</source>
-      <translation type="unfinished">Passthrough</translation>
+      <translation>直通</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="82"/>
       <source>Append</source>
-      <translation type="unfinished">Append</translation>
+      <translation>附加</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="93"/>
@@ -6988,12 +6988,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
       <source>Type of frames</source>
-      <translation type="unfinished">Type of frames</translation>
+      <translation>帧类型</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="41"/>
       <source>Resonant frequencies</source>
-      <translation type="unfinished">Resonant frequencies</translation>
+      <translation>共振频率</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="84"/>
@@ -7011,7 +7011,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="14"/>
       <source>Solver CalculiX Control</source>
-      <translation type="unfinished">Solver CalculiX Control</translation>
+      <translation>求解器 CalculiX 控制</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="20"/>
@@ -7031,7 +7031,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory</source>
-      <translation type="unfinished">Path to working directory</translation>
+      <translation>工作目录路径</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="66"/>
@@ -7051,12 +7051,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="78"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
+      <translation>求解器参数</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="133"/>
       <source>Solver Version</source>
-      <translation type="unfinished">Solver Version</translation>
+      <translation>求解器版本</translation>
     </message>
   </context>
   <context>
@@ -7064,7 +7064,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM Material Reinforcement</source>
-      <translation type="unfinished">FEM Material Reinforcement</translation>
+      <translation>有限元材料增强</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
@@ -7085,7 +7085,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
-      <translation type="unfinished">The form of the glyph</translation>
+      <translation>图标的形状</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
@@ -7130,7 +7130,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <source>Which vector field is used to orient the glyphs</source>
-      <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
+      <translation>用于定向图标的矢量场</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="78"/>
@@ -7154,7 +7154,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation type="unfinished">Which data field is used to scale the glyphs</translation>
+      <translation>用于缩放图标的数据字段</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7167,7 +7167,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
-      <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
+      <translation>用于缩放图标的常数乘数</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="161"/>
@@ -7177,29 +7177,29 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="199"/>
       <source>Changes the scale factor by +/- 50% of the set scale factor</source>
-      <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
+      <translation>将比例因子更改为设定比例因子的 +/- 50%</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
-      <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
+      <translation>如果缩放数据是矢量，此属性决定图标是按矢量幅度缩放还是按各个分量缩放</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
       <source>Not a vector</source>
-      <translation type="unfinished">Not a vector</translation>
+      <translation>非矢量</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="235"/>
       <source>By magnitude</source>
-      <translation type="unfinished">By magnitude</translation>
+      <translation>按幅度</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="240"/>
       <source>By components</source>
-      <translation type="unfinished">By components</translation>
+      <translation>按分量</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
@@ -7210,7 +7210,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
       <location filename="../ui/TaskPostGlyph.ui" line="349"/>
       <source>Which vertices are used as glyph locations</source>
-      <translation type="unfinished">Which vertices are used as glyph locations</translation>
+      <translation>哪些顶点用作图标位置</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
@@ -7220,23 +7220,23 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
       <source>Defines the maximal number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximal number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>定义用于“均匀采样”遮罩模式的最大顶点数</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="298"/>
       <location filename="../ui/TaskPostGlyph.ui" line="330"/>
       <source>Define the stride for "Every Nth" masking mode</source>
-      <translation type="unfinished">Define the stride for "Every Nth" masking mode</translation>
+      <translation>定义“每 N 个”遮罩模式的步长</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="301"/>
       <source>Stride</source>
-      <translation type="unfinished">Stride</translation>
+      <translation>步长</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="311"/>
       <source>Defines the maximum number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximum number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>定义用于“均匀采样”遮罩模式的最大顶点数</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="314"/>
@@ -7251,17 +7251,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="358"/>
       <source>Every Nth</source>
-      <translation type="unfinished">Every Nth</translation>
+      <translation>每 N 个</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="363"/>
       <source>Uniform Sampling</source>
-      <translation type="unfinished">Uniform Sampling</translation>
+      <translation>均匀采样</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="40"/>
       <source>Bins</source>
-      <translation type="unfinished">Bins</translation>
+      <translation>箱数</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="69"/>
@@ -7271,13 +7271,13 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="94"/>
       <source>Cumulative</source>
-      <translation type="unfinished">Cumulative</translation>
+      <translation>累积</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>图例</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
@@ -7301,7 +7301,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>X 轴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
@@ -7312,17 +7312,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="192"/>
       <source>Visuals</source>
-      <translation type="unfinished">Visuals</translation>
+      <translation>视觉效果</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="208"/>
       <source>Hatch Line Width</source>
-      <translation type="unfinished">Hatch Line Width</translation>
+      <translation>填充线宽度</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="215"/>
       <source>Bar width</source>
-      <translation type="unfinished">Bar width</translation>
+      <translation>条形宽度</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="40"/>
@@ -7350,12 +7350,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="2362"/>
       <source>Calculator Filter</source>
-      <translation type="unfinished">Calculator Filter</translation>
+      <translation>计算器过滤器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2363"/>
       <source>Creates a new field from current data</source>
-      <translation type="unfinished">Creates a new field from current data</translation>
+      <translation>从当前数据创建新字段</translation>
     </message>
   </context>
   <context>
@@ -7368,12 +7368,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="2764"/>
       <source>Pipeline Branch</source>
-      <translation type="unfinished">Pipeline Branch</translation>
+      <translation>管道分支</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2765"/>
       <source>Branches the pipeline into a new path</source>
-      <translation type="unfinished">Branches the pipeline into a new path</translation>
+      <translation>将管道分支到新路径</translation>
     </message>
   </context>
   <context>
@@ -7381,7 +7381,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="541"/>
       <source>Result Frames</source>
-      <translation type="unfinished">Result Frames</translation>
+      <translation>结果帧</translation>
     </message>
   </context>
   <context>
@@ -7389,7 +7389,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="2173"/>
       <source>Calculator options</source>
-      <translation type="unfinished">Calculator options</translation>
+      <translation>计算器选项</translation>
     </message>
   </context>
   <context>
@@ -7397,12 +7397,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="105"/>
       <source>Clipping Plane on Face</source>
-      <translation type="unfinished">Clipping Plane on Face</translation>
+      <translation>面上的裁剪平面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="108"/>
       <source>Adds a clipping plane on a selected face</source>
-      <translation type="unfinished">Adds a clipping plane on a selected face</translation>
+      <translation>在选定面上添加裁剪平面</translation>
     </message>
   </context>
   <context>
@@ -7410,12 +7410,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Constant Vacuum Permittivity</source>
-      <translation type="unfinished">Constant Vacuum Permittivity</translation>
+      <translation>恒定真空介电常数</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="189"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a constant vacuum permittivity to overwrite standard value</translation>
+      <translation>创建恒定真空介电常数以覆盖标准值</translation>
     </message>
   </context>
   <context>
@@ -7423,12 +7423,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="245"/>
       <source>Electric Charge Density</source>
-      <translation type="unfinished">Electric Charge Density</translation>
+      <translation>电荷密度</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="248"/>
       <source>Creates an electric charge density</source>
-      <translation type="unfinished">Creates an electric charge density</translation>
+      <translation>创建电荷密度</translation>
     </message>
   </context>
   <context>
@@ -7436,12 +7436,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="292"/>
       <source>Initial Flow Velocity Condition</source>
-      <translation type="unfinished">Initial Flow Velocity Condition</translation>
+      <translation>初始流速条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="296"/>
       <source>Creates an initial flow velocity condition</source>
-      <translation type="unfinished">Creates an initial flow velocity condition</translation>
+      <translation>创建初始流速条件</translation>
     </message>
   </context>
   <context>
@@ -7449,12 +7449,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="371"/>
       <source>Fluid Section for 1D Flow</source>
-      <translation type="unfinished">Fluid Section for 1D Flow</translation>
+      <translation>一维流动的流体截面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="374"/>
       <source>Creates a fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a fluid section for 1D flow</translation>
+      <translation>为一维流动创建流体截面</translation>
     </message>
   </context>
   <context>
@@ -7462,12 +7462,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Beam Cross Section</source>
-      <translation type="unfinished">Beam Cross Section</translation>
+      <translation>梁截面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="385"/>
       <source>Creates a beam cross section</source>
-      <translation type="unfinished">Creates a beam cross section</translation>
+      <translation>创建梁截面</translation>
     </message>
   </context>
   <context>
@@ -7475,12 +7475,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="395"/>
       <source>Shell Plate Thickness</source>
-      <translation type="unfinished">Shell Plate Thickness</translation>
+      <translation>壳板厚度</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="398"/>
       <source>Creates a shell plate thickness</source>
-      <translation type="unfinished">Creates a shell plate thickness</translation>
+      <translation>创建壳板厚度</translation>
     </message>
   </context>
   <context>
@@ -7488,12 +7488,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="408"/>
       <source>Beam Rotation</source>
-      <translation type="unfinished">Beam Rotation</translation>
+      <translation>梁旋转</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="409"/>
       <source>Creates a beam rotation</source>
-      <translation type="unfinished">Creates a beam rotation</translation>
+      <translation>创建梁旋转</translation>
     </message>
   </context>
   <context>
@@ -7501,12 +7501,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="419"/>
       <source>Deformation Equation</source>
-      <translation type="unfinished">Deformation Equation</translation>
+      <translation>变形方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="423"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates an equation for deformation (nonlinear elasticity)</translation>
+      <translation>创建变形方程（非线性弹性）</translation>
     </message>
   </context>
   <context>
@@ -7514,12 +7514,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="433"/>
       <source>Elasticity Equation</source>
-      <translation type="unfinished">Elasticity Equation</translation>
+      <translation>弹性方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="436"/>
       <source>Creates an equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates an equation for elasticity (stress)</translation>
+      <translation>创建弹性方程（应力）</translation>
     </message>
   </context>
   <context>
@@ -7527,12 +7527,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="446"/>
       <source>Electricforce Equation</source>
-      <translation type="unfinished">Electricforce Equation</translation>
+      <translation>电力方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="449"/>
       <source>Creates an equation for electric forces</source>
-      <translation type="unfinished">Creates an equation for electric forces</translation>
+      <translation>创建电力方程</translation>
     </message>
   </context>
   <context>
@@ -7540,12 +7540,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="459"/>
       <source>Electrostatic Equation</source>
-      <translation type="unfinished">Electrostatic Equation</translation>
+      <translation>静电方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="462"/>
       <source>Creates an equation for electrostatic</source>
-      <translation type="unfinished">Creates an equation for electrostatic</translation>
+      <translation>创建静电方程</translation>
     </message>
   </context>
   <context>
@@ -7553,12 +7553,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="472"/>
       <source>Flow Equation</source>
-      <translation type="unfinished">Flow Equation</translation>
+      <translation>流动方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="473"/>
       <source>Creates an equation for flow</source>
-      <translation type="unfinished">Creates an equation for flow</translation>
+      <translation>创建流动方程</translation>
     </message>
   </context>
   <context>
@@ -7566,12 +7566,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="483"/>
       <source>Flux Equation</source>
-      <translation type="unfinished">Flux Equation</translation>
+      <translation>通量方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="484"/>
       <source>Creates an equation for flux</source>
-      <translation type="unfinished">Creates an equation for flux</translation>
+      <translation>创建通量方程</translation>
     </message>
   </context>
   <context>
@@ -7579,12 +7579,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="494"/>
       <source>Heat Equation</source>
-      <translation type="unfinished">Heat Equation</translation>
+      <translation>热方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="495"/>
       <source>Creates an equation for heat</source>
-      <translation type="unfinished">Creates an equation for heat</translation>
+      <translation>创建热方程</translation>
     </message>
   </context>
   <context>
@@ -7592,12 +7592,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="507"/>
       <source>Magnetodynamic Equation</source>
-      <translation type="unfinished">Magnetodynamic Equation</translation>
+      <translation>磁动力学方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="511"/>
       <source>Creates an equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for magnetodynamic forces</translation>
+      <translation>创建磁动力方程</translation>
     </message>
   </context>
   <context>
@@ -7605,12 +7605,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="523"/>
       <source>Magnetodynamic 2D Equation</source>
-      <translation type="unfinished">Magnetodynamic 2D Equation</translation>
+      <translation>二维磁动力学方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="527"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for 2D magnetodynamic forces</translation>
+      <translation>创建二维磁动力方程</translation>
     </message>
   </context>
   <context>
@@ -7618,12 +7618,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Static Current Equation</source>
-      <translation type="unfinished">Static Current Equation</translation>
+      <translation>静态电流方程</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="540"/>
       <source>Creates an equation for static current</source>
-      <translation type="unfinished">Creates an equation for static current</translation>
+      <translation>创建静态电流方程</translation>
     </message>
   </context>
   <context>
@@ -7631,12 +7631,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Fluid Material</source>
-      <translation type="unfinished">Fluid Material</translation>
+      <translation>流体材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="583"/>
       <source>Creates a fluid material</source>
-      <translation type="unfinished">Creates a fluid material</translation>
+      <translation>创建流体材料</translation>
     </message>
   </context>
   <context>
@@ -7644,12 +7644,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="595"/>
       <source>Non-Linear Mechanical Material</source>
-      <translation type="unfinished">Non-Linear Mechanical Material</translation>
+      <translation>非线性机械材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="598"/>
       <source>Creates a non-linear mechanical material</source>
-      <translation type="unfinished">Creates a non-linear mechanical material</translation>
+      <translation>创建非线性机械材料</translation>
     </message>
   </context>
   <context>
@@ -7657,12 +7657,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="676"/>
       <source>Solid Material</source>
-      <translation type="unfinished">Solid Material</translation>
+      <translation>固体材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="678"/>
       <source>Creates a solid material</source>
-      <translation type="unfinished">Creates a solid material</translation>
+      <translation>创建固体材料</translation>
     </message>
   </context>
   <context>
@@ -7670,12 +7670,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="730"/>
       <source>Mesh Boundary Layer</source>
-      <translation type="unfinished">Mesh Boundary Layer</translation>
+      <translation>网格边界层</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="733"/>
       <source>Creates a mesh boundary layer</source>
-      <translation type="unfinished">Creates a mesh boundary layer</translation>
+      <translation>创建网格边界层</translation>
     </message>
   </context>
   <context>
@@ -7683,12 +7683,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="743"/>
       <source>Clear FEM Mesh</source>
-      <translation type="unfinished">Clear FEM Mesh</translation>
+      <translation>清除有限元网格</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="744"/>
       <source>Clears the mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clears the mesh of a FEM mesh object</translation>
+      <translation>清除有限元网格对象的网格</translation>
     </message>
   </context>
   <context>
@@ -7701,7 +7701,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="838"/>
       <source>Creates a mesh group</source>
-      <translation type="unfinished">Creates a mesh group</translation>
+      <translation>创建网格组</translation>
     </message>
   </context>
   <context>
@@ -7714,7 +7714,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="917"/>
       <source>Shows and visualizes the selected result data</source>
-      <translation type="unfinished">Shows and visualizes the selected result data</translation>
+      <translation>显示并可视化选定的结果数据</translation>
     </message>
   </context>
   <context>
@@ -7722,12 +7722,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="929"/>
       <source>Purge Results</source>
-      <translation type="unfinished">Purge Results</translation>
+      <translation>清除结果</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="933"/>
       <source>Purges all results from the active analysis</source>
-      <translation type="unfinished">Purges all results from the active analysis</translation>
+      <translation>清除活动分析中的所有结果</translation>
     </message>
   </context>
   <context>
@@ -7735,12 +7735,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1232"/>
       <source>Glyph Filter</source>
-      <translation type="unfinished">Glyph Filter</translation>
+      <translation>Glyph 过滤器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1237"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+      <translation>添加一个后处理过滤器，将 glyph 添加到网格顶点以进行顶点数据可视化</translation>
     </message>
   </context>
   <context>
@@ -7755,28 +7755,28 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostExtraction.ui" line="22"/>
       <location filename="../ui/TaskPostExtraction.ui" line="37"/>
       <source>Data Summary</source>
-      <translation type="unfinished">Data Summary</translation>
+      <translation>数据摘要</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="29"/>
       <location filename="../ui/TaskPostExtraction.ui" line="44"/>
       <source>Show Data</source>
-      <translation type="unfinished">Show Data</translation>
+      <translation>显示数据</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="62"/>
       <source>Data used in</source>
-      <translation type="unfinished">Data used in</translation>
+      <translation>数据用于</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="92"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>添加数据到</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
       <source>Create and add</source>
-      <translation type="unfinished">Create and add</translation>
+      <translation>创建并添加</translation>
     </message>
   </context>
   <context>
@@ -7792,7 +7792,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <source>Outline draw style (None does not draw outlines)</source>
-      <translation type="unfinished">Outline draw style (None does not draw outlines)</translation>
+      <translation>轮廓绘制样式（无则不绘制轮廓）</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
@@ -7806,13 +7806,13 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <source>Width of all lines (outline and hatch)</source>
-      <translation type="unfinished">Width of all lines (outline and hatch)</translation>
+      <translation>所有线条的宽度（轮廓线和填充线）</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
-      <translation type="unfinished">Hatch pattern</translation>
+      <translation>填充图案</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
@@ -7822,29 +7822,29 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
       <source>Density of hatch pattern</source>
-      <translation type="unfinished">Density of hatch pattern</translation>
+      <translation>填充图案密度</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="112"/>
       <source>Bars</source>
-      <translation type="unfinished">Bars</translation>
+      <translation>柱条</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>图例</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
       <source>Color of all lines (bar outline and hatches)</source>
-      <translation type="unfinished">Color of all lines (bar outline and hatches)</translation>
+      <translation>所有线条的颜色（柱条轮廓和填充线）</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <source>Color of the bars in histogram</source>
-      <translation type="unfinished">Color of the bars in histogram</translation>
+      <translation>直方图中柱条的颜色</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="34"/>
@@ -7867,7 +7867,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="435"/>
       <source>Result Display Options</source>
-      <translation type="unfinished">Result Display Options</translation>
+      <translation>结果显示选项</translation>
     </message>
   </context>
   <context>
@@ -7875,7 +7875,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="607"/>
       <source>Branch Behaviour</source>
-      <translation type="unfinished">Branch Behaviour</translation>
+      <translation>分支行为</translation>
     </message>
   </context>
   <context>
@@ -7883,7 +7883,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1441"/>
       <source>Clip Region, Choose Implicit Function</source>
-      <translation type="unfinished">Clip Region, Choose Implicit Function</translation>
+      <translation>裁剪区域，选择隐式函数</translation>
     </message>
   </context>
   <context>
@@ -7891,7 +7891,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1592"/>
       <source>Contours Filter Options</source>
-      <translation type="unfinished">Contours Filter Options</translation>
+      <translation>等值线过滤器选项</translation>
     </message>
   </context>
   <context>
@@ -7899,7 +7899,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1751"/>
       <source>Function Cut, Choose Implicit Function</source>
-      <translation type="unfinished">Function Cut, Choose Implicit Function</translation>
+      <translation>函数切割，选择隐式函数</translation>
     </message>
   </context>
   <context>
@@ -7907,7 +7907,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1884"/>
       <source>Scalar Clip Options</source>
-      <translation type="unfinished">Scalar Clip Options</translation>
+      <translation>标量裁剪选项</translation>
     </message>
   </context>
   <context>
@@ -7915,7 +7915,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="2005"/>
       <source>Warp Options</source>
-      <translation type="unfinished">Warp Options</translation>
+      <translation>扭曲选项</translation>
     </message>
   </context>
   <context>
@@ -7923,7 +7923,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostExtraction.cpp" line="50"/>
       <source>Data and Extractions</source>
-      <translation type="unfinished">Data and Extractions</translation>
+      <translation>数据与提取</translation>
     </message>
   </context>
   <context>
@@ -7931,7 +7931,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="162"/>
       <source>Activate Analysis</source>
-      <translation type="unfinished">Activate Analysis</translation>
+      <translation>激活分析</translation>
     </message>
   </context>
   <context>
@@ -7939,7 +7939,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskObjectName.cpp" line="40"/>
       <source>Name of the object</source>
-      <translation type="unfinished">Name of the object</translation>
+      <translation>对象名称</translation>
     </message>
   </context>
   <context>
@@ -7947,7 +7947,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>未找到可执行文件 '{}'</translation>
     </message>
   </context>
   <context>
@@ -7955,7 +7955,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>轴参考选择器</translation>
     </message>
   </context>
 </TS>

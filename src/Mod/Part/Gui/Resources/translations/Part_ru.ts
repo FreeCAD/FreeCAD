@@ -1368,12 +1368,12 @@
     <message>
       <location filename="../../Command.cpp" line="723"/>
       <source>Compound Tools</source>
-      <translation>Составные инструменты</translation>
+      <translation>Инструменты составных объектов</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
       <source>Compound tools for working with multiple shapes</source>
-      <translation>Инструменты Композитов для работы с множественными фигурами</translation>
+      <translation>Инструменты для работы с составными объектами состоящими из множества фигур</translation>
     </message>
   </context>
   <context>
@@ -1427,7 +1427,7 @@
     <message>
       <location filename="../../Command.cpp" line="606"/>
       <source>Shape splitting and compsolid creation tools</source>
-      <translation>Инструменты для разделения форм и создания композитных твёрдых тел</translation>
+      <translation>Инструменты для разделения форм и создания составных, соприкасающихся друг с другом твёрдых тел</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1440,12 @@
     <message>
       <location filename="../../Command.cpp" line="830"/>
       <source>Compound</source>
-      <translation>Группировать</translation>
+      <translation>Составной объект</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="831"/>
       <source>Compounds the selected shapes</source>
-      <translation>Объединяет выбранные фигуры в композит</translation>
+      <translation>Объединяет выбранные фигуры в Составной объект</translation>
     </message>
   </context>
   <context>
@@ -1719,7 +1719,8 @@
     <message>
       <location filename="../../Command.cpp" line="1096"/>
       <source>Converts the selected shell or compound to a solid</source>
-      <translation>Преобразует выбранную оболочку или композит в твёрдое тело</translation>
+      <translation>Преобразует выбранную оболочку или составной объект
+ в твёрдое тело</translation>
     </message>
   </context>
   <context>
@@ -2128,7 +2129,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="863"/>
       <source>Compound</source>
-      <translation>Группировать</translation>
+      <translation>Составной объект</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="907"/>
@@ -2485,7 +2486,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
       <location filename="../../DlgBooleanOperation.ui" line="129"/>
       <source>Compounds</source>
-      <translation>Соединения</translation>
+      <translation>Составные объекты</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
@@ -3190,12 +3191,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Объединяет композитные объекты во время чтения файла (медленнее, но с более высокой детализацией)</translation>
+      <translation>Объединяет составные объекты во время чтения файла (медленнее, но с более высокой детализацией)</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
       <source>Enable STEP compound merge</source>
-      <translation>Включить объединение композитов STEP</translation>
+      <translation>Включить слияние составных STEP объектов</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="45"/>
@@ -3225,12 +3226,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="93"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation>Разложить композитную фигуру на несколько твёрдых тел</translation>
+      <translation>Разложить фигуру составного объекта на несколько твёрдых тел</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="96"/>
       <source>Expand compound shape</source>
-      <translation>Разложить композитную фигуру</translation>
+      <translation>Разложить фигуру составного объекта</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="109"/>
@@ -5617,12 +5618,15 @@ Continue?</source>
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
-      <translation>Выберите не менее 2 фигур. Или выберите 1 композитную, содержащую 2 или более фигур, для вычисления пересечения между ними.</translation>
+      <translation>Выберите не менее 2 фигур. Или выберите 1 составной объект, 
+содержащий 2 или более фигур, для вычисления пересечения 
+между ними.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
-      <translation>Выберите не менее 2 фигур. Или выберите 1 композитную, содержащую 2 или более фигур, которые необходимо объединить.</translation>
+      <translation>Выберите не менее 2 фигур. Или выберите 1 составной объект, 
+содержащий 2 или более фигур, которые необходимо объединить.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="843"/>
@@ -5673,7 +5677,7 @@ Continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="76"/>
       <source>Compound solid</source>
-      <translation>Композитное тело</translation>
+      <translation>Составное тело</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -6049,12 +6053,12 @@ Continue?</source>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="73"/>
       <source>Delete compound content?</source>
-      <translation>Удалить содержимое композита?</translation>
+      <translation>Удалить содержимое составного объекта?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="74"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
-      <translation>У композита "%1" есть дочерние объекты %2. Вы тоже хотите их удалить?</translation>
+      <translation>У составного объекта "%1" есть дочерние объекты %2. Вы тоже хотите их удалить?</translation>
     </message>
   </context>
   <context>
@@ -6107,7 +6111,7 @@ Continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Композиты</translation>
+      <translation>Составной объект</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6156,7 +6160,7 @@ Continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation>Выберите как минимум два объекта или один или несколько композитов</translation>
+      <translation>Выберите как минимум два объекта или один или несколько составных объектов</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
@@ -6208,7 +6212,11 @@ Continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="194"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="526"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Выберите как минимум два объекта или один или несколько композитов. Если выбран только один композит, композитные фигуры будут пересекаться между собой (в противном случае композиты с самопересечениями будут считаться недействительными).</translation>
+      <translation>Выберите как минимум два объекта или один или несколько 
+составных объектов. Если выбран только один составной объект, 
+составные фигуры будут пересекаться между собой (в противном 
+случае составные объекты с самопересечениями будут считаться 
+недействительными).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
@@ -6222,12 +6230,14 @@ Continue?</source>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
       <source>Compound Filter</source>
-      <translation>Фильтр композита</translation>
+      <translation>Фильтр составного объекта</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation>Сначала выберите фигуру, которая является композитной. Если выбран второй объект (необязательно), он будет рассматриваться в качестве трафарета.</translation>
+      <translation>Сначала выберите фигуру, которая является составным объектом. 
+Если выбран второй объект (необязательно), он будет рассматриваться
+ в качестве трафарета.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
@@ -6235,9 +6245,9 @@ Continue?</source>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Отфильтровывает объекты из выбранного композита 
-по таким характеристикам, как объём, площадь или 
-длина, либо путём выбора определённых элементов.
+      <translation>Отфильтровывает объекты из выбранного составного 
+объекта по таким характеристикам, как объём, площадь 
+или длина, либо путём выбора определённых элементов.
 Если выбран второй объект, он будет использоваться 
 в качестве эталона, например, для фильтрации по 
 столкновениям или расстоянию.</translation>
@@ -6264,17 +6274,17 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode Compound</source>
-      <translation>Разрушить композит</translation>
+      <translation>Разрушить составной объект</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="55"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
-      <translation>Разделяет композитную форму на отдельные объекты, создавая фильтр композита для каждой разрушенной формы</translation>
+      <translation>Разделяет составную геометрию на отдельные объекты, создавая фильтр составного объекта для каждой разрушенной геометрии</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="61"/>
       <source>First select a shape that is a compound.</source>
-      <translation>Сначала выберите фигуру, которая является композитом.</translation>
+      <translation>Сначала выберите геометрию, которая является составной.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6427,12 +6437,12 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="70"/>
       <source>CompSolids</source>
-      <translation>Твёрдотельные композиты</translation>
+      <translation>Составные тела</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="76"/>
       <source>Compounds</source>
-      <translation>Композиты</translation>
+      <translation>Составные объекты</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="82"/>
@@ -6517,7 +6527,7 @@ for collision or distance filtering.</source>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
-      <translation>Выполняет булеву операцию 'исключающее ИЛИ' с двумя или более выбранными объектами или с фигурами внутри композитного объекта.
+      <translation>Выполняет булеву операцию 'исключающее ИЛИ' с двумя или более выбранными объектами или с фигурами внутри составного объекта.
 Пересекающиеся объёмы фигур будут удалены.</translation>
     </message>
   </context>
@@ -6620,7 +6630,8 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="77"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation>Форма должна быть кривой, ребром или композитом. Было предоставлено что-то другое.</translation>
+      <translation>Форма должна быть кривой, ребром или составным объектом. 
+Было предоставлено что-то другое.</translation>
     </message>
   </context>
   <context>
@@ -6766,7 +6777,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
       <source>Select at least one object or compounds</source>
-      <translation>Выберите хотя бы один объект или композит</translation>
+      <translation>Выберите хотя бы один единичный или составной объекты</translation>
     </message>
   </context>
   <context>
@@ -6937,12 +6948,14 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="333"/>
       <source>Slice to Compound</source>
-      <translation>Нарезать в Композит</translation>
+      <translation>Нарезать в Составной объект</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="338"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation>Разрезает выбранный объект, используя другие объекты в качестве режущих инструментов, и сохраняет результаты в одном композитном объекте</translation>
+      <translation>Разрезает выбранный объект, используя другие объекты в качестве 
+режущих инструментов, и сохраняет результаты в одном составном 
+объекте</translation>
     </message>
   </context>
   <context>
@@ -6955,7 +6968,8 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation>Разрезает выбранный объект на части другими объектами и разделяет его, создавая композитный фильтр для каждой из частей</translation>
+      <translation>Разрезает выбранный объект на части другими объектами и разделяет
+его, создавая фильтр составного объекта для каждого среза</translation>
     </message>
   </context>
   <context>

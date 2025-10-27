@@ -4682,7 +4682,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="228"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
-      <translation type="unfinished">The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</translation>
+      <translation>Die Anzahl der Versuche, die FreeCAD unternehmen soll, um überlappende Kanten zu entfernen, die vom Algorithmus zur Entfernung verdeckter Linien zurückgegeben werden. Der Wert 0 bedeutet, dass kein Schrubben durchgeführt wird, 1 bedeutet einen einzigen Durchgang und 2 bedeutet, dass ein zweiter Durchgang durchgeführt werden soll. Werte über 2 sind in der Regel nicht produktiv. Jeder Durchgang verlängert die Zeit, die zur Erstellung der Zeichnung benötigt wird.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="258"/>
@@ -5988,23 +5988,23 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="140"/>
       <source>Shows hard and outline edges (always shown)</source>
-      <translation type="unfinished">Shows hard and outline edges (always shown)</translation>
+      <translation>Zeigt harte Kanten und Umrisse (immer angezeigt)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show hard lines</source>
-      <translation type="unfinished">Show hard lines</translation>
+      <translation>Zeigt harte Linien</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
       <source>Shows hidden hard and outline edges</source>
-      <translation type="unfinished">Shows hidden hard and outline edges</translation>
+      <translation>Zeigt versteckte harte Linien und Konturen an</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Shows smooth lines</source>
-      <translation type="unfinished">Shows smooth lines</translation>
+      <translation>Zeigt glatte Linien</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
@@ -6883,7 +6883,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
       <source>Most inscribed geometry element</source>
-      <translation type="unfinished">Most inscribed geometry element</translation>
+      <translation>Das am häufigsten beschriftete Geometrieelement</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="489"/>
@@ -7147,7 +7147,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="127"/>
       <source>Reference label</source>
-      <translation type="unfinished">Reference label</translation>
+      <translation>Referenzbeschriftung</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="140"/>
@@ -7305,7 +7305,7 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>Format specifier</source>
-      <translation type="unfinished">Format specifier</translation>
+      <translation>Formatbezeichner</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="42"/>
@@ -7441,7 +7441,7 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="381"/>
       <source>Set dimension line angle to match selected edge or vertices</source>
-      <translation type="unfinished">Set dimension line angle to match selected edge or vertices</translation>
+      <translation>Setzt den Winkel der Maßlinie entsprechend der ausgewählten Kante oder den ausgewählten Punkten</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="384"/>

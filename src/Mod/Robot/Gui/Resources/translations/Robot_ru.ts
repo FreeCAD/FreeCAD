@@ -317,7 +317,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="481"/>
       <source>Trajectory Compound</source>
-      <translation>Соединение траекторий</translation>
+      <translation>Составные траектории</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="482"/>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
-      <translation type="unfinished">Visit %1 and copy the robot VRML and CSV files to %2</translation>
+      <translation>Посетите %1 и скопируйте файлы VRML и CSV на %2</translation>
     </message>
   </context>
   <context>

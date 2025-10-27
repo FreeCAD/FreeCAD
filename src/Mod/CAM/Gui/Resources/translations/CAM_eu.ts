@@ -3479,7 +3479,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Ordenatze-irizpidea</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1184"/>
@@ -9331,7 +9331,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="59"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Hariaren urratsa</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="67"/>

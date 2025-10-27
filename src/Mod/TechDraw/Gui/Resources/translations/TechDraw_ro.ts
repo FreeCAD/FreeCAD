@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Centerline Between 2 Lines</source>
-      <translation type="unfinished">Centerline Between 2 Lines</translation>
+      <translation>Linie centrală între 2 Linii</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="792"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>Adaugă o linie centrală între 2 linii selectate</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Centerline Between 2 Points</source>
-      <translation type="unfinished">Centerline Between 2 Points</translation>
+      <translation>Linie centrală între 2 Puncte</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="867"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>Adaugă o linie centrală între 2 puncte selectate</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Cosmetic Line Through 2 Points</source>
-      <translation type="unfinished">Cosmetic Line Through 2 Points</translation>
+      <translation>Linie cosmetică prin 2 Puncte</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="980"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Add a cosmetic line that passes through 2 selected points</translation>
+      <translation>Adaugă o linie cosmetică ce trece prin 2 puncte selectate</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1743"/>
       <source>Angle Dimension From 3 Points</source>
-      <translation type="unfinished">Angle Dimension From 3 Points</translation>
+      <translation>Cotă unghiulară din 3 Puncte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1744"/>
       <source>Inserts an angle dimension between 3 selected points</source>
-      <translation type="unfinished">Inserts an angle dimension between 3 selected points</translation>
+      <translation>Inserează o cotă unghiulară între 3 puncte selectate</translation>
     </message>
   </context>
   <context>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="697"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>Vizualizare activă</translation>
     </message>
   </context>
   <context>
@@ -96,12 +96,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Cotă unghiulară</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
       <source>Inserts an angle dimension between two edges</source>
-      <translation type="unfinished">Inserts an angle dimension between two edges</translation>
+      <translation>Inserează o cotă unghiulară între două muchii</translation>
     </message>
   </context>
   <context>
@@ -114,12 +114,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="527"/>
       <source>Text Annotation</source>
-      <translation type="unfinished">Text Annotation</translation>
+      <translation>Adnotare text</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="528"/>
       <source>Inserts an editable text block annotation to the current page</source>
-      <translation type="unfinished">Inserts an editable text block annotation to the current page</translation>
+      <translation>Inserează un bloc de text editabil pe pagina curentă</translation>
     </message>
   </context>
   <context>
@@ -132,12 +132,12 @@
     <message>
       <location filename="../../Command.cpp" line="1662"/>
       <source>BIM View</source>
-      <translation type="unfinished">BIM View</translation>
+      <translation>Vizualizare BIM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1663"/>
       <source>Inserts a view of a BIM section plane</source>
-      <translation type="unfinished">Inserts a view of a BIM section plane</translation>
+      <translation>Inserează o vizualizare a unui plan de secțiune BIM</translation>
     </message>
   </context>
   <context>
@@ -150,12 +150,12 @@
     <message>
       <location filename="../../Command.cpp" line="1275"/>
       <source>Balloon Annotation</source>
-      <translation type="unfinished">Balloon Annotation</translation>
+      <translation>Adnotare tip Balon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1276"/>
       <source>Inserts a new balloon annotation in the selected view</source>
-      <translation type="unfinished">Inserts a new balloon annotation in the selected view</translation>
+      <translation>Inserează o nouă adnotare tip balon în vizualizarea selectată</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="577"/>
       <source>Centerline</source>
-      <translation type="unfinished">Centerline</translation>
+      <translation>Linie centrală</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="578"/>
@@ -4362,7 +4362,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="26"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>Vizualizare activă</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="44"/>
@@ -10061,7 +10061,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>Adaugă o linie centrală între 2 linii selectate</translation>
     </message>
   </context>
   <context>
@@ -10069,7 +10069,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="659"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>Adaugă o linie centrală între 2 puncte selectate</translation>
     </message>
   </context>
   <context>

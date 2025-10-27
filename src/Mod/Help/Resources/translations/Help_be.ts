@@ -174,7 +174,7 @@ This only applies if Markdown is selected above.</source>
       <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>У вашай сістэме не ўсталяваныя сродак візуалізацыі Markdown, таму гэтая старонка даведкі адлюстроўваецца як ёсць.
-Калі ласка, усталюйце модулі Python - Markdown ці Pandoc, каб палепшыць адлюстраванне гэтай старонкі.</translation>
+Усталюйце модулі Python - Markdown ці Pandoc, каб палепшыць адлюстраванне гэтай старонкі.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="117"/>
