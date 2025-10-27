@@ -849,7 +849,7 @@ def drawLine(line, forceShape=False):
         if not DraftVecUtils.equals(v1, v2):
             try:
                 if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-                    return Draft.make_wire([v1, v2])
+                    return Draft.make_wire([v1, v2], face=False)
                 else:
                     return Part.LineSegment(v1, v2).toShape()
             except Part.OCCError:
@@ -891,9 +891,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
     `dxfCreateDraft` or `dxfCreateSketch` are set, and `forceShape` is `False`
     it creates a straight `Draft Wire`.
 
-    If the polyline is closed, and the global variable `dxfMakeFaceMode`
-    is set, it will return a `Part.Face`, otherwise it will return
-    a `Part.Wire`.
+    Otherwise, it will return a `Part.Wire`.
 
     See also
     --------
@@ -967,19 +965,15 @@ def drawPolyline(polyline, forceShape=False, num=None):
                     else:
                         return Part.Face(w1)
                 elif (dxfCreateDraft or dxfCreateSketch) and (not curves) and (not forceShape):
-                    ob = Draft.make_wire(verts)
+                    # Create parametric Draft.Wire for straight polylines
+                    ob = Draft.make_wire(verts, face=False)
                     ob.Closed = polyline.closed
                     ob.Placement = placementFromDXFOCS(polyline)
                     return ob
                 else:
-                    if polyline.closed and dxfMakeFaceMode:
-                        w = Part.Wire(edges)
-                        w.Placement = placementFromDXFOCS(polyline)
-                        return Part.Face(w)
-                    else:
-                        w = Part.Wire(edges)
-                        w.Placement = placementFromDXFOCS(polyline)
-                        return w
+                    w = Part.Wire(edges)
+                    w.Placement = placementFromDXFOCS(polyline)
+                    return w
             except Part.OCCError:
                 warn(polyline, num)
     return None
@@ -1134,7 +1128,7 @@ def drawEllipse(ellipse, forceShape=False):
                 shape.Placement = pl
                 return shape
             else:
-                return Draft.make_ellipse(majr, minr, pl)
+                return Draft.make_ellipse(majr, minr, pl, face=False)
         else:
             shape = el.toShape(start, end)
             shape.Placement = pl
@@ -1328,10 +1322,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False, alwaysDiscreti
         `dxfDiscretizeCurves` or `alwaysDiscretize` are `True`,
         and a `Draft BSpline` otherwise.
 
-        Otherwise it tries producing a `Part.Edge`
-        (`dxfDiscretizeCurves` or `alwaysDiscretize` are `True`)
-        or `Part.Face`
-        if `closed` and the global variable `dxfMakeFaceMode` are `True`.
+        Otherwise it produces a `Part.Wire`.
 
     To do
     -----
@@ -1339,9 +1330,9 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False, alwaysDiscreti
     """
     if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
         if dxfDiscretizeCurves or alwaysDiscretize:
-            ob = Draft.make_wire(verts)
+            ob = Draft.make_wire(verts, face=False)
         else:
-            ob = Draft.make_bspline(verts)
+            ob = Draft.make_bspline(verts, face=False)
         ob.Closed = closed
         return ob
     else:
@@ -1352,10 +1343,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False, alwaysDiscreti
             # print(knots)
             sp.interpolate(verts)
             sh = Part.Wire(sp.toShape())
-        if closed and dxfMakeFaceMode:
-            return Part.Face(sh)
-        else:
-            return sh
+        return sh
 
 
 def drawSplineOld(spline, forceShape=False):
@@ -2332,7 +2320,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     num = 0
     for polyline in polylines:
         if dxfImportLayouts or (not rawValue(polyline, 67)):
-            shape = drawPolyline(polyline, num)
+            shape = drawPolyline(polyline, num=num)
             if shape:
                 if dxfCreateSketch:
                     if isinstance(shape, Part.Shape):
@@ -4297,7 +4285,7 @@ def readPreferences():
     `dxfDiscretizeCurves`, `dxfStarBlocks`, `dxfMakeBlocks`, `dxfJoin`,
     `dxfRenderPolylineWidth`, `dxfImportTexts`, `dxfImportLayouts`,
     `dxfImportPoints`, `dxfImportHatches`, `dxfUseStandardSize`,
-    `dxfGetColors`, `dxfUseDraftVisGroups`, `dxfMakeFaceMode`,
+    `dxfGetColors`, `dxfUseDraftVisGroups`,
     `dxfBrightBackground`, `dxfDefaultColor`, `dxfUseLegacyImporter`,
     `dxfExportBlocks`, `dxfScaling`, `dxfUseLegacyExporter`
 
@@ -4310,7 +4298,7 @@ def readPreferences():
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks, dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
     global dxfImportTexts, dxfImportLayouts, dxfImportPoints, dxfImportHatches, dxfUseStandardSize
-    global dxfGetColors, dxfUseDraftVisGroups, dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
+    global dxfGetColors, dxfUseDraftVisGroups, dxfBrightBackground, dxfDefaultColor
     global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling, dxfUseLegacyExporter
 
     # Use the direct C++ API via Python for all parameter access
@@ -4371,7 +4359,6 @@ def readPreferences():
     dxfUseStandardSize = hGrp.GetBool("dxfStdSize", False)
     dxfGetColors = hGrp.GetBool("dxfGetOriginalColors", True)
     dxfUseDraftVisGroups = hGrp.GetBool("dxfUseDraftVisGroups", True)
-    dxfMakeFaceMode = hGrp.GetBool("MakeFaceMode", False)
     dxfUseLegacyExporter = hGrp.GetBool("dxfUseLegacyExporter", False)
     dxfExportBlocks = hGrp.GetBool("dxfExportBlocks", True)
     dxfScaling = hGrp.GetFloat("dxfScaling", 1.0)
