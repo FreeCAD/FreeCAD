@@ -138,8 +138,30 @@ public:
 
     void Restore(Base::XMLReader& reader) override;
 
+    /**
+     * @brief Set a given expression to @a path.
+     *
+     * Note that the "value" in this context is an expression.  This means that
+     * this function does not evaluate the expression and updates the property
+     * that @a path points to.  It merely registers the expression to be used
+     * when evaluating the property later.
+     *
+     * @param[in] path The path that the expression is targeting.
+     * @param[in] expr The new expression.
+     */
     void setValue(const App::ObjectIdentifier& path, std::shared_ptr<App::Expression> expr);
 
+    /**
+     * @brief Get the expression for @a path.
+     *
+     * Note that the "value" in this context is an expression.  This means that
+     * this function does not return the evaluated value of the property that
+     * @a path points to.  It merely returns the registered expression.
+     *
+     * @param[in] path ObjectIndentifier to query for.
+     *
+     * @return The expression for @a path, or empty boost::any if not found.
+     */
     const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
 
     /// Execute options
@@ -154,14 +176,39 @@ public:
         /// Execute on document restore
         ExecuteOnRestore,
     };
-    /** Evaluate the expressions
+
+    /**
+     * @brief Evaluate the expressions.
      *
-     * @param option: execution option, see ExecuteOption.
+     * Evaluate the expressions and update the properties they are bound to.
+     *
+     * @param[in] option: execution option, see ExecuteOption.
+     * @param[out] touched: if not null, set to true if any property was
+     * changed.
+     *
+     * @return On success a pointer to DocumentObject::StdReturn is returned.  On failure, it
+     * returns a pointer to a newly created App::DocumentObjectExecReturn that contains the error
+     * message.
      */
     DocumentObjectExecReturn* execute(ExecuteOption option = ExecuteAll, bool* touched = nullptr);
 
-    void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier>& paths) const;
+    /**
+     * @brief Find the paths to a given document object.
+     *
+     * @param[in] obj The document object to find paths to.
+     * @param[out] paths Object identifiers that point to @a obj.
+     */
+    void getPathsToDocumentObject(DocumentObject* obj,
+                                  std::vector<App::ObjectIdentifier>& paths) const;
 
+    /**
+     * @brief Check if any dependencies are touched.
+     *
+     * Determine whether any dependencies of any of the registered expressions
+     * have been touched.
+     *
+     * @return True if at least on dependency has been touched.
+     */
     bool depsAreTouched() const;
 
     /* Expression validator */
@@ -170,16 +217,41 @@ public:
         validator = f;
     }
 
+    /**
+     * @brief Validate the expression expression for a given path.
+     *
+     * @param[in] path The object identifier that the expression is targeting.
+     * @param expr The expression to validate.
+     *
+     * @return An empty string on success, an error message on failure.
+     */
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr) const;
 
+    /**
+     * @brief Rename object identifiers in the registered expressions.
+     *
+     * @param[in] paths A map with the current and new object identifiers.
+     */
     void renameExpressions(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
+    /**
+     * @brief Rename object identifiers in the registered expressions.
+     *
+     * @param[in] paths A map with the current and new object identifiers.
+     */
     void
     renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
-    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier& p) const override;
+    /**
+     * @brief Create a canonical object identifier of the given object \a p.
+     *
+     * @param oid The object identifier from which we want a canonical path.
+     * @return The canonical object identifier.
+     */
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier& oid) const override;
 
+    /// Get the number of expressions managed by this object.
     size_t numExpressions() const;
 
     /// signal called when an expression was changed
@@ -210,14 +282,42 @@ private:
     using ExpressionMap = std::map<const App::ObjectIdentifier, ExpressionInfo>;
 #endif
 
+    /**
+     * @brief Compute the evaluation order of the expressions.
+     *
+     * This method builds a graph for all expressions in the engine, and finds
+     * any circular dependencies.  It also computes the internal evaluation
+     * order, in case properties depend on each other.
+     *
+     * @param[in] option Execution option, see ExecuteOption.
+     *
+     * @return A vector with the evaluation order of the properties and their
+     * dependencies in terms of object identifiers.
+     *
+     * @throws Base::RuntimeError if a circular dependency is detected.
+     */
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 
+    /**
+     * @brief Update graph structure with given path and expression.
+     * @param path Path
+     * @param expression Expression to query for dependencies
+     * @param nodes Map with nodes of graph, including dependencies of 'expression'
+     * @param revNodes Reverse map of the nodes, containing only the given paths, without dependencies.
+     * @param edges Edges in graph
+     */
     void buildGraphStructures(const App::ObjectIdentifier& path,
                               const std::shared_ptr<Expression> expression,
                               boost::unordered_map<App::ObjectIdentifier, int>& nodes,
                               boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
                               std::vector<Edge>& edges) const;
-
+    /**
+     * @brief Build a graph of all expressions in \a exprs.
+     * @param exprs Expressions to use in graph
+     * @param revNodes Map from int[nodeid] to ObjectIndentifer.
+     * @param g Graph to update. May contain additional nodes than in revNodes, because of outside
+     * dependencies.
+     */
     void buildGraph(const ExpressionMap& exprs,
                     boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
                     DiGraph& g,
