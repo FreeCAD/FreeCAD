@@ -467,12 +467,8 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj,
 
 void ViewProviderBody::show()
 {
-    Base::Console().warning("SHOW METHOD \n", getObject()->getNameInDocument());
-
     // Call the base version first to ensure normal behavior
     PartGui::ViewProviderPartExt::show();
-
-    Base::Console().warning("Setting %s to visible \n", getObject()->getNameInDocument());
 
     auto body = static_cast<PartDesign::Body*>(getObject());
     if (!body)
@@ -480,7 +476,6 @@ void ViewProviderBody::show()
 
     auto tip = body->Tip.getValue();
     if (!tip || tip->Visibility.getValue()) {
-        Base::Console().message("- Tip already visible (or missing).\n");
         return;
     }
 
@@ -507,17 +502,12 @@ void ViewProviderBody::show()
         {
             if (f->Visibility.getValue()) {
                 foundVisible = true;
-                Base::Console().message("- Feature %s (%s) is visible and PartDesignGui feature.\n",f->Label.getValue(),f->getNameInDocument());
                 break;
             }
-        }
-        else {
-            Base::Console().warning("- Ignored non-PartDesign feature: %s (%s) — type: %s\n",f->Label.getValue(),f->getNameInDocument(),vpType);
         }
     }
 
     if (!foundVisible) {
-        Base::Console().message("- No features were visible, showing tip.\n");
         tip->Visibility.setValue(true);
     }
 }

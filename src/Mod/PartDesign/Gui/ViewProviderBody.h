@@ -31,8 +31,6 @@
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
 
-#include <Base/Console.h>
-
 class SoGroup;
 class SoSeparator;
 class SbBox3f;
