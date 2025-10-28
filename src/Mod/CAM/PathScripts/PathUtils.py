@@ -543,6 +543,358 @@ def addToJob(obj, jobname=None):
     return job
 
 
+def tsp_solver_points(points, routeStartPoint=None, routeEndPoint=None):
+    """
+    takes a list of points and reorders them to create efficient route for the router
+    it uses nearest neighbour algorithm, further improved with 2-opt and relocations
+    routeStartPoint and routeEndPoint are optional and specifiy where ROUGHLY the route should start and end
+
+    https://forum.freecad.org/viewtopic.php?p=852141#p852141
+    """
+
+    # STEP 1: Adds the routeStartPoint (it will be deleted at the end)
+    if routeStartPoint is None:
+        points.insert(0, {"x": points[0]["x"], "y": points[0]["y"]})
+    else:
+        points.insert(0, {"x": routeStartPoint[0], "y": routeStartPoint[1]})
+
+    # STEP 2: Applies nearest neighbour algorithm
+    potentialNeighbours = points[1:]
+    route = [points[0]]
+    while potentialNeighbours:
+        costCurrent = float("inf")
+        for neighbour in potentialNeighbours:
+            costNew = (route[-1]["x"] - neighbour["x"]) ** 2 + (
+                route[-1]["y"] - neighbour["y"]
+            ) ** 2
+            if costNew > costCurrent + 0.1:
+                continue
+            elif costNew < costCurrent - 0.1:
+                costCurrent = costNew
+                nearestNeighbour = neighbour
+            elif abs(route[0]["y"] - neighbour["y"]) < abs(route[0]["y"] - nearestNeighbour["y"]):
+                costCurrent = costNew
+                nearestNeighbour = neighbour
+        route.append(nearestNeighbour)
+        potentialNeighbours.remove(nearestNeighbour)
+
+    # STEP 3: Adds the routeEndPoint (it will be deleted at the end)
+    if routeEndPoint is not None:
+        route.append({"x": routeEndPoint[0], "y": routeEndPoint[1]})
+
+    # STEP 4: Additional improvement of the route
+    improvementFound = True
+    while improvementFound:
+        improvementFound = False
+        # STEP 4.1: Applies 2-opt
+        improvementReorderFound = True
+        while improvementReorderFound:
+            improvementReorderFound = False
+            for i in range(0, len(route) - 3):
+                for j in range(i + 3, len(route)):
+                    subRouteLengthCurrent = math.dist(
+                        [route[i]["x"], route[i]["y"]], [route[i + 1]["x"], route[i + 1]["y"]]
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[j - 1]["x"], route[j - 1]["y"]], [route[j]["x"], route[j]["y"]]
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[i + 1]["x"], route[i + 1]["y"]], [route[j]["x"], route[j]["y"]]
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[i]["x"], route[i]["y"]], [route[j - 1]["x"], route[j - 1]["y"]]
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route[i + 1 : j] = route[i + 1 : j][
+                            ::-1
+                        ]  # reverse the order of elements between i-th and j-th element
+                        improvementReorderFound = True
+                        improvementFound = True
+        # STEP 4.2: Applies relocation
+        improvementRelocateFound = True
+        while improvementRelocateFound:
+            improvementRelocateFound = False
+            for i in range(1, len(route) - 1):
+                for j in range(1, i - 2):
+                    subRouteLengthCurrent = math.dist(
+                        [route[i - 1]["x"], route[i - 1]["y"]], [route[i]["x"], route[i]["y"]]
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[i]["x"], route[i]["y"]], [route[i + 1]["x"], route[i + 1]["y"]]
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[j]["x"], route[j]["y"]], [route[j + 1]["x"], route[j + 1]["y"]]
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[i - 1]["x"], route[i - 1]["y"]],
+                        [route[i + 1]["x"], route[i + 1]["y"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[j]["x"], route[j]["y"]], [route[i]["x"], route[i]["y"]]
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[i]["x"], route[i]["y"]], [route[j + 1]["x"], route[j + 1]["y"]]
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route.insert(
+                            j + 1, route.pop(i)
+                        )  # relocate the i-th element backward (after j-th element)
+                        improvementRelocateFound = True
+                        improvementFound = True
+                for j in range(i + 1, len(route) - 1):
+                    subRouteLengthCurrent = math.dist(
+                        [route[i - 1]["x"], route[i - 1]["y"]], [route[i]["x"], route[i]["y"]]
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[i]["x"], route[i]["y"]], [route[i + 1]["x"], route[i + 1]["y"]]
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[j]["x"], route[j]["y"]], [route[j + 1]["x"], route[j + 1]["y"]]
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[i - 1]["x"], route[i - 1]["y"]],
+                        [route[i + 1]["x"], route[i + 1]["y"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[j]["x"], route[j]["y"]], [route[i]["x"], route[i]["y"]]
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[i]["x"], route[i]["y"]], [route[j + 1]["x"], route[j + 1]["y"]]
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route.insert(
+                            j, route.pop(i)
+                        )  # relocate the i-th element forward (after j-th element)
+                        improvementRelocateFound = True
+                        improvementFound = True
+
+    # STEP 5: Return result without temporary start and end points
+    if routeEndPoint is not None:
+        return route[1:-1]
+
+    return route[1:]
+
+
+def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, routeEndPoint=None):
+    """
+    takes a list of tunnels and reorders them to create efficient route for the router
+    it uses nearest neighbour algorithm, further improved with relocation and (if allowFlipping=True) 2-opt + flipping
+    allowFlipping defines whether entry/exit point of each tunnel can be flipped
+    routeStartPoint and routeEndPoint are optional and specifiy where ROUGHLY the route should start and end
+
+    https://forum.freecad.org/viewtopic.php?p=852141#p852141
+    """
+
+    # STEP 1: Adds the routeStartPoint (it will be deleted at the end)
+    if routeStartPoint is None:
+        tunnels.insert(0, {"endX": 0, "endY": 0})
+    else:
+        tunnels.insert(0, {"endX": routeStartPoint[0], "endY": routeStartPoint[1]})
+
+    # STEP 2: Applies nearest neighbour algorithm
+    potentialNeighbours = tunnels[1:]
+    route = [tunnels[0]]
+    while potentialNeighbours:
+        costCurrent = float("inf")
+        for neighbour in potentialNeighbours:
+            costNew = (route[-1]["endX"] - neighbour["startX"]) ** 2 + (
+                route[-1]["endY"] - neighbour["startY"]
+            ) ** 2
+            if costNew < costCurrent:
+                costCurrent = costNew
+                toBeFlipped = False
+                nearestNeighbour = neighbour
+        if allowFlipping:
+            for neighbour in potentialNeighbours:
+                if neighbour["isOpen"]:
+                    costNew = (route[-1]["endX"] - neighbour["endX"]) ** 2 + (
+                        route[-1]["endY"] - neighbour["endY"]
+                    ) ** 2
+                    if costNew < costCurrent:
+                        costCurrent = costNew
+                        toBeFlipped = True
+                        nearestNeighbour = neighbour
+        potentialNeighbours.remove(nearestNeighbour)
+        if toBeFlipped:
+            nearestNeighbour["flipped"] = not nearestNeighbour["flipped"]
+            nearestNeighbour["startX"], nearestNeighbour["endX"] = (
+                nearestNeighbour["endX"],
+                nearestNeighbour["startX"],
+            )
+            nearestNeighbour["startY"], nearestNeighbour["endY"] = (
+                nearestNeighbour["endY"],
+                nearestNeighbour["startY"],
+            )
+        route.append(nearestNeighbour)
+
+    # STEP 3: Adds the routeEndPoint (it will be deleted at the end)
+    if routeEndPoint is not None:
+        route.append({"startX": routeEndPoint[0], "startY": routeEndPoint[1]})
+
+    # STEP 4: Additional improvement of the route
+    improvementFound = True
+    while improvementFound:
+        improvementFound = False
+        if allowFlipping:
+            # STEP 4.1: Applies 2-opt
+            improvementReorderFound = True
+            while improvementReorderFound:
+                improvementReorderFound = False
+                for i in range(0, len(route) - 3):
+                    for j in range(i + 3, len(route)):
+                        subRouteLengthCurrent = math.dist(
+                            [route[i]["endX"], route[i]["endY"]],
+                            [route[i + 1]["startX"], route[i + 1]["startY"]],
+                        )
+                        subRouteLengthCurrent += math.dist(
+                            [route[j - 1]["endX"], route[j - 1]["endY"]],
+                            [route[j]["startX"], route[j]["startY"]],
+                        )
+                        subRouteLengthNew = math.dist(
+                            [route[i + 1]["startX"], route[i + 1]["startY"]],
+                            [route[j]["startX"], route[j]["startY"]],
+                        )
+                        subRouteLengthNew += math.dist(
+                            [route[i]["endX"], route[i]["endY"]],
+                            [route[j - 1]["endX"], route[j - 1]["endY"]],
+                        )
+                        subRouteLengthNew += 10e-6
+                        if subRouteLengthNew < subRouteLengthCurrent:
+                            for k in range(
+                                i + 1, j
+                            ):  # flips direction of each tunnel between i-th and j-th element
+                                if route[k]["isOpen"]:
+                                    route[k]["flipped"] = not route[k]["flipped"]
+                                    route[k]["startX"], route[k]["endX"] = (
+                                        route[k]["endX"],
+                                        route[k]["startX"],
+                                    )
+                                    route[k]["startY"], route[k]["endY"] = (
+                                        route[k]["endY"],
+                                        route[k]["startY"],
+                                    )
+                            route[i + 1 : j] = route[i + 1 : j][
+                                ::-1
+                            ]  # reverse the order of tunnels between i-th and j-th element
+                            improvementReorderFound = True
+                            improvementFound = True
+            # STEP 4.2: Applies flipping
+            improvementFlipFound = True
+            while improvementFlipFound:
+                improvementFlipFound = False
+                for i in range(1, len(route) - 1):
+                    if route[i]["isOpen"]:
+                        subRouteLengthCurrent = math.dist(
+                            [route[i - 1]["endX"], route[i - 1]["endY"]],
+                            [route[i]["startX"], route[i]["startY"]],
+                        )
+                        subRouteLengthCurrent += math.dist(
+                            [route[i]["endX"], route[i]["endY"]],
+                            [route[i + 1]["startX"], route[i + 1]["startY"]],
+                        )
+                        subRouteLengthNew = math.dist(
+                            [route[i - 1]["endX"], route[i - 1]["endY"]],
+                            [route[i]["endX"], route[i]["endY"]],
+                        )
+                        subRouteLengthNew += math.dist(
+                            [route[i]["startX"], route[i]["startY"]],
+                            [route[i + 1]["startX"], route[i + 1]["startY"]],
+                        )
+                        subRouteLengthNew += 10e-6
+                        if subRouteLengthNew < subRouteLengthCurrent:
+                            route[i]["flipped"] = not route[i][
+                                "flipped"
+                            ]  # flips direction of i-th tunnel
+                            route[i]["startX"], route[i]["endX"] = (
+                                route[i]["endX"],
+                                route[i]["startX"],
+                            )
+                            route[i]["startY"], route[i]["endY"] = (
+                                route[i]["endY"],
+                                route[i]["startY"],
+                            )
+                            improvementFlipFound = True
+                            improvementFound = True
+        # STEP 4.3: Applies relocation
+        improvementRelocateFound = True
+        while improvementRelocateFound:
+            improvementRelocateFound = False
+            for i in range(1, len(route) - 1):
+                for j in range(1, i - 2):
+                    subRouteLengthCurrent = math.dist(
+                        [route[i - 1]["endX"], route[i - 1]["endY"]],
+                        [route[i]["startX"], route[i]["startY"]],
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[i]["endX"], route[i]["endY"]],
+                        [route[i + 1]["startX"], route[i + 1]["startY"]],
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[j]["endX"], route[j]["endY"]],
+                        [route[j + 1]["startX"], route[j + 1]["startY"]],
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[i - 1]["endX"], route[i - 1]["endY"]],
+                        [route[i + 1]["startX"], route[i + 1]["startY"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[j]["endX"], route[j]["endY"]],
+                        [route[i]["startX"], route[i]["startY"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[i]["endX"], route[i]["endY"]],
+                        [route[j + 1]["startX"], route[j + 1]["startY"]],
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route.insert(
+                            j + 1, route.pop(i)
+                        )  # relocate the i-th tunnel backward (after j-th element)
+                        improvementRelocateFound = True
+                        improvementFound = True
+                for j in range(i + 1, len(route) - 1):
+                    subRouteLengthCurrent = math.dist(
+                        [route[i - 1]["endX"], route[i - 1]["endY"]],
+                        [route[i]["startX"], route[i]["startY"]],
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[i]["endX"], route[i]["endY"]],
+                        [route[i + 1]["startX"], route[i + 1]["startY"]],
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[j]["endX"], route[j]["endY"]],
+                        [route[j + 1]["startX"], route[j + 1]["startY"]],
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[i - 1]["endX"], route[i - 1]["endY"]],
+                        [route[i + 1]["startX"], route[i + 1]["startY"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[j]["endX"], route[j]["endY"]],
+                        [route[i]["startX"], route[i]["startY"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[i]["endX"], route[i]["endY"]],
+                        [route[j + 1]["startX"], route[j + 1]["startY"]],
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route.insert(
+                            j, route.pop(i)
+                        )  # relocate the i-th tunnel forward (after j-th element)
+                        improvementRelocateFound = True
+                        improvementFound = True
+
+    # STEP 5: Return result without temporary start and end points
+    if routeEndPoint is not None:
+        return route[1:-1]
+
+    return route[1:]
+
+
 def sort_locations(locations, keys, attractors=None):
     """sort holes by the nearest neighbor method
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
