@@ -132,7 +132,6 @@ bool ViewProviderBody::isActiveBody()
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-
     if(!activeView)
         return false;
 
