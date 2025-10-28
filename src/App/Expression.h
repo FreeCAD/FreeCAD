@@ -127,6 +127,14 @@ public:
 
     ~Expression() override;
 
+    /**
+     * @brief Check if the expression is touched.
+     *
+     * An expression is touched if one of the properties it references is
+     * touched.
+     *
+     * @return true if the expression is touched, false otherwise.
+     */
     virtual bool isTouched() const { return false; }
 
     Expression * eval() const;
@@ -138,6 +146,14 @@ public:
 
     Expression * copy() const;
 
+    /**
+     * @brief Get the operator priority.
+     *
+     * This is used to determine whether parentheses are needed when
+     * converting the expression to a string.
+     *
+     * @return The operator priority.
+     */
     virtual int priority() const;
 
     void getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const;
@@ -164,6 +180,15 @@ public:
 
     bool adjustLinks(const std::set<App::DocumentObject*> &inList);
 
+    /**
+     * @brief Simplify the expression.
+     *
+     * In contrast to @ref eval, which evaluates the expression to a value,
+     * this function simplifies the expression by computing all constant
+     * expressions.
+     *
+     * @return The simplified expression.
+     */
     virtual Expression * simplify() const = 0;
 
     void visit(ExpressionVisitor & v);
