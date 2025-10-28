@@ -23,6 +23,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "DrawPage.h"
 #include "DrawView.h"
@@ -152,6 +153,59 @@ PyObject* DrawPagePy::requestPaint(PyObject* args)
     page->requestPaint();
 
     Py_Return;
+}
+
+PyObject* DrawPagePy::exportToPDF(PyObject* args)
+{
+    char* rawPath = nullptr;
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &rawPath)) {
+        return nullptr;
+    }
+
+    std::string filePath(rawPath ? rawPath : "");
+    PyMem_Free(rawPath);
+
+    try {
+        bool ok = getDrawPagePtr()->exportToPDF(filePath);
+        return PyBool_FromLong(ok ? 1 : 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject* DrawPagePy::exportToSVG(PyObject* args)
+{
+    char* rawPath = nullptr;
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &rawPath)) {
+        return nullptr;
+    }
+
+    std::string filePath(rawPath ? rawPath : "");
+    PyMem_Free(rawPath);
+
+    try {
+        bool ok = getDrawPagePtr()->exportToSVG(filePath);
+        return PyBool_FromLong(ok ? 1 : 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject* DrawPagePy::renderToSVGString(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    try {
+        std::string svg = getDrawPagePtr()->renderToSVGString();
+        return PyUnicode_FromStringAndSize(svg.c_str(), static_cast<Py_ssize_t>(svg.size()));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }
 
 //! replace the current Label with a translated version
