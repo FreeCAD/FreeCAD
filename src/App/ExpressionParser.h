@@ -42,6 +42,9 @@ namespace App
 // included by everyone
 ///////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief %Part of an expression that represents an index or range.
+ */
 struct AppExport Expression::Component
 {
     ObjectIdentifier::Component comp;
