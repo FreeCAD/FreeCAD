@@ -95,7 +95,7 @@ public:
     /* Check whether the object accept reordering of its children during drop.*/
     bool acceptReorderingObjects() const override { return true; };
 
-    void setVisible(bool visible);
+    void show();
 
 protected:
     /// Copy over all visual properties to the child features

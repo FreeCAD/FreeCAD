@@ -151,8 +151,6 @@ void ViewProviderBody::toggleActiveBody()
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
     } else {
 
-        this->setVisible(!  this->isActiveBody()); // TEST TO TRIGGER THE FUNCTION...
-
         // assure the PartDesign workbench
         if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToWB", true))
             Gui::Command::assureWorkbench("PartDesignWorkbench");
@@ -330,50 +328,6 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     }
 }
 
-// void ViewProviderBody::setVisualBodyMode(bool bodymode)
-// {
-//     Gui::Document* gdoc = Gui::Application::Instance->getDocument(pcObject->getDocument());
-
-//     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-//     if (!body)
-//         return;
-
-//     auto features = body->Group.getValues();
-//     for (auto feature : features) {
-
-//         if (!feature->isDerivedFrom<PartDesign::Feature>())
-//             continue;
-
-//         auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
-//         if (vp) vp->setBodyMode(bodymode);
-//     }
-
-//     // --- Optimize: Tip visibility check when body becomes visible ---
-//     if (!bodymode)
-//         return;  // Only apply logic when showing the body
-
-//     App::DocumentObject* tip = body->Tip.getValue();
-//     if (!tip)
-//         return;
-
-//     // Fast exit if Tip is already visible
-//     if (tip->Visibility.getValue())
-//         return;
-
-//     // Only now iterate through features if necessary
-//     bool anyVisible = false;
-//     for (auto feature : features) {
-//         if (feature && feature->Visibility.getValue()) {
-//             anyVisible = true;
-//             break;
-//         }
-//     }
-
-//     // If none are visible, show the Tip
-//     if (!anyVisible)
-//         tip->Visibility.setValue(true);
-// }
-
 std::vector<std::string> ViewProviderBody::getDisplayModes() const
 {
 
@@ -511,13 +465,13 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj,
     return ViewProviderPart::canDragObjectToTarget(obj, target);
 }
 
-void ViewProviderBody::setVisible(bool visible)
+void ViewProviderBody::show()
 {
-    PartGui::ViewProviderPart::setVisible(visible);
+    Base::Console().warning("SHOW METHOD \n", getObject()->getNameInDocument());
 
-    if (!visible)
-        return;
-    
+    // Call the base version first to ensure normal behavior
+    PartGui::ViewProviderPartExt::show();
+
     Base::Console().warning("Setting %s to visible \n", getObject()->getNameInDocument());
 
     auto body = static_cast<PartDesign::Body*>(getObject());
