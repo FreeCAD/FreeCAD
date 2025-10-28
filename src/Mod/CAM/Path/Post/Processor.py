@@ -114,6 +114,8 @@ class PostProcessorFactory:
                     Path.Log.debug(f"Post processor {postname} is a script")
                     return WrapperPost(job, module_path, module_name)
 
+        return None
+
 
 def needsTcOp(oldTc, newTc):
     return (
@@ -131,10 +133,63 @@ class PostProcessor:
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
         self._units = units
-        self._job = job
         self._args = args
         self._kwargs = kwargs
         self.reinitialize()
+
+        if isinstance(job, dict):
+            # process only selected operations
+            self._job = job["job"]
+            self._operations = job["operations"]
+        else:
+            # get all operations from 'Operations' group
+            self._job = job
+            self._operations = job.Operations.Group
+
+        self.processArrays()
+
+    # Process operations from arrays
+    def processArrays(self):
+        # prepare list for extend operations from all Arrays in Job
+        arrays = []
+        for i, op in enumerate(self._operations):
+            if (
+                op.Name.startswith("Array")
+                and op.Active
+                and hasattr(op, "ArrayGroup")
+                and len(op.ArrayGroup)
+            ):
+                arrays.append({"index": i, "array": op})
+
+        if self._job.OrderOutputBy == "Tool":
+            # place copies after base op to minimize tool changes
+            for array in reversed(arrays):
+                # remove Array object from operations list
+                self._operations.pop(array["index"])
+                for opFromArray in reversed(array["array"].ArrayGroup):
+                    for i, op in enumerate(self._operations):
+                        if op.Name == opFromArray.Base[-1]:
+                            # insert copy after base op
+                            self._operations.insert(i + 1, opFromArray)
+                            break
+                        elif (
+                            isinstance(op.Proxy, Path.Op.Gui.Array.ObjectArrayChild)
+                            and op.Base[-1] == opFromArray.Base[-1]
+                        ):
+                            # export without base operation
+                            self._operations.insert(i, opFromArray)
+                            break
+                    else:
+                        # export without base operation
+                        self._operations.insert(array["index"], opFromArray)
+        else:
+            # place copies as is
+            for array in reversed(arrays):
+                # remove Array object from operations list
+                self._operations.pop(array["index"])
+                # insert all operations from Array group
+                for opFromArray in reversed(array["array"].ArrayGroup):
+                    self._operations.insert(array["index"], opFromArray)
 
     @classmethod
     def exists(cls, processor):
@@ -201,7 +256,7 @@ class PostProcessor:
                 sublist = [__fixtureSetup(index, f, self._job)]
 
                 # Now generate the gcode
-                for obj in self._job.Operations.Group:
+                for obj in self._operations:
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None and PathUtil.activeForOp(obj):
                         if needsTcOp(currTc, tc):
@@ -238,7 +293,7 @@ class PostProcessor:
                     postlist.append((toolstring, sublist))
 
             Path.Log.track(self._job.PostProcessorOutputFile)
-            for idx, obj in enumerate(self._job.Operations.Group):
+            for idx, obj in enumerate(self._operations):
                 Path.Log.track(obj.Label)
 
                 # check if the operation is active
@@ -284,7 +339,7 @@ class PostProcessor:
             currTc = None
 
             # Now generate the gcode
-            for obj in self._job.Operations.Group:
+            for obj in self._operations:
 
                 # check if the operation is active
                 if not PathUtil.activeForOp(obj):
