@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 // inclusion of the generated files (generated out of FeaturePy.xml)
 #include "FeaturePy.h"
 #include "FeaturePy.cpp"
@@ -37,21 +36,23 @@ std::string FeaturePy::representation() const
     return str.str();
 }
 
-PyObject *FeaturePy::getCustomAttributes(const char* ) const
+PyObject* FeaturePy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int FeaturePy::setCustomAttributes(const char* , PyObject *)
+int FeaturePy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }
 
-PyObject* FeaturePy::getBaseObject(PyObject * /*args*/)
+PyObject* FeaturePy::getBaseObject(PyObject* /*args*/)
 {
     App::DocumentObject* base = getFeaturePtr()->getBaseObject();
-    if (base)
+    if (base) {
         return base->getPyObject();
-    else
+    }
+    else {
         return Py::new_reference_to(Py::None());
+    }
 }

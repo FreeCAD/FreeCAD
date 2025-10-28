@@ -41,7 +41,7 @@ class SoCoordinate3;
 namespace Gui
 {
 
-class GuiExport ViewProviderAnnotation : public ViewProviderDocumentObject
+class GuiExport ViewProviderAnnotation: public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderAnnotation);
 
@@ -51,15 +51,15 @@ public:
     ~ViewProviderAnnotation() override;
 
     // Display properties
-    App::PropertyColor          TextColor;
-    App::PropertyEnumeration    Justification;
-    App::PropertyFloat          FontSize;
-    App::PropertyFont           FontName;
-    App::PropertyFloat          LineSpacing;
-    App::PropertyAngle          Rotation;
-    App::PropertyEnumeration    RotationAxis;
+    App::PropertyColor TextColor;
+    App::PropertyEnumeration Justification;
+    App::PropertyFloat FontSize;
+    App::PropertyFont FontName;
+    App::PropertyFloat LineSpacing;
+    App::PropertyAngle Rotation;
+    App::PropertyEnumeration RotationAxis;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
@@ -68,12 +68,12 @@ protected:
     void onChanged(const App::Property* prop) override;
 
 private:
-    SoFont           * pFont;
-    SoText2          * pLabel;
-    SoAsciiText      * pLabel3d;
-    SoBaseColor      * pColor;
-    SoTranslation    * pTranslation;
-    SoRotationXYZ    * pRotationXYZ;
+    SoFont* pFont;
+    SoText2* pLabel;
+    SoAsciiText* pLabel3d;
+    SoBaseColor* pColor;
+    SoTranslation* pTranslation;
+    SoRotationXYZ* pRotationXYZ;
 
     static const char* JustificationEnums[];
     static const char* RotationAxisEnums[];
@@ -85,7 +85,7 @@ private:
  * This approach gives a bit more flexibility since it can render arbitrary
  * annotations.
  */
-class GuiExport ViewProviderAnnotationLabel : public ViewProviderDocumentObject
+class GuiExport ViewProviderAnnotationLabel: public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderAnnotationLabel);
 
@@ -95,14 +95,14 @@ public:
     ~ViewProviderAnnotationLabel() override;
 
     // Display properties
-    App::PropertyColor          TextColor;
-    App::PropertyColor          BackgroundColor;
-    App::PropertyEnumeration    Justification;
-    App::PropertyFloat          FontSize;
-    App::PropertyFont           FontName;
-    App::PropertyBool           Frame;
+    App::PropertyColor TextColor;
+    App::PropertyColor BackgroundColor;
+    App::PropertyEnumeration Justification;
+    App::PropertyFloat FontSize;
+    App::PropertyFont FontName;
+    App::PropertyBool Frame;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
@@ -112,21 +112,21 @@ protected:
     void drawImage(const std::vector<std::string>&);
 
 private:
-    static void dragStartCallback(void * data, SoDragger * d);
-    static void dragFinishCallback(void * data, SoDragger * d);
-    static void dragMotionCallback(void * data, SoDragger * d);
+    static void dragStartCallback(void* data, SoDragger* d);
+    static void dragFinishCallback(void* data, SoDragger* d);
+    static void dragMotionCallback(void* data, SoDragger* d);
 
 private:
-    SoCoordinate3    * pCoords;
-    SoImage          * pImage;
-    SoBaseColor      * pColor;
-    SoTranslation    * pBaseTranslation;
-    TranslateManip   * pTextTranslation;
+    SoCoordinate3* pCoords;
+    SoImage* pImage;
+    SoBaseColor* pColor;
+    SoTranslation* pBaseTranslation;
+    TranslateManip* pTextTranslation;
 
     static const char* JustificationEnums[];
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_VIEWPROVIDERANNOTATION_H
+#endif  // GUI_VIEWPROVIDERANNOTATION_H

@@ -163,16 +163,20 @@ int FlowLayout::doLayout(const QRect& rect, bool testOnly) const
 
         int spaceX = horizontalSpacing();
         if (spaceX == -1) {
-            spaceX = wid->style()->layoutSpacing(QSizePolicy::PushButton,
-                                                 QSizePolicy::PushButton,
-                                                 Qt::Horizontal);
+            spaceX = wid->style()->layoutSpacing(
+                QSizePolicy::PushButton,
+                QSizePolicy::PushButton,
+                Qt::Horizontal
+            );
         }
 
         int spaceY = verticalSpacing();
         if (spaceY == -1) {
-            spaceY = wid->style()->layoutSpacing(QSizePolicy::PushButton,
-                                                 QSizePolicy::PushButton,
-                                                 Qt::Vertical);
+            spaceY = wid->style()->layoutSpacing(
+                QSizePolicy::PushButton,
+                QSizePolicy::PushButton,
+                Qt::Vertical
+            );
         }
 
         int nextX = x + itemSizeHint.width() + spaceX;
@@ -182,8 +186,10 @@ int FlowLayout::doLayout(const QRect& rect, bool testOnly) const
             // Apply row height to all items in the current row
             for (auto rowItem : currentRow) {
                 if (!testOnly) {
-                    rowItem->setGeometry(QRect(QPoint(rowItem->geometry().x(), y),
-                                               QSize(rowItem->sizeHint().width(), lineHeight)));
+                    rowItem->setGeometry(QRect(
+                        QPoint(rowItem->geometry().x(), y),
+                        QSize(rowItem->sizeHint().width(), lineHeight)
+                    ));
                 }
             }
 
@@ -206,8 +212,10 @@ int FlowLayout::doLayout(const QRect& rect, bool testOnly) const
     // Step 2: Apply the last row's height
     for (auto rowItem : currentRow) {
         if (!testOnly) {
-            rowItem->setGeometry(QRect(QPoint(rowItem->geometry().x(), y),
-                                       QSize(rowItem->sizeHint().width(), lineHeight)));
+            rowItem->setGeometry(QRect(
+                QPoint(rowItem->geometry().x(), y),
+                QSize(rowItem->sizeHint().width(), lineHeight)
+            ));
         }
     }
 

@@ -31,11 +31,11 @@
 #include <xercesc/util/BinInputStream.hpp>
 #include <xercesc/sax/InputSource.hpp>
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
+# define XERCES_CPP_NAMESPACE_QUALIFIER
 namespace XERCES_CPP_NAMESPACE
 {
 class BinInputStream;
@@ -95,10 +95,12 @@ private:
 class BaseExport StdInputSource: public XERCES_CPP_NAMESPACE_QUALIFIER InputSource
 {
 public:
-    StdInputSource(std::istream& Stream,
-                   const char* filePath,
-                   XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager =
-                       XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager);
+    StdInputSource(
+        std::istream& Stream,
+        const char* filePath,
+        XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager
+        = XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager
+    );
     ~StdInputSource() override;
 
     XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream* makeStream() const override;

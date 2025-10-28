@@ -43,8 +43,10 @@ class TaskFemConstraintTransform: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintTransform(ViewProviderFemConstraintTransform* ConstraintView,
-                                        QWidget* parent = nullptr);
+    explicit TaskFemConstraintTransform(
+        ViewProviderFemConstraintTransform* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintTransform() override;
     const std::string getReferences() const override;
     Base::Rotation getRotation() const;

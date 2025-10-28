@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-
 #include "SoFCColorBarNotifier.h"
 #include "SoFCColorBar.h"
 #include "Window.h"
@@ -58,8 +57,7 @@ void SoFCColorBarNotifier::detach(SoFCColorBarBase* bar)
     }
 }
 
-void SoFCColorBarNotifier::OnChange(ParameterGrp::SubjectType& caller,
-                                    ParameterGrp::MessageType reason)
+void SoFCColorBarNotifier::OnChange(ParameterGrp::SubjectType& caller, ParameterGrp::MessageType reason)
 {
     const ParameterGrp& grp = dynamic_cast<ParameterGrp&>(caller);
     if (strcmp(reason, "CbLabelTextSize") == 0 || strcmp(reason, "CbLabelColor") == 0) {

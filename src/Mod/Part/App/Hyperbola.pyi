@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from Conic import Conic
 from typing import Final, overload
 
-
 @export(
     Name="HyperbolaPy",
     Namespace="Part",
@@ -59,14 +58,9 @@ class Hyperbola(Conic):
 
     @overload
     def __init__(self) -> None: ...
-
     @overload
     def __init__(self, hyperbola: "Hyperbola") -> None: ...
-
     @overload
     def __init__(self, S1: Vector, S2: Vector, Center: Vector) -> None: ...
-
     @overload
-    def __init__(
-        self, Center: Vector, MajorRadius: float, MinorRadius: float
-    ) -> None: ...
+    def __init__(self, Center: Vector, MajorRadius: float, MinorRadius: float) -> None: ...

@@ -5,7 +5,6 @@ from GeometrySurface import GeometrySurface
 from GeometryCurve import GeometryCurve
 from typing import overload
 
-
 @export(
     Twin="GeomSurfaceOfRevolution",
     TwinPointer="GeomSurfaceOfRevolution",

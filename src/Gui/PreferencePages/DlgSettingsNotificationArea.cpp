@@ -35,13 +35,12 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsNotificationArea */
 
 DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
-    : PreferencePage(parent),
-      ui(new Ui_DlgSettingsNotificationArea)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsNotificationArea)
 {
     ui->setupUi(this);
 
     connect(ui->NotificationAreaEnabled, &QGroupBox::toggled, [this](int on) {
-
         bool enabled = on;
 
         if (enabled) {
@@ -56,8 +55,9 @@ void DlgSettingsNotificationArea::saveSettings()
 {
     // must be done as very first because we create a new instance of NavigatorStyle
     // where we set some attributes afterwards
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/NotificationArea");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NotificationArea"
+    );
 
     bool isNotificationAreaEnabled = ui->NotificationAreaEnabled->isChecked();
     hGrp->SetBool("NotificationAreaEnabled", isNotificationAreaEnabled);
@@ -78,8 +78,9 @@ void DlgSettingsNotificationArea::saveSettings()
 
 void DlgSettingsNotificationArea::loadSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/NotificationArea");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NotificationArea"
+    );
 
     bool isNotificationAreaEnabled = hGrp->GetBool("NotificationAreaEnabled", true);
     ui->NotificationAreaEnabled->setChecked(isNotificationAreaEnabled);

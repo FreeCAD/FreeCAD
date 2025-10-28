@@ -73,13 +73,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     PyObject* parameters = nullptr;
     const char* name = "";
     static const std::array<const char*, 3> kwlist {"name", "parameters", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args,
-                                            kwd,
-                                            "|sO!",
-                                            kwlist,
-                                            &name,
-                                            &PyDict_Type,
-                                            &parameters)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters)) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
@@ -123,13 +117,15 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
-    if (Base::Wrapped_ParseTupleAndKeywords(args,
-                                            kwd,
-                                            "|sO!",
-                                            kwlist,
-                                            &name,
-                                            &(Base::PlacementPy::Type),
-                                            &parameters)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwd,
+            "|sO!",
+            kwlist,
+            &name,
+            &(Base::PlacementPy::Type),
+            &parameters
+        )) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
@@ -241,16 +237,14 @@ PyObject* CommandPy::setFromGCode(PyObject* args)
 
 Py::Object CommandPy::getPlacement() const
 {
-    return Py::asObject(
-        new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
+    return Py::asObject(new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
 }
 
 void CommandPy::setPlacement(Py::Object arg)
 {
     Py::Type PlacementType(Base::getTypeAsObject(&(Base::PlacementPy::Type)));
     if (arg.isType(PlacementType)) {
-        getCommandPtr()->setFromPlacement(
-            *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr());
+        getCommandPtr()->setFromPlacement(*static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr());
         parameters_copy_dict.clear();
     }
     else {

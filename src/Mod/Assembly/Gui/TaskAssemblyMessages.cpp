@@ -39,7 +39,8 @@ TaskAssemblyMessages::TaskAssemblyMessages(ViewProviderAssembly* vp)
 {
     // NOLINTBEGIN
     connectionSetUp = vp->signalSetUp.connect(
-        std::bind(&TaskAssemblyMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
+        std::bind(&TaskAssemblyMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4)
+    );
     // NOLINTEND
 }
 
@@ -57,8 +58,10 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
         setLinkTooltip(tr("Click to select these redundant joints."));
     }
     else if (link == QStringLiteral("#dofs")) {
-        setLinkTooltip(tr("The assembly has unconstrained components giving rise to those "
-                          "Degrees Of Freedom. Click to select these unconstrained components."));
+        setLinkTooltip(
+            tr("The assembly has unconstrained components giving rise to those "
+               "Degrees Of Freedom. Click to select these unconstrained components.")
+        );
     }
     else if (link == QStringLiteral("#malformed")) {
         setLinkTooltip(tr("Click to select these malformed joints."));

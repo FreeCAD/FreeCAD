@@ -37,43 +37,43 @@
 
 namespace Gui
 {
-  namespace DAG
-  {
-    //! @brief view for DAG viewer
-    class View : public QGraphicsView, public SelectionObserver
-    {
-      Q_OBJECT
-    public:
-      explicit View(QWidget *parentIn = nullptr);
-      ~View() override;
+namespace DAG
+{
+//! @brief view for DAG viewer
+class View: public QGraphicsView, public SelectionObserver
+{
+    Q_OBJECT
+public:
+    explicit View(QWidget* parentIn = nullptr);
+    ~View() override;
 
-    public Q_SLOTS:
-      void awakeSlot(); //!< hooked up to event dispatcher for update when idle.
+public Q_SLOTS:
+    void awakeSlot();  //!< hooked up to event dispatcher for update when idle.
 
-    private:
-      void onSelectionChanged(const SelectionChanges& msg) override;
+private:
+    void onSelectionChanged(const SelectionChanges& msg) override;
 
-      void slotActiveDocument(const Gui::Document &documentIn);
-      void slotDeleteDocument(const Gui::Document &documentIn);
+    void slotActiveDocument(const Gui::Document& documentIn);
+    void slotDeleteDocument(const Gui::Document& documentIn);
 
-      using ModelMap = std::map<const Gui::Document*, std::shared_ptr<Model> >;
-      ModelMap modelMap;
-      boost::signals2::scoped_connection conActive;
-      boost::signals2::scoped_connection conDelete;
-    };
+    using ModelMap = std::map<const Gui::Document*, std::shared_ptr<Model>>;
+    ModelMap modelMap;
+    boost::signals2::scoped_connection conActive;
+    boost::signals2::scoped_connection conDelete;
+};
 
-    //! @brief dock window for DAG viewer
-    class DockWindow : public Gui::DockWindow
-    {
-        Q_OBJECT
-    public:
-        explicit DockWindow(Gui::Document* gDocumentIn = nullptr, QWidget *parent = nullptr);
-        ~DockWindow() override = default;
+//! @brief dock window for DAG viewer
+class DockWindow: public Gui::DockWindow
+{
+    Q_OBJECT
+public:
+    explicit DockWindow(Gui::Document* gDocumentIn = nullptr, QWidget* parent = nullptr);
+    ~DockWindow() override = default;
 
-    private:
-        View *dagView;
-    };
-  }
-}
+private:
+    View* dagView;
+};
+}  // namespace DAG
+}  // namespace Gui
 
-#endif // DAGVIEW_H
+#endif  // DAGVIEW_H

@@ -50,9 +50,11 @@ void FemPostFunctionProvider::unsetupObject()
     }
 }
 
-void FemPostFunctionProvider::handleChangedPropertyName(Base::XMLReader& reader,
-                                                        const char* typeName,
-                                                        const char* propName)
+void FemPostFunctionProvider::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "Functions") == 0
         && Base::Type::fromName(typeName) == App::PropertyLinkList::getClassTypeId()) {
@@ -104,12 +106,14 @@ void FemPostBoxFunction::onChanged(const Property* prop)
         float l = Length.getValue();
         float w = Width.getValue();
         float h = Height.getValue();
-        m_box->SetBounds(vec[0] - l / 2,
-                         vec[0] + l / 2,
-                         vec[1] - w / 2,
-                         vec[1] + w / 2,
-                         vec[2] - h / 2,
-                         vec[2] + h / 2);
+        m_box->SetBounds(
+            vec[0] - l / 2,
+            vec[0] + l / 2,
+            vec[1] - w / 2,
+            vec[1] + w / 2,
+            vec[2] - h / 2,
+            vec[2] + h / 2
+        );
     }
 
     Fem::FemPostFunction::onChanged(prop);

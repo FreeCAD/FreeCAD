@@ -29,9 +29,10 @@
 #include "ViewProvider.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderExtrusion : public ViewProviderPart
+class PartGuiExport ViewProviderExtrusion: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderExtrusion);
 
@@ -45,7 +46,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDEREXTRUSION_H
+#endif  // PARTGUI_VIEWPROVIDEREXTRUSION_H

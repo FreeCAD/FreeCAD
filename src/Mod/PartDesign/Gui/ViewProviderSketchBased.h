@@ -28,12 +28,13 @@
 #include <Gui/ParamHandler.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /**
  * A common base class for Sketch based view providers
  */
-class PartDesignGuiExport ViewProviderSketchBased : public ViewProvider
+class PartDesignGuiExport ViewProviderSketchBased: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderSketchBased);
 
@@ -59,10 +60,11 @@ private:
     Gui::CoinPtr<PartGui::SoPreviewShape> pcProfileShape;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview");
+        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview"
+    );
     Gui::ParamHandlers handlers;
 };
 
-} /* PartDesignGui  */
+}  // namespace PartDesignGui
 
 #endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */

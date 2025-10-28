@@ -88,12 +88,11 @@ void ViewProviderRobotObject::setDragger()
     Robot::RobotObject* robObj = static_cast<Robot::RobotObject*>(pcObject);
     Base::Placement loc = robObj->Tcp.getValue();
     SbMatrix M;
-    M.setTransform(SbVec3f(loc.getPosition().x, loc.getPosition().y, loc.getPosition().z),
-                   SbRotation(loc.getRotation()[0],
-                              loc.getRotation()[1],
-                              loc.getRotation()[2],
-                              loc.getRotation()[3]),
-                   SbVec3f(150, 150, 150));
+    M.setTransform(
+        SbVec3f(loc.getPosition().x, loc.getPosition().y, loc.getPosition().z),
+        SbRotation(loc.getRotation()[0], loc.getRotation()[1], loc.getRotation()[2], loc.getRotation()[3]),
+        SbVec3f(150, 150, 150)
+    );
     pcDragger->setMotionMatrix(M);
 }
 
@@ -263,105 +262,140 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
             }
         }
         if (Axis1Node) {
-            Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis1.getValue()));
+            Axis1Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis1.getValue())
+            );
         }
         if (Axis2Node) {
-            Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis2.getValue()));
+            Axis2Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis2.getValue())
+            );
         }
         if (Axis3Node) {
-            Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis3.getValue()));
+            Axis3Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis3.getValue())
+            );
         }
         if (Axis4Node) {
-            Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis4.getValue()));
+            Axis4Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis4.getValue())
+            );
         }
         if (Axis5Node) {
-            Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis5.getValue()));
+            Axis5Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis5.getValue())
+            );
         }
         if (Axis6Node) {
-            Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis6.getValue()));
+            Axis6Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis6.getValue())
+            );
         }
     }
     else if (prop == &robObj->Axis1) {
         if (Axis1Node) {
-            Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis1.getValue()));
+            Axis1Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis1.getValue())
+            );
             if (toolShape) {
                 toolShape->setTransformation(
-                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+                );
             }
         }
     }
     else if (prop == &robObj->Axis2) {
         if (Axis2Node) {
-            Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis2.getValue()));
+            Axis2Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis2.getValue())
+            );
             if (toolShape) {
                 toolShape->setTransformation(
-                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+                );
             }
         }
     }
     else if (prop == &robObj->Axis3) {
         if (Axis3Node) {
-            Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis3.getValue()));
+            Axis3Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis3.getValue())
+            );
             if (toolShape) {
                 toolShape->setTransformation(
-                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+                );
             }
         }
     }
     else if (prop == &robObj->Axis4) {
         if (Axis4Node) {
-            Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis4.getValue()));
+            Axis4Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis4.getValue())
+            );
             if (toolShape) {
                 toolShape->setTransformation(
-                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+                );
             }
         }
     }
     else if (prop == &robObj->Axis5) {
         if (Axis5Node) {
-            Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis5.getValue()));
+            Axis5Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis5.getValue())
+            );
             if (toolShape) {
                 toolShape->setTransformation(
-                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+                );
             }
         }
     }
     else if (prop == &robObj->Axis6) {
         if (Axis6Node) {
-            Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         Base::toRadians(robObj->Axis6.getValue()));
+            Axis6Node->rotation.setValue(
+                SbVec3f(0.0, 1.0, 0.0),
+                Base::toRadians(robObj->Axis6.getValue())
+            );
             if (toolShape) {
                 toolShape->setTransformation(
-                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                    (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+                );
             }
         }
     }
     else if (prop == &robObj->Tcp) {
         Base::Placement loc = robObj->Tcp.getValue();
         SbMatrix M;
-        M.setTransform(SbVec3f(loc.getPosition().x, loc.getPosition().y, loc.getPosition().z),
-                       SbRotation(loc.getRotation()[0],
-                                  loc.getRotation()[1],
-                                  loc.getRotation()[2],
-                                  loc.getRotation()[3]),
-                       SbVec3f(150, 150, 150));
+        M.setTransform(
+            SbVec3f(loc.getPosition().x, loc.getPosition().y, loc.getPosition().z),
+            SbRotation(
+                loc.getRotation()[0],
+                loc.getRotation()[1],
+                loc.getRotation()[2],
+                loc.getRotation()[3]
+            ),
+            SbVec3f(150, 150, 150)
+        );
         if (pcDragger) {
             pcDragger->setMotionMatrix(M);
         }
         if (toolShape) {
             toolShape->setTransformation(
-                (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+            );
         }
     }
     else if (prop == &robObj->ToolShape) {
@@ -370,20 +404,23 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
         if (o && (o->isDerivedFrom<Part::Feature>() || o->isDerivedFrom<App::VRMLObject>())) {
             toolShape = Gui::Application::Instance->getViewProvider(o);
             toolShape->setTransformation(
-                (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
+                (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix()
+            );
         }
         else {
             toolShape = nullptr;
         }
     }
 }
-void ViewProviderRobotObject::setAxisTo(float A1,
-                                        float A2,
-                                        float A3,
-                                        float A4,
-                                        float A5,
-                                        float A6,
-                                        const Base::Placement& Tcp)
+void ViewProviderRobotObject::setAxisTo(
+    float A1,
+    float A2,
+    float A3,
+    float A4,
+    float A5,
+    float A6,
+    const Base::Placement& Tcp
+)
 {
     Robot::RobotObject* robObj = static_cast<Robot::RobotObject*>(pcObject);
 

@@ -25,32 +25,33 @@
 
 #if BUILD_VR
 
-#include "CoinRiftWidget.h"
+# include "CoinRiftWidget.h"
 
-namespace Gui {
+namespace Gui
+{
 
-class View3DInventorRiftViewer : public CoinRiftWidget
+class View3DInventorRiftViewer: public CoinRiftWidget
 {
 public:
     View3DInventorRiftViewer();
     ~View3DInventorRiftViewer();
 
-     virtual void setSceneGraph(SoNode *sceneGraph);
+    virtual void setSceneGraph(SoNode* sceneGraph);
 
 protected:
-    SoGroup         *workplace;
-    SoTranslation   *translation;
-    SoRotationXYZ   *rotation1;
-    SoRotationXYZ   *rotation2;
-    SoScale         *scale;
+    SoGroup* workplace;
+    SoTranslation* translation;
+    SoRotationXYZ* rotation1;
+    SoRotationXYZ* rotation2;
+    SoScale* scale;
 
 protected:
-    void keyPressEvent(QKeyEvent *);
+    void keyPressEvent(QKeyEvent*);
 };
 
 
-} //namespace Gui
+}  // namespace Gui
 
-#endif //BUILD_VR
+#endif  // BUILD_VR
 
-#endif //GUI_View3DInventorRiftViewer_H
+#endif  // GUI_View3DInventorRiftViewer_H

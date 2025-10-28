@@ -32,7 +32,7 @@ namespace Gui
 {
 
 class MDIViewPyWrapImp;
-class GuiExport MDIViewPyWrap : public MDIView
+class GuiExport MDIViewPyWrap: public MDIView
 {
     Q_OBJECT
 
@@ -44,19 +44,24 @@ public:
      * the view will attach to the active document. Be aware, there isn't
      * always an active document.
      */
-    explicit MDIViewPyWrap(const Py::Object& py, Gui::Document* pcDocument, QWidget* parent=nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
+    explicit MDIViewPyWrap(
+        const Py::Object& py,
+        Gui::Document* pcDocument,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags wflags = Qt::WindowFlags()
+    );
     /** View destructor
      * Detach the view from the document, if attached.
      */
     ~MDIViewPyWrap() override;
 
     /// Message handler
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
     /// overwrite when checking on close state
     bool canClose() override;
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
     /** @name Printing */
     //@{
 public Q_SLOTS:
@@ -81,6 +86,6 @@ private:
     std::unique_ptr<MDIViewPyWrapImp> ptr;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_MDIVIEWPYWRAP_H
+#endif  // GUI_MDIVIEWPYWRAP_H

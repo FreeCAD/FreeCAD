@@ -54,8 +54,10 @@ class TaskMultiTransformParameters: public TaskTransformedParameters
     Q_OBJECT
 
 public:
-    explicit TaskMultiTransformParameters(ViewProviderTransformed* TransformedView,
-                                          QWidget* parent = nullptr);
+    explicit TaskMultiTransformParameters(
+        ViewProviderTransformed* TransformedView,
+        QWidget* parent = nullptr
+    );
     ~TaskMultiTransformParameters() override;
 
     void apply() override;

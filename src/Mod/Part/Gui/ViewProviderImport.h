@@ -35,10 +35,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderImport : public ViewProviderPart
+class PartGuiExport ViewProviderImport: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderImport);
 
@@ -53,8 +54,7 @@ protected:
     void unsetEdit(int ModNum) override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEVPROVIDERIMPORT_H
-
+#endif  // PARTGUI_VIEVPROVIDERIMPORT_H

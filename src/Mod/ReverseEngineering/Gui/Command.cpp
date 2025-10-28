@@ -76,9 +76,11 @@ void CmdApproxCurve::activated(int)
     App::DocumentObjectT objT;
     auto obj = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom<Points::Feature>())) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-                             qApp->translate("Reen_ApproxSurface", "Select a point cloud."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+            qApp->translate("Reen_ApproxSurface", "Select a point cloud.")
+        );
         return;
     }
 
@@ -108,15 +110,16 @@ CmdApproxSurface::CmdApproxSurface()
 void CmdApproxSurface::activated(int)
 {
     App::DocumentObjectT objT;
-    std::vector<App::DocumentObject*> obj =
-        Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(
+        App::GeoFeature::getClassTypeId()
+    );
     if (obj.size() != 1
-        || !(obj.at(0)->isDerivedFrom<Points::Feature>()
-             || obj.at(0)->isDerivedFrom<Mesh::Feature>())) {
+        || !(obj.at(0)->isDerivedFrom<Points::Feature>() || obj.at(0)->isDerivedFrom<Mesh::Feature>())) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-            qApp->translate("Reen_ApproxSurface", "Select a point cloud or mesh."));
+            qApp->translate("Reen_ApproxSurface", "Select a point cloud or mesh.")
+        );
         return;
     }
 
@@ -153,8 +156,8 @@ void CmdApproxPlane::activated(int)
         it->getPropertyList(List);
         for (const auto& jt : List) {
             if (jt->isDerivedFrom<App::PropertyComplexGeoData>()) {
-                const Data::ComplexGeoData* data =
-                    static_cast<App::PropertyComplexGeoData*>(jt)->getComplexData();
+                const Data::ComplexGeoData* data
+                    = static_cast<App::PropertyComplexGeoData*>(jt)->getComplexData();
                 if (data) {
                     data->getPoints(aPoints, aNormals, 0.01f);
                     if (!aPoints.empty()) {
@@ -199,15 +202,12 @@ void CmdApproxPlane::activated(int)
 
             Base::CoordinateSystem cs;
             cs.setPosition(Base::convertTo<Base::Vector3d>(base));
-            cs.setAxes(Base::convertTo<Base::Vector3d>(norm),
-                       Base::convertTo<Base::Vector3d>(dirU));
+            cs.setAxes(Base::convertTo<Base::Vector3d>(norm), Base::convertTo<Base::Vector3d>(dirU));
             Base::Placement pm = Base::CoordinateSystem().displacement(cs);
             double q0, q1, q2, q3;
             pm.getRotation().getValue(q0, q1, q2, q3);
 
-            Base::Console().log("RMS value for plane fit with %lu points: %.4f\n",
-                                aData.size(),
-                                sigma);
+            Base::Console().log("RMS value for plane fit with %lu points: %.4f\n", aData.size(), sigma);
             Base::Console().log("  Plane base(%.4f, %.4f, %.4f)\n", base.x, base.y, base.z);
             Base::Console().log("  Plane normal(%.4f, %.4f, %.4f)\n", norm.x, norm.y, norm.z);
 
@@ -378,8 +378,8 @@ void CmdApproxPolynomial::activated(int)
         fit.AddPoints(kernel.GetPoints());
         if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::BoundBox3f bbox = fit.GetBoundings();
-            std::vector<Base::Vector3d> poles =
-                fit.toBezier(bbox.MinX, bbox.MaxX, bbox.MinY, bbox.MaxY);
+            std::vector<Base::Vector3d> poles
+                = fit.toBezier(bbox.MinX, bbox.MaxX, bbox.MinY, bbox.MaxY);
             fit.Transform(poles);
 
             TColgp_Array2OfPnt grid(1, 3, 1, 3);
@@ -394,8 +394,7 @@ void CmdApproxPolynomial::activated(int)
             grid.SetValue(3, 3, Base::convertTo<gp_Pnt>(poles.at(8)));
 
             Handle(Geom_BezierSurface) bezier(new Geom_BezierSurface(grid));
-            Part::Feature* part =
-                static_cast<Part::Feature*>(doc->addObject("Part::Spline", "Bezier"));
+            Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Spline", "Bezier"));
             part->Shape.setValue(Part::GeomBezierSurface(bezier).toShape());
         }
     }
@@ -604,12 +603,15 @@ CmdPoissonReconstruction::CmdPoissonReconstruction()
 void CmdPoissonReconstruction::activated(int)
 {
     App::DocumentObjectT objT;
-    std::vector<App::DocumentObject*> obj =
-        Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(
+        Points::Feature::getClassTypeId()
+    );
     if (obj.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-                             qApp->translate("Reen_ApproxSurface", "Select a single point cloud."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+            qApp->translate("Reen_ApproxSurface", "Select a single point cloud.")
+        );
         return;
     }
 
@@ -637,8 +639,9 @@ CmdViewTriangulation::CmdViewTriangulation()
 
 void CmdViewTriangulation::activated(int)
 {
-    std::vector<App::DocumentObject*> obj =
-        Gui::Selection().getObjectsOfType(Points::Structured::getClassTypeId());
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(
+        Points::Structured::getClassTypeId()
+    );
     addModule(App, "ReverseEngineering");
     openCommand(QT_TRANSLATE_NOOP("Command", "View triangulation"));
     try {
@@ -647,11 +650,13 @@ void CmdViewTriangulation::activated(int)
             QString document = QString::fromStdString(objT.getDocumentPython());
             QString object = QString::fromStdString(objT.getObjectPython());
 
-            QString command = QStringLiteral("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
-                                             "= ReverseEngineering.viewTriangulation("
-                                             "Points=%2.Points,"
-                                             "Width=%2.Width,"
-                                             "Height=%2.Height)")
+            QString command = QStringLiteral(
+                                  "%1.addObject('Mesh::Feature', 'View mesh').Mesh "
+                                  "= ReverseEngineering.viewTriangulation("
+                                  "Points=%2.Points,"
+                                  "Width=%2.Width,"
+                                  "Height=%2.Height)"
+            )
                                   .arg(document, object);
             runCommand(Doc, command.toLatin1());
         }
@@ -661,9 +666,11 @@ void CmdViewTriangulation::activated(int)
     }
     catch (const Base::Exception& e) {
         abortCommand();
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("Reen_ViewTriangulation", "View triangulation failed"),
-                             QString::fromLatin1(e.what()));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Reen_ViewTriangulation", "View triangulation failed"),
+            QString::fromLatin1(e.what())
+        );
     }
 }
 

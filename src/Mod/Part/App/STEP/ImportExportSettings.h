@@ -66,7 +66,7 @@ private:
     ParameterGrp::handle pGroup;
 };
 
-} //namespace STEP
-} //namespace Part
+}  // namespace STEP
+}  // namespace Part
 
 #endif

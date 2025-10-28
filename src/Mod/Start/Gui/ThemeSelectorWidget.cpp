@@ -38,7 +38,7 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_MACOSX
-#include <CoreFoundation/CoreFoundation.h>
+# include <CoreFoundation/CoreFoundation.h>
 #endif
 
 using namespace StartGui;
@@ -58,7 +58,7 @@ static bool isSystemInDarkMode()
     const auto window = defaultPalette.color(QPalette::Window);
     return text.lightness() > window.lightness();
 #else
-#ifdef FC_OS_MACOSX
+# ifdef FC_OS_MACOSX
     auto key = CFSTR("AppleInterfaceStyle");
     if (auto value = CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication)) {
         // If the value is "Dark", Dark Mode is enabled
@@ -71,8 +71,8 @@ static bool isSystemInDarkMode()
         }
         CFRelease(value);
     }
-#endif  // FC_OS_MACOSX
-#endif  // QT_VERSION >= 6.4+
+# endif  // FC_OS_MACOSX
+#endif   // QT_VERSION >= 6.4+
     return false;
 }
 
@@ -110,15 +110,19 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     if (!layout) {
         return;
     }
-    std::map<Theme, QString> themeMap {{Theme::Classic, tr("FreeCAD Classic")},
-                                       {Theme::Dark, tr("FreeCAD Dark")},
-                                       {Theme::Light, tr("FreeCAD Light")}};
+    std::map<Theme, QString> themeMap {
+        {Theme::Classic, tr("FreeCAD Classic")},
+        {Theme::Dark, tr("FreeCAD Dark")},
+        {Theme::Light, tr("FreeCAD Light")}
+    };
     std::map<Theme, QIcon> iconMap {
         {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_classic.png"))},
         {Theme::Light, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_light.png"))},
-        {Theme::Dark, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_dark.png"))}};
+        {Theme::Dark, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_dark.png"))}
+    };
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow");
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
     for (const auto& theme : themeMap) {
         auto button = gsl::owner<QToolButton*>(new QToolButton());
@@ -137,18 +141,20 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
             button->setChecked(true);
         }
         else if (theme.first == Theme::Light
-                 && styleSheetName.contains(QLatin1String("FreeCAD Light"),
-                                            Qt::CaseSensitivity::CaseInsensitive)) {
+                 && styleSheetName.contains(
+                     QLatin1String("FreeCAD Light"),
+                     Qt::CaseSensitivity::CaseInsensitive
+                 )) {
             button->setChecked(true);
         }
         else if (theme.first == Theme::Dark
-                 && styleSheetName.contains(QLatin1String("FreeCAD Dark"),
-                                            Qt::CaseSensitivity::CaseInsensitive)) {
+                 && styleSheetName.contains(
+                     QLatin1String("FreeCAD Dark"),
+                     Qt::CaseSensitivity::CaseInsensitive
+                 )) {
             button->setChecked(true);
         }
-        connect(button, &QToolButton::clicked, this, [this, theme] {
-            themeChanged(theme.first);
-        });
+        connect(button, &QToolButton::clicked, this, [this, theme] { themeChanged(theme.first); });
         layout->addWidget(button);
         _buttons[static_cast<int>(theme.first)] = button;
     }
@@ -178,8 +184,9 @@ void ThemeSelectorWidget::onLinkActivated(const QString& link)
 
     // Set the user preferences to include only preference packs.
     // This is a quick and dirty way to open Addon Manager with only themes.
-    auto pref =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
+    auto pref = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Addons"
+    );
     pref->SetInt("PackageTypeSelection", 3);  // 3 stands for Preference Packs
     pref->SetInt("StatusSelection", 0);       // 0 stands for any installation status
 
@@ -190,7 +197,8 @@ void ThemeSelectorWidget::preselectThemeFromSystemSettings()
 {
     auto nullStyle("<N/A>");
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow");
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet", nullStyle));
     if (styleSheetName == QString::fromStdString(nullStyle)) {
         auto theme = isSystemInDarkMode() ? Theme::Dark : Theme::Light;
@@ -213,8 +221,9 @@ void ThemeSelectorWidget::themeChanged(Theme newTheme)
             prefPackManager->apply("FreeCAD Light");
             break;
     }
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Themes"
+    );
     const unsigned long nonExistentColor = -1434171135;
     const unsigned long defaultAccentColor = 1434171135;
     unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", nonExistentColor);
@@ -237,8 +246,10 @@ void ThemeSelectorWidget::retranslateUi()
 {
     _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
     if (Gui::Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
-        _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using "
-                                      "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>."));
+        _descriptionLabel->setText(
+            tr("Looking for more themes? You can obtain them using "
+               "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>.")
+        );
     }
     else {
         _descriptionLabel->hide();

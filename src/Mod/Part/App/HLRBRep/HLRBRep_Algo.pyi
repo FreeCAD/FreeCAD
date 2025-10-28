@@ -8,7 +8,8 @@ from typing import Final
     Include="HLRBRep_Algo.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(HLRBRep_Algo) hAlgo;
 
@@ -16,7 +17,8 @@ public:
     Handle(HLRBRep_Algo) handle() {
         return hAlgo;
     }
-""")
+"""
+)
 class HLRBRep_Algo(PyObjectBase):
     """
     Algo() -> HLRBRep_Algo
@@ -175,7 +177,7 @@ class HLRBRep_Algo(PyObjectBase):
     def selectFace(self, i: int) -> None:
         """
         selectFace(i)
-		
+
         Select only the faces of the shape of index i.
         """
         ...
@@ -192,7 +194,7 @@ class HLRBRep_Algo(PyObjectBase):
     def update(self) -> None:
         """
         update()
-		
+
         Update the DataStructure.
         """
         ...

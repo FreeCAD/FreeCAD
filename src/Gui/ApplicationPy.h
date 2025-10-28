@@ -26,7 +26,8 @@
 
 #include <Base/PyObjectBase.h>
 
-namespace Gui{
+namespace Gui
+{
 
 /** The ApplicationPy class
  * This is the Python wrapper class of Application.
@@ -118,6 +119,6 @@ public:
     // clang-format on
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 #endif

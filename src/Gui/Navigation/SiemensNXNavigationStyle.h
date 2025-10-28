@@ -31,7 +31,8 @@
 namespace Gui
 {
 
-class GuiExport SiemensNXNavigationStyle : public NavigationStateChart {
+class GuiExport SiemensNXNavigationStyle: public NavigationStateChart
+{
     using inherited = NavigationStateChart;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -43,7 +44,7 @@ public:
     std::string userFriendlyName() const override;
 
 protected:
-    SbBool processKeyboardEvent(const SoKeyboardEvent * const event) override;
+    SbBool processKeyboardEvent(const SoKeyboardEvent* const event) override;
 
 private:
     struct NaviMachine;

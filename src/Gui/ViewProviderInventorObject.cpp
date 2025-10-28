@@ -21,12 +21,11 @@
  ***************************************************************************/
 
 
-
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <QFile>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <QFile>
 
 
 #include <App/Document.h>
@@ -54,7 +53,7 @@ ViewProviderInventorObject::~ViewProviderInventorObject()
     pcFile->unref();
 }
 
-void ViewProviderInventorObject::attach(App::DocumentObject *pcObj)
+void ViewProviderInventorObject::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     auto pcFileBuf = new SoGroup();
@@ -67,12 +66,15 @@ void ViewProviderInventorObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderInventorObject::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("File+Buffer",ModeName)==0)
+    if (strcmp("File+Buffer", ModeName) == 0) {
         setDisplayMaskMode("FileBuffer");
-    else if (strcmp("Buffer",ModeName)==0)
+    }
+    else if (strcmp("Buffer", ModeName) == 0) {
         setDisplayMaskMode("Buffer");
-    else if (strcmp("File",ModeName)==0)
+    }
+    else if (strcmp("File", ModeName) == 0) {
         setDisplayMaskMode("File");
+    }
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
@@ -93,10 +95,11 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         SoInput in;
         std::string buffer = ivObj->Buffer.getValue();
         coinRemoveAllChildren(pcBuffer);
-        if (buffer.empty())
+        if (buffer.empty()) {
             return;
-        in.setBuffer((void *)buffer.c_str(), buffer.size());
-        SoSeparator * node = SoDB::readAll(&in);
+        }
+        in.setBuffer((void*)buffer.c_str(), buffer.size());
+        SoSeparator* node = SoDB::readAll(&in);
         if (node) {
             const char* doc = this->pcObject->getDocument()->getName();
             const char* obj = this->pcObject->getNameInDocument();
@@ -113,8 +116,8 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         coinRemoveAllChildren(pcFile);
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
             QByteArray buffer = file.readAll();
-            in.setBuffer((void *)buffer.constData(), buffer.length());
-            SoSeparator * node = SoDB::readAll(&in);
+            in.setBuffer((void*)buffer.constData(), buffer.length());
+            SoSeparator* node = SoDB::readAll(&in);
             if (node) {
                 const char* doc = this->pcObject->getDocument()->getName();
                 const char* obj = this->pcObject->getNameInDocument();
@@ -123,8 +126,8 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
             }
         }
     }
-    else if (prop->isDerivedFrom<App::PropertyPlacement>() &&
-             strcmp(prop->getName(), "Placement") == 0) {
+    else if (prop->isDerivedFrom<App::PropertyPlacement>()
+             && strcmp(prop->getName(), "Placement") == 0) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t
         // In FreeCAD a placement only has a rotation and a translation part but
@@ -141,15 +144,14 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         auto px = (float)p.getPosition().x;
         auto py = (float)p.getPosition().y;
         auto pz = (float)p.getPosition().z;
-        pcTransform->rotation.setValue(q0,q1,q2,q3);
-        pcTransform->translation.setValue(px,py,pz);
-        pcTransform->center.setValue(0.0f,0.0f,0.0f);
-        pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
+        pcTransform->rotation.setValue(q0, q1, q2, q3);
+        pcTransform->translation.setValue(px, py, pz);
+        pcTransform->center.setValue(0.0f, 0.0f, 0.0f);
+        pcTransform->scaleFactor.setValue(1.0f, 1.0f, 1.0f);
     }
 }
 
-void ViewProviderInventorObject::adjustSelectionNodes(SoNode* child, const char* docname,
-                                                      const char* objname)
+void ViewProviderInventorObject::adjustSelectionNodes(SoNode* child, const char* docname, const char* objname)
 {
     if (child->getTypeId().isDerivedFrom(SoFCSelection::getClassTypeId())) {
         static_cast<SoFCSelection*>(child)->documentName = docname;
@@ -157,7 +159,7 @@ void ViewProviderInventorObject::adjustSelectionNodes(SoNode* child, const char*
     }
     else if (child->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
         auto group = static_cast<SoGroup*>(child);
-        for (int i=0; i<group->getNumChildren(); i++) {
+        for (int i = 0; i < group->getNumChildren(); i++) {
             SoNode* subchild = group->getChild(i);
             adjustSelectionNodes(subchild, docname, objname);
         }

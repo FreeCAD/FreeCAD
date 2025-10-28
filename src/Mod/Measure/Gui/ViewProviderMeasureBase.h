@@ -145,8 +145,10 @@ protected:
     SoSeparator* getSoSeparatorText();
 
     static constexpr double defaultTolerance = 10e-6;
-    virtual Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
-                                            double tolerance = defaultTolerance);
+    virtual Base::Vector3d getTextDirection(
+        Base::Vector3d elementDirection,
+        double tolerance = defaultTolerance
+    );
     float getViewScale();
 
     // TODO: getters & setters and move variables to private?

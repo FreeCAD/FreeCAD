@@ -59,9 +59,11 @@ bool ViewProviderPart::doubleClicked()
     }
 }
 
-void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
-                                  const std::vector<Base::Color>& colBase,
-                                  std::vector<Base::Color>& colBool)
+void ViewProviderPart::applyColor(
+    const Part::ShapeHistory& hist,
+    const std::vector<Base::Color>& colBase,
+    std::vector<Base::Color>& colBool
+)
 {
     // apply color from modified faces
     for (const auto& jt : hist.shapeMap) {
@@ -71,9 +73,11 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
     }
 }
 
-void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
-                                     const std::vector<App::Material>& colBase,
-                                     std::vector<App::Material>& colBool)
+void ViewProviderPart::applyMaterial(
+    const Part::ShapeHistory& hist,
+    const std::vector<App::Material>& colBase,
+    std::vector<App::Material>& colBool
+)
 {
     // apply color from modified faces
     for (const auto& jt : hist.shapeMap) {

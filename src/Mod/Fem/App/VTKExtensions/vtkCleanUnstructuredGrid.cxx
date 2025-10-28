@@ -6,32 +6,32 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <vtkArrayDispatch.h>
-#include <vtkArrayDispatchArrayList.h>
-#include <vtkBitArray.h>
-#include <vtkCell.h>
-#include <vtkCellData.h>
-#include <vtkCellSizeFilter.h>
-#include <vtkCellTypes.h>
-#include <vtkCollection.h>
-#include <vtkDataArrayRange.h>
-#include <vtkDataSet.h>
-#include <vtkDoubleArray.h>
-#include <vtkIncrementalPointLocator.h>
-#include <vtkInformation.h>
-#include <vtkInformationVector.h>
-#include <vtkIntArray.h>
-#include <vtkMergePoints.h>
-#include <vtkObjectFactory.h>
-#include <vtkPointData.h>
-#include <vtkPointSet.h>
-#include <vtkPoints.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkSMPThreadLocalObject.h>
-#include <vtkStringArray.h>
-#include <vtkUnstructuredGrid.h>
+# include <vtkArrayDispatch.h>
+# include <vtkArrayDispatchArrayList.h>
+# include <vtkBitArray.h>
+# include <vtkCell.h>
+# include <vtkCellData.h>
+# include <vtkCellSizeFilter.h>
+# include <vtkCellTypes.h>
+# include <vtkCollection.h>
+# include <vtkDataArrayRange.h>
+# include <vtkDataSet.h>
+# include <vtkDoubleArray.h>
+# include <vtkIncrementalPointLocator.h>
+# include <vtkInformation.h>
+# include <vtkInformationVector.h>
+# include <vtkIntArray.h>
+# include <vtkMergePoints.h>
+# include <vtkObjectFactory.h>
+# include <vtkPointData.h>
+# include <vtkPointSet.h>
+# include <vtkPoints.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkSMPThreadLocalObject.h>
+# include <vtkStringArray.h>
+# include <vtkUnstructuredGrid.h>
 
-#include <unordered_set>
+# include <unordered_set>
 #endif
 
 #include "vtkCleanUnstructuredGrid.h"
@@ -132,7 +132,8 @@ unsigned char GetTopologicalDimension(vtkDataSet* ds)
     if (topoDim > MAX_CELL_DIM) {
         vtkErrorWithObjectMacro(
             nullptr,
-            "Topological dimension of data set is larger than the maximal cell dimension");
+            "Topological dimension of data set is larger than the maximal cell dimension"
+        );
         return MAX_CELL_DIM;
     }
     return topoDim;
@@ -141,18 +142,23 @@ unsigned char GetTopologicalDimension(vtkDataSet* ds)
 struct WeighingStrategy
 {
     virtual ~WeighingStrategy() = default;
-    virtual vtkSmartPointer<vtkDoubleArray> ComputeWeights(vtkDataSet* ds,
-                                                           const std::vector<vtkIdType>& ptMap) = 0;
+    virtual vtkSmartPointer<vtkDoubleArray> ComputeWeights(
+        vtkDataSet* ds,
+        const std::vector<vtkIdType>& ptMap
+    ) = 0;
 };
 
 struct FirstPointStrategy: public WeighingStrategy
 {
-    vtkSmartPointer<vtkDoubleArray> ComputeWeights(vtkDataSet* ds,
-                                                   const std::vector<vtkIdType>& ptMap) override
+    vtkSmartPointer<vtkDoubleArray> ComputeWeights(
+        vtkDataSet* ds,
+        const std::vector<vtkIdType>& ptMap
+    ) override
     {
         if (ds->GetNumberOfPoints() != static_cast<vtkIdType>(ptMap.size())) {
             vtkGenericWarningMacro(
-                "Number of points in dataset and number of entries in point map don't line up.");
+                "Number of points in dataset and number of entries in point map don't line up."
+            );
             return nullptr;
         }
         vtkNew<vtkDoubleArray> weights;
@@ -174,12 +180,15 @@ struct FirstPointStrategy: public WeighingStrategy
 
 struct AveragingStrategy: public WeighingStrategy
 {
-    vtkSmartPointer<vtkDoubleArray> ComputeWeights(vtkDataSet* ds,
-                                                   const std::vector<vtkIdType>& ptMap) override
+    vtkSmartPointer<vtkDoubleArray> ComputeWeights(
+        vtkDataSet* ds,
+        const std::vector<vtkIdType>& ptMap
+    ) override
     {
         if (ds->GetNumberOfPoints() != static_cast<vtkIdType>(ptMap.size())) {
             vtkGenericWarningMacro(
-                "Number of points in dataset and number of entries in point map don't line up.");
+                "Number of points in dataset and number of entries in point map don't line up."
+            );
             return nullptr;
         }
         std::vector<double> counts(ds->GetNumberOfPoints(), 0.0);
@@ -209,12 +218,15 @@ struct AveragingStrategy: public WeighingStrategy
 
 struct SpatialDensityStrategy: public WeighingStrategy
 {
-    vtkSmartPointer<vtkDoubleArray> ComputeWeights(vtkDataSet* ds,
-                                                   const std::vector<vtkIdType>& ptMap) override
+    vtkSmartPointer<vtkDoubleArray> ComputeWeights(
+        vtkDataSet* ds,
+        const std::vector<vtkIdType>& ptMap
+    ) override
     {
         if (ds->GetNumberOfPoints() != static_cast<vtkIdType>(ptMap.size())) {
             vtkGenericWarningMacro(
-                "Number of points in dataset and number of entries in point map don't line up.");
+                "Number of points in dataset and number of entries in point map don't line up."
+            );
             return nullptr;
         }
         // Get topological dimension of data set
@@ -233,7 +245,8 @@ struct SpatialDensityStrategy: public WeighingStrategy
                 || !cData->HasArray("Area") || !cData->HasArray("Volume")) {
                 vtkErrorWithObjectMacro(
                     nullptr,
-                    "Could not find correct cell data in output of cell size filter");
+                    "Could not find correct cell data in output of cell size filter"
+                );
                 return nullptr;
             }
             switch (topoDim) {
@@ -250,9 +263,11 @@ struct SpatialDensityStrategy: public WeighingStrategy
                     measures = cData->GetArray("Volume");
                     break;
                 default:
-                    vtkErrorWithObjectMacro(nullptr,
-                                            "Topological dimension of data set is higher than 3. "
-                                            "Cannot deal with that.");
+                    vtkErrorWithObjectMacro(
+                        nullptr,
+                        "Topological dimension of data set is higher than 3. "
+                        "Cannot deal with that."
+                    );
                     return nullptr;
             }
         }
@@ -302,18 +317,18 @@ struct SpatialDensityStrategy: public WeighingStrategy
             // Merits a dedicated struct with a reduce operation
             // collisions occurring in the += operation
             // vtkSMPTools::For(0, ds->GetNumberOfPoints(), computeMasses);
-            vtkSMPTools::For(0,
-                             ds->GetNumberOfPoints(),
-                             [&dRange, &masses, &ptMap](vtkIdType begin, vtkIdType end) {
-                                 for (vtkIdType iP = begin; iP < end; ++iP) {
-                                     if (ptMap[iP] < 0) {
-                                         continue;
-                                     }
-                                     dRange[iP] =
-                                         (masses[ptMap[iP]] != 0 ? dRange[iP] / masses[ptMap[iP]]
-                                                                 : 0.0);
-                                 }
-                             });
+            vtkSMPTools::For(
+                0,
+                ds->GetNumberOfPoints(),
+                [&dRange, &masses, &ptMap](vtkIdType begin, vtkIdType end) {
+                    for (vtkIdType iP = begin; iP < end; ++iP) {
+                        if (ptMap[iP] < 0) {
+                            continue;
+                        }
+                        dRange[iP] = (masses[ptMap[iP]] != 0 ? dRange[iP] / masses[ptMap[iP]] : 0.0);
+                    }
+                }
+            );
         }
         return density;
     }
@@ -331,8 +346,10 @@ struct WeighingStrategyFactory
             case vtkCleanUnstructuredGrid::SPATIAL_DENSITY:
                 return std::make_shared<SpatialDensityStrategy>();
             default:
-                vtkGenericWarningMacro("Incorrect weighing strategy type passed to factory. "
-                                       "defaulting to FIRST_POINT.");
+                vtkGenericWarningMacro(
+                    "Incorrect weighing strategy type passed to factory. "
+                    "defaulting to FIRST_POINT."
+                );
                 return std::make_shared<FirstPointStrategy>();
         }
     }
@@ -341,10 +358,12 @@ struct WeighingStrategyFactory
 struct WeighingWorklet
 {
     template<typename ArrayTypeIn, typename ArrayTypeOut>
-    void operator()(ArrayTypeIn* inArray,
-                    ArrayTypeOut* outArray,
-                    vtkDoubleArray* weights,
-                    const std::vector<vtkIdType>& ptMap)
+    void operator()(
+        ArrayTypeIn* inArray,
+        ArrayTypeOut* outArray,
+        vtkDoubleArray* weights,
+        const std::vector<vtkIdType>& ptMap
+    )
     {
         outArray->Fill(0);
         auto inRange = vtk::DataArrayTupleRange(inArray);
@@ -370,10 +389,12 @@ struct WeighingWorklet
 };
 
 template<>
-void WeighingWorklet::operator()(vtkBitArray* inArray,
-                                 vtkBitArray* outArray,
-                                 vtkDoubleArray* vtkNotUsed(weights),
-                                 const std::vector<vtkIdType>& ptMap)
+void WeighingWorklet::operator()(
+    vtkBitArray* inArray,
+    vtkBitArray* outArray,
+    vtkDoubleArray* vtkNotUsed(weights),
+    const std::vector<vtkIdType>& ptMap
+)
 {
     outArray->Fill(0);
     for (vtkIdType iP = 0; iP < inArray->GetNumberOfValues(); ++iP) {
@@ -385,10 +406,12 @@ void WeighingWorklet::operator()(vtkBitArray* inArray,
 }
 
 template<>
-void WeighingWorklet::operator()(vtkStringArray* inArray,
-                                 vtkStringArray* outArray,
-                                 vtkDoubleArray* vtkNotUsed(weights),
-                                 const std::vector<vtkIdType>& ptMap)
+void WeighingWorklet::operator()(
+    vtkStringArray* inArray,
+    vtkStringArray* outArray,
+    vtkDoubleArray* vtkNotUsed(weights),
+    const std::vector<vtkIdType>& ptMap
+)
 {
     for (vtkIdType iP = 0; iP < inArray->GetNumberOfValues(); ++iP) {
         if (ptMap[iP] < 0) {
@@ -399,10 +422,12 @@ void WeighingWorklet::operator()(vtkStringArray* inArray,
 }
 
 template<>
-void WeighingWorklet::operator()(vtkAbstractArray* inArray,
-                                 vtkAbstractArray* outArray,
-                                 vtkDoubleArray* vtkNotUsed(weights),
-                                 const std::vector<vtkIdType>& ptMap)
+void WeighingWorklet::operator()(
+    vtkAbstractArray* inArray,
+    vtkAbstractArray* outArray,
+    vtkDoubleArray* vtkNotUsed(weights),
+    const std::vector<vtkIdType>& ptMap
+)
 {
     for (vtkIdType iP = 0; iP < inArray->GetNumberOfTuples(); ++iP) {
         if (ptMap[iP] < 0) {
@@ -412,10 +437,12 @@ void WeighingWorklet::operator()(vtkAbstractArray* inArray,
     }
 }
 
-void WeightAttributes(vtkPointData* inPD,
-                      vtkPointData* outPD,
-                      vtkDoubleArray* weights,
-                      const std::vector<vtkIdType>& ptMap)
+void WeightAttributes(
+    vtkPointData* inPD,
+    vtkPointData* outPD,
+    vtkDoubleArray* weights,
+    const std::vector<vtkIdType>& ptMap
+)
 {
     // better here to use a Dispatch2BySameArrayType, but that doesn't exist
     using Dispatcher = vtkArrayDispatch::Dispatch2BySameValueType<vtkArrayDispatch::AllTypes>;
@@ -439,9 +466,10 @@ void WeightAttributes(vtkPointData* inPD,
             if (inStrArr) {
                 auto outStrArr = vtkStringArray::SafeDownCast(outAbsArr);
                 if (!outStrArr) {
-                    vtkGenericWarningMacro("Output array "
-                                           << inStrArr->GetName()
-                                           << " is not the same type as input string array.");
+                    vtkGenericWarningMacro(
+                        "Output array " << inStrArr->GetName()
+                                        << " is not the same type as input string array."
+                    );
                     continue;
                 }
                 worker(inStrArr, outStrArr, weights, ptMap);
@@ -452,8 +480,9 @@ void WeightAttributes(vtkPointData* inPD,
         }
         auto outArr = outPD->GetArray(inArr->GetName());
         if (!outArr) {
-            vtkGenericWarningMacro("Output array " << inArr->GetName()
-                                                   << " is nullptr or not a vtkDataArray.");
+            vtkGenericWarningMacro(
+                "Output array " << inArr->GetName() << " is nullptr or not a vtkDataArray."
+            );
             continue;
         }
         if (!Dispatcher::Execute(inArr, outArr, worker, weights, ptMap)) {
@@ -499,16 +528,19 @@ void vtkCleanUnstructuredGrid::PrintSelf(ostream& os, vtkIndent indent)
 }
 
 //----------------------------------------------------------------------------
-int vtkCleanUnstructuredGrid::RequestData(vtkInformation* vtkNotUsed(request),
-                                          vtkInformationVector** inputVector,
-                                          vtkInformationVector* outputVector)
+int vtkCleanUnstructuredGrid::RequestData(
+    vtkInformation* vtkNotUsed(request),
+    vtkInformationVector** inputVector,
+    vtkInformationVector* outputVector
+)
 {
     vtkInformation* inInfo = inputVector[0]->GetInformationObject(0);
     vtkInformation* outInfo = outputVector->GetInformationObject(0);
 
     vtkDataSet* input = vtkDataSet::SafeDownCast(inInfo->Get(vtkDataObject::DATA_OBJECT()));
-    vtkUnstructuredGrid* output =
-        vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+    vtkUnstructuredGrid* output = vtkUnstructuredGrid::SafeDownCast(
+        outInfo->Get(vtkDataObject::DATA_OBJECT())
+    );
 
     if (input->GetNumberOfCells() == 0) {
         // set up a ugrid with same data arrays as input, but

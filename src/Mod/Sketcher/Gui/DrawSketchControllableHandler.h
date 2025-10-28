@@ -40,11 +40,11 @@ namespace SketcherGui
  * controlling entities such as widgets and on-screen controls.
  */
 template<typename ControllerT>
-class DrawSketchControllableHandler
-    : public DrawSketchDefaultHandler<typename ControllerT::HandlerType,
-                                      typename ControllerT::SelectModeType,
-                                      ControllerT::AutoConstraintInitialSize,
-                                      typename ControllerT::ContructionMethodType>
+class DrawSketchControllableHandler: public DrawSketchDefaultHandler<
+                                         typename ControllerT::HandlerType,
+                                         typename ControllerT::SelectModeType,
+                                         ControllerT::AutoConstraintInitialSize,
+                                         typename ControllerT::ContructionMethodType>
 {
     /** @name Meta-programming definitions and members */
     //@{
@@ -55,10 +55,8 @@ class DrawSketchControllableHandler
 
     /** @name Convenience definitions */
     //@{
-    using DSDefaultHandler = DrawSketchDefaultHandler<HandlerType,
-                                                      SelectModeType,
-                                                      ControllerT::AutoConstraintInitialSize,
-                                                      ConstructionMethodType>;
+    using DSDefaultHandler
+        = DrawSketchDefaultHandler<HandlerType, SelectModeType, ControllerT::AutoConstraintInitialSize, ConstructionMethodType>;
 
     using ConstructionMachine = ConstructionMethodMachine<ConstructionMethodType>;
     //@}
@@ -71,7 +69,8 @@ class DrawSketchControllableHandler
 
 public:
     DrawSketchControllableHandler(
-        ConstructionMethodType constructionmethod = static_cast<ConstructionMethodType>(0))
+        ConstructionMethodType constructionmethod = static_cast<ConstructionMethodType>(0)
+    )
         : DSDefaultHandler(constructionmethod)
         , toolWidgetManager(static_cast<HandlerType*>(this))
     {}

@@ -154,10 +154,12 @@ public:
      * @param overlayparameters: Parameters for controlling the overlay
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeInformationOverlayCoinConverter(ViewProviderSketch& vp,
-                                            SoGroup* infogroup,
-                                            OverlayParameters& overlayparameters,
-                                            DrawingParameters& drawingparameters);
+    EditModeInformationOverlayCoinConverter(
+        ViewProviderSketch& vp,
+        SoGroup* infogroup,
+        OverlayParameters& overlayparameters,
+        DrawingParameters& drawingparameters
+    );
 
     /**
      * extracts information from the geometry and converts it into an information overlay in the

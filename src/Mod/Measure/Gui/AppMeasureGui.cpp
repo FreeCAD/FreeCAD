@@ -104,7 +104,8 @@ PyMOD_INIT_FUNC(MeasureGui)
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(
-        QT_TRANSLATE_NOOP("QObject", "Measure"));
+        QT_TRANSLATE_NOOP("QObject", "Measure")
+    );
 
     //    Q_INIT_RESOURCE(Measure);
 

@@ -49,10 +49,7 @@ void createPlacement(SoSeparator* sep, const SbVec3f& base, const SbRotation& r)
     sep->addChild(rot);
 }
 
-void updatePlacement(const SoSeparator* sep,
-                     const int idx,
-                     const SbVec3f& base,
-                     const SbRotation& r)
+void updatePlacement(const SoSeparator* sep, const int idx, const SbVec3f& base, const SbRotation& r)
 {
     SoTranslation* trans = static_cast<SoTranslation*>(sep->getChild(idx));
     trans->translation.setValue(base);
@@ -130,11 +127,7 @@ SoSeparator* createCube(const double width, const double length, const double he
     return sep;
 }
 
-void updateCube(const SoNode* node,
-                const int idx,
-                const double width,
-                const double length,
-                const double height)
+void updateCube(const SoNode* node, const int idx, const double width, const double length, const double height)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     SoCube* cube = static_cast<SoCube*>(sep->getChild(idx));
@@ -161,10 +154,12 @@ void updateArrow(const SoNode* node, const int idx, const double length, const d
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     updateCone(sep, idx, radius, radius / 2);
-    updatePlacement(sep,
-                    idx + CONE_CHILDREN,
-                    SbVec3f(0, -radius / 2 - (length - radius) / 2, 0),
-                    SbRotation());
+    updatePlacement(
+        sep,
+        idx + CONE_CHILDREN,
+        SbVec3f(0, -radius / 2 - (length - radius) / 2, 0),
+        SbRotation()
+    );
     updateCylinder(sep, idx + CONE_CHILDREN + PLACEMENT_CHILDREN, length - radius, radius / 5);
 }
 
@@ -174,7 +169,8 @@ void createFixed(SoSeparator* sep, const double height, const double width, cons
     createPlacement(
         sep,
         SbVec3f(0, -(height - width / 4) / 2 - width / 8 - (gap ? 1.0 : 0.1) * width / 8, 0),
-        SbRotation());
+        SbRotation()
+    );
     createCube(sep, width, width, width / 4);
 }
 
@@ -185,11 +181,7 @@ SoSeparator* createFixed(const double height, const double width, const bool gap
     return sep;
 }
 
-void updateFixed(const SoNode* node,
-                 const int idx,
-                 const double height,
-                 const double width,
-                 const bool gap)
+void updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap)
 {
     const SoSeparator* sep = static_cast<const SoSeparator*>(node);
     updateCone(sep, idx, height - width / 4, height - width / 4);
@@ -197,7 +189,8 @@ void updateFixed(const SoNode* node,
         sep,
         idx + CONE_CHILDREN,
         SbVec3f(0, -(height - width / 4) / 2 - width / 8 - (gap ? 1.0 : 0.0) * width / 8, 0),
-        SbRotation());
+        SbRotation()
+    );
     updateCube(sep, idx + CONE_CHILDREN + PLACEMENT_CHILDREN, width, width, width / 4);
 }
 

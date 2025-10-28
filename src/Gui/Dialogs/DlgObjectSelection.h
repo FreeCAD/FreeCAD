@@ -32,13 +32,14 @@ class QCheckBox;
 class QTreeWidgetItem;
 class QTreeWidget;
 
-namespace Gui {
+namespace Gui
+{
 
 class Ui_DlgObjectSelection;
 
 /** Dialog for object dependency selection
  */
-class GuiExport DlgObjectSelection : public QDialog
+class GuiExport DlgObjectSelection: public QDialog
 {
     Q_OBJECT
 
@@ -52,8 +53,11 @@ public:
      * @param parent: optional parent widget
      * @param fl: optional window flags
      */
-    DlgObjectSelection(const std::vector<App::DocumentObject*> &objs,
-            QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgObjectSelection(
+        const std::vector<App::DocumentObject*>& objs,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
 
     /** Constructor
      *
@@ -66,15 +70,19 @@ public:
      * @param parent: optional parent widget
      * @param fl: optional window flags
      */
-    DlgObjectSelection(const std::vector<App::DocumentObject*> &objs,
-                       const std::vector<App::DocumentObject*> &excludes,
-            QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgObjectSelection(
+        const std::vector<App::DocumentObject*>& objs,
+        const std::vector<App::DocumentObject*>& excludes,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
 
     /// Destructor
     ~DlgObjectSelection() override;
 
     /// Options for getSelections()
-    enum class SelectionOptions {
+    enum class SelectionOptions
+    {
         /// Invert the selection, i.e. return the unselected objects
         Invert = 1,
         /// Sort the returned object in depending order
@@ -86,35 +94,39 @@ public:
     std::vector<App::DocumentObject*> getSelections(SelectionOptions options = SelectionOptions()) const;
 
     /// Add a user defined checkbox at the bottom of the dialog
-    void addCheckBox(QCheckBox *box);
+    void addCheckBox(QCheckBox* box);
 
     /// Override the prompt message
-    void setMessage(const QString &);
+    void setMessage(const QString&);
 
     void accept() override;
     void reject() override;
 
 private Q_SLOTS:
-    void onDepItemChanged(QTreeWidgetItem * item, int);
-    void onObjItemChanged(QTreeWidgetItem * item, int);
+    void onDepItemChanged(QTreeWidgetItem* item, int);
+    void onObjItemChanged(QTreeWidgetItem* item, int);
     void onItemSelectionChanged();
     void checkItemChanged();
     void onAutoDeps(bool);
-    void onItemExpanded(QTreeWidgetItem *item);
+    void onItemExpanded(QTreeWidgetItem* item);
     void onUseOriginalsBtnClicked();
     void onShowDeps();
 
 private:
-    QTreeWidgetItem *getItem(App::DocumentObject *obj,
-                             std::vector<QTreeWidgetItem*> **items = nullptr,
-                             QTreeWidgetItem *parent = nullptr);
+    QTreeWidgetItem* getItem(
+        App::DocumentObject* obj,
+        std::vector<QTreeWidgetItem*>** items = nullptr,
+        QTreeWidgetItem* parent = nullptr
+    );
 
-    QTreeWidgetItem *createDepItem(QTreeWidget *parent, App::DocumentObject *obj);
+    QTreeWidgetItem* createDepItem(QTreeWidget* parent, App::DocumentObject* obj);
 
-    void init(const std::vector<App::DocumentObject*> &objs,
-              const std::vector<App::DocumentObject*> &excludes);
+    void init(
+        const std::vector<App::DocumentObject*>& objs,
+        const std::vector<App::DocumentObject*>& excludes
+    );
 
-    void setItemState(App::DocumentObject *obj, Qt::CheckState state, bool forced = false);
+    void setItemState(App::DocumentObject* obj, Qt::CheckState state, bool forced = false);
     void updateAllItemState();
 
 private:
@@ -126,7 +138,7 @@ private:
     std::map<App::SubObjectT, QTreeWidgetItem*> depMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
     std::map<App::SubObjectT, Qt::CheckState> itemChanged;
-    QTreeWidgetItem *allItem = nullptr;
+    QTreeWidgetItem* allItem = nullptr;
 
     QPushButton* useOriginalsBtn;
     bool returnOriginals = false;
@@ -135,9 +147,8 @@ private:
     ParameterGrp::handle hGrp;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DlgObjectSelection::SelectionOptions);
 
-#endif // GUI_DLGOBJECTSELECTION_H
-
+#endif  // GUI_DLGOBJECTSELECTION_H

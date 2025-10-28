@@ -31,7 +31,8 @@
 #include "ViewProviderGeoFeatureGroup.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
 class Document;
 class ViewProviderDatum;
@@ -47,7 +48,7 @@ enum class DatumElement
 
 using DatumElements = Base::Flags<DatumElement>;
 
-class GuiExport ViewProviderCoordinateSystem : public ViewProviderGeoFeatureGroup
+class GuiExport ViewProviderCoordinateSystem: public ViewProviderGeoFeatureGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderCoordinateSystem);
 
@@ -62,7 +63,10 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     std::vector<App::DocumentObject*> claimChildren3D() const override;
 
-    SoGroup* getChildRoot() const override {return pcGroupChildren;}
+    SoGroup* getChildRoot() const override
+    {
+        return pcGroupChildren;
+    }
 
     void attach(App::DocumentObject* pcObject) override;
     std::vector<std::string> getDisplayModes() const override;
@@ -74,11 +78,11 @@ public:
      */
     ///@{
     /// Set temporary visibility of some of origin's objects e.g. while rotating or mirroring
-    void setTemporaryVisibility (DatumElements elements);
+    void setTemporaryVisibility(DatumElements elements);
     /// Returns true if the origin in temporary visibility mode
-    bool isTemporaryVisibility ();
+    bool isTemporaryVisibility();
     /// Reset the visibility
-    void resetTemporaryVisibility ();
+    void resetTemporaryVisibility();
     ///@}
 
     void setTemporaryScale(double factor);
@@ -86,7 +90,8 @@ public:
 
     void setPlaneLabelVisibility(bool val);
 
-    bool canDragObjects() const override {
+    bool canDragObjects() const override
+    {
         return false;
     }
 
@@ -100,21 +105,20 @@ public:
     static const uint32_t defaultColor = 0x3296faff;
 
 protected:
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 private:
     using DatumObjectFunc = std::function<void(ViewProviderDatum*)>;
     void applyDatumObjects(const DatumObjectFunc& func);
 
 private:
-    SoGroup *pcGroupChildren;
+    SoGroup* pcGroupChildren;
 
     std::map<Gui::ViewProvider*, bool> tempVisMap;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DatumElement)
 
-#endif // GUI_VIEWPROVIDER_ViewProviderOrigin_H
-
+#endif  // GUI_VIEWPROVIDER_ViewProviderOrigin_H

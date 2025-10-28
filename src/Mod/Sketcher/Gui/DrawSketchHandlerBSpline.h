@@ -54,18 +54,18 @@ enum class BSplineConstructionMethod
     Knots,
     End  // Must be the last one
 };
-}
+}  // namespace ConstructionMethods
 
-using DSHBSplineController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerBSpline,
-                                      /*SelectModeT*/ StateMachines::TwoSeekEnd,
-                                      /*PAutoConstraintSize =*/2,
-                                      /*OnViewParametersT =*/OnViewParameters<4, 4>,  // NOLINT
-                                      /*WidgetParametersT =*/WidgetParameters<1, 1>,  // NOLINT
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
-                                      ConstructionMethods::BSplineConstructionMethod,
-                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+using DSHBSplineController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerBSpline,
+    /*SelectModeT*/ StateMachines::TwoSeekEnd,
+    /*PAutoConstraintSize =*/2,
+    /*OnViewParametersT =*/OnViewParameters<4, 4>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<1, 1>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    ConstructionMethods::BSplineConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
 using DSHBSplineControllerBase = DSHBSplineController::ControllerBase;
 
@@ -80,7 +80,8 @@ class DrawSketchHandlerBSpline: public DrawSketchHandlerBSplineBase
 public:
     explicit DrawSketchHandlerBSpline(
         ConstructionMethod constrMethod = ConstructionMethod::ControlPoints,
-        bool periodic = false)
+        bool periodic = false
+    )
         : DrawSketchHandlerBSplineBase(constrMethod)
         , SplineDegree(3)
         , periodic(periodic)
@@ -103,9 +104,7 @@ private:
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
 
-                seekAndRenderAutoConstraint(sugConstraints[0],
-                                            onSketchPos,
-                                            Base::Vector2d(0.f, 0.f));
+                seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, getLastPoint());
@@ -116,9 +115,7 @@ private:
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
 
-                seekAndRenderAutoConstraint(sugConstraints[1],
-                                            onSketchPos,
-                                            Base::Vector2d(0.f, 0.f));
+                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             default:
                 break;
@@ -181,9 +178,7 @@ private:
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
                 // for showing the knots on creation
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             else {
                 int myDegree = 3;
@@ -206,13 +201,11 @@ private:
                     streams.back() << "App.Vector(" << points[i].x << "," << points[i].y << "),";
                     if (multiplicities[i] >= myDegree) {
                         streams.emplace_back();
-                        streams.back()
-                            << "App.Vector(" << points[i].x << "," << points[i].y << "),";
+                        streams.back() << "App.Vector(" << points[i].x << "," << points[i].y << "),";
                     }
                 }
                 // The last point
-                streams.back() << "App.Vector(" << points.back().x << "," << points.back().y
-                               << "),";
+                streams.back() << "App.Vector(" << points.back().x << "," << points.back().y << "),";
 
                 // Note the plural of plurals. Each element is a separate sequence.
                 std::vector<std::string> controlpointses;
@@ -251,9 +244,11 @@ private:
                 Gui::Command::runCommand(Gui::Command::Gui, "_bsps = []");
                 for (auto& controlpoints : controlpointses) {
                     // TODO: variable degrees?
-                    QString cmdstr = QStringLiteral("_bsps.append(Part.BSplineCurve())\n"
-                                                    "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
-                                                    "_bsps[-1].increaseDegree(%3)")
+                    QString cmdstr = QStringLiteral(
+                                         "_bsps.append(Part.BSplineCurve())\n"
+                                         "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
+                                         "_bsps[-1].increaseDegree(%3)"
+                    )
                                          .arg(QString::fromLatin1(controlpoints.c_str()))
                                          .arg(QString::fromLatin1(periodic ? "True" : "False"))
                                          .arg(myDegree);
@@ -261,26 +256,37 @@ private:
                     // Adjust internal knots here (raise multiplicity)
                     // How this contributes to the final B-spline
                     if (controlpoints == controlpointses.front()) {
-                        Gui::Command::runCommand(Gui::Command::Gui,
-                                                 "_finalbsp_poles.extend(_bsps[-1].getPoles())");
-                        Gui::Command::runCommand(Gui::Command::Gui,
-                                                 "_finalbsp_knots.extend(_bsps[-1].getKnots())");
                         Gui::Command::runCommand(
                             Gui::Command::Gui,
-                            "_finalbsp_mults.extend(_bsps[-1].getMultiplicities())");
+                            "_finalbsp_poles.extend(_bsps[-1].getPoles())"
+                        );
+                        Gui::Command::runCommand(
+                            Gui::Command::Gui,
+                            "_finalbsp_knots.extend(_bsps[-1].getKnots())"
+                        );
+                        Gui::Command::runCommand(
+                            Gui::Command::Gui,
+                            "_finalbsp_mults.extend(_bsps[-1].getMultiplicities())"
+                        );
                     }
                     else {
                         Gui::Command::runCommand(
                             Gui::Command::Gui,
-                            "_finalbsp_poles.extend(_bsps[-1].getPoles()[1:])");
-                        Gui::Command::runCommand(Gui::Command::Gui,
-                                                 "_finalbsp_knots.extend([_finalbsp_knots[-1] + i "
-                                                 "for i in _bsps[-1].getKnots()[1:]])");
-                        Gui::Command::runCommand(Gui::Command::Gui,
-                                                 "_finalbsp_mults[-1] = 3");  // FIXME: Hardcoded
+                            "_finalbsp_poles.extend(_bsps[-1].getPoles()[1:])"
+                        );
                         Gui::Command::runCommand(
                             Gui::Command::Gui,
-                            "_finalbsp_mults.extend(_bsps[-1].getMultiplicities()[1:])");
+                            "_finalbsp_knots.extend([_finalbsp_knots[-1] + i "
+                            "for i in _bsps[-1].getKnots()[1:]])"
+                        );
+                        Gui::Command::runCommand(
+                            Gui::Command::Gui,
+                            "_finalbsp_mults[-1] = 3"
+                        );  // FIXME: Hardcoded
+                        Gui::Command::runCommand(
+                            Gui::Command::Gui,
+                            "_finalbsp_mults.extend(_bsps[-1].getMultiplicities()[1:])"
+                        );
                     }
                 }
 
@@ -292,7 +298,8 @@ private:
                     "(_finalbsp_poles,_finalbsp_mults,_finalbsp_knots,%s,%d,None,False),%s)",
                     periodic ? "True" : "False",
                     myDegree,
-                    constructionModeAsBooleanText());
+                    constructionModeAsBooleanText()
+                );
                 currentgeoid++;
 
                 // TODO: Confirm we do not need to delete individual elements
@@ -348,11 +355,13 @@ private:
                         // Change the knot multiplicity here because the user asked and it's not C0
                         // NOTE: The knot number here has to be provided in the OCCT ordering.
                         if (multiplicities[i] > 1 && multiplicities[i] < myDegree) {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                                  currentgeoid,
-                                                  knotNumber + 1,
-                                                  multiplicities[i] - 1);
+                            Gui::cmdAppObjectArgs(
+                                sketchgui->getObject(),
+                                "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                currentgeoid,
+                                knotNumber + 1,
+                                multiplicities[i] - 1
+                            );
                         }
                         knotNumber++;
                     }
@@ -365,17 +374,17 @@ private:
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
                 // for showing the rest of internal geometry on creation
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
 
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception&) {
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline")
+            );
             Gui::Command::abortCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
@@ -532,9 +541,8 @@ private:
                     }
                     else {
                         // The coincidence with first point may be indirect
-                        const auto coincidents =
-                            sketchgui->getSketchObject()->getAllCoincidentPoints(ac.GeoId,
-                                                                                 ac.PosId);
+                        const auto coincidents
+                            = sketchgui->getSketchObject()->getAllCoincidentPoints(ac.GeoId, ac.PosId);
                         if (coincidents.find(geoIds[0]) != coincidents.end()) {
                             isClosed = true;
                         }
@@ -657,9 +665,11 @@ private:
             updateDataAndDrawToPosition(prevCursorPosition);
         }
         catch (const Base::Exception&) {
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Error deleting last pole/knot"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Error deleting last pole/knot")
+            );
             // some commands might have already deleted some constraints/geometries but not
             // others
             Gui::Command::abortCommand();
@@ -708,28 +718,35 @@ private:
                     ? "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)"
                     : "addGeometry(Part.Point(App.Vector(%f,%f,0)),True)",
                 pos.x,
-                pos.y);
+                pos.y
+            );
 
 
             if (constructionMethod() == ConstructionMethod::ControlPoints) {
                 if (firstPoint) {  // First pole defaults to 1.0 weight
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
-                                          geoId,
-                                          1.0);
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                        geoId,
+                        1.0
+                    );
                 }
                 else {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                                          geoIds[0],
-                                          geoId);
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                        geoIds[0],
+                        geoId
+                    );
                 }
             }
         }
         catch (const Base::Exception&) {
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Error adding B-spline pole/knot"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Error adding B-spline pole/knot")
+            );
 
             Gui::Command::abortCommand();
 
@@ -821,12 +838,14 @@ private:
                 mults.resize(vSize + 1, 1);
             }
 
-            auto bSpline = std::make_unique<Part::GeomBSplineCurve>(bsplinePoints3D,
-                                                                    weights,
-                                                                    knots,
-                                                                    mults,
-                                                                    degree,
-                                                                    periodic);
+            auto bSpline = std::make_unique<Part::GeomBSplineCurve>(
+                bsplinePoints3D,
+                weights,
+                knots,
+                mults,
+                degree,
+                periodic
+            );
             bSpline->setPoles(bsplinePoints3D);
             Sketcher::GeometryFacade::setConstruction(bSpline.get(), isConstructionMode());
             ShapeGeometry.emplace_back(std::move(bSpline));
@@ -908,51 +927,62 @@ void DSHBSplineController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setNoticeVisible(true);
         toolWidget->setNoticeText(
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Press F to undo last point."));
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Press F to undo last point.")
+        );
 
         QStringList names = {
             QApplication::translate("Sketcher_CreateBSpline", "From control points"),
-            QApplication::translate("Sketcher_CreateBSpline", "From knots")};
+            QApplication::translate("Sketcher_CreateBSpline", "From knots")
+        };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)"));
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)")
+        );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Create a periodic B-spline."));
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Create a periodic B-spline.")
+        );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->periodic);
 
         if (isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr")
+            );
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 1,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation_Constr"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation_Constr")
+            );
             toolWidget->setCheckboxIcon(
                 WCheckbox::FirstBox,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr")
+            );
         }
         else {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline")
+            );
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 1,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation")
+            );
             toolWidget->setCheckboxIcon(
                 WCheckbox::FirstBox,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline")
+            );
         }
 
         toolWidget->setParameterLabel(
             WParameter::First,
-            QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')"));
+            QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')")
+        );
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
         toolWidget->configureParameterMax(WParameter::First, Geom_BSplineCurve::MaxDegree());
@@ -973,10 +1003,12 @@ void DSHBSplineController::configureToolWidget()
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     onViewParameters[OnViewParameter::Third]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
     onViewParameters[OnViewParameter::Fourth]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 }
 
 template<>
@@ -1112,9 +1144,11 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
 
             double range = (onSketchPos - prevPoint).Angle();
             if (!fourthParam->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fourth,
-                                        Base::toDegrees(range),
-                                        Base::Unit::Angle);
+                setOnViewParameterValue(
+                    OnViewParameter::Fourth,
+                    Base::toDegrees(range),
+                    Base::Unit::Angle
+                );
             }
 
             thirdParam->setPoints(start, end);
@@ -1230,7 +1264,8 @@ void DSHBSplineController::addConstraints()
                     static_cast<int>(pPos),
                     handler->geoIds[i + 1],
                     static_cast<int>(pPos),
-                    handler->distances[i + 1]);
+                    handler->distances[i + 1]
+                );
             }
         }
     };

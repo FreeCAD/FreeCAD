@@ -1,7 +1,6 @@
 from ViewProviderDocumentObject import ViewProviderDocumentObject
 from typing import Any, Final
 
-
 class ViewProviderLink(ViewProviderDocumentObject):
     """
     This is the ViewProviderLink class

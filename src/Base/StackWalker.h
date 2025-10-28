@@ -261,20 +261,20 @@ protected:
     __asm    mov c.Esp, esp                                       \
   } while (0)
 // clang-format on
-#endif
+#   endif
 
-#else
+#  else
 
 // The following is defined for x86 (XP and higher), x64 and IA64:
-#define GET_CURRENT_CONTEXT_STACKWALKER_CODEPLEX(c, contextFlags)                                  \
-    do {                                                                                           \
-        memset(&c, 0, sizeof(CONTEXT));                                                            \
-        c.ContextFlags = contextFlags;                                                             \
-        RtlCaptureContext(&c);                                                                     \
-    } while (0);
-#endif
+#   define GET_CURRENT_CONTEXT_STACKWALKER_CODEPLEX(c, contextFlags) \
+          do { \
+              memset(&c, 0, sizeof(CONTEXT)); \
+              c.ContextFlags = contextFlags; \
+              RtlCaptureContext(&c); \
+          } while (0);
+#  endif
 
-#endif  // defined(_MSC_VER)
+# endif  // defined(_MSC_VER)
 
 #endif  // __STACKWALKER_H__
 // NOLINTEND

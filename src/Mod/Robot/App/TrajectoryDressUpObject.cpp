@@ -30,16 +30,16 @@ using namespace App;
 
 PROPERTY_SOURCE(Robot::TrajectoryDressUpObject, Robot::TrajectoryObject)
 
-const char* TrajectoryDressUpObject::ContTypeEnums[] = {"DontChange",
-                                                        "Continues",
-                                                        "Discontinues",
-                                                        nullptr};
-const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange",
-                                                       "UseOrientation",
-                                                       "AddPosition",
-                                                       "AddOrintation",
-                                                       "AddPositionAndOrientation",
-                                                       nullptr};
+const char* TrajectoryDressUpObject::ContTypeEnums[]
+    = {"DontChange", "Continues", "Discontinues", nullptr};
+const char* TrajectoryDressUpObject::AddTypeEnums[] = {
+    "DontChange",
+    "UseOrientation",
+    "AddPosition",
+    "AddOrintation",
+    "AddPositionAndOrientation",
+    nullptr
+};
 
 TrajectoryDressUpObject::TrajectoryDressUpObject()
 {
@@ -48,27 +48,35 @@ TrajectoryDressUpObject::TrajectoryDressUpObject()
     ADD_PROPERTY_TYPE(Speed, (1000), "TrajectoryDressUp", Prop_None, "Speed to use");
     ADD_PROPERTY_TYPE(UseSpeed, (0), "TrajectoryDressUp", Prop_None, "Switch the speed usage on");
     ADD_PROPERTY_TYPE(Acceleration, (1000), "TrajectoryDressUp", Prop_None, "Acceleration to use");
-    ADD_PROPERTY_TYPE(UseAcceleration,
-                      (0),
-                      "TrajectoryDressUp",
-                      Prop_None,
-                      "Switch the acceleration usage on");
-    ADD_PROPERTY_TYPE(ContType,
-                      ((long)0),
-                      "TrajectoryDressUp",
-                      Prop_None,
-                      "Define the dress up of continuity");
+    ADD_PROPERTY_TYPE(
+        UseAcceleration,
+        (0),
+        "TrajectoryDressUp",
+        Prop_None,
+        "Switch the acceleration usage on"
+    );
+    ADD_PROPERTY_TYPE(
+        ContType,
+        ((long)0),
+        "TrajectoryDressUp",
+        Prop_None,
+        "Define the dress up of continuity"
+    );
     ContType.setEnums(ContTypeEnums);
-    ADD_PROPERTY_TYPE(PosAdd,
-                      (Base::Placement()),
-                      "TrajectoryDressUp",
-                      Prop_None,
-                      "Position & Orientation to use");
-    ADD_PROPERTY_TYPE(AddType,
-                      ((long)0),
-                      "TrajectoryDressUp",
-                      Prop_None,
-                      "How to change the Position & Orientation");
+    ADD_PROPERTY_TYPE(
+        PosAdd,
+        (Base::Placement()),
+        "TrajectoryDressUp",
+        Prop_None,
+        "Position & Orientation to use"
+    );
+    ADD_PROPERTY_TYPE(
+        AddType,
+        ((long)0),
+        "TrajectoryDressUp",
+        Prop_None,
+        "How to change the Position & Orientation"
+    );
     AddType.setEnums(AddTypeEnums);
 }
 
@@ -84,8 +92,8 @@ App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
         return new App::DocumentObjectExecReturn("Linked object is not a Trajectory object");
     }
 
-    const std::vector<Waypoint*>& wps =
-        static_cast<Robot::TrajectoryObject*>(link)->Trajectory.getValue().getWaypoints();
+    const std::vector<Waypoint*>& wps
+        = static_cast<Robot::TrajectoryObject*>(link)->Trajectory.getValue().getWaypoints();
     for (auto wp : wps) {
         Waypoint wpt = *wp;
         if (UseSpeed.getValue()) {

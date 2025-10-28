@@ -58,8 +58,7 @@ EditTableView::EditTableView(QWidget* parent)
 
 void EditTableView::keyPressEvent(QKeyEvent* event)
 {
-    if ((event->matches(QKeySequence::Delete) || event->matches(QKeySequence::Backspace))
-        && model()) {
+    if ((event->matches(QKeySequence::Delete) || event->matches(QKeySequence::Backspace)) && model()) {
         removeOne();
     }
     else {
@@ -168,14 +167,18 @@ void AutoSaver::saveIfNecessary()
 NetworkAccessManager::NetworkAccessManager(QObject* parent)
     : QNetworkAccessManager(parent)
 {
-    connect(this,
-            &QNetworkAccessManager::authenticationRequired,
-            this,
-            &NetworkAccessManager::authenticationRequired);
-    connect(this,
-            &QNetworkAccessManager::proxyAuthenticationRequired,
-            this,
-            &NetworkAccessManager::proxyAuthenticationRequired);
+    connect(
+        this,
+        &QNetworkAccessManager::authenticationRequired,
+        this,
+        &NetworkAccessManager::authenticationRequired
+    );
+    connect(
+        this,
+        &QNetworkAccessManager::proxyAuthenticationRequired,
+        this,
+        &NetworkAccessManager::proxyAuthenticationRequired
+    );
 
     auto diskCache = new QNetworkDiskCache(this);
     QString location = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -195,8 +198,10 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply* reply, QAuthent
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
-    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped(),
-                                    QString(reply->url().toString()).toHtmlEscaped());
+    introMessage = introMessage.arg(
+        QString(reply->url().toString()).toHtmlEscaped(),
+        QString(reply->url().toString()).toHtmlEscaped()
+    );
     passwordDialog.siteDescription->setText(introMessage);
     passwordDialog.siteDescription->setWordWrap(true);
 
@@ -206,8 +211,7 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply* reply, QAuthent
     }
 }
 
-void NetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy& proxy,
-                                                       QAuthenticator* auth)
+void NetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy& proxy, QAuthenticator* auth)
 {
     QWidget* mainWindow = Gui::getMainWindow();
 
@@ -308,8 +312,8 @@ void DownloadItem::getFileName()
     QSettings settings;
     settings.beginGroup(QLatin1String("downloadmanager"));
     QString defaultLocation = getDownloadDirectory();
-    QString downloadDirectory =
-        settings.value(QLatin1String("downloadDirectory"), defaultLocation).toString();
+    QString downloadDirectory
+        = settings.value(QLatin1String("downloadDirectory"), defaultLocation).toString();
     if (!downloadDirectory.isEmpty()) {
         downloadDirectory += QLatin1Char('/');
     }
@@ -321,7 +325,8 @@ void DownloadItem::getFileName()
         if (fileName.isEmpty()) {
             m_reply->close();
             fileNameLabel->setText(
-                tr("Download canceled: %1").arg(QFileInfo(defaultFileName).fileName()));
+                tr("Download canceled: %1").arg(QFileInfo(defaultFileName).fileName())
+            );
             return;
         }
     }
@@ -385,9 +390,11 @@ void DownloadItem::open()
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-                Gui::Application::Instance->importFrom(it.key().toUtf8(),
-                                                       doc->getDocument()->getName(),
-                                                       it.value().toLatin1());
+                Gui::Application::Instance->importFrom(
+                    it.key().toUtf8(),
+                    doc->getDocument()->getName(),
+                    it.value().toLatin1()
+                );
             }
         }
         else {
@@ -421,8 +428,9 @@ void DownloadItem::tryAgain()
     stopButton->setVisible(true);
     progressBar->setVisible(true);
 
-    QNetworkReply* r =
-        DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(m_url));
+    QNetworkReply* r = DownloadManager::getInstance()->networkAccessManager()->get(
+        QNetworkRequest(m_url)
+    );
     if (m_reply) {
         m_reply->deleteLater();
     }
@@ -453,8 +461,7 @@ void DownloadItem::downloadReadyRead()
             getFileName();
         }
         if (!m_output.open(QIODevice::WriteOnly)) {
-            downloadInfoLabel->setText(
-                tr("Error opening saved file: %1").arg(m_output.errorString()));
+            downloadInfoLabel->setText(tr("Error opening saved file: %1").arg(m_output.errorString()));
             stopButton->click();
             Q_EMIT statusChanged();
             return;
@@ -530,20 +537,13 @@ void DownloadItem::metaDataChanged()
 
             disconnect(m_reply, &QNetworkReply::readyRead, this, &DownloadItem::downloadReadyRead);
             disconnect(m_reply, &QNetworkReply::errorOccurred, this, &DownloadItem::error);
-            disconnect(m_reply,
-                       &QNetworkReply::downloadProgress,
-                       this,
-                       &DownloadItem::downloadProgress);
-            disconnect(m_reply,
-                       &QNetworkReply::metaDataChanged,
-                       this,
-                       &DownloadItem::metaDataChanged);
+            disconnect(m_reply, &QNetworkReply::downloadProgress, this, &DownloadItem::downloadProgress);
+            disconnect(m_reply, &QNetworkReply::metaDataChanged, this, &DownloadItem::metaDataChanged);
             disconnect(m_reply, &QNetworkReply::finished, this, &DownloadItem::finished);
             m_reply->close();
             m_reply->deleteLater();
 
-            m_reply =
-                DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(url));
+            m_reply = DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(url));
             init();
         }
     }
@@ -590,18 +590,19 @@ void DownloadItem::updateInfoLabel()
             remaining = tr("- %4 %5 remaining").arg(timeRemaining).arg(timeRemainingString);
         }
         info = QString(tr("%1 of %2 (%3/sec) %4"))
-                   .arg(dataString(m_bytesReceived),
-                        bytesTotal == 0 ? tr("?") : dataString(bytesTotal),
-                        dataString((int)speed),
-                        remaining);
+                   .arg(
+                       dataString(m_bytesReceived),
+                       bytesTotal == 0 ? tr("?") : dataString(bytesTotal),
+                       dataString((int)speed),
+                       remaining
+                   );
     }
     else {
         if (m_bytesReceived == bytesTotal) {
             info = dataString(m_output.size());
         }
         else {
-            info =
-                tr("%1 of %2 - Stopped").arg(dataString(m_bytesReceived), dataString(bytesTotal));
+            info = tr("%1 of %2 - Stopped").arg(dataString(m_bytesReceived), dataString(bytesTotal));
         }
     }
     downloadInfoLabel->setText(info);

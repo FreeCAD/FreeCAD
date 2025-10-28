@@ -43,8 +43,8 @@ public:
     Filling();
 
     // Properties of Curves
-    App::PropertyLinkSubList
-        BoundaryEdges;  // Boundary Edges (C0 is required for edges without a corresponding face)
+    App::PropertyLinkSubList BoundaryEdges;  // Boundary Edges (C0 is required for edges without a
+                                             // corresponding face)
     App::PropertyStringList BoundaryFaces;   // Boundary Faces (C0, G1 and G2 are possible)
     App::PropertyIntegerList BoundaryOrder;  // Order of constraint on border faces
     App::PropertyLinkSubList UnboundEdges;   // Unbound constraint edges (C0 is required for edges
@@ -78,14 +78,18 @@ public:
     }
 
 private:
-    void addConstraints(BRepFill_Filling& builder,
-                        const App::PropertyLinkSubList& edges,
-                        const App::PropertyStringList& faces,
-                        const App::PropertyIntegerList& orders,
-                        Standard_Boolean bnd);
-    void addConstraints(BRepFill_Filling& builder,
-                        const App::PropertyLinkSubList& faces,
-                        const App::PropertyIntegerList& orders);
+    void addConstraints(
+        BRepFill_Filling& builder,
+        const App::PropertyLinkSubList& edges,
+        const App::PropertyStringList& faces,
+        const App::PropertyIntegerList& orders,
+        Standard_Boolean bnd
+    );
+    void addConstraints(
+        BRepFill_Filling& builder,
+        const App::PropertyLinkSubList& faces,
+        const App::PropertyIntegerList& orders
+    );
     void addConstraints(BRepFill_Filling& builder, const App::PropertyLinkSubList& points);
 };
 

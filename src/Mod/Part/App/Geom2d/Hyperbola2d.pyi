@@ -8,7 +8,7 @@ from typing import Final, overload
     PythonName="Part.Geom2d.Hyperbola2d",
     FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Include="Mod/Part/App/Geometry2d.h",
-    Constructor=True
+    Constructor=True,
 )
 class Hyperbola2d(Conic2d):
     """

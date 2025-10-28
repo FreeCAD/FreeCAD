@@ -34,7 +34,8 @@ class SoGroup;
 class SoSeparator;
 class SbBox3f;
 class SoGetBoundingBoxAction;
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /** ViewProvider of the Body feature
  *  This class manages the visual appearance of the features in the
@@ -42,7 +43,8 @@ namespace PartDesignGui {
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
-class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, public Gui::ViewProviderOriginGroupExtension
+class PartDesignGuiExport ViewProviderBody: public PartGui::ViewProviderPart,
+                                            public Gui::ViewProviderOriginGroupExtension
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody);
@@ -55,29 +57,29 @@ public:
 
     App::PropertyEnumeration DisplayModeBody;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool isActiveBody();
     void toggleActiveBody();
 
-    std::vector< std::string > getDisplayModes() const override;
+    std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     void setOverrideMode(const std::string& mode) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// Update the children's highlighting when triggered
     void updateData(const App::Property* prop) override;
-    ///unify children visuals
+    /// unify children visuals
     void onChanged(const App::Property* prop) override;
 
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only
      */
-    SbBox3f getBoundBox ();
+    SbBox3f getBoundBox();
 
     PartDesign::Feature* getShownFeature() const;
     ViewProvider* getShownViewProvider() const;
@@ -90,7 +92,10 @@ public:
     void dropObject(App::DocumentObject*) override;
     bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
     /* Check whether the object accept reordering of its children during drop.*/
-    bool acceptReorderingObjects() const override { return true; };
+    bool acceptReorderingObjects() const override
+    {
+        return true;
+    };
 
 protected:
     /// Copy over all visual properties to the child features
@@ -103,9 +108,7 @@ private:
 };
 
 
+}  // namespace PartDesignGui
 
-} // namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderHole_H
-
+#endif  // PARTGUI_ViewProviderHole_H

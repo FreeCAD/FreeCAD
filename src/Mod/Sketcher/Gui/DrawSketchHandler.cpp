@@ -48,22 +48,25 @@ using namespace Sketcher;
 
 /************************************ Attorney *******************************************/
 
-inline void
-ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(ViewProviderSketch& vp,
-                                                                        bool enabled /*= true*/)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::
+    setConstraintSelectability(ViewProviderSketch& vp, bool enabled /*= true*/)
 {
     vp.setConstraintSelectability(enabled);
 }
 
-inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch& vp,
-                                                                         const Base::Vector2d& Pos,
-                                                                         const SbString& txt)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(
+    ViewProviderSketch& vp,
+    const Base::Vector2d& Pos,
+    const SbString& txt
+)
 {
     vp.setPositionText(Pos, txt);
 }
 
-inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch& vp,
-                                                                         const Base::Vector2d& Pos)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(
+    ViewProviderSketch& vp,
+    const Base::Vector2d& Pos
+)
 {
     vp.setPositionText(Pos);
 }
@@ -73,16 +76,18 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(ViewP
     vp.resetPositionText();
 }
 
-inline void
-ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSketch& vp,
-                                                      const std::vector<Base::Vector2d>& EditCurve)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(
+    ViewProviderSketch& vp,
+    const std::vector<Base::Vector2d>& EditCurve
+)
 {
     vp.drawEdit(EditCurve);
 }
 
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(
     ViewProviderSketch& vp,
-    const std::list<std::vector<Base::Vector2d>>& list)
+    const std::list<std::vector<Base::Vector2d>>& list
+)
 {
     vp.drawEdit(list);
 }
@@ -90,20 +95,21 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(
     ViewProviderSketch& vp,
     const std::vector<Base::Vector2d>& EditMarkers,
-    unsigned int augmentationlevel)
+    unsigned int augmentationlevel
+)
 {
     vp.drawEditMarkers(EditMarkers, augmentationlevel);
 }
 
-inline void ViewProviderSketchDrawSketchHandlerAttorney::setAxisPickStyle(ViewProviderSketch& vp,
-                                                                          bool on)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setAxisPickStyle(ViewProviderSketch& vp, bool on)
 {
     vp.setAxisPickStyle(on);
 }
 
-inline void
-ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(ViewProviderSketch& vp,
-                                                                     Base::Vector2d point)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(
+    ViewProviderSketch& vp,
+    Base::Vector2d point
+)
 {
     vp.moveCursorToSketchPoint(point);
 }
@@ -113,49 +119,52 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(ViewProvide
     vp.ensureFocus();
 }
 
-inline void ViewProviderSketchDrawSketchHandlerAttorney::preselectAtPoint(ViewProviderSketch& vp,
-                                                                          Base::Vector2d point)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::preselectAtPoint(
+    ViewProviderSketch& vp,
+    Base::Vector2d point
+)
 {
     vp.preselectAtPoint(point);
 }
 
-inline int
-ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(const ViewProviderSketch& vp)
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(const ViewProviderSketch& vp)
 {
     return vp.getPreselectPoint();
 }
 
-inline int
-ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(const ViewProviderSketch& vp)
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(const ViewProviderSketch& vp)
 {
     return vp.getPreselectCurve();
 }
 
-inline int
-ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const ViewProviderSketch& vp)
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const ViewProviderSketch& vp)
 {
     return vp.getPreselectCross();
 }
 
-inline void
-ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(ViewProviderSketch& vp,
-                                                              bool enable,
-                                                              Base::Vector2d referencePoint)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(
+    ViewProviderSketch& vp,
+    bool enable,
+    Base::Vector2d referencePoint
+)
 {
     vp.setAngleSnapping(enable, referencePoint);
 }
 
-inline void ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(ViewProviderSketch& vp,
-                                                                        int constNum,
-                                                                        const Base::Vector2d& toPos,
-                                                                        OffsetMode offset)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(
+    ViewProviderSketch& vp,
+    int constNum,
+    const Base::Vector2d& toPos,
+    OffsetMode offset
+)
 {
     vp.moveConstraint(constNum, toPos, offset);
 }
 
-inline void
-ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(const ViewProviderSketch& vp,
-                                                               const std::string& toolname)
+inline void ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(
+    const ViewProviderSketch& vp,
+    const std::string& toolname
+)
 {
     vp.signalToolChanged(toolname);
 }
@@ -166,14 +175,13 @@ CurveConverter::CurveConverter()
 {
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View");
+            "User parameter:BaseApp/Preferences/View"
+        );
         hGrp->Attach(this);
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
-        Base::Console().developerError("CurveConverter",
-                                       "Malformed parameter string: %s\n",
-                                       e.what());
+        Base::Console().developerError("CurveConverter", "Malformed parameter string: %s\n", e.what());
     }
 
     updateCurvedEdgeCountSegmentsParameter();
@@ -209,8 +217,8 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
 
         auto geo = static_cast<const Part::GeomConic*>(geometry);
 
-        double segment =
-            (geo->getLastParameter() - geo->getFirstParameter()) / curvedEdgeCountSegments;
+        double segment = (geo->getLastParameter() - geo->getFirstParameter())
+            / curvedEdgeCountSegments;
 
         for (int i = 0; i < curvedEdgeCountSegments; i++) {
             emplaceasvector2d(geo->value(geo->getFirstParameter() + i * segment));
@@ -223,8 +231,9 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
     return vector2d;
 }
 
-std::list<std::vector<Base::Vector2d>>
-CurveConverter::toVector2DList(const std::vector<Part::Geometry*>& geometries)
+std::list<std::vector<Base::Vector2d>> CurveConverter::toVector2DList(
+    const std::vector<Part::Geometry*>& geometries
+)
 {
     std::list<std::vector<Base::Vector2d>> list;
 
@@ -237,8 +246,9 @@ CurveConverter::toVector2DList(const std::vector<Part::Geometry*>& geometries)
 
 void CurveConverter::updateCurvedEdgeCountSegmentsParameter()
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
 
     // value cannot be smaller than 6
@@ -378,8 +388,9 @@ int DrawSketchHandler::getHighestCurveIndex()
     return sketchgui->getSketchObject()->getHighestCurveIndex();
 }
 
-std::vector<QPixmap>
-DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& suggestedConstraints)
+std::vector<QPixmap> DrawSketchHandler::suggestedConstraintsPixmaps(
+    std::vector<AutoConstraint>& suggestedConstraints
+)
 {
     std::vector<QPixmap> pixmaps;
     // Iterate through AutoConstraints types and get their pixmaps
@@ -409,8 +420,10 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
         }
         if (!iconType.isEmpty()) {
             constexpr int iconWidth = 16;
-            QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(iconType.toStdString().c_str(),
-                                                              QSize(iconWidth, iconWidth));
+            QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(
+                iconType.toStdString().c_str(),
+                QSize(iconWidth, iconWidth)
+            );
             pixmaps.push_back(icon);
         }
     }
@@ -482,7 +495,8 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
     const Base::Vector2d& Pos,
     const Base::Vector2d& Dir,
-    AutoConstraint::TargetType type)
+    AutoConstraint::TargetType type
+)
 {
     PreselectionData preSel = getPreselectionData();
 
@@ -531,7 +545,8 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
 
 void DrawSketchHandler::seekAlignmentAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
-    const Base::Vector2d& Dir)
+    const Base::Vector2d& Dir
+)
 {
     using std::numbers::pi;
     constexpr double angleDevRad = Base::toRadians<double>(2);
@@ -555,9 +570,11 @@ void DrawSketchHandler::seekAlignmentAutoConstraint(
     }
 }
 
-void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                                                  const Base::Vector2d& Pos,
-                                                  const Base::Vector2d& Dir)
+void DrawSketchHandler::seekTangentAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    const Base::Vector2d& Dir
+)
 {
     using std::numbers::pi;
     SketchObject* obj = sketchgui->getSketchObject();
@@ -691,9 +708,10 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
                         -aoe->getMajorRadius()
                             * ((tmpPos.x - center.x) * majdir.y - (tmpPos.y - center.y) * majdir.x),
                         aoe->getMinorRadius()
-                            * ((tmpPos.x - center.x) * majdir.x + (tmpPos.y - center.y) * majdir.y))
-                        - startAngle,
-                    2.f * pi);
+                            * ((tmpPos.x - center.x) * majdir.x + (tmpPos.y - center.y) * majdir.y)
+                    ) - startAngle,
+                    2.f * pi
+                );
 
                 while (angle < startAngle) {
                     angle += 2 * pi;  // Bring it to range of arc
@@ -720,10 +738,12 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
     }
 }
 
-int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                                          const Base::Vector2d& Pos,
-                                          const Base::Vector2d& Dir,
-                                          AutoConstraint::TargetType type)
+int DrawSketchHandler::seekAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    const Base::Vector2d& Dir,
+    AutoConstraint::TargetType type
+)
 {
     suggestedConstraints.clear();
 
@@ -744,10 +764,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     return suggestedConstraints.size();
 }
 
-void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs,
-                                              int geoId1,
-                                              Sketcher::PointPos posId1,
-                                              bool createowncommand /*= true*/)
+void DrawSketchHandler::createAutoConstraints(
+    const std::vector<AutoConstraint>& autoConstrs,
+    int geoId1,
+    Sketcher::PointPos posId1,
+    bool createowncommand /*= true*/
+)
 {
     if (!sketchgui->Autoconstraints.getValue()) {
         return;  // If Autoconstraints property is not set quit
@@ -777,7 +799,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geoId1,
                         static_cast<int>(posId1),
                         cstr.GeoId,
-                        static_cast<int>(cstr.PosId));
+                        static_cast<int>(cstr.PosId)
+                    );
                 } break;
                 case Sketcher::PointOnObject: {
                     Sketcher::PointPos posId2 = cstr.PosId;
@@ -792,7 +815,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
                         geoId1,
                         static_cast<int>(posId1),
-                        geoId2);
+                        geoId2
+                    );
                 } break;
                 case Sketcher::Symmetric: {
                     Gui::cmdAppObjectArgs(
@@ -801,7 +825,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geoId2,
                         geoId2,
                         geoId1,
-                        static_cast<int>(posId1));
+                        static_cast<int>(posId1)
+                    );
                 } break;
                     // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
                     // and should be 'Constraint::GeoUndef' However it can be used as a way to
@@ -809,14 +834,18 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                     // case the caller as to set geoId2, then it will be used as target instead of
                     // geoId2
                 case Sketcher::Horizontal: {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                          geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                    );
                 } break;
                 case Sketcher::Vertical: {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                          geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
+                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                    );
                 } break;
                 case Sketcher::Tangent: {
                     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
@@ -837,15 +866,15 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geom2 = Obj->getGeometry(geoId2);
 
                         if (geom2->is<Part::GeomEllipse>() || geom2->is<Part::GeomArcOfEllipse>()
-                            || geom2->is<Part::GeomCircle>()
-                            || geom2->is<Part::GeomArcOfCircle>()) {
+                            || geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>()) {
                             // in all these cases an intermediate element is needed
                             makeTangentToEllipseviaNewPoint(
                                 Obj,
                                 static_cast<const Part::GeomEllipse*>(geom1),
                                 geom2,
                                 geoId1,
-                                geoId2);
+                                geoId2
+                            );
                             return;
                         }
                     }
@@ -871,15 +900,18 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                                 static_cast<const Part::GeomArcOfEllipse*>(geom1),
                                 geom2,
                                 geoId1,
-                                geoId2);
+                                geoId2
+                            );
                             return;
                         }
                     }
 
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
-                                          geoId1,
-                                          cstr.GeoId);
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
+                        geoId1,
+                        cstr.GeoId
+                    );
                 } break;
                 default:
                     break;
@@ -898,7 +930,8 @@ int DrawSketchHandler::seekAndRenderAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
     const Base::Vector2d& Pos,
     const Base::Vector2d& Dir,
-    AutoConstraint::TargetType type)
+    AutoConstraint::TargetType type
+)
 {
     if (seekAutoConstraint(suggestedConstraints, Pos, Dir, type)) {
         renderSuggestConstraintsCursor(suggestedConstraints);
@@ -910,8 +943,7 @@ int DrawSketchHandler::seekAndRenderAutoConstraint(
     return suggestedConstraints.size();
 }
 
-void DrawSketchHandler::renderSuggestConstraintsCursor(
-    std::vector<AutoConstraint>& suggestedConstraints)
+void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints)
 {
     std::vector<QPixmap> pixmaps = suggestedConstraintsPixmaps(suggestedConstraints);
     addCursorTail(pixmaps);
@@ -967,8 +999,7 @@ void DrawSketchHandler::drawPositionAtCursor(const Base::Vector2d& position)
     setPositionText(position);
 }
 
-void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
-                                              const Base::Vector2d& origin)
+void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin)
 {
     if (!showCursorCoords()) {
         return;
@@ -984,9 +1015,11 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
     setPositionText(position, text);
 }
 
-void DrawSketchHandler::drawWidthHeightAtCursor(const Base::Vector2d& position,
-                                                const double val1,
-                                                const double val2)
+void DrawSketchHandler::drawWidthHeightAtCursor(
+    const Base::Vector2d& position,
+    const double val1,
+    const double val2
+)
 {
     if (!showCursorCoords()) {
         return;
@@ -999,9 +1032,7 @@ void DrawSketchHandler::drawWidthHeightAtCursor(const Base::Vector2d& position,
     setPositionText(position, text);
 }
 
-void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
-                                           const double val,
-                                           Base::Unit unit)
+void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position, const double val, Base::Unit unit)
 {
     if (!showCursorCoords()) {
         return;
@@ -1035,12 +1066,16 @@ QString DrawSketchHandler::getToolWidgetHeaderText() const
     return getToolWidgetText();
 }
 
-void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
-                                        unsigned int augmentationlevel) const
+void DrawSketchHandler::drawEditMarkers(
+    const std::vector<Base::Vector2d>& EditMarkers,
+    unsigned int augmentationlevel
+) const
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(*sketchgui,
-                                                                 EditMarkers,
-                                                                 augmentationlevel);
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(
+        *sketchgui,
+        EditMarkers,
+        augmentationlevel
+    );
 }
 
 void DrawSketchHandler::setAxisPickStyle(bool on)
@@ -1085,17 +1120,12 @@ Sketcher::SketchObject* DrawSketchHandler::getSketchObject()
 
 void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePoint)
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(*sketchgui,
-                                                                  enable,
-                                                                  referencePoint);
+    ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(*sketchgui, enable, referencePoint);
 }
 
 void DrawSketchHandler::moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(*sketchgui,
-                                                                constNum,
-                                                                toPos,
-                                                                offset);
+    ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(*sketchgui, constNum, toPos, offset);
 }
 
 void DrawSketchHandler::signalToolChanged() const

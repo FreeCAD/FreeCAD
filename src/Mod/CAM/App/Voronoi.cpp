@@ -112,8 +112,9 @@ void Voronoi::diagram_type::reIndex()
     }
 }
 
-Voronoi::point_type
-Voronoi::diagram_type::retrievePoint(const Voronoi::diagram_type::cell_type* cell) const
+Voronoi::point_type Voronoi::diagram_type::retrievePoint(
+    const Voronoi::diagram_type::cell_type* cell
+) const
 {
     Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index();
     Voronoi::diagram_type::cell_type::source_category_type category = cell->source_category();
@@ -129,11 +130,11 @@ Voronoi::diagram_type::retrievePoint(const Voronoi::diagram_type::cell_type* cel
     }
 }
 
-Voronoi::segment_type
-Voronoi::diagram_type::retrieveSegment(const Voronoi::diagram_type::cell_type* cell) const
+Voronoi::segment_type Voronoi::diagram_type::retrieveSegment(
+    const Voronoi::diagram_type::cell_type* cell
+) const
 {
-    Voronoi::diagram_type::cell_type::source_index_type index =
-        cell->source_index() - points.size();
+    Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index() - points.size();
     return segments[index];
 }
 
@@ -195,11 +196,13 @@ long Voronoi::numVertices() const
 void Voronoi::construct()
 {
     vd->clear();
-    construct_voronoi(vd->points.begin(),
-                      vd->points.end(),
-                      vd->segments.begin(),
-                      vd->segments.end(),
-                      static_cast<voronoi_diagram_type*>(vd));
+    construct_voronoi(
+        vd->points.begin(),
+        vd->points.end(),
+        vd->segments.begin(),
+        vd->segments.end(),
+        static_cast<voronoi_diagram_type*>(vd)
+    );
     vd->reIndex();
 }
 
@@ -225,8 +228,7 @@ void Voronoi::colorExterior(const Voronoi::diagram_type::edge_type* edge, std::s
 
 void Voronoi::colorExterior(Voronoi::color_type color)
 {
-    for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end();
-         ++it) {
+    for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
         if (it->is_infinite()) {
             colorExterior(&(*it), color);
         }
@@ -235,8 +237,7 @@ void Voronoi::colorExterior(Voronoi::color_type color)
 
 void Voronoi::colorTwins(Voronoi::color_type color)
 {
-    for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end();
-         ++it) {
+    for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
         if (!it->color()) {
             auto twin = it->twin();
             if (!twin->color()) {
@@ -248,8 +249,9 @@ void Voronoi::colorTwins(Voronoi::color_type color)
 
 double Voronoi::diagram_type::angleOfSegment(int i, Voronoi::diagram_type::angle_map_t* angle) const
 {
-    Voronoi::diagram_type::angle_map_t::const_iterator a =
-        angle ? angle->find(i) : Voronoi::diagram_type::angle_map_t::const_iterator();
+    Voronoi::diagram_type::angle_map_t::const_iterator a = angle
+        ? angle->find(i)
+        : Voronoi::diagram_type::angle_map_t::const_iterator();
     if (!angle || a == angle->end()) {
         Voronoi::point_type p0 = low(segments[i]);
         Voronoi::point_type p1 = high(segments[i]);
@@ -294,8 +296,7 @@ void Voronoi::colorColinear(Voronoi::color_type color, double degree)
     Voronoi::diagram_type::angle_map_t angle;
     int psize = vd->points.size();
 
-    for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end();
-         ++it) {
+    for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
         int i0 = it->cell()->source_index() - psize;
         int i1 = it->twin()->cell()->source_index() - psize;
         if (it->color() == 0 && it->cell()->contains_segment()

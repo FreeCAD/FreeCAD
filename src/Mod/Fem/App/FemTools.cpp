@@ -287,9 +287,11 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
 }
 
 // function to determine 3rd-party binaries used by the FEM WB
-std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
-                                            std::string prefBinaryName,
-                                            std::string binaryName)
+std::string Fem::Tools::checkIfBinaryExists(
+    std::string prefSection,
+    std::string prefBinaryName,
+    std::string binaryName
+)
 {
     // if "Search in known binary directories" is set in the preferences, we ignore custom path
     auto paramPath = "User parameter:BaseApp/Preferences/Mod/Fem/" + prefSection;
@@ -300,8 +302,9 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
     if (knownDirectories) {
         // first check the environment paths, normally determined by the PATH environment variable
         // On Windows, the executable extensions(".exe" etc.) should be automatically appended
-        QString executablePath =
-            QStandardPaths::findExecutable(QString::fromLatin1(binaryName.c_str()));
+        QString executablePath = QStandardPaths::findExecutable(
+            QString::fromLatin1(binaryName.c_str())
+        );
         if (!executablePath.isEmpty()) {
             return executablePath.toStdString();
         }
@@ -309,9 +312,10 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
         else {
             auto appBinaryPath = App::Application::getHomePath() + "bin/";
             QStringList pathCandidates = {QString::fromLatin1(appBinaryPath.c_str())};
-            QString executablePath =
-                QStandardPaths::findExecutable(QString::fromLatin1(binaryName.c_str()),
-                                               pathCandidates);
+            QString executablePath = QStandardPaths::findExecutable(
+                QString::fromLatin1(binaryName.c_str()),
+                pathCandidates
+            );
             if (!executablePath.isEmpty()) {
                 return executablePath.toStdString();
             }
@@ -321,8 +325,9 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
         auto binaryPathString = prefBinaryName + "BinaryPath";
         // use binary path from settings, fall back to system path if not defined
         auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), binaryName.c_str());
-        QString executablePath =
-            QStandardPaths::findExecutable(QString::fromLatin1(binaryPath.c_str()));
+        QString executablePath = QStandardPaths::findExecutable(
+            QString::fromLatin1(binaryPath.c_str())
+        );
         if (!executablePath.isEmpty()) {
             return executablePath.toStdString();
         }
@@ -330,8 +335,7 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
     return "";
 }
 
-Base::Placement Fem::Tools::getSubShapeGlobalLocation(const Part::Feature* feat,
-                                                      const TopoDS_Shape& sh)
+Base::Placement Fem::Tools::getSubShapeGlobalLocation(const Part::Feature* feat, const TopoDS_Shape& sh)
 {
     Base::Matrix4D matrix = Part::TopoShape::convert(sh.Location().Transformation());
     Base::Placement shPla {matrix};
@@ -348,8 +352,7 @@ void Fem::Tools::setSubShapeGlobalLocation(const Part::Feature* feat, TopoDS_Sha
 }
 
 
-TopoDS_Shape
-Fem::Tools::getFeatureSubShape(const Part::Feature* feat, const char* subName, bool silent)
+TopoDS_Shape Fem::Tools::getFeatureSubShape(const Part::Feature* feat, const char* subName, bool silent)
 {
     TopoDS_Shape sh;
     const Part::TopoShape& toposhape = feat->Shape.getShape();
@@ -367,11 +370,13 @@ Fem::Tools::getFeatureSubShape(const Part::Feature* feat, const char* subName, b
     return sh;
 }
 
-bool Fem::Tools::getCylinderParams(const TopoDS_Shape& sh,
-                                   Base::Vector3d& base,
-                                   Base::Vector3d& axis,
-                                   double& height,
-                                   double& radius)
+bool Fem::Tools::getCylinderParams(
+    const TopoDS_Shape& sh,
+    Base::Vector3d& base,
+    Base::Vector3d& axis,
+    double& height,
+    double& radius
+)
 {
     TopoDS_Face face = TopoDS::Face(sh);
     BRepAdaptor_Surface surface(face);

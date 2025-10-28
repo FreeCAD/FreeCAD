@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include "Application.h"
 #include "Document.h"
 #include "TransactionObject.h"

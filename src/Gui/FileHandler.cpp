@@ -22,10 +22,10 @@
  **************************************************************************/
 
 
-# include <QFileInfo>
-# include <QImageReader>
-# include <QStringList>
-# include <Inventor/SoInput.h>
+#include <QFileInfo>
+#include <QImageReader>
+#include <QStringList>
+#include <Inventor/SoInput.h>
 
 
 #include "FileHandler.h"
@@ -42,9 +42,7 @@ using namespace Gui;
 
 FileHandler::FileHandler(const QString& filename)
     : filename(filename)
-{
-
-}
+{}
 
 bool FileHandler::openFile()
 {
@@ -77,7 +75,7 @@ App::Document* FileHandler::getOrCreateDocument()
 
 App::Document* FileHandler::getOrCreateDocument(const std::string& document)
 {
-    App::Document *doc = nullptr;
+    App::Document* doc = nullptr;
     if (!document.empty()) {
         doc = App::GetApplication().getDocument(document.c_str());
     }
@@ -133,26 +131,29 @@ bool FileHandler::openInternal()
         return true;
     }
 
-    if (hasExtension(QStringList() << QLatin1String("wrl")
-                                   << QLatin1String("wrz")
-                                   << QLatin1String("vrml"))) {
+    if (hasExtension(
+            QStringList() << QLatin1String("wrl") << QLatin1String("wrz") << QLatin1String("vrml")
+        )) {
         openVRML();
         return true;
     }
 
-    if (hasExtension(QStringList() << QLatin1String("py")
-                                   << QLatin1String("fcmacro")
-                                   << QLatin1String("fcscript"))) {
+    if (hasExtension(
+            QStringList() << QLatin1String("py") << QLatin1String("fcmacro")
+                          << QLatin1String("fcscript")
+        )) {
         openPython();
         return true;
     }
 
     QStringList supportedFormats;
     auto imageFormats = QImageReader::supportedImageFormats();
-    std::transform(imageFormats.cbegin(), imageFormats.cend(),
-                   std::back_inserter(supportedFormats), [](const QByteArray& format) {
-        return QString::fromLatin1(format);
-    });
+    std::transform(
+        imageFormats.cbegin(),
+        imageFormats.cend(),
+        std::back_inserter(supportedFormats),
+        [](const QByteArray& format) { return QString::fromLatin1(format); }
+    );
 
     if (hasExtension(supportedFormats)) {
         openImage();
@@ -172,7 +173,7 @@ void FileHandler::openInternal(const char* type, const char* prop)
     QString encBase = Base::Tools::escapeEncodeString(fi.baseName());
     QString encPath = Base::Tools::escapeEncodeString(fi.absoluteFilePath());
 
-    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", type,  encBase.toStdString());
+    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", type, encBase.toStdString());
     Gui::cmdAppDocumentArgs(doc, "ActiveObject.%s = '%s'", prop, encPath.toStdString());
     Gui::cmdAppDocumentArgs(doc, "ActiveObject.Label = '%s'", encBase.toStdString());
     Gui::cmdAppDocument(doc, "recompute()");
@@ -209,5 +210,5 @@ void FileHandler::openPython()
     auto edit = new PythonEditorView(editor, getMainWindow());
     edit->open(filename);
     edit->resize(400, 300);
-    getMainWindow()->addWindow( edit );
+    getMainWindow()->addWindow(edit);
 }

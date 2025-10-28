@@ -61,8 +61,8 @@ struct PathExport AreaParams: CAreaParams
 
     bool operator==(const AreaParams& other) const
     {
-#define AREA_COMPARE(_param)                                                                       \
-    if (PARAM_FIELD(NAME, _param) != other.PARAM_FIELD(NAME, _param))                              \
+#define AREA_COMPARE(_param) \
+    if (PARAM_FIELD(NAME, _param) != other.PARAM_FIELD(NAME, _param)) \
         return false;
         PARAM_FOREACH(AREA_COMPARE, AREA_PARAMS_CAREA);
         PARAM_FOREACH(AREA_COMPARE, AREA_PARAMS_AREA);
@@ -160,9 +160,11 @@ protected:
      *
      * See #AREA_PARAMS_OFFSET for description of the arguments.
      */
-    void makeOffset(std::list<std::shared_ptr<CArea>>& areas,
-                    PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_OFFSET),
-                    bool from_center = false);
+    void makeOffset(
+        std::list<std::shared_ptr<CArea>>& areas,
+        PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_OFFSET),
+        bool from_center = false
+    );
 
     /** Make a pocket of the combined shape
      *
@@ -227,10 +229,12 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(int index = -1,
-                            PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_OFFSET),
-                            int reoirent = 0,
-                            bool from_center = false);
+    TopoDS_Shape makeOffset(
+        int index = -1,
+        PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_OFFSET),
+        int reoirent = 0,
+        bool from_center = false
+    );
 
     /** Make a pocket of the combined shape
      *
@@ -250,15 +254,19 @@ public:
      * See #AREA_PARAMS_EXTRA for description of the arguments. Currently, there
      * is only one argument, namely \c mode for section mode.
      */
-    std::vector<std::shared_ptr<Area>>
-    makeSections(PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_SECTION_EXTRA),
-                 const std::vector<double>& heights = std::vector<double>(),
-                 const TopoDS_Shape& plane = TopoDS_Shape());
+    std::vector<std::shared_ptr<Area>> makeSections(
+        PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_SECTION_EXTRA),
+        const std::vector<double>& heights = std::vector<double>(),
+        const TopoDS_Shape& plane = TopoDS_Shape()
+    );
 
-    std::shared_ptr<Area>
-    getClearedArea(const Toolpath* path, double diameter, double zmax, Base::BoundBox3d bbox);
-    std::shared_ptr<Area> getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas,
-                                      double diameter);
+    std::shared_ptr<Area> getClearedArea(
+        const Toolpath* path,
+        double diameter,
+        double zmax,
+        Base::BoundBox3d bbox
+    );
+    std::shared_ptr<Area> getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter);
     TopoDS_Shape toTopoShape();
 
     /** Config this Area object */
@@ -308,11 +316,13 @@ public:
      * \arg \c to_edges: if true, discretize all curves, and insert as open
      * line segments
      * */
-    static void addWire(CArea& area,
-                        const TopoDS_Wire& wire,
-                        const gp_Trsf* trsf = nullptr,
-                        double deflection = 0.01,
-                        bool to_edges = false);
+    static void addWire(
+        CArea& area,
+        const TopoDS_Wire& wire,
+        const gp_Trsf* trsf = nullptr,
+        double deflection = 0.01,
+        bool to_edges = false
+    );
 
     /** Add a OCC generic shape to CArea
      *
@@ -331,15 +341,17 @@ public:
      * \return Returns the number of non coplaner. Planar testing only happens
      * if \c plane is supplied
      * */
-    static int addShape(CArea& area,
-                        const TopoDS_Shape& shape,
-                        const gp_Trsf* trsf = nullptr,
-                        double deflection = 0.01,
-                        const TopoDS_Shape* plane = nullptr,
-                        bool force_coplanar = true,
-                        CArea* areaOpen = nullptr,
-                        bool to_edges = false,
-                        bool reorient = true);
+    static int addShape(
+        CArea& area,
+        const TopoDS_Shape& shape,
+        const gp_Trsf* trsf = nullptr,
+        double deflection = 0.01,
+        const TopoDS_Shape* plane = nullptr,
+        bool force_coplanar = true,
+        CArea* areaOpen = nullptr,
+        bool to_edges = false,
+        bool reorient = true
+    );
 
     /** Convert curves in CArea into an OCC shape
      *
@@ -348,8 +360,12 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Shape
-    toShape(const CArea& area, bool fill, const gp_Trsf* trsf = nullptr, int reoirent = 0);
+    static TopoDS_Shape toShape(
+        const CArea& area,
+        bool fill,
+        const gp_Trsf* trsf = nullptr,
+        int reoirent = 0
+    );
 
     /** Convert a single curve into an OCC wire
      *
@@ -357,8 +373,7 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Shape
-    toShape(const CCurve& curve, const gp_Trsf* trsf = nullptr, int reorient = 0);
+    static TopoDS_Shape toShape(const CCurve& curve, const gp_Trsf* trsf = nullptr, int reorient = 0);
 
     /** Check if two OCC shape is coplanar */
     static bool isCoplanar(const TopoDS_Shape& s1, const TopoDS_Shape& s2);
@@ -383,13 +398,15 @@ public:
      *
      * \return sorted wires
      */
-    static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape>& shapes,
-                                             bool has_start = false,
-                                             gp_Pnt* pstart = nullptr,
-                                             gp_Pnt* pend = nullptr,
-                                             double* stepdown_hint = nullptr,
-                                             short* arc_plane = nullptr,
-                                             PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_SORT));
+    static std::list<TopoDS_Shape> sortWires(
+        const std::list<TopoDS_Shape>& shapes,
+        bool has_start = false,
+        gp_Pnt* pstart = nullptr,
+        gp_Pnt* pend = nullptr,
+        double* stepdown_hint = nullptr,
+        short* arc_plane = nullptr,
+        PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_SORT)
+    );
 
     /** Convert a list of wires to gcode
      *
@@ -400,16 +417,20 @@ public:
      *
      * See #AREA_PARAMS_PATH for other arguments
      */
-    static void toPath(Toolpath& path,
-                       const std::list<TopoDS_Shape>& shapes,
-                       const gp_Pnt* pstart = nullptr,
-                       gp_Pnt* pend = nullptr,
-                       PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_PATH));
+    static void toPath(
+        Toolpath& path,
+        const std::list<TopoDS_Shape>& shapes,
+        const gp_Pnt* pstart = nullptr,
+        gp_Pnt* pend = nullptr,
+        PARAM_ARGS_DEF(PARAM_FARG, AREA_PARAMS_PATH)
+    );
 
-    static int project(TopoDS_Shape& out,
-                       const TopoDS_Shape& in,
-                       const AreaParams* params = nullptr,
-                       const TopoDS_Shape* work_plane = nullptr);
+    static int project(
+        TopoDS_Shape& out,
+        const TopoDS_Shape& in,
+        const AreaParams* params = nullptr,
+        const TopoDS_Shape* work_plane = nullptr
+    );
 
     static void setWireOrientation(TopoDS_Wire& wire, const gp_Dir& dir, bool ccw);
 
@@ -421,8 +442,7 @@ public:
     static void setDefaultParams(const AreaStaticParams& params);
     static const AreaStaticParams& getDefaultParams();
 
-    static void
-    showShape(const TopoDS_Shape& shape, const char* name, const char* fmt = nullptr, ...);
+    static void showShape(const TopoDS_Shape& shape, const char* name, const char* fmt = nullptr, ...);
 };
 
 }  // namespace Path

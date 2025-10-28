@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-
-
 #include "View.h"
 #include "Application.h"
 #include "Document.h"
@@ -33,17 +31,17 @@ using namespace Gui;
 // BaseView
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::BaseView,Base::BaseClass)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::BaseView, Base::BaseClass)
 
 
-BaseView::BaseView( Gui::Document* pcDocument)
-  :_pcDocument(pcDocument)
+BaseView::BaseView(Gui::Document* pcDocument)
+    : _pcDocument(pcDocument)
 {
-    if (pcDocument){
+    if (pcDocument) {
         pcDocument->attachView(this);
         bIsPassive = false;
     }
-    else{
+    else {
         Application::Instance->attachView(this);
         bIsPassive = true;
     }
@@ -56,17 +54,20 @@ BaseView::~BaseView()
 
 void BaseView::onClose()
 {
-    if (bIsDetached)
+    if (bIsDetached) {
         return;
+    }
 
     if (bIsPassive) {
         Application::Instance->detachView(this);
-        if (_pcDocument)
+        if (_pcDocument) {
             _pcDocument->detachView(this, true);
+        }
     }
     else {
-        if (_pcDocument)
+        if (_pcDocument) {
             _pcDocument->detachView(this);
+        }
     }
 
     _pcDocument = nullptr;
@@ -80,13 +81,16 @@ void BaseView::deleteSelf()
 
 void BaseView::setDocument(Gui::Document* pcDocument)
 {
-    if (_pcDocument == pcDocument)
+    if (_pcDocument == pcDocument) {
         return;
+    }
     // detaches and attaches the observer
-    if (_pcDocument)
+    if (_pcDocument) {
         _pcDocument->detachView(this, true);
-    if (pcDocument)
-        pcDocument->attachView(this,true);
+    }
+    if (pcDocument) {
+        pcDocument->attachView(this, true);
+    }
 
     // set the new document as the active one
     _pcDocument = pcDocument;

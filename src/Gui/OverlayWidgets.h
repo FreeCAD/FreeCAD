@@ -41,7 +41,8 @@
 class QPropertyAnimation;
 class QLayoutItem;
 
-namespace Gui {
+namespace Gui
+{
 
 class OverlayTabWidget;
 class OverlayTitleBar;
@@ -58,14 +59,28 @@ class OverlayTabWidget: public QTabWidget
 
     /** @name Graphics effect properties for customization through stylesheet */
     //@{
-    Q_PROPERTY(QColor effectColor READ effectColor WRITE setEffectColor) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(int effectWidth READ effectWidth WRITE setEffectWidth) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(int effectHeight READ effectHeight WRITE setEffectHeight) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(qreal effectOffsetX READ effectOffsetX WRITE setEffectOffsetX) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(qreal effectOffsetY READ effectOffsetY WRITE setEffectOffsetY) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(qreal effectBlurRadius READ effectBlurRadius WRITE setEffectBlurRadius) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(bool enableEffect READ effectEnabled WRITE setEffectEnabled) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(qreal animation READ animation WRITE setAnimation) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        QColor effectColor READ effectColor WRITE setEffectColor
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        int effectWidth READ effectWidth WRITE setEffectWidth
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        int effectHeight READ effectHeight WRITE setEffectHeight
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        qreal effectOffsetX READ effectOffsetX WRITE setEffectOffsetX
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        qreal effectOffsetY READ effectOffsetY WRITE setEffectOffsetY
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        qreal effectBlurRadius READ effectBlurRadius WRITE setEffectBlurRadius
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        bool enableEffect READ effectEnabled WRITE setEffectEnabled
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(qreal animation READ animation WRITE setAnimation)  // clazy:exclude=qproperty-without-notify
     //@}
 
 public:
@@ -73,7 +88,7 @@ public:
      * @param parent: parent widget
      * @param pos: docking position
      */
-    OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos);
+    OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos);
 
     /// Enable/disable overlay mode for this tab widget
     void setOverlayMode(bool enable);
@@ -85,14 +100,14 @@ public:
      * @param widget: dock widget to be added
      * @param title: title for the dock widget
      */
-    void addWidget(QDockWidget *widget, const QString &title);
+    void addWidget(QDockWidget* widget, const QString& title);
 
     /** Remove a dock widget
      * @param widget: dock widget to be removed
      * @param last: optional non overlaid widget. If given, then the removed
      * dock widget will be tabified together with this one.
      */
-    void removeWidget(QDockWidget *widget, QDockWidget *last=nullptr);
+    void removeWidget(QDockWidget* widget, QDockWidget* last = nullptr);
 
     /** Set the current dock widget
      * @param widget: an overlay dock widget
@@ -101,7 +116,7 @@ public:
      * give widget will take the whole space. This is actually handled inside
      * onCurrentChanged().
      */
-    void setCurrent(QDockWidget *widget);
+    void setCurrent(QDockWidget* widget);
 
     /** Handle ESC key press
      *
@@ -121,7 +136,8 @@ public:
     bool isTransparent() const;
 
     /// Auto mode to show or hide the tab widget
-    enum class AutoMode {
+    enum class AutoMode
+    {
         /// No auto show or hide
         NoAutoMode,
         /// Auto hide tab widget on lost of focus
@@ -136,21 +152,31 @@ public:
     /// Set auto mode to show or hide the tab widget
     void setAutoMode(AutoMode mode);
     /// Get current auto mode
-    AutoMode getAutoMode() const { return autoMode; }
+    AutoMode getAutoMode() const
+    {
+        return autoMode;
+    }
 
     /// Touch the tab widget to trigger saving of settings
-    void touch() {touched = true;}
+    void touch()
+    {
+        touched = true;
+    }
     /// Check if the tab widget settings need to be saved
-    bool isTouched() const {return touched;}
+    bool isTouched() const
+    {
+        return touched;
+    }
 
     /// Set geometry of this tab widget
     void setRect(QRect rect);
 
     /// Get the geometry of this tab widget
-    const QRect &getRect();
+    const QRect& getRect();
 
     /// Overlay query option
-    enum class QueryOption {
+    enum class QueryOption
+    {
         /// Report the current overlay status
         QueryOverlay,
         /// Report true if transparency status has been changed
@@ -159,7 +185,7 @@ public:
         TransparencyNotChanged,
     };
     /// Query overlay status
-    bool isOverlaid(QueryOption option=QueryOption::QueryOverlay) const;
+    bool isOverlaid(QueryOption option = QueryOption::QueryOverlay) const;
     /** Check if needs to auto hide this tab widget
      *
      * Besides when auto hide mode is activated by user, the tab widget will
@@ -174,9 +200,9 @@ public:
      * @param rect: output geometry of the tab widget
      * @return Return true if the tab widget should be auto hiding
      */
-    bool getAutoHideRect(QRect &rect) const;
+    bool getAutoHideRect(QRect& rect) const;
     /// Handler of various actions exposed as buttons on title bar
-    void onAction(QAction *);
+    void onAction(QAction*);
     /// Sync relevant actions status with the current auto mode
     void syncAutoMode();
     // Establish if stylesheet is dark
@@ -189,9 +215,12 @@ public:
      * docking tab widget, and y offset for left and right ones. Height is the y
      * offset for top and bottom, and x offset for left and right ones.
      */
-    void setOffset(const QSize &ofs);
+    void setOffset(const QSize& ofs);
     /// Get the tab widget position offset
-    const QSize &getOffset() const {return offset;}
+    const QSize& getOffset() const
+    {
+        return offset;
+    }
 
     /** Set tab widget size delta
      * @param delta: the size delta. For left and right widget, the delta is
@@ -200,33 +229,51 @@ public:
      */
     void setSizeDelta(int delta);
     /// Get the tab widget size delta
-    int getSizeDelta() const {return sizeDelta;}
+    int getSizeDelta() const
+    {
+        return sizeDelta;
+    }
 
     /// Obtain the proxy widget
-    OverlayProxyWidget *getProxyWidget() {return proxyWidget;}
+    OverlayProxyWidget* getProxyWidget()
+    {
+        return proxyWidget;
+    }
 
     /// Obtain the current dock widget
-    QDockWidget *currentDockWidget() const;
+    QDockWidget* currentDockWidget() const;
     /// Obtain the dock widget by index
-    QDockWidget *dockWidget(int index) const;
+    QDockWidget* dockWidget(int index) const;
     /// Obtain the index of a given dock widget
-    int dockWidgetIndex(QDockWidget *) const;
+    int dockWidgetIndex(QDockWidget*) const;
 
     /// Set the title bar for this tab widget
-    void setTitleBar(QWidget *);
+    void setTitleBar(QWidget*);
 
     /// Get the splitter
-    QSplitter *getSplitter() const {return splitter;}
+    QSplitter* getSplitter() const
+    {
+        return splitter;
+    }
     /// Get the title bar
-    QWidget *getTitleBar() const {return titleBar;}
+    QWidget* getTitleBar() const
+    {
+        return titleBar;
+    }
 
     /// Get the docking position of this tab widget
-    Qt::DockWidgetArea getDockArea() const {return dockArea;}
+    Qt::DockWidgetArea getDockArea() const
+    {
+        return dockArea;
+    }
 
     /// Get delay time for animated reveal
-    const QTime &getRevealTime() const {return revealTime;}
+    const QTime& getRevealTime() const
+    {
+        return revealTime;
+    }
     /// Set delay time for animated reveal
-    void setRevealTime(const QTime &time);
+    void setRevealTime(const QTime& time);
 
     /// Restore state
     void restore(ParameterGrp::handle handle);
@@ -249,7 +296,10 @@ public:
     void setEffectBlurRadius(qreal);
     bool effectEnabled() const;
     void setEffectEnabled(bool);
-    qreal animation() const {return _animation;}
+    qreal animation() const
+    {
+        return _animation;
+    }
     void setAnimation(qreal);
     //@}
 
@@ -265,7 +315,7 @@ public:
      * View/DockOverlayAlphaRadius. May return -1 if out side of the widget, or
      * zero if transparent.
      */
-    int testAlpha(const QPoint &pos, int radiusScale);
+    int testAlpha(const QPoint& pos, int radiusScale);
 
     /// Start animated showing
     void startShow();
@@ -273,7 +323,8 @@ public:
     void startHide();
 
     /// Internal state of the tab widget
-    enum class State {
+    enum class State
+    {
         /// The tab widget is showing
         Showing,
         /// Normal visible state
@@ -288,21 +339,27 @@ public:
     /// Set state of the tab widget
     void setState(State);
     /// Get the state of the widget
-    State getState() const {return _state;}
+    State getState() const
+    {
+        return _state;
+    }
 
     /// Handle splitter resize
     void onSplitterResize(int index);
 
     /// Check if the tab widget is saving its state
-    bool isSaving() const {return _saving;}
+    bool isSaving() const
+    {
+        return _saving;
+    }
 
     /// Helper function to create title bar for a dock widget
-    static QWidget *createTitleButton(QAction *action, int size);
+    static QWidget* createTitleButton(QAction* action, int size);
     /// Helper function to prepare a widget as a title widget
-    static QLayoutItem *prepareTitleWidget(QWidget *widget, const QList<QAction*> &actions);
+    static QLayoutItem* prepareTitleWidget(QWidget* widget, const QList<QAction*>& actions);
 
 protected:
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void enterEvent(QEvent* ev) override;
 #else
     void enterEvent(QEnterEvent* ev) override;
@@ -318,7 +375,8 @@ protected:
     void refreshIcons();
 
     /// Overlay mode options
-    enum class OverlayOption {
+    enum class OverlayOption
+    {
         /// Enable overlay
         Enable,
         /// Disable overlay
@@ -327,9 +385,9 @@ protected:
         ShowTab,
     };
     /// Toggle overlay mode for a given widget
-    void setOverlayMode(QWidget *widget, OverlayOption option);
+    void setOverlayMode(QWidget* widget, OverlayOption option);
     /// Helper function to set overlay mode for a give widget
-    static void _setOverlayMode(QWidget *widget, OverlayOption option);
+    static void _setOverlayMode(QWidget* widget, OverlayOption option);
 
 protected:
     void onCurrentChanged(int index);
@@ -337,7 +395,7 @@ protected:
     void onRepaint();
     void onAnimationStateChanged();
     void setupLayout();
-    void onSizeGripMove(const QPoint &);
+    void onSizeGripMove(const QPoint&);
 
 private:
     friend class OverlayProxyWidget;
@@ -350,9 +408,9 @@ private:
     QSize offset;
     int sizeDelta = 0;
     QRect rectOverlay;
-    OverlayProxyWidget *proxyWidget;
-    QSplitter *splitter = nullptr;
-    QWidget *titleBar = nullptr;
+    OverlayProxyWidget* proxyWidget;
+    QSplitter* splitter = nullptr;
+    QWidget* titleBar = nullptr;
     QAction actNoAutoMode;
     QAction actAutoHide;
     QAction actEditHide;
@@ -377,29 +435,29 @@ private:
     QTime revealTime;
     ParameterGrp::handle hGrp;
 
-    OverlayGraphicsEffect *_graphicsEffect = nullptr;
-    OverlayGraphicsEffect *_graphicsEffectTab = nullptr;
+    OverlayGraphicsEffect* _graphicsEffect = nullptr;
+    OverlayGraphicsEffect* _graphicsEffectTab = nullptr;
     bool _effectEnabled = false;
 
     QImage _image;
     qreal _imageScale;
 
     qreal _animation = 0;
-    QPropertyAnimation *_animator = nullptr;
+    QPropertyAnimation* _animator = nullptr;
 
     State _state = State::Normal;
 
-    std::map<QDockWidget *, int> _sizemap;
+    std::map<QDockWidget*, int> _sizemap;
     bool _saving = false;
 
     // NOLINTBEGIN
-    static OverlayDragFrame *_DragFrame;
-    static QDockWidget *_DragFloating;
-    static QWidget *_Dragging;
-    static OverlayTabWidget *_LeftOverlay;
-    static OverlayTabWidget *_RightOverlay;
-    static OverlayTabWidget *_TopOverlay;
-    static OverlayTabWidget *_BottomOverlay;
+    static OverlayDragFrame* _DragFrame;
+    static QDockWidget* _DragFloating;
+    static QWidget* _Dragging;
+    static OverlayTabWidget* _LeftOverlay;
+    static OverlayTabWidget* _RightOverlay;
+    static OverlayTabWidget* _TopOverlay;
+    static OverlayTabWidget* _BottomOverlay;
     // NOLINTEND
 };
 
@@ -408,7 +466,7 @@ class OverlayDragFrame: public QWidget
 {
     Q_OBJECT
 public:
-    explicit OverlayDragFrame(QWidget * parent);
+    explicit OverlayDragFrame(QWidget* parent);
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
@@ -421,8 +479,8 @@ class OverlayTitleBar: public QWidget
 {
     Q_OBJECT
 public:
-    explicit OverlayTitleBar(QWidget * parent);
-    void setTitleItem(QLayoutItem *);
+    explicit OverlayTitleBar(QWidget* parent);
+    void setTitleItem(QLayoutItem*);
     void endDrag();
 
 protected:
@@ -436,7 +494,7 @@ protected:
 private:
     QPoint dragOffset;
     QSize dragSize;
-    QLayoutItem *titleItem = nullptr;
+    QLayoutItem* titleItem = nullptr;
     QColor textcolor;
     int timerId = 0;
     bool blink = false;
@@ -449,54 +507,57 @@ class OverlaySizeGrip: public QWidget
 {
     Q_OBJECT
 public:
-    OverlaySizeGrip(QWidget *parent, bool vertical);
+    OverlaySizeGrip(QWidget* parent, bool vertical);
 
 Q_SIGNALS:
-    void dragMove(const QPoint &globalPos);
+    void dragMove(const QPoint& globalPos);
 
 protected:
     void paintEvent(QPaintEvent* ev) override;
     void mouseMoveEvent(QMouseEvent* ev) override;
     void mousePressEvent(QMouseEvent* ev) override;
     void mouseReleaseEvent(QMouseEvent* ev) override;
-    const QPixmap &pixmap() const;
+    const QPixmap& pixmap() const;
 
 private:
     bool vertical;
 };
 
 /// Splitter for OverlayTabWidget
-class OverlaySplitter : public QSplitter
+class OverlaySplitter: public QSplitter
 {
     Q_OBJECT
 public:
-    explicit OverlaySplitter(QWidget *parent);
+    explicit OverlaySplitter(QWidget* parent);
     void retranslate();
 
 protected:
-    QSplitterHandle *createHandle() override;
+    QSplitterHandle* createHandle() override;
 };
 
 
 /// Splitter handle for dragging the splitter
-class OverlaySplitterHandle : public QSplitterHandle
+class OverlaySplitterHandle: public QSplitterHandle
 {
     Q_OBJECT
 public:
     friend class OverlaySplitter;
 
-    OverlaySplitterHandle(Qt::Orientation, QSplitter *parent);
-    void setTitleItem(QLayoutItem *);
+    OverlaySplitterHandle(Qt::Orientation, QSplitter* parent);
+    void setTitleItem(QLayoutItem*);
     void retranslate();
     void refreshIcons();
-    QDockWidget * dockWidget();
+    QDockWidget* dockWidget();
 
     void showTitle(bool enable);
-    bool isShowing() const { return _showTitle; }
+    bool isShowing() const
+    {
+        return _showTitle;
+    }
     void endDrag();
 
 protected:
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void enterEvent(QEvent* ev) override;
 #else
     void enterEvent(QEnterEvent* ev) override;
@@ -516,7 +577,7 @@ protected:
     void onTimer();
 
 private:
-    QLayoutItem * titleItem = nullptr;
+    QLayoutItem* titleItem = nullptr;
     int idx = -1;
     QAction actFloat;
     bool _showTitle = true;
@@ -532,7 +593,7 @@ class OverlayToolButton: public QToolButton
 {
     Q_OBJECT
 public:
-    explicit OverlayToolButton(QWidget *parent);
+    explicit OverlayToolButton(QWidget* parent);
 };
 
 /** Class for handling visual hint for bringing back hidden overlay dock widget
@@ -548,15 +609,19 @@ class OverlayProxyWidget: public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QBrush hintColor READ hintColor WRITE setHintColor) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QBrush hintColor READ hintColor WRITE setHintColor)  // clazy:exclude=qproperty-without-notify
 
 public:
-    explicit OverlayProxyWidget(OverlayTabWidget *);
+    explicit OverlayProxyWidget(OverlayTabWidget*);
 
-    OverlayTabWidget *getOwner() const {return owner;}
+    OverlayTabWidget* getOwner() const
+    {
+        return owner;
+    }
 
     /// For representing hit region
-    enum class HitTest {
+    enum class HitTest
+    {
         /// Not hitting
         HitNone = 0,
         /// Hitting the proxy widget size but not within the visible hint area.
@@ -568,20 +633,20 @@ public:
      * @param pos: cursor position
      * @param delay: Whether to delay showing hint on mouse hit
      */
-    HitTest hitTest(const QPoint &pos, bool delay=true);
+    HitTest hitTest(const QPoint& pos, bool delay = true);
 
     /// Check if the visual hint is showing
     bool isActivated() const;
 
     QBrush hintColor() const;
-    void setHintColor(const QBrush &);
+    void setHintColor(const QBrush&);
 
     QRect getRect() const;
 
     void onMousePress();
 
 protected:
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void enterEvent(QEvent* ev) override;
 #else
     void enterEvent(QEnterEvent* ev) override;
@@ -608,41 +673,79 @@ class OverlayGraphicsEffect: public QGraphicsEffect
 {
     Q_OBJECT
 public:
-    explicit OverlayGraphicsEffect(QObject *parent);
+    explicit OverlayGraphicsEffect(QObject* parent);
 
     void draw(QPainter* painter) override;
     QRectF boundingRectFor(const QRectF& rect) const override;
 
-    inline void setSize(const QSize &size)
-        { if(_size!=size){_size = size; updateBoundingRect(); } }
+    inline void setSize(const QSize& size)
+    {
+        if (_size != size) {
+            _size = size;
+            updateBoundingRect();
+        }
+    }
 
-    inline QSize size() const { return _size; }
+    inline QSize size() const
+    {
+        return _size;
+    }
 
-    inline void setOffset(const QPointF &offset)
-        { if(_offset!=offset) {_offset = offset; updateBoundingRect(); } }
+    inline void setOffset(const QPointF& offset)
+    {
+        if (_offset != offset) {
+            _offset = offset;
+            updateBoundingRect();
+        }
+    }
 
-    inline QPointF offset() const { return _offset; }
+    inline QPointF offset() const
+    {
+        return _offset;
+    }
 
     inline void setBlurRadius(qreal blurRadius)
-        { if(_blurRadius!=blurRadius) {_blurRadius = blurRadius; updateBoundingRect();} }
+    {
+        if (_blurRadius != blurRadius) {
+            _blurRadius = blurRadius;
+            updateBoundingRect();
+        }
+    }
 
-    inline qreal blurRadius() const { return _blurRadius; }
+    inline qreal blurRadius() const
+    {
+        return _blurRadius;
+    }
 
-    inline void setColor(const QColor& color) { _color = color; }
-    inline QColor color() const { return _color; }
+    inline void setColor(const QColor& color)
+    {
+        _color = color;
+    }
+    inline QColor color() const
+    {
+        return _color;
+    }
 
-    inline bool enabled() const {return _enabled;}
+    inline bool enabled() const
+    {
+        return _enabled;
+    }
     inline void setEnabled(bool enabled)
-        { if(_enabled!=enabled) {_enabled = enabled; updateBoundingRect();} }
+    {
+        if (_enabled != enabled) {
+            _enabled = enabled;
+            updateBoundingRect();
+        }
+    }
 
 private:
     bool _enabled;
-    QSize  _size;
-    qreal  _blurRadius;
+    QSize _size;
+    qreal _blurRadius;
     QColor _color;
     QPointF _offset;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // FC_OVERLAYWIDGETS_H
+#endif  // FC_OVERLAYWIDGETS_H

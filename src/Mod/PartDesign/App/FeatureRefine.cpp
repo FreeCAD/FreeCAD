@@ -40,11 +40,13 @@ PROPERTY_SOURCE(PartDesign::FeatureRefine, PartDesign::Feature)
 
 FeatureRefine::FeatureRefine()
 {
-    ADD_PROPERTY_TYPE(Refine,
-                      (0),
-                      "Part Design",
-                      (App::PropertyType)(App::Prop_None),
-                      "Refine shape (clean up redundant edges) after operations");
+    ADD_PROPERTY_TYPE(
+        Refine,
+        (0),
+        "Part Design",
+        (App::PropertyType)(App::Prop_None),
+        "Refine shape (clean up redundant edges) after operations"
+    );
     // init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()
@@ -75,8 +77,10 @@ bool FeatureRefine::onlyHaveRefined()
     Shape.setValue(result);
     return true;
 }
-TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape,
-                                             const RefineErrorPolicy onError) const
+TopoShape FeatureRefine::refineShapeIfActive(
+    const TopoShape& oldShape,
+    const RefineErrorPolicy onError
+) const
 {
     if (!this->Refine.getValue()) {
         return oldShape;
@@ -87,8 +91,7 @@ TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape,
     }
     catch (Standard_Failure& err) {
         if (onError == RefineErrorPolicy::Warn) {
-            Base::Console().warning(
-                fmt::format("Refine failed: {}", err.GetMessageString()).c_str());
+            Base::Console().warning(fmt::format("Refine failed: {}", err.GetMessageString()).c_str());
         }
         else {
             throw;

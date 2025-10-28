@@ -1,4 +1,4 @@
-#/******************************************************************************
+# /******************************************************************************
 # *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
@@ -28,14 +28,16 @@ from .Shaft import Shaft
 
 translate = FreeCAD.Qt.translate
 
+
 class TaskWizardShaft:
     "Shaft Wizard"
+
     App = FreeCAD
     Gui = FreeCADGui
 
     def __init__(self, doc):
         mw = QtGui.QApplication.activeWindow()
-        #cw = mw.centralWidget() # This is a qmdiarea widget
+        # cw = mw.centralWidget() # This is a qmdiarea widget
         cw = mw.findChild(QtGui.QMdiArea)
         self.doc = doc
 
@@ -53,24 +55,35 @@ class TaskWizardShaft:
         # Buttons for diagram display
         buttonLayout = QtGui.QGridLayout()
         all = translate("TaskWizardShaft", "All")
-        bnames = [[f"{all} [x]", f"{all} [y]", f"{all} [z]" ],
-                           ["N [x]", "Q [y]", "Q [z]"],
-                           ["Mt [x]",  "Mb [z]", "Mb [y]"],
-                           ["",  "w [y]",  "w [z]"],
-                           ["sigma [x]", "sigma [y]", "sigma [z]"],
-                           ["tau [x]",  "sigmab [z]", "sigmab [y]"]]
-        slots = [[self.slotAllx,  self.slotAlly,  self.slotAllz],
-                      [self.slotFx,  self.slotQy,  self.slotQz],
-                      [self.slotMx,  self.slotMz,  self.slotMy],
-                      [self.slotNone,  self.slotWy, self.slotWz],
-                      [self.slotSigmax,  self.slotSigmay,  self.slotSigmaz],
-                      [self.slotTaut,  self.slotSigmabz,  self.slotSigmaby]]
-        self.buttons = [[None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None]]
+        bnames = [
+            [f"{all} [x]", f"{all} [y]", f"{all} [z]"],
+            ["N [x]", "Q [y]", "Q [z]"],
+            ["Mt [x]", "Mb [z]", "Mb [y]"],
+            ["", "w [y]", "w [z]"],
+            ["sigma [x]", "sigma [y]", "sigma [z]"],
+            ["tau [x]", "sigmab [z]", "sigmab [y]"],
+        ]
+        slots = [
+            [self.slotAllx, self.slotAlly, self.slotAllz],
+            [self.slotFx, self.slotQy, self.slotQz],
+            [self.slotMx, self.slotMz, self.slotMy],
+            [self.slotNone, self.slotWy, self.slotWz],
+            [self.slotSigmax, self.slotSigmay, self.slotSigmaz],
+            [self.slotTaut, self.slotSigmabz, self.slotSigmaby],
+        ]
+        self.buttons = [
+            [None, None, None],
+            [None, None, None],
+            [None, None, None],
+            [None, None, None],
+            [None, None, None],
+            [None, None, None],
+        ]
 
         for col in range(3):
             for row in range(6):
                 button = QtGui.QPushButton(bnames[row][col])
-                buttonLayout.addWidget(button,  row,  col)
+                buttonLayout.addWidget(button, row, col)
                 self.buttons[row][col] = button
                 button.clicked.connect(slots[row][col])
 
@@ -82,16 +95,18 @@ class TaskWizardShaft:
 
         # The top layout will contain the Shaft Wizard layout plus the elements of the FEM constraints dialog
         layout = QtGui.QVBoxLayout()
-        layout.setObjectName("ShaftWizard") # Do not change or translate: Required to detect whether Shaft Wizard is running in FemGui::ViewProviderFemConstraintXXX
+        layout.setObjectName(
+            "ShaftWizard"
+        )  # Do not change or translate: Required to detect whether Shaft Wizard is running in FemGui::ViewProviderFemConstraintXXX
         sublayout = QtGui.QVBoxLayout()
-        sublayout.setObjectName("ShaftWizardLayout") # Do not change or translate
+        sublayout.setObjectName("ShaftWizardLayout")  # Do not change or translate
         sublayout.addWidget(self.table.widget)
         sublayout.addLayout(buttonLayout)
         layout.addLayout(sublayout)
         self.form.setLayout(layout)
 
         # Switch to feature window
-        mdi=FreeCADGui.getMainWindow().findChild(QtGui.QMdiArea)
+        mdi = FreeCADGui.getMainWindow().findChild(QtGui.QMdiArea)
         cw.setActiveSubWindow(featureWindow)
 
     def showDiagram(self, diagram):
@@ -101,57 +116,75 @@ class TaskWizardShaft:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(msgBox.Information)
             msgBox.setWindowTitle(translate("TaskWizardShaft", "Missing Module"))
-            msgBox.setText(translate("TaskWizardShaft", "The Plot add-on is not installed. Install it to enable this feature."))
+            msgBox.setText(
+                translate(
+                    "TaskWizardShaft",
+                    "The Plot add-on is not installed. Install it to enable this feature.",
+                )
+            )
             msgBox.setDetailedText(traceback.format_exc())
             msgBox.exec_()
+
     def slotAllx(self):
         self.showDiagram("Allx")
+
     def slotAlly(self):
         self.showDiagram("Ally")
+
     def slotAllz(self):
         self.showDiagram("Allz")
 
     def slotFx(self):
         self.showDiagram("Nx")
+
     def slotQy(self):
         self.showDiagram("Qy")
+
     def slotQz(self):
         self.showDiagram("Qz")
 
     def slotMx(self):
         self.showDiagram("Mx")
+
     def slotMz(self):
         self.showDiagram("Mz")
+
     def slotMy(self):
         self.showDiagram("My")
 
     def slotNone(self):
         pass
+
     def slotWy(self):
         self.showDiagram("wy")
+
     def slotWz(self):
         self.showDiagram("wz")
 
     def slotSigmax(self):
         self.showDiagram("sigmax")
+
     def slotSigmay(self):
         self.showDiagram("sigmay")
+
     def slotSigmaz(self):
         self.showDiagram("sigmaz")
 
     def slotTaut(self):
         self.showDiagram("taut")
+
     def slotSigmabz(self):
         self.showDiagram("sigmabz")
+
     def slotSigmaby(self):
         self.showDiagram("sigmaby")
 
-    def updateButton(self,  row,  col,  flag):
+    def updateButton(self, row, col, flag):
         self.buttons[row][col].setEnabled(flag)
 
-    def updateButtons(self,  col,  flag):
+    def updateButtons(self, col, flag):
         for row in range(len(self.buttons)):
-            self.updateButton(row,  col,  flag)
+            self.updateButton(row, col, flag)
 
     def getStandardButtons(self):
         return QtGui.QDialogButtonBox.Ok
@@ -168,6 +201,7 @@ class TaskWizardShaft:
     def isAllowedAlterDocument(self):
         return False
 
+
 # HACK: Workaround to allow a callback
 # Problem: From the FemConstraint ViewProvider, we need to tell the Shaft instance that the user finished editing the constraint
 # We can find the Shaft Wizard dialog object from C++, but there is no way to reach the Shaft instance
@@ -175,6 +209,7 @@ class TaskWizardShaft:
 # Note: Another way would be to create a hidden widget in the Shaft Wizard dialog and write some data to it, triggering a slot
 # in the python code
 WizardShaftDlg = None
+
 
 class WizardShaftGui:
     def Activated(self):
@@ -185,10 +220,10 @@ class WizardShaftGui:
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
         MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Shaft Design Wizard")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Starts the shaft design wizard")
-        return {'Pixmap': IconPath,
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            "PartDesign_WizardShaft", "Starts the shaft design wizard"
+        )
+        return {"Pixmap": IconPath, "MenuText": MenuText, "ToolTip": ToolTip}
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
@@ -196,6 +231,7 @@ class WizardShaftGui:
     def __del__(self):
         global WizardShaftDlg
         WizardShaftDlg = None
+
 
 class WizardShaftGuiCallback:
     def Activated(self):
@@ -205,18 +241,21 @@ class WizardShaftGuiCallback:
 
     def isActive(self):
         global WizardShaftDlg
-        return (WizardShaftDlg is not None)
+        return WizardShaftDlg is not None
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaftCallBack", "Shaft design wizard...")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaftCallBack", "Start the shaft design wizard")
-        return {'Pixmap': IconPath,
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            "PartDesign_WizardShaftCallBack", "Shaft design wizard..."
+        )
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            "PartDesign_WizardShaftCallBack", "Start the shaft design wizard"
+        )
+        return {"Pixmap": IconPath, "MenuText": MenuText, "ToolTip": ToolTip}
 
-FreeCADGui.addCommand('PartDesign_WizardShaft', WizardShaftGui())
-FreeCADGui.addCommand('PartDesign_WizardShaftCallBack', WizardShaftGuiCallback())
 
-#Note: Start wizard in Python Console with
+FreeCADGui.addCommand("PartDesign_WizardShaft", WizardShaftGui())
+FreeCADGui.addCommand("PartDesign_WizardShaftCallBack", WizardShaftGuiCallback())
+
+# Note: Start wizard in Python Console with
 # Gui.runCommand('PartDesign_WizardShaft')

@@ -34,7 +34,8 @@
 class SoSFString;
 class SoSFColor;
 
-namespace Gui {
+namespace Gui
+{
 
 class SelectionChanges;
 
@@ -43,24 +44,24 @@ class SelectionChanges;
  * whether an object gets preselected.
  * @author Jürgen Riegel
  */
-class GuiExport SoFCPreselectionAction : public SoAction
+class GuiExport SoFCPreselectionAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCPreselectionAction);
 
 public:
-    SoFCPreselectionAction (const SelectionChanges &SelCh);
+    SoFCPreselectionAction(const SelectionChanges& SelCh);
     ~SoFCPreselectionAction() override;
 
     static void initClass();
     static void finish();
 
-    const SelectionChanges &SelChange;
+    const SelectionChanges& SelChange;
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -68,24 +69,24 @@ private:
  * whether an object gets selected.
  * @author Jürgen Riegel
  */
-class GuiExport SoFCSelectionAction : public SoAction
+class GuiExport SoFCSelectionAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCSelectionAction);
 
 public:
-    SoFCSelectionAction (const SelectionChanges &SelCh);
+    SoFCSelectionAction(const SelectionChanges& SelCh);
     ~SoFCSelectionAction() override;
 
     static void initClass();
     static void finish();
 
-    const SelectionChanges &SelChange;
+    const SelectionChanges& SelChange;
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -93,12 +94,12 @@ private:
  * whether selection is enabled or disabled.
  * @author Werner Mayer
  */
-class GuiExport SoFCEnableSelectionAction : public SoAction
+class GuiExport SoFCEnableSelectionAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCEnableSelectionAction);
 
 public:
-    SoFCEnableSelectionAction (const SbBool& sel);
+    SoFCEnableSelectionAction(const SbBool& sel);
     ~SoFCEnableSelectionAction() override;
 
     SbBool enabled;
@@ -107,10 +108,10 @@ public:
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -118,12 +119,12 @@ private:
  * whether preselection is enabled or disabled.
  * @author Werner Mayer
  */
-class GuiExport SoFCEnablePreselectionAction : public SoAction
+class GuiExport SoFCEnablePreselectionAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCEnablePreselectionAction);
 
 public:
-    SoFCEnablePreselectionAction (const SbBool& sel);
+    SoFCEnablePreselectionAction(const SbBool& sel);
     ~SoFCEnablePreselectionAction() override;
 
     SbBool enabled;
@@ -132,10 +133,10 @@ public:
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -143,12 +144,12 @@ private:
  * which selection color is used.
  * @author Werner Mayer
  */
-class GuiExport SoFCSelectionColorAction : public SoAction
+class GuiExport SoFCSelectionColorAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCSelectionColorAction);
 
 public:
-    SoFCSelectionColorAction (const SoSFColor& col);
+    SoFCSelectionColorAction(const SoSFColor& col);
     ~SoFCSelectionColorAction() override;
 
     SoSFColor selectionColor;
@@ -157,10 +158,10 @@ public:
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -168,12 +169,12 @@ private:
  * which highlight color is used.
  * @author Werner Mayer
  */
-class GuiExport SoFCHighlightColorAction : public SoAction
+class GuiExport SoFCHighlightColorAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCHighlightColorAction);
 
 public:
-    SoFCHighlightColorAction (const SoSFColor& col);
+    SoFCHighlightColorAction(const SoSFColor& col);
     ~SoFCHighlightColorAction() override;
 
     SoSFColor highlightColor;
@@ -182,10 +183,10 @@ public:
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -193,12 +194,12 @@ private:
  * when a document has been renamed.
  * @author Werner Mayer
  */
-class GuiExport SoFCDocumentAction : public SoAction
+class GuiExport SoFCDocumentAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCDocumentAction);
 
 public:
-    SoFCDocumentAction (const SoSFString& docName);
+    SoFCDocumentAction(const SoSFString& docName);
     ~SoFCDocumentAction() override;
 
     SoSFString documentName;
@@ -207,10 +208,10 @@ public:
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
 /**
@@ -218,12 +219,12 @@ private:
  * object and component at a certain position of an SoFCSelection node.
  * @author Werner Mayer
  */
-class GuiExport SoFCDocumentObjectAction : public SoAction
+class GuiExport SoFCDocumentObjectAction: public SoAction
 {
     SO_ACTION_HEADER(SoFCDocumentObjectAction);
 
 public:
-    SoFCDocumentObjectAction ();
+    SoFCDocumentObjectAction();
     ~SoFCDocumentObjectAction() override;
 
     void setHandled();
@@ -233,10 +234,10 @@ public:
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 
 public:
     SbString documentName;
@@ -244,32 +245,32 @@ public:
     SbString componentName;
 
 private:
-    SbBool _handled{false};
+    SbBool _handled {false};
 };
 
 /**
  * The SoGLSelectAction class is used to get all data under a selected area.
  * @author Werner Mayer
  */
-class GuiExport SoGLSelectAction : public SoAction
+class GuiExport SoGLSelectAction: public SoAction
 {
     SO_ACTION_HEADER(SoGLSelectAction);
 
 public:
-    SoGLSelectAction (const SbViewportRegion& region, const SbViewportRegion& select);
+    SoGLSelectAction(const SbViewportRegion& region, const SbViewportRegion& select);
     ~SoGLSelectAction() override;
 
     void setHandled();
     SbBool isHandled() const;
-    const SbViewportRegion& getViewportRegion () const;
+    const SbViewportRegion& getViewportRegion() const;
 
     static void initClass();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 
 public:
     std::vector<unsigned long> indices;
@@ -277,18 +278,18 @@ public:
 private:
     const SbViewportRegion& vpregion;
     const SbViewportRegion& vpselect;
-    SbBool _handled{false};
+    SbBool _handled {false};
 };
 
 /**
  * @author Werner Mayer
  */
-class GuiExport SoVisibleFaceAction : public SoAction
+class GuiExport SoVisibleFaceAction: public SoAction
 {
     SO_ACTION_HEADER(SoVisibleFaceAction);
 
 public:
-    SoVisibleFaceAction ();
+    SoVisibleFaceAction();
     ~SoVisibleFaceAction() override;
 
     void setHandled();
@@ -297,13 +298,13 @@ public:
     static void initClass();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 
 private:
-    SbBool _handled{false};
+    SbBool _handled {false};
 };
 
 class SoBoxSelectionRenderActionP;
@@ -311,25 +312,32 @@ class SoBoxSelectionRenderActionP;
  * The SoBoxSelectionRenderAction class renders the scene with highlighted boxes around selections.
  * @author Werner Mayer
  */
-class GuiExport SoBoxSelectionRenderAction : public SoGLRenderAction {
+class GuiExport SoBoxSelectionRenderAction: public SoGLRenderAction
+{
     using inherited = SoGLRenderAction;
 
     SO_ACTION_HEADER(SoBoxSelectionRenderAction);
 
 public:
     SoBoxSelectionRenderAction();
-    SoBoxSelectionRenderAction(const SbViewportRegion & viewportregion);
+    SoBoxSelectionRenderAction(const SbViewportRegion& viewportregion);
     ~SoBoxSelectionRenderAction() override;
 
     static void initClass();
 
-    void apply(SoNode * node) override;
-    void apply(SoPath * path) override;
-    void apply(const SoPathList & pathlist, SbBool obeysrules = false) override;
-    void setVisible(SbBool b) { hlVisible = b; }
-    SbBool isVisible() const { return hlVisible; }
-    void setColor(const SbColor & color);
-    const SbColor & getColor();
+    void apply(SoNode* node) override;
+    void apply(SoPath* path) override;
+    void apply(const SoPathList& pathlist, SbBool obeysrules = false) override;
+    void setVisible(SbBool b)
+    {
+        hlVisible = b;
+    }
+    SbBool isVisible() const
+    {
+        return hlVisible;
+    }
+    void setColor(const SbColor& color);
+    const SbColor& getColor();
     void setLinePattern(unsigned short pattern);
     unsigned short getLinePattern() const;
     void setLineWidth(const float width);
@@ -340,34 +348,34 @@ protected:
 
 private:
     void constructorCommon();
-    void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
+    void drawBoxes(SoPath* pathtothis, const SoPathList* pathlist);
 
-    SoBoxSelectionRenderActionP * pimpl;
+    SoBoxSelectionRenderActionP* pimpl;
 };
 
 /**
  * Helper class no notify nodes to update VBO.
  * @author Werner Mayer
  */
-class GuiExport SoUpdateVBOAction : public SoAction
+class GuiExport SoUpdateVBOAction: public SoAction
 {
     SO_ACTION_HEADER(SoUpdateVBOAction);
 
 public:
-    SoUpdateVBOAction ();
+    SoUpdateVBOAction();
     ~SoUpdateVBOAction() override;
 
     static void initClass();
     static void finish();
 
 protected:
-    void beginTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
 
 private:
-    static void callDoAction(SoAction *action,SoNode *node);
+    static void callDoAction(SoAction* action, SoNode* node);
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // _SoFCSelectionAction_h
+#endif  // _SoFCSelectionAction_h

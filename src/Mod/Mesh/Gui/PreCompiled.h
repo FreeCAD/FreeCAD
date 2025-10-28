@@ -45,7 +45,7 @@
 #include <Gui/InventorAll.h>
 
 #if defined(FC_OS_WIN32)
-#include <Windows.h>
+# include <Windows.h>
 #endif
 
 #endif  // MESHGUI_PRECOMPILED_H

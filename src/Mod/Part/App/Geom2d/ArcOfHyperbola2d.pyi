@@ -26,5 +26,4 @@ class ArcOfHyperbola2d(ArcOfConic2d):
     """The internal hyperbola representation"""
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...

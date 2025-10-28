@@ -74,22 +74,22 @@
 using namespace std;
 using namespace SketcherGui;
 
-#define CONSTRUCTION_UPDATE_ACTION(CLASS, ICON)                                                    \
-    /* This macro creates an updateAction() function that will toggle between normal &             \
-     * construction icon */                                                                        \
-    void CLASS::updateAction(int mode)                                                             \
-    {                                                                                              \
-        auto act = getAction();                                                                    \
-        if (act) {                                                                                 \
-            switch (static_cast<GeometryCreationMode>(mode)) {                                     \
-                case GeometryCreationMode::Normal:                                                 \
-                    act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON));                        \
-                    break;                                                                         \
-                case GeometryCreationMode::Construction:                                           \
-                    act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON "_Constr"));              \
-                    break;                                                                         \
-            }                                                                                      \
-        }                                                                                          \
+#define CONSTRUCTION_UPDATE_ACTION(CLASS, ICON) \
+    /* This macro creates an updateAction() function that will toggle between normal & \
+     * construction icon */ \
+    void CLASS::updateAction(int mode) \
+    { \
+        auto act = getAction(); \
+        if (act) { \
+            switch (static_cast<GeometryCreationMode>(mode)) { \
+                case GeometryCreationMode::Normal: \
+                    act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON)); \
+                    break; \
+                case GeometryCreationMode::Construction: \
+                    act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON "_Constr")); \
+                    break; \
+            } \
+        } \
     }
 
 namespace SketcherGui
@@ -168,8 +168,7 @@ public:
                 getAction()->setIcon(al[index]->icon());
                 break;
             case GeometryCreationMode::Construction:
-                al[0]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline_Constr"));
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline_Constr"));
                 al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine_Constr"));
                 getAction()->setIcon(al[index]->icon());
                 break;
@@ -228,8 +227,9 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Polyline");
-    sToolTipText =
-        QT_TR_NOOP("Creates a continuous polyline. Press the 'M' key to switch segment modes");
+    sToolTipText = QT_TR_NOOP(
+        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
+    );
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
@@ -298,14 +298,16 @@ public:
                 break;
             case GeometryCreationMode::Construction:
                 al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
-                al[1]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
                 al[2]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr")
+                );
                 al[3]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr")
+                );
                 al[4]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr")
+                );
                 getAction()->setIcon(al[index]->icon());
                 break;
         }
@@ -375,9 +377,12 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointArc, "Sketcher_Create3PointArc
 void CmdSketcherCreate3PointArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerArc>(
-                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerArc>(
+            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim
+        )
+    );
 }
 
 bool CmdSketcherCreate3PointArc::isActive()
@@ -516,20 +521,21 @@ public:
             case GeometryCreationMode::Normal:
                 al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
                 al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
-                al[2]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
-                al[3]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
+                al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
+                al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
                 getAction()->setIcon(al[index]->icon());
                 break;
             case GeometryCreationMode::Construction:
                 al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
                 al[1]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr")
+                );
                 al[2]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter_Constr")
+                );
                 al[3]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr")
+                );
                 getAction()->setIcon(al[index]->icon());
                 break;
         }
@@ -598,9 +604,12 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointCircle, "Sketcher_Create3Point
 void CmdSketcherCreate3PointCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerCircle>(
-                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerCircle>(
+            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim
+        )
+    );
 }
 
 bool CmdSketcherCreate3PointCircle::isActive()
@@ -670,9 +679,12 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseBy3Points, "Sketcher_CreateEl
 void CmdSketcherCreateEllipseBy3Points::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerEllipse>(
-                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerEllipse>(
+            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim
+        )
+    );
 }
 
 bool CmdSketcherCreateEllipseBy3Points::isActive()
@@ -718,16 +730,15 @@ public:
         switch (static_cast<GeometryCreationMode>(mode)) {
             case GeometryCreationMode::Normal:
                 al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
-                al[1]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
                 al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
                 getAction()->setIcon(al[index]->icon());
                 break;
             case GeometryCreationMode::Construction:
-                al[0]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
                 al[1]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr")
+                );
                 al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
                 getAction()->setIcon(al[index]->icon());
                 break;
@@ -766,9 +777,12 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateRectangle, "Sketcher_CreateRectangle
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerRectangle>(
-                        ConstructionMethods::RectangleConstructionMethod::Diagonal));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerRectangle>(
+            ConstructionMethods::RectangleConstructionMethod::Diagonal
+        )
+    );
 }
 
 bool CmdSketcherCreateRectangle::isActive()
@@ -799,9 +813,12 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateRectangleCenter, "Sketcher_CreateRec
 void CmdSketcherCreateRectangleCenter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerRectangle>(
-                        ConstructionMethods::RectangleConstructionMethod::CenterAndCorner));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerRectangle>(
+            ConstructionMethods::RectangleConstructionMethod::CenterAndCorner
+        )
+    );
 }
 
 bool CmdSketcherCreateRectangleCenter::isActive()
@@ -833,10 +850,13 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateOblong, "Sketcher_CreateOblong")
 void CmdSketcherCreateOblong::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerRectangle>(
-                        ConstructionMethods::RectangleConstructionMethod::Diagonal,
-                        true));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerRectangle>(
+            ConstructionMethods::RectangleConstructionMethod::Diagonal,
+            true
+        )
+    );
 }
 
 bool CmdSketcherCreateOblong::isActive()
@@ -895,17 +915,15 @@ public:
                 getAction()->setIcon(al[index]->icon());
                 break;
             case GeometryCreationMode::Construction:
-                al[0]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle_Constr"));
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle_Constr"));
                 al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSquare_Constr"));
-                al[2]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon_Constr"));
+                al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon_Constr"));
                 al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHexagon_Constr"));
-                al[4]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHeptagon_Constr"));
+                al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHeptagon_Constr"));
                 al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOctagon_Constr"));
                 al[6]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRegularPolygon_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRegularPolygon_Constr")
+                );
                 getAction()->setIcon(al[index]->icon());
                 break;
         }
@@ -1133,8 +1151,7 @@ void CmdSketcherCreateRegularPolygon::activated(int iMsg)
     // Pop-up asking for values
     SketcherRegularPolygonDialog srpd;
     if (srpd.exec() == QDialog::Accepted) {
-        ActivateHandler(getActiveGuiDocument(),
-                        std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
     }
 }
 
@@ -1301,22 +1318,28 @@ public:
         switch (static_cast<GeometryCreationMode>(mode)) {
             case GeometryCreationMode::Normal:
                 al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
-                al[1]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
                 al[2]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation"));
-                al[3]->setIcon(Gui::BitmapFactory().iconFromTheme(
-                    "Sketcher_CreatePeriodicBSplineByInterpolation"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation")
+                );
+                al[3]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePeriodicBSplineByInterpolation")
+                );
                 getAction()->setIcon(al[index]->icon());
                 break;
             case GeometryCreationMode::Construction:
                 al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
                 al[1]->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr"));
-                al[2]->setIcon(Gui::BitmapFactory().iconFromTheme(
-                    "Sketcher_CreateBSplineByInterpolation_Constr"));
-                al[3]->setIcon(Gui::BitmapFactory().iconFromTheme(
-                    "Sketcher_CreatePeriodicBSplineByInterpolation_Constr"));
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr")
+                );
+                al[2]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation_Constr")
+                );
+                al[3]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme(
+                        "Sketcher_CreatePeriodicBSplineByInterpolation_Constr"
+                    )
+                );
                 getAction()->setIcon(al[index]->icon());
                 break;
         }
@@ -1354,9 +1377,12 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSpline, "Sketcher_CreateBSpline")
 void CmdSketcherCreateBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerBSpline>(
-                        ConstructionMethods::BSplineConstructionMethod::ControlPoints));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerBSpline>(
+            ConstructionMethods::BSplineConstructionMethod::ControlPoints
+        )
+    );
 }
 
 bool CmdSketcherCreateBSpline::isActive()
@@ -1391,10 +1417,13 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSpline, "Sketcher_Create_Pe
 void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerBSpline>(
-                        ConstructionMethods::BSplineConstructionMethod::ControlPoints,
-                        true));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerBSpline>(
+            ConstructionMethods::BSplineConstructionMethod::ControlPoints,
+            true
+        )
+    );
 }
 
 bool CmdSketcherCreatePeriodicBSpline::isActive()
@@ -1422,15 +1451,15 @@ CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation
     eType = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSplineByInterpolation,
-                           "Sketcher_CreateBSplineByInterpolation")
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSplineByInterpolation, "Sketcher_CreateBSplineByInterpolation")
 
 void CmdSketcherCreateBSplineByInterpolation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerBSpline>(
-                        ConstructionMethods::BSplineConstructionMethod::Knots));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::Knots)
+    );
 }
 
 bool CmdSketcherCreateBSplineByInterpolation::isActive()
@@ -1459,17 +1488,22 @@ CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplin
     eType = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSplineByInterpolation,
-                           "Sketcher_CreatePeriodicBSplineByInterpolation")
+CONSTRUCTION_UPDATE_ACTION(
+    CmdSketcherCreatePeriodicBSplineByInterpolation,
+    "Sketcher_CreatePeriodicBSplineByInterpolation"
+)
 
 void CmdSketcherCreatePeriodicBSplineByInterpolation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerBSpline>(
-                        ConstructionMethods::BSplineConstructionMethod::Knots,
-                        true));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerBSpline>(
+            ConstructionMethods::BSplineConstructionMethod::Knots,
+            true
+        )
+    );
 }
 
 bool CmdSketcherCreatePeriodicBSplineByInterpolation::isActive()
@@ -1534,9 +1568,10 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerFillet>(
-                        ConstructionMethods::FilletConstructionMethod::Fillet));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerFillet>(ConstructionMethods::FilletConstructionMethod::Fillet)
+    );
 }
 
 bool CmdSketcherCreateFillet::isActive()
@@ -1565,9 +1600,10 @@ CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
 void CmdSketcherCreateChamfer::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerFillet>(
-                        ConstructionMethods::FilletConstructionMethod::Chamfer));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerFillet>(ConstructionMethods::FilletConstructionMethod::Chamfer)
+    );
 }
 
 bool CmdSketcherCreateChamfer::isActive()
@@ -1712,8 +1748,9 @@ public:
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
         sMenuText = QT_TR_NOOP("External Geometry");
-        sToolTipText =
-            QT_TR_NOOP("Creates sketch elements linked to geometry defined outside the sketch");
+        sToolTipText = QT_TR_NOOP(
+            "Creates sketch elements linked to geometry defined outside the sketch"
+        );
         sWhatsThis = "Sketcher_CompExternal";
         sStatusTip = sToolTipText;
         sAccel = "G, X";
@@ -1785,8 +1822,10 @@ void CmdSketcherProjection::activated(int iMsg)
     bool extGeoRef = Gui::WindowParameter::getDefaultParameter()
                          ->GetGroup("Mod/Sketcher/General")
                          ->GetBool("AlwaysExtGeoReference", false);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerExternal>(extGeoRef, false));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerExternal>(extGeoRef, false)
+    );
 }
 
 bool CmdSketcherProjection::isActive()
@@ -1804,8 +1843,7 @@ CmdSketcherIntersection::CmdSketcherIntersection()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("External Intersection");
-    sToolTipText =
-        QT_TR_NOOP("Creates the intersection of external geometry with the sketch plane");
+    sToolTipText = QT_TR_NOOP("Creates the intersection of external geometry with the sketch plane");
     sWhatsThis = "Sketcher_Intersection";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Intersection";
@@ -1821,8 +1859,10 @@ void CmdSketcherIntersection::activated(int iMsg)
     bool extGeoRef = Gui::WindowParameter::getDefaultParameter()
                          ->GetGroup("Mod/Sketcher/General")
                          ->GetBool("AlwaysExtGeoReference", false);
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerExternal>(extGeoRef, true));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        std::make_unique<DrawSketchHandlerExternal>(extGeoRef, true)
+    );
 }
 
 bool CmdSketcherIntersection::isActive()

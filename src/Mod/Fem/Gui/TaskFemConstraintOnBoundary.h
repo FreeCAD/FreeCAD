@@ -48,9 +48,11 @@ class TaskFemConstraintOnBoundary: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintOnBoundary(ViewProviderFemConstraint* ConstraintView,
-                                         QWidget* parent = nullptr,
-                                         const char* pixmapname = "");
+    explicit TaskFemConstraintOnBoundary(
+        ViewProviderFemConstraint* ConstraintView,
+        QWidget* parent = nullptr,
+        const char* pixmapname = ""
+    );
     ~TaskFemConstraintOnBoundary() override;
 
 protected Q_SLOTS:

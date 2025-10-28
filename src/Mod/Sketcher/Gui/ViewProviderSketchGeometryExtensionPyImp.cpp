@@ -38,9 +38,11 @@ std::string ViewProviderSketchGeometryExtensionPy::representation() const
     return str.str();
 }
 
-PyObject* ViewProviderSketchGeometryExtensionPy::PyMake(struct _typeobject*,
-                                                        PyObject*,
-                                                        PyObject*)  // Python wrapper
+PyObject* ViewProviderSketchGeometryExtensionPy::PyMake(
+    struct _typeobject*,
+    PyObject*,
+    PyObject*
+)  // Python wrapper
 {
     // create a new instance of PointPy and the Twin object
     return new ViewProviderSketchGeometryExtensionPy(new ViewProviderSketchGeometryExtension);
@@ -62,10 +64,12 @@ int ViewProviderSketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kw
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError,
-                    "ViewProviderSketchGeometryExtension constructor accepts:\n"
-                    "-- empty parameter list\n"
-                    "-- int\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "ViewProviderSketchGeometryExtension constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- int\n"
+    );
     return -1;
 }
 
@@ -84,8 +88,7 @@ PyObject* ViewProviderSketchGeometryExtensionPy::getCustomAttributes(const char*
     return nullptr;
 }
 
-int ViewProviderSketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/,
-                                                               PyObject* /*obj*/)
+int ViewProviderSketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

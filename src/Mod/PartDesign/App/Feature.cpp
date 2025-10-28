@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-# include <BRep_Tool.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <Standard_Failure.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <Standard_Failure.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
 
 
 #include "App/Datums.h"
@@ -47,25 +47,35 @@
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 bool getPDRefineModelParameter()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/PartDesign");
     return hGrp->GetBool("RefineModel", true);
 }
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
+PROPERTY_SOURCE(PartDesign::Feature, Part::Feature)
 
 Feature::Feature()
 {
-    ADD_PROPERTY(BaseFeature,(nullptr));
-    ADD_PROPERTY_TYPE(_Body,(nullptr),"Base",(App::PropertyType)(
-                App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
-    ADD_PROPERTY(SuppressedShape,(TopoShape()));
+    ADD_PROPERTY(BaseFeature, (nullptr));
+    ADD_PROPERTY_TYPE(
+        _Body,
+        (nullptr),
+        "Base",
+        (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden | App::Prop_Output
+                            | App::Prop_Transient),
+        0
+    );
+    ADD_PROPERTY(SuppressedShape, (TopoShape()));
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 
@@ -133,16 +143,16 @@ void Feature::updateSuppressedShape()
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
     std::vector<TopoShape> generated;
-    if(!shape.isNull()) {
+    if (!shape.isNull()) {
         unsigned count = shape.countSubShapes(TopAbs_FACE);
-        for(unsigned i=1; i<=count; ++i) {
-            Data::MappedName mapped = shape.getMappedName(
-                    Data::IndexedName::fromConst("Face", i));
-            if(mapped && shape.isElementGenerated(mapped))
+        for (unsigned i = 1; i <= count; ++i) {
+            Data::MappedName mapped = shape.getMappedName(Data::IndexedName::fromConst("Face", i));
+            if (mapped && shape.isElementGenerated(mapped)) {
                 generated.push_back(shape.getSubTopoShape(TopAbs_FACE, i));
+            }
         }
     }
-    if(!generated.empty()) {
+    if (!generated.empty()) {
         res.makeElementCompound(generated);
         res.setPlacement(Placement.getValue());
     }
@@ -151,8 +161,9 @@ void Feature::updateSuppressedShape()
 
 short Feature::mustExecute() const
 {
-    if (BaseFeature.isTouched())
+    if (BaseFeature.isTouched()) {
         return 1;
+    }
     return Part::Feature::mustExecute();
 }
 
@@ -177,12 +188,10 @@ TopoShape Feature::getSolid(const TopoShape& shape) const
     return shape;
 }
 
-void Feature::onChanged(const App::Property *prop)
+void Feature::onChanged(const App::Property* prop)
 {
-    if (!this->isRestoring()
-        && this->getDocument()
-        && !this->getDocument()->isPerformingTransaction()
-    ) {
+    if (!this->isRestoring() && this->getDocument()
+        && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &Visibility || prop == &BaseFeature) {
             auto body = Body::findBodyOf(this);
             if (body) {
@@ -191,22 +200,25 @@ void Feature::onChanged(const App::Property *prop)
                     body->Group.find(this->getNameInDocument(), &idx);
                     int baseidx = -1;
                     body->Group.find(BaseFeature.getValue()->getNameInDocument(), &idx);
-                    if (idx >= 0 && baseidx >= 0 && baseidx+1 != idx)
+                    if (idx >= 0 && baseidx >= 0 && baseidx + 1 != idx) {
                         body->insertObject(BaseFeature.getValue(), this);
+                    }
                 }
             }
-        } else if (prop == &ShapeMaterial) {
+        }
+        else if (prop == &ShapeMaterial) {
             auto body = Body::findBodyOf(this);
             if (body) {
-                if (body->ShapeMaterial.getValue().getUUID()
-                    != ShapeMaterial.getValue().getUUID()) {
+                if (body->ShapeMaterial.getValue().getUUID() != ShapeMaterial.getValue().getUUID()) {
                     body->ShapeMaterial.setValue(ShapeMaterial.getValue());
                 }
             }
-        } else if (prop == &Suppressed){
+        }
+        else if (prop == &Suppressed) {
             if (Suppressed.getValue()) {
                 SuppressedPlacement = Placement.getValue();
-            } else {
+            }
+            else {
                 Placement.setValue(SuppressedPlacement);
                 SuppressedPlacement = Base::Placement();
             }
@@ -218,10 +230,11 @@ void Feature::onChanged(const App::Property *prop)
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
 {
     int result = 0;
-    if (shape.IsNull())
+    if (shape.IsNull()) {
         return result;
+    }
     TopExp_Explorer xp;
-    xp.Init(shape,type);
+    xp.Init(shape, type);
     for (; xp.More(); xp.Next()) {
         result++;
     }
@@ -259,8 +272,9 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
     if (!f.Infinite()) {
         TopExp_Explorer exp;
         exp.Init(f, TopAbs_VERTEX);
-        if (exp.More())
+        if (exp.More()) {
             return BRep_Tool::Pnt(TopoDS::Vertex(exp.Current()));
+        }
         // Else try the other method
     }
 
@@ -269,19 +283,21 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
     throw Base::NotImplementedError("getPointFromFace(): Not implemented yet for this case");
 }
 
-Part::Feature* Feature::getBaseObject(bool silent) const {
+Part::Feature* Feature::getBaseObject(bool silent) const
+{
     App::DocumentObject* BaseLink = BaseFeature.getValue();
     Part::Feature* BaseObject = nullptr;
-    const char *err = nullptr;
+    const char* err = nullptr;
 
     if (BaseLink) {
         if (BaseLink->isDerivedFrom<Part::Feature>()) {
             BaseObject = static_cast<Part::Feature*>(BaseLink);
         }
         if (!BaseObject) {
-            err =  "No base feature linked";
+            err = "No base feature linked";
         }
-    } else {
+    }
+    else {
         err = "Base property not set";
     }
 
@@ -293,24 +309,27 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
     return BaseObject;
 }
 
-const TopoDS_Shape& Feature::getBaseShape() const {
+const TopoDS_Shape& Feature::getBaseShape() const
+{
     const Part::Feature* BaseObject = getBaseObject();
 
-    if (!BaseObject)
+    if (!BaseObject) {
         throw Base::ValueError("Base feature's shape is not defined");
+    }
 
-    if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()||
-        BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>())
-    {
+    if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()
+        || BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>()) {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
 
     const TopoDS_Shape& result = BaseObject->Shape.getValue();
-    if (result.IsNull())
+    if (result.IsNull()) {
         throw Base::ValueError("Base feature's shape is invalid");
-    TopExp_Explorer xp (result, TopAbs_SOLID);
-    if (!xp.More())
+    }
+    TopExp_Explorer xp(result, TopAbs_SOLID);
+    if (!xp.More()) {
         throw Base::ValueError("Base feature's shape is not a solid");
+    }
 
     return result;
 }
@@ -356,17 +375,17 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
     return result;
 }
 
-void Feature::getGeneratedShapes(std::vector<int>& faces,
-                                 std::vector<int>& edges,
-                                 std::vector<int>& vertices) const
+void Feature::getGeneratedShapes(
+    std::vector<int>& faces,
+    std::vector<int>& edges,
+    std::vector<int>& vertices
+) const
 {
-    static const auto addAllSubShapesToSet = [](
-        const Part::TopoShape& shape,
-        const Part::TopoShape& face,
-        TopAbs_ShapeEnum type,
-        std::set<int>& set
-    ) {
-        for (auto &subShape : face.getSubShapes(type)) {
+    static const auto addAllSubShapesToSet = [](const Part::TopoShape& shape,
+                                                const Part::TopoShape& face,
+                                                TopAbs_ShapeEnum type,
+                                                std::set<int>& set) {
+        for (auto& subShape : face.getSubShapes(type)) {
             if (int subShapeId = shape.findShape(subShape); subShapeId > 0) {
                 set.insert(subShapeId);
             }
@@ -403,38 +422,39 @@ void Feature::updatePreviewShape()
 
 PyObject* Feature::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePy(this),true);
+        PythonObject = Py::Object(new FeaturePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->isDerivedFrom<App::DatumElement>() ||
-           feature->isDerivedFrom<Part::Datum>();
+    return feature->isDerivedFrom<App::DatumElement>() || feature->isDerivedFrom<Part::Datum>();
 }
 
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
-    if (!plane)
+    if (!plane) {
         throw Base::ValueError("Feature: Null object");
+    }
 
     Base::Vector3d pos = plane->Placement.getValue().getPosition();
     Base::Rotation rot = plane->Placement.getValue().getRotation();
-    Base::Vector3d normal(0,0,1);
+    Base::Vector3d normal(0, 0, 1);
     rot.multVec(normal, normal);
-    return gp_Pln(gp_Pnt(pos.x,pos.y,pos.z), gp_Dir(normal.x,normal.y,normal.z));
+    return gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(normal.x, normal.y, normal.z));
 }
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
-    if (!builder.IsDone())
+    if (!builder.IsDone()) {
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
+    }
 
     return builder.Shape();
 }
@@ -449,29 +469,36 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
     return TopoShape(obj->getID(), nullptr, builder.Shape());
 }
 
-Body* Feature::getFeatureBody() const {
+Body* Feature::getFeatureBody() const
+{
 
     auto body = freecad_cast<Body*>(_Body.getValue());
-    if(body)
+    if (body) {
         return body;
+    }
 
     auto list = getInList();
     for (auto in : list) {
-        if(in->isDerivedFrom<Body>() && //is Body?
-           static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
+        if (in->isDerivedFrom<Body>() &&                // is Body?
+            static_cast<Body*>(in)->hasObject(this)) {  // is part of this Body?
 
-               return static_cast<Body*>(in);
+            return static_cast<Body*>(in);
         }
     }
 
     return nullptr;
 }
 
-App::DocumentObject *Feature::getSubObject(const char *subname,
-        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+App::DocumentObject* Feature::getSubObject(
+    const char* subname,
+    PyObject** pyObj,
+    Base::Matrix4D* pmat,
+    bool transform,
+    int depth
+) const
 {
     if (subname && subname != Data::findElementName(subname)) {
-        const char * dot = strchr(subname,'.');
+        const char* dot = strchr(subname, '.');
         if (dot) {
             auto body = PartDesign::Body::findBodyOf(this);
             if (body) {
@@ -491,12 +518,14 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
                         // transform' is requested, we need to actively apply
                         // an inverse transform.
                         _mat = Placement.getValue().inverse().toMatrix();
-                        if (pmat)
+                        if (pmat) {
                             *pmat *= _mat;
-                        else
+                        }
+                        else {
                             pmat = &_mat;
+                        }
                     }
-                    return feat->getSubObject(dot+1, pyObj, pmat, true, depth+1);
+                    return feat->getSubObject(dot + 1, pyObj, pmat, true, depth + 1);
                 }
             }
         }
@@ -505,18 +534,23 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 }
 
 
-}//namespace PartDesign
+}  // namespace PartDesign
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeaturePython, PartDesign::Feature)
-template<> const char* PartDesign::FeaturePython::getViewProviderName() const {
+template<>
+const char* PartDesign::FeaturePython::getViewProviderName() const
+{
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeaturePython::getPyObject() {
+template<>
+PyObject* PartDesign::FeaturePython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -524,5 +558,4 @@ template<> PyObject* PartDesign::FeaturePython::getPyObject() {
 
 // explicit template instantiation
 template class PartDesignExport FeaturePythonT<PartDesign::Feature>;
-}
-
+}  // namespace App

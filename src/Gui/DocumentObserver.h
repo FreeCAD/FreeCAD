@@ -27,7 +27,10 @@
 #include <boost/signals2.hpp>
 
 
-namespace App { class Property; }
+namespace App
+{
+class Property;
+}
 namespace Gui
 {
 class Document;
@@ -75,8 +78,8 @@ private:
 
 /**
  * The ViewProviderT class is a helper class to store the names of a view provider and its document.
- * This can be useful when you cannot rely on that the document or the object still exists when you have to
- * access it.
+ * This can be useful when you cannot rely on that the document or the object still exists when you
+ * have to access it.
  *
  * @author Werner Mayer
  */
@@ -88,15 +91,15 @@ public:
     /*! Constructor */
     ViewProviderT(const ViewProviderT&);
     /*! Constructor */
-    ViewProviderT(ViewProviderT &&);
+    ViewProviderT(ViewProviderT&&);
     /*! Constructor */
     explicit ViewProviderT(const ViewProviderDocumentObject*);
     /*! Destructor */
     ~ViewProviderT();
     /*! Assignment operator */
-    ViewProviderT &operator=(const ViewProviderT&);
+    ViewProviderT& operator=(const ViewProviderT&);
     /*! Assignment operator */
-    ViewProviderT &operator=(ViewProviderT &&);
+    ViewProviderT& operator=(ViewProviderT&&);
     /*! Assignment operator */
     void operator=(const ViewProviderDocumentObject*);
     /*! Equality operator */
@@ -105,7 +108,7 @@ public:
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
-    const std::string &getDocumentName() const;
+    const std::string& getDocumentName() const;
     /*! Get the Gui::Document as Python command. */
     std::string getGuiDocumentPython() const;
     /*! Get the App::Document as Python command. */
@@ -113,7 +116,7 @@ public:
     /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
     ViewProviderDocumentObject* getViewProvider() const;
     /*! Get the name of the document object. */
-    const std::string &getObjectName() const;
+    const std::string& getObjectName() const;
     /*! Get the document object as Python command. */
     std::string getObjectPython() const;
     /*! Get a pointer to the document or 0 if it doesn't exist any more or the type doesn't match. */
@@ -175,8 +178,8 @@ class GuiExport ViewProviderWeakPtrT
 public:
     explicit ViewProviderWeakPtrT(ViewProviderDocumentObject*);
 
-    ViewProviderWeakPtrT(ViewProviderWeakPtrT &&);
-    ViewProviderWeakPtrT &operator=(ViewProviderWeakPtrT &&);
+    ViewProviderWeakPtrT(ViewProviderWeakPtrT&&);
+    ViewProviderWeakPtrT& operator=(ViewProviderWeakPtrT&&);
 
     FC_DISABLE_COPY(ViewProviderWeakPtrT);
 
@@ -196,7 +199,7 @@ public:
      * \brief operator =
      * Assignment operator
      */
-    ViewProviderWeakPtrT& operator= (ViewProviderDocumentObject* p);
+    ViewProviderWeakPtrT& operator=(ViewProviderDocumentObject* p);
     /*!
      * \brief operator *
      * \return pointer to the document
@@ -211,12 +214,12 @@ public:
      * \brief operator ==
      * \return true if both objects are equal, false otherwise
      */
-    bool operator== (const ViewProviderWeakPtrT& p) const noexcept;
+    bool operator==(const ViewProviderWeakPtrT& p) const noexcept;
     /*!
      * \brief operator !=
      * \return true if both objects are inequal, false otherwise
      */
-    bool operator!= (const ViewProviderWeakPtrT& p) const noexcept;
+    bool operator!=(const ViewProviderWeakPtrT& p) const noexcept;
     /*! Get a pointer to the object or 0 if it doesn't exist any more or the type doesn't match. */
     template<typename T>
     inline T* get() const noexcept
@@ -234,33 +237,37 @@ private:
 /**
  * @brief The WeakPtrT class
  */
-template <class T>
+template<class T>
 class WeakPtrT
 {
 public:
-    explicit WeakPtrT(T* t) : ptr(t) {
-    }
+    explicit WeakPtrT(T* t)
+        : ptr(t)
+    {}
     ~WeakPtrT() = default;
 
     /*!
      * \brief reset
      * Releases the reference to the managed object. After the call *this manages no object.
      */
-    void reset() {
+    void reset()
+    {
         ptr.reset();
     }
     /*!
      * \brief expired
      * \return true if the managed object has already been deleted, false otherwise.
      */
-    bool expired() const {
+    bool expired() const
+    {
         return ptr.expired();
     }
     /*!
      * \brief operator =
      * Assignment operator
      */
-    WeakPtrT<T>& operator= (T* p) {
+    WeakPtrT<T>& operator=(T* p)
+    {
         ptr = p;
         return *this;
     }
@@ -268,28 +275,32 @@ public:
      * \brief operator *
      * \return pointer to the view provider
      */
-    T* operator*() const {
+    T* operator*() const
+    {
         return ptr.get<T>();
     }
     /*!
      * \brief operator ->
      * \return pointer to the view provider
      */
-    T* operator->() const {
+    T* operator->() const
+    {
         return ptr.get<T>();
     }
     /*!
      * \brief operator ==
      * \return true if both objects are equal, false otherwise
      */
-    bool operator== (const WeakPtrT<T>& p) const {
+    bool operator==(const WeakPtrT<T>& p) const
+    {
         return ptr == p.ptr;
     }
     /*!
      * \brief operator !=
      * \return true if both objects are inequal, false otherwise
      */
-    bool operator!= (const WeakPtrT<T>& p) const {
+    bool operator!=(const WeakPtrT<T>& p) const
+    {
         return ptr != p.ptr;
     }
     /*! Get a pointer to the object or 0 if it doesn't exist any more. */
@@ -307,8 +318,8 @@ private:
 };
 
 #ifdef _MSC_VER
-#  pragma warning(push)
-#  pragma warning(disable: 4251)  // MSVC emits warning C4251 too conservatively for our use-case
+# pragma warning(push)
+# pragma warning(disable : 4251)  // MSVC emits warning C4251 too conservatively for our use-case
 #endif
 
 /**
@@ -342,8 +353,7 @@ private:
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const ViewProviderDocumentObject& Obj);
     /** The property of an observed object has changed */
-    virtual void slotChangedObject(const ViewProviderDocumentObject& Obj,
-                                   const App::Property& Prop);
+    virtual void slotChangedObject(const ViewProviderDocumentObject& Obj, const App::Property& Prop);
     /** Notifies when the object has been relabeled. */
     virtual void slotRelabelObject(const ViewProviderDocumentObject& Obj);
     /** Notifies when the object has been activated. */
@@ -374,9 +384,9 @@ private:
 };
 
 #ifdef _MSC_VER
-#  pragma warning(pop)
+# pragma warning(pop)
 #endif
 
-} //namespace Gui
+}  // namespace Gui
 
-#endif // GUI_DOCUMENTOBSERVER_H
+#endif  // GUI_DOCUMENTOBSERVER_H

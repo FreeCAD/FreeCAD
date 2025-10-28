@@ -33,7 +33,7 @@ namespace Gui
 
 class NavigationAnimation;
 
-class GuiExport NavigationAnimator : public QObject
+class GuiExport NavigationAnimator: public QObject
 {
     Q_OBJECT
 public:
@@ -48,6 +48,6 @@ private:
     std::shared_ptr<NavigationAnimation> activeAnimation;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_NAVIGATIONANIMATOR_H
+#endif  // GUI_NAVIGATIONANIMATOR_H

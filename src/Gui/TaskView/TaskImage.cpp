@@ -419,9 +419,11 @@ void TaskImage::updatePlacement()
     }
     // NOLINTEND
 
-    Base::Vector3d offset = Base::Vector3d(ui->spinBoxX->value().getValue(),
-                                           ui->spinBoxY->value().getValue(),
-                                           ui->spinBoxZ->value().getValue());
+    Base::Vector3d offset = Base::Vector3d(
+        ui->spinBoxX->value().getValue(),
+        ui->spinBoxY->value().getValue(),
+        ui->spinBoxZ->value().getValue()
+    );
     offset = rot.multVec(offset);
     Pos = Base::Placement(offset, rot);
 
@@ -448,22 +450,24 @@ void TaskImage::updateIcon()
     }
 
     ui->previewLabel->setPixmap(
-        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size()));
+        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size())
+    );
 }
 
 // ----------------------------------------------------------------------------
 
-InteractiveScale::InteractiveScale(View3DInventorViewer* view,
-                                   ViewProvider* vp,
-                                   const Base::Placement& plc)  // NOLINT
+InteractiveScale::InteractiveScale(
+    View3DInventorViewer* view,
+    ViewProvider* vp,
+    const Base::Placement& plc
+)  // NOLINT
     : active(false)
     , placement(plc)
     , viewer(view)
     , viewProv(vp)
     , midPoint(SbVec3f(0, 0, 0))
 {
-    measureLabel =
-        new EditableDatumLabel(viewer, placement, SbColor(1.0F, 0.149F, 0.0F));  // NOLINT
+    measureLabel = new EditableDatumLabel(viewer, placement, SbColor(1.0F, 0.149F, 0.0F));  // NOLINT
 }
 
 InteractiveScale::~InteractiveScale()
@@ -475,12 +479,12 @@ void InteractiveScale::activate()
 {
     if (viewer) {
         viewer->setEditing(true);
-        viewer->addEventCallback(SoLocation2Event::getClassTypeId(),
-                                 InteractiveScale::getMousePosition,
-                                 this);
-        viewer->addEventCallback(SoButtonEvent::getClassTypeId(),
-                                 InteractiveScale::soEventFilter,
-                                 this);
+        viewer->addEventCallback(
+            SoLocation2Event::getClassTypeId(),
+            InteractiveScale::getMousePosition,
+            this
+        );
+        viewer->addEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
         active = true;
@@ -493,12 +497,16 @@ void InteractiveScale::deactivate()
         points.clear();
         measureLabel->deactivate();
         viewer->setEditing(false);
-        viewer->removeEventCallback(SoLocation2Event::getClassTypeId(),
-                                    InteractiveScale::getMousePosition,
-                                    this);
-        viewer->removeEventCallback(SoButtonEvent::getClassTypeId(),
-                                    InteractiveScale::soEventFilter,
-                                    this);
+        viewer->removeEventCallback(
+            SoLocation2Event::getClassTypeId(),
+            InteractiveScale::getMousePosition,
+            this
+        );
+        viewer->removeEventCallback(
+            SoButtonEvent::getClassTypeId(),
+            InteractiveScale::soEventFilter,
+            this
+        );
         viewer->setSelectionEnabled(true);
         viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
         active = false;
@@ -570,8 +578,10 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             Q_EMIT enableApplyBtn();
         }
         else {
-            Base::Console().warning(std::string("Image scale"),
-                                    "The second point is too close. Retry!\n");
+            Base::Console().warning(
+                std::string("Image scale"),
+                "The second point is too close. Retry!\n"
+            );
         }
     }
 }

@@ -31,8 +31,10 @@ AttacherSubObjectPlacement::AttacherSubObjectPlacement()
     attacher->setUp({}, Attacher::mmMidpoint);
 }
 
-Base::Placement AttacherSubObjectPlacement::calculate(App::SubObjectT object,
-                                                         Base::Placement basePlacement) const
+Base::Placement AttacherSubObjectPlacement::calculate(
+    App::SubObjectT object,
+    Base::Placement basePlacement
+) const
 {
     attacher->setReferences({object});
 
@@ -47,7 +49,7 @@ std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentOb
         const auto shape = feature->Shape.getShape();
 
         if (const auto cog = shape.centerOfGravity()) {
-            const Base::Placement comPlacement { *cog, Base::Rotation { } };
+            const Base::Placement comPlacement {*cog, Base::Rotation {}};
 
             return (feature->Placement.getValue().inverse() * comPlacement).getPosition();
         }

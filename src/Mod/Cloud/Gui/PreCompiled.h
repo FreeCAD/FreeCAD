@@ -44,7 +44,7 @@
 #include <vector>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // Qt Toolkit

@@ -29,9 +29,10 @@
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderPrimitive : public ViewProviderPart
+class PartGuiExport ViewProviderPrimitive: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPrimitive);
 
@@ -51,8 +52,7 @@ private:
     ViewProviderAttachExtension extension;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPRIMITIVE_H
-
+#endif  // PARTGUI_VIEWPROVIDERPRIMITIVE_H

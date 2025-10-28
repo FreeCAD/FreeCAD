@@ -83,8 +83,9 @@ void ToolHandler::deactivate()
 unsigned long ToolHandler::getCrosshairColor()
 {
     unsigned long color = 0xFFFFFFFF;  // white
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     color = hGrp->GetUnsigned("CursorCrosshairColor", color);
     // from rgba to rgb
     color = (color >> 8) & 0xFFFFFF;
@@ -109,10 +110,12 @@ void ToolHandler::setCrosshairCursor(const char* svgName)
     setCrosshairCursor(cursorName);
 }
 
-void ToolHandler::setSvgCursor(const QString& cursorName,
-                                     int x,
-                                     int y,
-                                     const std::map<unsigned long, unsigned long>& colorMapping)
+void ToolHandler::setSvgCursor(
+    const QString& cursorName,
+    int x,
+    int y,
+    const std::map<unsigned long, unsigned long>& colorMapping
+)
 {
     // The TechDraw_Pointer_*.svg icons have a default size of 64x64. When directly creating
     // them with a size of 32x32 they look very bad.
@@ -131,9 +134,11 @@ void ToolHandler::setSvgCursor(const QString& cursorName,
     }
 #endif
 
-    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(),
-                                                         QSizeF{cursorSize, cursorSize},
-                                                         colorMapping);
+    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(
+        cursorName.toStdString().c_str(),
+        QSizeF {cursorSize, cursorSize},
+        colorMapping
+    );
     if (isRatioOne) {
         pointer = pointer.scaled(32, 32);
     }

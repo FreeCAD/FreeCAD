@@ -36,11 +36,13 @@ PROPERTY_SOURCE(Path::FeatureCompound, Path::Feature)
 FeatureCompound::FeatureCompound()
 {
     ADD_PROPERTY_TYPE(Group, (nullptr), "Base", Prop_None, "Ordered list of paths to combine");
-    ADD_PROPERTY_TYPE(UsePlacements,
-                      (false),
-                      "Base",
-                      Prop_None,
-                      "Specifies if the placements of children must be computed");
+    ADD_PROPERTY_TYPE(
+        UsePlacements,
+        (false),
+        "Base",
+        Prop_None,
+        "Specifies if the placements of children must be computed"
+    );
 }
 
 FeatureCompound::~FeatureCompound()
@@ -53,11 +55,10 @@ App::DocumentObjectExecReturn* FeatureCompound::execute()
 
     for (std::vector<DocumentObject*>::const_iterator it = Paths.begin(); it != Paths.end(); ++it) {
         if ((*it)->isDerivedFrom<Path::Feature>()) {
-            const std::vector<Command*>& cmds =
-                static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
+            const std::vector<Command*>& cmds
+                = static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
             const Base::Placement pl = static_cast<Path::Feature*>(*it)->Placement.getValue();
-            for (std::vector<Command*>::const_iterator it2 = cmds.begin(); it2 != cmds.end();
-                 ++it2) {
+            for (std::vector<Command*>::const_iterator it2 = cmds.begin(); it2 != cmds.end(); ++it2) {
                 if (UsePlacements.getValue()) {
                     result.addCommand((*it2)->transform(pl));
                 }

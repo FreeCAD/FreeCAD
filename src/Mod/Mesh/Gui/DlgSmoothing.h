@@ -29,7 +29,7 @@
 #include <Gui/TaskView/TaskView.h>
 
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 class QButtonGroup;

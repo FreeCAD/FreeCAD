@@ -32,4 +32,3 @@
 #include <Mod/Part/App/OpenCascadeAll.h>
 
 #endif
-

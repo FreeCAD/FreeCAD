@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -66,20 +65,24 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     static const char* sgroup = "Selection";
     static const char* osgroup = "Object Style";
 
-    ADD_PROPERTY_TYPE(Transparency,
-                      (initialTransparency),
-                      osgroup,
-                      App::Prop_None,
-                      "Set object transparency");
+    ADD_PROPERTY_TYPE(
+        Transparency,
+        (initialTransparency),
+        osgroup,
+        App::Prop_None,
+        "Set object transparency"
+    );
     Transparency.setConstraints(&intPercent);
 
     ADD_PROPERTY_TYPE(ShapeAppearance, (mat), osgroup, App::Prop_None, "Shape appearance");
     ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
-    ADD_PROPERTY_TYPE(Selectable,
-                      (true),
-                      sgroup,
-                      App::Prop_None,
-                      "Set if the object is selectable in the 3d view");
+    ADD_PROPERTY_TYPE(
+        Selectable,
+        (true),
+        sgroup,
+        App::Prop_None,
+        "Set if the object is selectable in the 3d view"
+    );
 
     pickStyle = new SoPickStyle();
     pickStyle->ref();
@@ -113,8 +116,9 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     return hGrp->GetBool("EnableSelection", true);
 }
 
@@ -165,8 +169,7 @@ void ViewProviderGeometryObject::attach(App::DocumentObject* pcObj)
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom<App::PropertyComplexGeoData>()) {
-        Base::BoundBox3d box =
-            static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
+        Base::BoundBox3d box = static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
@@ -203,9 +206,11 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
     ViewProviderDragger::updateData(prop);
 }
 
-SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos,
-                                                              const View3DInventorViewer& viewer,
-                                                              bool pickAll) const
+SoPickedPointList ViewProviderGeometryObject::getPickedPoints(
+    const SbVec2s& pos,
+    const View3DInventorViewer& viewer,
+    bool pickAll
+) const
 {
     auto root = new SoSeparator;
     root->ref();
@@ -224,8 +229,10 @@ SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos
     return rp.getPickedPointList();
 }
 
-SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos,
-                                                          const View3DInventorViewer& viewer) const
+SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(
+    const SbVec2s& pos,
+    const View3DInventorViewer& viewer
+) const
 {
     auto root = new SoSeparator;
     root->ref();
@@ -247,8 +254,9 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos,
 
 unsigned long ViewProviderGeometryObject::getBoundColor() const
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     // white (255,255,255)
     unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor", 4294967295UL);
     return bbcol;
@@ -256,18 +264,14 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
 
 void ViewProviderGeometryObject::setCoinAppearance(const App::Material& source)
 {
-    pcShapeMaterial->ambientColor.setValue(source.ambientColor.r,
-                                           source.ambientColor.g,
-                                           source.ambientColor.b);
-    pcShapeMaterial->diffuseColor.setValue(source.diffuseColor.r,
-                                           source.diffuseColor.g,
-                                           source.diffuseColor.b);
-    pcShapeMaterial->specularColor.setValue(source.specularColor.r,
-                                            source.specularColor.g,
-                                            source.specularColor.b);
-    pcShapeMaterial->emissiveColor.setValue(source.emissiveColor.r,
-                                            source.emissiveColor.g,
-                                            source.emissiveColor.b);
+    pcShapeMaterial->ambientColor
+        .setValue(source.ambientColor.r, source.ambientColor.g, source.ambientColor.b);
+    pcShapeMaterial->diffuseColor
+        .setValue(source.diffuseColor.r, source.diffuseColor.g, source.diffuseColor.b);
+    pcShapeMaterial->specularColor
+        .setValue(source.specularColor.r, source.specularColor.g, source.specularColor.b);
+    pcShapeMaterial->emissiveColor
+        .setValue(source.emissiveColor.r, source.emissiveColor.g, source.emissiveColor.b);
     pcShapeMaterial->shininess.setValue(source.shininess);
     pcShapeMaterial->transparency.setValue(source.transparency);
 }
@@ -276,8 +280,9 @@ namespace
 {
 float getBoundBoxFontSize()
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     return hGrp->GetFloat("BoundingBoxFontSize", 10.0);
 }
 }  // namespace
@@ -360,9 +365,11 @@ PyObject* ViewProviderGeometryObject::getPyObject()
     return pyViewObject;
 }
 
-void ViewProviderGeometryObject::handleChangedPropertyName(Base::XMLReader& reader,
-                                                           const char* TypeName,
-                                                           const char* PropName)
+void ViewProviderGeometryObject::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    const char* PropName
+)
 {
     if (strcmp(PropName, "ShapeColor") == 0
         && strcmp(TypeName, App::PropertyColor::getClassTypeId().getName()) == 0) {

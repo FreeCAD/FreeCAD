@@ -52,8 +52,10 @@ class TaskFemConstraintForce: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView,
-                                    QWidget* parent = nullptr);
+    explicit TaskFemConstraintForce(
+        ViewProviderFemConstraintForce* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintForce() override;
     const std::string getForce() const;
     const std::string getReferences() const override;
@@ -73,8 +75,9 @@ protected:
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
-    std::pair<App::DocumentObject*, std::string>
-    getDirection(const std::vector<Gui::SelectionObject>&) const;
+    std::pair<App::DocumentObject*, std::string> getDirection(
+        const std::vector<Gui::SelectionObject>&
+    ) const;
     void updateUI();
 
 private:

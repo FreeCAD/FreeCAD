@@ -67,34 +67,38 @@ struct FemFace
         return Base::Vector3d(Nodes[0]->X(), Nodes[0]->Y(), Nodes[0]->Z());
     }
 
-    Base::Vector3d set(short size,
-                       const SMDS_MeshElement* element,
-                       unsigned short id,
-                       short faceNo,
-                       const SMDS_MeshNode* n1,
-                       const SMDS_MeshNode* n2,
-                       const SMDS_MeshNode* n3,
-                       const SMDS_MeshNode* n4 = nullptr,
-                       const SMDS_MeshNode* n5 = nullptr,
-                       const SMDS_MeshNode* n6 = nullptr,
-                       const SMDS_MeshNode* n7 = nullptr,
-                       const SMDS_MeshNode* n8 = nullptr);
+    Base::Vector3d set(
+        short size,
+        const SMDS_MeshElement* element,
+        unsigned short id,
+        short faceNo,
+        const SMDS_MeshNode* n1,
+        const SMDS_MeshNode* n2,
+        const SMDS_MeshNode* n3,
+        const SMDS_MeshNode* n4 = nullptr,
+        const SMDS_MeshNode* n5 = nullptr,
+        const SMDS_MeshNode* n6 = nullptr,
+        const SMDS_MeshNode* n7 = nullptr,
+        const SMDS_MeshNode* n8 = nullptr
+    );
 
     bool isSameFace(FemFace& face);
 };
 
-Base::Vector3d FemFace::set(short size,
-                            const SMDS_MeshElement* element,
-                            unsigned short id,
-                            short faceNo,
-                            const SMDS_MeshNode* n1,
-                            const SMDS_MeshNode* n2,
-                            const SMDS_MeshNode* n3,
-                            const SMDS_MeshNode* n4,
-                            const SMDS_MeshNode* n5,
-                            const SMDS_MeshNode* n6,
-                            const SMDS_MeshNode* n7,
-                            const SMDS_MeshNode* n8)
+Base::Vector3d FemFace::set(
+    short size,
+    const SMDS_MeshElement* element,
+    unsigned short id,
+    short faceNo,
+    const SMDS_MeshNode* n1,
+    const SMDS_MeshNode* n2,
+    const SMDS_MeshNode* n3,
+    const SMDS_MeshNode* n4,
+    const SMDS_MeshNode* n5,
+    const SMDS_MeshNode* n6,
+    const SMDS_MeshNode* n7,
+    const SMDS_MeshNode* n8
+)
 {
     Nodes[0] = n1;
     Nodes[1] = n2;
@@ -200,21 +204,21 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     ADD_PROPERTY(ShowInner, (false));
     ADD_PROPERTY(MaxFacesShowInner, (50000));
 
-    ADD_PROPERTY_TYPE(ColorMode,
-                      ("Overall"),
-                      "Display Options",
-                      App::Prop_None,
-                      "Set the color mode");
-    ADD_PROPERTY_TYPE(NodeColorArray,
-                      (PointColor.getValue()),
-                      "Object Style",
-                      App::Prop_Hidden,
-                      "Node diffuse color array");
-    ADD_PROPERTY_TYPE(ElementColorArray,
-                      (ShapeAppearance.getDiffuseColor()),
-                      "Object Style",
-                      App::Prop_Hidden,
-                      "Node diffuse color array");
+    ADD_PROPERTY_TYPE(ColorMode, ("Overall"), "Display Options", App::Prop_None, "Set the color mode");
+    ADD_PROPERTY_TYPE(
+        NodeColorArray,
+        (PointColor.getValue()),
+        "Object Style",
+        App::Prop_Hidden,
+        "Node diffuse color array"
+    );
+    ADD_PROPERTY_TYPE(
+        ElementColorArray,
+        (ShapeAppearance.getDiffuseColor()),
+        "Object Style",
+        App::Prop_Hidden,
+        "Node diffuse color array"
+    );
 
     suppressibleExt.initExtension(this);
 
@@ -379,15 +383,17 @@ void ViewProviderFemMesh::updateData(const App::Property* prop)
         ViewProviderFEMMeshBuilder builder;
         resetColorByNodeId();
         resetDisplacementByNodeId();
-        builder.createMesh(prop,
-                           pcCoords,
-                           pcFaces,
-                           pcLines,
-                           vFaceElementIdx,
-                           vNodeElementIdx,
-                           onlyEdges,
-                           ShowInner.getValue(),
-                           MaxFacesShowInner.getValue());
+        builder.createMesh(
+            prop,
+            pcCoords,
+            pcFaces,
+            pcLines,
+            vFaceElementIdx,
+            vNodeElementIdx,
+            onlyEdges,
+            ShowInner.getValue(),
+            MaxFacesShowInner.getValue()
+        );
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
 }
@@ -424,15 +430,17 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else if (prop == &ShowInner) {
         // recalc mesh with new settings
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(&(static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh),
-                           pcCoords,
-                           pcFaces,
-                           pcLines,
-                           vFaceElementIdx,
-                           vNodeElementIdx,
-                           onlyEdges,
-                           ShowInner.getValue(),
-                           MaxFacesShowInner.getValue());
+        builder.createMesh(
+            &(static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh),
+            pcCoords,
+            pcFaces,
+            pcLines,
+            vFaceElementIdx,
+            vNodeElementIdx,
+            onlyEdges,
+            ShowInner.getValue(),
+            MaxFacesShowInner.getValue()
+        );
     }
     else if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
@@ -453,8 +461,7 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
         matchTransparency();
         setMaterialOverall();
     }
-    else if ((prop == &ElementColorArray || prop == &ShapeAppearance)
-             && ColorMode.getValue() == 1) {
+    else if ((prop == &ElementColorArray || prop == &ShapeAppearance) && ColorMode.getValue() == 1) {
         matchTransparency();
         setMaterialByColorArray(&ElementColorArray, vFaceElementIdx);
     }
@@ -550,10 +557,8 @@ std::set<long> ViewProviderFemMesh::getHighlightNodes() const
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
     if (!HighlightedNodes.empty()) {
-        const SMESHDS_Mesh* data = static_cast<Fem::FemMeshObject*>(this->pcObject)
-                                       ->FemMesh.getValue()
-                                       .getSMesh()
-                                       ->GetMeshDS();
+        const SMESHDS_Mesh* data
+            = static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh.getValue().getSMesh()->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
@@ -573,9 +578,7 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
 
         // save the node ids
         vHighlightedIdx.clear();
-        vHighlightedIdx.insert(vHighlightedIdx.end(),
-                               HighlightedNodes.begin(),
-                               HighlightedNodes.end());
+        vHighlightedIdx.insert(vHighlightedIdx.end(), HighlightedNodes.begin(), HighlightedNodes.end());
     }
     else {
         pcAnoCoords->point.setNum(0);
@@ -612,8 +615,10 @@ void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long, Base::Vec
     setDisplacementByNodeIdHelper(vecVec, startId);
 }
 
-void ViewProviderFemMesh::setDisplacementByNodeId(const std::vector<long>& NodeIds,
-                                                  const std::vector<Base::Vector3d>& NodeDisps)
+void ViewProviderFemMesh::setDisplacementByNodeId(
+    const std::vector<long>& NodeIds,
+    const std::vector<Base::Vector3d>& NodeDisps
+)
 {
     long startId = *(std::min_element(NodeIds.begin(), NodeIds.end()));
     long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
@@ -630,7 +635,8 @@ void ViewProviderFemMesh::setDisplacementByNodeId(const std::vector<long>& NodeI
 
 void ViewProviderFemMesh::setDisplacementByNodeIdHelper(
     const std::vector<Base::Vector3d>& DispVector,
-    long startId)
+    long startId
+)
 {
     DisplacementVector.resize(vNodeElementIdx.size());
     int i = 0;
@@ -678,8 +684,10 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
     DisplacementFactor = factor;
 }
 
-void ViewProviderFemMesh::setColorByNodeId(const std::vector<long>& NodeIds,
-                                           const std::vector<Base::Color>& NodeColors)
+void ViewProviderFemMesh::setColorByNodeId(
+    const std::vector<long>& NodeIds,
+    const std::vector<Base::Color>& NodeColors
+)
 {
     long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
 
@@ -716,14 +724,14 @@ void ViewProviderFemMesh::resetColorByNodeId()
     NodeColorArray.setValue(c);
 }
 
-void ViewProviderFemMesh::setColorByNodeId(
-    const std::map<std::vector<long>, Base::Color>& elemColorMap)
+void ViewProviderFemMesh::setColorByNodeId(const std::map<std::vector<long>, Base::Color>& elemColorMap)
 {
     setColorByIdHelper(elemColorMap, vNodeElementIdx, 0, NodeColorArray);
 }
 
 void ViewProviderFemMesh::setColorByElementId(
-    const std::map<std::vector<long>, Base::Color>& elemColorMap)
+    const std::map<std::vector<long>, Base::Color>& elemColorMap
+)
 {
     setColorByIdHelper(elemColorMap, vFaceElementIdx, 3, ElementColorArray);
 }
@@ -732,7 +740,8 @@ void ViewProviderFemMesh::setColorByIdHelper(
     const std::map<std::vector<long>, Base::Color>& elemColorMap,
     const std::vector<unsigned long>& vElementIdx,
     int rShift,
-    App::PropertyColorList& prop)
+    App::PropertyColorList& prop
+)
 {
     std::vector<Base::Color> vecColor(vElementIdx.size());
     std::map<long, const Base::Color*> colorMap;
@@ -744,8 +753,7 @@ void ViewProviderFemMesh::setColorByIdHelper(
 
     Base::Color baseDif = ShapeAppearance.getDiffuseColor();
     int i = 0;
-    for (std::vector<unsigned long>::const_iterator it = vElementIdx.begin();
-         it != vElementIdx.end();
+    for (std::vector<unsigned long>::const_iterator it = vElementIdx.begin(); it != vElementIdx.end();
          ++it, i++) {
         unsigned long ElemIdx = ((*it) >> rShift);
         const std::map<long, const Base::Color*>::const_iterator pos = colorMap.find(ElemIdx);
@@ -786,7 +794,8 @@ void ViewProviderFemMesh::setMaterialOverall() const
 
 void ViewProviderFemMesh::setMaterialByColorArray(
     const App::PropertyColorList* prop,
-    const std::vector<unsigned long>& vElementIdx) const
+    const std::vector<unsigned long>& vElementIdx
+) const
 {
     const App::Material& baseMat = ShapeAppearance[0];
     Base::Color baseDif = baseMat.diffuseColor;
@@ -868,8 +877,7 @@ void ViewProviderFemMesh::resetColorByElementId()
 
 // ----------------------------------------------------------------------------
 
-void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop,
-                                            std::vector<SoNode*>& nodes) const
+void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
     SoCoordinate3* pcPointsCoord = nullptr;
     SoIndexedFaceSet* pcFaces = nullptr;
@@ -895,15 +903,17 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop,
         std::vector<unsigned long> vFaceElementIdx;
         std::vector<unsigned long> vNodeElementIdx;
         bool onlyEdges;
-        createMesh(prop,
-                   pcPointsCoord,
-                   pcFaces,
-                   pcLines,
-                   vFaceElementIdx,
-                   vNodeElementIdx,
-                   onlyEdges,
-                   false,
-                   0);
+        createMesh(
+            prop,
+            pcPointsCoord,
+            pcFaces,
+            pcLines,
+            vFaceElementIdx,
+            vNodeElementIdx,
+            onlyEdges,
+            false,
+            0
+        );
     }
 }
 
@@ -923,15 +933,17 @@ inline unsigned long ElemFold(unsigned long Element, unsigned long FaceNbr)
     return t2;
 }
 
-void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
-                                            SoCoordinate3* coords,
-                                            SoIndexedFaceSet* faces,
-                                            SoIndexedLineSet* lines,
-                                            std::vector<unsigned long>& vFaceElementIdx,
-                                            std::vector<unsigned long>& vNodeElementIdx,
-                                            bool& onlyEdges,
-                                            bool ShowInner,
-                                            int MaxFacesShowInner) const
+void ViewProviderFEMMeshBuilder::createMesh(
+    const App::Property* prop,
+    SoCoordinate3* coords,
+    SoIndexedFaceSet* faces,
+    SoIndexedLineSet* lines,
+    std::vector<unsigned long>& vFaceElementIdx,
+    std::vector<unsigned long>& vNodeElementIdx,
+    bool& onlyEdges,
+    bool ShowInner,
+    int MaxFacesShowInner
+) const
 {
 
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
@@ -950,7 +962,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
     Base::TimeElapsed Start;
     Base::Console().log(
-        "Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
+        "Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n"
+    );
 
     const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numTria = info.NbTriangles();
@@ -967,8 +980,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     int numTries;
     if (ShowFaces) {
-        numTries =
-            numTria + numQuad /*+numPoly*/ + numTetr * 4 + numHexa * 6 + numPyrd * 5 + numPris * 5;
+        numTries = numTria + numQuad /*+numPoly*/ + numTetr * 4 + numHexa * 6 + numPyrd * 5
+            + numPris * 5;
     }
     else {
         numTries = numTetr * 4 + numHexa * 6 + numPyrd * 5 + numPris * 5;
@@ -985,9 +998,11 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     std::vector<FemFace> facesHelper(numTries);
 
-    Base::Console().log("    %f: Start build up %i face helper\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()),
-                        facesHelper.size());
+    Base::Console().log(
+        "    %f: Start build up %i face helper\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()),
+        facesHelper.size()
+    );
     Base::BoundBox3d BndBox;
 
     int i = 0;
@@ -1001,57 +1016,74 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             switch (num) {
                 case 3:
                     // tria3 face = N1, N2, N3
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aFace,
-                                                    aFace->GetID(),
-                                                    0,
-                                                    aFace->GetNode(0),
-                                                    aFace->GetNode(1),
-                                                    aFace->GetNode(2)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aFace,
+                            aFace->GetID(),
+                            0,
+                            aFace->GetNode(0),
+                            aFace->GetNode(1),
+                            aFace->GetNode(2)
+                        )
+                    );
                     break;
                 case 4:
                     // quad4 face = N1, N2, N3, N4
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aFace,
-                                                    aFace->GetID(),
-                                                    0,
-                                                    aFace->GetNode(0),
-                                                    aFace->GetNode(1),
-                                                    aFace->GetNode(2),
-                                                    aFace->GetNode(3)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aFace,
+                            aFace->GetID(),
+                            0,
+                            aFace->GetNode(0),
+                            aFace->GetNode(1),
+                            aFace->GetNode(2),
+                            aFace->GetNode(3)
+                        )
+                    );
                     break;
                 case 6:
                     // tria6 face = N1, N4, N2, N5, N3, N6
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aFace,
-                                                    aFace->GetID(),
-                                                    0,
-                                                    aFace->GetNode(0),
-                                                    aFace->GetNode(3),
-                                                    aFace->GetNode(1),
-                                                    aFace->GetNode(4),
-                                                    aFace->GetNode(2),
-                                                    aFace->GetNode(5)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aFace,
+                            aFace->GetID(),
+                            0,
+                            aFace->GetNode(0),
+                            aFace->GetNode(3),
+                            aFace->GetNode(1),
+                            aFace->GetNode(4),
+                            aFace->GetNode(2),
+                            aFace->GetNode(5)
+                        )
+                    );
                     break;
                 case 8:
                     // quad8 face = N1, N5, N2, N6, N3, N7, N4, N8
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aFace,
-                                                    aFace->GetID(),
-                                                    0,
-                                                    aFace->GetNode(0),
-                                                    aFace->GetNode(4),
-                                                    aFace->GetNode(1),
-                                                    aFace->GetNode(5),
-                                                    aFace->GetNode(2),
-                                                    aFace->GetNode(6),
-                                                    aFace->GetNode(3),
-                                                    aFace->GetNode(7)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aFace,
+                            aFace->GetID(),
+                            0,
+                            aFace->GetNode(0),
+                            aFace->GetNode(4),
+                            aFace->GetNode(1),
+                            aFace->GetNode(5),
+                            aFace->GetNode(2),
+                            aFace->GetNode(6),
+                            aFace->GetNode(3),
+                            aFace->GetNode(7)
+                        )
+                    );
                     break;
                 default:
                     // unknown face type
                     throw std::runtime_error(
-                        "Node count not supported by ViewProviderFemMesh, [3|4|6|8] are allowed");
+                        "Node count not supported by ViewProviderFemMesh, [3|4|6|8] are allowed"
+                    );
             }
         }
     }
@@ -1071,34 +1103,50 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 2 = N1, N4, N2
                     // face 3 = N2, N4, N3
                     // face 4 = N3, N4, N1
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(2)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(1)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(2)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(0)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(1),
+                            aVol->GetNode(2)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(0),
+                            aVol->GetNode(3),
+                            aVol->GetNode(1)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(1),
+                            aVol->GetNode(3),
+                            aVol->GetNode(2)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(2),
+                            aVol->GetNode(3),
+                            aVol->GetNode(0)
+                        )
+                    );
                     break;
                 // pyra5 volume
                 case 5:
@@ -1107,42 +1155,62 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 3 = N2, N5, N3
                     // face 4 = N3, N5, N4
                     // face 5 = N4, N5, N1
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(3)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(1)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(2)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(3)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    5,
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(0)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(1),
+                            aVol->GetNode(2),
+                            aVol->GetNode(3)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(0),
+                            aVol->GetNode(4),
+                            aVol->GetNode(1)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(1),
+                            aVol->GetNode(4),
+                            aVol->GetNode(2)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(2),
+                            aVol->GetNode(4),
+                            aVol->GetNode(3)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            5,
+                            aVol->GetNode(3),
+                            aVol->GetNode(4),
+                            aVol->GetNode(0)
+                        )
+                    );
                     break;
                 // penta6 volume
                 case 6:
@@ -1151,44 +1219,64 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 3 = N1, N4, N5, N2
                     // face 4 = N2, N5, N6, N3
                     // face 5 = N3, N6, N4, N1
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(2)));
-                    BndBox.Add(facesHelper[i++].set(3,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(4)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(1)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(2)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    5,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(0)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(1),
+                            aVol->GetNode(2)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            3,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(3),
+                            aVol->GetNode(5),
+                            aVol->GetNode(4)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(0),
+                            aVol->GetNode(3),
+                            aVol->GetNode(4),
+                            aVol->GetNode(1)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(1),
+                            aVol->GetNode(4),
+                            aVol->GetNode(5),
+                            aVol->GetNode(2)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            5,
+                            aVol->GetNode(2),
+                            aVol->GetNode(5),
+                            aVol->GetNode(3),
+                            aVol->GetNode(0)
+                        )
+                    );
                     break;
                 // hexa8 volume
                 case 8:
@@ -1198,54 +1286,78 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 4 = N2, N6, N7, N3
                     // face 5 = N3, N7, N8, N4
                     // face 6 = N4, N8, N5, N1
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(3)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(5)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(1)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(2)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    5,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(3)));
-                    BndBox.Add(facesHelper[i++].set(4,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    6,
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(0)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(1),
+                            aVol->GetNode(2),
+                            aVol->GetNode(3)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(4),
+                            aVol->GetNode(7),
+                            aVol->GetNode(6),
+                            aVol->GetNode(5)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(0),
+                            aVol->GetNode(4),
+                            aVol->GetNode(5),
+                            aVol->GetNode(1)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(1),
+                            aVol->GetNode(5),
+                            aVol->GetNode(6),
+                            aVol->GetNode(2)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            5,
+                            aVol->GetNode(2),
+                            aVol->GetNode(6),
+                            aVol->GetNode(7),
+                            aVol->GetNode(3)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            4,
+                            aVol,
+                            aVol->GetID(),
+                            6,
+                            aVol->GetNode(3),
+                            aVol->GetNode(7),
+                            aVol->GetNode(4),
+                            aVol->GetNode(0)
+                        )
+                    );
                     break;
                 // tetra10 volume
                 case 10:
@@ -1253,46 +1365,62 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 2 = N1, N8,  N4, N9,  N2, N5
                     // face 3 = N2, N9,  N4, N10, N3, N6
                     // face 4 = N3, N10, N4, N8,  N1, N7
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(6)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(8),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(4)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(8),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(9),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(5)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(9),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(6)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(4),
+                            aVol->GetNode(1),
+                            aVol->GetNode(5),
+                            aVol->GetNode(2),
+                            aVol->GetNode(6)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(0),
+                            aVol->GetNode(7),
+                            aVol->GetNode(3),
+                            aVol->GetNode(8),
+                            aVol->GetNode(1),
+                            aVol->GetNode(4)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(1),
+                            aVol->GetNode(8),
+                            aVol->GetNode(3),
+                            aVol->GetNode(9),
+                            aVol->GetNode(2),
+                            aVol->GetNode(5)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(2),
+                            aVol->GetNode(9),
+                            aVol->GetNode(3),
+                            aVol->GetNode(7),
+                            aVol->GetNode(0),
+                            aVol->GetNode(6)
+                        )
+                    );
                     break;
                 // pyra13 volume
                 case 13:
@@ -1301,58 +1429,78 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 3 = N2, N11, N5, N12, N3, N7
                     // face 4 = N3, N12, N5, N13, N4, N8
                     // face 5 = N4, N13, N5, N10, N1, N9
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(8)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(9),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(10),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(5)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(10),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(11),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(6)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(11),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(12),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(7)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    5,
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(12),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(9),
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(8)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(5),
+                            aVol->GetNode(1),
+                            aVol->GetNode(6),
+                            aVol->GetNode(2),
+                            aVol->GetNode(7),
+                            aVol->GetNode(3),
+                            aVol->GetNode(8)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(0),
+                            aVol->GetNode(9),
+                            aVol->GetNode(4),
+                            aVol->GetNode(10),
+                            aVol->GetNode(1),
+                            aVol->GetNode(5)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(1),
+                            aVol->GetNode(10),
+                            aVol->GetNode(4),
+                            aVol->GetNode(11),
+                            aVol->GetNode(2),
+                            aVol->GetNode(6)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(2),
+                            aVol->GetNode(11),
+                            aVol->GetNode(4),
+                            aVol->GetNode(12),
+                            aVol->GetNode(3),
+                            aVol->GetNode(7)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            5,
+                            aVol->GetNode(3),
+                            aVol->GetNode(12),
+                            aVol->GetNode(4),
+                            aVol->GetNode(9),
+                            aVol->GetNode(0),
+                            aVol->GetNode(8)
+                        )
+                    );
                     break;
                 // penta15 volume
                 case 15:
@@ -1361,62 +1509,82 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 3 = N1, N13, N4, N10, N5, N14, N2, N7
                     // face 4 = N2, N14, N5, N11, N6, N15, N3, N8
                     // face 5 = N3, N15, N6, N12, N4, N13, N1, N9
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(8)));
-                    BndBox.Add(facesHelper[i++].set(6,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(11),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(10),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(9)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(12),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(9),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(13),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(6)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(13),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(10),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(14),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(7)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    5,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(14),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(11),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(12),
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(8)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(6),
+                            aVol->GetNode(1),
+                            aVol->GetNode(7),
+                            aVol->GetNode(2),
+                            aVol->GetNode(8)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            6,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(3),
+                            aVol->GetNode(11),
+                            aVol->GetNode(5),
+                            aVol->GetNode(10),
+                            aVol->GetNode(4),
+                            aVol->GetNode(9)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(0),
+                            aVol->GetNode(12),
+                            aVol->GetNode(3),
+                            aVol->GetNode(9),
+                            aVol->GetNode(4),
+                            aVol->GetNode(13),
+                            aVol->GetNode(1),
+                            aVol->GetNode(6)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(1),
+                            aVol->GetNode(13),
+                            aVol->GetNode(4),
+                            aVol->GetNode(10),
+                            aVol->GetNode(5),
+                            aVol->GetNode(14),
+                            aVol->GetNode(2),
+                            aVol->GetNode(7)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            5,
+                            aVol->GetNode(2),
+                            aVol->GetNode(14),
+                            aVol->GetNode(5),
+                            aVol->GetNode(11),
+                            aVol->GetNode(3),
+                            aVol->GetNode(12),
+                            aVol->GetNode(0),
+                            aVol->GetNode(8)
+                        )
+                    );
                     break;
                 // hexa20 volume
                 case 20:
@@ -1426,83 +1594,109 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // face 4 = N2, N18, N6, N14, N7, N19, N3, N10
                     // face 5 = N3, N19, N7, N15, N8, N20, N4, N11
                     // face 6 = N4, N20, N8, N16, N5, N17, N1, N12
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    1,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(8),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(9),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(10),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(11)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    2,
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(15),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(14),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(13),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(12)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    3,
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(16),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(12),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(17),
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(8)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    4,
-                                                    aVol->GetNode(1),
-                                                    aVol->GetNode(17),
-                                                    aVol->GetNode(5),
-                                                    aVol->GetNode(13),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(18),
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(9)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    5,
-                                                    aVol->GetNode(2),
-                                                    aVol->GetNode(18),
-                                                    aVol->GetNode(6),
-                                                    aVol->GetNode(14),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(19),
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(10)));
-                    BndBox.Add(facesHelper[i++].set(8,
-                                                    aVol,
-                                                    aVol->GetID(),
-                                                    6,
-                                                    aVol->GetNode(3),
-                                                    aVol->GetNode(19),
-                                                    aVol->GetNode(7),
-                                                    aVol->GetNode(15),
-                                                    aVol->GetNode(4),
-                                                    aVol->GetNode(16),
-                                                    aVol->GetNode(0),
-                                                    aVol->GetNode(11)));
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            1,
+                            aVol->GetNode(0),
+                            aVol->GetNode(8),
+                            aVol->GetNode(1),
+                            aVol->GetNode(9),
+                            aVol->GetNode(2),
+                            aVol->GetNode(10),
+                            aVol->GetNode(3),
+                            aVol->GetNode(11)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            2,
+                            aVol->GetNode(4),
+                            aVol->GetNode(15),
+                            aVol->GetNode(7),
+                            aVol->GetNode(14),
+                            aVol->GetNode(6),
+                            aVol->GetNode(13),
+                            aVol->GetNode(5),
+                            aVol->GetNode(12)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            3,
+                            aVol->GetNode(0),
+                            aVol->GetNode(16),
+                            aVol->GetNode(4),
+                            aVol->GetNode(12),
+                            aVol->GetNode(5),
+                            aVol->GetNode(17),
+                            aVol->GetNode(1),
+                            aVol->GetNode(8)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            4,
+                            aVol->GetNode(1),
+                            aVol->GetNode(17),
+                            aVol->GetNode(5),
+                            aVol->GetNode(13),
+                            aVol->GetNode(6),
+                            aVol->GetNode(18),
+                            aVol->GetNode(2),
+                            aVol->GetNode(9)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            5,
+                            aVol->GetNode(2),
+                            aVol->GetNode(18),
+                            aVol->GetNode(6),
+                            aVol->GetNode(14),
+                            aVol->GetNode(7),
+                            aVol->GetNode(19),
+                            aVol->GetNode(3),
+                            aVol->GetNode(10)
+                        )
+                    );
+                    BndBox.Add(
+                        facesHelper[i++].set(
+                            8,
+                            aVol,
+                            aVol->GetID(),
+                            6,
+                            aVol->GetNode(3),
+                            aVol->GetNode(19),
+                            aVol->GetNode(7),
+                            aVol->GetNode(15),
+                            aVol->GetNode(4),
+                            aVol->GetNode(16),
+                            aVol->GetNode(0),
+                            aVol->GetNode(11)
+                        )
+                    );
                     break;
                 // unknown volume type
                 default:
-                    throw std::runtime_error("Node count not supported by ViewProviderFemMesh, "
-                                             "[4|5|6|8|10|13|15|20] are allowed");
+                    throw std::runtime_error(
+                        "Node count not supported by ViewProviderFemMesh, "
+                        "[4|5|6|8|10|13|15|20] are allowed"
+                    );
             }
         }
     }
@@ -1510,8 +1704,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
     if (FaceSize < MaxFacesShowInner) {
-        Base::Console().log("    %f: Start eliminate internal faces SIMPLE\n",
-                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+        Base::Console().log(
+            "    %f: Start eliminate internal faces SIMPLE\n",
+            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+        );
 
         // search for double (inside) faces and hide them
         if (!ShowInner) {
@@ -1527,8 +1723,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
     else {
-        Base::Console().log("    %f: Start eliminate internal faces GRID\n",
-                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+        Base::Console().log(
+            "    %f: Start eliminate internal faces GRID\n",
+            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+        );
         BndBox.Enlarge(BndBox.CalcDiagonalLength() / 10000.0);
         // calculate grid properties
         double edge = pow(FaceSize, 1.0 / 3.0);
@@ -1548,8 +1746,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         double Yln = BndBox.LengthY() / NbrY;
         double Zln = BndBox.LengthZ() / NbrZ;
 
-        std::vector<FemFaceGridItem> Grid(static_cast<size_t>(NbrX) * static_cast<size_t>(NbrY)
-                                          * static_cast<size_t>(NbrZ));
+        std::vector<FemFaceGridItem> Grid(
+            static_cast<size_t>(NbrX) * static_cast<size_t>(NbrY) * static_cast<size_t>(NbrZ)
+        );
 
 
         unsigned int iX = 0;
@@ -1596,8 +1795,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }  // if( FaceSize < 1000)
 
 
-    Base::Console().log("    %f: Start build up node map\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log(
+        "    %f: Start build up node map\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
 
     // sort out double nodes and build up index map
     std::map<const SMDS_MeshNode*, int> mapNodeIndex;
@@ -1629,8 +1830,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             }
         }
     }
-    Base::Console().log("    %f: Start set point vector\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log(
+        "    %f: Start set point vector\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
 
     // set the point coordinates
     coords->point.setNum(mapNodeIndex.size());
@@ -1647,8 +1850,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
     // count triangle size
-    Base::Console().log("    %f: Start count triangle size\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log(
+        "    %f: Start count triangle size\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
     int triangleCount = 0;
     for (int l = 0; l < FaceSize; l++) {
         if (!facesHelper[l].hide) {
@@ -1668,7 +1873,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 default:
                     throw std::runtime_error(
                         "Face with unknown node count found, only display mode nodes is supported "
-                        "for this element (tiangleCount)");
+                        "for this element (tiangleCount)"
+                    );
             }
         }
     }
@@ -1703,8 +1909,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
 
-    Base::Console().log("    %f: Start build up triangle vector\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log(
+        "    %f: Start build up triangle vector\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
     // set the triangle face indices
     faces->coordIndex.setNum(4 * triangleCount);
     vFaceElementIdx.resize(triangleCount);
@@ -3116,15 +3324,18 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 default:
                     throw std::runtime_error(
                         "Element with unknown node count found (may be not implemented), only "
-                        "display mode nodes is supported for this element (NodeCount)");
+                        "display mode nodes is supported for this element (NodeCount)"
+                    );
             }
         }
     }
 
     faces->coordIndex.finishEditing();
 
-    Base::Console().log("    %f: Start build up edge vector\n",
-                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log(
+        "    %f: Start build up edge vector\n",
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
     // std::map<int,std::set<int> > EdgeMap;
     // count edges
     int EdgeSize = 0;
@@ -3140,8 +3351,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     for (std::map<int, std::set<int>>::const_iterator it = EdgeMap.begin(); it != EdgeMap.end();
          ++it) {
-        for (std::set<int>::const_iterator it2 = it->second.begin(); it2 != it->second.end();
-             ++it2) {
+        for (std::set<int>::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
             indices[index++] = it->first;
             indices[index++] = *it2;
             indices[index++] = -1;
@@ -3153,7 +3363,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     Base::Console().log(
         "    %f: Finish =========================================================\n",
-        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
+    );
 }
 
 

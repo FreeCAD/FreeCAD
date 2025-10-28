@@ -65,9 +65,11 @@ int GeometryFacadePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError,
-                    "Sketcher::GeometryFacade constructor accepts:\n"
-                    "-- Part.Geometry\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Sketcher::GeometryFacade constructor accepts:\n"
+        "-- Part.Geometry\n"
+    );
     return -1;
 }
 
@@ -169,20 +171,17 @@ PyObject* GeometryFacadePy::mirror(PyObject* args)
 
     PyErr_Clear();
     PyObject* axis;
-    if (PyArg_ParseTuple(args,
-                         "O!O!",
-                         &(Base::VectorPy::Type),
-                         &o,
-                         &(Base::VectorPy::Type),
-                         &axis)) {
+    if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &o, &(Base::VectorPy::Type), &axis)) {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(o)->value();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(axis)->value();
         getGeometryFacadePtr()->mirror(pnt, dir);
         Py_Return;
     }
 
-    PyErr_SetString(Part::PartExceptionOCCError,
-                    "either a point (vector) or axis (vector, vector) must be given");
+    PyErr_SetString(
+        Part::PartExceptionOCCError,
+        "either a point (vector) or axis (vector, vector) must be given"
+    );
     return nullptr;
 }
 
@@ -280,7 +279,8 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject* args) const
         if (!type.isBad()) {
             try {
                 std::shared_ptr<const Part::GeometryExtension> ext(
-                    this->getGeometryFacadePtr()->getExtension(type));
+                    this->getGeometryFacadePtr()->getExtension(type)
+                );
 
                 // we create a copy and transfer this copy's memory management responsibility to
                 // Python
@@ -292,13 +292,17 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject* args) const
                 return nullptr;
             }
             catch (const std::bad_weak_ptr&) {
-                PyErr_SetString(Part::PartExceptionOCCError,
-                                "Geometry extension does not exist anymore.");
+                PyErr_SetString(
+                    Part::PartExceptionOCCError,
+                    "Geometry extension does not exist anymore."
+                );
                 return nullptr;
             }
             catch (Base::NotImplementedError&) {
-                PyErr_SetString(Part::PartExceptionOCCError,
-                                "Geometry extension does not implement a Python counterpart.");
+                PyErr_SetString(
+                    Part::PartExceptionOCCError,
+                    "Geometry extension does not implement a Python counterpart."
+                );
                 return nullptr;
             }
         }
@@ -308,8 +312,10 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject* args) const
         }
     }
 
-    PyErr_SetString(Part::PartExceptionOCCError,
-                    "A string with the name of the geometry extension type was expected");
+    PyErr_SetString(
+        Part::PartExceptionOCCError,
+        "A string with the name of the geometry extension type was expected"
+    );
     return nullptr;
 }
 
@@ -320,7 +326,8 @@ PyObject* GeometryFacadePy::getExtensionOfName(PyObject* args) const
 
         try {
             std::shared_ptr<const Part::GeometryExtension> ext(
-                this->getGeometryFacadePtr()->getExtension(std::string(o)));
+                this->getGeometryFacadePtr()->getExtension(std::string(o))
+            );
 
             // we create a copy and transfer this copy's memory management responsibility to Python
             PyObject* cpy = ext->copyPyObject();
@@ -331,19 +338,22 @@ PyObject* GeometryFacadePy::getExtensionOfName(PyObject* args) const
             return nullptr;
         }
         catch (const std::bad_weak_ptr&) {
-            PyErr_SetString(Part::PartExceptionOCCError,
-                            "Geometry extension does not exist anymore.");
+            PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
             return nullptr;
         }
         catch (Base::NotImplementedError&) {
-            PyErr_SetString(Part::PartExceptionOCCError,
-                            "Geometry extension does not implement a Python counterpart.");
+            PyErr_SetString(
+                Part::PartExceptionOCCError,
+                "Geometry extension does not implement a Python counterpart."
+            );
             return nullptr;
         }
     }
 
-    PyErr_SetString(Part::PartExceptionOCCError,
-                    "A string with the name of the geometry extension was expected");
+    PyErr_SetString(
+        Part::PartExceptionOCCError,
+        "A string with the name of the geometry extension was expected"
+    );
     return nullptr;
 }
 
@@ -357,7 +367,8 @@ PyObject* GeometryFacadePy::hasExtensionOfType(PyObject* args) const
         if (!type.isBad()) {
             try {
                 return Py::new_reference_to(
-                    Py::Boolean(this->getGeometryFacadePtr()->hasExtension(type)));
+                    Py::Boolean(this->getGeometryFacadePtr()->hasExtension(type))
+                );
             }
             catch (const Base::ValueError& e) {
                 PyErr_SetString(Part::PartExceptionOCCError, e.what());
@@ -370,8 +381,10 @@ PyObject* GeometryFacadePy::hasExtensionOfType(PyObject* args) const
         }
     }
 
-    PyErr_SetString(Part::PartExceptionOCCError,
-                    "A string with the type of the geometry extension was expected");
+    PyErr_SetString(
+        Part::PartExceptionOCCError,
+        "A string with the type of the geometry extension was expected"
+    );
     return nullptr;
 }
 
@@ -382,7 +395,8 @@ PyObject* GeometryFacadePy::hasExtensionOfName(PyObject* args) const
 
         try {
             return Py::new_reference_to(
-                Py::Boolean(this->getGeometryFacadePtr()->hasExtension(std::string(o))));
+                Py::Boolean(this->getGeometryFacadePtr()->hasExtension(std::string(o)))
+            );
         }
         catch (const Base::ValueError& e) {
             PyErr_SetString(Part::PartExceptionOCCError, e.what());
@@ -390,8 +404,10 @@ PyObject* GeometryFacadePy::hasExtensionOfName(PyObject* args) const
         }
     }
 
-    PyErr_SetString(Part::PartExceptionOCCError,
-                    "A string with the type of the geometry extension was expected");
+    PyErr_SetString(
+        Part::PartExceptionOCCError,
+        "A string with the type of the geometry extension was expected"
+    );
     return nullptr;
 }
 
@@ -437,8 +453,7 @@ PyObject* GeometryFacadePy::deleteExtensionOfName(PyObject* args)
         }
     }
 
-    PyErr_SetString(Part::PartExceptionOCCError,
-                    "A string with the name of the extension was expected");
+    PyErr_SetString(Part::PartExceptionOCCError, "A string with the name of the extension was expected");
     return nullptr;
 }
 
@@ -450,8 +465,8 @@ PyObject* GeometryFacadePy::getExtensions(PyObject* args) const
     }
 
     try {
-        const std::vector<std::weak_ptr<const Part::GeometryExtension>> ext =
-            this->getGeometryFacadePtr()->getExtensions();
+        const std::vector<std::weak_ptr<const Part::GeometryExtension>> ext
+            = this->getGeometryFacadePtr()->getExtensions();
 
         Py::List list;
 

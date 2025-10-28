@@ -32,7 +32,7 @@
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 
 
@@ -215,8 +215,7 @@ public:
     void rotLine(const Vector3d& rclBase, const Vector3d& rclDir, double fAngle);
     /// Extract the rotation axis and angle. Therefore the 3x3 submatrix must be orthogonal.
     bool toAxisAngle(Vector3f& rclBase, Vector3f& rclDir, float& fAngle, float& fTranslation) const;
-    bool
-    toAxisAngle(Vector3d& rclBase, Vector3d& rclDir, double& fAngle, double& fTranslation) const;
+    bool toAxisAngle(Vector3d& rclBase, Vector3d& rclDir, double& fAngle, double& fTranslation) const;
     /// transform (move,scale,rotate) around a point
     void transform(const Vector3f& vec, const Matrix4D& mat);
     void transform(const Vector3d& vec, const Matrix4D& mat);

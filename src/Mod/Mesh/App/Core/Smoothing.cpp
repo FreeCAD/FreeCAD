@@ -106,8 +106,7 @@ void PlaneFitSmoothing::Smooth(unsigned int iterations)
     }
 }
 
-void PlaneFitSmoothing::SmoothPoints(unsigned int iterations,
-                                     const std::vector<PointIndex>& point_indices)
+void PlaneFitSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
 {
     MeshCore::MeshPoint center;
     MeshCore::MeshPointArray PointArray = kernel.GetPoints();
@@ -167,9 +166,11 @@ LaplaceSmoothing::LaplaceSmoothing(MeshKernel& m)
     : AbstractSmoothing(m)
 {}
 
-void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
-                                const MeshRefPointToFacets& vf_it,
-                                double stepsize)
+void LaplaceSmoothing::Umbrella(
+    const MeshRefPointToPoints& vv_it,
+    const MeshRefPointToFacets& vf_it,
+    double stepsize
+)
 {
     const MeshCore::MeshPointArray& points = kernel.GetPoints();
     MeshCore::MeshPointArray::_TConstIterator v_it, v_beg = points.begin(), v_end = points.end();
@@ -204,10 +205,12 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
     }
 }
 
-void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
-                                const MeshRefPointToFacets& vf_it,
-                                double stepsize,
-                                const std::vector<PointIndex>& point_indices)
+void LaplaceSmoothing::Umbrella(
+    const MeshRefPointToPoints& vv_it,
+    const MeshRefPointToFacets& vf_it,
+    double stepsize,
+    const std::vector<PointIndex>& point_indices
+)
 {
     const MeshCore::MeshPointArray& points = kernel.GetPoints();
     MeshCore::MeshPointArray::_TConstIterator v_beg = points.begin();
@@ -251,8 +254,7 @@ void LaplaceSmoothing::Smooth(unsigned int iterations)
     }
 }
 
-void LaplaceSmoothing::SmoothPoints(unsigned int iterations,
-                                    const std::vector<PointIndex>& point_indices)
+void LaplaceSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
 {
     MeshCore::MeshRefPointToPoints vv_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
@@ -279,8 +281,7 @@ void TaubinSmoothing::Smooth(unsigned int iterations)
     }
 }
 
-void TaubinSmoothing::SmoothPoints(unsigned int iterations,
-                                   const std::vector<PointIndex>& point_indices)
+void TaubinSmoothing::SmoothPoints(unsigned int iterations, const std::vector<PointIndex>& point_indices)
 {
     MeshCore::MeshRefPointToPoints vv_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
@@ -302,10 +303,7 @@ inline Base::Vector3d find_median(std::vector<AngleNormal>& container)
         return an1.first < an2.first;
     };
     size_t n = container.size() / 2;
-    std::nth_element(container.begin(),
-                     container.begin() + n,
-                     container.end(),
-                     compare_angle_normal);
+    std::nth_element(container.begin(), container.begin() + n, container.end(), compare_angle_normal);
 
     if ((container.size() % 2) == 1) {
         return container[n].second;
@@ -335,8 +333,10 @@ void MedianFilterSmoothing::Smooth(unsigned int iterations)
     }
 }
 
-void MedianFilterSmoothing::SmoothPoints(unsigned int iterations,
-                                         const std::vector<PointIndex>& point_indices)
+void MedianFilterSmoothing::SmoothPoints(
+    unsigned int iterations,
+    const std::vector<PointIndex>& point_indices
+)
 {
     MeshCore::MeshRefFacetToFacets ff_it(kernel);
     MeshCore::MeshRefPointToFacets vf_it(kernel);
@@ -346,9 +346,11 @@ void MedianFilterSmoothing::SmoothPoints(unsigned int iterations,
     }
 }
 
-void MedianFilterSmoothing::UpdatePoints(const MeshRefFacetToFacets& ff_it,
-                                         const MeshRefPointToFacets& vf_it,
-                                         const std::vector<PointIndex>& point_indices)
+void MedianFilterSmoothing::UpdatePoints(
+    const MeshRefFacetToFacets& ff_it,
+    const MeshRefPointToFacets& vf_it,
+    const std::vector<PointIndex>& point_indices
+)
 {
     const MeshCore::MeshPointArray& points = kernel.GetPoints();
     const MeshCore::MeshFacetArray& facets = kernel.GetFacets();

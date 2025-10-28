@@ -44,8 +44,9 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryCompound, RobotGui::ViewProvider
 
 bool ViewProviderTrajectoryCompound::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg =
-        new TaskDlgTrajectoryCompound(getObject<Robot::TrajectoryCompound>());
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryCompound(
+        getObject<Robot::TrajectoryCompound>()
+    );
     Gui::Control().showDialog(dlg);
     return true;
 }

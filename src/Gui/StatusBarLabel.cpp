@@ -32,14 +32,16 @@
 #include "StatusBarLabel.h"
 #include <App/Application.h>
 
-namespace Gui {
+namespace Gui
+{
 
-StatusBarLabel::StatusBarLabel(QWidget *parent, const std::string& parameterName)
+StatusBarLabel::StatusBarLabel(QWidget* parent, const std::string& parameterName)
     : QLabel(parent)
 {
     if (!parameterName.empty()) {
         hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/MainWindow");
+            "User parameter:BaseApp/Preferences/MainWindow"
+        );
 
         // set visibility before storing parameterName to avoid saving it immediately
         setVisible(hGrp->GetBool(parameterName.c_str(), true));
@@ -49,14 +51,14 @@ StatusBarLabel::StatusBarLabel(QWidget *parent, const std::string& parameterName
     }
 }
 
-void StatusBarLabel::contextMenuEvent(QContextMenuEvent *event)
+void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu(this);
 
     // Reproduce standard status bar widget menu
-    if (auto *statusBar = qobject_cast<QStatusBar*>(parentWidget())) {
-        for (QObject *child : statusBar->children()) {
-            QWidget *widget = qobject_cast<QWidget*>(child);
+    if (auto* statusBar = qobject_cast<QStatusBar*>(parentWidget())) {
+        for (QObject* child : statusBar->children()) {
+            QWidget* widget = qobject_cast<QWidget*>(child);
             if (!widget) {
                 continue;
             }
@@ -65,7 +67,7 @@ void StatusBarLabel::contextMenuEvent(QContextMenuEvent *event)
                 continue;
             }
 
-            QAction *action = menu.addAction(title);
+            QAction* action = menu.addAction(title);
             action->setCheckable(true);
             action->setChecked(widget->isVisible());
             QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
@@ -73,15 +75,13 @@ void StatusBarLabel::contextMenuEvent(QContextMenuEvent *event)
     }
 
     if (textInteractionFlags() & Qt::TextSelectableByMouse) {
-        menu.addSeparator(); // ----------
+        menu.addSeparator();  // ----------
 
         // Copy + Select All
         menu.addAction(tr("Copy"), [this]() {
             QApplication::clipboard()->setText(this->selectedText());
         });
-        menu.addAction(tr("Select All"), [this]() {
-            this->setSelection(0, this->text().length());
-        });
+        menu.addAction(tr("Select All"), [this]() { this->setSelection(0, this->text().length()); });
     }
 
     menu.exec(event->globalPos());
@@ -98,4 +98,4 @@ void StatusBarLabel::setVisible(bool visible)
     QLabel::setVisible(visible);
 }
 
-} // namespace Gui
+}  // namespace Gui

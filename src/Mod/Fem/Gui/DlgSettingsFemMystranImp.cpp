@@ -37,10 +37,12 @@ DlgSettingsFemMystranImp::DlgSettingsFemMystranImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_mystran_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemMystranImp::onfileNameSelected);
+    connect(
+        ui->fc_mystran_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemMystranImp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemMystranImp::~DlgSettingsFemMystranImp() = default;

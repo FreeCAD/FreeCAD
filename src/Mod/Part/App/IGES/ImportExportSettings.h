@@ -31,7 +31,8 @@
 namespace Part
 {
 
-namespace IGES {
+namespace IGES
+{
 
 class PartExport ImportExportSettings
 {
@@ -60,7 +61,7 @@ private:
     ParameterGrp::handle pGroup;
 };
 
-} //namespace IGES
-} //namespace Part
+}  // namespace IGES
+}  // namespace Part
 
 #endif

@@ -29,9 +29,11 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintOnBoundary */
 
-TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint* ConstraintView,
-                                                         QWidget* parent,
-                                                         const char* pixmapname)
+TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(
+    ViewProviderFemConstraint* ConstraintView,
+    QWidget* parent,
+    const char* pixmapname
+)
     : TaskFemConstraint(ConstraintView, parent, pixmapname)
     , selChangeMode(SelectionChangeModes::none)
 {
@@ -40,10 +42,12 @@ TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstrai
     buttonGroup = new ButtonGroup(this);
     buttonGroup->setExclusive(true);
 
-    connect(buttonGroup,
-            qOverload<QAbstractButton*, bool>(&QButtonGroup::buttonToggled),
-            this,
-            &TaskFemConstraintOnBoundary::onButtonToggled);
+    connect(
+        buttonGroup,
+        qOverload<QAbstractButton*, bool>(&QButtonGroup::buttonToggled),
+        this,
+        &TaskFemConstraintOnBoundary::onButtonToggled
+    );
 }
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()

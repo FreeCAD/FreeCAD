@@ -30,7 +30,8 @@
 #include <vector>
 
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
 class AbstractSplitViewPy;
 class View3DSettings;
@@ -38,17 +39,21 @@ class View3DSettings;
 /** The SplitView3DInventor class allows one to create a window with two or more Inventor views.
  *  \author Werner Mayer
  */
-class GuiExport AbstractSplitView : public MDIView
+class GuiExport AbstractSplitView: public MDIView
 {
     Q_OBJECT
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
+    AbstractSplitView(
+        Gui::Document* pcDocument,
+        QWidget* parent,
+        Qt::WindowFlags wflags = Qt::WindowFlags()
+    );
     ~AbstractSplitView() override;
 
-    const char *getName() const override;
+    const char* getName() const override;
 
     /// Message handler
     bool onMsg(const char* pMsg, const char** ppReturn) override;
@@ -57,12 +62,12 @@ public:
     void deleteSelf() override;
     void viewAll() override;
 
-    View3DInventorViewer *getViewer(unsigned int) const;
+    View3DInventorViewer* getViewer(unsigned int) const;
     void setOverrideCursor(const QCursor&) override;
     bool containsViewProvider(const ViewProvider*) const override;
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
     int getSize();
 
 protected:
@@ -71,22 +76,22 @@ protected:
 
 protected:
     std::vector<View3DInventorViewer*> _viewer;
-    PyObject *_viewerPy;
+    PyObject* _viewerPy;
     std::unique_ptr<View3DSettings> viewSettings;
 };
 
-class AbstractSplitViewPy : public Py::PythonExtension<AbstractSplitViewPy>
+class AbstractSplitViewPy: public Py::PythonExtension<AbstractSplitViewPy>
 {
 public:
     using BaseType = Py::PythonExtension<AbstractSplitViewPy>;
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
-    AbstractSplitViewPy(AbstractSplitView *vi);
+    AbstractSplitViewPy(AbstractSplitView* vi);
     ~AbstractSplitViewPy() override;
     AbstractSplitView* getSplitViewPtr();
 
     Py::Object repr() override;
-    Py::Object getattr(const char *) override;
+    Py::Object getattr(const char*) override;
     Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object fitAll(const Py::Tuple&);
@@ -109,16 +114,20 @@ private:
 /** The SplitView3DInventor class allows one to create a window with two or more Inventor views.
  *  \author Werner Mayer
  */
-class GuiExport SplitView3DInventor : public AbstractSplitView
+class GuiExport SplitView3DInventor: public AbstractSplitView
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
+    SplitView3DInventor(
+        int views,
+        Gui::Document* pcDocument,
+        QWidget* parent,
+        Qt::WindowFlags wflags = Qt::WindowFlags()
+    );
     ~SplitView3DInventor() override;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif  //GUI_SPLITVIEW3DINVENTOR_H
-
+#endif  // GUI_SPLITVIEW3DINVENTOR_H

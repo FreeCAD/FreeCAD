@@ -39,10 +39,12 @@ Base::DualQuat Base::operator-(Base::DualQuat a, Base::DualQuat b)
 
 Base::DualQuat Base::operator*(Base::DualQuat a, Base::DualQuat b)
 {
-    return {a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
-            a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
-            a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x,
-            a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z};
+    return {
+        a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
+        a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
+        a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x,
+        a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z
+    };
 }
 
 Base::DualQuat Base::operator*(Base::DualQuat a, double b)
@@ -109,9 +111,9 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
 
     DualQuat self = *this;
     if (shorten) {
-        if (dot(self, identity())
-            < -1e-12) {  // using negative tolerance instead of zero, for stability in situations
-                         // the choice is ambiguous (180-degree rotations)
+        if (dot(self, identity()) < -1e-12) {  // using negative tolerance instead of zero, for
+                                               // stability in situations the choice is ambiguous
+                                               // (180-degree rotations)
             self = -self;
         }
     }
@@ -128,8 +130,10 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
     pitch *= t;
 
     // back to quaternion
-    return {l * sin(theta / 2) + DualQuat(0, 0, 0, cos(theta / 2)),
-            m * sin(theta / 2) + pitch / 2 * cos(theta / 2) * l
-                + DualQuat(0, 0, 0, -pitch / 2 * sin(theta / 2))};
+    return {
+        l * sin(theta / 2) + DualQuat(0, 0, 0, cos(theta / 2)),
+        m * sin(theta / 2) + pitch / 2 * cos(theta / 2) * l
+            + DualQuat(0, 0, 0, -pitch / 2 * sin(theta / 2))
+    };
 }
 // NOLINTEND(readability-identifier-length)

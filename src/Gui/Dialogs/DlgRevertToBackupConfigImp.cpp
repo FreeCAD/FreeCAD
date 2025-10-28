@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QDateTime>
-# include <QPushButton>
+#include <QDateTime>
+#include <QPushButton>
 
 #include "Dialogs/DlgRevertToBackupConfigImp.h"
 #include "ui_DlgRevertToBackupConfig.h"
@@ -40,7 +40,12 @@ DlgRevertToBackupConfigImp::DlgRevertToBackupConfigImp(QWidget* parent)
     , ui(new Ui_DlgRevertToBackupConfig)
 {
     ui->setupUi(this);
-    connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, &DlgRevertToBackupConfigImp::onItemSelectionChanged);
+    connect(
+        ui->listWidget,
+        &QListWidget::itemSelectionChanged,
+        this,
+        &DlgRevertToBackupConfigImp::onItemSelectionChanged
+    );
 }
 
 DlgRevertToBackupConfigImp::~DlgRevertToBackupConfigImp() = default;
@@ -48,17 +53,18 @@ DlgRevertToBackupConfigImp::~DlgRevertToBackupConfigImp() = default;
 void Gui::Dialog::DlgRevertToBackupConfigImp::onItemSelectionChanged()
 {
     auto items = ui->listWidget->selectedItems();
-    if (items.count() == 1)
+    if (items.count() == 1) {
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(true);
-    else
+    }
+    else {
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(false);
-
+    }
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgRevertToBackupConfigImp::changeEvent(QEvent *e)
+void DlgRevertToBackupConfigImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -69,12 +75,11 @@ void DlgRevertToBackupConfigImp::changeEvent(QEvent *e)
 }
 
 // FIXME: Replace with more accurate C++20 solution once its usable: https://stackoverflow.com/a/68593141
-template <typename TP>
+template<typename TP>
 static std::time_t to_time_t(TP tp)
 {
     using namespace std::chrono;
-    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now()
-              + system_clock::now());
+    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
     return system_clock::to_time_t(sctp);
 }
 
@@ -96,7 +101,9 @@ void DlgRevertToBackupConfigImp::accept()
 {
     auto items = ui->listWidget->selectedItems();
     if (items.count() != 1) {
-        Base::Console().error(tr("No selection in dialog, cannot load backup file").toStdString().c_str());
+        Base::Console().error(
+            tr("No selection in dialog, cannot load backup file").toStdString().c_str()
+        );
         return;
     }
     auto item = items[0];

@@ -20,6 +20,7 @@ from math import acos
 import FreeCAD, Part
 from FreeCAD import Base
 from . import involute
+
 rotate = involute.rotate
 
 
@@ -37,6 +38,7 @@ def makeGear(m, Z, angle, split=True):
 
 class FCWireBuilder(object):
     """A helper class to prepare a Part.Wire object"""
+
     def __init__(self):
         self.pos = None
         self.theta = 0.0
@@ -54,7 +56,7 @@ class FCWireBuilder(object):
         self.pos = end
 
     def arc(self, p, r, sweep):
-        """"Add an arc from self.pos to p which radius is r
+        """ "Add an arc from self.pos to p which radius is r
         sweep (0 or 1) determine the orientation of the arc
         """
         p = rotate(p, self.theta)
@@ -77,6 +79,7 @@ class FCWireBuilder(object):
     def close(self):
         pass
 
+
 def midpoints(p1, p2, r):
     """A very ugly function that returns the midpoint of a p1 and p2
     on the circle which radius is r and which pass through p1 and
@@ -84,24 +87,24 @@ def midpoints(p1, p2, r):
 
     Return the 2 possible solutions
     """
-    vx, vy = p2[0]-p1[0], p2[1]-p1[1]
-    b = (vx**2 + vy**2)**.5
-    v = (vx/b, vy/b)
-    cosA = b**2 / (2*b*r)
+    vx, vy = p2[0] - p1[0], p2[1] - p1[1]
+    b = (vx**2 + vy**2) ** 0.5
+    v = (vx / b, vy / b)
+    cosA = b**2 / (2 * b * r)
     A = acos(cosA)
 
     vx, vy = rotate(v, A)
-    c1 = (p1[0]+r*vx, p1[1]+r*vy)
-    m1x, m1y = ((p1[0]+p2[0])/2 - c1[0], (p1[1]+p2[1])/2 - c1[1])
-    dm1 = (m1x**2+m1y**2)**.5
-    m1x, m1y = (c1[0] + r*m1x/dm1, c1[1] + r*m1y/dm1)
+    c1 = (p1[0] + r * vx, p1[1] + r * vy)
+    m1x, m1y = ((p1[0] + p2[0]) / 2 - c1[0], (p1[1] + p2[1]) / 2 - c1[1])
+    dm1 = (m1x**2 + m1y**2) ** 0.5
+    m1x, m1y = (c1[0] + r * m1x / dm1, c1[1] + r * m1y / dm1)
     m1 = (m1x, m1y)
 
     vx, vy = rotate(v, -A)
-    c2 = (p1[0]+r*vx, p1[1]+r*vy)
-    m2x, m2y = ((p1[0]+p2[0])/2 - c2[0], (p1[1]+p2[1])/2 - c2[1])
-    dm2 = (m2x**2+m2y**2)**.5
-    m2x, m2y = (c2[0] + r*m2x/dm2, c2[1] + r*m2y/dm2)
+    c2 = (p1[0] + r * vx, p1[1] + r * vy)
+    m2x, m2y = ((p1[0] + p2[0]) / 2 - c2[0], (p1[1] + p2[1]) / 2 - c2[1])
+    dm2 = (m2x**2 + m2y**2) ** 0.5
+    m2x, m2y = (c2[0] + r * m2x / dm2, c2[1] + r * m2y / dm2)
     m2 = (m2x, m2y)
 
     return m1, m2

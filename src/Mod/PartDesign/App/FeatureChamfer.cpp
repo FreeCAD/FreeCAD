@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <limits>
+#include <limits>
 
-# include <BRepAlgo.hxx>
-# include <BRepFilletAPI_MakeChamfer.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
-# include <Standard_Version.hxx>
+#include <BRepAlgo.hxx>
+#include <BRepFilletAPI_MakeChamfer.hxx>
+#include <TopExp.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
+#include <ShapeFix_Shape.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
+#include <Standard_Version.hxx>
 
 
 #include <Base/Exception.h>
@@ -48,10 +48,16 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", nullptr};
-const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, std::numeric_limits<float>::max(), 0.1};
+const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize
+    = {0.0, std::numeric_limits<float>::max(), 0.1};
 const App::PropertyAngle::Constraints Chamfer::floatAngle = {0.0, 180.0, 1.0};
 
-static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);
+static App::DocumentObjectExecReturn* validateParameters(
+    int chamferType,
+    double size,
+    double size2,
+    double angle
+);
 
 Chamfer::Chamfer()
 {
@@ -71,9 +77,15 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
-    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Chamfer", App::Prop_None,
-             "Chamfer all edges if true, else use only those edges in Base property.\n"
-             "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
+    ADD_PROPERTY_TYPE(
+        UseAllEdges,
+        (false),
+        "Chamfer",
+        App::Prop_None,
+        "Chamfer all edges if true, else use only those edges in Base property.\n"
+        "If true, then this overrides any edge changes made to the Base property or in the "
+        "dialog.\n"
+    );
 
     updateProperties();
 }
@@ -85,25 +97,28 @@ short Chamfer::mustExecute() const
     auto chamferType = ChamferType.getValue();
 
     switch (chamferType) {
-        case 0: // "Equal distance"
+        case 0:  // "Equal distance"
             touched = Size.isTouched() || ChamferType.isTouched();
             break;
-        case 1: // "Two distances"
+        case 1:  // "Two distances"
             touched = Size.isTouched() || ChamferType.isTouched() || Size2.isTouched();
             break;
-        case 2: // "Distance and Angle"
+        case 2:  // "Distance and Angle"
             touched = Size.isTouched() || ChamferType.isTouched() || Angle.isTouched();
             break;
     }
 
-    if (Placement.isTouched() || touched)
+    if (Placement.isTouched() || touched) {
         return 1;
+    }
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Chamfer::execute()
+App::DocumentObjectExecReturn* Chamfer::execute()
 {
-    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+    if (onlyHaveRefined()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
     // The only difference is that the Base property also stores the edges that are to be chamfered
@@ -121,8 +136,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
                                         : getContinuousEdges(TopShape);
 
     if (edges.empty()) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "No edges specified"));
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No edges specified"));
     }
     const int chamferType = ChamferType.getValue();
     const double size = Size.getValue();
@@ -137,38 +151,46 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
     this->positionByBaseFeature();
 
-    if ( static_cast<Part::ChamferType>(chamferType) == Part::ChamferType::distanceAngle ) {
+    if (static_cast<Part::ChamferType>(chamferType) == Part::ChamferType::distanceAngle) {
         size2 = angle;
     }
     try {
         TopoShape shape(0);
-        shape.makeElementChamfer(TopShape,
-                                 edges,
-                                 static_cast<Part::ChamferType>(chamferType),
-                                 size,
-                                 size2,
-                                 nullptr,
-                                 flipDirection ? Part::Flip::flip : Part::Flip::none);
+        shape.makeElementChamfer(
+            TopShape,
+            edges,
+            static_cast<Part::ChamferType>(chamferType),
+            size,
+            size2,
+            nullptr,
+            flipDirection ? Part::Flip::flip : Part::Flip::none
+        );
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer"));
+                QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer")
+            );
         }
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(TopShape.getShape());
         if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(shape.getShape(),
-                                Precision::Confusion(),
-                                Precision::Confusion(),
-                                TopAbs_SHAPE);
+            aSFT.LimitTolerance(
+                shape.getShape(),
+                Precision::Confusion(),
+                Precision::Confusion(),
+                TopAbs_SHAPE
+            );
         }
 
         // store shape before refinement
         this->rawShape = shape;
         shape = refineShapeIfActive(shape);
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Result has multiple solids: enable 'Allow Compound' in the active body."
+            ));
         }
 
         shape = getSolid(shape);
@@ -180,15 +202,15 @@ App::DocumentObjectExecReturn *Chamfer::execute()
     }
 }
 
-void Chamfer::Restore(Base::XMLReader &reader)
+void Chamfer::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
 }
 
-void Chamfer::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
-    if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-        strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
+    if (prop && strcmp(TypeName, "App::PropertyFloatConstraint") == 0
+        && strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
         App::PropertyFloatConstraint p;
         p.Restore(reader);
         static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
@@ -211,50 +233,59 @@ void Chamfer::updateProperties()
 {
     auto chamferType = ChamferType.getValue();
 
-    auto disableproperty = [](App::Property * prop, bool on) {
+    auto disableproperty = [](App::Property* prop, bool on) {
         prop->setStatus(App::Property::ReadOnly, on);
     };
 
     switch (chamferType) {
-    case 0: // "Equal distance"
-        disableproperty(&this->Angle, true);
-        disableproperty(&this->Size2, true);
-        break;
-    case 1: // "Two distances"
-        disableproperty(&this->Angle, true);
-        disableproperty(&this->Size2, false);
-        break;
-    case 2: // "Distance and Angle"
-        disableproperty(&this->Angle, false);
-        disableproperty(&this->Size2, true);
-        break;
+        case 0:  // "Equal distance"
+            disableproperty(&this->Angle, true);
+            disableproperty(&this->Size2, true);
+            break;
+        case 1:  // "Two distances"
+            disableproperty(&this->Angle, true);
+            disableproperty(&this->Size2, false);
+            break;
+        case 2:  // "Distance and Angle"
+            disableproperty(&this->Angle, false);
+            disableproperty(&this->Size2, true);
+            break;
     }
 }
 
-static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle)
+static App::DocumentObjectExecReturn* validateParameters(
+    int chamferType,
+    double size,
+    double size2,
+    double angle
+)
 {
     // Size is common to all chamfer types.
     if (size <= 0) {
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Size must be greater than zero"));
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Size must be greater than zero")
+        );
     }
 
     switch (chamferType) {
-        case 0: // Equal distance
+        case 0:  // Equal distance
             // Nothing to do.
             break;
-        case 1: // Two distances
+        case 1:  // Two distances
             if (size2 <= 0) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Size2 must be greater than zero"));
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Size2 must be greater than zero")
+                );
             }
             break;
-        case 2: // Distance and angle
+        case 2:  // Distance and angle
             if (angle <= 0 || angle >= 180.0) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle must be greater than 0 and less than 180"));
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Angle must be greater than 0 and less than 180")
+                );
             }
             break;
     }
 
     return App::DocumentObject::StdReturn;
 }
-
-

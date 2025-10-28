@@ -28,7 +28,8 @@
 #include <string>
 #include <Base/Factory.h>
 
-namespace Gui {
+namespace Gui
+{
 class Workbench;
 
 /**
@@ -38,31 +39,31 @@ class Workbench;
  * @note To create workbenches you should use the API of WorkbenchManager.
  * @author Werner Mayer
  */
-class GuiExport WorkbenchFactoryInst : public Base::Factory
+class GuiExport WorkbenchFactoryInst: public Base::Factory
 {
 public:
-  /// The one and only instance.
-  static WorkbenchFactoryInst& instance();
-  /// Destructs the sole instance.
-  static void destruct ();
+    /// The one and only instance.
+    static WorkbenchFactoryInst& instance();
+    /// Destructs the sole instance.
+    static void destruct();
 
-  /** Creates the workbench with \a name. If no such workbench is registered
-   * 0 is returned.
-   */
-  Workbench* createWorkbench ( const char* sName ) const;
-  /** Returns a list of all registered workbench classes. */
-  std::list<std::string> workbenches() const;
+    /** Creates the workbench with \a name. If no such workbench is registered
+     * 0 is returned.
+     */
+    Workbench* createWorkbench(const char* sName) const;
+    /** Returns a list of all registered workbench classes. */
+    std::list<std::string> workbenches() const;
 
 private:
-  static WorkbenchFactoryInst* _pcSingleton;
+    static WorkbenchFactoryInst* _pcSingleton;
 
-  WorkbenchFactoryInst() = default;
-  ~WorkbenchFactoryInst() override = default;
+    WorkbenchFactoryInst() = default;
+    ~WorkbenchFactoryInst() override = default;
 };
 
 inline GuiExport WorkbenchFactoryInst& WorkbenchFactory()
 {
-  return WorkbenchFactoryInst::instance();
+    return WorkbenchFactoryInst::instance();
 }
 
 // --------------------------------------------------------------------
@@ -72,20 +73,20 @@ inline GuiExport WorkbenchFactoryInst& WorkbenchFactory()
  * classes.
  * @author Werner Mayer
  */
-template <class CLASS>
+template<class CLASS>
 class WorkbenchProducer: public Base::AbstractProducer
 {
 public:
-  WorkbenchProducer()   = default;
+    WorkbenchProducer() = default;
 
-  ~WorkbenchProducer () override = default;
+    ~WorkbenchProducer() override = default;
 
-  void* Produce () const override
-  {
-    return (new CLASS);
-  }
+    void* Produce() const override
+    {
+        return (new CLASS);
+    }
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_WORKBENCHFACTORY_H
+#endif  // GUI_WORKBENCHFACTORY_H

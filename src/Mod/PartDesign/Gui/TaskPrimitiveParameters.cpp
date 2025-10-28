@@ -382,7 +382,8 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
             App::Origin* origin = body->getOrigin();
             Gui::ViewProviderCoordinateSystem* vpOrigin;
             vpOrigin = static_cast<Gui::ViewProviderCoordinateSystem*>(
-                Gui::Application::Instance->getViewProvider(origin));
+                Gui::Application::Instance->getViewProvider(origin)
+            );
             vpOrigin->resetTemporaryVisibility();
         }
     }
@@ -821,135 +822,157 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
         Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch (ui->widgetStack->currentIndex()) {
             case 1:  // box
-                cmd = fmt::format("{0}.Length='{1}'\n"
-                                  "{0}.Width='{2}'\n"
-                                  "{0}.Height='{3}'\n",
-                                  name,
-                                  ui->boxLength->value().getSafeUserString(),
-                                  ui->boxWidth->value().getSafeUserString(),
-                                  ui->boxHeight->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Length='{1}'\n"
+                    "{0}.Width='{2}'\n"
+                    "{0}.Height='{3}'\n",
+                    name,
+                    ui->boxLength->value().getSafeUserString(),
+                    ui->boxWidth->value().getSafeUserString(),
+                    ui->boxHeight->value().getSafeUserString()
+                );
                 break;
 
             case 2:  // cylinder
-                cmd = fmt::format("{0}.Radius='{1}'\n"
-                                  "{0}.Height='{2}'\n"
-                                  "{0}.Angle='{3}'\n"
-                                  "{0}.FirstAngle='{4}'\n"
-                                  "{0}.SecondAngle='{5}'\n",
-                                  name,
-                                  ui->cylinderRadius->value().getSafeUserString(),
-                                  ui->cylinderHeight->value().getSafeUserString(),
-                                  ui->cylinderAngle->value().getSafeUserString(),
-                                  ui->cylinderXSkew->value().getSafeUserString(),
-                                  ui->cylinderYSkew->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Radius='{1}'\n"
+                    "{0}.Height='{2}'\n"
+                    "{0}.Angle='{3}'\n"
+                    "{0}.FirstAngle='{4}'\n"
+                    "{0}.SecondAngle='{5}'\n",
+                    name,
+                    ui->cylinderRadius->value().getSafeUserString(),
+                    ui->cylinderHeight->value().getSafeUserString(),
+                    ui->cylinderAngle->value().getSafeUserString(),
+                    ui->cylinderXSkew->value().getSafeUserString(),
+                    ui->cylinderYSkew->value().getSafeUserString()
+                );
                 break;
 
             case 3:  // cone
-                cmd = fmt::format("{0}.Radius1='{1}'\n"
-                                  "{0}.Radius2='{2}'\n"
-                                  "{0}.Height='{3}'\n"
-                                  "{0}.Angle='{4}'\n",
-                                  name,
-                                  ui->coneRadius1->value().getSafeUserString(),
-                                  ui->coneRadius2->value().getSafeUserString(),
-                                  ui->coneHeight->value().getSafeUserString(),
-                                  ui->coneAngle->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Radius1='{1}'\n"
+                    "{0}.Radius2='{2}'\n"
+                    "{0}.Height='{3}'\n"
+                    "{0}.Angle='{4}'\n",
+                    name,
+                    ui->coneRadius1->value().getSafeUserString(),
+                    ui->coneRadius2->value().getSafeUserString(),
+                    ui->coneHeight->value().getSafeUserString(),
+                    ui->coneAngle->value().getSafeUserString()
+                );
                 break;
 
             case 4:  // sphere
-                cmd = fmt::format("{0}.Radius='{1}'\n"
-                                  "{0}.Angle1='{2}'\n"
-                                  "{0}.Angle2='{3}'\n"
-                                  "{0}.Angle3='{4}'\n",
-                                  name,
-                                  ui->sphereRadius->value().getSafeUserString(),
-                                  ui->sphereAngle1->value().getSafeUserString(),
-                                  ui->sphereAngle2->value().getSafeUserString(),
-                                  ui->sphereAngle3->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Radius='{1}'\n"
+                    "{0}.Angle1='{2}'\n"
+                    "{0}.Angle2='{3}'\n"
+                    "{0}.Angle3='{4}'\n",
+                    name,
+                    ui->sphereRadius->value().getSafeUserString(),
+                    ui->sphereAngle1->value().getSafeUserString(),
+                    ui->sphereAngle2->value().getSafeUserString(),
+                    ui->sphereAngle3->value().getSafeUserString()
+                );
                 break;
             case 5:  // ellipsoid
-                cmd = fmt::format("{0}.Radius1='{1}'\n"
-                                  "{0}.Radius2='{2}'\n"
-                                  "{0}.Radius3='{3}'\n"
-                                  "{0}.Angle1='{4}'\n"
-                                  "{0}.Angle2='{5}'\n"
-                                  "{0}.Angle3='{6}'\n",
-                                  name,
-                                  ui->ellipsoidRadius1->value().getSafeUserString(),
-                                  ui->ellipsoidRadius2->value().getSafeUserString(),
-                                  ui->ellipsoidRadius3->value().getSafeUserString(),
-                                  ui->ellipsoidAngle1->value().getSafeUserString(),
-                                  ui->ellipsoidAngle2->value().getSafeUserString(),
-                                  ui->ellipsoidAngle3->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Radius1='{1}'\n"
+                    "{0}.Radius2='{2}'\n"
+                    "{0}.Radius3='{3}'\n"
+                    "{0}.Angle1='{4}'\n"
+                    "{0}.Angle2='{5}'\n"
+                    "{0}.Angle3='{6}'\n",
+                    name,
+                    ui->ellipsoidRadius1->value().getSafeUserString(),
+                    ui->ellipsoidRadius2->value().getSafeUserString(),
+                    ui->ellipsoidRadius3->value().getSafeUserString(),
+                    ui->ellipsoidAngle1->value().getSafeUserString(),
+                    ui->ellipsoidAngle2->value().getSafeUserString(),
+                    ui->ellipsoidAngle3->value().getSafeUserString()
+                );
                 break;
 
             case 6:  // torus
-                cmd = fmt::format("{0}.Radius1='{1}'\n"
-                                  "{0}.Radius2='{2}'\n"
-                                  "{0}.Angle1='{3}'\n"
-                                  "{0}.Angle2='{4}'\n"
-                                  "{0}.Angle3='{5}'\n",
-                                  name,
-                                  ui->torusRadius1->value().getSafeUserString(),
-                                  ui->torusRadius2->value().getSafeUserString(),
-                                  ui->torusAngle1->value().getSafeUserString(),
-                                  ui->torusAngle2->value().getSafeUserString(),
-                                  ui->torusAngle3->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Radius1='{1}'\n"
+                    "{0}.Radius2='{2}'\n"
+                    "{0}.Angle1='{3}'\n"
+                    "{0}.Angle2='{4}'\n"
+                    "{0}.Angle3='{5}'\n",
+                    name,
+                    ui->torusRadius1->value().getSafeUserString(),
+                    ui->torusRadius2->value().getSafeUserString(),
+                    ui->torusAngle1->value().getSafeUserString(),
+                    ui->torusAngle2->value().getSafeUserString(),
+                    ui->torusAngle3->value().getSafeUserString()
+                );
                 break;
             case 7:  // prism
-                cmd = fmt::format("{0}.Polygon={1}\n"
-                                  "{0}.Circumradius='{2}'\n"
-                                  "{0}.Height='{3}'\n"
-                                  "{0}.FirstAngle='{4}'\n"
-                                  "{0}.SecondAngle='{5}'\n",
-                                  name,
-                                  ui->prismPolygon->value(),
-                                  ui->prismCircumradius->value().getSafeUserString(),
-                                  ui->prismHeight->value().getSafeUserString(),
-                                  ui->prismXSkew->value().getSafeUserString(),
-                                  ui->prismYSkew->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Polygon={1}\n"
+                    "{0}.Circumradius='{2}'\n"
+                    "{0}.Height='{3}'\n"
+                    "{0}.FirstAngle='{4}'\n"
+                    "{0}.SecondAngle='{5}'\n",
+                    name,
+                    ui->prismPolygon->value(),
+                    ui->prismCircumradius->value().getSafeUserString(),
+                    ui->prismHeight->value().getSafeUserString(),
+                    ui->prismXSkew->value().getSafeUserString(),
+                    ui->prismYSkew->value().getSafeUserString()
+                );
                 break;
             case 8:  // wedge
                 // Xmin/max, Ymin/max and Zmin/max must each not be equal
                 if (ui->wedgeXmin->value().getValue() == ui->wedgeXmax->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(),
-                                         tr("Invalid wedge parameters"),
-                                         tr("X min must not be equal to X max!"));
+                    QMessageBox::warning(
+                        Gui::getMainWindow(),
+                        tr("Invalid wedge parameters"),
+                        tr("X min must not be equal to X max!")
+                    );
                     return false;
                 }
                 else if (ui->wedgeYmin->value().getValue() == ui->wedgeYmax->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(),
-                                         tr("Invalid wedge parameters"),
-                                         tr("Y min must not be equal to Y max!"));
+                    QMessageBox::warning(
+                        Gui::getMainWindow(),
+                        tr("Invalid wedge parameters"),
+                        tr("Y min must not be equal to Y max!")
+                    );
                     return false;
                 }
                 else if (ui->wedgeZmin->value().getValue() == ui->wedgeZmax->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(),
-                                         tr("Invalid wedge parameters"),
-                                         tr("Z min must not be equal to Z max!"));
+                    QMessageBox::warning(
+                        Gui::getMainWindow(),
+                        tr("Invalid wedge parameters"),
+                        tr("Z min must not be equal to Z max!")
+                    );
                     return false;
                 }
-                cmd = fmt::format("{0}.Xmin='{1}'\n"
-                                  "{0}.Ymin='{2}'\n"
-                                  "{0}.Zmin='{3}'\n"
-                                  "{0}.X2min='{4}'\n"
-                                  "{0}.Z2min='{5}'\n"
-                                  "{0}.Xmax='{6}'\n"
-                                  "{0}.Ymax='{7}'\n"
-                                  "{0}.Zmax='{8}'\n"
-                                  "{0}.X2max='{9}'\n"
-                                  "{0}.Z2max='{10}'\n",
-                                  name,
-                                  ui->wedgeXmin->value().getSafeUserString(),
-                                  ui->wedgeYmin->value().getSafeUserString(),
-                                  ui->wedgeZmin->value().getSafeUserString(),
-                                  ui->wedgeX2min->value().getSafeUserString(),
-                                  ui->wedgeZ2min->value().getSafeUserString(),
-                                  ui->wedgeXmax->value().getSafeUserString(),
-                                  ui->wedgeYmax->value().getSafeUserString(),
-                                  ui->wedgeZmax->value().getSafeUserString(),
-                                  ui->wedgeX2max->value().getSafeUserString(),
-                                  ui->wedgeZ2max->value().getSafeUserString());
+                cmd = fmt::format(
+                    "{0}.Xmin='{1}'\n"
+                    "{0}.Ymin='{2}'\n"
+                    "{0}.Zmin='{3}'\n"
+                    "{0}.X2min='{4}'\n"
+                    "{0}.Z2min='{5}'\n"
+                    "{0}.Xmax='{6}'\n"
+                    "{0}.Ymax='{7}'\n"
+                    "{0}.Zmax='{8}'\n"
+                    "{0}.X2max='{9}'\n"
+                    "{0}.Z2max='{10}'\n",
+                    name,
+                    ui->wedgeXmin->value().getSafeUserString(),
+                    ui->wedgeYmin->value().getSafeUserString(),
+                    ui->wedgeZmin->value().getSafeUserString(),
+                    ui->wedgeX2min->value().getSafeUserString(),
+                    ui->wedgeZ2min->value().getSafeUserString(),
+                    ui->wedgeXmax->value().getSafeUserString(),
+                    ui->wedgeYmax->value().getSafeUserString(),
+                    ui->wedgeZmax->value().getSafeUserString(),
+                    ui->wedgeX2max->value().getSafeUserString(),
+                    ui->wedgeZ2max->value().getSafeUserString()
+                );
                 break;
 
             default:
@@ -963,9 +986,11 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {
-        QMessageBox::warning(this,
-                             tr("Create primitive"),
-                             QApplication::translate("Exception", e.what()));
+        QMessageBox::warning(
+            this,
+            tr("Create primitive"),
+            QApplication::translate("Exception", e.what())
+        );
         return false;
     }
     return true;

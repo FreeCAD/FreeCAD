@@ -110,33 +110,33 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     sketcher->setCommand("Sketcher");
     addSketcherWorkbenchSketchActions(*sketcher);
 
-    Gui::ToolBarItem* sketcherEditMode =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* sketcherEditMode
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     sketcherEditMode->setCommand("Edit Mode");
     addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
-    Gui::ToolBarItem* geom =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* geom
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     geom->setCommand("Geometries");
     addSketcherWorkbenchGeometries(*geom);
 
-    Gui::ToolBarItem* cons =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* cons
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     cons->setCommand("Constraints");
     addSketcherWorkbenchConstraints(*cons);
 
-    Gui::ToolBarItem* consaccel =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* consaccel
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     consaccel->setCommand("Sketcher Tools");
     addSketcherWorkbenchTools(*consaccel);
 
-    Gui::ToolBarItem* bspline =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* bspline
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     bspline->setCommand("B-Spline Tools");
     addSketcherWorkbenchBSplines(*bspline);
 
-    Gui::ToolBarItem* visual =
-        new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    Gui::ToolBarItem* visual
+        = new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     visual->setCommand("Visual Helpers");
     addSketcherWorkbenchVisual(*visual);
 
@@ -155,13 +155,15 @@ namespace
 {
 inline const QStringList editModeToolbarNames()
 {
-    return QStringList {QStringLiteral("Edit Mode"),
-                        QStringLiteral("Geometries"),
-                        QStringLiteral("Constraints"),
-                        QStringLiteral("Sketcher Tools"),
-                        QStringLiteral("B-Spline Tools"),
-                        QStringLiteral("Visual Helpers"),
-                        QStringLiteral("Sketcher Edit Tools")};
+    return QStringList {
+        QStringLiteral("Edit Mode"),
+        QStringLiteral("Geometries"),
+        QStringLiteral("Constraints"),
+        QStringLiteral("Sketcher Tools"),
+        QStringLiteral("B-Spline Tools"),
+        QStringLiteral("Visual Helpers"),
+        QStringLiteral("Sketcher Edit Tools")
+    };
 }
 
 inline const QStringList nonEditModeToolbarNames()
@@ -188,11 +190,15 @@ void Workbench::activated()
      */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
-        Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
-                                                     Gui::ToolBarManager::State::ForceAvailable);
+        Gui::ToolBarManager::getInstance()->setState(
+            editModeToolbarNames(),
+            Gui::ToolBarManager::State::ForceAvailable
+        );
 
-        Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
-                                                     Gui::ToolBarManager::State::ForceHidden);
+        Gui::ToolBarManager::getInstance()->setState(
+            nonEditModeToolbarNames(),
+            Gui::ToolBarManager::State::ForceHidden
+        );
     }
 }
 
@@ -201,13 +207,19 @@ void Workbench::enterEditMode()
     /* Ensure the state left by the non-edit mode toolbars is saved (in case of changing to edit
      * mode) without changing workbench
      */
-    Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
-                                                 Gui::ToolBarManager::State::SaveState);
+    Gui::ToolBarManager::getInstance()->setState(
+        nonEditModeToolbarNames(),
+        Gui::ToolBarManager::State::SaveState
+    );
 
-    Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
-                                                 Gui::ToolBarManager::State::ForceAvailable);
-    Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
-                                                 Gui::ToolBarManager::State::ForceHidden);
+    Gui::ToolBarManager::getInstance()->setState(
+        editModeToolbarNames(),
+        Gui::ToolBarManager::State::ForceAvailable
+    );
+    Gui::ToolBarManager::getInstance()->setState(
+        nonEditModeToolbarNames(),
+        Gui::ToolBarManager::State::ForceHidden
+    );
 }
 
 void Workbench::leaveEditMode()
@@ -222,14 +234,20 @@ void Workbench::leaveEditMode()
     auto* workbench = Gui::WorkbenchManager::instance()->active();
 
     if (workbench->name() == "SketcherWorkbench") {
-        Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
-                                                     Gui::ToolBarManager::State::SaveState);
+        Gui::ToolBarManager::getInstance()->setState(
+            editModeToolbarNames(),
+            Gui::ToolBarManager::State::SaveState
+        );
     }
 
-    Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
-                                                 Gui::ToolBarManager::State::RestoreDefault);
-    Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
-                                                 Gui::ToolBarManager::State::RestoreDefault);
+    Gui::ToolBarManager::getInstance()->setState(
+        editModeToolbarNames(),
+        Gui::ToolBarManager::State::RestoreDefault
+    );
+    Gui::ToolBarManager::getInstance()->setState(
+        nonEditModeToolbarNames(),
+        Gui::ToolBarManager::State::RestoreDefault
+    );
 }
 
 namespace SketcherGui
@@ -297,7 +315,8 @@ template<>
 inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Commands");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Commands"
+    );
 
     if (hGrp->GetBool("UnifiedLineCommands", false)) {
         geom << "Sketcher_CompLine";
@@ -447,7 +466,8 @@ template<>
 inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints"
+    );
 
     if (hGrp->GetBool("UnifiedCoincident", true)) {
         cons << "Sketcher_ConstrainCoincidentUnified";
@@ -485,7 +505,8 @@ template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+    );
 
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
         if (!hGrp->GetBool("SeparatedDimensioningTools", false)) {
@@ -508,7 +529,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
     cons << "Separator";
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints"
+    );
 
     if (hGrp->GetBool("UnifiedCoincident", true)) {
         cons << "Sketcher_ConstrainCoincidentUnified";

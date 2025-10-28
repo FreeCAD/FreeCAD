@@ -35,33 +35,41 @@ PROPERTY_SOURCE(Fem::ConstraintForce, Fem::Constraint)
 ConstraintForce::ConstraintForce()
 {
     ADD_PROPERTY(Force, (0.0));
-    ADD_PROPERTY_TYPE(Direction,
-                      (nullptr),
-                      "ConstraintForce",
-                      (App::PropertyType)(App::Prop_None),
-                      "Element giving direction of constraint");
+    ADD_PROPERTY_TYPE(
+        Direction,
+        (nullptr),
+        "ConstraintForce",
+        (App::PropertyType)(App::Prop_None),
+        "Element giving direction of constraint"
+    );
     // RefDispl must get a global scope, see
     Direction.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY(Reversed, (0));
-    ADD_PROPERTY_TYPE(DirectionVector,
-                      (Base::Vector3d(0, 0, 1)),
-                      "ConstraintForce",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Direction of arrows");
+    ADD_PROPERTY_TYPE(
+        DirectionVector,
+        (Base::Vector3d(0, 0, 1)),
+        "ConstraintForce",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Direction of arrows"
+    );
 
     // by default use the null vector to indicate an invalid value
     naturalDirectionVector = Base::Vector3d(0, 0, 0);
-    ADD_PROPERTY_TYPE(EnableAmplitude,
-                      (false),
-                      "ConstraintForce",
-                      (App::PropertyType)(App::Prop_None),
-                      "Amplitude of the force load");
-    ADD_PROPERTY_TYPE(AmplitudeValues,
-                      (std::vector<std::string> {"0, 0", "1, 1"}),
-                      "ConstraintForce",
-                      (App::PropertyType)(App::Prop_None),
-                      "Amplitude values");
+    ADD_PROPERTY_TYPE(
+        EnableAmplitude,
+        (false),
+        "ConstraintForce",
+        (App::PropertyType)(App::Prop_None),
+        "Amplitude of the force load"
+    );
+    ADD_PROPERTY_TYPE(
+        AmplitudeValues,
+        (std::vector<std::string> {"0, 0", "1, 1"}),
+        "ConstraintForce",
+        (App::PropertyType)(App::Prop_None),
+        "Amplitude values"
+    );
 }
 
 App::DocumentObjectExecReturn* ConstraintForce::execute()
@@ -69,9 +77,11 @@ App::DocumentObjectExecReturn* ConstraintForce::execute()
     return Constraint::execute();
 }
 
-void ConstraintForce::handleChangedPropertyType(Base::XMLReader& reader,
-                                                const char* TypeName,
-                                                App::Property* prop)
+void ConstraintForce::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // property Force had App::PropertyFloat, was changed to App::PropertyForce
     if (prop == &Force && strcmp(TypeName, "App::PropertyFloat") == 0) {
@@ -113,8 +123,7 @@ void ConstraintForce::onChanged(const App::Property* prop)
             if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
                 DirectionVector.setValue(-naturalDirectionVector);
             }
-            else if (!Reversed.getValue()
-                     && (DirectionVector.getValue() != naturalDirectionVector)) {
+            else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
                 DirectionVector.setValue(naturalDirectionVector);
             }
         }

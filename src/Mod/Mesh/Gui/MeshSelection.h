@@ -29,7 +29,7 @@
 #include <Gui/Selection/SelectionObject.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 

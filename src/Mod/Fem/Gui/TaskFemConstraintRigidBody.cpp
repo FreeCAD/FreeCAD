@@ -44,7 +44,8 @@ using namespace Gui;
 
 TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ViewProviderFemConstraintRigidBody* ConstraintView,
-    QWidget* parent)
+    QWidget* parent
+)
     : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintRigidBody")
 {  // Note change "RigidBody" in line above to new constraint name
     constexpr float floatMax = std::numeric_limits<float>::max();
@@ -55,55 +56,74 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
 
     // create a context menu for the listview of the references
     createActions(ui->lw_references);
-    deleteAction->connect(deleteAction,
-                          &QAction::triggered,
-                          this,
-                          &TaskFemConstraintRigidBody::onReferenceDeleted);
+    deleteAction->connect(
+        deleteAction,
+        &QAction::triggered,
+        this,
+        &TaskFemConstraintRigidBody::onReferenceDeleted
+    );
 
-    connect(ui->lw_references,
-            &QListWidget::currentItemChanged,
-            this,
-            &TaskFemConstraintRigidBody::setSelection);
-    connect(ui->lw_references,
-            &QListWidget::itemClicked,
-            this,
-            &TaskFemConstraintRigidBody::setSelection);
-    connect(ui->cb_x_trans_mode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintRigidBody::onTransModeXChanged);
-    connect(ui->cb_y_trans_mode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintRigidBody::onTransModeYChanged);
-    connect(ui->cb_z_trans_mode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintRigidBody::onTransModeZChanged);
-    connect(ui->cb_x_rot_mode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintRigidBody::onRotModeXChanged);
-    connect(ui->cb_y_rot_mode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintRigidBody::onRotModeYChanged);
-    connect(ui->cb_z_rot_mode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintRigidBody::onRotModeZChanged);
-    connect(ui->qsb_ref_node_x,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintRigidBody::onRefNodeXChanged);
-    connect(ui->qsb_ref_node_y,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintRigidBody::onRefNodeYChanged);
-    connect(ui->qsb_ref_node_z,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintRigidBody::onRefNodeZChanged);
+    connect(
+        ui->lw_references,
+        &QListWidget::currentItemChanged,
+        this,
+        &TaskFemConstraintRigidBody::setSelection
+    );
+    connect(ui->lw_references, &QListWidget::itemClicked, this, &TaskFemConstraintRigidBody::setSelection);
+    connect(
+        ui->cb_x_trans_mode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintRigidBody::onTransModeXChanged
+    );
+    connect(
+        ui->cb_y_trans_mode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintRigidBody::onTransModeYChanged
+    );
+    connect(
+        ui->cb_z_trans_mode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintRigidBody::onTransModeZChanged
+    );
+    connect(
+        ui->cb_x_rot_mode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintRigidBody::onRotModeXChanged
+    );
+    connect(
+        ui->cb_y_rot_mode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintRigidBody::onRotModeYChanged
+    );
+    connect(
+        ui->cb_z_rot_mode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintRigidBody::onRotModeZChanged
+    );
+    connect(
+        ui->qsb_ref_node_x,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintRigidBody::onRefNodeXChanged
+    );
+    connect(
+        ui->qsb_ref_node_y,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintRigidBody::onRefNodeYChanged
+    );
+    connect(
+        ui->qsb_ref_node_z,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintRigidBody::onRefNodeZChanged
+    );
 
     this->groupLayout()->addWidget(proxy);
 
@@ -132,11 +152,14 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ui->qsb_ref_node_y->setValue(refNode.y);
     ui->qsb_ref_node_z->setValue(refNode.z);
     ui->qsb_ref_node_x->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.x")));
+        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.x"))
+    );
     ui->qsb_ref_node_y->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.y")));
+        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.y"))
+    );
     ui->qsb_ref_node_z->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.z")));
+        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.z"))
+    );
     ui->qsb_ref_node_x->setMinimum(-floatMax);
     ui->qsb_ref_node_x->setMaximum(floatMax);
     ui->qsb_ref_node_y->setMinimum(-floatMax);
@@ -162,13 +185,15 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ui->spb_rot_axis_z->setValue(rotDir.z);
     ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
     ui->spb_rot_axis_x->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.x")));
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.x"))
+    );
     ui->spb_rot_axis_y->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.y")));
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.y"))
+    );
     ui->spb_rot_axis_z->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.z")));
-    ui->qsb_rot_angle->bind(
-        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.z"))
+    );
+    ui->qsb_rot_angle->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
     ui->spb_rot_axis_x->setMinimum(-floatMax);
     ui->spb_rot_axis_x->setMaximum(floatMax);
     ui->spb_rot_axis_y->setMinimum(-floatMax);
@@ -248,8 +273,9 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
-    ui->lbl_info->setText(tr("Select geometry of type: ")
-                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+    ui->lbl_info->setText(
+        tr("Select geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face"))
+    );
 
     updateUI();
 }
@@ -270,8 +296,8 @@ void TaskFemConstraintRigidBody::updateUI()
 
 void TaskFemConstraintRigidBody::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -288,9 +314,11 @@ void TaskFemConstraintRigidBody::addToSelection()
 
         App::DocumentObject* obj = it.getObject();
         if (obj->getDocument() != pcConstraint->getDocument()) {
-            QMessageBox::warning(this,
-                                 tr("Selection error"),
-                                 tr("External object selection is not supported"));
+            QMessageBox::warning(
+                this,
+                tr("Selection error"),
+                tr("External object selection is not supported")
+            );
             return;
         }
 
@@ -298,17 +326,17 @@ void TaskFemConstraintRigidBody::addToSelection()
         for (size_t subIt = 0; subIt < (subNames.size());
              ++subIt) {  // for every selected sub element
             bool addMe = true;
-            for (auto itr = std::ranges::find(SubElements, subNames[subIt]);
-                 itr != SubElements.end();
-                 itr = std::find(++itr,
-                                 SubElements.end(),
-                                 subNames[subIt])) {  // for every sub element in selection that
-                                                      // matches one in old list
+            for (auto itr = std::ranges::find(SubElements, subNames[subIt]); itr != SubElements.end(); itr
+                 = std::find(++itr,
+                             SubElements.end(),
+                             subNames[subIt])) {  // for every sub element in selection that
+                                                  // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {  // if selected sub element's object equals the one in old list
-                                  // then it was added before so don't add
+                        itr
+                    )]) {  // if selected sub element's object equals the one in old list
+                           // then it was added before so don't add
                     addMe = false;
                 }
             }
@@ -326,8 +354,10 @@ void TaskFemConstraintRigidBody::addToSelection()
             }
             for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
                 if (SubElements[iStr].find(searchStr) == std::string::npos) {
-                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
-                                     "constraint allowed!");
+                    QString msg = tr(
+                        "Only one type of selection (vertex, face or edge) per "
+                        "constraint allowed!"
+                    );
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -348,8 +378,8 @@ void TaskFemConstraintRigidBody::addToSelection()
 
 void TaskFemConstraintRigidBody::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -369,17 +399,17 @@ void TaskFemConstraintRigidBody::removeFromSelection()
 
         for (size_t subIt = 0; subIt < (subNames.size());
              ++subIt) {  // for every selected sub element
-            for (auto itr = std::ranges::find(SubElements, subNames[subIt]);
-                 itr != SubElements.end();
-                 itr = std::find(++itr,
-                                 SubElements.end(),
-                                 subNames[subIt])) {  // for every sub element in selection that
-                                                      // matches one in old list
+            for (auto itr = std::ranges::find(SubElements, subNames[subIt]); itr != SubElements.end(); itr
+                 = std::find(++itr,
+                             SubElements.end(),
+                             subNames[subIt])) {  // for every sub element in selection that
+                                                  // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {  // if selected sub element's object equals the one in old list
-                                  // then it was added before so mark for deletion
+                        itr
+                    )]) {  // if selected sub element's object equals the one in old list
+                           // then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -642,7 +672,8 @@ void TaskFemConstraintRigidBody::clearButtons(const SelectionChangeModes notThis
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgFemConstraintRigidBody::TaskDlgFemConstraintRigidBody(
-    ViewProviderFemConstraintRigidBody* ConstraintView)
+    ViewProviderFemConstraintRigidBody* ConstraintView
+)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -656,24 +687,29 @@ TaskDlgFemConstraintRigidBody::TaskDlgFemConstraintRigidBody(
 bool TaskDlgFemConstraintRigidBody::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintRigidBody* parameters =
-        static_cast<const TaskFemConstraintRigidBody*>(parameter);
+    const TaskFemConstraintRigidBody* parameters = static_cast<const TaskFemConstraintRigidBody*>(
+        parameter
+    );
     try {
         Base::Vector3d ref = parameters->getReferenceNode();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.ReferenceNode = App.Vector(%f, %f, %f)",
-                                name.c_str(),
-                                ref.x,
-                                ref.y,
-                                ref.z);
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ReferenceNode = App.Vector(%f, %f, %f)",
+            name.c_str(),
+            ref.x,
+            ref.y,
+            ref.z
+        );
 
         Base::Vector3d disp = parameters->getDisplacement();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Displacement = App.Vector(%f, %f, %f)",
-                                name.c_str(),
-                                disp.x,
-                                disp.y,
-                                disp.z);
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Displacement = App.Vector(%f, %f, %f)",
+            name.c_str(),
+            disp.x,
+            disp.y,
+            disp.z
+        );
 
         Base::Rotation rot = parameters->getRotation();
         Base::Vector3d axis;
@@ -686,63 +722,88 @@ bool TaskDlgFemConstraintRigidBody::accept()
             axis.x,
             axis.y,
             axis.z,
-            angle);
+            angle
+        );
 
         auto force = parameters->getForce();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.ForceX = \"%s\"",
-                                name.c_str(),
-                                force[0].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.ForceY = \"%s\"",
-                                name.c_str(),
-                                force[1].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.ForceZ = \"%s\"",
-                                name.c_str(),
-                                force[2].c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ForceX = \"%s\"",
+            name.c_str(),
+            force[0].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ForceY = \"%s\"",
+            name.c_str(),
+            force[1].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ForceZ = \"%s\"",
+            name.c_str(),
+            force[2].c_str()
+        );
 
         auto moment = parameters->getMoment();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.MomentX = \"%s\"",
-                                name.c_str(),
-                                moment[0].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.MomentY = \"%s\"",
-                                name.c_str(),
-                                moment[1].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.MomentZ = \"%s\"",
-                                name.c_str(),
-                                moment[2].c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.MomentX = \"%s\"",
+            name.c_str(),
+            moment[0].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.MomentY = \"%s\"",
+            name.c_str(),
+            moment[1].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.MomentZ = \"%s\"",
+            name.c_str(),
+            moment[2].c_str()
+        );
 
         auto transModes = parameters->getTranslationalMode();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.TranslationalModeX = \"%s\"",
-                                name.c_str(),
-                                transModes[0].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.TranslationalModeY = \"%s\"",
-                                name.c_str(),
-                                transModes[1].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.TranslationalModeZ = \"%s\"",
-                                name.c_str(),
-                                transModes[2].c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.TranslationalModeX = \"%s\"",
+            name.c_str(),
+            transModes[0].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.TranslationalModeY = \"%s\"",
+            name.c_str(),
+            transModes[1].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.TranslationalModeZ = \"%s\"",
+            name.c_str(),
+            transModes[2].c_str()
+        );
 
         auto rotModes = parameters->getRotationalMode();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.RotationalModeX = \"%s\"",
-                                name.c_str(),
-                                rotModes[0].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.RotationalModeY = \"%s\"",
-                                name.c_str(),
-                                rotModes[1].c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
-                                name.c_str(),
-                                rotModes[2].c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.RotationalModeX = \"%s\"",
+            name.c_str(),
+            rotModes[0].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.RotationalModeY = \"%s\"",
+            name.c_str(),
+            rotModes[1].c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
+            name.c_str(),
+            rotModes[2].c_str()
+        );
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

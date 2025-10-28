@@ -118,8 +118,11 @@ public:
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
     void create_mbdSimulationParameters(App::DocumentObject* sim);
-    std::shared_ptr<MbD::ASMTPart>
-    makeMbdPart(std::string& name, Base::Placement plc = Base::Placement(), double mass = 1.0);
+    std::shared_ptr<MbD::ASMTPart> makeMbdPart(
+        std::string& name,
+        Base::Placement plc = Base::Placement(),
+        double mass = 1.0
+    );
     std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
     // To help the solver, during dragging, we are bundling parts connected by a fixed joint.
     // So several assembly components are bundled in a single ASMTPart.
@@ -133,15 +136,18 @@ public:
     MbDPartData getMbDData(App::DocumentObject* part);
     std::shared_ptr<MbD::ASMTMarker> makeMbdMarker(std::string& name, Base::Placement& plc);
     std::vector<std::shared_ptr<MbD::ASMTJoint>> makeMbdJoint(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint,
-                                                       JointType jointType);
+    std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint, JointType jointType);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistance(App::DocumentObject* joint);
-    std::string handleOneSideOfJoint(App::DocumentObject* joint,
-                                     const char* propRefName,
-                                     const char* propPlcName);
-    void getRackPinionMarkers(App::DocumentObject* joint,
-                              std::string& markerNameI,
-                              std::string& markerNameJ);
+    std::string handleOneSideOfJoint(
+        App::DocumentObject* joint,
+        const char* propRefName,
+        const char* propPlcName
+    );
+    void getRackPinionMarkers(
+        App::DocumentObject* joint,
+        std::string& markerNameI,
+        std::string& markerNameJ
+    );
     int slidingPartIndex(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
@@ -150,15 +156,19 @@ public:
     template<typename T>
     T* getGroup();
 
-    std::vector<App::DocumentObject*>
-    getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
+    std::vector<App::DocumentObject*> getJoints(
+        bool updateJCS = true,
+        bool delBadJoints = false,
+        bool subJoints = true
+    );
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
-    App::DocumentObject*
-    getJointOfPartConnectingToGround(App::DocumentObject* part,
-                                     std::string& name,
-                                     const std::vector<App::DocumentObject*>& excludeJoints = {});
+    App::DocumentObject* getJointOfPartConnectingToGround(
+        App::DocumentObject* part,
+        std::string& name,
+        const std::vector<App::DocumentObject*>& excludeJoints = {}
+    );
     std::unordered_set<App::DocumentObject*> getGroundedParts();
     std::unordered_set<App::DocumentObject*> fixGroundedParts();
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
@@ -167,23 +177,32 @@ public:
     bool isJointTypeConnecting(App::DocumentObject* joint);
 
     bool isObjInSetOfObjRefs(App::DocumentObject* obj, const std::vector<ObjRef>& pairs);
-    void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
-                                 std::unordered_set<App::DocumentObject*> groundedObjs);
-    void traverseAndMarkConnectedParts(App::DocumentObject* currentPart,
-                                       std::vector<ObjRef>& connectedParts,
-                                       const std::vector<App::DocumentObject*>& joints);
-    std::vector<ObjRef> getConnectedParts(App::DocumentObject* part,
-                                          const std::vector<App::DocumentObject*>& joints);
+    void removeUnconnectedJoints(
+        std::vector<App::DocumentObject*>& joints,
+        std::unordered_set<App::DocumentObject*> groundedObjs
+    );
+    void traverseAndMarkConnectedParts(
+        App::DocumentObject* currentPart,
+        std::vector<ObjRef>& connectedParts,
+        const std::vector<App::DocumentObject*>& joints
+    );
+    std::vector<ObjRef> getConnectedParts(
+        App::DocumentObject* part,
+        const std::vector<App::DocumentObject*>& joints
+    );
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
 
-    std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part,
-                                           App::DocumentObject* joint = nullptr);
-    App::DocumentObject*
-    getUpstreamMovingPart(App::DocumentObject* part,
-                          App::DocumentObject*& joint,
-                          std::string& name,
-                          std::vector<App::DocumentObject*> excludeJoints = {});
+    std::vector<ObjRef> getDownstreamParts(
+        App::DocumentObject* part,
+        App::DocumentObject* joint = nullptr
+    );
+    App::DocumentObject* getUpstreamMovingPart(
+        App::DocumentObject* part,
+        App::DocumentObject*& joint,
+        std::string& name,
+        std::vector<App::DocumentObject*> excludeJoints = {}
+    );
 
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);

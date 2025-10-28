@@ -192,18 +192,20 @@ private:
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
-        internalAlignmentType2str {{"Undef",
-                                    "EllipseMajorDiameter",
-                                    "EllipseMinorDiameter",
-                                    "EllipseFocus1",
-                                    "EllipseFocus2",
-                                    "HyperbolaMajor",
-                                    "HyperbolaMinor",
-                                    "HyperbolaFocus",
-                                    "ParabolaFocus",
-                                    "BSplineControlPoint",
-                                    "BSplineKnotPoint",
-                                    "ParabolaFocalAxis"}};
+        internalAlignmentType2str {
+            {"Undef",
+             "EllipseMajorDiameter",
+             "EllipseMinorDiameter",
+             "EllipseFocus1",
+             "EllipseFocus2",
+             "HyperbolaMajor",
+             "HyperbolaMinor",
+             "HyperbolaFocus",
+             "ParabolaFocus",
+             "BSplineControlPoint",
+             "BSplineKnotPoint",
+             "ParabolaFocalAxis"}
+        };
 
 public:
     ConstraintType Type {None};

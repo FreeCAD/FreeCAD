@@ -31,18 +31,19 @@
 #include <Inventor/SbVec3f.h>
 #include <Gui/GLPainter.h>
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
 
 /**
  * @author Werner Mayer
  */
-class GuiExport Flag : public QOpenGLWidget
+class GuiExport Flag: public QOpenGLWidget
 {
     Q_OBJECT
 
 public:
-    Flag(QWidget* parent=nullptr);
+    Flag(QWidget* parent = nullptr);
     ~Flag() override;
 
     QSize sizeHint() const override;
@@ -56,11 +57,11 @@ protected:
     void resizeGL(int width, int height) override;
     void paintGL() override;
 
-    void paintEvent(QPaintEvent *) override;
-    void mouseMoveEvent(QMouseEvent *) override;
-    void mousePressEvent(QMouseEvent *) override;
-    void resizeEvent(QResizeEvent *) override;
-    void contextMenuEvent(QContextMenuEvent *) override;
+    void paintEvent(QPaintEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void contextMenuEvent(QContextMenuEvent*) override;
 
 private:
     QString text;
@@ -69,49 +70,60 @@ private:
 };
 
 
-class FlagLayout : public QLayout
+class FlagLayout: public QLayout
 {
     Q_OBJECT
 
 public:
-    enum Position { TopLeft, TopRight, BottomLeft, BottomRight };
+    enum Position
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    };
 
-    FlagLayout(QWidget *parent, int margin = 0, int spacing = -1);
+    FlagLayout(QWidget* parent, int margin = 0, int spacing = -1);
     FlagLayout(int spacing = -1);
     ~FlagLayout() override;
 
-    void addItem(QLayoutItem *item) override;
-    void addWidget(QWidget *widget, Position position);
+    void addItem(QLayoutItem* item) override;
+    void addWidget(QWidget* widget, Position position);
     Qt::Orientations expandingDirections() const override;
     bool hasHeightForWidth() const override;
     int count() const override;
-    QLayoutItem *itemAt(int index) const override;
+    QLayoutItem* itemAt(int index) const override;
     QSize minimumSize() const override;
-    void setGeometry(const QRect &rect) override;
+    void setGeometry(const QRect& rect) override;
     QSize sizeHint() const override;
-    QLayoutItem *takeAt(int index) override;
+    QLayoutItem* takeAt(int index) override;
 
-    void add(QLayoutItem *item, Position position);
+    void add(QLayoutItem* item, Position position);
 
 private:
     struct ItemWrapper
     {
-        ItemWrapper(QLayoutItem *i, Position p) {
+        ItemWrapper(QLayoutItem* i, Position p)
+        {
             item = i;
             position = p;
         }
 
-        QLayoutItem *item;
+        QLayoutItem* item;
         Position position;
     };
 
-    enum SizeType { MinimumSize, SizeHint };
+    enum SizeType
+    {
+        MinimumSize,
+        SizeHint
+    };
     QSize calculateSize(SizeType sizeType) const;
 
-    QList<ItemWrapper *> list;
+    QList<ItemWrapper*> list;
 };
 
-class GuiExport GLFlagWindow : public Gui::GLGraphicsItem
+class GuiExport GLFlagWindow: public Gui::GLGraphicsItem
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -131,7 +143,7 @@ private:
     FlagLayout* _flagLayout;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_FLAG_H
+#endif  // GUI_FLAG_H
