@@ -104,7 +104,6 @@ PyMOD_INIT_FUNC(SketcherGui)
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/elements"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/general"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/geometry"));
-    // Gui::BitmapFactory().addPath(QStringLiteral(":/icons/obsolete"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/pointers"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/splines"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/tools"));
