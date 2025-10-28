@@ -393,28 +393,31 @@ public:
 
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject* feature, bool reverse = false);
-    
+
     /// Update all element references in the _ElementRefMap
     static void updateAllElementReferences(bool reverse = false);
 
     /// Obtain link properties that contain element references to a given object
     static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject*);
 
-    /** Helper function for update individual element reference
+    /**
+     * @brief Update individual element references.
      *
-     * @param feature: if given, than only update element reference belonging
-     *                 to this feature. If not, then update geometry element
-     *                 references.
-     * @param sub: the subname reference to be updated.
-     * @param shadow: a pair of new and old style element references to be updated.
-     * @param reverse: if true, then use the old style, i.e. non-mapped element
-     *                 reference to query for the new style, i.e. mapped
-     *                 element reference when update. If false, then the other
-     *                 way around.
-     * @param notify: if true, call aboutToSetValue() before change
+     * This helper function is to be called by each link property in the event
+     * of geometry element reference change due to geometry model changes.
      *
-     * This helper function is to be called by each link property in the event of
-     * geometry element reference change due to geometry model changes.
+     * @param[in] feature If given, than only update element reference
+     * belonging to this feature. If not, then update all geometry element
+     * references.
+     * @param[in] obj The linked object.
+     * @param[in,out] sub The subname reference to be updated.
+     * @param[in,out] shadow A pair of new and old style element references to be updated.
+     *
+     * @param[in] reverse If true, then use the old style, i.e. non-mapped element
+     * reference to query for the new style, i.e. mapped element reference when
+     * update. If false, then the other way around.
+     *
+     * @param[in] notify: if true, call aboutToSetValue() before change
      */
     bool _updateElementReference(App::DocumentObject* feature,
                                  App::DocumentObject* obj,
@@ -446,20 +449,21 @@ public:
                            const std::vector<App::DocumentObject*>& objs,
                            bool clear);
 
-    /** Helper function for link import operation
+    /**
+     * @brief Try import a subname reference.
      *
-     * @param obj: the linked object
-     * @param sub: subname reference
-     * @param doc: importing document
-     * @param nameMap: a name map from source object to its imported counter part
+     * This operation will go through all subname references and import all
+     * externally linked objects.  After import, the link property must be
+     * changed to point to the newly imported objects, which should happen
+     * inside the API CopyOnImportExternal(). This function helps to rewrite
+     * subname reference to point to the correct sub objects that are imported.
      *
-     * @return Return a changed subname reference, or empty string if no change.
+     * @param obj The linked object.
+     * @param sub The subname reference.
+     * @param doc The importing document.
+     * @param nameMap A name map from source object to its imported counter part.
      *
-     * Link import operation will go through all link property and imports all
-     * externally linked object. After import, the link property must be
-     * changed to point to the newly imported objects, which should happen inside
-     * the API CopyOnImportExternal(). This function helps to rewrite subname
-     * reference to point to the correct sub objects that are imported.
+     * @return A changed subname reference, or an empty string if no change.
      */
     static std::string tryImportSubName(const App::DocumentObject* obj,
                                         const char* sub,
