@@ -211,6 +211,7 @@ SET(FemObjects_SRCS
     femobjects/result_mechanical.py
     femobjects/solver_calculix.py
     femobjects/solver_ccxtools.py
+    femobjects/solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
@@ -285,9 +286,8 @@ SET(FemSolverCalculix_SRCS
 SET(FemSolverElmer_SRCS
     femsolver/elmer/__init__.py
     femsolver/elmer/sifio.py
-    femsolver/elmer/solver.py
-    femsolver/elmer/tasks.py
     femsolver/elmer/writer.py
+    femsolver/elmer/elmertools.py
 )
 
 SET(FemSolverElmerEquations_SRCS
@@ -631,6 +631,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_calculix.py
     femtaskpanels/task_solver_ccxtools.py
+    femtaskpanels/task_solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
@@ -701,6 +702,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
+    femviewprovider/view_solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
