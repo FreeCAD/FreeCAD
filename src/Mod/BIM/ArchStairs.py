@@ -1703,6 +1703,7 @@ class _Stairs(ArchComponent.Component):
 
         "builds a simple, straight staircase from a straight edge"
 
+
         """
         edge                  : Edge defining the flight/landing like stairs' direction, run, rise/height etc. (mandatory)
                                 (makeStraightStairsWithLanding() should have provided edge with z information)
@@ -1888,7 +1889,6 @@ class _Stairs(ArchComponent.Component):
                 # TODO Why 'reuse' vBase?
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
-
                 for i in range(numOfSteps - 1):
                     if not lProfile:
                         lProfile.append(vBase)
@@ -1971,6 +1971,11 @@ class _Stairs(ArchComponent.Component):
                 else:
                     lProfile.append(lProfile[-1].add(Vector(h.x, h.y, -resHeight2)))
 
+                # Add back vertex before start vertext offsetted riser thickness
+                if vRiserThickness.Length and downstartstairs != "HorizontalCut":
+                    lProfile.append(vBasedAligned)
+
+                # Add start vertex as last vertext to complete a closed polygon
                 lProfile.append(vBase)
 
                 pol = Part.makePolygon(lProfile)
