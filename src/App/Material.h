@@ -140,16 +140,17 @@ public:
     bool operator==(const Material& m) const
     {
         // clang-format off
-        return _matType == m._matType
-            && shininess == m.shininess
+        if (!uuid.empty() && uuid == m.uuid) {
+            return true;
+        }
+        return shininess == m.shininess
             && transparency == m.transparency
             && ambientColor == m.ambientColor
             && diffuseColor == m.diffuseColor
             && specularColor == m.specularColor
             && emissiveColor == m.emissiveColor
             && image == m.image
-            && image == m.imagePath
-            && uuid == m.uuid;
+            && imagePath == m.imagePath;
         // clang-format on
     }
     bool operator!=(const Material& m) const
