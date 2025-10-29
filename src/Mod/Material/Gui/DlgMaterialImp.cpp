@@ -24,7 +24,7 @@
 #include <QSignalBlocker>
 #include <QString>
 #include <algorithm>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
@@ -56,7 +56,7 @@ namespace sp = std::placeholders;
 
 class DlgMaterialImp::Private
 {
-    using DlgMaterialImp_Connection = boost::signals2::connection;
+    using DlgMaterialImp_Connection = fastsignals::connection;
 
 public:
     Ui::DlgMaterial ui;
