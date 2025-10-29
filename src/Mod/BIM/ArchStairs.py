@@ -1703,7 +1703,6 @@ class _Stairs(ArchComponent.Component):
 
         "builds a simple, straight staircase from a straight edge"
 
-
         """
         edge                  : Edge defining the flight/landing like stairs' direction, run, rise/height etc. (mandatory)
                                 (makeStraightStairsWithLanding() should have provided edge with z information)
