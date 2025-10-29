@@ -54,11 +54,21 @@ fc_copy_file_if_different(
 
 # -----------------------------------------------------------------------------
 
-include_directories(
+target_include_directories(
+    FreeCADApp
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    FreeCADApp
+    SYSTEM
+    PUBLIC
+    ${QtCore_INCLUDE_DIRS}
+    ${QtXml_INCLUDE_DIRS}
 )
 
 set(FreeCADApp_LIBS
@@ -71,16 +81,12 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADApp_LIBS TracyClient)
 endif()
 
-include_directories(
-    ${QtCore_INCLUDE_DIRS}
-    ${QtXml_INCLUDE_DIRS}
-    ${Coin_INCLUDE_DIR}
-)
 list(APPEND FreeCADApp_LIBS
         ${QtCore_LIBRARIES}
         ${QtXml_LIBRARIES}
 )
 
+generate_from_py(ApplicationDirectories)
 generate_from_py(Document)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
@@ -107,6 +113,7 @@ generate_embed_from_py(FreeCADInit InitScript.h)
 generate_embed_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_Pyi_SRCS
+    ApplicationDirectories.pyi
     Extension.pyi
     ExtensionContainer.pyi
     DocumentObjectExtension.pyi
@@ -263,6 +270,7 @@ SET(Properties_HPP_SRCS
     PropertyStandard.h
     PropertyUnits.h
     PropertyExpressionEngine.h
+    PropertyOverrides.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}
@@ -274,6 +282,8 @@ SET(FreeCADApp_CPP_SRCS
     ${Document_CPP_SRCS}
     ${Properties_CPP_SRCS}
     Application.cpp
+    ApplicationDirectories.cpp
+    ApplicationDirectoriesPyImp.cpp
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
@@ -304,6 +314,7 @@ SET(FreeCADApp_HPP_SRCS
     ${Document_HPP_SRCS}
     ${Properties_HPP_SRCS}
     Application.h
+    ApplicationDirectories.h
     AutoTransaction.h
     Branding.h
     CleanupProcess.h
@@ -336,17 +347,23 @@ SET(FreeCADApp_SRCS
     ${FreeCADApp_Pyi_SRCS}
     FreeCADInit.py
     FreeCADTest.py
-    PreCompiled.cpp
     PreCompiled.h
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
+    target_precompile_headers(FreeCADApp PRIVATE
+        $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
+
+if (MSVC)
+    target_compile_definitions(FreeCADApp PRIVATE WIN32_LEAN_AND_MEAN)
+    target_compile_options(FreeCADApp PRIVATE /wd4251 /wd4273 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADApp)
 endif()

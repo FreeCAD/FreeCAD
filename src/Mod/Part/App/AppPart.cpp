@@ -21,13 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Interface_Static.hxx>
 # include <IGESControl_Controller.hxx>
 # include <STEPControl_Controller.hxx>
 # include <Standard_Version.hxx>
-#endif
+
+#include <FCConfig.h>
 
 #include <App/Application.h>
 #include <Base/Console.h>

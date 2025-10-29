@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include "Gui/Control.h"
 #include "FemGuiTools.h"

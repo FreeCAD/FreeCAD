@@ -22,8 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepOffsetAPI_DraftAngle.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -40,7 +38,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
-#endif
+
 
 #include <App/Datums.h>
 #include <App/Document.h>
@@ -128,9 +126,13 @@ App::DocumentObjectExecReturn *Draft::execute()
     App::DocumentObject* refDirection = PullDirection.getValue();
     if (refDirection) {
         if (refDirection->isDerivedFrom<PartDesign::Line>()) {
-                    PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
-                    Base::Vector3d d = line->getDirection();
-                    pullDirection = gp_Dir(d.x, d.y, d.z);
+            PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
+            Base::Vector3d d = line->getDirection();
+            pullDirection = gp_Dir(d.x, d.y, d.z);
+        } else if (refDirection->isDerivedFrom<App::Line>()) {
+            App::Line* line = static_cast<App::Line*>(refDirection);
+            Base::Vector3d d = line->getDirection();
+            pullDirection = gp_Dir(d.x, d.y, d.z);
         } else if (refDirection->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = PullDirection.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
@@ -288,7 +290,7 @@ App::DocumentObjectExecReturn *Draft::execute()
         }
 
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
         }
 
         this->Shape.setValue(getSolid(shape));
@@ -299,3 +301,5 @@ App::DocumentObjectExecReturn *Draft::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
+
+

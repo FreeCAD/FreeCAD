@@ -33,8 +33,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class Text(DraftAnnotation):
@@ -50,30 +49,24 @@ class Text(DraftAnnotation):
         properties = obj.PropertiesList
 
         if "Placement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The placement of the base point "
-                                     "of the first line")
-            obj.addProperty("App::PropertyPlacement",
-                            "Placement",
-                            "Base",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "The placement of the base point " "of the first line"
+            )
+            obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip, locked=True)
             obj.Placement = App.Placement()
 
         if "Text" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The text displayed by this object.\n"
-                                     "It is a list of strings; each element "
-                                     "in the list will be displayed "
-                                     "in its own line.")
-            obj.addProperty("App::PropertyStringList",
-                            "Text",
-                            "Base",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The text displayed by this object.\n"
+                "It is a list of strings; each element "
+                "in the list will be displayed "
+                "in its own line.",
+            )
+            obj.addProperty("App::PropertyStringList", "Text", "Base", _tip, locked=True)
             obj.Text = []
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_text", vp_class="ViewProviderText")
@@ -95,8 +88,7 @@ class Text(DraftAnnotation):
         # switched: "2D text" becomes "World" and "3D text" becomes "Screen".
         # It should be the other way around:
         vobj.DisplayMode = "World" if vobj.DisplayMode == "Screen" else "Screen"
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
+        _log("v0.21, " + obj.Name + ", renamed 'DisplayMode' options to 'World/Screen'")
 
     def update_properties_1v1(self, obj, vobj):
         if hasattr(vobj, "LineWidth"):
@@ -105,12 +97,7 @@ class Text(DraftAnnotation):
         if hasattr(vobj, "LineColor"):
             vobj.setPropertyStatus("LineColor", "-LockDynamic")
             vobj.removeProperty("LineColor")
-        _wrn(
-            "v1.1, "
-            + obj.Label
-            + ", "
-            + translate("draft", "removed view properties")
-        )
+        _log("v1.1, " + obj.Name + ", removed view properties")
 
     def loads(self, state):
         # Before update_properties_0v21 the self.Type value was stored.

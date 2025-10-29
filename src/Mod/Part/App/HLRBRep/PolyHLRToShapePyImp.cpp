@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <Mod/Part/PartGlobal.h>
 
 #include "HLRBRep/PolyHLRToShapePy.h"
 #include "HLRBRep/PolyHLRToShapePy.cpp"

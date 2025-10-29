@@ -20,11 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(__MINGW32__)
 #define WNT  // avoid conflict with GUID
 #endif
-#ifndef _PreComp_
 #include <Quantity_ColorRGBA.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
@@ -35,7 +33,7 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_GraphNode.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
-#endif
+
 
 #include <XCAFDoc_ShapeMapTool.hxx>
 
@@ -52,6 +50,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
+#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF2.h"
 
@@ -392,6 +391,16 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             FC_WARN(obj->getFullName() << " has null shape");
         }
         return {};
+    }
+
+    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
+        App::DocumentObject* tip = body->Tip.getValue();
+        if (tip) {
+            // keep the shape from the body, but use the tip's colors
+            // by replacing obj with tip
+            obj = tip;
+        }
     }
 
     // sub may contain more than one hierarchy, e.g. Assembly container may use

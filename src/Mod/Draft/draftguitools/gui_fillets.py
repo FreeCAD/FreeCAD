@@ -64,10 +64,14 @@ class Fillet(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Fillet",
-                "Accel": "F,I",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between 2 selected edges")}
+        return {
+            "Pixmap": "Draft_Fillet",
+            "Accel": "F,I",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Fillet", "Creates a fillet between 2 selected edges"
+            ),
+        }
 
     def Activated(self, name="Fillet"):
         """Execute when the command is called."""
@@ -87,23 +91,21 @@ class Fillet(gui_base_original.Creator):
             self.ui.radiusValue.setToolTip(tooltip)
             self.ui.radius = params.get_param("FilletRadius")
             self.ui.setRadiusValue(self.ui.radius, "Length")
-            self.ui.check_delete = self.ui._checkbox("isdelete",
-                                                     self.ui.layout,
-                                                     checked=self.delete)
-            self.ui.check_delete.setText(translate("Draft",
-                                                   "Delete original objects"))
+            self.ui.check_delete = self.ui._checkbox(
+                "isdelete", self.ui.layout, checked=self.delete
+            )
+            self.ui.check_delete.setText(translate("Draft", "Delete original objects"))
             self.ui.check_delete.show()
-            self.ui.check_chamfer = self.ui._checkbox("ischamfer",
-                                                      self.ui.layout,
-                                                      checked=self.chamfer)
-            self.ui.check_chamfer.setText(translate("Draft",
-                                                    "Create chamfer"))
+            self.ui.check_chamfer = self.ui._checkbox(
+                "ischamfer", self.ui.layout, checked=self.chamfer
+            )
+            self.ui.check_chamfer.setText(translate("Draft", "Create chamfer"))
             self.ui.check_chamfer.show()
 
-            if hasattr(self.ui.check_delete, "checkStateChanged"): # Qt version >= 6.7.0
+            if hasattr(self.ui.check_delete, "checkStateChanged"):  # Qt version >= 6.7.0
                 self.ui.check_delete.checkStateChanged.connect(self.set_delete)
                 self.ui.check_chamfer.checkStateChanged.connect(self.set_chamfer)
-            else: # Qt version < 6.7.0
+            else:  # Qt version < 6.7.0
                 self.ui.check_delete.stateChanged.connect(self.set_delete)
                 self.ui.check_chamfer.stateChanged.connect(self.set_chamfer)
 
@@ -163,15 +165,17 @@ class Fillet(gui_base_original.Creator):
         if delete:
             cmd += ", delete=True"
         cmd += ")"
-        cmd_list = ["sels = FreeCADGui.Selection.getSelectionEx('', 0)",
-                    "fillet = " + cmd,
-                    "Draft.autogroup(fillet)",
-                    "FreeCAD.ActiveDocument.recompute()"]
+        cmd_list = [
+            "sels = FreeCADGui.Selection.getSelectionEx('', 0)",
+            "fillet = " + cmd,
+            "Draft.autogroup(fillet)",
+            "FreeCAD.ActiveDocument.recompute()",
+        ]
 
         self.commit(translate("draft", "Create Fillet"), cmd_list)
         self.finish()
 
 
-Gui.addCommand('Draft_Fillet', Fillet())
+Gui.addCommand("Draft_Fillet", Fillet())
 
 ## @}

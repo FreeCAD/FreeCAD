@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <BRep_Tool.hxx>
@@ -33,7 +31,6 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <gp_Pnt.hxx>
-#endif
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -622,7 +619,7 @@ void SketchAnalysis::solveSketch(const char* errorText)
     solvesketch(status, dofs, true);
 
     if (status == int(Solver::RedundantConstraints)) {
-        sketch->autoRemoveRedundants(false);
+        sketch->autoRemoveRedundants(DeleteOption::NoFlag);
 
         solvesketch(status, dofs, false);
     }

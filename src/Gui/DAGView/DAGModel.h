@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
@@ -32,7 +33,6 @@
 #include <QGraphicsScene>
 #include <QLineEdit>
 
-#include "DAGFilter.h"
 #include "DAGModelGraph.h"
 #include "DAGRectItem.h"
 
@@ -159,11 +159,6 @@ namespace Gui
       QAction *editingFinishedAction;
       QGraphicsProxyWidget *proxy = nullptr;
       void finishRename();
-
-      //filters
-      void setupFilters();
-      using FilterContainer = std::vector<std::shared_ptr<FilterBase> >;
-      FilterContainer filters;
     };
   }
 }

@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsScene>
 # include <QGraphicsSceneHoverEvent>
 # include <QKeyEvent>
 # include <QPainterPath>
 # include <QPainterPathStroker>
-#endif
+
 
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>

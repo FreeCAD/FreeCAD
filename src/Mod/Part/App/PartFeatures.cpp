@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -41,7 +39,7 @@
 #include <TopoDS_Shell.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+
 
 #include <App/Link.h>
 

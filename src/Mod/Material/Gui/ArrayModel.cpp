@@ -19,11 +19,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QList>
 #include <QMetaType>
-#endif
+
 
 #include <Base/Console.h>
 #include <Gui/MainWindow.h>

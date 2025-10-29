@@ -21,13 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QGroupBox>
 # include <QLabel>
 # include <QScreen>
-#endif // #ifndef _PreComp_
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -636,11 +633,11 @@ void TaskProjGroup::changeEvent(QEvent *event)
 
 const char * TaskProjGroup::viewChkIndexToCStr(int index)
 {
-    //   Third Angle:  FTL  T  FTRight
+    //   Third angle:  FTL  T  FTRight
     //                  L   F   Right   Rear
     //                 FBL  B  FBRight
     //
-    //   First Angle:  FBRight  B  FBL
+    //   First angle:  FBRight  B  FBL
     //                  Right   F   L  Rear
     //                 FTRight  T  FTL
 
@@ -695,10 +692,10 @@ bool TaskProjGroup::useThirdAngle()
         return thirdAngle;
     }
 
-    if (multiView->usedProjectionType().isValue("Third Angle")) {
+    if (multiView->usedProjectionType().isValue("Third angle")) {
         thirdAngle = true;
     } else if (multiView->usedProjectionType().isValue("Default") &&
-        page->ProjectionType.isValue("Third Angle")) {
+        page->ProjectionType.isValue("Third angle")) {
         thirdAngle = true;
     }
     return thirdAngle;

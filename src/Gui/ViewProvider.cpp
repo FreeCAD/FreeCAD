@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QApplication>
+# include <QKeyEvent>
 # include <QTimer>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -34,7 +34,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -49,6 +49,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
+#include "DockWindowManager.h"
 #include "SoFCDB.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -233,6 +234,12 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                             if (viewer->isSelecting()) {
                                 return;
                             }
+                        }
+
+                        DockWindowManager* pDockMgr = DockWindowManager::instance();
+                        if (QWidget* widget = pDockMgr->getDockWindow("Tasks")) {
+                            QKeyEvent ev(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+                            qApp->postEvent(widget, &ev);
                         }
 
                         auto func = new Gui::TimerFunction();
@@ -913,8 +920,6 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
 }
 
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable())
-        return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionGetElementPicked(pp,subname))
@@ -1081,3 +1086,4 @@ void ViewProvider::setLinkVisible(bool visible) {
     if(ext)
         ext->setLinkVisible(visible);
 }
+

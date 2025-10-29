@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Precision.hxx>
 #include <QDoubleValidator>
 #include <QLocale>
@@ -34,7 +32,6 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -351,7 +348,7 @@ void SketcherValidation::onOrientLockEnableClicked()
         *sketch,
         tr("Constraint orientation locking"),
         tr("Orientation locking was enabled and recomputed for %1 constraints. The"
-           " constraints have been listed in the report view (menu View -> Panels ->"
+           " constraints have been listed in the report view (menu View → Panels →"
            " Report view).")
             .arg(n));
 
@@ -372,7 +369,7 @@ void SketcherValidation::onOrientLockDisableClicked()
         *sketch,
         tr("Constraint orientation locking"),
         tr("Orientation locking was disabled for %1 constraints. The"
-           " constraints have been listed in the report view (menu View -> Panels ->"
+           " constraints have been listed in the report view (menu View → Panels →"
            " Report view). Note that for all future constraints, the locking still"
            " defaults to ON.")
             .arg(n));
@@ -388,7 +385,7 @@ void SketcherValidation::onDelConstrExtrClicked()
 
     int reply = QMessageBox::question(
         this,
-        tr("Delete constraints to external geom."),
+        tr("Delete Constraints to External Geometry"),
         tr("This will delete all constraints that deal with external geometry. This is "
            "useful to rescue a sketch with broken or changed links to external geometry. Delete "
            "the constraints?"),

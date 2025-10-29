@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -19,9 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
-#include "PreCompiled.h"
 
 #include "Exception.h"
 #include "ProgressIndicatorPy.h"
@@ -71,8 +70,7 @@ ProgressIndicatorPy::~ProgressIndicatorPy() = default;
 
 Py::Object ProgressIndicatorPy::repr()
 {
-    std::string s = "Base.ProgressIndicator";
-    return Py::String(s);  // NOLINT
+    return Py::String("Base.ProgressIndicator");
 }
 
 Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)

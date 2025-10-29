@@ -1,4 +1,6 @@
 aci
+addmin
+afile
 ake
 aline
 alle
@@ -6,6 +8,7 @@ alledges
 alocation
 anid
 anormal
+anull
 apoints
 aply
 appy
@@ -39,6 +42,7 @@ hist
 incrementin
 indexin
 indicies
+indx
 inout
 invertin
 isnt
@@ -46,10 +50,12 @@ ist
 itsel
 leadin
 linez
+localy
 lod
 mantatory
 mata
 methode
+mke
 modell
 nd
 nin
@@ -59,6 +65,7 @@ numer
 oce
 ontop
 ot
+pard
 parm
 parms
 pointin
@@ -66,14 +73,18 @@ programm
 propt
 rady
 recurrance
+rin
 rougly
 sectionin
 seh
+ser
+sergent
 serie
 shs
 siz
 som
 strack
+strin
 substraction
 sur
 te

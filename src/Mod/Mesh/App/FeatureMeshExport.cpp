@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "FeatureMeshExport.h"
 #include "MeshFeature.h"

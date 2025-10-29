@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,13 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <xercesc/framework/MemoryManager.hpp>
 #include <xercesc/util/OutOfMemoryException.hpp>
-#endif
 
 #include "Exception.h"
 #include "XMLTools.h"

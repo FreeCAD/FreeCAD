@@ -24,10 +24,18 @@
 #ifndef PARTGUI_VIEWPROVIDERPART_H
 #define PARTGUI_VIEWPROVIDERPART_H
 
+#include <utility>
+
 #include <Gui/ViewProviderBuilder.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
+#include <Mod/Part/PartGlobal.h>
 
 class SoSeparator;
+
+namespace Gui
+{
+class GizmoContainer;
+}
 
 namespace Part { struct ShapeHistory; }
 

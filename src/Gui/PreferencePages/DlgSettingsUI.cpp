@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPushButton>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/ParamHandler.h>
@@ -70,8 +68,8 @@ void DlgSettingsUI::saveSettings()
     ui->OverlayStyleSheets->onSave();
 
     // Tree View
+    ui->fontSizeSpinBox->onSave();
     ui->iconSizeSpinBox->onSave();
-    ui->rowSpacingSpinBox->onSave();
     ui->resizableColumnsCheckBox->onSave();
     ui->showVisibilityIconCheckBox->onSave();
     ui->hideDescriptionCheckBox->onSave();
@@ -99,8 +97,8 @@ void DlgSettingsUI::loadSettings()
     ui->ThemeAccentColor3->onRestore();
 
     // Tree View
+    ui->fontSizeSpinBox->onRestore();
     ui->iconSizeSpinBox->onRestore();
-    ui->rowSpacingSpinBox->onRestore();
     ui->resizableColumnsCheckBox->onRestore();
     ui->showVisibilityIconCheckBox->onRestore();
     ui->hideDescriptionCheckBox->onRestore();
@@ -205,33 +203,6 @@ void DlgSettingsUI::changeEvent(QEvent *e)
     else {
         QWidget::changeEvent(e);
     }
-}
-
-namespace {
-
-void applyStyleSheet(ParameterGrp *hGrp)
-{
-    if (auto parameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>()) {
-        parameterManager->reload();
-    }
-
-    auto sheet = hGrp->GetASCII("StyleSheet");
-    bool tiledBG = hGrp->GetBool("TiledBackground", false);
-    Gui::Application::Instance->setStyleSheet(QString::fromUtf8(sheet.c_str()), tiledBG);
-}
-
-} // anonymous namespace
-
-void DlgSettingsUI::attachObserver()
-{
-    static ParamHandlers handlers;
-
-    auto handler = handlers.addDelayedHandler("BaseApp/Preferences/MainWindow",
-                               {"StyleSheet", "TiledBackground"},
-                               applyStyleSheet);
-    handlers.addHandler("BaseApp/Preferences/Themes",
-                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
-                        handler);
 }
 
 #include "moc_DlgSettingsUI.cpp"

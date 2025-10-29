@@ -29,14 +29,11 @@
 #include "ViewProviderDragger.h"
 
 #include <Base/ServiceProvider.h>
+
+#include <App/Application.h>
 #include <App/Services.h>
 
 class SoDragger;
-
-namespace Attacher
-{
-    class AttachEngine;
-}
 
 namespace Gui
 {

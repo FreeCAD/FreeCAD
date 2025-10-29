@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
@@ -20,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DAGModelGraph.h"
 

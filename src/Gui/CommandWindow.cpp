@@ -20,13 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QCoreApplication>
 # include <QStatusBar>
 # include <QEvent>
-#endif
 
 #include "Command.h"
 #include "Action.h"

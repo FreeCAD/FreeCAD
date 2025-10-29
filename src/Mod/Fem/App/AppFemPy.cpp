@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cstdlib>
 #include <memory>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -41,6 +39,7 @@
 #include "FemPostPipeline.h"
 #include "FemVTKTools.h"
 #include <LibraryVersions.h>
+#include <vtkVersionMacros.h>
 #endif
 
 #ifdef FC_USE_VTK_PYTHON
@@ -83,6 +82,12 @@ public:
         add_varargs_method("getVtkVersion",
                            &Module::getVtkVersion,
                            "Returns the VTK version FreeCAD is linked against");
+        add_varargs_method("getVtkVersionNumber",
+                           &Module::getVtkVersionNumber,
+                           "Returns the VTK version FreeCAD is linked against as a number");
+        add_varargs_method("vtkVersionCheck",
+                           &Module::vtkVersionCheck,
+                           "Returns VTK version number from `major`, `minor` and `build` values");
 #ifdef FC_USE_VTK_PYTHON
         add_varargs_method(
             "isVtkCompatible",
@@ -232,8 +237,8 @@ private:
                     else if (file.hasExtension("inp")) {
                         // get Abaqus inp prefs
                         ParameterGrp::handle g = hGrp->GetGroup("Abaqus");
-                        int elemParam = g->GetInt("AbaqusElementChoice", 1);
-                        bool groupParam = g->GetBool("AbaqusWriteGroups", false);
+                        int elemParam = g->GetInt("AbaqusElementChoice", 2);
+                        bool groupParam = g->GetBool("AbaqusWriteGroups", true);
                         // write ABAQUS Output
                         femMesh.writeABAQUS(file.filePath(), elemParam, groupParam);
                     }
@@ -340,6 +345,27 @@ private:
         }
 
         return Py::String(fcVtkVersion);
+    }
+
+    Py::Object getVtkVersionNumber(const Py::Tuple& args)
+    {
+        if (!PyArg_ParseTuple(args.ptr(), "")) {
+            throw Py::Exception();
+        }
+
+        return Py::Long(VTK_VERSION_NUMBER);
+    }
+
+    Py::Object vtkVersionCheck(const Py::Tuple& args)
+    {
+        int major;
+        int minor;
+        int build = 0;
+        if (!PyArg_ParseTuple(args.ptr(), "ii|i", &major, &minor, &build)) {
+            throw Py::Exception();
+        }
+
+        return Py::Long(VTK_VERSION_CHECK(major, minor, build));
     }
 
 #ifdef FC_USE_VTK_PYTHON

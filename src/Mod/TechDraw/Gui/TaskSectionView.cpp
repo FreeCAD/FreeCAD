@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <cmath>
-#endif// #ifndef _PreComp_
 
 #include "Widgets/CompassWidget.h"
 #include "Widgets/VectorEditWidget.h"
@@ -757,10 +754,6 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) : Tas
 }
 TaskDlgSectionView::~TaskDlgSectionView() {}
 
-void TaskDlgSectionView::update()
-{
-    //widget->updateTask();
-}
 
 //==== calls from the TaskView ===============================================================
 void TaskDlgSectionView::open() {}

@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
@@ -33,7 +31,6 @@
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
-#endif // _PreComp_
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -250,6 +247,43 @@ void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier> &paths) cons
                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Area")));
     paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
                     << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Volume")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox")));
+    
+    // BoundBox sub-properties
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XMax")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XMin")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YMax")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YMin")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZMax")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZMin")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XLength")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YLength")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZLength")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("DiagonalLength")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Center")));
 }
 
 void PropertyPartShape::beforeSave() const

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
@@ -55,7 +54,7 @@
 # include <QWhatsThis>
 # include <QWindow>
 # include <QPushButton>
-#endif
+
 
 #if defined(Q_OS_WIN)
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
@@ -72,6 +71,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/ImagePlane.h>
 #include <App/SafeMode.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
@@ -104,6 +104,7 @@
 #include "ReportView.h"
 #include "SelectionView.h"
 #include "SplashScreen.h"
+#include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Tree.h"
@@ -391,7 +392,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // labels and progressbar
     d->status = new StatusBarObserver();
-    d->actionLabel = new QLabel(statusBar());
+    d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     d->sizeLabel = new DimensionWidget(statusBar());
 
@@ -402,12 +403,19 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // hint label
     d->hintLabel = new InputHintWidget(statusBar());
+    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
+    //: A context menu action used to show or hide the input hints in the status bar
+    d->hintLabel->setWindowTitle(tr("Input hints"));
+
     statusBar()->addWidget(d->hintLabel);
 
     // right side label
-    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
+    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
+    //: A context menu action used to enable or disable quick measure in the status bar
+    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
@@ -2051,32 +2059,84 @@ bool MainWindow::canInsertFromMimeData (const QMimeData * source) const
     if (!source)
         return false;
     return source->hasUrls() ||
+        source->hasImage() ||
         source->hasFormat(_MimeDocObj) || source->hasFormat(_MimeDocObjX) ||
         source->hasFormat(_MimeDocObjFile) || source->hasFormat(_MimeDocObjXFile);
 }
 
 void MainWindow::insertFromMimeData (const QMimeData * mimeData)
 {
-    if (!mimeData)
+    if (!mimeData) {
         return;
+    }
+    
+    if (mimeData->hasImage()) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (!doc) {
+            doc = App::GetApplication().newDocument();
+        }
+
+        if (!doc) {
+            return;
+        }
+
+        QImage image = qvariant_cast<QImage>(mimeData->imageData());
+        if (image.isNull()) {
+            return;
+        }
+
+        std::string tempPath = App::Application::getTempFileName("png");
+        if (image.save(QString::fromStdString(tempPath), "PNG")) {
+            WaitCursor wc;
+            doc->openTransaction("Paste image");
+
+            try {
+                std::string objName = doc->getUniqueObjectName("ImagePlane");
+                App::DocumentObject* obj = doc->addObject("Image::ImagePlane", objName.c_str());
+                if (obj) {
+                    obj->Label.setValue("PastedImage");
+                    static_cast<Image::ImagePlane*>(obj)->ImageFile.setValue(tempPath.c_str());
+                    doc->recompute();
+                }
+            }
+            catch (const Base::Exception& e) {
+                doc->abortTransaction();
+                e.reportException();
+                return;
+            }
+
+            doc->commitTransaction();
+        }
+        else {
+            Base::Console().error("Failed to save pasted image to temporary file: %s\n",
+                                  tempPath.c_str());
+        }
+        return;
+    }
+    
     bool fromDoc = false;
     bool hasXLink = false;
     QString format;
-    if(mimeData->hasFormat(_MimeDocObj))
+    if (mimeData->hasFormat(_MimeDocObj)) {
         format = _MimeDocObj;
+    }
     else if(mimeData->hasFormat(_MimeDocObjX)) {
         format = _MimeDocObjX;
         hasXLink = true;
-    }else if(mimeData->hasFormat(_MimeDocObjFile)) {
+    }
+    else if(mimeData->hasFormat(_MimeDocObjFile)) {
         format = _MimeDocObjFile;
         fromDoc = true;
-    }else if(mimeData->hasFormat(_MimeDocObjXFile)) {
+    }
+    else if(mimeData->hasFormat(_MimeDocObjXFile)) {
         format = _MimeDocObjXFile;
         fromDoc = true;
         hasXLink = true;
-    }else {
-        if (mimeData->hasUrls())
+    }
+    else {
+        if (mimeData->hasUrls()) {
             loadUrls(App::GetApplication().getActiveDocument(), mimeData->urls());
+        }
         return;
     }
 
@@ -2251,6 +2311,11 @@ void MainWindow::showMessage(const QString& message, int timeout) {
 void MainWindow::setRightSideMessage(const QString& message)
 {
     d->rightSideLabel->setText(message.simplified());
+}
+
+bool MainWindow::isRightSideMessageVisible() const
+{
+    return d->rightSideLabel->isVisible();
 }
 
 void MainWindow::showStatus(int type, const QString& message)

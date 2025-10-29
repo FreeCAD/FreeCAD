@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QFont>
 #include <QLocale>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Interpreter.h>

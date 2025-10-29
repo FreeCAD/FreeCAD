@@ -4,12 +4,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1532"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1533"/>
       <source>Clone</source>
       <translation>ასლი</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1534"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1535"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>ქმნის გეომეტრიის ასლს, საბაზისოდ ბოლოს მონიშნული წერტილით</translation>
     </message>
@@ -17,27 +17,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8698"/>
+      <location filename="../../CommandConstraints.cpp" line="8879"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>რადიუსის/დიამეტრის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8699"/>
+      <location filename="../../CommandConstraints.cpp" line="8880"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation type="unfinished">Constrains the radius or diameter of an arc or a circle</translation>
+      <translation>შეზღუდავს რკალის ან წრეწირის რადიუსს ან დიამეტრს</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8809"/>
+      <location filename="../../CommandConstraints.cpp" line="8990"/>
       <source>Constrain radius</source>
       <translation>რადიუსის სეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8815"/>
+      <location filename="../../CommandConstraints.cpp" line="8996"/>
       <source>Constrain diameter</source>
       <translation>დიამეტრის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8821"/>
+      <location filename="../../CommandConstraints.cpp" line="9002"/>
       <source>Constrain auto radius/diameter</source>
       <translation>ავტომატური რადიუსის/დიამეტრის შეზღუდვა</translation>
     </message>
@@ -45,12 +45,12 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1615"/>
       <source>Clone</source>
       <translation>კლონი</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1616"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1617"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>ქმნის გეომეტრიის ასლს, საბაზისოდ ბოლოს მონიშნული წერტილით</translation>
     </message>
@@ -58,22 +58,22 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="633"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="661"/>
       <source>Modify Knot Multiplicity</source>
-      <translation type="unfinished">Modify Knot Multiplicity</translation>
+      <translation>კვანძის ჯერადობის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
       <translation>B-სპლაინის მონიშნული კვანძის სიმრავლის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="699"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="727"/>
       <source>Increase knot multiplicity</source>
       <translation>კვანძის ჯერადობის გაზრდა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="708"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="736"/>
       <source>Decrease knot multiplicity</source>
       <translation>კვანძის ჯერადობის შემცირება</translation>
     </message>
@@ -81,25 +81,25 @@
   <context>
     <name>CmdSketcherConvertToNURBS</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="114"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="112"/>
       <source>Geometry to B-Spline</source>
-      <translation type="unfinished">Geometry to B-Spline</translation>
+      <translation>გეომეტრიიდან B-სპლაინზე</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
-      <source>Converts the selected geometry to a B-spline</source>
-      <translation>მონიშნული გეომეტრიის B-სპლაინად გარდაქმნა</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="113"/>
+      <source>Converts the selected geometry to B-splines</source>
+      <translation>გადაიყვანს მონიშნულ გეომეტრიას B-სპლაინებში</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1481"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1482"/>
       <source>Copy</source>
       <translation>კოპირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1482"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1483"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>ქმნის გეომეტრიის მარტივ ასლს, საბაზისოდ ბოლოს მონიშნული წერტილით</translation>
     </message>
@@ -107,12 +107,12 @@
   <context>
     <name>CmdSketcherDecreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="267"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="261"/>
       <source>Decrease B-Spline Degree</source>
-      <translation type="unfinished">Decrease B-Spline Degree</translation>
+      <translation>B-სპლაინის ხარისხის შემცირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="268"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="262"/>
       <source>Decreases the degree of the B-spline</source>
       <translation>B-სპლაინის დონის დაწევა</translation>
     </message>
@@ -120,12 +120,12 @@
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="496"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="524"/>
       <source>Decrease Knot Multiplicity</source>
-      <translation type="unfinished">Decrease Knot Multiplicity</translation>
+      <translation>კვანძის ჯერადობის შემცირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="497"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="525"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>B-სპლაინის მონიშნული კვანძის სიმრავლის შემცირება</translation>
     </message>
@@ -133,12 +133,12 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="190"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="188"/>
       <source>Increase B-Spline Degree</source>
-      <translation type="unfinished">Increase B-Spline Degree</translation>
+      <translation>B-სპლაინის ხარისხის გაზრდა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="191"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="189"/>
       <source>Increases the degree of the B-spline</source>
       <translation>B-სპლაინის დონის აწევა</translation>
     </message>
@@ -146,12 +146,12 @@
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="377"/>
       <source>Increase Knot Multiplicity</source>
-      <translation type="unfinished">Increase Knot Multiplicity</translation>
+      <translation>კვანძის ჯერადობის გაზრდა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="378"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>B-სპლაინის მონიშნული კვანძის სიმრავლის გაზრდა</translation>
     </message>
@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="578"/>
+      <location filename="../../Command.cpp" line="576"/>
       <source>Attach Sketch</source>
-      <translation type="unfinished">Attach Sketch</translation>
+      <translation>ესკიზის მიბმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="579"/>
+      <location filename="../../Command.cpp" line="577"/>
       <source>Attaches a sketch to the selected geometry element</source>
-      <translation type="unfinished">Attaches a sketch to the selected geometry element</translation>
+      <translation>მიამაგრებს ესკიზს მონიშნულ გეომეტრიის ელემენტს</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="670"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>ზოგიერთი მონიშნული ობიექტი საჩვენებელ ესკიზს ეყრდნობა. წრიული დამოკიდებულებები მხარდაუჭერელია.</translation>
     </message>
@@ -177,35 +177,35 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1001"/>
+      <location filename="../../Command.cpp" line="999"/>
       <source>Merge Sketches</source>
-      <translation type="unfinished">Merge Sketches</translation>
+      <translation>ესკიზების შერწყმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1002"/>
+      <location filename="../../Command.cpp" line="1000"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
-      <translation type="unfinished">Creates a new sketch by merging at least 2 selected sketches</translation>
+      <translation>ქმნის ახალ ესკიზს 2 ან მეტი მონიშნული ესკიზის შერწყმით</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1017"/>
+      <location filename="../../Command.cpp" line="1015"/>
       <source>Wrong selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1018"/>
+      <location filename="../../Command.cpp" line="1016"/>
       <source>Select at least 2 sketches</source>
-      <translation type="unfinished">Select at least 2 sketches</translation>
+      <translation>მონიშნეთ, სულ ცოტა, 2 ესკიზი</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="872"/>
       <source>Mirror Sketch</source>
-      <translation type="unfinished">Mirror Sketch</translation>
+      <translation>ესკიზის ანარეკლი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="873"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -214,25 +214,25 @@ by using the X or Y axes, or the origin point,
 as mirroring reference</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Wrong selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Select at least 1 sketch</source>
-      <translation type="unfinished">Select at least 1 sketch</translation>
+      <translation>მონიშნეთ, სულ ცოტა, 1 ესკიზი</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1580"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1581"/>
       <source>Move</source>
       <translation>გადატანა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1581"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1582"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>გეომეტრიების გადატანა ორიენტირად ბოლოს მონიშნული წერტილის გამოყენებით</translation>
     </message>
@@ -240,12 +240,12 @@ as mirroring reference</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1922"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1924"/>
       <source>Rectangular Array</source>
-      <translation type="unfinished">Rectangular Array</translation>
+      <translation>მართკუთხედი მასივი</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1923"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1925"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>ქმნის გეომეტრიის მართკუთხა მასივის შაბლონს, მიმართვად ბოლო არჩეული წერტილის გამოყენებით</translation>
     </message>
@@ -253,12 +253,12 @@ as mirroring reference</translation>
   <context>
     <name>CmdSketcherSwitchVirtualSpace</name>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="90"/>
       <source>Switch Virtual Space</source>
-      <translation type="unfinished">Switch Virtual Space</translation>
+      <translation>ვირტუალური სივრცის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="96"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="92"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
       <translation>მონიშნული შეზღუდვების ან ხედების სხვა ვირტუალურ სივრცეზე გადართვა</translation>
     </message>
@@ -266,421 +266,418 @@ as mirroring reference</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="834"/>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Validate Sketch</source>
-      <translation type="unfinished">Validate Sketch</translation>
+      <translation>ესკიზის შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation type="unfinished">Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="851"/>
+      <location filename="../../Command.cpp" line="849"/>
       <source>Wrong selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="850"/>
       <source>Select only 1 sketch.</source>
-      <translation type="unfinished">Select only 1 sketch.</translation>
+      <translation>მონიშნეთ მხოლოდ 1 ესკიზი.</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3582"/>
+      <location filename="../../CommandConstraints.cpp" line="3763"/>
       <source>Add 'Lock' constraint</source>
       <translation>"მბლოკავი" შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3636"/>
+      <location filename="../../CommandConstraints.cpp" line="3817"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>ფარდობითი „დაბლოკვის“ შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3701"/>
+      <location filename="../../CommandConstraints.cpp" line="3882"/>
       <source>Add fixed constraint</source>
       <translation>ფიქსირებული შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3872"/>
-      <source>Add 'Block' constraint</source>
-      <translation>'ბლოკის' ტიპის შეზღუდვის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3921"/>
+      <location filename="../../CommandConstraints.cpp" line="4102"/>
       <source>Add block constraint</source>
       <translation>ბლოკის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4261"/>
-      <location filename="../../CommandConstraints.cpp" line="4448"/>
+      <location filename="../../CommandConstraints.cpp" line="4442"/>
+      <location filename="../../CommandConstraints.cpp" line="4629"/>
       <source>Add coincident constraint</source>
       <translation>დამთხვევის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4675"/>
-      <location filename="../../CommandConstraints.cpp" line="4998"/>
+      <location filename="../../CommandConstraints.cpp" line="4856"/>
+      <location filename="../../CommandConstraints.cpp" line="5179"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>ჰორიზონტალური ღერძის შეზღუდვამდე მანძილის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4687"/>
-      <location filename="../../CommandConstraints.cpp" line="5012"/>
+      <location filename="../../CommandConstraints.cpp" line="4868"/>
+      <location filename="../../CommandConstraints.cpp" line="5193"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>ვერიკალურ ღერძამდე მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4699"/>
-      <location filename="../../CommandConstraints.cpp" line="5025"/>
+      <location filename="../../CommandConstraints.cpp" line="4880"/>
+      <location filename="../../CommandConstraints.cpp" line="5206"/>
       <source>Add point to point distance constraint</source>
       <translation>წერტილიდან წერტილამდე მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2065"/>
+      <location filename="../../CommandConstraints.cpp" line="2246"/>
       <source>Add point to line Distance constraint</source>
       <translation>წერტილიდან ხაზამდე დაშორების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4823"/>
-      <location filename="../../CommandConstraints.cpp" line="5174"/>
+      <location filename="../../CommandConstraints.cpp" line="5004"/>
+      <location filename="../../CommandConstraints.cpp" line="5355"/>
       <source>Add circle to circle distance constraint</source>
       <translation>წრეწირიდან წრეწირამდე მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4866"/>
+      <location filename="../../CommandConstraints.cpp" line="5047"/>
       <source>Add circle to line distance constraint</source>
       <translation>წრეწირიდან ხაზამდე მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2163"/>
-      <location filename="../../CommandConstraints.cpp" line="2186"/>
-      <location filename="../../CommandConstraints.cpp" line="2254"/>
-      <location filename="../../CommandConstraints.cpp" line="2338"/>
-      <location filename="../../CommandConstraints.cpp" line="4914"/>
-      <location filename="../../CommandConstraints.cpp" line="4941"/>
-      <location filename="../../CommandConstraints.cpp" line="5069"/>
+      <location filename="../../CommandConstraints.cpp" line="2344"/>
+      <location filename="../../CommandConstraints.cpp" line="2367"/>
+      <location filename="../../CommandConstraints.cpp" line="2435"/>
+      <location filename="../../CommandConstraints.cpp" line="2519"/>
+      <location filename="../../CommandConstraints.cpp" line="5095"/>
+      <location filename="../../CommandConstraints.cpp" line="5122"/>
+      <location filename="../../CommandConstraints.cpp" line="5250"/>
       <source>Add length constraint</source>
       <translation>სიგრძის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1612"/>
-      <location filename="../../CommandConstraints.cpp" line="1800"/>
-      <location filename="../../CommandConstraints.cpp" line="2971"/>
+      <location filename="../../CommandConstraints.cpp" line="1776"/>
+      <location filename="../../CommandConstraints.cpp" line="1967"/>
+      <location filename="../../CommandConstraints.cpp" line="3152"/>
       <source>Dimension</source>
       <translation>ზომა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2034"/>
+      <location filename="../../CommandConstraints.cpp" line="2215"/>
       <source>Add lock constraint</source>
       <translation>დაბლოკვის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2030"/>
+      <location filename="../../CommandConstraints.cpp" line="2211"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>'წყარომდე დაშორების' შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2046"/>
-      <location filename="../../CommandConstraints.cpp" line="2660"/>
-      <location filename="../../CommandConstraints.cpp" line="2889"/>
+      <location filename="../../CommandConstraints.cpp" line="2227"/>
+      <location filename="../../CommandConstraints.cpp" line="2841"/>
+      <location filename="../../CommandConstraints.cpp" line="3070"/>
       <source>Add Distance constraint</source>
       <translation>დაშორების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2051"/>
-      <location filename="../../CommandConstraints.cpp" line="2080"/>
-      <location filename="../../CommandConstraints.cpp" line="2114"/>
+      <location filename="../../CommandConstraints.cpp" line="2232"/>
+      <location filename="../../CommandConstraints.cpp" line="2261"/>
+      <location filename="../../CommandConstraints.cpp" line="2295"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>'ჰორიზონტალური' შეზღუდვების დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2055"/>
-      <location filename="../../CommandConstraints.cpp" line="2087"/>
-      <location filename="../../CommandConstraints.cpp" line="2121"/>
+      <location filename="../../CommandConstraints.cpp" line="2236"/>
+      <location filename="../../CommandConstraints.cpp" line="2268"/>
+      <location filename="../../CommandConstraints.cpp" line="2302"/>
       <source>Add 'Vertical' constraints</source>
       <translation>'ვერტიკალური' შეზღუდვების დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2070"/>
-      <location filename="../../CommandConstraints.cpp" line="2133"/>
+      <location filename="../../CommandConstraints.cpp" line="2251"/>
+      <location filename="../../CommandConstraints.cpp" line="2314"/>
       <source>Add Symmetry constraint</source>
       <translation>სიმეტრიის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2093"/>
-      <location filename="../../CommandConstraints.cpp" line="2265"/>
+      <location filename="../../CommandConstraints.cpp" line="2274"/>
+      <location filename="../../CommandConstraints.cpp" line="2446"/>
       <source>Add Symmetry constraints</source>
       <translation>სიმეტრიის შეზღუდვების დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2138"/>
-      <location filename="../../CommandConstraints.cpp" line="2150"/>
+      <location filename="../../CommandConstraints.cpp" line="2319"/>
+      <location filename="../../CommandConstraints.cpp" line="2331"/>
       <source>Add Distance constraints</source>
       <translation>დაშორების შეზღუდვების დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2196"/>
+      <location filename="../../CommandConstraints.cpp" line="2377"/>
       <source>Add Horizontal constraint</source>
       <translation>ჰორიზონტალური შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2201"/>
+      <location filename="../../CommandConstraints.cpp" line="2382"/>
       <source>Add Vertical constraint</source>
       <translation>ვერტიკალური შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2205"/>
+      <location filename="../../CommandConstraints.cpp" line="2386"/>
+      <location filename="../../CommandConstraints.cpp" line="4053"/>
       <source>Add Block constraint</source>
       <translation>ბლოკის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2220"/>
+      <location filename="../../CommandConstraints.cpp" line="2401"/>
       <source>Add Angle constraint</source>
       <translation>კუთხის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2230"/>
-      <location filename="../../CommandConstraints.cpp" line="2353"/>
-      <location filename="../../CommandConstraints.cpp" line="2363"/>
-      <location filename="../../CommandConstraints.cpp" line="2401"/>
+      <location filename="../../CommandConstraints.cpp" line="2411"/>
+      <location filename="../../CommandConstraints.cpp" line="2534"/>
+      <location filename="../../CommandConstraints.cpp" line="2544"/>
+      <location filename="../../CommandConstraints.cpp" line="2582"/>
       <source>Add Equality constraint</source>
       <translation>ტოლობის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2241"/>
+      <location filename="../../CommandConstraints.cpp" line="2422"/>
       <source>Add Equality constraints</source>
       <translation>ტოლობის შეზღუდვების დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10345"/>
+      <location filename="../../CommandConstraints.cpp" line="10544"/>
       <source>Activate/Deactivate constraints</source>
       <translation>შეზღუდვების აქტივაცია/დეაქტივაცია</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2289"/>
-      <location filename="../../CommandConstraints.cpp" line="2322"/>
+      <location filename="../../CommandConstraints.cpp" line="2470"/>
+      <location filename="../../CommandConstraints.cpp" line="2503"/>
       <source>Add arc angle constraint</source>
       <translation>რკალის კუთხის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2343"/>
+      <location filename="../../CommandConstraints.cpp" line="2524"/>
       <source>Add concentric and length constraint</source>
       <translation>კონცენტრირებული და სიგრძის შეზღუდვის დამატებ</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2867"/>
+      <location filename="../../CommandConstraints.cpp" line="3048"/>
       <source>Add DistanceX constraint</source>
       <translation>X დაშორების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2878"/>
+      <location filename="../../CommandConstraints.cpp" line="3059"/>
       <source>Add DistanceY constraint</source>
       <translation>Y დაშორების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4179"/>
-      <location filename="../../CommandConstraints.cpp" line="4363"/>
+      <location filename="../../CommandConstraints.cpp" line="4360"/>
+      <location filename="../../CommandConstraints.cpp" line="4544"/>
       <source>Add point on object constraint</source>
       <translation>ობექტის შეზღუდვაზე წერტილის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2294"/>
-      <location filename="../../CommandConstraints.cpp" line="2326"/>
+      <location filename="../../CommandConstraints.cpp" line="2475"/>
+      <location filename="../../CommandConstraints.cpp" line="2507"/>
       <source>Add arc length constraint</source>
       <translation>რკალის სიგრძის შეზღუდვის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4742"/>
-      <location filename="../../CommandConstraints.cpp" line="5119"/>
+      <location filename="../../CommandConstraints.cpp" line="4923"/>
+      <location filename="../../CommandConstraints.cpp" line="5300"/>
       <source>Add point to line distance constraint</source>
-      <translation type="unfinished">Add point to line distance constraint</translation>
+      <translation>წერტილიდან ხაზამდე დაშორების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4772"/>
+      <location filename="../../CommandConstraints.cpp" line="4953"/>
       <source>Add point to circle distance constraint</source>
-      <translation type="unfinished">Add point to circle distance constraint</translation>
+      <translation>წერტილიდან წრეწირამდე დაშორების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5360"/>
-      <location filename="../../CommandConstraints.cpp" line="5486"/>
+      <location filename="../../CommandConstraints.cpp" line="5541"/>
+      <location filename="../../CommandConstraints.cpp" line="5667"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>წერტილიდან წერტილამდე ჰორიზონტალური მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5401"/>
+      <location filename="../../CommandConstraints.cpp" line="5582"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>X-კოორდინატის ფიქსირებული შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5660"/>
-      <location filename="../../CommandConstraints.cpp" line="5783"/>
+      <location filename="../../CommandConstraints.cpp" line="5841"/>
+      <location filename="../../CommandConstraints.cpp" line="5964"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>წერტილიდან წერტილამდე ვერტიკალური მანძილის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5698"/>
+      <location filename="../../CommandConstraints.cpp" line="5879"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Y-კოორდინატის ფიქსირებული შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5931"/>
-      <location filename="../../CommandConstraints.cpp" line="5975"/>
+      <location filename="../../CommandConstraints.cpp" line="6112"/>
+      <location filename="../../CommandConstraints.cpp" line="6156"/>
       <source>Add parallel constraint</source>
       <translation>პარალელურობის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6115"/>
-      <location filename="../../CommandConstraints.cpp" line="6214"/>
-      <location filename="../../CommandConstraints.cpp" line="6377"/>
-      <location filename="../../CommandConstraints.cpp" line="6427"/>
-      <location filename="../../CommandConstraints.cpp" line="6578"/>
-      <location filename="../../CommandConstraints.cpp" line="6627"/>
-      <location filename="../../CommandConstraints.cpp" line="6683"/>
+      <location filename="../../CommandConstraints.cpp" line="6296"/>
+      <location filename="../../CommandConstraints.cpp" line="6395"/>
+      <location filename="../../CommandConstraints.cpp" line="6558"/>
+      <location filename="../../CommandConstraints.cpp" line="6608"/>
+      <location filename="../../CommandConstraints.cpp" line="6759"/>
+      <location filename="../../CommandConstraints.cpp" line="6808"/>
+      <location filename="../../CommandConstraints.cpp" line="6864"/>
       <source>Add perpendicular constraint</source>
       <translation>მართკუთხა შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6253"/>
+      <location filename="../../CommandConstraints.cpp" line="6434"/>
       <source>Add perpendicularity constraint</source>
       <translation>მართკუთხობის სეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6820"/>
+      <location filename="../../CommandConstraints.cpp" line="7001"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>დამთხვევის+მხების ptp მხებთან მიმოცვლა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6950"/>
-      <location filename="../../CommandConstraints.cpp" line="7052"/>
-      <location filename="../../CommandConstraints.cpp" line="7101"/>
-      <location filename="../../CommandConstraints.cpp" line="7288"/>
-      <location filename="../../CommandConstraints.cpp" line="7456"/>
-      <location filename="../../CommandConstraints.cpp" line="7526"/>
-      <location filename="../../CommandConstraints.cpp" line="7559"/>
+      <location filename="../../CommandConstraints.cpp" line="7131"/>
+      <location filename="../../CommandConstraints.cpp" line="7233"/>
+      <location filename="../../CommandConstraints.cpp" line="7282"/>
+      <location filename="../../CommandConstraints.cpp" line="7469"/>
+      <location filename="../../CommandConstraints.cpp" line="7637"/>
+      <location filename="../../CommandConstraints.cpp" line="7707"/>
+      <location filename="../../CommandConstraints.cpp" line="7740"/>
       <source>Add tangent constraint</source>
       <translation>მხების შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7147"/>
-      <location filename="../../CommandConstraints.cpp" line="7158"/>
-      <location filename="../../CommandConstraints.cpp" line="7170"/>
-      <location filename="../../CommandConstraints.cpp" line="7194"/>
-      <location filename="../../CommandConstraints.cpp" line="7207"/>
-      <location filename="../../CommandConstraints.cpp" line="7231"/>
-      <location filename="../../CommandConstraints.cpp" line="7243"/>
-      <location filename="../../CommandConstraints.cpp" line="7268"/>
-      <location filename="../../CommandConstraints.cpp" line="7361"/>
-      <location filename="../../CommandConstraints.cpp" line="7372"/>
-      <location filename="../../CommandConstraints.cpp" line="7384"/>
-      <location filename="../../CommandConstraints.cpp" line="7408"/>
-      <location filename="../../CommandConstraints.cpp" line="7420"/>
-      <location filename="../../CommandConstraints.cpp" line="7444"/>
+      <location filename="../../CommandConstraints.cpp" line="7328"/>
+      <location filename="../../CommandConstraints.cpp" line="7339"/>
+      <location filename="../../CommandConstraints.cpp" line="7351"/>
+      <location filename="../../CommandConstraints.cpp" line="7375"/>
+      <location filename="../../CommandConstraints.cpp" line="7388"/>
+      <location filename="../../CommandConstraints.cpp" line="7412"/>
+      <location filename="../../CommandConstraints.cpp" line="7424"/>
+      <location filename="../../CommandConstraints.cpp" line="7449"/>
+      <location filename="../../CommandConstraints.cpp" line="7542"/>
+      <location filename="../../CommandConstraints.cpp" line="7553"/>
+      <location filename="../../CommandConstraints.cpp" line="7565"/>
+      <location filename="../../CommandConstraints.cpp" line="7589"/>
+      <location filename="../../CommandConstraints.cpp" line="7601"/>
+      <location filename="../../CommandConstraints.cpp" line="7625"/>
       <source>Add tangent constraint point</source>
       <translation>მხების შეზღუდვის წერტილის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2298"/>
-      <location filename="../../CommandConstraints.cpp" line="2302"/>
-      <location filename="../../CommandConstraints.cpp" line="2309"/>
-      <location filename="../../CommandConstraints.cpp" line="2314"/>
-      <location filename="../../CommandConstraints.cpp" line="7779"/>
-      <location filename="../../CommandConstraints.cpp" line="7823"/>
-      <location filename="../../CommandConstraints.cpp" line="7852"/>
-      <location filename="../../CommandConstraints.cpp" line="7929"/>
+      <location filename="../../CommandConstraints.cpp" line="2479"/>
+      <location filename="../../CommandConstraints.cpp" line="2483"/>
+      <location filename="../../CommandConstraints.cpp" line="2490"/>
+      <location filename="../../CommandConstraints.cpp" line="2495"/>
+      <location filename="../../CommandConstraints.cpp" line="7960"/>
+      <location filename="../../CommandConstraints.cpp" line="8004"/>
+      <location filename="../../CommandConstraints.cpp" line="8033"/>
+      <location filename="../../CommandConstraints.cpp" line="8110"/>
       <source>Add radius constraint</source>
       <translation>რადიუსის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8130"/>
-      <location filename="../../CommandConstraints.cpp" line="8162"/>
-      <location filename="../../CommandConstraints.cpp" line="8183"/>
-      <location filename="../../CommandConstraints.cpp" line="8259"/>
+      <location filename="../../CommandConstraints.cpp" line="8311"/>
+      <location filename="../../CommandConstraints.cpp" line="8343"/>
+      <location filename="../../CommandConstraints.cpp" line="8364"/>
+      <location filename="../../CommandConstraints.cpp" line="8440"/>
       <source>Add diameter constraint</source>
       <translation>დიამეტრის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8455"/>
-      <location filename="../../CommandConstraints.cpp" line="8503"/>
-      <location filename="../../CommandConstraints.cpp" line="8538"/>
-      <location filename="../../CommandConstraints.cpp" line="8627"/>
+      <location filename="../../CommandConstraints.cpp" line="8636"/>
+      <location filename="../../CommandConstraints.cpp" line="8684"/>
+      <location filename="../../CommandConstraints.cpp" line="8719"/>
+      <location filename="../../CommandConstraints.cpp" line="8808"/>
       <source>Add radiam constraint</source>
       <translation>რადიამის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="263"/>
-      <location filename="../../CommandConstraints.cpp" line="8960"/>
-      <location filename="../../CommandConstraints.cpp" line="9076"/>
-      <location filename="../../CommandConstraints.cpp" line="9102"/>
-      <location filename="../../CommandConstraints.cpp" line="9197"/>
+      <location filename="../../CommandConstraints.cpp" line="262"/>
+      <location filename="../../CommandConstraints.cpp" line="9141"/>
+      <location filename="../../CommandConstraints.cpp" line="9257"/>
+      <location filename="../../CommandConstraints.cpp" line="9283"/>
+      <location filename="../../CommandConstraints.cpp" line="9378"/>
       <source>Add angle constraint</source>
       <translation>კუთხის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6843"/>
+      <location filename="../../CommandConstraints.cpp" line="7024"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
       <translation>ობიექტზე არსებული წერტილისა და მხების მიმოცვლა მრუდის მხების წერტილთან</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9459"/>
-      <location filename="../../CommandConstraints.cpp" line="9514"/>
+      <location filename="../../CommandConstraints.cpp" line="9640"/>
+      <location filename="../../CommandConstraints.cpp" line="9695"/>
       <source>Add equality constraint</source>
       <translation>ტოლობის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9640"/>
-      <location filename="../../CommandConstraints.cpp" line="9699"/>
-      <location filename="../../CommandConstraints.cpp" line="9720"/>
-      <location filename="../../CommandConstraints.cpp" line="9823"/>
-      <location filename="../../CommandConstraints.cpp" line="9867"/>
+      <location filename="../../CommandConstraints.cpp" line="9821"/>
+      <location filename="../../CommandConstraints.cpp" line="9880"/>
+      <location filename="../../CommandConstraints.cpp" line="9901"/>
+      <location filename="../../CommandConstraints.cpp" line="10004"/>
+      <location filename="../../CommandConstraints.cpp" line="10044"/>
+      <location filename="../../CommandConstraints.cpp" line="10066"/>
       <source>Add symmetric constraint</source>
       <translation>სიმეტრიულობის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10029"/>
+      <location filename="../../CommandConstraints.cpp" line="10228"/>
       <source>Add Snell's law constraint</source>
       <translation>სნელის კანონის შეზღუდვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10258"/>
+      <location filename="../../CommandConstraints.cpp" line="10457"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>მშენებლობის/მიმართვის შეზღუდვის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="248"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>Create a new sketch on a face</source>
       <translation>ზედაპირზე ახალი ესკიზის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Create a new sketch</source>
       <translation>ახალი ესკიზის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="552"/>
+      <location filename="../../Command.cpp" line="550"/>
       <source>Reorient sketch</source>
       <translation>ესკიზის რეორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="760"/>
+      <location filename="../../Command.cpp" line="758"/>
       <source>Attach sketch</source>
       <translation>ესკიზის მიბმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="766"/>
       <source>Detach sketch</source>
       <translation>ესკიზის მოძრობა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="906"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>ყოველი მონიშნული ესკიზის სარკისებური ასლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1027"/>
+      <location filename="../../Command.cpp" line="1025"/>
       <source>Merge sketches</source>
       <translation>ესკიზების შერწყმა</translation>
     </message>
@@ -690,7 +687,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>ესკიზზე ხაზის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="461"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
       <source>Add sketch box</source>
       <translation>ესკიზის ყუთის დამატება</translation>
     </message>
@@ -710,17 +707,17 @@ invalid constraints, and degenerate geometry</translation>
       <translation>ესკიზზე ოვალის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="300"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="302"/>
       <source>Add sketch arc of ellipse</source>
       <translation>ესკიზზე ოვალის რკალის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="305"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="307"/>
       <source>Add sketch arc of hyperbola</source>
       <translation>ჰიპერბოლის ესკიზური რკალის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="234"/>
       <source>Add sketch arc of Parabola</source>
       <translation>პარაბოლის ესკიზური რკალის დამატება</translation>
     </message>
@@ -736,62 +733,62 @@ invalid constraints, and degenerate geometry</translation>
       <translation>მომრგვალების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="176"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="177"/>
       <source>Trim edge</source>
       <translation>წიბოს გაჭრა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="291"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="292"/>
       <source>Extend edge</source>
       <translation>წიბოს გაფართოვება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="154"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="155"/>
       <source>Split edge</source>
       <translation>წიბოს გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="176"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="177"/>
       <source>Add external geometry</source>
       <translation>გარე გეომეტრიის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="176"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="173"/>
       <source>Add slot</source>
       <translation>სლოტის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="140"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="138"/>
       <source>Convert to NURBS</source>
       <translation>NURBS-ში გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="216"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="214"/>
       <source>Increase B-spline degree</source>
       <translation>B-სპლაინის კუთხის გაზრდა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="295"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="289"/>
       <source>Decrease B-spline degree</source>
       <translation>B-სპლაინის კუთხის შემცირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="414"/>
       <source>Increase knot multiplicity</source>
       <translation>კვანძის გამრავლებადობის გაზრდა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="533"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="561"/>
       <source>Decrease knot multiplicity</source>
       <translation>კვანძის გამრავლებადობის შემცირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="776"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="805"/>
       <source>Insert knot</source>
       <translation>კვანძის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1066"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1095"/>
       <source>Join Curves</source>
       <translation>მრუდების შეერთება</translation>
     </message>
@@ -811,89 +808,88 @@ invalid constraints, and degenerate geometry</translation>
       <translation>შიდა გეომეტრიის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1267"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1268"/>
       <source>Copy/clone/move geometry</source>
       <translation>გეომეტრიის კოპირება/ასლი/გადატანა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1850"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1852"/>
       <source>Create copy of geometry</source>
       <translation>გეომეტრიის ასლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2100"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2102"/>
       <source>Delete all geometry</source>
       <translation>მთელი გეომეტრიის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2164"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2166"/>
       <source>Delete all constraints</source>
       <translation>ყველა შეზღუდვის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2298"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2300"/>
       <source>Remove Axes Alignment</source>
       <translation>ღერძების სწორების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="166"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="162"/>
       <source>Toggle constraints to the other virtual space</source>
       <translation>შეზღუდვების სხვა ვირტუალურ სივრცეში გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="176"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1521"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1524"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="172"/>
       <source>Update constraint's virtual space</source>
       <translation>შეზღუდვის ვირტუალური სივრცის განახლება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="892"/>
-      <location filename="../../DrawSketchHandler.cpp" line="763"/>
-      <source>Add auto constraints</source>
-      <translation>ავტომატური შეზღუდვების დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="706"/>
       <source>Swap constraint names</source>
       <translation>შეზღუდვების სახელების მიმოცვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1213"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1211"/>
       <source>Rename sketch constraint</source>
       <translation>ესკიზის შეზღუდვისთვის სახელის გადარქმევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1558"/>
+      <source>Update constraint's visibility</source>
+      <translation>შეზღუდვის ხილვადობის განახლება</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="1772"/>
       <source>Drag Point</source>
       <translation>გადაათრიეთ წერტილი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1772"/>
       <source>Drag Curve</source>
       <translation>რკალის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1679"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1773"/>
       <source>Drag geometries</source>
       <translation>გეომეტრიების გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1060"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1117"/>
       <source>Drag Constraint</source>
       <translation>შეზღუდვის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1332"/>
       <source>Modify sketch constraints</source>
       <translation>ესკიზის შეზღუდვების ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="168"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="169"/>
       <source>Create a carbon copy</source>
       <translation>ზუსტი ასლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="386"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="433"/>
       <source>Offset</source>
       <translation>წანაცვლება</translation>
     </message>
@@ -903,22 +899,22 @@ invalid constraints, and degenerate geometry</translation>
       <translation>პოლიგონის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="202"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="208"/>
       <source>Add sketch arc slot</source>
       <translation>ესკიზის რკალის სლოტის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="144"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="145"/>
       <source>Rotate geometries</source>
       <translation>გეომეტრიების შებრუნება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="105"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
       <source>Scale geometries</source>
       <translation>გეომეტრიების მასშტაბი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="116"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="118"/>
       <source>Translate geometries</source>
       <translation>გეომეტრიების მოძრაობითი გადატანა</translation>
     </message>
@@ -928,36 +924,38 @@ invalid constraints, and degenerate geometry</translation>
       <translation>სიმეტრიის გეომეტრიები</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
-      <source>Add sketch bSpline</source>
-      <translation>ესკიზის B-სპლაინის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="598"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="736"/>
-      <source>Add sketch B-spline</source>
-      <translation>ესკიზის B-სპლაინის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="460"/>
       <source>Add line to sketch polyline</source>
       <translation>ესკიზის პოლიხაზზე ხაზის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="485"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="488"/>
       <source>Add arc to sketch polyline</source>
       <translation>ესკიზის პოლიხაზზე რკალის დამატება</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="184"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="180"/>
       <source>Toggle construction geometry</source>
       <translation>მშენებლობითი გეომეტრიის ჩართ/გამორთ</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="913"/>
+      <location filename="../../DrawSketchHandler.cpp" line="760"/>
+      <source>Add Auto-Constraints</source>
+      <translation>ავტოშეზღუდვების დამატება</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
+      <source>Add Sketch B-Spline</source>
+      <translation>ესკიზის B-სპლაინის დამატება</translation>
     </message>
   </context>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Sketcher</source>
       <translation>ესკიზმქმნელი</translation>
     </message>
@@ -965,103 +963,103 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6557"/>
+      <location filename="../../../App/SketchObject.cpp" line="6619"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>თქვენ არ ითხოვთ ცვლილებას კვანძის გაყოფადობაში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
-      <location filename="../../../App/SketchObject.cpp" line="6712"/>
+      <location filename="../../../App/SketchObject.cpp" line="6612"/>
+      <location filename="../../../App/SketchObject.cpp" line="6774"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-სპლაინის გეომეტრიის ინდექსი (GeoID) დაშვებულ ლიმიტებს გარეთაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6564"/>
-      <location filename="../../../App/SketchObject.cpp" line="6724"/>
+      <location filename="../../../App/SketchObject.cpp" line="6626"/>
+      <location filename="../../../App/SketchObject.cpp" line="6786"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>გეომეტრიის მითითებული ინდექსი (GeoID) B-სპლაინს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6575"/>
+      <location filename="../../../App/SketchObject.cpp" line="6637"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>კვანძის ინდექსი საზღვრებს გარეთაა. დაიმახსოვრეთ, რომ OCC ნოტაციების შესაბამისად, პირველი კვანძის ინდექსი 1-ია და არა 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6587"/>
+      <location filename="../../../App/SketchObject.cpp" line="6649"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>სიმრავლე არ შეიძლება გაიზარდოს B-სპლაინის დონის მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6596"/>
+      <location filename="../../../App/SketchObject.cpp" line="6658"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>სიმრავლე არ შეიძლება შემცირდეს ნულს მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6610"/>
+      <location filename="../../../App/SketchObject.cpp" line="6672"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-ს არ შეუძლია შეამციროს სიმრავლე მაქსიმალური ტოლერანტობის ფარგლებში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6717"/>
+      <location filename="../../../App/SketchObject.cpp" line="6779"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>კვანძებს არ შეიძლება ნულოვანი მამრავლი ჰქონდეს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6736"/>
+      <location filename="../../../App/SketchObject.cpp" line="6798"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>კვანძის მამრავლი არ შეიძლება B-სპლაინის დონეზე დიდი იყოს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6743"/>
+      <location filename="../../../App/SketchObject.cpp" line="6805"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>კვანძის ჩასმა B-სპლაინის პარამეტრების დიაპაზონის გარეთ შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="321"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="340"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="367"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="380"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="393"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="406"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="418"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="432"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="459"/>
-      <location filename="../../SketcherToolDefaultWidget.cpp" line="575"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="318"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="337"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="364"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="377"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="390"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="403"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="415"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="429"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="456"/>
+      <location filename="../../SketcherToolDefaultWidget.cpp" line="572"/>
       <source>ToolWidget parameter index out of range</source>
       <translation>პარამეტრი ToolWidget დასაშვებ შუალედს გარეთაა</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="675"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="672"/>
       <source>Autoconstraint error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: დამთხვევის შეზღუდვების გადატარების დროს ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="722"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="719"/>
       <source>Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: ვერტიკალური/ჰორიზონტალური შეზღუდვების გადატარების დროს ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="815"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="812"/>
       <source>Autoconstraint error: Unsolvable sketch while applying equality constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: თანასწორობის შეზღუდვების გადატარების დროს ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="855"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="852"/>
       <source>Autoconstraint error: Unsolvable sketch without constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: შეზღუდვების გარეშე ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="869"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="866"/>
       <source>Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: ჰორიზონტალური და ვერტიკალური შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="884"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="881"/>
       <source>Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: წერტილიდან წერტილამდე შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="905"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="902"/>
       <source>Autoconstraint error: Unsolvable sketch after applying equality constraints.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: თანასწორობის შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
@@ -1069,7 +1067,7 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
     <message>
-      <location filename="../../TaskSketcherCreateCommands.cpp" line="36"/>
+      <location filename="../../TaskSketcherCreateCommands.cpp" line="34"/>
       <source>Appearance</source>
       <translation>გარეგნობა</translation>
     </message>
@@ -1085,512 +1083,507 @@ invalid constraints, and degenerate geometry</translation>
       <translation>ესკიზმქმნელი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="122"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>არ არსებობს რეჟიმი, რომელიც მიიღებს ქვე-ელემენტების მონიშნულ ნაკრებს</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="125"/>
       <source>Broken link to support subelements</source>
       <translation>ქვეელემენტების მხარდაჭერის გაფუჭებული ბმული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Unexpected error</source>
       <translation>გაუთვალისწინებელი შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="132"/>
       <source>Face is non-planar</source>
       <translation>ზედაპირი ბრტყელი არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>მონიშნული მოხაზულობები არასწორი ფორმისაა (მაგ: ამობურცული წიბო, სადაც სწორი იყო საჭირო)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Invalid selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Too many objects selected</source>
       <translation>მონიშნულია მეტისმეტად ბევრი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>Sketch mapping</source>
       <translation>ესკიზის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
-      <translation type="unfinished">Cannot map the sketch to the selected object. %1.</translation>
+      <translation>შეუძლებელია ესკიზის რუკის მონიშნულ ობიექტზე დატანა. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>Do not attach</source>
-      <translation type="unfinished">Do not attach</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="699"/>
-      <source>Don't attach</source>
       <translation>არ მიამაგრო</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="169"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="178"/>
-      <location filename="../../CommandConstraints.cpp" line="173"/>
-      <location filename="../../CommandConstraints.cpp" line="180"/>
-      <location filename="../../CommandConstraints.cpp" line="2639"/>
-      <location filename="../../CommandConstraints.cpp" line="2798"/>
-      <location filename="../../CommandConstraints.cpp" line="2814"/>
-      <location filename="../../CommandConstraints.cpp" line="3120"/>
-      <location filename="../../CommandConstraints.cpp" line="3527"/>
-      <location filename="../../CommandConstraints.cpp" line="3554"/>
-      <location filename="../../CommandConstraints.cpp" line="3559"/>
-      <location filename="../../CommandConstraints.cpp" line="3812"/>
-      <location filename="../../CommandConstraints.cpp" line="3845"/>
-      <location filename="../../CommandConstraints.cpp" line="3850"/>
-      <location filename="../../CommandConstraints.cpp" line="4143"/>
-      <location filename="../../CommandConstraints.cpp" line="4173"/>
-      <location filename="../../CommandConstraints.cpp" line="4196"/>
-      <location filename="../../CommandConstraints.cpp" line="4227"/>
-      <location filename="../../CommandConstraints.cpp" line="4245"/>
-      <location filename="../../CommandConstraints.cpp" line="4378"/>
-      <location filename="../../CommandConstraints.cpp" line="4400"/>
-      <location filename="../../CommandConstraints.cpp" line="4430"/>
-      <location filename="../../CommandConstraints.cpp" line="4632"/>
-      <location filename="../../CommandConstraints.cpp" line="4644"/>
-      <location filename="../../CommandConstraints.cpp" line="4893"/>
-      <location filename="../../CommandConstraints.cpp" line="4901"/>
-      <location filename="../../CommandConstraints.cpp" line="4967"/>
-      <location filename="../../CommandConstraints.cpp" line="5093"/>
-      <location filename="../../CommandConstraints.cpp" line="5198"/>
-      <location filename="../../CommandConstraints.cpp" line="5283"/>
-      <location filename="../../CommandConstraints.cpp" line="5296"/>
-      <location filename="../../CommandConstraints.cpp" line="5329"/>
-      <location filename="../../CommandConstraints.cpp" line="5391"/>
-      <location filename="../../CommandConstraints.cpp" line="5427"/>
-      <location filename="../../CommandConstraints.cpp" line="5462"/>
-      <location filename="../../CommandConstraints.cpp" line="5584"/>
-      <location filename="../../CommandConstraints.cpp" line="5597"/>
-      <location filename="../../CommandConstraints.cpp" line="5628"/>
-      <location filename="../../CommandConstraints.cpp" line="5690"/>
-      <location filename="../../CommandConstraints.cpp" line="5724"/>
-      <location filename="../../CommandConstraints.cpp" line="5759"/>
-      <location filename="../../CommandConstraints.cpp" line="5881"/>
-      <location filename="../../CommandConstraints.cpp" line="5916"/>
-      <location filename="../../CommandConstraints.cpp" line="5925"/>
-      <location filename="../../CommandConstraints.cpp" line="5964"/>
-      <location filename="../../CommandConstraints.cpp" line="6063"/>
-      <location filename="../../CommandConstraints.cpp" line="6075"/>
-      <location filename="../../CommandConstraints.cpp" line="6110"/>
-      <location filename="../../CommandConstraints.cpp" line="6186"/>
-      <location filename="../../CommandConstraints.cpp" line="6196"/>
-      <location filename="../../CommandConstraints.cpp" line="6237"/>
-      <location filename="../../CommandConstraints.cpp" line="6248"/>
-      <location filename="../../CommandConstraints.cpp" line="6277"/>
-      <location filename="../../CommandConstraints.cpp" line="6298"/>
-      <location filename="../../CommandConstraints.cpp" line="6478"/>
-      <location filename="../../CommandConstraints.cpp" line="6499"/>
-      <location filename="../../CommandConstraints.cpp" line="6678"/>
-      <location filename="../../CommandConstraints.cpp" line="6899"/>
-      <location filename="../../CommandConstraints.cpp" line="6911"/>
-      <location filename="../../CommandConstraints.cpp" line="6945"/>
-      <location filename="../../CommandConstraints.cpp" line="7017"/>
-      <location filename="../../CommandConstraints.cpp" line="7037"/>
-      <location filename="../../CommandConstraints.cpp" line="7046"/>
-      <location filename="../../CommandConstraints.cpp" line="7075"/>
-      <location filename="../../CommandConstraints.cpp" line="7084"/>
-      <location filename="../../CommandConstraints.cpp" line="7095"/>
-      <location filename="../../CommandConstraints.cpp" line="7123"/>
-      <location filename="../../CommandConstraints.cpp" line="7282"/>
-      <location filename="../../CommandConstraints.cpp" line="7335"/>
-      <location filename="../../CommandConstraints.cpp" line="7509"/>
-      <location filename="../../CommandConstraints.cpp" line="7554"/>
-      <location filename="../../CommandConstraints.cpp" line="7680"/>
-      <location filename="../../CommandConstraints.cpp" line="7693"/>
-      <location filename="../../CommandConstraints.cpp" line="7759"/>
-      <location filename="../../CommandConstraints.cpp" line="7767"/>
-      <location filename="../../CommandConstraints.cpp" line="7923"/>
-      <location filename="../../CommandConstraints.cpp" line="8043"/>
-      <location filename="../../CommandConstraints.cpp" line="8056"/>
-      <location filename="../../CommandConstraints.cpp" line="8101"/>
-      <location filename="../../CommandConstraints.cpp" line="8119"/>
-      <location filename="../../CommandConstraints.cpp" line="8245"/>
-      <location filename="../../CommandConstraints.cpp" line="8253"/>
-      <location filename="../../CommandConstraints.cpp" line="8361"/>
-      <location filename="../../CommandConstraints.cpp" line="8374"/>
-      <location filename="../../CommandConstraints.cpp" line="8435"/>
-      <location filename="../../CommandConstraints.cpp" line="8443"/>
-      <location filename="../../CommandConstraints.cpp" line="8621"/>
-      <location filename="../../CommandConstraints.cpp" line="8904"/>
-      <location filename="../../CommandConstraints.cpp" line="8917"/>
-      <location filename="../../CommandConstraints.cpp" line="8953"/>
-      <location filename="../../CommandConstraints.cpp" line="9051"/>
-      <location filename="../../CommandConstraints.cpp" line="9064"/>
-      <location filename="../../CommandConstraints.cpp" line="9129"/>
-      <location filename="../../CommandConstraints.cpp" line="9190"/>
-      <location filename="../../CommandConstraints.cpp" line="9344"/>
-      <location filename="../../CommandConstraints.cpp" line="9358"/>
-      <location filename="../../CommandConstraints.cpp" line="9376"/>
-      <location filename="../../CommandConstraints.cpp" line="9383"/>
-      <location filename="../../CommandConstraints.cpp" line="9404"/>
-      <location filename="../../CommandConstraints.cpp" line="9437"/>
-      <location filename="../../CommandConstraints.cpp" line="9453"/>
-      <location filename="../../CommandConstraints.cpp" line="9508"/>
-      <location filename="../../CommandConstraints.cpp" line="9592"/>
-      <location filename="../../CommandConstraints.cpp" line="9606"/>
-      <location filename="../../CommandConstraints.cpp" line="9633"/>
-      <location filename="../../CommandConstraints.cpp" line="9662"/>
-      <location filename="../../CommandConstraints.cpp" line="9692"/>
-      <location filename="../../CommandConstraints.cpp" line="9742"/>
-      <location filename="../../CommandConstraints.cpp" line="9771"/>
-      <location filename="../../CommandConstraints.cpp" line="9816"/>
-      <location filename="../../CommandConstraints.cpp" line="9840"/>
-      <location filename="../../CommandConstraints.cpp" line="9930"/>
-      <location filename="../../CommandConstraints.cpp" line="9940"/>
-      <location filename="../../CommandConstraints.cpp" line="9965"/>
-      <location filename="../../CommandConstraints.cpp" line="9975"/>
-      <location filename="../../CommandConstraints.cpp" line="9993"/>
-      <location filename="../../CommandConstraints.cpp" line="10128"/>
-      <location filename="../../CommandConstraints.cpp" line="10204"/>
-      <location filename="../../CommandConstraints.cpp" line="10216"/>
-      <location filename="../../CommandConstraints.cpp" line="10252"/>
+      <location filename="../../CommandConstraints.cpp" line="172"/>
+      <location filename="../../CommandConstraints.cpp" line="179"/>
+      <location filename="../../CommandConstraints.cpp" line="2820"/>
+      <location filename="../../CommandConstraints.cpp" line="2979"/>
+      <location filename="../../CommandConstraints.cpp" line="2995"/>
+      <location filename="../../CommandConstraints.cpp" line="3301"/>
+      <location filename="../../CommandConstraints.cpp" line="3708"/>
+      <location filename="../../CommandConstraints.cpp" line="3735"/>
+      <location filename="../../CommandConstraints.cpp" line="3740"/>
+      <location filename="../../CommandConstraints.cpp" line="3993"/>
+      <location filename="../../CommandConstraints.cpp" line="4026"/>
+      <location filename="../../CommandConstraints.cpp" line="4031"/>
+      <location filename="../../CommandConstraints.cpp" line="4324"/>
+      <location filename="../../CommandConstraints.cpp" line="4354"/>
+      <location filename="../../CommandConstraints.cpp" line="4377"/>
+      <location filename="../../CommandConstraints.cpp" line="4408"/>
+      <location filename="../../CommandConstraints.cpp" line="4426"/>
+      <location filename="../../CommandConstraints.cpp" line="4559"/>
+      <location filename="../../CommandConstraints.cpp" line="4581"/>
+      <location filename="../../CommandConstraints.cpp" line="4611"/>
+      <location filename="../../CommandConstraints.cpp" line="4813"/>
+      <location filename="../../CommandConstraints.cpp" line="4825"/>
+      <location filename="../../CommandConstraints.cpp" line="5074"/>
+      <location filename="../../CommandConstraints.cpp" line="5082"/>
+      <location filename="../../CommandConstraints.cpp" line="5148"/>
+      <location filename="../../CommandConstraints.cpp" line="5274"/>
+      <location filename="../../CommandConstraints.cpp" line="5379"/>
+      <location filename="../../CommandConstraints.cpp" line="5464"/>
+      <location filename="../../CommandConstraints.cpp" line="5477"/>
+      <location filename="../../CommandConstraints.cpp" line="5510"/>
+      <location filename="../../CommandConstraints.cpp" line="5572"/>
+      <location filename="../../CommandConstraints.cpp" line="5608"/>
+      <location filename="../../CommandConstraints.cpp" line="5643"/>
+      <location filename="../../CommandConstraints.cpp" line="5765"/>
+      <location filename="../../CommandConstraints.cpp" line="5778"/>
+      <location filename="../../CommandConstraints.cpp" line="5809"/>
+      <location filename="../../CommandConstraints.cpp" line="5871"/>
+      <location filename="../../CommandConstraints.cpp" line="5905"/>
+      <location filename="../../CommandConstraints.cpp" line="5940"/>
+      <location filename="../../CommandConstraints.cpp" line="6062"/>
+      <location filename="../../CommandConstraints.cpp" line="6097"/>
+      <location filename="../../CommandConstraints.cpp" line="6106"/>
+      <location filename="../../CommandConstraints.cpp" line="6145"/>
+      <location filename="../../CommandConstraints.cpp" line="6244"/>
+      <location filename="../../CommandConstraints.cpp" line="6256"/>
+      <location filename="../../CommandConstraints.cpp" line="6291"/>
+      <location filename="../../CommandConstraints.cpp" line="6367"/>
+      <location filename="../../CommandConstraints.cpp" line="6377"/>
+      <location filename="../../CommandConstraints.cpp" line="6418"/>
+      <location filename="../../CommandConstraints.cpp" line="6429"/>
+      <location filename="../../CommandConstraints.cpp" line="6458"/>
+      <location filename="../../CommandConstraints.cpp" line="6479"/>
+      <location filename="../../CommandConstraints.cpp" line="6659"/>
+      <location filename="../../CommandConstraints.cpp" line="6680"/>
+      <location filename="../../CommandConstraints.cpp" line="6859"/>
+      <location filename="../../CommandConstraints.cpp" line="7080"/>
+      <location filename="../../CommandConstraints.cpp" line="7092"/>
+      <location filename="../../CommandConstraints.cpp" line="7126"/>
+      <location filename="../../CommandConstraints.cpp" line="7198"/>
+      <location filename="../../CommandConstraints.cpp" line="7218"/>
+      <location filename="../../CommandConstraints.cpp" line="7227"/>
+      <location filename="../../CommandConstraints.cpp" line="7256"/>
+      <location filename="../../CommandConstraints.cpp" line="7265"/>
+      <location filename="../../CommandConstraints.cpp" line="7276"/>
+      <location filename="../../CommandConstraints.cpp" line="7304"/>
+      <location filename="../../CommandConstraints.cpp" line="7463"/>
+      <location filename="../../CommandConstraints.cpp" line="7516"/>
+      <location filename="../../CommandConstraints.cpp" line="7690"/>
+      <location filename="../../CommandConstraints.cpp" line="7735"/>
+      <location filename="../../CommandConstraints.cpp" line="7861"/>
+      <location filename="../../CommandConstraints.cpp" line="7874"/>
+      <location filename="../../CommandConstraints.cpp" line="7940"/>
+      <location filename="../../CommandConstraints.cpp" line="7948"/>
+      <location filename="../../CommandConstraints.cpp" line="8104"/>
+      <location filename="../../CommandConstraints.cpp" line="8224"/>
+      <location filename="../../CommandConstraints.cpp" line="8237"/>
+      <location filename="../../CommandConstraints.cpp" line="8282"/>
+      <location filename="../../CommandConstraints.cpp" line="8300"/>
+      <location filename="../../CommandConstraints.cpp" line="8426"/>
+      <location filename="../../CommandConstraints.cpp" line="8434"/>
+      <location filename="../../CommandConstraints.cpp" line="8542"/>
+      <location filename="../../CommandConstraints.cpp" line="8555"/>
+      <location filename="../../CommandConstraints.cpp" line="8616"/>
+      <location filename="../../CommandConstraints.cpp" line="8624"/>
+      <location filename="../../CommandConstraints.cpp" line="8802"/>
+      <location filename="../../CommandConstraints.cpp" line="9085"/>
+      <location filename="../../CommandConstraints.cpp" line="9098"/>
+      <location filename="../../CommandConstraints.cpp" line="9134"/>
+      <location filename="../../CommandConstraints.cpp" line="9232"/>
+      <location filename="../../CommandConstraints.cpp" line="9245"/>
+      <location filename="../../CommandConstraints.cpp" line="9310"/>
+      <location filename="../../CommandConstraints.cpp" line="9371"/>
+      <location filename="../../CommandConstraints.cpp" line="9525"/>
+      <location filename="../../CommandConstraints.cpp" line="9539"/>
+      <location filename="../../CommandConstraints.cpp" line="9557"/>
+      <location filename="../../CommandConstraints.cpp" line="9564"/>
+      <location filename="../../CommandConstraints.cpp" line="9585"/>
+      <location filename="../../CommandConstraints.cpp" line="9618"/>
+      <location filename="../../CommandConstraints.cpp" line="9634"/>
+      <location filename="../../CommandConstraints.cpp" line="9689"/>
+      <location filename="../../CommandConstraints.cpp" line="9773"/>
+      <location filename="../../CommandConstraints.cpp" line="9787"/>
+      <location filename="../../CommandConstraints.cpp" line="9814"/>
+      <location filename="../../CommandConstraints.cpp" line="9843"/>
+      <location filename="../../CommandConstraints.cpp" line="9873"/>
+      <location filename="../../CommandConstraints.cpp" line="9923"/>
+      <location filename="../../CommandConstraints.cpp" line="9952"/>
+      <location filename="../../CommandConstraints.cpp" line="9997"/>
+      <location filename="../../CommandConstraints.cpp" line="10021"/>
+      <location filename="../../CommandConstraints.cpp" line="10129"/>
+      <location filename="../../CommandConstraints.cpp" line="10139"/>
+      <location filename="../../CommandConstraints.cpp" line="10164"/>
+      <location filename="../../CommandConstraints.cpp" line="10174"/>
+      <location filename="../../CommandConstraints.cpp" line="10192"/>
       <location filename="../../CommandConstraints.cpp" line="10327"/>
-      <location filename="../../CommandConstraints.cpp" line="10339"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="168"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="243"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="326"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="379"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="438"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="526"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="573"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="936"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1046"/>
-      <location filename="../../CommandSketcherTools.cpp" line="86"/>
+      <location filename="../../CommandConstraints.cpp" line="10403"/>
+      <location filename="../../CommandConstraints.cpp" line="10415"/>
+      <location filename="../../CommandConstraints.cpp" line="10451"/>
+      <location filename="../../CommandConstraints.cpp" line="10526"/>
+      <location filename="../../CommandConstraints.cpp" line="10538"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
       <location filename="../../CommandSketcherTools.cpp" line="369"/>
       <location filename="../../CommandSketcherTools.cpp" line="1013"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1339"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1349"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1411"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1942"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1952"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2016"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2226"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2236"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2283"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2348"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="166"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="237"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="407"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1075"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="170"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="179"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="166"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="175"/>
       <source>Select edges from the sketch</source>
-      <translation type="unfinished">Select edges from the sketch</translation>
+      <translation>აირჩიეთ წიბოები ესკიზიდან</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="104"/>
+      <location filename="../../EditDatumDialog.cpp" line="102"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
       <translation>მონაცემების ჩასწორება დაუშვებელია, რადგან ესკიზი კონფლიქტურ შეზღუდვებს შეიცავს</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="103"/>
+      <location filename="../../EditDatumDialog.cpp" line="101"/>
       <source>Dimensional constraint</source>
       <translation>სივრცული შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="174"/>
+      <location filename="../../CommandConstraints.cpp" line="173"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>ორ გარე გეომეტრიას შორის შეზღუდვის დამატება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="181"/>
+      <location filename="../../CommandConstraints.cpp" line="180"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>ორ დამაგრებულ გეომეტრიას შორის შეზღუდვის დამატება შეუძლებელია. დამაგრებულ გეომეტრიებს მიეკუთვნება გარე გეომეტრია, დაბლოკილი გეომეტრია და ისეთი სპეციალური წერტილები, როგორიცაა B-სპლაინის კვანძის წერტილები.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="755"/>
+      <location filename="../../CommandConstraints.cpp" line="754"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>Sketcher-ის შეზღუდვის ჩანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="871"/>
+      <location filename="../../CommandConstraints.cpp" line="870"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>ერთერთი მონიშნული ესკიზზე უნდა იყოს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3121"/>
+      <location filename="../../CommandConstraints.cpp" line="3302"/>
       <source>Select an edge from the sketch.</source>
       <translation>ესკიზზე წიბოს მონიშვნა.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3085"/>
-      <location filename="../../CommandConstraints.cpp" line="3094"/>
-      <location filename="../../CommandConstraints.cpp" line="3146"/>
-      <location filename="../../CommandConstraints.cpp" line="3170"/>
-      <location filename="../../CommandConstraints.cpp" line="3224"/>
-      <location filename="../../CommandConstraints.cpp" line="3258"/>
+      <location filename="../../CommandConstraints.cpp" line="3266"/>
+      <location filename="../../CommandConstraints.cpp" line="3275"/>
+      <location filename="../../CommandConstraints.cpp" line="3327"/>
+      <location filename="../../CommandConstraints.cpp" line="3351"/>
+      <location filename="../../CommandConstraints.cpp" line="3405"/>
+      <location filename="../../CommandConstraints.cpp" line="3439"/>
       <source>Impossible constraint</source>
       <translation>შეზღუდვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3147"/>
-      <location filename="../../CommandConstraints.cpp" line="3259"/>
+      <location filename="../../CommandConstraints.cpp" line="3328"/>
+      <location filename="../../CommandConstraints.cpp" line="3440"/>
       <source>The selected edge is not a line segment.</source>
       <translation>მონიშნული წიბო ხაზის სეგმენტს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3077"/>
-      <location filename="../../CommandConstraints.cpp" line="3862"/>
-      <location filename="../../CommandConstraints.cpp" line="3915"/>
+      <location filename="../../CommandConstraints.cpp" line="3258"/>
+      <location filename="../../CommandConstraints.cpp" line="4043"/>
+      <location filename="../../CommandConstraints.cpp" line="4096"/>
       <source>Double constraint</source>
       <translation>ორმაგი შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3078"/>
+      <location filename="../../CommandConstraints.cpp" line="3259"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>მონიშნულ წიბოს უკვე აქვს ჰორიზონტალური შეზღუდვა!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3086"/>
+      <location filename="../../CommandConstraints.cpp" line="3267"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>მონიშნულ წიბოს უკვე აქვს ვერტიკალური შეზღუდვა!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3225"/>
+      <location filename="../../CommandConstraints.cpp" line="3406"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>მონიშნულია ერთზე მეტი დამაგრებული წერტილი. მონიშნეთ მაქსიმუმ ერთი დამაგრებული წერტილი!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3528"/>
-      <location filename="../../CommandConstraints.cpp" line="3813"/>
-      <location filename="../../CommandConstraints.cpp" line="4633"/>
+      <location filename="../../CommandConstraints.cpp" line="3709"/>
+      <location filename="../../CommandConstraints.cpp" line="3994"/>
+      <location filename="../../CommandConstraints.cpp" line="4814"/>
       <source>Select vertices from the sketch.</source>
       <translation>ესკიზზე წვეროების მონიშვნა.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3555"/>
+      <location filename="../../CommandConstraints.cpp" line="3736"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>აირჩიეთ წიბოდან კიდევ ერთი წვერო წყაროს გარდა.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3560"/>
+      <location filename="../../CommandConstraints.cpp" line="3741"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>ესკიზზე მხოლოდ წვეროები მონიშნეთ. ბოლოს მონიშნული წვერო საწყისი შეიძლება იყოს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3826"/>
+      <location filename="../../CommandConstraints.cpp" line="4007"/>
       <source>Wrong solver status</source>
       <translation>ამომხსნელის არასწორი სტატუსი</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3846"/>
+      <location filename="../../CommandConstraints.cpp" line="4027"/>
       <source>Select one edge from the sketch.</source>
       <translation>ესკიზიდან მონიშნეთ ერთი წიბო.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3851"/>
+      <location filename="../../CommandConstraints.cpp" line="4032"/>
       <source>Select only edges from the sketch.</source>
       <translation>ესკიზიდან მონიშნეთ მხოლოდ წიბოები.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4228"/>
+      <location filename="../../CommandConstraints.cpp" line="4409"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
       <translation>არცერთი მონიშნული წერტილი არ შემოიფარგლება შესაბამის მრუდებზე, რადგან ისინი ერთი და იგივე ელემენტის ნაწილებია, რადგან ორივე გარე გეომეტრიაა, ან იმიტომ, რომ წიბო დაუშვებელია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7283"/>
+      <location filename="../../CommandConstraints.cpp" line="7464"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>B-სპლაინთან ერთად, მხოლოდ, მხები-წერტილის-გავლითაა მხარდაჭერილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7768"/>
-      <location filename="../../CommandConstraints.cpp" line="8444"/>
+      <location filename="../../CommandConstraints.cpp" line="7949"/>
+      <location filename="../../CommandConstraints.cpp" line="8625"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>ესკიზიდან მონიშნეთ მხოლოდ ერთი ან მეტი B-სპლაინი, რკალები ან წრეწირები, მაგრამ ტიპებს ნუ შეურევთ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9915"/>
+      <location filename="../../CommandConstraints.cpp" line="10114"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>აირჩიეთ ხაზის ორი ბოლოწერტილები, რომლებსაც სხივის როლში შეუძლიათ გამოსვლა და წიბო, რომელიც ზღვარს წრმოადგენს. პირველი მონიშნული წერტილი შეესაბამება ინდექსს n1, მეორე n2 და მიბმის მნიშვნელობა შესატყვისობას n2/n1-ზე აყენებს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9941"/>
+      <location filename="../../CommandConstraints.cpp" line="10140"/>
       <source>Number of selected objects is not 3</source>
       <translation>მონიშნული ობიექტების რიცხვი არ უდრის სამს</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="786"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="563"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1083"/>
+      <location filename="../../CommandConstraints.cpp" line="785"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="591"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1112"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4076"/>
+      <location filename="../../CommandConstraints.cpp" line="4257"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>სამაგიეროდ გამოყენებულია ბოლო წერტილიდან ბოლო წერტილთან მხები.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4246"/>
+      <location filename="../../CommandConstraints.cpp" line="4427"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>დამთხვევის შეზღუდვისთვის ესკიზიდან აირჩიეთ ორი წვერო ან მეტი წვერო, ან, კონცენტრული შეზღუდვისთვის, ორი ან მეტი წრეწირი, ოვალები, რკალები ან ოვალის რკალები.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4431"/>
+      <location filename="../../CommandConstraints.cpp" line="4612"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>დამთხვევის შეზღუდვისთვის ესკიზიდან აირჩიეთ ორი წვერო, ან, კონცენტრული შეზღუდვისთვის, ორი წრეწირი, ოვალები, რკალები ან ოვალის რკალები.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4645"/>
+      <location filename="../../CommandConstraints.cpp" line="4826"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>ესკიზიდან აირჩიეთ მხოლოდ ერთი ხაზი ან ერთი წერტილი და ერთი ხაზი ან ორი წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4902"/>
+      <location filename="../../CommandConstraints.cpp" line="5083"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>ღერძზე სიგრძის შეზღუდვის დაწესება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4968"/>
-      <location filename="../../CommandConstraints.cpp" line="5199"/>
+      <location filename="../../CommandConstraints.cpp" line="5149"/>
+      <location filename="../../CommandConstraints.cpp" line="5380"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>ესკიზიდან აირჩიეთ მხოლოდ ერთი ხაზი ან ერთი წერტილი და ერთი ხაზი ან ორი წერტილი ან ორი წრეწირი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5094"/>
+      <location filename="../../CommandConstraints.cpp" line="5275"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>ამ შეზღუდვას აზრი არ აქვს არახაზოვანი მრუდებისთვის.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4028"/>
+      <location filename="../../CommandConstraints.cpp" line="4209"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>სამაგიეროდ გამოყენებულია ბოლო წერტილიდან წიბოსთნ მხები.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5284"/>
-      <location filename="../../CommandConstraints.cpp" line="5585"/>
-      <location filename="../../CommandConstraints.cpp" line="7681"/>
-      <location filename="../../CommandConstraints.cpp" line="8044"/>
-      <location filename="../../CommandConstraints.cpp" line="8362"/>
-      <location filename="../../CommandConstraints.cpp" line="8905"/>
+      <location filename="../../CommandConstraints.cpp" line="5465"/>
+      <location filename="../../CommandConstraints.cpp" line="5766"/>
+      <location filename="../../CommandConstraints.cpp" line="7862"/>
+      <location filename="../../CommandConstraints.cpp" line="8225"/>
+      <location filename="../../CommandConstraints.cpp" line="8543"/>
+      <location filename="../../CommandConstraints.cpp" line="9086"/>
       <source>Select the right things from the sketch.</source>
       <translation>ესკიზიდან სწორი რამეების არჩევა.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4197"/>
-      <location filename="../../CommandConstraints.cpp" line="4379"/>
-      <location filename="../../CommandConstraints.cpp" line="6111"/>
-      <location filename="../../CommandConstraints.cpp" line="6249"/>
-      <location filename="../../CommandConstraints.cpp" line="6299"/>
-      <location filename="../../CommandConstraints.cpp" line="6500"/>
-      <location filename="../../CommandConstraints.cpp" line="6679"/>
-      <location filename="../../CommandConstraints.cpp" line="6946"/>
-      <location filename="../../CommandConstraints.cpp" line="7096"/>
-      <location filename="../../CommandConstraints.cpp" line="7124"/>
-      <location filename="../../CommandConstraints.cpp" line="7336"/>
-      <location filename="../../CommandConstraints.cpp" line="7555"/>
-      <location filename="../../CommandConstraints.cpp" line="8102"/>
-      <location filename="../../CommandConstraints.cpp" line="8254"/>
-      <location filename="../../CommandConstraints.cpp" line="8954"/>
-      <location filename="../../CommandConstraints.cpp" line="9052"/>
-      <location filename="../../CommandConstraints.cpp" line="9191"/>
-      <location filename="../../CommandConstraints.cpp" line="9994"/>
+      <location filename="../../CommandConstraints.cpp" line="4378"/>
+      <location filename="../../CommandConstraints.cpp" line="4560"/>
+      <location filename="../../CommandConstraints.cpp" line="6292"/>
+      <location filename="../../CommandConstraints.cpp" line="6430"/>
+      <location filename="../../CommandConstraints.cpp" line="6480"/>
+      <location filename="../../CommandConstraints.cpp" line="6681"/>
+      <location filename="../../CommandConstraints.cpp" line="6860"/>
+      <location filename="../../CommandConstraints.cpp" line="7127"/>
+      <location filename="../../CommandConstraints.cpp" line="7277"/>
+      <location filename="../../CommandConstraints.cpp" line="7305"/>
+      <location filename="../../CommandConstraints.cpp" line="7517"/>
+      <location filename="../../CommandConstraints.cpp" line="7736"/>
+      <location filename="../../CommandConstraints.cpp" line="8283"/>
+      <location filename="../../CommandConstraints.cpp" line="8435"/>
+      <location filename="../../CommandConstraints.cpp" line="9135"/>
+      <location filename="../../CommandConstraints.cpp" line="9233"/>
+      <location filename="../../CommandConstraints.cpp" line="9372"/>
+      <location filename="../../CommandConstraints.cpp" line="10193"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>აირჩიეთ წიბო, რომელიც არაა B-სპლაინის წონა.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4118"/>
+      <location filename="../../CommandConstraints.cpp" line="4299"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>აირჩიეთ ან რამდენიმე წერტილი, ან რამდენიმე კონიკური კონცენტრულობისთვს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4121"/>
+      <location filename="../../CommandConstraints.cpp" line="4302"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>აირჩიეთ ან ერთი წერტილი და რამდენიმე მრუდი, ან ერთ მრუდი და რამდენიმე წერტილი</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4124"/>
+      <location filename="../../CommandConstraints.cpp" line="4305"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>მონიშნეთ ან ერთ წერტილი და რამდენიმე მრუდი ან ერთი რუდი და რამდენიმე წერტილი ხელსაწყოსთვის წერტილი ობიექტზე, ან რამდენიმე წერტილი დამთხვევისთვის, ან რამდენიმე კონუსი კონცენტრულობისთვის.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4401"/>
+      <location filename="../../CommandConstraints.cpp" line="4582"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>არცერთი მონიშნული წერტილი არ შემოიფარგლება შესაბამის მრუდებზე. ისინი ან ერთი და იგივე ელემენტის ნაწილებია, ან გარე გეომეტრიის ნაწილს წარმოადგენენ.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4894"/>
+      <location filename="../../CommandConstraints.cpp" line="5075"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>ამ მონიშნულზე სიგრძის შეზღუდვის დაწესება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5297"/>
-      <location filename="../../CommandConstraints.cpp" line="5428"/>
-      <location filename="../../CommandConstraints.cpp" line="5598"/>
-      <location filename="../../CommandConstraints.cpp" line="5725"/>
+      <location filename="../../CommandConstraints.cpp" line="5478"/>
+      <location filename="../../CommandConstraints.cpp" line="5609"/>
+      <location filename="../../CommandConstraints.cpp" line="5779"/>
+      <location filename="../../CommandConstraints.cpp" line="5906"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>ესკიზიდან აირჩიეთ ზუსტად ერთი ხაზი ან ორი წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5330"/>
+      <location filename="../../CommandConstraints.cpp" line="5511"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>ღერძზე ჰორიზონტალური სიგრძის შეზღუდვის დაწესება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5392"/>
+      <location filename="../../CommandConstraints.cpp" line="5573"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>საწყის წერტილზე ფიქსირებული X-კოორდინატის შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5463"/>
-      <location filename="../../CommandConstraints.cpp" line="5760"/>
+      <location filename="../../CommandConstraints.cpp" line="5644"/>
+      <location filename="../../CommandConstraints.cpp" line="5941"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>ამ შეზღუდვას აზრი მხოლოდ ხაზის სეგმენტზე ან წერტილების წყვილზე აქვს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5629"/>
+      <location filename="../../CommandConstraints.cpp" line="5810"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>ღერძზე ვერტიკალური სიგრძის შეზღუდვის დაწესება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5691"/>
+      <location filename="../../CommandConstraints.cpp" line="5872"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>საწყის წერტილზე ფიქსირებული Y-კოორდინატის შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5882"/>
+      <location filename="../../CommandConstraints.cpp" line="6063"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>ესკიზიდან აირჩიეთ ორი ან მეტი ხაზი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5917"/>
+      <location filename="../../CommandConstraints.cpp" line="6098"/>
       <source>One selected edge is not a valid line.</source>
       <translation>ერთი მონიშნული წიბო სწორ ხაზს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5926"/>
-      <location filename="../../CommandConstraints.cpp" line="9359"/>
+      <location filename="../../CommandConstraints.cpp" line="6107"/>
+      <location filename="../../CommandConstraints.cpp" line="9540"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>მონიშნეთ მინიმუმ 2 ხაზი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5965"/>
+      <location filename="../../CommandConstraints.cpp" line="6146"/>
       <source>The selected edge is not a valid line.</source>
       <translation>მონიშნული წიბო სწორ ხაზს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6054"/>
+      <location filename="../../CommandConstraints.cpp" line="6235"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1600,35 +1593,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 მხარდაჭერილი კომბინაციებია: ორი მრუდი; ან ბოლო წერტილი და მრუდი; ან ორი ბოლო წერტილი; ან ორი მრუდი და წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6059"/>
+      <location filename="../../CommandConstraints.cpp" line="6240"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>ესკიზიდან მონიშნეთ რამე გეომეტრია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6197"/>
-      <location filename="../../CommandConstraints.cpp" line="6238"/>
+      <location filename="../../CommandConstraints.cpp" line="6378"/>
+      <location filename="../../CommandConstraints.cpp" line="6419"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>დაუკავშირებელ წერტილზე მართობული შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6278"/>
-      <location filename="../../CommandConstraints.cpp" line="6479"/>
+      <location filename="../../CommandConstraints.cpp" line="6459"/>
+      <location filename="../../CommandConstraints.cpp" line="6660"/>
       <source>One of the selected edges should be a line.</source>
       <translation>ერთი მონიშნული წიბოებიდან ხაზი უნდა იყოს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6831"/>
+      <location filename="../../CommandConstraints.cpp" line="7012"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>ბოლო წერტილიდან წერტილამდე მხები გადატარებულია. დამთხვევის შეზღუდვა წაშლილია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6859"/>
+      <location filename="../../CommandConstraints.cpp" line="7040"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>ბოლო წერტილიდან წიბომდე მხები გადატარებულია. წერტილი ობიექტის შეზღუდვაზე წაშლილია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6890"/>
+      <location filename="../../CommandConstraints.cpp" line="7071"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1638,418 +1631,302 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 მხარდაჭერილი კომბინაციებია: ორი მრუდი; ან ბოლო წერტილი და მრუდი; ან ორი ბოლო წერტილი; ან ორი მრუდი და წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6895"/>
+      <location filename="../../CommandConstraints.cpp" line="7076"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>ესკიზიდან მონიშნეთ რამე გეომეტრია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7047"/>
-      <location filename="../../CommandConstraints.cpp" line="7085"/>
-      <location filename="../../CommandConstraints.cpp" line="7510"/>
+      <location filename="../../CommandConstraints.cpp" line="7228"/>
+      <location filename="../../CommandConstraints.cpp" line="7266"/>
+      <location filename="../../CommandConstraints.cpp" line="7691"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>დაუკავშირებელ წერტილზე მხების შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7038"/>
-      <location filename="../../CommandConstraints.cpp" line="7076"/>
+      <location filename="../../CommandConstraints.cpp" line="7219"/>
+      <location filename="../../CommandConstraints.cpp" line="7257"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>მხების მზღუდავი B-სპლაინის კვანძთან მხოლოდ ხაზებითაა მხარდაჭერილი!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="229"/>
+      <location filename="../../CommandConstraints.cpp" line="228"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
       <translation type="unfinished">One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="761"/>
+      <location filename="../../CommandConstraints.cpp" line="760"/>
       <source>Keep notifying about constraint substitutions</source>
-      <translation type="unfinished">Keep notifying about constraint substitutions</translation>
+      <translation>შეზღუდვების ჩანაცვლების შესახებ შეტყობინებების ჩვენების გაგრძელება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="787"/>
+      <location filename="../../CommandConstraints.cpp" line="786"/>
       <source>Unexpected error. More information may be available in the report view.</source>
       <translation type="unfinished">Unexpected error. More information may be available in the report view.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="839"/>
+      <location filename="../../CommandConstraints.cpp" line="838"/>
       <source>Only the sketch and its support are allowed to be selected</source>
-      <translation type="unfinished">Only the sketch and its support are allowed to be selected</translation>
+      <translation>შეიძლება მოინიშნოს მხოლოდ ესკიზი და მისი საყრდენი</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="850"/>
+      <location filename="../../CommandConstraints.cpp" line="849"/>
       <source>Only the sketch and its support may be selected</source>
-      <translation type="unfinished">Only the sketch and its support may be selected</translation>
+      <translation>შეიძლება, მხოლოდ, ესკიზის და მისი მხარდაჭერის მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="862"/>
+      <location filename="../../CommandConstraints.cpp" line="861"/>
       <source>Only the sketch and its support  may be selected</source>
-      <translation type="unfinished">Only the sketch and its support  may be selected</translation>
+      <translation>შეიძლება, მხოლოდ, ესკიზის და მისი მხარდაჭერის მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1120"/>
-      <location filename="../../CommandConstraints.cpp" line="1152"/>
-      <location filename="../../CommandConstraints.cpp" line="1161"/>
-      <location filename="../../CommandConstraints.cpp" line="1169"/>
-      <location filename="../../CommandConstraints.cpp" line="1295"/>
-      <source>%1 pick point or edge</source>
-      <translation type="unfinished">%1 pick point or edge</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1123"/>
-      <location filename="../../CommandConstraints.cpp" line="1220"/>
-      <location filename="../../CommandConstraints.cpp" line="1260"/>
-      <location filename="../../CommandConstraints.cpp" line="1273"/>
-      <source>%1 pick edge</source>
-      <translation type="unfinished">%1 pick edge</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1125"/>
-      <location filename="../../CommandConstraints.cpp" line="1247"/>
-      <source>%1 pick point</source>
-      <translation type="unfinished">%1 pick point</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1156"/>
-      <location filename="../../CommandConstraints.cpp" line="1165"/>
-      <location filename="../../CommandConstraints.cpp" line="1173"/>
-      <location filename="../../CommandConstraints.cpp" line="1299"/>
-      <source>%1 pick second point or edge</source>
-      <translation type="unfinished">%1 pick second point or edge</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1178"/>
-      <location filename="../../CommandConstraints.cpp" line="1186"/>
-      <location filename="../../CommandConstraints.cpp" line="1194"/>
-      <source>%1 pick edge or first point</source>
-      <translation type="unfinished">%1 pick edge or first point</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1182"/>
-      <location filename="../../CommandConstraints.cpp" line="1190"/>
-      <location filename="../../CommandConstraints.cpp" line="1198"/>
-      <location filename="../../CommandConstraints.cpp" line="1251"/>
-      <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1203"/>
-      <source>%1 pick edge to block</source>
-      <translation type="unfinished">%1 pick edge to block</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1207"/>
-      <source>%1 pick point to lock</source>
-      <translation type="unfinished">%1 pick point to lock</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1212"/>
-      <source>%1 pick point or curve</source>
-      <translation type="unfinished">%1 pick point or curve</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1216"/>
-      <source>%1 pick second point or curve</source>
-      <translation type="unfinished">%1 pick second point or curve</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1224"/>
-      <location filename="../../CommandConstraints.cpp" line="1264"/>
-      <location filename="../../CommandConstraints.cpp" line="1277"/>
-      <source>%1 pick second edge</source>
-      <translation type="unfinished">%1 pick second edge</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1229"/>
-      <location filename="../../CommandConstraints.cpp" line="1233"/>
-      <source>%1 pick circle or arc</source>
-      <translation type="unfinished">%1 pick circle or arc</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1238"/>
-      <location filename="../../CommandConstraints.cpp" line="1286"/>
-      <source>%1 pick line</source>
-      <translation type="unfinished">%1 pick line</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1242"/>
-      <location filename="../../CommandConstraints.cpp" line="1290"/>
-      <source>%1 pick second line</source>
-      <translation type="unfinished">%1 pick second line</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1255"/>
-      <source>%1 pick symmetry line</source>
-      <translation type="unfinished">%1 pick symmetry line</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1268"/>
-      <source>%1 pick optional tangent point</source>
-      <translation type="unfinished">%1 pick optional tangent point</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1281"/>
-      <source>%1 pick optional perpendicular point</source>
-      <translation type="unfinished">%1 pick optional perpendicular point</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1827"/>
-      <source>%1 pick geometry</source>
-      <translation type="unfinished">%1 pick geometry</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1829"/>
-      <source>%1 pick second point or geometry</source>
-      <translation type="unfinished">%1 pick second point or geometry</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1831"/>
-      <source>%1 place dimension</source>
-      <translation type="unfinished">%1 place dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3095"/>
-      <location filename="../../CommandConstraints.cpp" line="3863"/>
-      <location filename="../../CommandConstraints.cpp" line="3916"/>
+      <location filename="../../CommandConstraints.cpp" line="3276"/>
+      <location filename="../../CommandConstraints.cpp" line="4044"/>
+      <location filename="../../CommandConstraints.cpp" line="4097"/>
       <source>The selected edge already has a block constraint!</source>
-      <translation type="unfinished">The selected edge already has a block constraint!</translation>
+      <translation>მონიშნულ წიბოს უკვე ადევს შეზღუდვის ბლოკი!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3171"/>
+      <location filename="../../CommandConstraints.cpp" line="3352"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
       <translation type="unfinished">The selected items cannot be constrained horizontally or vertically!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3827"/>
+      <location filename="../../CommandConstraints.cpp" line="4008"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation type="unfinished">A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4096"/>
+      <location filename="../../CommandConstraints.cpp" line="4277"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>სამაგიეროდ გამოყენებულია B-სპლაინის კვანძიდან ბოლო წერტილის მხებამდე.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6076"/>
-      <location filename="../../CommandConstraints.cpp" line="6912"/>
+      <location filename="../../CommandConstraints.cpp" line="6257"/>
+      <location filename="../../CommandConstraints.cpp" line="7093"/>
       <source>Wrong number of selected objects!</source>
       <translation>მონიშნული ობიექტების არასწორი რაოდენობა!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6187"/>
-      <location filename="../../CommandConstraints.cpp" line="7018"/>
+      <location filename="../../CommandConstraints.cpp" line="6368"/>
+      <location filename="../../CommandConstraints.cpp" line="7199"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>3 ობიექტით უნდა იყოს 2 მრუდი და 1 წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7694"/>
-      <location filename="../../CommandConstraints.cpp" line="7760"/>
-      <location filename="../../CommandConstraints.cpp" line="8057"/>
-      <location filename="../../CommandConstraints.cpp" line="8120"/>
-      <location filename="../../CommandConstraints.cpp" line="8375"/>
-      <location filename="../../CommandConstraints.cpp" line="8436"/>
+      <location filename="../../CommandConstraints.cpp" line="7875"/>
+      <location filename="../../CommandConstraints.cpp" line="7941"/>
+      <location filename="../../CommandConstraints.cpp" line="8238"/>
+      <location filename="../../CommandConstraints.cpp" line="8301"/>
+      <location filename="../../CommandConstraints.cpp" line="8556"/>
+      <location filename="../../CommandConstraints.cpp" line="8617"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>აირჩიეთ ერთი ან მეტი რკალი ან წრეწირი ესკიზიდან.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7924"/>
-      <location filename="../../CommandConstraints.cpp" line="8246"/>
-      <location filename="../../CommandConstraints.cpp" line="8622"/>
+      <location filename="../../CommandConstraints.cpp" line="8105"/>
+      <location filename="../../CommandConstraints.cpp" line="8427"/>
+      <location filename="../../CommandConstraints.cpp" line="8803"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>შეზღუდვები ეხებამხოლოდ რკალებს და წრეწირებს.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8918"/>
-      <location filename="../../CommandConstraints.cpp" line="9130"/>
+      <location filename="../../CommandConstraints.cpp" line="9099"/>
+      <location filename="../../CommandConstraints.cpp" line="9311"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>ესკიზიდან მონიშნეთ ერთი ან ორი ხაზი ან მონიშნეთ ორი წიბო და წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="257"/>
+      <location filename="../../CommandConstraints.cpp" line="256"/>
       <source>Parallel lines</source>
       <translation>პარალელური ხაზები</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="258"/>
+      <location filename="../../CommandConstraints.cpp" line="257"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>კუთხის შეზღუდვის დაყენება პარალელური ხაზებისთვის შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9065"/>
+      <location filename="../../CommandConstraints.cpp" line="9246"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>ღერძზე კუთხის შეზღუდვის დაწესება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9345"/>
+      <location filename="../../CommandConstraints.cpp" line="9526"/>
       <source>Select two edges from the sketch.</source>
       <translation>მონიშეთ ორი წიბო ესკიზიდან.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9377"/>
+      <location filename="../../CommandConstraints.cpp" line="9558"/>
       <source>Select two or more compatible edges.</source>
       <translation>მონიშნეთ ორი ან მეტი თავსებადი წიბო.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9384"/>
+      <location filename="../../CommandConstraints.cpp" line="9565"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>ესკიზის ღერძები არ შეიძლება გამოყენებულ იქნას თანასწორობის შეზღუდვაში.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9405"/>
+      <location filename="../../CommandConstraints.cpp" line="9586"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>B-სპლაინის წიბოსთვის თანასწორობა ჯერ მხარდაუჭერელია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2640"/>
-      <location filename="../../CommandConstraints.cpp" line="9438"/>
-      <location filename="../../CommandConstraints.cpp" line="9454"/>
-      <location filename="../../CommandConstraints.cpp" line="9509"/>
+      <location filename="../../CommandConstraints.cpp" line="2821"/>
+      <location filename="../../CommandConstraints.cpp" line="9619"/>
+      <location filename="../../CommandConstraints.cpp" line="9635"/>
+      <location filename="../../CommandConstraints.cpp" line="9690"/>
       <source>Select two or more edges of similar type.</source>
       <translation>მონიშნეთ ორი ან მეტი ერთნაირი ტიპის წიბო.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9593"/>
-      <location filename="../../CommandConstraints.cpp" line="9607"/>
-      <location filename="../../CommandConstraints.cpp" line="9663"/>
-      <location filename="../../CommandConstraints.cpp" line="9743"/>
-      <location filename="../../CommandConstraints.cpp" line="9841"/>
+      <location filename="../../CommandConstraints.cpp" line="9774"/>
+      <location filename="../../CommandConstraints.cpp" line="9788"/>
+      <location filename="../../CommandConstraints.cpp" line="9844"/>
+      <location filename="../../CommandConstraints.cpp" line="9924"/>
+      <location filename="../../CommandConstraints.cpp" line="10022"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>ესკიზზე მონიშნეთ ორი წერტილი და სიმეტრიის ხაზი, ან ორი წერტილი და სიმეტრიის წერტილი ან ხაზი და სიმეტრიის წერტილი.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9634"/>
-      <location filename="../../CommandConstraints.cpp" line="9817"/>
+      <location filename="../../CommandConstraints.cpp" line="9815"/>
+      <location filename="../../CommandConstraints.cpp" line="9998"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>არ შეიძლება სიმეტრიის შეზღუდვის დამატება ხაზსა და მის ბოლო წერტილებს შორის.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2799"/>
-      <location filename="../../CommandConstraints.cpp" line="2815"/>
-      <location filename="../../CommandConstraints.cpp" line="9693"/>
-      <location filename="../../CommandConstraints.cpp" line="9772"/>
+      <location filename="../../CommandConstraints.cpp" line="2980"/>
+      <location filename="../../CommandConstraints.cpp" line="2996"/>
+      <location filename="../../CommandConstraints.cpp" line="9874"/>
+      <location filename="../../CommandConstraints.cpp" line="9953"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>არ შეიძლება სიმეტრიის შეზღუდვის დამატება ხაზსა და მის ბოლო წერტილებს შორის!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9924"/>
+      <location filename="../../CommandConstraints.cpp" line="10123"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>მონიშნული ობიექტები არ წარმოადგენენ მხოლიდ გეომეტრიებს ერთი ესკიზიდან.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9966"/>
+      <location filename="../../CommandConstraints.cpp" line="10165"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>შეუძლებელია შეზღუდვის შექმნა მხოლოდ გარე გეომეტრიით.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9976"/>
+      <location filename="../../CommandConstraints.cpp" line="10175"/>
       <source>Incompatible geometry is selected.</source>
       <translation>არჩეულია შეუთავსებელი გეომეტრია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10129"/>
+      <location filename="../../CommandConstraints.cpp" line="10328"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>აირჩიეთ ერთი განზომილების შეზღუდვა ესკიზიდან.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10205"/>
-      <location filename="../../CommandConstraints.cpp" line="10217"/>
-      <location filename="../../CommandConstraints.cpp" line="10253"/>
-      <location filename="../../CommandConstraints.cpp" line="10328"/>
-      <location filename="../../CommandConstraints.cpp" line="10340"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="120"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="129"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
+      <location filename="../../CommandConstraints.cpp" line="10404"/>
+      <location filename="../../CommandConstraints.cpp" line="10416"/>
+      <location filename="../../CommandConstraints.cpp" line="10452"/>
+      <location filename="../../CommandConstraints.cpp" line="10527"/>
+      <location filename="../../CommandConstraints.cpp" line="10539"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="152"/>
       <source>Select constraints from the sketch.</source>
       <translation>აირჩიეთ შეზღუდვები ესკიზიდან.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="419"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="793"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="447"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="822"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-ის ბირთვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="167"/>
       <source>None of the selected elements is an edge.</source>
       <translation>არცერთი მონიშნული ელემენტი წიბო არაა.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="428"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="801"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="456"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="830"/>
       <source>Input Error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="439"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="574"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="467"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="602"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>არცერთი არჩეული ელემენტი არ არის B-სპლაინის კვანძი</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="918"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="991"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="947"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1020"/>
       <source>Selection is empty</source>
       <translation>მონიშნული ცარიელია</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="238"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="321"/>
       <source>At least one of the selected objects was not a B-spline and was ignored.</source>
       <translation>სულ ცოტა ერთი ობიექტი არ წარმოადგენდა B-სპლაინს და იგნორირებული იყო.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="408"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
       <source>The selection comprises more than one item. Select just one knot.</source>
       <translation type="unfinished">The selection comprises more than one item. Select just one knot.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="919"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="948"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation type="unfinished">Nothing is selected. Select a B-spline.</translation>
+      <translation>არაფერია მონიშნული. მონიშნეთ B-სპლაინი.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="937"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="966"/>
       <source>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</source>
       <translation type="unfinished">Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="992"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1021"/>
       <source>Nothing is selected. Select end points of curves.</source>
-      <translation type="unfinished">Nothing is selected. Select end points of curves.</translation>
+      <translation>არაფერი მოგინიშნავთ. მონიშნეთ მრუდების ბოლო წერტილები.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1019"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <source>Too many curves on point</source>
       <translation>წერტილზე მეტისმეტად ბევრიმრუდია</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1020"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1030"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1049"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1059"/>
       <source>Exactly two curves should end at the selected point to be able to join them.</source>
       <translation>იმისათვის, რომ შეგეძლოთ მათი შეერთება, აუცილებელია, ერთ წერტილში ზუსტად ორი მრუდი სრულდებოდეს.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1029"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1058"/>
       <source>Too few curves on point</source>
       <translation>წერტილზე მეტისმეტად ცოტა მრუდია</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1047"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1076"/>
       <source>Two end points, or coincident point should be selected.</source>
       <translation>არჩეული უნდა იყოს ორი ბოლო წერტილი ან დამთხვევის წერტილი.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="86"/>
+      <source>Wrong Selection</source>
+      <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="87"/>
       <location filename="../../CommandSketcherTools.cpp" line="370"/>
       <location filename="../../CommandSketcherTools.cpp" line="1014"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1943"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1953"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2227"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2237"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2349"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1341"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1351"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1945"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1955"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2229"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2239"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2351"/>
       <source>Select elements from a single sketch.</source>
       <translation>მონიშნეთ ელემენტები მხოლოდ ერთი ესკიზიდან.</translation>
     </message>
@@ -2064,45 +1941,45 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>მონიშნული უნდა იყოს ერთი შეზღუდვა მაინც</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2017"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1413"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2019"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>ასლი მოითხოვს მინიმუმ ერთ მონიშნულ არაგარე გეომეტრიულ ელემენტს</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2090"/>
-      <source>Delete all geometry</source>
+      <location filename="../../CommandSketcherTools.cpp" line="2092"/>
+      <source>Delete All Geometry</source>
       <translation>მთელი გეომეტრიის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2091"/>
-      <source>Delete all geometry and constraints?</source>
-      <translation type="unfinished">Delete all geometry and constraints?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
-      <source>Delete all constraints</source>
+      <location filename="../../CommandSketcherTools.cpp" line="2156"/>
+      <source>Delete All Constraints</source>
       <translation>ყველა შეზღუდვის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2155"/>
-      <source>Delete all the constraints in the sketch?</source>
-      <translation type="unfinished">Delete all the constraints in the sketch?</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2093"/>
+      <source>Delete all geometry and constraints?</source>
+      <translation>წავშალო ყველა გეომეტრია და შეზღუდვები?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2284"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2157"/>
+      <source>Delete all the constraints in the sketch?</source>
+      <translation>წავშალო ყველა შეზრუდვა ესკიზში?</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2286"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
       <translation>სწორების ღერძის წაშლას სულ ერთი მონიშნული არა-გარე გეომეტრიული ელემენტი სჭირდება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="628"/>
-      <location filename="../../TaskSketcherElements.cpp" line="675"/>
+      <location filename="../../TaskSketcherElements.cpp" line="627"/>
+      <location filename="../../TaskSketcherElements.cpp" line="674"/>
       <source>Unsupported visual layer operation</source>
       <translation>მხარდაუჭერელი ვიზუალური ფენის ოპერაცია</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="629"/>
-      <location filename="../../TaskSketcherElements.cpp" line="676"/>
+      <location filename="../../TaskSketcherElements.cpp" line="628"/>
+      <location filename="../../TaskSketcherElements.cpp" line="675"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>გარე გეომეტრიის სხვა ვიზუალურ ფენაზე გადატანა ამჟამად მხარდაჭერილი არაა. გარე გეომეტრია გამოტოვებული იქნება</translation>
     </message>
@@ -2110,42 +1987,42 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="78"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="79"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>ზუსტი ასლი წრიულ დამოკიდებულებას გამოიწვევს.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="81"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="82"/>
       <source>This object is in another document.</source>
       <translation>ეს ობიექტი სხვა დოკუმენტშია.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="84"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="85"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation>ობიექტი სხვა სხეულს ეკუთვნის. ჯვარედინი ბმის დასაშვებად გეჭიროთ ღილაკი Ctrl.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="89"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="90"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation>ეს ობიექტი ეკუთვნის სხვა სხეულს და შეიცავს გარე გეომეტრიას. ჯვარედინი ბმების აკრძალულია.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="93"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="94"/>
       <source>This object belongs to another part.</source>
       <translation>ეს ობიექტი სხვა ნაწილს ეკუთვნის.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="97"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="98"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>მონიშნული ესკიზი ამ ესკიზს პარალელური არაა. არაპარალელური ესკიზების დასაშვებად გეჭიროთ Ctrl+Alt.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="102"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="103"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>მონიშნული ესკიზის XY ღერძებს არ აქვთ იგივე მიმართულება, რაც ამ ესკიზს. დასაიგნორებლად დააჭირეთ და გეჭიროთ Ctrl+Alt.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="107"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="108"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>მონიშნული ესკიზის საწყისი წერტილი არაა სწორებული ამ ესკიზის საწყის წერტილზე. დასაიგნორებლად დააჭირეთ და გეჭიროთ Ctrl+Alt.</translation>
     </message>
@@ -2286,67 +2163,67 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="67"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="64"/>
       <source>Select Elements</source>
       <translation>აირჩიეთ ელემენტები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="563"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="561"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>მნიშვნელობის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="568"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="566"/>
       <source>Toggle Driving/Reference</source>
-      <translation type="unfinished">Toggle Driving/Reference</translation>
+      <translation>გადართვა წაყვანა/მიმართვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="572"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="570"/>
       <source>Deactivate</source>
       <translation>დეაქტივაცია</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="572"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="570"/>
       <source>Activate</source>
       <translation>გააქტიურება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="574"/>
       <source>Show Constraints</source>
-      <translation type="unfinished">Show Constraints</translation>
+      <translation>შეზღუდვების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="578"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
       <source>Hide Constraints</source>
-      <translation type="unfinished">Hide Constraints</translation>
+      <translation>შეზღუდვების დამალვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="593"/>
       <source>Center Sketch</source>
-      <translation type="unfinished">Center Sketch</translation>
+      <translation>ესკიზის დაცენტრება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="603"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="601"/>
       <source>Swap Constraint Names</source>
-      <translation type="unfinished">Swap Constraint Names</translation>
+      <translation>შეზღუდვის სახელების მიმოცვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="588"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="586"/>
       <source>Rename</source>
       <translation>გადარქმევა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="598"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="596"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="698"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
       <source>Unnamed constraint</source>
       <translation>უსახელო შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="699"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="697"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>მხოლოდ დასახელებული შეზღუდვების სახელები შეიძლება მიმოიცვალოს.</translation>
     </message>
@@ -2354,74 +2231,74 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="121"/>
+      <location filename="../../EditDatumDialog.cpp" line="119"/>
       <source>Insert Angle</source>
-      <translation type="unfinished">Insert Angle</translation>
+      <translation>ჩასმის კუთხე</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="123"/>
+      <location filename="../../EditDatumDialog.cpp" line="121"/>
       <source>Angle:</source>
       <translation>კუთხე:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="128"/>
+      <location filename="../../EditDatumDialog.cpp" line="126"/>
       <source>Insert Radius</source>
-      <translation type="unfinished">Insert Radius</translation>
+      <translation>რადიუსის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="135"/>
+      <location filename="../../EditDatumDialog.cpp" line="133"/>
       <source>Insert Diameter</source>
-      <translation type="unfinished">Insert Diameter</translation>
+      <translation>დიამეტრის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="142"/>
+      <location filename="../../EditDatumDialog.cpp" line="140"/>
       <source>Insert Weight</source>
-      <translation type="unfinished">Insert Weight</translation>
+      <translation>სიმძიმის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="148"/>
+      <location filename="../../EditDatumDialog.cpp" line="146"/>
       <source>Refractive Index Ratio</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>რეფრაქციის ინდექსის კოეფიციენტი</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="155"/>
+      <location filename="../../EditDatumDialog.cpp" line="153"/>
       <source>Insert Length</source>
-      <translation type="unfinished">Insert Length</translation>
+      <translation>სიგრძის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="130"/>
+      <location filename="../../EditDatumDialog.cpp" line="128"/>
       <source>Radius:</source>
       <translation>რადიუსი:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="137"/>
+      <location filename="../../EditDatumDialog.cpp" line="135"/>
       <source>Diameter:</source>
       <translation>დიამეტრი:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="143"/>
+      <location filename="../../EditDatumDialog.cpp" line="141"/>
       <source>Weight:</source>
       <translation>წონა:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="149"/>
+      <location filename="../../EditDatumDialog.cpp" line="147"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>N2/n1 ფარდობა:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="157"/>
+      <location filename="../../EditDatumDialog.cpp" line="155"/>
       <source>Length:</source>
       <translation>სიგრძე:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10005"/>
+      <location filename="../../CommandConstraints.cpp" line="10204"/>
       <source>Refractive Index Ratio</source>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>რეფრაქციის ინდექსის კოეფიციენტი</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10006"/>
+      <location filename="../../CommandConstraints.cpp" line="10205"/>
       <source>Ratio n2/n1:</source>
       <translation>N2/n1 ფარდობა:</translation>
     </message>
@@ -2429,72 +2306,72 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="336"/>
+      <location filename="../../TaskSketcherElements.cpp" line="335"/>
       <source>Normal</source>
       <translation>ნორმალური</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="337"/>
+      <location filename="../../TaskSketcherElements.cpp" line="336"/>
       <source>Construction</source>
       <translation>მშენებლობა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="338"/>
+      <location filename="../../TaskSketcherElements.cpp" line="337"/>
       <source>Internal</source>
       <translation>შიდა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="339"/>
+      <location filename="../../TaskSketcherElements.cpp" line="338"/>
       <source>External</source>
       <translation>გარე</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="340"/>
+      <location filename="../../TaskSketcherElements.cpp" line="339"/>
       <source>All types</source>
       <translation>ყველა ტიპი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="341"/>
+      <location filename="../../TaskSketcherElements.cpp" line="340"/>
       <source>Point</source>
       <translation>წერტილი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="342"/>
+      <location filename="../../TaskSketcherElements.cpp" line="341"/>
       <source>Line</source>
       <translation>ხაზი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="343"/>
+      <location filename="../../TaskSketcherElements.cpp" line="342"/>
       <source>Circle</source>
       <translation>წრე</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="344"/>
+      <location filename="../../TaskSketcherElements.cpp" line="343"/>
       <source>Ellipse</source>
       <translation>ოვალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="345"/>
+      <location filename="../../TaskSketcherElements.cpp" line="344"/>
       <source>Arc of circle</source>
       <translation>წრეწირის რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="346"/>
+      <location filename="../../TaskSketcherElements.cpp" line="345"/>
       <source>Arc of ellipse</source>
       <translation>ოვალის რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="347"/>
+      <location filename="../../TaskSketcherElements.cpp" line="346"/>
       <source>Arc of hyperbola</source>
       <translation>ჰიპერბოლის რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="348"/>
+      <location filename="../../TaskSketcherElements.cpp" line="347"/>
       <source>Arc of parabola</source>
       <translation>პარაბოლის რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="349"/>
+      <location filename="../../TaskSketcherElements.cpp" line="348"/>
       <source>B-spline</source>
       <translation>B-სპლაინი</translation>
     </message>
@@ -2502,142 +2379,142 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="64"/>
-      <source>Point Coincidence</source>
-      <translation>წერტილის დამთხვევა</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="66"/>
-      <source>Point on Object</source>
-      <translation>ობიექტზე მითითება</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="68"/>
+      <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Vertical Constraint</source>
       <translation>ვერტიკალური შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="70"/>
+      <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Horizontal Constraint</source>
       <translation>ჰორიზონტალურობის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="72"/>
+      <location filename="../../TaskSketcherElements.cpp" line="69"/>
       <source>Parallel Constraint</source>
       <translation>პარალელურობის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="74"/>
+      <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Perpendicular Constraint</source>
       <translation>მართკუთხა შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="76"/>
+      <location filename="../../TaskSketcherElements.cpp" line="73"/>
       <source>Tangent Constraint</source>
       <translation>მხების შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="82"/>
+      <location filename="../../TaskSketcherElements.cpp" line="79"/>
       <source>Block Constraint</source>
       <translation>შეზღუდვის დაბლოკვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="78"/>
+      <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>ტოლი შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="80"/>
+      <location filename="../../TaskSketcherElements.cpp" line="61"/>
+      <source>Coincident Constraint</source>
+      <translation>დამთხვევის შეზღუდვა</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="63"/>
+      <source>Point-On-Object Constraint</source>
+      <translation>ობიექტზე-მდებარე-წეერტილის შეზღუდვა</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>სიმეტრიული შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="84"/>
+      <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>მდებარეობის ჩაკეტვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="86"/>
+      <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>ჰორიზონტალური განზომილება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="88"/>
+      <location filename="../../TaskSketcherElements.cpp" line="85"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>ვერტიკალური განზომილება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="90"/>
-      <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="92"/>
+      <location filename="../../TaskSketcherElements.cpp" line="89"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>რადიუსის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="94"/>
+      <location filename="../../TaskSketcherElements.cpp" line="91"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>დიამეტრის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="96"/>
-      <source>Radius or Diameter Dimension</source>
-      <translation type="unfinished">Radius or Diameter Dimension</translation>
+      <location filename="../../TaskSketcherElements.cpp" line="87"/>
+      <source>Distance Dimension</source>
+      <translation>მანძილის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="98"/>
+      <location filename="../../TaskSketcherElements.cpp" line="93"/>
+      <source>Radius/Diameter Dimension</source>
+      <translation>რადიუსის/დიამეტრის განზომილება</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="95"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>კუთხის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="100"/>
-      <source>Construction Geometry</source>
-      <translation>კონსტრუქციის გეომეტრია</translation>
+      <location filename="../../TaskSketcherElements.cpp" line="97"/>
+      <source>Toggle Construction Geometry</source>
+      <translation>მშენებლობითი გეომეტრიის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="102"/>
+      <location filename="../../TaskSketcherElements.cpp" line="99"/>
       <source>Select Constraints</source>
       <translation>აირჩიეთ შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="104"/>
+      <location filename="../../TaskSketcherElements.cpp" line="101"/>
       <source>Select Origin</source>
       <translation>აირჩიეთ წყარო</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="106"/>
+      <location filename="../../TaskSketcherElements.cpp" line="103"/>
       <source>Select Horizontal Axis</source>
       <translation>აირჩიეთ ჰორიზონტალური ღერძი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="108"/>
+      <location filename="../../TaskSketcherElements.cpp" line="105"/>
       <source>Select Vertical Axis</source>
       <translation>ვერტიკალური ღერძის არჩევა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="808"/>
+      <location filename="../../TaskSketcherElements.cpp" line="807"/>
       <source>Layer</source>
       <translation>ფენა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="818"/>
+      <location filename="../../TaskSketcherElements.cpp" line="817"/>
       <source>Layer 0</source>
       <translation>ფენა 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="819"/>
+      <location filename="../../TaskSketcherElements.cpp" line="818"/>
       <source>Layer 1</source>
       <translation>ფენა 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="820"/>
+      <location filename="../../TaskSketcherElements.cpp" line="819"/>
       <source>Hidden</source>
       <translation>დამალული</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="825"/>
+      <location filename="../../TaskSketcherElements.cpp" line="824"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
@@ -2645,22 +2522,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="71"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="72"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>ამის მიბმა გამოიწევევს წრიულ დამოკიდებულებას.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="74"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="75"/>
       <source>This object is in another document.</source>
       <translation>ეს ობიექტი სხვა დოკუმენტშია.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="78"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="79"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>ეს ობიექტი სხვა სხეულს ეკუთვნის, მიბმა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="82"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="83"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>ეს ობიექტი სხვა ნაწილს ეკუთვნის, მიბმა შეუძლებელია.</translation>
     </message>
@@ -2670,12 +2547,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="23"/>
       <source>Insert Datum</source>
-      <translation type="unfinished">Insert Datum</translation>
+      <translation>სიდიდის ჩასმა</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="31"/>
       <source>Datum</source>
-      <translation type="unfinished">Datum</translation>
+      <translation>სიდიდე</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="48"/>
@@ -2701,8 +2578,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="132"/>
-      <location filename="../../PropertyConstraintListItem.cpp" line="189"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="130"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="187"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>
@@ -2713,7 +2590,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis or Point</source>
-      <translation type="unfinished">Select Mirror Axis or Point</translation>
+      <translation>აირჩიეთ ანარეკლი ღერძი ან წერტილი</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
@@ -2736,12 +2613,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>აირჩიეთ ორიენტაცია</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="20"/>
       <source>Sketch Orientation</source>
-      <translation type="unfinished">Sketch Orientation</translation>
+      <translation>ესკიზის ორიენტაცია</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
@@ -2779,7 +2656,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create Array</source>
-      <translation type="unfinished">Create Array</translation>
+      <translation>მასივის შექმნა</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
@@ -2834,7 +2711,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create Regular Polygon</source>
-      <translation type="unfinished">Create Regular Polygon</translation>
+      <translation>ჩვეულებრივი მრავალკუთხედის შექმნა</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -2863,17 +2740,12 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.ui" line="26"/>
-      <source>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</source>
-      <translation type="unfinished">Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</translation>
+      <translation>ამოცანის პანელის ვიჯეტები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
       <source>Dragging Performance</source>
-      <translation type="unfinished">Dragging Performance</translation>
+      <translation>გადათრევის წარმადობა</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="51"/>
@@ -2890,12 +2762,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="107"/>
       <source>Automatically removes newly added redundant constraints</source>
-      <translation type="unfinished">Automatically removes newly added redundant constraints</translation>
+      <translation>ავტომატურად წაშლის ახლადა დამატებულ დამატებით შეზღუდვებს</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="110"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>დამატებითი შეზღუდვების ავტომატური წაშლა</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="126"/>
@@ -2905,12 +2777,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
       <source>Esc key can leave sketch edit mode</source>
-      <translation type="unfinished">Esc key can leave sketch edit mode</translation>
+      <translation>ესკიზის ჩასწორების რეჟიმიდან გასასვლელად გამოიყენეთ Esc ღილაკი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>
       <source>Notify about automatic constraint substitutions</source>
-      <translation type="unfinished">Notify about automatic constraint substitutions</translation>
+      <translation>შეტყობინება ავტომატური შეზღუდვის ჩანაცვლების შესახებ</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="164"/>
@@ -2920,7 +2792,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="167"/>
       <source>Unify coincident and point-on-object constraints</source>
-      <translation type="unfinished">Unify coincident and point-on-object constraints</translation>
+      <translation>დამთხვევის და წერტილი-ობიექტზე შეზღუდვების გაერთიანება</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="183"/>
@@ -2930,7 +2802,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="186"/>
       <source>Unified tool for automatic horizontal/vertical constraints</source>
-      <translation type="unfinished">Unified tool for automatic horizontal/vertical constraints</translation>
+      <translation>გაერთიანებული ხელსაწყო ავტომატური ჰორიზონტალური/ვერტიკალური შეზღუდვებისთვის</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="202"/>
@@ -2945,30 +2817,40 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="224"/>
       <source>Always add external geometry as construction</source>
-      <translation type="unfinished">Always add external geometry as construction</translation>
+      <translation>გარე გეომეტრია ყოველთვის დაემატება მშენებლობის სახით</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="249"/>
+      <location filename="../../SketcherSettings.ui" line="240"/>
+      <source>Closed loops will automatically generate internal faces which are selectable to be used with other tools</source>
+      <translation type="unfinished">Closed loops will automatically generate internal faces which are selectable to be used with other tools</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="243"/>
+      <source>Generate internal faces</source>
+      <translation>შიდა ზედაპირების გენერაცია</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="265"/>
       <source>Dimension Constraint</source>
-      <translation type="unfinished">Dimension Constraint</translation>
+      <translation>განზომილების შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="276"/>
+      <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>განზომილების ხელსაწყოს დიამეტრის/რადიუსის რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="283"/>
+      <location filename="../../SketcherSettings.ui" line="299"/>
       <source>Dimensioning constraints</source>
-      <translation type="unfinished">Dimensioning constraints</translation>
+      <translation>განზომილების შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="290"/>
+      <location filename="../../SketcherSettings.ui" line="306"/>
       <source>Scale upon first constraint</source>
-      <translation type="unfinished">Scale upon first constraint</translation>
+      <translation>მასშტაბი პირველ შეზღუდვაზე</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="297"/>
+      <location filename="../../SketcherSettings.ui" line="313"/>
       <source>Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
@@ -2979,14 +2861,14 @@ Requires to re-enter edit mode to take effect.</source>
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="316"/>
+      <location filename="../../SketcherSettings.ui" line="332"/>
       <source>Tool Parameters</source>
-      <translation type="unfinished">Tool Parameters</translation>
+      <translation>ხელსაწყოს პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="322"/>
+      <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
-      <translation type="unfinished">On-view-parameters (OVP)</translation>
+      <translation>პარამეტრები-ხედზე (OVP)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="145"/>
@@ -2994,12 +2876,17 @@ Requires to re-enter edit mode to take effect.</source>
       <translation>შეგატყობინებთ შეზღუდვების ავტომატური ჩანაცვლების შესახებ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="205"/>
-      <source>Group the polyline and line commands</source>
-      <translation type="unfinished">Group the polyline and line commands</translation>
+      <location filename="../../SketcherSettings.ui" line="26"/>
+      <source>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</source>
+      <translation>აჩვენებს დამატებით სექციას 'დამატებითი ამომხსნელის მართვის ელემენტები' ამოცანების ხედში ამომხსნელის პარამეტრების მოსარგებად</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="265"/>
+      <location filename="../../SketcherSettings.ui" line="205"/>
+      <source>Group the polyline and line commands</source>
+      <translation>პოლიხაზის და ხაზის ბრძანებების დაჯგუფება</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="281"/>
       <source>Select the type of dimensioning constraints for your toolbar:
 'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 'Separated tools': Individual tools for each dimensioning constraint.
@@ -3012,7 +2899,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 ეს პარამეტრი მხოლოდ ხელსაწყოების პანელისთვისაა. რაც არ უნდა აირჩიოთ, ყველა ხელსაწყო, ასევე, ხელმისაწვდომია მენიუდან და მათი მალსახმობებით.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="255"/>
+      <location filename="../../SketcherSettings.ui" line="271"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
@@ -3023,7 +2910,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'რადიუსი': ხელსაწყო ორივე, რკალებისთვის და წრეწირებისთვის, რადიუსს გამოიყენებს.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="329"/>
+      <location filename="../../SketcherSettings.ui" line="345"/>
       <source>Choose a visibility mode for the On-View-Parameters:
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
@@ -3034,62 +2921,62 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'ყველა': ხილულია ორივე, განზომილების და პოზიციური ხედის-პარამეტრები. პოზიციურებია კურსორის (x,y) კოორდინატები. მაგალითად, წრეწირის ცენტრი.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="198"/>
+      <location filename="../../SketcherSettings.cpp" line="196"/>
       <source>Single tool</source>
       <translation>ერთი ხელსაწყო</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="199"/>
+      <location filename="../../SketcherSettings.cpp" line="197"/>
       <source>Separated tools</source>
       <translation>გაყოფილი ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="200"/>
+      <location filename="../../SketcherSettings.cpp" line="198"/>
       <source>Both</source>
       <translation>ორივე</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="218"/>
+      <location filename="../../SketcherSettings.cpp" line="216"/>
       <source>Auto</source>
       <translation>ავტო</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="219"/>
+      <location filename="../../SketcherSettings.cpp" line="217"/>
       <source>Diameter</source>
       <translation>დიამეტრი</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="220"/>
+      <location filename="../../SketcherSettings.cpp" line="218"/>
       <source>Radius</source>
       <translation>რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="231"/>
+      <location filename="../../SketcherSettings.cpp" line="229"/>
       <source>Always</source>
       <translation>ყოველთვის</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="232"/>
+      <location filename="../../SketcherSettings.cpp" line="230"/>
       <source>Never</source>
       <translation>არასდროს</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="233"/>
+      <location filename="../../SketcherSettings.cpp" line="231"/>
       <source>When no scale feature is visible</source>
-      <translation type="unfinished">When no scale feature is visible</translation>
+      <translation>როცა მასშტაბირების ფუნქცია ხილული არაა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="240"/>
+      <location filename="../../SketcherSettings.cpp" line="238"/>
       <source>None</source>
       <translation>არაფერი</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="241"/>
+      <location filename="../../SketcherSettings.cpp" line="239"/>
       <source>Dimensions only</source>
       <translation>მხოლოდ განზომილებები</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="242"/>
+      <location filename="../../SketcherSettings.cpp" line="240"/>
       <source>Position and dimensions</source>
       <translation>პოზიცია და განზომილებები</translation>
     </message>
@@ -3102,171 +2989,162 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <translation>ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="211"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="248"/>
       <source>Font size</source>
       <translation>ფონტის ზომა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="40"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="202"/>
       <source>px</source>
       <translation>პქს</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
       <source>View scale ratio</source>
       <translation>მასშტაბის კოეფიციენტის ნახვა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="188"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>საზომი ერთეულები შეზღუდვებში და კურსორის კოორდნატებში ნაჩვენები არ ქნება.
 გააჩნია ყველა საზომი ერთეულის მხარდაჭერა, გარდა "US საბაჟო" და "სამშენებლო აშშ/ევრო"-ის.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
       <source>Segments per geometry</source>
       <translation>გეომეტრიის სეგმენტების რიცხვი</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="262"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>ზომის შეზღუდვის შექმნისას მნიშვნელობის კითხვა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>გეომეტრიის შექმნის "გაგრძელების რეჟიმი"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>შეზღუდვების შექმნის "გაგრძელების რეჟიმი"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="192"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="229"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>მხარდაჭერილი ერთეული ერთეულებისთვის ბაზის სიგრძის ერთეულების დამალვა</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
       <source>Sketch Editing</source>
-      <translation type="unfinished">Sketch Editing</translation>
+      <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
+      <source>Pixel size used to render constraint symbols</source>
+      <translation>პიქსელის ზომა, რომელიც გამოყენებული იქნება შეზღუდვის სიმბოლოების რენდერისთვის</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
       <source>Scales the 3D view based on this factor</source>
-      <translation type="unfinished">Scales the 3D view based on this factor</translation>
+      <translation>გაადიდებს 3D ხედს ამ კოეფიციენტზე დამოკიდებულებით</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="109"/>
       <source>The number of polygons used for geometry approximation</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation</translation>
+      <translation>გეომეტრიის აპროქსიმაციისთვის გამოყენებული მრავალკუთხედების რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
-      <source>Displays names of dimensional constraints, if they exist</source>
-      <translation type="unfinished">Displays names of dimensional constraints, if they exist</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Show dimensional constraint name with format</source>
       <translation>ზომის შეზღუდვის ფორმატირებული სახელის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="121"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
       <source>%N = %V</source>
       <translation>%N = %V</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
       <translation type="unfinished">Keeps the current Sketcher tool active after creating geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="199"/>
       <source>Font size used for labels and constraints</source>
-      <translation type="unfinished">Font size used for labels and constraints</translation>
+      <translation>ჭდეებისთვის და შეზღუდვებისთვის გამოყენებული ფონტის ზომა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
       <translation type="unfinished">Keeps the current Sketcher constraint tool active after creating geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
-      <source>Displays cursor position coordinates next to the cursor while editing a sketch</source>
-      <translation type="unfinished">Displays cursor position coordinates next to the cursor while editing a sketch</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="243"/>
-      <source>Displays coordinates next to the cursor while editing</source>
-      <translation type="unfinished">Displays coordinates next to the cursor while editing</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
       <translation type="unfinished">Opens a dialog to input a value for new dimensional constraints after creation</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
       <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="324"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Visibility Automation</source>
-      <translation type="unfinished">Visibility Automation</translation>
+      <translation>ხილვადობის ავტომატიზაცია</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="330"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
       <source>Hides all object features that depend on the opened sketch</source>
-      <translation type="unfinished">Hides all object features that depend on the opened sketch</translation>
+      <translation>დამალავს ყველა ობიექტის თვისებას, რომელიც ღია ესკიზზეა დამოკიდებული</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation type="unfinished">Shows source objects which are used for external geometry in the opened sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="368"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
       <source>Shows objects the opened sketch is attached to</source>
-      <translation type="unfinished">Shows objects the opened sketch is attached to</translation>
+      <translation>აჩვენებს ობიექტებს, რომელზეც ღია ესკიზია მიმაგრებული</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="387"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
       <source>Restores the camera position after closing the sketch</source>
-      <translation type="unfinished">Restores the camera position after closing the sketch</translation>
+      <translation>აღადგენს კამერის პოზიციას ესკიზის დახურვის შემდეგ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="406"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation type="unfinished">Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="426"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
       <translation type="unfinished">Opens a sketch in section view mode, showing only objects behind the sketch plane</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="429"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
-      <translation type="unfinished">Open sketch in section view mode</translation>
+      <translation>ესკიზის გახსნა კვეთის ხედის რეჟიმში</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="470"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation type="unfinished">Applies current visibility automation settings to all sketches in the open documents</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="473"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
       <source>Apply to Existing Sketches</source>
-      <translation type="unfinished">Apply to Existing Sketches</translation>
+      <translation>გადატარება არსებულ ესკიზებზე</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="111"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
       <source>The format of the dimensional constraint string presentation.
 Defaults to: %N = %V
 
@@ -3279,37 +3157,57 @@ Defaults to: %N = %V
 %V - ზომის მნიშვნელობა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="281"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="27"/>
+      <source>Constraint symbol size</source>
+      <translation>შეზღუდვის სიმბოლოს ზომა</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="128"/>
+      <source>Shows names of dimensional constraints, if they exist</source>
+      <translation>აჩვენებს განზომილებების შეზღუდვის სახელებს, თუ ისინი არსებობს</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="277"/>
+      <source>Shows cursor position coordinates next to the cursor while editing a sketch</source>
+      <translation type="unfinished">Shows cursor position coordinates next to the cursor while editing a sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <source>Show coordinates next to the cursor while editing</source>
+      <translation>ჩასწორებისას კოორდინატების ჩვენება კურსორის შემდეგ</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>კურსორის კოორდინატებისთვის სისტემური წილადების პარამეტრის გამოყენება</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="333"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>ყველა ობიექტის, რომელიც ესკიზზეა დამოკიდებული, დამალვა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="352"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="389"/>
       <source>Show objects used for external geometry</source>
       <translation>გარე გეომეტრიისთვის გამოყენებული ობიექტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="371"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>ესკიზზე მიბმული ობიექტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Restore camera position after editing</source>
       <translation>კამერის პოზიციის აღდგენა ჩასწორების დასრულების შემდეგ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="410"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>ჩასწორების რეჟიში გადასვლისას ორთგრაფიული კამერის ავტომატური ჩართვა</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="451"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>შენიშვნა: ეს პარამეტრები წარმოადნენ ახალ ესკიზებზე გადატარებულ ნაგულისხმევ მნისვნელობებს. ეს ქცევა ცალცალკეა დამახსოვრებული ესკიზის ხედის ჩანართის თვისებებში.</translation>
     </message>
@@ -3327,55 +3225,55 @@ Defaults to: %N = %V
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="178"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="175"/>
       <source>No missing coincidences</source>
       <translation>ნაკლული შეერთებები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="179"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="176"/>
       <source>No missing coincidences found</source>
       <translation>ნაკლული შეერთებები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="187"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="184"/>
       <source>Missing coincidences</source>
       <translation>გამოტოვებული დამთხვევები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="188"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="185"/>
       <source>%1 missing coincidences found</source>
       <translation>ნაპოვნია %1 ნაკლული შეერთება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="239"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="236"/>
       <source>No invalid constraints</source>
       <translation>არასწორი შეზღუდვები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="240"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="237"/>
       <source>No invalid constraints found</source>
       <translation>არასწორი შეზღუდვები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="246"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="243"/>
       <source>Invalid constraints</source>
       <translation>არასწორი შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="247"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="244"/>
       <source>Invalid constraints found</source>
       <translation>ნაპოვნია არასწორი შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="288"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="303"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="314"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="331"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="285"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="300"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="311"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="328"/>
       <source>Reversed external geometry</source>
       <translation>გადმობრუნებული გარე გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="289"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="286"/>
       <source>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
 
 %2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
@@ -3388,7 +3286,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="304"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="301"/>
       <source>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
@@ -3397,64 +3295,68 @@ However, no constraints linking to the endpoints were found.</source>
 However, no constraints linking to the endpoints were found.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="315"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="312"/>
       <source>No reversed external geometry arcs were found.</source>
-      <translation type="unfinished">No reversed external geometry arcs were found.</translation>
+      <translation>შებრუნებული გარე გეომეტრიის რკალის პოვნა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
-      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</translation>
+      <location filename="../../TaskSketcherValidation.cpp" line="388"/>
+      <source>Delete Constraints to External Geometry</source>
+      <translation>გარე გეომესტრიის შეზღუდვების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
-      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="392"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="389"/>
       <source>This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</source>
       <translation type="unfinished">This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="332"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="329"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
       <translation>შემობრუნებული რკალების ბოლო წერტილების დამაკავშირებელ შეზღუდვებზე %1 ცვლილება განხორციელდა.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="352"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="373"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="349"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="370"/>
       <source>Constraint orientation locking</source>
       <translation>შეზღუდვის ორიენტაციის ჩაკეტვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="410"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="350"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</source>
+      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="371"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="407"/>
       <source>Delete constraints to external geom.</source>
       <translation>გარე გეომეტრის შეზღუდვების წაშლა.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="411"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="408"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>გარე გეომეტრიასთან დაკავშირებული ყველა შეზღუდვა წაშლილია.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="480"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="477"/>
       <source>No degenerated geometry</source>
       <translation>დეგენერატიული გეომეტრია ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="481"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="478"/>
       <source>No degenerated geometry found</source>
       <translation>დეგენერატიული გეომეტრია ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="487"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="484"/>
       <source>Degenerated geometry</source>
       <translation>დეგენერირებული გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="488"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="485"/>
       <source>%1 degenerated geometry found</source>
       <translation>ნაპოვნია %1 დეგენერატიული გეომეტრია</translation>
     </message>
@@ -3464,12 +3366,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Toggles the chosen constraint filters</source>
-      <translation type="unfinished">Toggles the chosen constraint filters</translation>
+      <translation>გადართავს არჩეული შეზღუდვის ფილტრებს</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Filters constraints by type</source>
-      <translation type="unfinished">Filters constraints by type</translation>
+      <translation>ფილტრავს შეზღუდვებს ტიპით</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
@@ -3487,44 +3389,50 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>მორგება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="823"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="821"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="849"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="847"/>
       <source>Auto constraints</source>
       <translation>ავტომატური შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="848"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>დამატებითი შეზღუდვების ავტომატური წაშლა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="851"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="849"/>
       <source>Display only filtered constraints</source>
-      <translation type="unfinished">Display only filtered constraints</translation>
+      <translation>მხოლოდ გაფილტრული შეზღუდვების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="852"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
       <source>Extended information (in widget)</source>
       <translation>დამატებითი ინფორმაცია (ვიჯეტში)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="853"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="851"/>
       <source>Hide internal alignment (in widget)</source>
       <translation>შიდა სწორების დამალვა (ვიჯეტში)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1536"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1570"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1536"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>ხილვადობის ტრეკინგის განახლება შეუძლებელია:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1570"/>
+      <source>Impossible to update visibility:</source>
+      <translation>ხილვადობის განახლება შეუძლებელია:</translation>
     </message>
   </context>
   <context>
@@ -3532,12 +3440,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Toggles the chosen element filters</source>
-      <translation type="unfinished">Toggles the chosen element filters</translation>
+      <translation>გადართავს არჩეული ელემენტის ფილტრებს</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Filters elements by type</source>
-      <translation type="unfinished">Filters elements by type</translation>
+      <translation>ფილტრავს ელემენტებს ტიპით</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
@@ -3550,132 +3458,132 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>გამართვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1893"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1900"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1907"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1914"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1921"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1928"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1935"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1903"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1910"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1917"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1952"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1959"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
       <source>Construction</source>
       <translation>კონსტრუქცია</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1211"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1223"/>
       <source>Elements</source>
       <translation>ელემენტები</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1889"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2025"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2026"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1906"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2043"/>
       <source>Point</source>
       <translation>წერტილი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1949"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1904"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1911"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1918"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1925"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1932"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1939"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1946"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1960"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1966"/>
       <source>Internal</source>
       <translation>შიდა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1896"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2028"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2029"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1913"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2045"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
       <source>Line</source>
       <translation>ხაზი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1903"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2032"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1920"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2048"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
       <source>Arc</source>
       <translation>რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1910"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2035"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1927"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2051"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
       <source>Circle</source>
       <translation>წრე</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1917"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1934"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
       <source>Ellipse</source>
       <translation>ოვალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2041"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
       <source>Elliptical Arc</source>
       <translation>ელიფსის რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2059"/>
       <source>Elliptical arc</source>
-      <translation type="unfinished">Elliptical arc</translation>
+      <translation>ელიფსური რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2045"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2062"/>
       <source>Hyperbolic Arc</source>
       <translation>ჰიპერბოლური რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2063"/>
       <source>Hyperbolic arc</source>
-      <translation type="unfinished">Hyperbolic arc</translation>
+      <translation>ჰიპერბოლური რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2066"/>
       <source>Parabolic Arc</source>
       <translation>პარაბოლური რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1955"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2067"/>
       <source>Parabolic arc</source>
-      <translation type="unfinished">Parabolic arc</translation>
+      <translation>პარაბოლური რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2053"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1957"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1962"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2069"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2070"/>
       <source>B-spline</source>
       <translation>B-სპლაინი</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1946"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1963"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2071"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2072"/>
       <source>Other</source>
       <translation>სხვა</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2095"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2112"/>
       <source>Extended information</source>
       <translation>მეტი ინფორმაცია</translation>
     </message>
@@ -3683,44 +3591,44 @@ However, no constraints linking to the endpoints were found.</translation>
   <context>
     <name>SketcherGui::TaskSketcherMessages</name>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="119"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="116"/>
       <source>Executes a recomputation of active document after every sketch action</source>
       <translation>ახორციელებს აქტიური დოკუმენტის ხელახალი გამოთვლას ესკიზის ყოველი მოქმედების შემდეგ</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="65"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="62"/>
       <source>Click to select these conflicting constraints.</source>
       <translation>დააწკაპუნეთ კონფლიქტური შეზღუდვების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="46"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="43"/>
       <source>Sketch Edit</source>
-      <translation type="unfinished">Sketch Edit</translation>
+      <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="68"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="65"/>
       <source>Click to select these redundant constraints.</source>
       <translation>დააწკაპუნეთ დამატებითი შეზღუდვების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="71"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="68"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select these unconstrained elements.</source>
       <translation>ესკიზს გააჩნია შეუზღუდავი ობიექტები, როლებიც თავისუფლების დონეებს ბადებს. დააწკაპუნეთ შეუზღუდავი ელემენტების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="75"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="72"/>
       <source>Click to select these malformed constraints.</source>
       <translation>დააწკაპუნეთ არასწორად ჩამოყალიბებული შეზღუდვების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="79"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="76"/>
       <source>Some constraints in combination are partially redundant. Click to select these partially redundant constraints.</source>
       <translation>ზოგიერთი შეზღუდვა კომბინაციაში ნაწილობრივ დამატებითია. დააწკაპუნეთ ნაწილობრივ დამატებითი შეზღუდვების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="118"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="115"/>
       <source>Auto-update</source>
-      <translation type="unfinished">Auto-update</translation>
+      <translation>ავტომატური განახლება</translation>
     </message>
   </context>
   <context>
@@ -3728,12 +3636,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketch Validation</source>
-      <translation type="unfinished">Sketch Validation</translation>
+      <translation>ესკიზის შემოწმება</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and Non-Manifold Vertices</source>
-      <translation type="unfinished">Open and Non-Manifold Vertices</translation>
+      <translation>ღია და არა ერთგვაროვანი წვეროები</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
@@ -3743,7 +3651,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="41"/>
       <source>Highlight Troublesome Vertices</source>
-      <translation type="unfinished">Highlight Troublesome Vertices</translation>
+      <translation>პრობლემული წვეროების გამოკვეთა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="51"/>
@@ -3753,7 +3661,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="54"/>
       <source>Missing Coincidences</source>
-      <translation type="unfinished">Missing Coincidences</translation>
+      <translation>ნაკლული დამთხვევები</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="60"/>
@@ -3768,7 +3676,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="74"/>
       <source>Ignores construction geometry in the search</source>
-      <translation type="unfinished">Ignores construction geometry in the search</translation>
+      <translation>გამოტოვებს კონსტრუქციის გეომეტრიას ძებნისას</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="77"/>
@@ -3800,32 +3708,32 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="108"/>
       <source>Invalid Constraints</source>
-      <translation type="unfinished">Invalid Constraints</translation>
+      <translation>არასწორი შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="137"/>
       <source>Delete Constraints Linked to External Geometry</source>
-      <translation type="unfinished">Delete Constraints Linked to External Geometry</translation>
+      <translation>გარე გეომესტრიასტან მიბმული შეზღუდვების წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="147"/>
       <source>Degenerate Geometry</source>
-      <translation type="unfinished">Degenerate Geometry</translation>
+      <translation>გეომეტრიის დეგენერაცია</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="176"/>
       <source>Reversed External Geometry</source>
-      <translation type="unfinished">Reversed External Geometry</translation>
+      <translation>შებრუნებული გარე გეომეტრია</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="195"/>
       <source>Swap Endpoints in Constraints</source>
-      <translation type="unfinished">Swap Endpoints in Constraints</translation>
+      <translation>შეზღუდვების ბოლო წერტილების მიმოცვლა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
       <source>Constraint Orientation Locking</source>
-      <translation type="unfinished">Constraint Orientation Locking</translation>
+      <translation>შეზღუდვის ორიენტაციის ჩაკეტვა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="114"/>
@@ -3886,120 +3794,120 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3317"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3038"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3339"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>ესკიზი არასწორია. მისი ჩასწორება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3497"/>
       <source>The following constraint is partially redundant:</source>
       <translation>ეს შეზღუდვა ნაწილობრივ დამატებითია:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3498"/>
       <source>The following constraints are partially redundant:</source>
       <translation>ეს შეზღუდვები ნაწილობრივ დამატებითია:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2999"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3300"/>
       <source>Edit Sketch</source>
-      <translation type="unfinished">Edit Sketch</translation>
+      <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3017"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3318"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>დავხურო ეს დიალოგი?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3036"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3337"/>
       <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
+      <translation>არასწორი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3338"/>
       <source>Open the sketch validation tool?</source>
-      <translation type="unfinished">Open the sketch validation tool?</translation>
+      <translation>გავხსნა ესკიზის შემოწმების ხელსაწყო?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3483"/>
       <source>Remove the following constraint:</source>
-      <translation type="unfinished">Remove the following constraint:</translation>
+      <translation>წაიშლება შემდეგი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3484"/>
       <source>Remove at least one of the following constraints:</source>
-      <translation type="unfinished">Remove at least one of the following constraints:</translation>
+      <translation>მოიღეთ, მინიმუმ, ერთ-ერთი შემდეგი შეზღუდვა:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3490"/>
       <source>Remove the following redundant constraint:</source>
-      <translation type="unfinished">Remove the following redundant constraint:</translation>
+      <translation>წაშალეთ შემდეგი დამატებითი შეზღუდვა:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3491"/>
       <source>Remove the following redundant constraints:</source>
-      <translation type="unfinished">Remove the following redundant constraints:</translation>
+      <translation>წაშალეთ შემდეგი დამატებითი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3203"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3504"/>
       <source>Remove the following malformed constraint:</source>
-      <translation type="unfinished">Remove the following malformed constraint:</translation>
+      <translation>წაშალეთ შემდეგი დეფორმირებული შეზღუდვა:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3204"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3505"/>
       <source>Remove the following malformed constraints:</source>
-      <translation type="unfinished">Remove the following malformed constraints:</translation>
+      <translation>წაშალეთ შემდეგი დეფორმირებული შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3262"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3564"/>
       <source>Empty sketch</source>
       <translation>ცარიელი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3569"/>
       <source>Over-constrained:</source>
       <translation>ზედმეტად-შეზღუდული:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3575"/>
       <source>Malformed constraints:</source>
       <translation>არასწორად შექმნილი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3281"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3583"/>
       <source>Redundant constraints:</source>
       <translation>დამატებითი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3589"/>
       <source>Partially redundant:</source>
       <translation>ნაწილობრივ დამატებითი:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3294"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3596"/>
       <source>Solver failed to converge</source>
       <translation>ამომხსნელის შეცდომა შეერთების დროს</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3300"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
       <source>Under-constrained:</source>
       <translation>საკმარისზე ნაკლებად შეზღუდული:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3302"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3604"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n თავისუფლების ხარისხი</numerusform>
+        <numerusform>%n თავისუფლების ხარისხი</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3306"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3608"/>
       <source>Fully constrained</source>
       <translation>სრულად შეზღუდული</translation>
     </message>
@@ -4007,8 +3915,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="711"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="714"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="739"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="742"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>B-სპლაინის მონიშნული კვანძის სიმრავლის შემცირება</translation>
     </message>
@@ -4016,8 +3924,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="702"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="705"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="730"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="733"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>B-სპლაინის მონიშნული კვანძის სიმრავლის გაზრდა</translation>
     </message>
@@ -4025,8 +3933,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1689"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1692"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1690"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1693"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>ქმნის გეომეტრიის ასლს, საბაზისოდ ბოლოს მონიშნული წერტილით</translation>
     </message>
@@ -4034,17 +3942,17 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1688"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1689"/>
       <source>Clone</source>
       <translation>ასლი</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1696"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1697"/>
       <source>Copy</source>
       <translation>კოპირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1704"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1705"/>
       <source>Move</source>
       <translation>გადატანა</translation>
     </message>
@@ -4052,8 +3960,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8816"/>
-      <location filename="../../CommandConstraints.cpp" line="8818"/>
+      <location filename="../../CommandConstraints.cpp" line="8997"/>
+      <location filename="../../CommandConstraints.cpp" line="8999"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>წრის ან რკალის რადიუსის გასწორება</translation>
     </message>
@@ -4061,23 +3969,10 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1697"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1700"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1698"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1701"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>ქმნის გეომეტრიის მარტივ ასლს, საბაზისოდ ბოლოს მონიშნული წერტილით</translation>
-    </message>
-  </context>
-  <context>
-    <name>Sketcher_CreateBSpline</name>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="889"/>
-      <source>By control points</source>
-      <translation>საკონტროლო წერტილებით</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="890"/>
-      <source>By knots</source>
-      <translation>კვანძით</translation>
     </message>
   </context>
   <context>
@@ -4096,74 +3991,74 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="622"/>
       <source>No sketch found</source>
       <translation>ესკიზი ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>ესკიზს თავის თავს ვერ მიაბამთ!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>The document does not contain a sketch</source>
-      <translation type="unfinished">The document does not contain a sketch</translation>
+      <translation>დოკუმენტი ესკიზს არ შეიცავს</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="641"/>
+      <source>Select Sketch</source>
+      <translation>აირჩიეთ ესკიზი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
-      <source>Select sketch</source>
-      <translation>ესკიზის არჩევა</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="645"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>აირჩიეთ ესკიზი (ზოგიერთი ესკიზი, წრიული დამოკიდებულებების თავიდან ასაცილებლად, ნაჩვენები არაა)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="645"/>
       <source>Select a sketch from the list</source>
       <translation>აირჩიეთ ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="712"/>
+      <location filename="../../Command.cpp" line="710"/>
       <source> (incompatible with selection)</source>
       <translation> (შეუთავსებელია მონიშნულთან)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="711"/>
       <source> (current)</source>
       <translation> (მიმდინარე)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="721"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source> (suggested)</source>
       <translation> (შეთავაზებული)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="728"/>
-      <source>Sketch attachment</source>
-      <translation>ჩადებული ესკიზი</translation>
+      <location filename="../../Command.cpp" line="726"/>
+      <source>Sketch Attachment</source>
+      <translation>ესკიზის მიმაგრებები</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="728"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>მიმაგრების მიმდინარე რეჟიმი შეუთავსებელია ახალ მონიშნულთან.
 აირჩიეთ ესკიზის მონიშნულ ობიექტზე მიმაგრების მეთოდი.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="732"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>აირჩიეთ ესკიზის მონიშნულ ობიექტებზე დამაგრების მეთოდი.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>Map sketch</source>
       <translation>ესკიზის რუკა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="779"/>
+      <location filename="../../Command.cpp" line="777"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>ესკიზის საყრდენზე მიბმა შეუძლებელია:
@@ -4173,8 +4068,8 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1705"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1707"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1706"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1708"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>გეომეტრიების გადატანა ორიენტირად ბოლოს მონიშნული წერტილის გამოყენებით</translation>
     </message>
@@ -4182,12 +4077,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
-      <source>Sketch attachment</source>
-      <translation>ჩადებული ესკიზი</translation>
+      <location filename="../../Command.cpp" line="212"/>
+      <source>Sketch Attachment</source>
+      <translation>ესკიზის მიმაგრებები</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>აირჩიეთ ესკიზის მონიშნულ ობიექტზე დამაგრების მეთოდი</translation>
     </message>
@@ -4195,12 +4090,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <source>Sketch has support</source>
-      <translation>ესკიზს აქვს საფუძველი</translation>
+      <location filename="../../Command.cpp" line="455"/>
+      <source>Sketch Has Support</source>
+      <translation>ესკიზს აქვს საყრდენი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="456"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation type="unfinished">Sketch with a support face cannot be reoriented.
@@ -4282,7 +4177,7 @@ to determine whether a solution converges or not</source>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="22"/>
       <source>Default algorithm used for solving the sketch</source>
-      <translation type="unfinished">Default algorithm used for solving the sketch</translation>
+      <translation>ნაგულისხმევი ალგორითმი ესკიზის ამოსახსნელად</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
@@ -4301,22 +4196,22 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="72"/>
       <source>DogLeg Gauss step</source>
-      <translation type="unfinished">DogLeg Gauss step</translation>
+      <translation>მახვილი კუთხის გაუსის ბიჯი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
       <source>Maximum iterations</source>
-      <translation type="unfinished">Maximum iterations</translation>
+      <translation>იტერაციების მაქსიმუმი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
       <source>Scales the maximum iteration count based on the sketch size</source>
-      <translation type="unfinished">Scales the maximum iteration count based on the sketch size</translation>
+      <translation>მოახდენს მაქსიმალური იტერაციების რაოდენობას ესკიზის ზომაზე დაფუძნებით</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="153"/>
       <source>Sketch size multiplier</source>
-      <translation type="unfinished">Sketch size multiplier</translation>
+      <translation>ესკიზის მასშტაბის მამრავლი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="166"/>
@@ -4326,12 +4221,12 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="192"/>
       <source>Convergence</source>
-      <translation type="unfinished">Convergence</translation>
+      <translation>კონვერგენცია</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm</source>
-      <translation type="unfinished">QR algorithm</translation>
+      <translation>QR ალგორითმი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
@@ -4370,12 +4265,12 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="370"/>
       <source>Solving algorithm used to detect redundant constraints</source>
-      <translation type="unfinished">Solving algorithm used to detect redundant constraints</translation>
+      <translation>დამატებითი შეზღუდვების აღმოსაჩენად გამოყენებული ამოხსნის ალგორითმი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
       <source>Redundant solver</source>
-      <translation type="unfinished">Redundant solver</translation>
+      <translation>სიჭარბის ამომხსნელი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
@@ -4385,7 +4280,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
       <source>Maximum redundant solver iterations</source>
-      <translation type="unfinished">Maximum redundant solver iterations</translation>
+      <translation>მაქსიმალური დამატებითი ამომხსნელის იტერაციები</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
@@ -4395,17 +4290,17 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
       <source>Redundant sketch size multiplier</source>
-      <translation type="unfinished">Redundant sketch size multiplier</translation>
+      <translation>ესკიზის ზომის დამატებითი მამრავლი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="592"/>
       <source>Console debug mode</source>
-      <translation type="unfinished">Console debug mode</translation>
+      <translation>კონსოლის გამართვის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration level</source>
-      <translation type="unfinished">Iteration level</translation>
+      <translation>იტერაციის დონე</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
@@ -4481,7 +4376,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3246"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3547"/>
       <source>and %1 more</source>
       <translation>და %1 სხვა</translation>
     </message>
@@ -4489,59 +4384,59 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>P&amp;rofiles</source>
       <translation>&amp;პროფილები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>S&amp;ketch</source>
       <translation>მო&amp;ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Sketcher</source>
       <translation>ესკიზმქმნელი</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Edit Mode</source>
-      <translation type="unfinished">Edit Mode</translation>
+      <translation>ჩასწორების რეჟიმი</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
+      <source>Geometries</source>
+      <translation>გეომეტრიები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
-      <source>Geometries</source>
-      <translation type="unfinished">Geometries</translation>
+      <source>Constraints</source>
+      <translation>შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
-      <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <source>Sketcher Helpers</source>
+      <translation>ესკიზის დამხმარეები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
-      <source>Sketcher Helpers</source>
-      <translation type="unfinished">Sketcher Helpers</translation>
+      <source>B-Spline Tools</source>
+      <translation>B-სპლაინის ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
-      <source>B-Spline Tools</source>
-      <translation type="unfinished">B-Spline Tools</translation>
+      <source>Visual Tools</source>
+      <translation>ვიზუალური ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
-      <source>Visual Tools</source>
-      <translation type="unfinished">Visual Tools</translation>
+      <source>Virtual Space</source>
+      <translation>ვირტუალური სივრცე</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
-      <source>Virtual Space</source>
-      <translation type="unfinished">Virtual Space</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
-      <translation type="unfinished">Sketcher Edit Tools</translation>
+      <translation>ესკიზის ჩასწორების ხელსაწყოები</translation>
     </message>
   </context>
   <context>
@@ -4584,12 +4479,12 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid Settings</source>
-      <translation type="unfinished">Grid Settings</translation>
+      <translation>ბადის მორგება</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
       <source>Displays a grid in the active sketch</source>
-      <translation type="unfinished">Displays a grid in the active sketch</translation>
+      <translation>აჩვენებს ბადეს აქტიურ ესკიზში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
@@ -4599,7 +4494,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid auto-spacing</source>
-      <translation type="unfinished">Grid auto-spacing</translation>
+      <translation>ბადის ავტომატური ბიჯი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
@@ -4618,17 +4513,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="154"/>
       <source>Grid Display</source>
-      <translation type="unfinished">Grid Display</translation>
+      <translation>ბადის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="166"/>
       <source>Minor Grid Lines</source>
-      <translation type="unfinished">Minor Grid Lines</translation>
+      <translation>დამხმარე ბადის ხაზები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="188"/>
       <source>Line pattern used for grid lines</source>
-      <translation type="unfinished">Line pattern used for grid lines</translation>
+      <translation>ბადის ხაზების შაბლონი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
@@ -4650,12 +4545,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="272"/>
       <source>Major Grid Lines</source>
-      <translation type="unfinished">Major Grid Lines</translation>
+      <translation>ძირითადი ბადის ხაზები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="284"/>
       <source>Major grid line interval</source>
-      <translation type="unfinished">Major grid line interval</translation>
+      <translation>ძირითადი ბადის ხაზის ინტერვალი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="294"/>
@@ -4665,7 +4560,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="326"/>
       <source>Line pattern used for grid division</source>
-      <translation type="unfinished">Line pattern used for grid division</translation>
+      <translation>ბადის გასაყოფად გამოყენებული ხაზის შაბლონი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="346"/>
@@ -4676,83 +4571,83 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="591"/>
+      <location filename="../../../App/SketchObject.cpp" line="587"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>ესკიზი არასწორ შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="597"/>
+      <location filename="../../../App/SketchObject.cpp" line="593"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>ესკიზი ნაწილობრივ დამატებით შეზღუდვებს შეიცავს!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9958"/>
+      <location filename="../../../App/SketchObject.cpp" line="10021"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>გეომეტრიის თვისების უმართავი ცვლილება არასწორი შეზღუდვის ინდექსების გაჩენას იწყვევს</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9989"/>
+      <location filename="../../../App/SketchObject.cpp" line="10052"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>შეზღუდვის თვისების უმართავი ცვლილება არასწორი შეზღუდვის ინდექსების გაჩენას იწყვევს</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10612"/>
+      <location filename="../../../App/SketchObject.cpp" line="10675"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>პარაბოლები მიგრირებულია. მიგრირებული ფაილები FreeCAD-ის წინა ვერსიებში არ გაიხსნება!!
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1289"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1868"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2305"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="325"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="333"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="210"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="649"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="719"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="337"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="203"/>
       <location filename="../../DrawSketchHandlerLine.h" line="138"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="469"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="159"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="165"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="327"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="473"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="503"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="140"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="258"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="256"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="335"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="131"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="187"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1290"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2307"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="338"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2106"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2108"/>
       <source>Failed to delete all geometry</source>
       <translation>ყველა გეომეტრიის წაშლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2171"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2173"/>
       <source>Failed to delete all constraints</source>
       <translation>ყველა შეზღუდვის წაშლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2391"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2393"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
       <translation>მონიშნულის გეომეტრიები არასწორია. B-სპლაინები და წერტილები ჯერ მხარდაჭერილი არაა.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="140"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2390"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2392"/>
       <source>Invalid selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
@@ -4762,51 +4657,51 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>მონიშნულს სწორი გეომეტრიები არ გააჩნია.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="418"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>შეზღუდვას ინდექსის ინფორმაცია არასწორია და ის მიუღებელია.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="434"/>
-      <location filename="../../CommandConstraints.cpp" line="514"/>
-      <location filename="../../CommandConstraints.cpp" line="611"/>
-      <location filename="../../CommandConstraints.cpp" line="701"/>
-      <location filename="../../CommandConstraints.cpp" line="6412"/>
-      <location filename="../../CommandConstraints.cpp" line="6616"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="829"/>
+      <location filename="../../CommandConstraints.cpp" line="433"/>
+      <location filename="../../CommandConstraints.cpp" line="513"/>
+      <location filename="../../CommandConstraints.cpp" line="610"/>
+      <location filename="../../CommandConstraints.cpp" line="700"/>
+      <location filename="../../CommandConstraints.cpp" line="6593"/>
+      <location filename="../../CommandConstraints.cpp" line="6797"/>
       <location filename="../../CommandSketcherTools.cpp" line="1077"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="629"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="858"/>
       <source>Invalid Constraint</source>
       <translation>არასწორი შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="775"/>
+      <location filename="../../CommandConstraints.cpp" line="774"/>
       <source>Invalid constraint</source>
-      <translation type="unfinished">Invalid constraint</translation>
+      <translation>არასწორი შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="501"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="504"/>
       <source>Failed to add arc</source>
       <translation>რკალის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="326"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="328"/>
       <source>Failed to add arc of ellipse</source>
       <translation>ოვალის რკალის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="255"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="257"/>
       <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
       <translation>არასწორი კუთხეებიდან ჰიპერბოლის რკალის შექმნა შეუძლებელია. თავიდან სცადეთ!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="334"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="336"/>
       <source>Cannot create arc of hyperbola</source>
       <translation>ჰიპერბოლის რკალის შექმნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="257"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
       <source>Cannot create arc of parabola</source>
       <translation>პარაბოლის რკალის შექმნის შეცდომა</translation>
     </message>
@@ -4816,17 +4711,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>B-სპლაინის შექმნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="650"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="662"/>
       <source>Error deleting last pole/knot</source>
       <translation>ბოლო პოლუსის/კვანძის წაშლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="720"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="732"/>
       <source>Error adding B-spline pole/knot</source>
       <translation>B-სპლაინის პოლუსის/კვანძის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="189"/>
       <source>Failed to add carbon copy</source>
       <translation>ზუსტი ასლის დამატების შეცდომა</translation>
     </message>
@@ -4836,12 +4731,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>წრეწირის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="338"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="339"/>
       <source>Failed to extend edge</source>
       <translation>წიბოს გაფართოების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="205"/>
       <source>Failed to add external geometry</source>
       <translation>გარე გეომეტრის დამატების შეცდომა</translation>
     </message>
@@ -4852,23 +4747,23 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="139"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="471"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="474"/>
       <source>Failed to add line</source>
       <translation>ხაზის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="298"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
       <location filename="../../DrawSketchHandlerLine.h" line="143"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="474"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="164"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="128"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="191"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="136"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="298"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
       <source>Tool execution aborted</source>
       <translation>ხელსაწყოს შესრულება შეწყდა</translation>
     </message>
@@ -4883,59 +4778,69 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>მრავალკუთხედის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="470"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
       <source>Failed to add box</source>
       <translation>ჩარჩოს დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="187"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
       <source>Failed to add slot</source>
       <translation>სლოტის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="167"/>
       <source>Failed to add edge</source>
       <translation>წიბოს დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="189"/>
       <source>Failed to trim edge</source>
       <translation>წიბოს წაკვეთის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="65"/>
-      <location filename="../../EditDatumDialog.cpp" line="280"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1223"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1221"/>
+      <location filename="../../EditDatumDialog.cpp" line="63"/>
+      <location filename="../../EditDatumDialog.cpp" line="278"/>
       <source>Value Error</source>
       <translation>მნიშვნელობის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="950"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="971"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>ავტოშეზღუდვები დამატებითობებს იწვევს. ისინი წაიშლება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="969"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="990"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>დამატებითი შეზღუდვა ავტოშეზღუდვა არაა. ავტოშეზღუდვები ან დამატებითი შეზღუდვები დამატებული არაა. მოგვწერეთ ამის შესახებ!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1017"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1038"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>მოულოდნელი დამატება/ურთიერთგამომრიცხავი შეზღუდვა. შეამოწმეთ ამ ოპერაციის შეზღუდვები და ავტოშეზღუდვები.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1144"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="428"/>
+      <source>Offset Error</source>
+      <translation>წანაცვლების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="429"/>
+      <source>Offset could not be created.</source>
+      <translation>წანაცვლების შექმნა შეუძლებელია.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
       <source>Invalid Value</source>
       <translation>არასწორი მნიშვნელობა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1145"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1198"/>
       <source>Offset value can't be 0.</source>
       <translation>წანაცვლების მნიშვნელობა 0 ვერ იქნება.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="217"/>
       <source>Failed to add arc slot</source>
       <translation>რკალის სლოტის დამატების შეცდომა</translation>
     </message>
@@ -4945,17 +4850,22 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>ოვალის დამატების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="160"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="169"/>
       <source>Failed to rotate</source>
       <translation>შებრუნების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="122"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="116"/>
+      <source>Invalid scale factor. Scale factor must be a positive number.</source>
+      <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerScale.h" line="141"/>
       <source>Failed to scale</source>
       <translation>დამასშტაბების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="132"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="142"/>
       <source>Failed to translate</source>
       <translation>მოძრაობითი გადატანა ჩავარდა</translation>
     </message>
@@ -4965,7 +4875,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>სიმეტრიის შექმნა ჩავარდა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="66"/>
+      <location filename="../../EditDatumDialog.cpp" line="64"/>
       <source>Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</source>
       <translation type="unfinished">Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</translation>
     </message>
@@ -4973,12 +4883,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2986"/>
+      <location filename="../../CommandConstraints.cpp" line="3167"/>
       <source>Dimension</source>
       <translation>ზომა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2987"/>
+      <location filename="../../CommandConstraints.cpp" line="3168"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
       <translation type="unfinished">Constrains contextually based on the selection. The type can be changed with the M key.</translation>
     </message>
@@ -4986,14 +4896,14 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1404"/>
+      <location filename="../../CommandConstraints.cpp" line="1561"/>
       <source>Dimension</source>
       <translation>ზომა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1405"/>
+      <location filename="../../CommandConstraints.cpp" line="1562"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>განზომილების ხელსაწყოები</translation>
     </message>
   </context>
   <context>
@@ -5108,17 +5018,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1171"/>
       <source>Delete original geometries (U)</source>
       <translation>ორიგინალი გეომეტრიების წაშლა (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="526"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
       <source>Apply equal constraints</source>
       <translation>ტოლი შეზღუდვების გადატარება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="530"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>თუ ეს პარამეტრი ჩართულია, განზომილების შეზღუდვები ოპერაციიდან ამოღებული იქნება.
@@ -5128,7 +5038,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1125"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1175"/>
       <source>Add offset constraint (J)</source>
       <translation>წანაცვლების შეზღუდვის დამატება (J)</translation>
     </message>
@@ -5136,32 +5046,32 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1786"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
       <source>Corner, width, height</source>
       <translation>კუთხე, სიგანე, სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1787"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
       <source>Center, width, height</source>
       <translation>ცენტრი, სიგანე, სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1788"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
       <source>3 corners</source>
       <translation>3 კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1789"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
       <source>Center, 2 corners</source>
       <translation>ცენტრი, 2 კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1794"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
       <source>Rounded corners (U)</source>
       <translation>მომრგვალებული კუთხეები (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1797"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>მომრგვალებული კუთხეების მქონე ოთხკუთხედის შექმნა.</translation>
     </message>
@@ -5169,22 +5079,14 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1803"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
       <source>Frame (J)</source>
       <translation>ჩარჩო (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1806"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>ორი მართკუთხედის შექმნა მუდმივი წანაცვლებით.</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::TaskSketcherTool</name>
-    <message>
-      <location filename="../../TaskSketcherTool.cpp" line="48"/>
-      <source>Tool parameters</source>
-      <translation>ხელსაწყოს პარამეტრები</translation>
     </message>
   </context>
   <context>
@@ -5222,17 +5124,17 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
       <source>Working Colors</source>
-      <translation type="unfinished">Working Colors</translation>
+      <translation>მუშა ფერები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="114"/>
       <source>Color of the crosshair cursor</source>
-      <translation type="unfinished">Color of the crosshair cursor</translation>
+      <translation>კურსორი-სამიზნე ბადის ფერი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="139"/>
       <source>Geometric Element Colors</source>
-      <translation type="unfinished">Geometric Element Colors</translation>
+      <translation>გეომეტრიული ელემენტის ფერები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="151"/>
@@ -5243,11 +5145,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="164"/>
       <source>Unconstrained</source>
       <translation>შეუზღუდავი</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
-      <source>Pattern</source>
-      <translation>ნიმუში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="178"/>
@@ -5267,12 +5164,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="257"/>
       <source>Line pattern of normal edges</source>
-      <translation type="unfinished">Line pattern of normal edges</translation>
+      <translation>ნორმალური წიბოების ხაზის ნიმუში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="267"/>
       <source>Width of normal edges</source>
-      <translation type="unfinished">Width of normal edges</translation>
+      <translation>ნორმალური წიბოების სიგანე</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="308"/>
@@ -5282,12 +5179,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="354"/>
       <source>Line pattern of construction edges</source>
-      <translation type="unfinished">Line pattern of construction edges</translation>
+      <translation>კონსტრუქციის წიბოების ხაზის ნიმუში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="364"/>
       <source>Width of construction edges</source>
-      <translation type="unfinished">Width of construction edges</translation>
+      <translation>კონსტრუქციის წებოების სიგანე</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="392"/>
@@ -5307,47 +5204,52 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="451"/>
       <source>Line pattern of internal aligned edges</source>
-      <translation type="unfinished">Line pattern of internal aligned edges</translation>
+      <translation>შიდა გასწორებული წიბოების ხაზის ნიმუში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="461"/>
       <source>Width of internal aligned edges</source>
-      <translation type="unfinished">Width of internal aligned edges</translation>
+      <translation>შიდა გასწორებული წიბოების სიგანე</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="489"/>
-      <source>External reference geometry</source>
-      <translation type="unfinished">External reference geometry</translation>
+      <source>External construction geometry</source>
+      <translation>გარე მშენებლობითი გეომეტრია</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
+      <source>Color of external construction geometry in edit mode</source>
+      <translation>გარე დამხმარე გეომეტრიის ფერი ჩასწორების რეჟიმში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
-      <source>Line pattern of external edges</source>
-      <translation type="unfinished">Line pattern of external edges</translation>
+      <source>Line pattern of external construction edges</source>
+      <translation>გარე კონსტრუქციის წიბოების ხაზის ნიმუში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
-      <source>Width of external edges</source>
-      <translation type="unfinished">Width of external edges</translation>
+      <source>Width of external construction edges</source>
+      <translation>გარე კონსტრუქციის წებოების სიგანე</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="560"/>
       <source>External defining geometry</source>
-      <translation type="unfinished">External defining geometry</translation>
+      <translation>გარე აღმწერი გეომეტრია</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="573"/>
       <source>Color of external defining geometry in edit mode</source>
-      <translation type="unfinished">Color of external defining geometry in edit mode</translation>
+      <translation>გარე აღწერის გეომეტრიის ფერი ჩასწორების რეჟიმში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="593"/>
       <source>Line pattern of external defining edges</source>
-      <translation type="unfinished">Line pattern of external defining edges</translation>
+      <translation>გარე აღმწერი წიბოების ხაზის ნიმუში</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="603"/>
       <source>Width of external defining edges</source>
-      <translation type="unfinished">Width of external defining edges</translation>
+      <translation>გარე აღმწერი წიბოების სიგანე</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
@@ -5367,12 +5269,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
       <source>Constraint Colors</source>
-      <translation type="unfinished">Constraint Colors</translation>
+      <translation>შეზღუდვის ფერები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="747"/>
       <source>Dimensional constraints</source>
-      <translation type="unfinished">Dimensional constraints</translation>
+      <translation>განზომილების შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
@@ -5382,42 +5284,57 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Reference constraints</source>
-      <translation type="unfinished">Reference constraints</translation>
+      <translation>მიმართვის შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
       <source>Deactivated constraints</source>
-      <translation type="unfinished">Deactivated constraints</translation>
+      <translation>გამორთული შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
       <source>Colors Outside Sketcher</source>
-      <translation type="unfinished">Colors Outside Sketcher</translation>
+      <translation>ფერები ესკიზის გარეთ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
       <translation>წვერო</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
       <source>Color of vertices outside edit mode</source>
       <translation>წვეროების ფერი ჩასწორების რეჟიმიმის გარეთ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="927"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
       <source>Edge</source>
       <translation>წიბო</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="934"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
       <source>Color of edges outside edit mode</source>
       <translation>წიბოების ფერი ჩასწორების რეჟიმის გარეთ</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <source>Face</source>
+      <translation>სიბრტყე</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
+      <translation type="unfinished">Color of internal faces formed by intersecting geometry or closed loops in the sketch</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
       <translation>გეომეტრია</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
+      <source>Line Type</source>
+      <translation>ხაზის ტიპი</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
@@ -5428,11 +5345,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="334"/>
       <source>Color of construction geometry in edit mode</source>
       <translation>დამხმარე გეომეტრიის ფერი ჩასწორების რეჟიმში</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
-      <source>Color of external geometry in edit mode</source>
-      <translation>გარე გეომეტრიის ფერი ჩასწორების რეჟიმშია</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -5473,7 +5385,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="549"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>ასლები (+'U'/ -'J')</translation>
     </message>
@@ -5486,7 +5398,7 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>მხარეები (+'U'/ -'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="930"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="955"/>
       <source>Degree (+'U'/ -'J')</source>
       <translation>ხარისხი (+'U'/ -'J')</translation>
     </message>
@@ -5494,7 +5406,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="515"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="594"/>
       <source>Keep original geometries (U)</source>
       <translation>ორიგინალი გეომეტრიების შენარჩუნება (U)</translation>
     </message>
@@ -5502,20 +5414,20 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1477"/>
+      <location filename="../../CommandConstraints.cpp" line="1634"/>
       <source>Constrain</source>
       <translation>შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1478"/>
+      <location filename="../../CommandConstraints.cpp" line="1635"/>
       <source>Constrain tools</source>
-      <translation type="unfinished">Constrain tools</translation>
+      <translation>შეზღუდვის ხელსაწყოები</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="535"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="548"/>
       <source>Copies (+'U'/-'J')</source>
       <translation>ასლები (+'U'/-'J')</translation>
     </message>
@@ -5523,7 +5435,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="538"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="551"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>მწკრივები (+'R'/-'F')</translation>
     </message>
@@ -5531,12 +5443,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="513"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="516"/>
       <source>Center</source>
       <translation>ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="514"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="517"/>
       <source>3 rim points</source>
       <translation>სამი წერტილის მიხედვით</translation>
     </message>
@@ -5544,12 +5456,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="578"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="584"/>
       <source>Arc ends</source>
       <translation>რკალი სრულდება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="579"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="585"/>
       <source>Flat ends</source>
       <translation>ბრტყელი ბოლოები</translation>
     </message>
@@ -5570,12 +5482,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="450"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="458"/>
       <source>Preserve corner (U)</source>
       <translation>კუთხის შენახვა (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="453"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="461"/>
       <source>Preserves intersection point and most constraints</source>
       <translation>შეინახავს კვეთის წერტილს და შეზღუდვების უმრავლესობას</translation>
     </message>
@@ -5601,12 +5513,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1108"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1158"/>
       <source>Arc</source>
       <translation>რკალი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1109"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
       <source>Intersection</source>
       <translation>კვეთა</translation>
     </message>
@@ -5620,27 +5532,19 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_symmetry</name>
-    <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
-      <source>Create Symmetry Constraints (J)</source>
-      <translation>სიმეტრიის შეზღუდვების შექმნა (J)</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="887"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="911"/>
       <source>Press F to undo last point.</source>
       <translation>ბოლო წერტილის გასაუქმებლად დააწექით ღილაკს "F".</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="895"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="920"/>
       <source>Periodic (R)</source>
       <translation>პერიოდული (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="898"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="923"/>
       <source>Create a periodic B-spline.</source>
       <translation>პერიოდული B-სპლაინის შექმნა.</translation>
     </message>
@@ -5648,8 +5552,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8810"/>
-      <location filename="../../CommandConstraints.cpp" line="8812"/>
+      <location filename="../../CommandConstraints.cpp" line="8991"/>
+      <location filename="../../CommandConstraints.cpp" line="8993"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>წრეწირის ან რკალის რადიუსის გამუდმივება</translation>
     </message>
@@ -5657,8 +5561,8 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8823"/>
-      <location filename="../../CommandConstraints.cpp" line="8825"/>
+      <location filename="../../CommandConstraints.cpp" line="9004"/>
+      <location filename="../../CommandConstraints.cpp" line="9006"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>წრეწირის ან რკალის რადიუსის/დიამეტრის გამუდმივება</translation>
     </message>
@@ -5666,12 +5570,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="507"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
       <source>Apply equal constraints</source>
       <translation>ტოლი შეზღუდვების გადატარება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="510"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="523"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>თუ ეს პარამეტრი ჩართულია, განზომილების შეზღუდვები ოპერაციიდან ამოღებული იქნება.
@@ -5681,64 +5585,64 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="155"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>ახალი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="156"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>ქმნის ახალ ესკიზს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="334"/>
       <source>Edit Sketch</source>
-      <translation type="unfinished">Edit Sketch</translation>
+      <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="335"/>
       <source>Opens the selected sketch for editing</source>
-      <translation type="unfinished">Opens the selected sketch for editing</translation>
+      <translation>გახსნის მონიშნულ ესკიზს ჩასასწორებლად</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Leave Sketch</source>
-      <translation type="unfinished">Leave Sketch</translation>
+      <translation>ესკიზის დატოვება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
+      <location filename="../../Command.cpp" line="366"/>
       <source>Exits the active sketch</source>
-      <translation type="unfinished">Exits the active sketch</translation>
+      <translation>გამოვა აქტიური ესკიზიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Stop Operation</source>
-      <translation type="unfinished">Stop Operation</translation>
+      <translation>ოპერაციის გაჩერება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Stops the active operation while in edit mode</source>
-      <translation type="unfinished">Stops the active operation while in edit mode</translation>
+      <translation>აქტიური ოპერაციის გაჩერება ჩასწორების რეჟიმში ყოფნისას</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Reorient Sketch</source>
-      <translation type="unfinished">Reorient Sketch</translation>
+      <translation>ესკიზის რეორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation type="unfinished">Places the selected sketch on one of the global coordinate planes.
@@ -5748,12 +5652,12 @@ This will clear the AttachmentSupport property.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Align View to Sketch</source>
-      <translation type="unfinished">Align View to Sketch</translation>
+      <translation>ხედის გასწორება ესკიზზე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation type="unfinished">Aligns the camera orientation perpendicular to the active sketch plane</translation>
     </message>
@@ -5761,55 +5665,55 @@ This will clear the AttachmentSupport property.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>Toggle Section View</source>
-      <translation type="unfinished">Toggle Section View</translation>
+      <translation>ჭრილის ხედის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1102"/>
+      <location filename="../../Command.cpp" line="1100"/>
       <source>Toggles between section view and full view</source>
-      <translation type="unfinished">Toggles between section view and full view</translation>
+      <translation>გადართავს ჭრილის ხედსა და სრულ ხედს შორის</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1173"/>
       <source>Display grid</source>
-      <translation type="unfinished">Display grid</translation>
+      <translation>ბადის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1174"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
-      <translation type="unfinished">Toggles the visibility of the grid in the active sketch</translation>
+      <translation>გადართავს ბადის ხილვადობას აქტიურ ესკიზში</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1177"/>
       <source>Grid auto-spacing</source>
-      <translation type="unfinished">Grid auto-spacing</translation>
+      <translation>ბადის ავტომატური ბიჯი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1178"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation type="unfinished">Automatically adjusts the grid spacing based on the zoom level</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1183"/>
+      <location filename="../../Command.cpp" line="1181"/>
       <source>Spacing</source>
       <translation>გამოტოვება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1184"/>
+      <location filename="../../Command.cpp" line="1182"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>ბადის ორ მეზობელ ხაზს შორს მანძილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Snap to grid</source>
       <translation>ბადეზე მიმაგრება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>ახალი წერტილები მიებმება უახლოესი ბადის ხაზს.
@@ -5819,35 +5723,35 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1317"/>
+      <location filename="../../Command.cpp" line="1315"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>ბადის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1319"/>
+      <location filename="../../Command.cpp" line="1317"/>
       <source>Toggles the grid display in the active sketch</source>
-      <translation type="unfinished">Toggles the grid display in the active sketch</translation>
+      <translation>გადართავს ბადის ჩვენებას აქტიურ ესკიზში</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1453"/>
+      <location filename="../../Command.cpp" line="1451"/>
       <source>Snap to objects</source>
       <translation>ობიექტებზე მიბმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1454"/>
+      <location filename="../../Command.cpp" line="1452"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>ახალი წერტლები ამჟამად წინასწარ არჩეულ ობიექტს მიემაგრება. ის ასევე მიემაგრება ხაზის შუა ადგილებს და რკალებს.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1458"/>
+      <location filename="../../Command.cpp" line="1456"/>
       <source>Snap angle</source>
       <translation>მიბმის კუთხე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1458"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation type="unfinished">Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</translation>
     </message>
@@ -5855,66 +5759,66 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1548"/>
+      <location filename="../../Command.cpp" line="1546"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>მიბმის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1550"/>
+      <location filename="../../Command.cpp" line="1548"/>
       <source>Toggles snapping</source>
-      <translation type="unfinished">Toggles snapping</translation>
+      <translation>გადართავს მიბმას</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1672"/>
       <source>Normal geometry</source>
-      <translation type="unfinished">Normal geometry</translation>
+      <translation>ნორმალური გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>Construction geometry</source>
       <translation>მშენებლობითი გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="1676"/>
       <source>External geometry</source>
-      <translation type="unfinished">External geometry</translation>
+      <translation>გარე გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1681"/>
+      <location filename="../../Command.cpp" line="1679"/>
       <source>Unknown geometry</source>
-      <translation type="unfinished">Unknown geometry</translation>
+      <translation>უცნობი გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1722"/>
+      <location filename="../../Command.cpp" line="1720"/>
       <source>Rendering order</source>
-      <translation type="unfinished">Rendering order</translation>
+      <translation>რენდერის მიმდევრობა</translation>
     </message>
   </context>
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1809"/>
+      <location filename="../../Command.cpp" line="1807"/>
       <source>Rendering Order</source>
-      <translation type="unfinished">Rendering Order</translation>
+      <translation>რენდერის მიმდევრობა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1810"/>
+      <location filename="../../Command.cpp" line="1808"/>
       <source>Reorders items in the rendering order</source>
-      <translation type="unfinished">Reorders items in the rendering order</translation>
+      <translation>გადაალაგებს ელემენტებს რენდერის მიმდევრობაში</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="73"/>
-      <source>Construction Geometry</source>
-      <translation>კონსტრუქციის გეომეტრია</translation>
+      <location filename="../../CommandAlterGeometry.cpp" line="69"/>
+      <source>Toggle Construction Geometry</source>
+      <translation>მშენებლობითი გეომეტრიის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="74"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="70"/>
       <source>Toggles between defining geometry and construction geometry modes</source>
       <translation type="unfinished">Toggles between defining geometry and construction geometry modes</translation>
     </message>
@@ -5922,25 +5826,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1508"/>
+      <location filename="../../CommandConstraints.cpp" line="1665"/>
       <source>Toggle Constraints</source>
-      <translation type="unfinished">Toggle Constraints</translation>
+      <translation>შეზღუდვების გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1509"/>
+      <location filename="../../CommandConstraints.cpp" line="1666"/>
       <source>Toggle constrain tools</source>
-      <translation type="unfinished">Toggle constrain tools</translation>
+      <translation>შეზღუდვის ხელსაწყოების გადართვა</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3041"/>
+      <location filename="../../CommandConstraints.cpp" line="3222"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation type="unfinished">Horizontal/Vertical Constraint</translation>
+      <translation>ჰორიზონტალური/ვერტიკალური შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3042"/>
+      <location filename="../../CommandConstraints.cpp" line="3223"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
       <translation type="unfinished">Constrains the selected elements either horizontally or vertically</translation>
     </message>
@@ -5948,12 +5852,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3359"/>
+      <location filename="../../CommandConstraints.cpp" line="3540"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation type="unfinished">Horizontal/Vertical Constraint</translation>
+      <translation>ჰორიზონტალური/ვერტიკალური შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3360"/>
+      <location filename="../../CommandConstraints.cpp" line="3541"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
       <translation type="unfinished">Constrains the selected elements either horizontally or vertically, based on their closest alignment</translation>
     </message>
@@ -5961,38 +5865,38 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3405"/>
+      <location filename="../../CommandConstraints.cpp" line="3586"/>
       <source>Horizontal Constraint</source>
       <translation>ჰორიზონტალურობის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3406"/>
+      <location filename="../../CommandConstraints.cpp" line="3587"/>
       <source>Constrains the selected elements horizontally</source>
-      <translation type="unfinished">Constrains the selected elements horizontally</translation>
+      <translation>შეზღუდავს მონიშნულ ელემენტებს ჰორიზონტალურად</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3450"/>
+      <location filename="../../CommandConstraints.cpp" line="3631"/>
       <source>Vertical Constraint</source>
       <translation>ვერტიკალური შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3451"/>
+      <location filename="../../CommandConstraints.cpp" line="3632"/>
       <source>Constrains the selected elements vertically</source>
-      <translation type="unfinished">Constrains the selected elements vertically</translation>
+      <translation>შეზღუდავს მონიშნულ ელემენტებს ვერტიკალურად</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3496"/>
+      <location filename="../../CommandConstraints.cpp" line="3677"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>მდებარეობის ჩაკეტვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3497"/>
+      <location filename="../../CommandConstraints.cpp" line="3678"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
       <translation type="unfinished">Constrains the selected vertices by adding horizontal and vertical distance constraints</translation>
     </message>
@@ -6000,64 +5904,64 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3781"/>
+      <location filename="../../CommandConstraints.cpp" line="3962"/>
       <source>Block Constraint</source>
       <translation>შეზღუდვის დაბლოკვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3782"/>
+      <location filename="../../CommandConstraints.cpp" line="3963"/>
       <source>Constrains the selected edges as fixed</source>
-      <translation type="unfinished">Constrains the selected edges as fixed</translation>
+      <translation>შეზღუდავს მონიშნულ წიბოებს დამაგრებულად</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3981"/>
+      <location filename="../../CommandConstraints.cpp" line="4162"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>დამთხვევის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3982"/>
+      <location filename="../../CommandConstraints.cpp" line="4163"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation type="unfinished">Constrains the selected elements to be coincident</translation>
+      <translation>შეზღუდავს მონიშნულ ელემენტებს, რომ ისინი ემთხვეოდნენ</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4493"/>
+      <location filename="../../CommandConstraints.cpp" line="4674"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>დამთხვევის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4494"/>
+      <location filename="../../CommandConstraints.cpp" line="4675"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation type="unfinished">Constrains the selected elements to be coincident</translation>
+      <translation>შეზღუდავს მონიშნულ ელემენტებს, რომ ისინი ემთხვეოდნენ</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4543"/>
+      <location filename="../../CommandConstraints.cpp" line="4724"/>
       <source>Point-On-Object Constraint</source>
-      <translation type="unfinished">Point-On-Object Constraint</translation>
+      <translation>ობიექტზე-მდებარე-წეერტილის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4544"/>
+      <location filename="../../CommandConstraints.cpp" line="4725"/>
       <source>Constrains the selected point onto the selected object</source>
-      <translation type="unfinished">Constrains the selected point onto the selected object</translation>
+      <translation>შეზღუდავს მონიშნულ კედელს მონიშნულ ობიექტზე</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4595"/>
+      <location filename="../../CommandConstraints.cpp" line="4776"/>
       <source>Distance Dimension</source>
-      <translation type="unfinished">Distance Dimension</translation>
+      <translation>მანძილის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4596"/>
+      <location filename="../../CommandConstraints.cpp" line="4777"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
       <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if one is selected</translation>
     </message>
@@ -6065,25 +5969,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5249"/>
+      <location filename="../../CommandConstraints.cpp" line="5430"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>ჰორიზონტალური განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5250"/>
-      <source>Constrains the horizontal distance between two points, or from a point to the origin if one is selected</source>
-      <translation type="unfinished">Constrains the horizontal distance between two points, or from a point to the origin if one is selected</translation>
+      <location filename="../../CommandConstraints.cpp" line="5431"/>
+      <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
+      <translation type="unfinished">Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5550"/>
+      <location filename="../../CommandConstraints.cpp" line="5731"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>ვერტიკალური განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5551"/>
+      <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrains the vertical distance between the selected elements</source>
       <translation type="unfinished">Constrains the vertical distance between the selected elements</translation>
     </message>
@@ -6091,77 +5995,77 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5846"/>
+      <location filename="../../CommandConstraints.cpp" line="6027"/>
       <source>Parallel Constraint</source>
       <translation>პარალელურობის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5847"/>
+      <location filename="../../CommandConstraints.cpp" line="6028"/>
       <source>Constrains the selected lines to be parallel</source>
-      <translation type="unfinished">Constrains the selected lines to be parallel</translation>
+      <translation>შეზღუდავს მონიშნულ ხაზებს, რომ ისინი პარალელური იყოს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6009"/>
+      <location filename="../../CommandConstraints.cpp" line="6190"/>
       <source>Perpendicular Constraint</source>
       <translation>მართკუთხა შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6010"/>
+      <location filename="../../CommandConstraints.cpp" line="6191"/>
       <source>Constrains the selected lines to be perpendicular</source>
-      <translation type="unfinished">Constrains the selected lines to be perpendicular</translation>
+      <translation>შეზღუდავს მონიშნულ ხაზებს, რომ ისინი პერპენდიკულარული იყოს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6774"/>
+      <location filename="../../CommandConstraints.cpp" line="6955"/>
       <source>Tangent/Collinear Constraint</source>
-      <translation type="unfinished">Tangent/Collinear Constraint</translation>
+      <translation>მხების/კოლინეურის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6775"/>
+      <location filename="../../CommandConstraints.cpp" line="6956"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
-      <translation type="unfinished">Constrains the selected elements to be tangent or collinear</translation>
+      <translation>შეზღუდავს მონიშნულ ელემენტებს, რომ ისინი მხებები, ან კოლინეურები იყვნენ</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7649"/>
+      <location filename="../../CommandConstraints.cpp" line="7830"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>რადიუსის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7650"/>
+      <location filename="../../CommandConstraints.cpp" line="7831"/>
       <source>Constrains the radius of the selected circle or arc</source>
-      <translation type="unfinished">Constrains the radius of the selected circle or arc</translation>
+      <translation>შეზღუდავს მონიშნული წრეწირის ან რკალის რადიუსს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8012"/>
+      <location filename="../../CommandConstraints.cpp" line="8193"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>დიამეტრის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8013"/>
+      <location filename="../../CommandConstraints.cpp" line="8194"/>
       <source>Constrains the diameter of the selected circle or arc</source>
-      <translation type="unfinished">Constrains the diameter of the selected circle or arc</translation>
+      <translation>შეზღუდავს მონიშნული წრეწირის ან რკალის დიამეტრს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8330"/>
+      <location filename="../../CommandConstraints.cpp" line="8511"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>რადიუსის/დიამეტრის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8331"/>
+      <location filename="../../CommandConstraints.cpp" line="8512"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
       <translation type="unfinished">Constrains the radius of the selected arc or the diameter of the selected circle</translation>
     </message>
@@ -6169,51 +6073,51 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8858"/>
+      <location filename="../../CommandConstraints.cpp" line="9039"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>კუთხის განზომილება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8859"/>
-      <source>Constrains the angle of the selected elements</source>
-      <translation type="unfinished">Constrains the angle of the selected elements</translation>
+      <location filename="../../CommandConstraints.cpp" line="9040"/>
+      <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
+      <translation type="unfinished">Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9311"/>
+      <location filename="../../CommandConstraints.cpp" line="9492"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>ტოლი შეზღუდვები</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9313"/>
+      <location filename="../../CommandConstraints.cpp" line="9494"/>
       <source>Constrains the selected edges or circles to be equal</source>
-      <translation type="unfinished">Constrains the selected edges or circles to be equal</translation>
+      <translation>შეზღუდავს მონიშნულ წიბოებს ან წრეებს, რომ ისინი ტოლები იყვნენ</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9553"/>
+      <location filename="../../CommandConstraints.cpp" line="9734"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>სიმეტრიული შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9554"/>
+      <location filename="../../CommandConstraints.cpp" line="9735"/>
       <source>Constrains the selected elements to be symmetric</source>
-      <translation type="unfinished">Constrains the selected elements to be symmetric</translation>
+      <translation>შეზღუდავს მონიშნულ ელემენტებს, რომ ისინი სიმეტრიული იყოს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9896"/>
+      <location filename="../../CommandConstraints.cpp" line="10095"/>
       <source>Refraction Constraint</source>
-      <translation type="unfinished">Refraction Constraint</translation>
+      <translation>რეფრაქციის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9897"/>
+      <location filename="../../CommandConstraints.cpp" line="10096"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
       <translation type="unfinished">Constrains the selected elements based on the refraction law (Snell's Law)</translation>
     </message>
@@ -6221,25 +6125,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10093"/>
+      <location filename="../../CommandConstraints.cpp" line="10292"/>
       <source>Edit Value</source>
-      <translation type="unfinished">Edit Value</translation>
+      <translation>მნიშვნელობის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10094"/>
+      <location filename="../../CommandConstraints.cpp" line="10293"/>
       <source>Edits the value of a dimensional constraint</source>
-      <translation type="unfinished">Edits the value of a dimensional constraint</translation>
+      <translation>ჩაასწორებს განზომილების შეზღუდვის მნიშვნელობას</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10147"/>
+      <location filename="../../CommandConstraints.cpp" line="10346"/>
       <source>Toggle Driving/Reference Constraints</source>
-      <translation type="unfinished">Toggle Driving/Reference Constraints</translation>
+      <translation>მშენებლობის/მიმართვის შეზღუდვების გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10148"/>
+      <location filename="../../CommandConstraints.cpp" line="10347"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation type="unfinished">Toggles between driving and reference mode of the selected constraints and commands</translation>
     </message>
@@ -6247,64 +6151,64 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10302"/>
+      <location filename="../../CommandConstraints.cpp" line="10501"/>
       <source>Toggle Constraints</source>
-      <translation type="unfinished">Toggle Constraints</translation>
+      <translation>შეზღუდვების გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10303"/>
+      <location filename="../../CommandConstraints.cpp" line="10502"/>
       <source>Toggles the state of the selected constraints</source>
-      <translation type="unfinished">Toggles the state of the selected constraints</translation>
+      <translation>გადართავს მონიშნული შეზღუდვების მდგომარეობას</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="114"/>
+      <location filename="../../CommandCreateGeo.cpp" line="111"/>
       <source>Point</source>
       <translation>წერტილი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="115"/>
+      <location filename="../../CommandCreateGeo.cpp" line="112"/>
       <source>Creates a point</source>
-      <translation type="unfinished">Creates a point</translation>
+      <translation>ქმნის წერტილს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="145"/>
+      <location filename="../../CommandCreateGeo.cpp" line="142"/>
       <source>Polyline</source>
       <translation>პოლიხაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="146"/>
+      <location filename="../../CommandCreateGeo.cpp" line="143"/>
       <source>Creates a continuous polyline</source>
-      <translation type="unfinished">Creates a continuous polyline</translation>
+      <translation>ქმნის უწყვეტ პოლიხაზს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="202"/>
+      <location filename="../../CommandCreateGeo.cpp" line="199"/>
       <source>Line</source>
       <translation>ხაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="203"/>
+      <location filename="../../CommandCreateGeo.cpp" line="200"/>
       <source>Creates a line</source>
-      <translation type="unfinished">Creates a line</translation>
+      <translation>ქმნის ხაზს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="233"/>
+      <location filename="../../CommandCreateGeo.cpp" line="230"/>
       <source>Polyline</source>
       <translation>პოლიხაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="235"/>
+      <location filename="../../CommandCreateGeo.cpp" line="232"/>
       <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
       <translation type="unfinished">Creates a continuous polyline. Press the 'M' key to switch segment modes</translation>
     </message>
@@ -6312,181 +6216,181 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="267"/>
+      <location filename="../../CommandCreateGeo.cpp" line="264"/>
       <source>Arc</source>
       <translation>რკალი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="268"/>
+      <location filename="../../CommandCreateGeo.cpp" line="265"/>
       <source>Creates an arc</source>
-      <translation type="unfinished">Creates an arc</translation>
+      <translation>ქმნის რკალს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="335"/>
+      <location filename="../../CommandCreateGeo.cpp" line="332"/>
       <source>Arc From Center</source>
-      <translation type="unfinished">Arc From Center</translation>
+      <translation>რკალი ცენტრიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="336"/>
+      <location filename="../../CommandCreateGeo.cpp" line="333"/>
       <source>Creates an arc defined by a center point and an end point</source>
-      <translation type="unfinished">Creates an arc defined by a center point and an end point</translation>
+      <translation>შექმნის რკალს, რომელიც აღწერილია ცენტრი წერტილით და ბოლო წერტილით</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="367"/>
+      <location filename="../../CommandCreateGeo.cpp" line="364"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>რკალი 3 წერტილიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="368"/>
+      <location filename="../../CommandCreateGeo.cpp" line="365"/>
       <source>Creates an arc defined by 2 end points and 1 point on the arc</source>
-      <translation type="unfinished">Creates an arc defined by 2 end points and 1 point on the arc</translation>
+      <translation>ქმნის რკალს, რომელიც აღწერილია 2 ბოლო წერტილით და 1 წერტილით რკალზე</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="400"/>
+      <location filename="../../CommandCreateGeo.cpp" line="397"/>
       <source>Elliptical Arc</source>
       <translation>ელიფსის რკალი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="401"/>
+      <location filename="../../CommandCreateGeo.cpp" line="398"/>
       <source>Creates an elliptical arc</source>
-      <translation type="unfinished">Creates an elliptical arc</translation>
+      <translation>ქმნის ელიფსურ რკალს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="431"/>
+      <location filename="../../CommandCreateGeo.cpp" line="428"/>
       <source>Hyperbolic Arc</source>
       <translation>ჰიპერბოლური რკალი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="432"/>
+      <location filename="../../CommandCreateGeo.cpp" line="429"/>
       <source>Creates a hyperbolic arc</source>
-      <translation type="unfinished">Creates a hyperbolic arc</translation>
+      <translation>ქმნის ჰიპერბოლურ რკალს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="461"/>
+      <location filename="../../CommandCreateGeo.cpp" line="458"/>
       <source>Parabolic Arc</source>
       <translation>პარაბოლური რკალი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="462"/>
+      <location filename="../../CommandCreateGeo.cpp" line="459"/>
       <source>Creates a parabolic arc</source>
-      <translation type="unfinished">Creates a parabolic arc</translation>
+      <translation>ქმნის პარაბოლურ რკალს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="493"/>
+      <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Conic</source>
       <translation>კონიკური</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="494"/>
+      <location filename="../../CommandCreateGeo.cpp" line="491"/>
       <source>Creates a conic</source>
-      <translation type="unfinished">Creates a conic</translation>
+      <translation>ქმნის კონიკურს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="559"/>
+      <location filename="../../CommandCreateGeo.cpp" line="556"/>
       <source>Circle From Center</source>
-      <translation type="unfinished">Circle From Center</translation>
+      <translation>წრე ცენტრიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="560"/>
+      <location filename="../../CommandCreateGeo.cpp" line="557"/>
       <source>Creates a circle from a center and rim point</source>
-      <translation type="unfinished">Creates a circle from a center and rim point</translation>
+      <translation>ქმნის წრეს ცენტრიდან და ფერსოს წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="590"/>
+      <location filename="../../CommandCreateGeo.cpp" line="587"/>
       <source>Circle From 3 Points</source>
-      <translation type="unfinished">Circle From 3 Points</translation>
+      <translation>წრე 3 წერტილიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="591"/>
+      <location filename="../../CommandCreateGeo.cpp" line="588"/>
       <source>Creates a circle from 3 perimeter points</source>
-      <translation type="unfinished">Creates a circle from 3 perimeter points</translation>
+      <translation>ქმნის წრეს 3 პერიმეტრის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="627"/>
+      <location filename="../../CommandCreateGeo.cpp" line="624"/>
       <source>Ellipse From Center</source>
-      <translation type="unfinished">Ellipse From Center</translation>
+      <translation>ოვალი ცენტრიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="628"/>
+      <location filename="../../CommandCreateGeo.cpp" line="625"/>
       <source>Creates an ellipse from a center and rim point</source>
-      <translation type="unfinished">Creates an ellipse from a center and rim point</translation>
+      <translation>ქმნის ოვალს ცენტრით და ფერსოს წერტილით</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="662"/>
+      <location filename="../../CommandCreateGeo.cpp" line="659"/>
       <source>Ellipse From 3 Points</source>
-      <translation type="unfinished">Ellipse From 3 Points</translation>
+      <translation>ოვალი 3 წერტილიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="663"/>
+      <location filename="../../CommandCreateGeo.cpp" line="660"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
-      <translation type="unfinished">Creates an ellipse from 3 points on its perimeter</translation>
+      <translation>ქმნის ოვალს 3 წერტილიდან მის პერიმეტრზე</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="697"/>
+      <location filename="../../CommandCreateGeo.cpp" line="694"/>
       <source>Rectangle</source>
       <translation>ოთხკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="698"/>
+      <location filename="../../CommandCreateGeo.cpp" line="695"/>
       <source>Creates a rectangle</source>
-      <translation type="unfinished">Creates a rectangle</translation>
+      <translation>ქმნის მართკუთხედს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="758"/>
+      <location filename="../../CommandCreateGeo.cpp" line="755"/>
       <source>Rectangle</source>
       <translation>ოთხკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="759"/>
+      <location filename="../../CommandCreateGeo.cpp" line="756"/>
       <source>Creates a rectangle from 2 corner points</source>
-      <translation type="unfinished">Creates a rectangle from 2 corner points</translation>
+      <translation>შექმნის ოთხკუთხედს 2 კუთხის წერტილებიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="791"/>
+      <location filename="../../CommandCreateGeo.cpp" line="788"/>
       <source>Centered Rectangle</source>
-      <translation type="unfinished">Centered Rectangle</translation>
+      <translation>დაცენტრებული მართკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="792"/>
+      <location filename="../../CommandCreateGeo.cpp" line="789"/>
       <source>Creates a centered rectangle from a center and a corner point</source>
       <translation type="unfinished">Creates a centered rectangle from a center and a corner point</translation>
     </message>
@@ -6494,38 +6398,38 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="825"/>
+      <location filename="../../CommandCreateGeo.cpp" line="822"/>
       <source>Rounded Rectangle</source>
-      <translation type="unfinished">Rounded Rectangle</translation>
+      <translation>მომრგვალებული მართკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="826"/>
+      <location filename="../../CommandCreateGeo.cpp" line="823"/>
       <source>Creates a rounded rectangle from 2 corner points</source>
-      <translation type="unfinished">Creates a rounded rectangle from 2 corner points</translation>
+      <translation>შექმნის მომრგვალებულ ოთხკუთხედს 2 კუთხის წერტილებიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="861"/>
+      <location filename="../../CommandCreateGeo.cpp" line="858"/>
       <source>Polygon</source>
       <translation>მრავალკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="862"/>
+      <location filename="../../CommandCreateGeo.cpp" line="859"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation type="unfinished">Creates a regular polygon from a center and corner point</translation>
+      <translation>ქმნის ჩვეულებრივ მრავალკუთხედს ცენტრით და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="935"/>
+      <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <source>Triangle</source>
       <translation>სამკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="936"/>
+      <location filename="../../CommandCreateGeo.cpp" line="933"/>
       <source>Creates an equilateral triangle from a center and corner point</source>
       <translation type="unfinished">Creates an equilateral triangle from a center and corner point</translation>
     </message>
@@ -6533,181 +6437,181 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="966"/>
+      <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Square</source>
       <translation>კვადრატი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="967"/>
+      <location filename="../../CommandCreateGeo.cpp" line="964"/>
       <source>Creates a square from a center and corner point</source>
-      <translation type="unfinished">Creates a square from a center and corner point</translation>
+      <translation>ქმნის კვადრატს ცენტრიდან და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="997"/>
+      <location filename="../../CommandCreateGeo.cpp" line="994"/>
       <source>Pentagon</source>
-      <translation type="unfinished">Pentagon</translation>
+      <translation>ხუთკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="998"/>
+      <location filename="../../CommandCreateGeo.cpp" line="995"/>
       <source>Creates a pentagon from a center and corner point</source>
-      <translation type="unfinished">Creates a pentagon from a center and corner point</translation>
+      <translation>ქმნის ხუთკუთხედს ცენტრიდან და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1028"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1025"/>
       <source>Hexagon</source>
       <translation>ექვსკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1029"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1026"/>
       <source>Creates a hexagon from a center and corner point</source>
-      <translation type="unfinished">Creates a hexagon from a center and corner point</translation>
+      <translation>ქმნის ექვსკუთხედს ცენტრიდან და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1059"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1056"/>
       <source>Heptagon</source>
-      <translation type="unfinished">Heptagon</translation>
+      <translation>შვიდკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1060"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1057"/>
       <source>Creates a heptagon from a center and corner point</source>
-      <translation type="unfinished">Creates a heptagon from a center and corner point</translation>
+      <translation>ქმნის შვიდკუთხედს ცენტრიდან და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1090"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1087"/>
       <source>Octagon</source>
-      <translation type="unfinished">Octagon</translation>
+      <translation>რვაკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1091"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1088"/>
       <source>Creates an octagon from a center and corner point</source>
-      <translation type="unfinished">Creates an octagon from a center and corner point</translation>
+      <translation>ქმნის რვაკუთხედს ცენტრიდან და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1121"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1118"/>
       <source>Polygon</source>
       <translation>მრავალკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1122"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1119"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation type="unfinished">Creates a regular polygon from a center and corner point</translation>
+      <translation>ქმნის ჩვეულებრივ მრავალკუთხედს ცენტრით და კუთხის წერტილიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1160"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1157"/>
       <source>Slot</source>
       <translation>სლოტი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1161"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1158"/>
       <source>Slot tools</source>
-      <translation type="unfinished">Slot tools</translation>
+      <translation>სლოტის ხელსაწყოები</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1216"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1213"/>
       <source>Slot</source>
       <translation>სლოტი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1217"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1214"/>
       <source>Creates a slot</source>
-      <translation type="unfinished">Creates a slot</translation>
+      <translation>ქმნის სლოტს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1247"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1244"/>
       <source>Arc Slot</source>
-      <translation type="unfinished">Arc Slot</translation>
+      <translation>რკალის სლოტი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1245"/>
       <source>Creates an arc slot</source>
-      <translation type="unfinished">Creates an arc slot</translation>
+      <translation>ქმნის რკალის სლოტს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1280"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1277"/>
       <source>B-Spline</source>
       <translation>B-სპლაინი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1281"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1278"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a B-spline curve defined by control points</translation>
+      <translation>შექმნის B-სპლაინის მრუდს, რომელიც საკონტროლო წერტილების მიერაა აღწერილი</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1346"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1343"/>
       <source>B-Spline</source>
       <translation>B-სპლაინი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1347"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1344"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a B-spline curve defined by control points</translation>
+      <translation>შექმნის B-სპლაინის მრუდს, რომელიც საკონტროლო წერტილების მიერაა აღწერილი</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1383"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1380"/>
       <source>Periodic B-Spline</source>
-      <translation type="unfinished">Periodic B-Spline</translation>
+      <translation>პერიოდული B-სპლაინი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1384"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1381"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a periodic B-spline curve defined by control points</translation>
+      <translation>შექმნის პერიოდულ B-სპლაინის მრუდს, რომელიც საკონტროლო წერტილების მიერაა აღწერილი</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1416"/>
       <source>B-Spline From Knots</source>
-      <translation type="unfinished">B-Spline From Knots</translation>
+      <translation>B-სპლაინი კვანძებიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1420"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1417"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
-      <translation type="unfinished">Creates a B-spline from knots, i.e. from interpolation</translation>
+      <translation>ქმნის B-სპლაინს კვანძებისგან. მაგალითად, ინტერპოლაციიდან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1456"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1453"/>
       <source>Periodic B-Spline From Knots</source>
-      <translation type="unfinished">Periodic B-Spline From Knots</translation>
+      <translation>პერიოდული B-სპლაინი კვანძიდან</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1457"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1454"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
       <translation type="unfinished">Creates a periodic B-spline defined by knots using interpolation</translation>
     </message>
@@ -6715,103 +6619,103 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1494"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1491"/>
       <source>Fillet/Chamfer</source>
-      <translation type="unfinished">Fillet/Chamfer</translation>
+      <translation>მომრგვალებული ნაზოლი/კუთხის ნაზოლი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1495"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1492"/>
       <source>Creates a fillet or chamfer between 2 lines</source>
-      <translation type="unfinished">Creates a fillet or chamfer between 2 lines</translation>
+      <translation>ქმნის მომრგვალებული ნაზოლს ან კუთხის ნაზოლს 2 ხაზს შორის</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1528"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1525"/>
       <source>Fillet</source>
       <translation>მომრგვალება</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1529"/>
-      <source>Creates a fillet between 2 selected lines or 1 coincident point</source>
-      <translation type="unfinished">Creates a fillet between 2 selected lines or 1 coincident point</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="1526"/>
+      <source>Creates a fillet between 2 selected lines or at coincident points</source>
+      <translation type="unfinished">Creates a fillet between 2 selected lines or at coincident points</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1559"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1556"/>
       <source>Chamfer</source>
       <translation>კუთხის ნაზოლი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1560"/>
-      <source>Creates a chamfer between 2 selected lines or 1 coincident point</source>
-      <translation type="unfinished">Creates a chamfer between 2 selected lines or 1 coincident point</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="1557"/>
+      <source>Creates a chamfer between 2 selected lines or at coincident points</source>
+      <translation type="unfinished">Creates a chamfer between 2 selected lines or at coincident points</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1592"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1589"/>
       <source>Edit Edges</source>
-      <translation type="unfinished">Edit Edges</translation>
+      <translation>წიბოების ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1593"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1590"/>
       <source>Edge editing tools</source>
-      <translation type="unfinished">Edge editing tools</translation>
+      <translation>წიბოს ჩასწორების ხელსაწყოები</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1623"/>
       <source>Trim Edge</source>
-      <translation type="unfinished">Trim Edge</translation>
+      <translation>წიბოს გაჭრა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1627"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1624"/>
       <source>Trims an edge with respect to the selected position</source>
-      <translation type="unfinished">Trims an edge with respect to the selected position</translation>
+      <translation>წაკვეთავს წიბოს მონიშნული პოზიციის გათვალისწინებით</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1656"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1653"/>
       <source>Extend Edge</source>
-      <translation type="unfinished">Extend Edge</translation>
+      <translation>წიბოს გაფართოება</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1657"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1654"/>
       <source>Extends an edge with respect to the selected position</source>
-      <translation type="unfinished">Extends an edge with respect to the selected position</translation>
+      <translation>გააფართოებს წიბოს მონიშნული პოზიციის გათვალისწინებით</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1686"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1683"/>
       <source>Split Edge</source>
-      <translation type="unfinished">Split Edge</translation>
+      <translation>წიბოს გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1687"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1684"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into 2 segments while preserving constraints</translation>
+      <translation>გაყოფს წიბოს 2 სეგმენტად შეზღუდვების შენარჩუნებით</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1717"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1714"/>
       <source>External Geometry</source>
       <translation>გარე გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1719"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1716"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
       <translation type="unfinished">Creates sketch elements linked to geometry defined outside the sketch</translation>
     </message>
@@ -6819,12 +6723,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherProjection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1774"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1771"/>
       <source>External Projection</source>
-      <translation type="unfinished">External Projection</translation>
+      <translation>გარე პროექცია</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1775"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1772"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
       <translation type="unfinished">Creates the projection of external geometry in the sketch plane</translation>
     </message>
@@ -6832,12 +6736,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherIntersection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1809"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1806"/>
       <source>External Intersection</source>
-      <translation type="unfinished">External Intersection</translation>
+      <translation>გარე თანაკვეთა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1811"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1808"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
       <translation type="unfinished">Creates the intersection of external geometry with the sketch plane</translation>
     </message>
@@ -6845,25 +6749,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1846"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1843"/>
       <source>Carbon Copy</source>
-      <translation type="unfinished">Carbon Copy</translation>
+      <translation>ასლი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1847"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1844"/>
       <source>Copies the geometry of another sketch</source>
-      <translation type="unfinished">Copies the geometry of another sketch</translation>
+      <translation>აკოპირებს სხვა ესკიზის გეომეტრიას</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherInsertKnot</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="887"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="916"/>
       <source>Insert Knot</source>
-      <translation type="unfinished">Insert Knot</translation>
+      <translation>კვანძის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="889"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="918"/>
       <source>Inserts a knot at a given parameter. If a knot already exists at that parameter, its multiplicity is increased by 1.</source>
       <translation type="unfinished">Inserts a knot at a given parameter. If a knot already exists at that parameter, its multiplicity is increased by 1.</translation>
     </message>
@@ -6871,38 +6775,38 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherJoinCurves</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="956"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="985"/>
       <source>Join Curves</source>
       <translation>მრუდების შეერთება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="957"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="986"/>
       <source>Joins 2 curves at selected end points</source>
-      <translation type="unfinished">Joins 2 curves at selected end points</translation>
+      <translation>აერთებს 2 მრუდს მონიშნულ ბოლო წერტილებთან</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="67"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="64"/>
       <source>Toggle B-Spline Degree</source>
-      <translation type="unfinished">Toggle B-Spline Degree</translation>
+      <translation>B-სპლაინის ხარისხის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="68"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="65"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the degree for all B-splines</translation>
+      <translation>გადართავს ყველა კუთხის ხილვადობას ყველა B-სპლაინისთვის</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="96"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="93"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>B-სპლაინის კონტროლის პოლიგონის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="94"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the control polygons for all B-splines</translation>
     </message>
@@ -6910,12 +6814,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="125"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="122"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>B-სპლაინის სიმრუდის სავარცხლის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="126"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="123"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the curvature comb for all B-splines</translation>
     </message>
@@ -6923,12 +6827,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherBSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="154"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="151"/>
       <source>Toggle B-spline knot multiplicity</source>
-      <translation type="unfinished">Toggle B-spline knot multiplicity</translation>
+      <translation>B-სპლაინის კვანძის ჯერადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="155"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="152"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the knot multiplicity for all B-splines</translation>
     </message>
@@ -6936,12 +6840,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherBSplinePoleWeight</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="183"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="180"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation type="unfinished">Toggle B-Spline Control Point Weight</translation>
+      <translation>B-სპლაინის საკონტროლო წერტილის წონის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="184"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="181"/>
       <source>Toggles the visibility of control point weights for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of control point weights for all B-splines</translation>
     </message>
@@ -6949,55 +6853,55 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="213"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="210"/>
       <source>Toggle B-Spline Information Layer</source>
-      <translation type="unfinished">Toggle B-Spline Information Layer</translation>
+      <translation>B-სპლაინის ინფორმაციის ფენის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="214"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="211"/>
       <source>Toggles the visibility of the information layer for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the information layer for all B-splines</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="295"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="292"/>
       <source>Toggle B-Spline Degree</source>
-      <translation type="unfinished">Toggle B-Spline Degree</translation>
+      <translation>B-სპლაინის ხარისხის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="304"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="301"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>B-სპლაინის კონტროლის პოლიგონის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="313"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="310"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>B-სპლაინის სიმრუდის სავარცხლის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="322"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="319"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation type="unfinished">Toggle B-Spline Knot Multiplicity</translation>
+      <translation>B-სპლაინის კვანძის ჯერადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="332"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="329"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation type="unfinished">Toggle B-Spline Control Point Weight</translation>
+      <translation>B-სპლაინის საკონტროლო წერტილის წონის გადართვა</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
+      <location filename="../../CommandSketcherOverlay.cpp" line="295"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="298"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="301"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the degree for all B-splines</translation>
+      <translation>გადართავს ყველა კუთხის ხილვადობას ყველა B-სპლაინისთვის</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplinePolygon</name>
     <message>
+      <location filename="../../CommandSketcherOverlay.cpp" line="303"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="306"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the control polygons for all B-splines</translation>
     </message>
@@ -7005,8 +6909,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
+      <location filename="../../CommandSketcherOverlay.cpp" line="313"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="316"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="319"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the curvature comb for all B-splines</translation>
     </message>
@@ -7014,8 +6918,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
+      <location filename="../../CommandSketcherOverlay.cpp" line="321"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="324"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="327"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the knot multiplicity for all B-splines</translation>
     </message>
@@ -7023,8 +6927,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_BSplinePoleWeight</name>
     <message>
+      <location filename="../../CommandSketcherOverlay.cpp" line="331"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="334"/>
-      <location filename="../../CommandSketcherOverlay.cpp" line="337"/>
       <source>Toggles the visibility of the control point weight for all B-splines</source>
       <translation type="unfinished">Toggles the visibility of the control point weight for all B-splines</translation>
     </message>
@@ -7032,14 +6936,14 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherArcOverlay</name>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="358"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="355"/>
       <source>Toggle Circular Helper for Arcs</source>
-      <translation type="unfinished">Toggle Circular Helper for Arcs</translation>
+      <translation>რკალებისთვის მრგვალი დამხმარის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherOverlay.cpp" line="359"/>
+      <location filename="../../CommandSketcherOverlay.cpp" line="356"/>
       <source>Toggles the visibility of the circular helpers for all arcs</source>
-      <translation type="unfinished">Toggles the visibility of the circular helpers for all arcs</translation>
+      <translation>გადართავს წრიული დამხმარეების ხილვადობას ყველა რკალისთვის</translation>
     </message>
   </context>
   <context>
@@ -7047,7 +6951,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="225"/>
       <source>C&amp;opy Elements</source>
-      <translation type="unfinished">C&amp;opy Elements</translation>
+      <translation>ელემენტების კ&amp;ოპირება</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="226"/>
@@ -7060,12 +6964,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="256"/>
       <source>C&amp;ut Elements</source>
-      <translation type="unfinished">C&amp;ut Elements</translation>
+      <translation>&amp;ელემენტების ამოჭრა</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="257"/>
       <source>Cuts the selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Cuts the selected geometries and constraints to the clipboard</translation>
+      <translation>ამოჭრის მონიშნულ გეომეტრიებს და შეზღუდვებს ბუფერში</translation>
     </message>
   </context>
   <context>
@@ -7073,7 +6977,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="296"/>
       <source>P&amp;aste Elements</source>
-      <translation type="unfinished">P&amp;aste Elements</translation>
+      <translation>ელემენტების ჩ&amp;ასმა</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="297"/>
@@ -7086,7 +6990,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="344"/>
       <source>Select Associated Constraints</source>
-      <translation type="unfinished">Select Associated Constraints</translation>
+      <translation>აირჩიეთ ასოცირებული შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="346"/>
@@ -7104,7 +7008,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="429"/>
       <source>Selects the local origin point of the sketch</source>
-      <translation type="unfinished">Selects the local origin point of the sketch</translation>
+      <translation>მონიშნავს ესკიზის ლოკალურ საწყის წერტილს</translation>
     </message>
   </context>
   <context>
@@ -7117,7 +7021,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="473"/>
       <source>Selects the local vertical axis of the sketch</source>
-      <translation type="unfinished">Selects the local vertical axis of the sketch</translation>
+      <translation>მონიშნავს ესკიზის ლოკალურ ვერტიკალურ ღერძს</translation>
     </message>
   </context>
   <context>
@@ -7130,7 +7034,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="514"/>
       <source>Selects the local horizontal axis of the sketch</source>
-      <translation type="unfinished">Selects the local horizontal axis of the sketch</translation>
+      <translation>მონიშნავს ესკიზის ლოკალურ ჰორიზონტალურ ღერძს</translation>
     </message>
   </context>
   <context>
@@ -7138,12 +7042,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="553"/>
       <source>Select Redundant Constraints</source>
-      <translation type="unfinished">Select Redundant Constraints</translation>
+      <translation>აირჩიეთ დამატებითი შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="554"/>
       <source>Selects all redundant constraints</source>
-      <translation type="unfinished">Selects all redundant constraints</translation>
+      <translation>მონიშნავს ყველა დამატებით შეზღუდვას</translation>
     </message>
   </context>
   <context>
@@ -7151,12 +7055,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="611"/>
       <source>Select Malformed Constraints</source>
-      <translation type="unfinished">Select Malformed Constraints</translation>
+      <translation>აირჩიეთ დეფორმირებული შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="612"/>
       <source>Selects all malformed constraints</source>
-      <translation type="unfinished">Selects all malformed constraints</translation>
+      <translation>მონიშნავს ყველა დეფორმირებულ შეზღუდვას</translation>
     </message>
   </context>
   <context>
@@ -7164,12 +7068,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="666"/>
       <source>Select Partially Redundant Constraints</source>
-      <translation type="unfinished">Select Partially Redundant Constraints</translation>
+      <translation>მონიშნეთ ნაწილობრივ დამატებითი შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="667"/>
       <source>Selects all partially redundant constraints</source>
-      <translation type="unfinished">Selects all partially redundant constraints</translation>
+      <translation>მონიშნავს ყველა ნაწილობრივ დამატებით შეზღუდვას</translation>
     </message>
   </context>
   <context>
@@ -7177,12 +7081,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="722"/>
       <source>Select Conflicting Constraints</source>
-      <translation type="unfinished">Select Conflicting Constraints</translation>
+      <translation>აირჩიეთ კონფლიქტური შეზღუდვები</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="723"/>
       <source>Selects all conflicting constraints</source>
-      <translation type="unfinished">Selects all conflicting constraints</translation>
+      <translation>მონიშნავს ყველა კონფლიქტურ შეზღუდვას</translation>
     </message>
   </context>
   <context>
@@ -7190,7 +7094,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="780"/>
       <source>Select Associated Geometry</source>
-      <translation type="unfinished">Select Associated Geometry</translation>
+      <translation>აირჩიეთ ასოცირებული გეომეტრია</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="782"/>
@@ -7203,7 +7107,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="900"/>
       <source>Select Under-Constrained Elements</source>
-      <translation type="unfinished">Select Under-Constrained Elements</translation>
+      <translation>არასაკმარისად მონიშნული ელემენტების მონიშვნა</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="901"/>
@@ -7216,12 +7120,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="989"/>
       <source>Toggle Internal Geometry</source>
-      <translation type="unfinished">Toggle Internal Geometry</translation>
+      <translation>შიდა გეომეტრიის გადართვა</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="990"/>
       <source>Toggles the visibility of all internal geometry</source>
-      <translation type="unfinished">Toggles the visibility of all internal geometry</translation>
+      <translation>გადართავს ყველა შიდა გეომეტრიის ხილვადობას</translation>
     </message>
   </context>
   <context>
@@ -7234,18 +7138,18 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1106"/>
       <source>Creates a mirrored copy of the selected geometry</source>
-      <translation type="unfinished">Creates a mirrored copy of the selected geometry</translation>
+      <translation>ქმნის მონიშნული გეომეტრიის სარკისებურ ასლს</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2074"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2076"/>
       <source>Delete All Geometry</source>
       <translation>მთელი გეომეტრიის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2075"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2077"/>
       <source>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</source>
       <translation type="unfinished">Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</translation>
     </message>
@@ -7253,25 +7157,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2139"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2141"/>
       <source>Delete All Constraints</source>
       <translation>ყველა შეზღუდვის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2140"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2142"/>
       <source>Deletes all constraints in the sketch</source>
-      <translation type="unfinished">Deletes all constraints in the sketch</translation>
+      <translation>წაშლის ესკიზის ყველა შეზღუდვას</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2206"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2208"/>
       <source>Remove Axes Alignment</source>
       <translation>ღერძების სწორების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2207"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2209"/>
       <source>Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
       <translation type="unfinished">Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
     </message>
@@ -7279,25 +7183,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherOffset</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2326"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2328"/>
       <source>Offset</source>
       <translation>წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2327"/>
-      <source>Offsets the selected geometry: positive values offset outward, negative values inward</source>
-      <translation type="unfinished">Offsets the selected geometry: positive values offset outward, negative values inward</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2329"/>
+      <source>Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward</source>
+      <translation type="unfinished">Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRotate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2411"/>
       <source>Rotate / Polar Transform</source>
-      <translation type="unfinished">Rotate / Polar Transform</translation>
+      <translation>შებრუნება / პოლარული გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2410"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2412"/>
       <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
       <translation type="unfinished">Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</translation>
     </message>
@@ -7305,25 +7209,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherScale</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2443"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2445"/>
       <source>Scale</source>
       <translation>მასშტაბირება</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2444"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <source>Scales the selected geometries</source>
-      <translation type="unfinished">Scales the selected geometries</translation>
+      <translation>ახდენს მონიშნული გეომეტრიების დამასშტაბებას</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTranslate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2477"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2479"/>
       <source>Move / Array Transform</source>
-      <translation type="unfinished">Move / Array Transform</translation>
+      <translation>გადაადგილება / მასივის გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2478"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2480"/>
       <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
       <translation type="unfinished">Translates the selected geometries and enables the creation of 'i' * 'j' copies</translation>
     </message>
@@ -7333,138 +7237,143 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="96"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="105"/>
       <source>%1 pick arc center</source>
-      <translation type="unfinished">%1 pick arc center</translation>
+      <translation>%1 მიუთითეთ რკალის ცენტრი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="111"/>
       <source>%1 pick arc start point</source>
-      <translation type="unfinished">%1 pick arc start point</translation>
+      <translation>%1 მიუთითეთ რკალის საწყისი წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="117"/>
       <source>%1 pick arc end point</source>
-      <translation type="unfinished">%1 pick arc end point</translation>
+      <translation>%1 მიუთითეთ რკალის ბოლო წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="125"/>
       <source>%1 pick first arc point</source>
-      <translation type="unfinished">%1 pick first arc point</translation>
+      <translation>%1 მიუთითეთ პირველი რკალის წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="131"/>
       <source>%1 pick second arc point</source>
-      <translation type="unfinished">%1 pick second arc point</translation>
+      <translation>%1 მიუთითეთ მეორე რკალის წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="137"/>
       <source>%1 pick third arc point</source>
-      <translation type="unfinished">%1 pick third arc point</translation>
+      <translation>%1 მიუთითეთ მესამე რკალის წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="392"/>
-      <source>Arc parameters</source>
+      <source>Arc Parameters</source>
       <translation>რკალის პარამეტრები</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="418"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="420"/>
       <source>%1 pick ellipse center</source>
-      <translation type="unfinished">%1 pick ellipse center</translation>
+      <translation>%1 მიუთითეთ ოვალის ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="423"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="425"/>
       <source>%1 pick axis point</source>
-      <translation type="unfinished">%1 pick axis point</translation>
+      <translation>%1 მიუთითეთ ღერძის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="428"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="430"/>
       <source>%1 pick arc start point</source>
-      <translation type="unfinished">%1 pick arc start point</translation>
+      <translation>%1 მიუთითეთ რკალის საწყისი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="433"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="435"/>
       <source>%1 pick arc end point</source>
-      <translation type="unfinished">%1 pick arc end point</translation>
+      <translation>%1 მიუთითეთ რკალის ბოლო წერტილი</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfHyperbola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="417"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="419"/>
       <source>%1 pick center point</source>
-      <translation type="unfinished">%1 pick center point</translation>
+      <translation>%1 მიუთითეთ ცენტრის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="422"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="424"/>
       <source>%1 pick axis point</source>
-      <translation type="unfinished">%1 pick axis point</translation>
+      <translation>%1 მიუთითეთ ღერძის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="427"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="429"/>
       <source>%1 pick arc start point</source>
-      <translation type="unfinished">%1 pick arc start point</translation>
+      <translation>%1 მიუთითეთ რკალის საწყისი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="432"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="434"/>
       <source>%1 pick arc end point</source>
-      <translation type="unfinished">%1 pick arc end point</translation>
+      <translation>%1 მიუთითეთ რკალის ბოლო წერტილი</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfParabola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="347"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="349"/>
       <source>%1 pick focus point</source>
-      <translation type="unfinished">%1 pick focus point</translation>
+      <translation>%1 მიუთითეთ ფოკუსის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="352"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="354"/>
       <source>%1 pick axis point</source>
-      <translation type="unfinished">%1 pick axis point</translation>
+      <translation>%1 მიუთითეთ ღერძის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="357"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="359"/>
       <source>%1 pick starting point</source>
-      <translation type="unfinished">%1 pick starting point</translation>
+      <translation>%1 მიუთითეთ საწყისი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="362"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="364"/>
       <source>%1 pick end point</source>
-      <translation type="unfinished">%1 pick end point</translation>
+      <translation>%1 მიუთითეთ საბოლოო წერტილი</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="100"/>
+      <source>%1 switch mode</source>
+      <translation>%1 რეჟიმის გადართვა</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="107"/>
       <source>%1 pick slot center</source>
-      <translation type="unfinished">%1 pick slot center</translation>
+      <translation>%1 მიუთითეთ სლოტის ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="110"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="113"/>
       <source>%1 pick slot radius</source>
-      <translation type="unfinished">%1 pick slot radius</translation>
+      <translation>%1 მიუთითეთ სლოტის რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="115"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="119"/>
       <source>%1 pick slot angle</source>
-      <translation type="unfinished">%1 pick slot angle</translation>
+      <translation>%1 მიუთითეთ სლოტის კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="120"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="125"/>
       <source>%1 pick slot width</source>
-      <translation type="unfinished">%1 pick slot width</translation>
+      <translation>%1 მიუთითეთ სლოტის სიგანე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="299"/>
-      <source>Arc Slot parameters</source>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="305"/>
+      <source>Arc Slot Parameters</source>
       <translation>რკალის სლოტის პარამეტრები</translation>
     </message>
   </context>
@@ -7473,47 +7382,65 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="412"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="421"/>
       <source>%1 pick first control point</source>
-      <translation type="unfinished">%1 pick first control point</translation>
+      <translation>%1 მიუთითეთ შემდეგი საკონტროლო წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="427"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="423"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
+      <source>%1 + degree</source>
+      <translation>%1 + გრადუსი</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="424"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
+      <source>%1 - degree</source>
+      <translation>%1 - გრადუსი</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="429"/>
       <source>%1 pick next control point</source>
-      <translation type="unfinished">%1 pick next control point</translation>
+      <translation>%1 მიუთითეთ შემდეგი საკონტროლო წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="428"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="448"/>
       <source>%1 finish B-spline</source>
-      <translation type="unfinished">%1 finish B-spline</translation>
+      <translation>%1 B-სპლაინის დასრულება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="436"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>
       <source>%1 pick first knot</source>
-      <translation type="unfinished">%1 pick first knot</translation>
+      <translation>%1 მიუთითეთ პირველი კვანძი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="442"/>
-      <source>%1 pick next knot</source>
-      <translation type="unfinished">%1 pick next knot</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="450"/>
+      <source>%1 toggle periodic</source>
+      <translation>%1 პერიოდულობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="491"/>
-      <source>B-spline parameters</source>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
+      <source>%1 pick next knot</source>
+      <translation>%1 მიუთითეთ შემდეგი კვანძი</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="497"/>
+      <source>B-Spline Parameters</source>
       <translation>B-სპლაინის პარამეტრები</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerCarbonCopy</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="227"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="228"/>
       <source>%1 pick sketch to copy</source>
       <comment>Sketcher CarbonCopy: hint</comment>
-      <translation type="unfinished">%1 pick sketch to copy</translation>
+      <translation>%1 მიუთითეთ დასაკოპირებელი ესკიზი</translation>
     </message>
   </context>
   <context>
@@ -7521,36 +7448,36 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="86"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="95"/>
       <source>%1 pick circle center</source>
-      <translation type="unfinished">%1 pick circle center</translation>
+      <translation>%1 მიუთითეთ წრის ცენტრი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="101"/>
       <source>%1 pick rim point</source>
-      <translation type="unfinished">%1 pick rim point</translation>
+      <translation>%1 მიუთითეთ ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="109"/>
       <source>%1 pick first rim point</source>
-      <translation type="unfinished">%1 pick first rim point</translation>
+      <translation>%1 მიუთითეთ პირველი ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="115"/>
       <source>%1 pick second rim point</source>
-      <translation type="unfinished">%1 pick second rim point</translation>
+      <translation>%1 მიუთითეთ მეორე ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="121"/>
       <source>%1 pick third rim point</source>
-      <translation type="unfinished">%1 pick third rim point</translation>
+      <translation>%1 მიუთითეთ მესამე ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="310"/>
-      <source>Circle parameters</source>
+      <source>Circle Parameters</source>
       <translation>წრეწირის პარამეტრები</translation>
     </message>
   </context>
@@ -7559,66 +7486,66 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="92"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="101"/>
       <source>%1 pick ellipse center</source>
-      <translation type="unfinished">%1 pick ellipse center</translation>
+      <translation>%1 მიუთითეთ ოვალის ცენტრი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="107"/>
       <source>%1 pick axis endpoint</source>
-      <translation type="unfinished">%1 pick axis endpoint</translation>
+      <translation>%1 მიუთითეთ ღერძის ბოლო წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="113"/>
       <source>%1 pick minor axis endpoint</source>
-      <translation type="unfinished">%1 pick minor axis endpoint</translation>
+      <translation>%1 მიუთითეთ დამხმარე ღერძის ბოლო წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="121"/>
       <source>%1 pick first rim point</source>
-      <translation type="unfinished">%1 pick first rim point</translation>
+      <translation>%1 მიუთითეთ პირველი ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="127"/>
       <source>%1 pick second rim point</source>
-      <translation type="unfinished">%1 pick second rim point</translation>
+      <translation>%1 მიუთითეთ მეორე ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="133"/>
       <source>%1 pick third rim point</source>
-      <translation type="unfinished">%1 pick third rim point</translation>
+      <translation>%1 მიუთითეთ მესამე ფერსოს წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="328"/>
-      <source>Ellipse parameters</source>
+      <source>Ellipse Parameters</source>
       <translation>ოვალის პარამეტრები</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerExtend</name>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="387"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="388"/>
       <source>%1 pick edge to extend</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation type="unfinished">%1 pick edge to extend</translation>
+      <translation>%1 მიუთითეთ გასაფართოებელი წიბო</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="392"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="393"/>
       <source>%1 set extension length</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation type="unfinished">%1 set extension length</translation>
+      <translation>%1 დააყენეთ გაფართოების სიგრძე</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="252"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="253"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
-      <translation type="unfinished">%1 pick external geometry</translation>
+      <translation>%1 მიუთითეთ გარე გეომეტრია</translation>
     </message>
   </context>
   <context>
@@ -7635,90 +7562,97 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="348"/>
-      <source>Fillet/Chamfer parameters</source>
-      <translation>მომრგვალებული/კუთხის ნაზოლის მორგება</translation>
+      <source>Fillet/Chamfer Parameters</source>
+      <translation>მომრგვალებული/კუთხის ნაზოლის პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="421"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="417"/>
+      <source>%1 switch mode</source>
+      <translation>%1 რეჟიმის გადართვა</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="418"/>
+      <source>%1 toggle preserve corner</source>
+      <translation>%1 კუთხის შემონახვის გადართვა</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="425"/>
       <source>%1 pick first edge or point</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
-      <translation type="unfinished">%1 pick first edge or point</translation>
+      <translation>%1 მიუთითეთ პირველი წიბო ან წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="424"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
       <source>%1 pick second edge</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
-      <translation type="unfinished">%1 pick second edge</translation>
+      <translation>%1 მიუთითეთ მეორე წიბო</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="427"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="433"/>
       <source>%1 create fillet</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
-      <translation type="unfinished">%1 create fillet</translation>
+      <translation>%1 მომრგვალებული ნაზოლის შექმნა</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerLine</name>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="217"/>
-      <source>Line parameters</source>
+      <source>Line Parameters</source>
       <translation>ხაზის პარამეტრები</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="264"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="273"/>
       <location filename="../../DrawSketchHandlerLine.h" line="287"/>
       <location filename="../../DrawSketchHandlerLine.h" line="301"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 მიუთითეთ პირველი წერტილი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="279"/>
       <location filename="../../DrawSketchHandlerLine.h" line="293"/>
       <location filename="../../DrawSketchHandlerLine.h" line="307"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 მიუთითეთ მეორე წერტილი</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="779"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="783"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 მიუთითეთ პირველი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="784"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="788"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>%1 მიუთითეთ შემდეგი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="785"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="789"/>
       <source>%1 finish</source>
-      <translation type="unfinished">%1 finish</translation>
+      <translation>%1 დასრულება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="786"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="790"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="182"/>
-      <source>Offset parameters</source>
+      <location filename="../../DrawSketchHandlerOffset.h" line="184"/>
+      <source>Offset Parameters</source>
       <translation>წანაცვლების პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="200"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="202"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
-      <translation type="unfinished">%1 set offset direction and distance</translation>
+      <translation>%1 დააყენეთ წანაცვლების მიმართულება და მანძილი</translation>
     </message>
   </context>
   <context>
@@ -7727,31 +7661,31 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerPoint.h" line="70"/>
       <source>%1 place a point</source>
       <comment>Sketcher Point: hint</comment>
-      <translation type="unfinished">%1 place a point</translation>
+      <translation>%1 წერტილის მოთავსება</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
-      <source>Polygon parameters</source>
+      <source>Polygon Parameters</source>
       <translation>მრავალკუთხედის პარამეტრები</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="276"/>
       <source>%1 pick polygon center</source>
-      <translation type="unfinished">%1 pick polygon center</translation>
+      <translation>%1 მიუთითეთ მრავალკუთხედის ცენტრი</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="277"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="284"/>
       <source>%1/%2 increase / decrease number of sides</source>
-      <translation type="unfinished">%1/%2 increase / decrease number of sides</translation>
+      <translation>გვერდების რაოდენობის %1/%2 გაზრდა / შემცირება</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
       <source>%1 pick rotation and size</source>
-      <translation type="unfinished">%1 pick rotation and size</translation>
+      <translation>%1 მიუთითეთ ბრუნვა და ზომა</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="283"/>
@@ -7764,122 +7698,132 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="117"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 რეჟიმის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="178"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="210"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <source>%1 toggle rounded corners</source>
+      <translation>%1 მომრგვალებული კუთხეების გადართვა</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <source>%1 toggle frame</source>
+      <translation>%1 ჩარჩოს გადართვა</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
       <source>%1 pick first corner</source>
-      <translation type="unfinished">%1 pick first corner</translation>
+      <translation>%1 მიუთითეთ პირველი კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="132"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
       <source>%1 pick opposite corner</source>
-      <translation type="unfinished">%1 pick opposite corner</translation>
+      <translation>%1 მიუთითეთ საპირისპირო კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="138"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="164"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="196"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
       <source>%1 set corner radius or frame thickness</source>
-      <translation type="unfinished">%1 set corner radius or frame thickness</translation>
+      <translation>%1 დააყენეთ კუთხის რადიუსი ან ჩარჩოს სისქე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="144"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
       <source>%1 set frame thickness</source>
-      <translation type="unfinished">%1 set frame thickness</translation>
+      <translation>%1 დააყენეთ ჩარჩოს სისქე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="152"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="204"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
       <source>%1 pick center</source>
       <translation>%1 აირჩიეთ ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="158"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
       <source>%1 pick corner</source>
-      <translation type="unfinished">%1 pick corner</translation>
+      <translation>%1 აირჩიეთ კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="184"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="216"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
       <source>%1 pick second corner</source>
-      <translation type="unfinished">%1 pick second corner</translation>
+      <translation>%1 მიუთითეთ მეორე კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="190"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
       <source>%1 pick third corner</source>
-      <translation type="unfinished">%1 pick third corner</translation>
+      <translation>%1 მიუთითეთ მესამე კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="706"/>
-      <source>Rectangle parameters</source>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
+      <source>Rectangle Parameters</source>
       <translation>მართკუთხედის პარამეტრები</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="96"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="97"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 pick center point</translation>
+      <translation>%1 მიუთითეთ ცენტრის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="101"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="102"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 set start angle</translation>
+      <translation>%1 დააყენეთ საწყისი კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="106"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="107"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 set rotation angle</translation>
+      <translation>%1 დააყენეთ ბრუნვის კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="203"/>
-      <source>Rotate parameters</source>
+      <location filename="../../DrawSketchHandlerRotate.h" line="212"/>
+      <source>Rotate Parameters</source>
       <translation>შებრუნების პარამეტრები</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="146"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="165"/>
       <source>%1 pick reference point</source>
-      <translation type="unfinished">%1 pick reference point</translation>
+      <translation>%1 მიუთითეთ მიმართვის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="170"/>
       <source>%1 set scale factor</source>
-      <translation type="unfinished">%1 set scale factor</translation>
+      <translation>%1 მიუთითეთ მასშტაბის კოეფიციენტი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="214"/>
-      <source>Scale parameters</source>
+      <location filename="../../DrawSketchHandlerScale.h" line="233"/>
+      <source>Scale Parameters</source>
       <translation>მასშტაბის მორგება</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="94"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="92"/>
       <source>%1 pick slot start point</source>
-      <translation type="unfinished">%1 pick slot start point</translation>
+      <translation>%1 მიუთითეთ სლოტის საწყისი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="99"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="97"/>
       <source>%1 pick slot end point</source>
-      <translation type="unfinished">%1 pick slot end point</translation>
+      <translation>%1 მიუთითეთ სლოტის ბოლო წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="104"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="102"/>
       <source>%1 pick slot width</source>
-      <translation type="unfinished">%1 pick slot width</translation>
+      <translation>%1 მიუთითეთ სლოტის სიგანე</translation>
     </message>
   </context>
   <context>
@@ -7888,64 +7832,93 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerSplitting.h" line="204"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
-      <translation type="unfinished">%1 pick location on edge to split</translation>
+      <translation>%1 მიუთითეთ მდებარეობა წიბოზე, გასაყოფად</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerSymmetry</name>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
-      <source>Symmetry parameters</source>
+      <source>Symmetry Parameters</source>
       <translation>სიმეტრიის პარამეტრები</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="224"/>
       <source>%1 pick axis, edge, or point</source>
       <comment>Sketcher Symmetry: hint</comment>
-      <translation type="unfinished">%1 pick axis, edge, or point</translation>
+      <translation>%1 მიუთითეთ ღერძი, წიბო, ან წერტილი</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="175"/>
-      <source>Translate parameters</source>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="185"/>
+      <source>Translate Parameters</source>
       <translation>პარამეტრების მოძრაობითი გადატანა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="438"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="451"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 pick reference point</translation>
+      <translation>%1 მიუთითეთ მიმართვის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="440"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="453"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 set translation vector</translation>
+      <translation>%1 დააყენეთ გადატანითი მოძრაობის ვექტორი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="443"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="456"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 set second translation vector</translation>
+      <translation>%1 დააყენეთ მეორე გადატანითი მოძრაობის ვექტორი</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="216"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="217"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
-      <translation type="unfinished">%1 pick edge to trim</translation>
+      <translation>%1 მიუთითეთ წასაკვეთი წიბო</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::TaskSketcherSolverAdvanced</name>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="58"/>
+      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="56"/>
       <source>Advanced Solver Controls</source>
-      <translation type="unfinished">Advanced Solver Controls</translation>
+      <translation>ამომხსნელის დამატებითი პარამეტრები</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateBSpline</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="914"/>
+      <source>From control points</source>
+      <translation>საკონტროლო წერტილებიდან</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="915"/>
+      <source>From knots</source>
+      <translation>კვანძებიდან</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_symmetry</name>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
+      <source>Create symmetry constraints (J)</source>
+      <translation>სიმეტრიის შეზღუდვების შექმნა (J)</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::TaskSketcherTool</name>
+    <message>
+      <location filename="../../TaskSketcherTool.cpp" line="43"/>
+      <source>Tool Parameters</source>
+      <translation>ხელსაწყოს პარამეტრები</translation>
     </message>
   </context>
 </TS>

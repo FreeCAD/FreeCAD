@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QDockWidget>
 # include <QStatusBar>
-#endif
+
 
 #include "Workbench.h"
 #include "WorkbenchManipulator.h"
@@ -719,10 +718,13 @@ MenuItem* StdWorkbench::setupMenuBar() const
     auto tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
 #ifdef BUILD_ADDONMGR
-    *tool << "Std_AddonMgr"
-          << "Separator";
+    if (Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
+        *tool << "Std_AddonMgr"
+              << "Separator";
+    }
 #endif
     *tool << "Std_Measure"
+          << "Std_ClarifySelection"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_ViewLoadImage"
@@ -865,7 +867,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Hidden);
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
-    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_TaskView", Qt::RightDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
 

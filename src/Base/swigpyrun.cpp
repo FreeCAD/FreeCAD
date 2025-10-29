@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,7 +23,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 #include <sstream>
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 #if defined(__clang__)

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(__MINGW32__)
 #define WNT  // avoid conflict with GUID
 #endif
-#ifndef _PreComp_
 #include <Quantity_ColorRGBA.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
@@ -40,13 +38,14 @@
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
 #include <gp_Trsf.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF.h"
 #include "Tools.h"
@@ -173,6 +172,14 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
         }
 
         return_label = root_id;
+    }
+    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
+        App::DocumentObject* tip = body->Tip.getValue();
+        if (tip && tip->isDerivedFrom<Part::Feature>()) {
+            // use the tip instead of the body for export
+            obj = tip;
+        }
     }
 
     if (obj->isDerivedFrom<Part::Feature>()) {

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -71,57 +70,188 @@ class JobCreate:
         self.index = None
         self.model = None
 
+    def _getMinuteBasedSchemas(self):
+        """Dynamically discover which unit schemas support velocity in minutes."""
+        internal_names = FreeCAD.Units.listSchemas()
+        minute_based_schemes = []
+
+        # Create a test velocity quantity
+        q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
+
+        for i, key in enumerate(internal_names):
+            try:
+                label = FreeCAD.Units.listSchemas(i)
+                r = FreeCAD.Units.schemaTranslate(q, i)
+                if "/min" in r[2]:
+                    minute_based_schemes.append({"id": i, "label": label})
+            except (IndexError, TypeError):
+                # Skip invalid schema indices
+                continue
+
+        return minute_based_schemes
+
+    def _currentSchemaUsesMinutes(self):
+        """Test if the current unit schema uses minutes for velocity."""
+        try:
+            # Create a test velocity quantity
+            q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
+
+            # Get current schema's representation of velocity
+            current_representation = q.getUserPreferred()[2]
+
+            # Check if the current representation contains '/min'
+            return "/min" in current_representation
+        except Exception:
+            # If we can't determine, assume it doesn't use minutes
+            return False
+
     def _warnUserIfNotUsingMinutes(self):
         # Warn user if current schema doesn't use minute for time in velocity
         if Path.Preferences.suppressVelocity():
             return
 
-        # schemas in order of preference -- the first ones get proposed to the user
-        minute_based_schemes = list(map(FreeCAD.Units.listSchemas, [6, 3, 2]))
-        if FreeCAD.ActiveDocument.UnitSystem in minute_based_schemes:
+        # Test if current schema uses minutes for velocity
+        if self._currentSchemaUsesMinutes():
             return
 
-        # NB: On macOS the header is ignored as per its UI guidelines.
-        header = translate("CAM_Job", "Warning: Incompatible Unit Schema")
-        info = translate(
-            "CAM_Job",
-            (
-                "This document uses an improper unit schema "
-                "which can result in dangerous situations and machine crashes!"
-            ),
+        # Get all minute-based schemas for the dialog
+        minute_based_schemes = self._getMinuteBasedSchemas()
+
+        # Create custom dialog with unit schema selection
+        dialog = QtGui.QDialog()
+        dialog.setWindowTitle(translate("CAM_Job", "Warning: Incompatible Unit Schema"))
+        dialog.setModal(True)
+        dialog.resize(500, 400)
+
+        layout = QtGui.QVBoxLayout(dialog)
+
+        # Warning message
+        warning_label = QtGui.QLabel()
+        warning_label.setText(
+            translate(
+                "CAM_Job",
+                "<b>This document uses an improper unit schema which can result in "
+                "dangerous situations and machine crashes!</b>",
+            )
         )
-        details = translate(
-            "CAM_Job",
-            (
-                "<p>This document's unit schema, '{}', "
-                "expresses velocity in values <i>per second</i>."
-                "\n"
-                "<p>Please change the unit schema in the document properties "
-                "to one that expresses feed rates <i>per minute</i> instead. "
-                "\n"
-                "For example: \n"
-                "<ul>\n"
-                "<li>{}\n"
-                "<li>{}\n"
-                "</ul>\n"
-                "\n"
-                "<p>Keeping the current unit schema can result in dangerous G-code errors. "
+        warning_label.setWordWrap(True)
+        warning_label.setStyleSheet("color: red; font-weight: bold; margin-bottom: 10px;")
+        layout.addWidget(warning_label)
+
+        # Current schema info
+        current_info = QtGui.QLabel()
+        current_info.setText(
+            translate(
+                "CAM_Job",
+                "Current unit schema '{}' expresses velocity in values <i>per second</i>.",
+            ).format(FreeCAD.ActiveDocument.UnitSystem)
+        )
+        current_info.setWordWrap(True)
+        layout.addWidget(current_info)
+
+        # Recommendation
+        recommendation = QtGui.QLabel()
+        recommendation.setText(
+            translate(
+                "CAM_Job",
+                "Please select a unit schema that expresses feed rates <i>per minute</i> instead:",
+            )
+        )
+        recommendation.setWordWrap(True)
+        layout.addWidget(recommendation)
+
+        # Unit schema selection
+        schema_group = QtGui.QGroupBox(translate("CAM_Job", "Recommended Unit Schemas"))
+        schema_layout = QtGui.QVBoxLayout(schema_group)
+
+        self.schema_buttons = []
+        for i, schema in enumerate(minute_based_schemes):
+            radio = QtGui.QRadioButton(schema["label"])
+            radio.setProperty("schema_id", schema["id"])  # Store the schema ID
+            if i == 0:  # Select first (most preferred) by default
+                radio.setChecked(True)
+            self.schema_buttons.append(radio)
+            schema_layout.addWidget(radio)
+
+        layout.addWidget(schema_group)
+
+        # Additional info
+        info_label = QtGui.QLabel()
+        info_label.setText(
+            translate(
+                "CAM_Job",
+                "Keeping the current unit schema can result in dangerous G-code errors. "
                 "For details please refer to the "
                 "<a href='https://wiki.freecad.org/CAM_Workbench#Units'>Units section</a> "
-                "of the CAM Workbench's wiki page."
-            ),
-        ).format(FreeCAD.ActiveDocument.UnitSystem, *minute_based_schemes[:2])
-        msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, info)
-        msgbox.setInformativeText(details)
-        msgbox.addButton(translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole)
-        dont_show_again_button = msgbox.addButton(
-            translate("CAM_Job", "Don't show this warning again"),
-            QtGui.QMessageBox.ActionRole,
+                "of the CAM Workbench's wiki page.",
+            )
         )
+        info_label.setWordWrap(True)
+        info_label.setOpenExternalLinks(True)
+        layout.addWidget(info_label)
 
-        msgbox.exec_()
-        if msgbox.clickedButton() == dont_show_again_button:
-            Path.Preferences.preferences().SetBool(Path.Preferences.WarningSuppressVelocity, True)
+        # Buttons
+        button_layout = QtGui.QHBoxLayout()
+
+        change_button = QtGui.QPushButton(translate("CAM_Job", "Change Unit Schema"))
+        change_button.setDefault(True)
+        change_button.clicked.connect(lambda: self._applyUnitSchema(dialog))
+
+        keep_button = QtGui.QPushButton(translate("CAM_Job", "Keep Current Schema"))
+        keep_button.clicked.connect(dialog.reject)
+
+        dont_show_button = QtGui.QPushButton(translate("CAM_Job", "Don't Show Again"))
+        dont_show_button.clicked.connect(lambda: self._suppressWarning(dialog))
+
+        button_layout.addWidget(change_button)
+        button_layout.addWidget(keep_button)
+        button_layout.addWidget(dont_show_button)
+
+        layout.addLayout(button_layout)
+
+        dialog.exec_()
+
+    def _applyUnitSchema(self, dialog):
+        """Apply the selected unit schema to the document."""
+        selected_schema_id = None
+        selected_schema_label = None
+        for button in self.schema_buttons:
+            if button.isChecked():
+                selected_schema_id = button.property("schema_id")
+                selected_schema_label = button.text()
+                break
+
+        if selected_schema_id is not None:
+            try:
+                FreeCAD.ActiveDocument.UnitSystem = selected_schema_id
+                FreeCAD.ActiveDocument.recompute()
+
+                # Show success message
+                QtGui.QMessageBox.information(
+                    dialog,
+                    translate("CAM_Job", "Unit Schema Changed"),
+                    translate("CAM_Job", "Unit schema successfully changed to '{}'.").format(
+                        selected_schema_label
+                    ),
+                )
+                dialog.accept()
+            except Exception as e:
+                QtGui.QMessageBox.critical(
+                    dialog,
+                    translate("CAM_Job", "Error"),
+                    translate("CAM_Job", "Failed to change unit schema: {}").format(str(e)),
+                )
+        else:
+            QtGui.QMessageBox.warning(
+                dialog,
+                translate("CAM_Job", "No Selection"),
+                translate("CAM_Job", "Please select a unit schema."),
+            )
+
+    def _suppressWarning(self, dialog):
+        """Suppress future warnings and close dialog."""
+        Path.Preferences.preferences().SetBool(Path.Preferences.WarningSuppressVelocity, True)
+        dialog.reject()
 
     def setupTitle(self, title):
         self.dialog.setWindowTitle(title)
@@ -152,9 +282,11 @@ class JobCreate:
 
         for base in self.candidates:
             if (
-                not base in jobResources
+                base not in jobResources
                 and not PathJob.isResourceClone(job, base, None)
                 and not hasattr(base, "StockType")
+                and base.ViewObject.ShowInTree
+                and base.TypeId != "App::DocumentObjectGroup"
             ):
                 item0 = QtGui.QStandardItem()
                 item1 = QtGui.QStandardItem()

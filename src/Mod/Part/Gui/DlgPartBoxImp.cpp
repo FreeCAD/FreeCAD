@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgPartBoxImp.h"
 #include "ui_DlgPartBox.h"

@@ -43,9 +43,7 @@ def isCubic(shape):
     and all angles are 90 degrees between its edges.
     """
     # first we try fast methods
-    if (len(shape.Vertexes) != 8
-            or len(shape.Faces) != 6
-            or len(shape.Edges) != 12):
+    if len(shape.Vertexes) != 8 or len(shape.Faces) != 6 or len(shape.Edges) != 12:
         return False
 
     for e in shape.Edges:
@@ -60,10 +58,10 @@ def isCubic(shape):
         for i in range(4):
             e1 = vec(f.Edges[i])
             if i < 3:
-                e2 = vec(f.Edges[i+1])
+                e2 = vec(f.Edges[i + 1])
             else:
                 e2 = vec(f.Edges[0])
-            rpi = [0.0, round(math.pi/2, precision())]
+            rpi = [0.0, round(math.pi / 2, precision())]
             if round(e1.getAngle(e2), precision()) not in rpi:
                 return False
 
@@ -109,7 +107,7 @@ def getCubicDimensions(shape):
 
     # getting height
     vz = None
-    rpi = round(math.pi/2, precision())
+    rpi = round(math.pi / 2, precision())
     for i in range(1, 6):
         for e in shape.Faces[i].Edges:
             if basepoint in [e.Vertexes[0].Point, e.Vertexes[1].Point]:
@@ -128,9 +126,12 @@ def getCubicDimensions(shape):
     mat.rotateY(rotY)
     mat.rotateZ(rotZ)
 
-    return [App.Placement(mat),
-            round(vx.Length, precision()),
-            round(vy.Length, precision()),
-            round(vz.Length, precision())]
+    return [
+        App.Placement(mat),
+        round(vx.Length, precision()),
+        round(vy.Length, precision()),
+        round(vz.Length, precision()),
+    ]
+
 
 ## @}

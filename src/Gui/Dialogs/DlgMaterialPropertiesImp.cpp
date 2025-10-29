@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <App/PropertyStandard.h>
 
 #include "Dialogs/DlgMaterialPropertiesImp.h"

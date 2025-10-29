@@ -21,14 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoLightModel.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <QMessageBox>
 # include <QCheckBox>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>

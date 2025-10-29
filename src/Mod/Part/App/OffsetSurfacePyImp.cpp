@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_OffsetSurface.hxx>
 # include <memory>
-#endif
+
 
 #include "OCCError.h"
 #include "OffsetSurfacePy.h"

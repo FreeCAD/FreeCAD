@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -20,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 #include <App/DocumentObjectPy.h>
 
 #include "SelectionFilterPy.h"
@@ -47,10 +48,7 @@ SelectionFilterPy::~SelectionFilterPy() = default;
 
 Py::Object SelectionFilterPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "SelectionFilter";
-    return Py::String(s_out.str());
+    return Py::String("SelectionFilter");
 }
 
 Py::Object SelectionFilterPy::match()

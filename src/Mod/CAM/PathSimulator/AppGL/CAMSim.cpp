@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"  // NOLINT
-#ifndef _PreComp_
 #include <string>
 #include <vector>
-#endif
+
 
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"

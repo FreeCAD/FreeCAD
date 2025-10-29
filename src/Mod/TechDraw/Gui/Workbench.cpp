@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <qobject.h>
-#endif
+
 
 #include "Workbench.h"
 #include <App/Application.h>
@@ -37,9 +35,9 @@ using namespace TechDrawGui;
 
 #if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Dimensions");
-    qApp->translate("Workbench", "Extensions: Attributes/Modifications");
-    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
-    qApp->translate("Workbench", "Extensions: Dimensions");
+    qApp->translate("Workbench", "Attributes/Modifications");
+    qApp->translate("Workbench", "Centerlines/Threading");
+    qApp->translate("Workbench", "Format/Organize Dimensions");
     qApp->translate("Workbench", "Annotations");
     qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
@@ -94,14 +92,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_AreaDimension";
     *dimensions << "TechDraw_HorizontalExtentDimension";
     *dimensions << "TechDraw_VerticalExtentDimension";
-    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
-    *dimensions << "TechDraw_LinkDimension";
-    *dimensions << "TechDraw_LandmarkDimension";
     *dimensions << "TechDraw_DimensionRepair";
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: Attributes/Modifications");
+    toolattrib->setCommand("Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
     *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
     *toolattrib << "Separator";
@@ -124,7 +119,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: centerlines and threading
     Gui::MenuItem* toolcenter = new Gui::MenuItem;
-    toolcenter->setCommand("Extensions: Centerlines/Threading");
+    toolcenter->setCommand("Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
     *toolcenter << "Separator";
@@ -145,7 +140,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
-    tooldimensions->setCommand("Extensions: Dimensions");
+    tooldimensions->setCommand("Format/Organize Dimensions");
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateObliqueChainDimension";
@@ -344,7 +339,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_AxoLengthDimension";
-    *dims << "TechDraw_LandmarkDimension";
     *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem* extattribs = new Gui::ToolBarItem(root);
@@ -443,8 +437,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_AngleDimension";
     *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
-    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
-    *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_AxoLengthDimension";
     *dims << "TechDraw_LandmarkDimension";

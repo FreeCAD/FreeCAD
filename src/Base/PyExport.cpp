@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,8 +29,6 @@
  *  \version $Revision: 2.2 $
  *  \date    $Date: 2006/01/24 14:26:42 $
  */
-
-#include "PreCompiled.h"
 
 
 #include "PyExport.h"

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -300,7 +301,7 @@ public:
     void setColorOverride(Base::Color c) {
         overrideColor = true;
         colorOverride = SbColor(c.r,c.g,c.b);
-        transOverride = c.a;
+        transOverride = 1.0 - c.a;
     }
 
     void removeColorOverride() {
@@ -477,3 +478,4 @@ private:
 } // namespace Gui
 
 #endif // !GUI_SOFCUNIFIEDSELECTION_H
+

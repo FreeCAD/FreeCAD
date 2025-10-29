@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoEventCallback.h>
@@ -31,7 +29,7 @@
 #include <QMessageBox>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
@@ -899,7 +897,7 @@ void CmdFemConstraintSpring::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintSpring");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make spring on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make Spring Constraint"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")",
               FeatName.c_str());
@@ -1128,10 +1126,10 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Node Set by Poly");
-    sToolTipText = QT_TR_NOOP("Creates a node set by poly");
+    sMenuText = QT_TR_NOOP("Node Set by Polygon");
+    sToolTipText = QT_TR_NOOP("Creates a node set by polygon selection");
     sWhatsThis = "FEM_DefineNodesSet";
-    sStatusTip = QT_TR_NOOP("Create node set by Poly");
+    sStatusTip = sToolTipText;
     sPixmap = "FEM_CreateNodesSet";
 }
 
@@ -1280,10 +1278,10 @@ CmdFemDefineElementsSet::CmdFemDefineElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Element Set by Poly");
-    sToolTipText = QT_TR_NOOP("Create element set by poly");
+    sMenuText = QT_TR_NOOP("Element Set From Polygon");
+    sToolTipText = QT_TR_NOOP("Creates a collection of elements selected by a polygon");
     sWhatsThis = "FEM_DefineElementsSet";
-    sStatusTip = QT_TR_NOOP("Create Element set by Poly");
+    sStatusTip = sToolTipText;
     sPixmap = "FEM_CreateElementsSet";
 }
 
@@ -2217,7 +2215,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
                 Gui::getMainWindow(),
                 qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
                 qApp->translate("CmdFemPostLinearizedStressesFilter",
-                                "Select a Clip filter which clips a STRESS field along a line."));
+                                "Select a clip filter which clips a stress field along a line"));
         }
     }
     else {
@@ -2225,7 +2223,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
             Gui::getMainWindow(),
             qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
             qApp->translate("CmdFemPostLinearizedStressesFilter",
-                            "Select a clip filter which clips a stress field along a line."));
+                            "Select a clip filter which clips a stress field along a line"));
     }
 }
 
@@ -2470,6 +2468,10 @@ void CmdFemPostFunctions::activated(int iMsg)
                       center[0],
                       center[1],
                       center[2]);
+            doCommand(Doc,
+                      "Gui.ActiveDocument.%s.Scale = %f",
+                      FeatName.c_str(),
+                      box.GetDiagonalLength());
         }
         else if (iMsg == 1) {  // Sphere
             doCommand(Doc,

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -20,14 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#include <limits>
-#endif
-
 #include <cmath>
+#include <limits>
+
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include "Vector3D.h"
@@ -435,6 +432,15 @@ Vector3<float_type>& Vector3<float_type>::Normalize()
         z /= fLen;
     }
     return *this;
+}
+
+template<class float_type>
+Vector3<float_type> Vector3<float_type>::Normalized() const
+{
+    Vector3<float_type> copy = *this;
+    copy.Normalize();
+
+    return copy;
 }
 
 template<class float_type>

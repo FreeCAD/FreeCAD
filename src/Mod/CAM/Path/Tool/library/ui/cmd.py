@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -48,8 +47,10 @@ class CommandToolBitLibraryDockOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toolbit Dock"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toggles the toolbit dock"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitSelection", "Add toolbit…"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_ToolBitSelection", "Opens the toolbit selection dialog"
+            ),
             "Accel": "P, T",
             "CmdType": "ForEdit",
         }
@@ -73,7 +74,7 @@ class CommandLibraryEditorOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "Toolbit Library Editor"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "Toolbit Library Manager"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_ToolBitLibraryOpen", "Opens an editor to manage toolbit libraries"
             ),
@@ -84,7 +85,7 @@ class CommandLibraryEditorOpen:
         return True
 
     def Activated(self):
-        library = LibraryEditor()
+        library = LibraryEditor(parent=FreeCADGui.getMainWindow())
         library.open()
 
 

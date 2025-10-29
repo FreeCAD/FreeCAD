@@ -355,6 +355,8 @@ Evolumes
 *MATERIAL, NAME=FemMaterial
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections

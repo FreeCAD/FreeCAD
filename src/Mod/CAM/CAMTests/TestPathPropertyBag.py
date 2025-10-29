@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2021 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,6 +24,20 @@ import Path.Base.PropertyBag as PathPropertyBag
 import CAMTests.PathTestUtils as PathTestUtils
 
 
+def as_group_list(groups):
+    """Normalize CustomPropertyGroups to a list of strings."""
+    if groups is None:
+        return []
+    if isinstance(groups, (list, tuple)):
+        return list(groups)
+    if isinstance(groups, str):
+        return [groups]
+    try:
+        return list(groups)
+    except Exception:
+        return [str(groups)]
+
+
 class TestPathPropertyBag(PathTestUtils.PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("test-property-bag")
@@ -37,7 +50,7 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         bag = PathPropertyBag.Create()
         self.assertTrue(hasattr(bag, "Proxy"))
         self.assertEqual(bag.Proxy.getCustomProperties(), [])
-        self.assertEqual(bag.CustomPropertyGroups, [])
+        self.assertEqual(as_group_list(bag.CustomPropertyGroups), [])
 
     def test01(self):
         """adding properties to a PropertyBag is tracked properly"""
@@ -48,7 +61,7 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         bag.Title = "Madame"
         self.assertEqual(bag.Title, "Madame")
         self.assertEqual(bag.Proxy.getCustomProperties(), ["Title"])
-        self.assertEqual(bag.CustomPropertyGroups, ["Address"])
+        self.assertEqual(as_group_list(bag.CustomPropertyGroups), ["Address"])
 
     def test02(self):
         """refreshCustomPropertyGroups deletes empty groups"""
@@ -59,7 +72,7 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         bag.removeProperty("Title")
         proxy.refreshCustomPropertyGroups()
         self.assertEqual(bag.Proxy.getCustomProperties(), [])
-        self.assertEqual(bag.CustomPropertyGroups, [])
+        self.assertEqual(as_group_list(bag.CustomPropertyGroups), [])
 
     def test03(self):
         """refreshCustomPropertyGroups does not delete non-empty groups"""
@@ -72,4 +85,4 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         bag.removeProperty("Gender")
         proxy.refreshCustomPropertyGroups()
         self.assertEqual(bag.Proxy.getCustomProperties(), ["Title"])
-        self.assertEqual(bag.CustomPropertyGroups, ["Address"])
+        self.assertEqual(as_group_list(bag.CustomPropertyGroups), ["Address"])

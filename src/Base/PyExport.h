@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -40,6 +42,9 @@
 #endif
 
 #include <Python.h>
+
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower

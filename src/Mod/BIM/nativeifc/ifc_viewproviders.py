@@ -90,7 +90,7 @@ class ifc_vp_object:
         from . import ifc_types
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
@@ -100,52 +100,49 @@ class ifc_vp_object:
         # IFC actions
         actions = []
         if element.is_a("IfcSpatialElement"):
-            if (
-                FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
-                == vobj.Object
-            ):
-                t = translate("BIM", "Deactivate container")
+            if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == vobj.Object:
+                t = translate("BIM", "Deactivate Container")
             else:
-                t = translate("BIM", "Make active container")
+                t = translate("BIM", "Make Active Container")
             action_activate = QtGui.QAction(icon, t, menu)
             action_activate.triggered.connect(self.activate)
             menu.addAction(action_activate)
         if self.hasChildren(vobj.Object):
-            action_expand = QtGui.QAction(icon, translate("BIM", "Expand children"), menu)
+            action_expand = QtGui.QAction(icon, translate("BIM", "Expand Children"), menu)
             action_expand.triggered.connect(self.expandChildren)
             actions.append(action_expand)
         if vobj.Object.Group:
-            action_shrink = QtGui.QAction(icon, translate("BIM", "Collapse children"), menu)
+            action_shrink = QtGui.QAction(icon, translate("BIM", "Collapse Children"), menu)
             action_shrink.triggered.connect(self.collapseChildren)
             actions.append(action_shrink)
         if vobj.Object.ShapeMode == "Shape":
-            t = translate("BIM", "Remove shape")
+            t = translate("BIM", "Remove Shape")
         else:
-            t = translate("BIM", "Load shape")
+            t = translate("BIM", "Load Shape")
         action_shape = QtGui.QAction(icon, t, menu)
         action_shape.triggered.connect(self.switchShape)
         actions.append(action_shape)
         if vobj.Object.ShapeMode == "None":
-            action_coin = QtGui.QAction(icon, translate("BIM", "Load representation"), menu)
+            action_coin = QtGui.QAction(icon, translate("BIM", "Load Representation"), menu)
             action_coin.triggered.connect(self.switchCoin)
             actions.append(action_coin)
         if element and ifc_tools.has_representation(element):
-            action_geom = QtGui.QAction(icon, translate("BIM", "Add geometry properties"), menu)
+            action_geom = QtGui.QAction(icon, translate("BIM", "Add Geometry Properties"), menu)
             action_geom.triggered.connect(self.addGeometryProperties)
             actions.append(action_geom)
-        action_tree = QtGui.QAction(icon, translate("BIM", "Show geometry tree"), menu)
+        action_tree = QtGui.QAction(icon, translate("BIM", "Show Geometry Tree"), menu)
         action_tree.triggered.connect(self.showTree)
         actions.append(action_tree)
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, translate("BIM", "Expand property sets"), menu)
+            action_props = QtGui.QAction(icon, translate("BIM", "Expand Property Sets"), menu)
             action_props.triggered.connect(self.showProps)
             actions.append(action_props)
         if ifc_materials.get_material(self.Object):
-            action_material = QtGui.QAction(icon, translate("BIM", "Load material"), menu)
+            action_material = QtGui.QAction(icon, translate("BIM", "Load Material"), menu)
             action_material.triggered.connect(self.addMaterial)
             actions.append(action_material)
         if ifc_types.is_typable(self.Object):
-            action_type = QtGui.QAction(icon, translate("BIM", "Convert to type"), menu)
+            action_type = QtGui.QAction(icon, translate("BIM", "Convert to Type"), menu)
             action_type.triggered.connect(self.convertToType)
             actions.append(action_type)
         if actions:
@@ -156,7 +153,7 @@ class ifc_vp_object:
 
         # generic actions
         ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-        action_group = QtGui.QAction(ficon, translate("BIM", "Create group..."), menu)
+        action_group = QtGui.QAction(ficon, translate("BIM", "New Group"), menu)
         action_group.triggered.connect(self.createGroup)
         menu.addAction(action_group)
 
@@ -324,6 +321,7 @@ class ifc_vp_object:
         """Add an object to the view provider by d&d"""
 
         from PySide import QtCore  # lazy import
+
         # delay the action to prevent the object to be deleted
         # before the end of the drop
         QtCore.QTimer.singleShot(100, lambda: self.onDrop(incoming_object))
@@ -332,6 +330,7 @@ class ifc_vp_object:
         """Delayed action to be taken when dropping an object"""
 
         from . import ifc_tools  # lazy import
+
         ifc_tools.aggregate(incoming_object, self.Object)
         if self.hasChildren(self.Object):
             self.expandChildren(self.Object)
@@ -339,15 +338,10 @@ class ifc_vp_object:
     def activate(self):
         """Marks this container as active"""
 
-        if (
-            FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
-            == self.Object
-        ):
+        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == self.Object:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
         else:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject(
-                "NativeIFC", self.Object
-            )
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", self.Object)
 
     def createGroup(self):
         """Creates a group under this object"""
@@ -402,9 +396,9 @@ class ifc_vp_object:
         if not hasattr(self, "Object"):
             return
         from . import ifc_types
+
         ifc_types.convert_to_type(self.Object)
         self.Object.Document.recompute()
-
 
 
 class ifc_vp_document(ifc_vp_object):
@@ -423,7 +417,7 @@ class ifc_vp_document(ifc_vp_object):
 
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         ifc_menu = super().setupContextMenu(vobj, menu)
@@ -432,14 +426,14 @@ class ifc_vp_document(ifc_vp_object):
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if vobj.Object.Modified:
-            action_diff = QtGui.QAction(icon, translate("BIM", "View diff..."), menu)
+            action_diff = QtGui.QAction(icon, translate("BIM", "View Diff"), menu)
             action_diff.triggered.connect(self.diff)
             ifc_menu.addAction(action_diff)
             if vobj.Object.IfcFilePath:
-                action_save = QtGui.QAction(icon, translate("BIM", "Save IFC file"), menu)
+                action_save = QtGui.QAction(icon, translate("BIM", "Save IFC File"), menu)
                 action_save.triggered.connect(self.save)
                 ifc_menu.addAction(action_save)
-        action_saveas = QtGui.QAction(icon, translate("BIM", "Save IFC file as..."), menu)
+        action_saveas = QtGui.QAction(icon, translate("BIM", "Save IFC File As…"), menu)
         action_saveas.triggered.connect(self.saveas)
         ifc_menu.addAction(action_saveas)
 
@@ -491,7 +485,7 @@ class ifc_vp_document(ifc_vp_object):
         msg = "Warning: This operation will change the whole IFC file contents "
         msg += "and will not give versionable results. It is best to not do "
         msg += "this while you are in the middle of a project. "
-        msg += "Do you wish to continue anyway?"
+        msg += "Continue anyway?"
         dlg = QtGui.QMessageBox.question(
             None,
             "Replace IFC file schema?",
@@ -576,17 +570,13 @@ class ifc_vp_material:
         im = QtGui.QImage(48, 48, QtGui.QImage.Format_ARGB32)
         im.fill(QtCore.Qt.transparent)
         pt = QtGui.QPainter(im)
-        pt.setPen(
-            QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap)
-        )
+        pt.setPen(QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
         gradient = QtGui.QLinearGradient(0, 0, 48, 48)
         gradient.setColorAt(0, matcolor)
         gradient.setColorAt(1, darkcolor)
         pt.setBrush(QtGui.QBrush(gradient))
         pt.drawEllipse(6, 6, 36, 36)
-        pt.setPen(
-            QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap)
-        )
+        pt.setPen(QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
         pt.setBrush(QtGui.QBrush(QtCore.Qt.white, QtCore.Qt.SolidPattern))
         pt.drawEllipse(12, 12, 12, 12)
         pt.end()
@@ -606,12 +596,12 @@ class ifc_vp_material:
         from . import ifc_psets
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, translate("BIM", "Expand property sets"), menu)
+            action_props = QtGui.QAction(icon, translate("BIM", "Expand Property Sets"), menu)
             action_props.triggered.connect(self.showProps)
             menu.addAction(action_props)
 
@@ -628,7 +618,7 @@ class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPa
     """A vp that inherits the Arch BuildingPart vp, but keeps aggregating properties of ifc vp"""
 
     def __init__(self, vobj):
-        ArchBuildingPart.ViewProviderBuildingPart.__init__(self,vobj)
+        ArchBuildingPart.ViewProviderBuildingPart.__init__(self, vobj)
 
 
 def overlay(icon1, icon2):
@@ -686,8 +676,8 @@ def get_icon(vp):
 
     if hasattr(vp, "Object"):
         if hasattr(vp.Object, "IfcClass"):
-            rclass = vp.Object.IfcClass.replace("StandardCase","")
-            rclass = vp.Object.IfcClass.replace("Type","")
+            rclass = vp.Object.IfcClass.replace("StandardCase", "")
+            rclass = vp.Object.IfcClass.replace("Type", "")
             ifcicon = ":/icons/IFC/" + rclass + ".svg"
             if QtCore.QFile.exists(ifcicon):
                 if getattr(vp, "ifcclass", "") != rclass:

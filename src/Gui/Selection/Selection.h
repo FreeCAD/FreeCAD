@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -409,6 +410,9 @@ public:
      */
     void setVisible(VisibleState visible);
 
+    bool isClarifySelectionActive();
+    void setClarifySelectionActive(bool active);
+
     /// signal on new object
     boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
 
@@ -708,6 +712,7 @@ protected:
 
     int logDisabled = 0;
     bool logHasSelection = false;
+    bool clarifySelectionActive = false;
 
     SelectionStyle selectionStyle;
 };

@@ -146,7 +146,7 @@
            <string>Sets this as axis</string>
           </property>
           <property name="text">
-           <string>X Direction</string>
+           <string>X-Direction</string>
           </property>
          </widget>
         </item>
@@ -187,7 +187,7 @@
            <string>Sets this as axis</string>
           </property>
           <property name="text">
-           <string>Y Direction</string>
+           <string>Y-Direction</string>
           </property>
          </widget>
         </item>
@@ -225,7 +225,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Z Direction</string>
+           <string>Z-Direction</string>
           </property>
          </widget>
         </item>

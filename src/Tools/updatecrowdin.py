@@ -308,7 +308,7 @@ class CrowdinUpdater:
         files_info = self._get_files_info()
         futures = []
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             for ts_file in ts_files:
                 if self.multithread:
                     future = executor.submit(
@@ -320,16 +320,20 @@ class CrowdinUpdater:
 
         # This blocks until all futures are complete and will also throw any exception
         for future in futures:
+            print(f"{future.result()} done.")
             future.result()
 
 
 def load_token():
-    # load API token stored in ~/.crowdin-freecad-token
-    config_file = os.path.expanduser("~") + os.sep + ".crowdin-freecad-token"
+    # try to read token from ~/.crowdin-freecad-token
+    config_file = os.path.join(os.path.expanduser("~"), ".crowdin-freecad-token")
     if os.path.exists(config_file):
-        with open(config_file) as file:
-            return file.read().strip()
-    return None
+        with open(config_file, "r") as file:
+            token = file.read().strip()
+            if token:
+                return token
+    # if file does'nt exists read from CROWDIN_TOKEN
+    return os.environ.get("CROWDIN_TOKEN")
 
 
 def updateqrc(qrcpath, lncode):
@@ -521,9 +525,9 @@ if __name__ == "__main__":
 
     project_identifier = os.environ.get("CROWDIN_PROJECT_ID")
     if not project_identifier:
-        project_identifier = "freecad"
-        # print('CROWDIN_PROJECT_ID env var must be set')
-        # sys.exit()
+        # project_identifier = "freecad"
+        print("CROWDIN_PROJECT_ID env var must be set")
+        sys.exit()
 
     updater = CrowdinUpdater(token, project_identifier)
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Unit tests for the Path.Tool.Shape module and its document utilities.
 import unittest
 from unittest.mock import patch, MagicMock, call

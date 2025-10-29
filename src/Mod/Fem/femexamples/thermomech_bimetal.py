@@ -146,7 +146,7 @@ def setup(doc=None, solvertype="ccxtools"):
         # solver_obj.MatrixSolverType = "default"
         solver_obj.MatrixSolverType = "spooles"  # thomas
         solver_obj.SplitInputWriter = False
-        solver_obj.IterationsMaximum = 2000
+        solver_obj.IncrementsMaximum = 2000
         # solver_obj.IterationsControlParameterTimeUse = True  # thermomech spine
     analysis.addObject(solver_obj)
 

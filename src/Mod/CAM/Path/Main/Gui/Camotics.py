@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -28,6 +27,7 @@ import FreeCADGui
 import Mesh
 import Path
 import PathScripts
+import PathScripts.PathUtils as PathUtils
 import Path.Post.Command as PathPost
 import camotics
 import io
@@ -191,7 +191,7 @@ class CamoticsSimulation(QtCore.QObject):
             self.SIM.set_tool(
                 t.ToolNumber,
                 metric=True,
-                shape=self.SHAPEMAP.get(t.Tool.ShapeName, "Cylindrical"),
+                shape=self.SHAPEMAP.get(PathUtils.getToolShapeName(t.Tool), "Cylindrical"),
                 length=t.Tool.Length.Value,
                 diameter=t.Tool.Diameter.Value,
             )
@@ -283,7 +283,9 @@ class CamoticsSimulation(QtCore.QObject):
             if hasattr(t.Tool, "Camotics"):
                 toolitem["shape"] = t.Tool.Camotics
             else:
-                toolitem["shape"] = self.SHAPEMAP.get(t.Tool.ShapeName, "Cylindrical")
+                toolitem["shape"] = self.SHAPEMAP.get(
+                    PathUtils.getToolShapeName(t.Tool), "Cylindrical"
+                )
 
             toolitem["length"] = t.Tool.Length.Value
             toolitem["diameter"] = t.Tool.Diameter.Value

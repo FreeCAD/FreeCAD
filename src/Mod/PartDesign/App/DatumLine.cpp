@@ -22,13 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pnt.hxx>
-#endif
+
 
 #include "DatumLine.h"
 

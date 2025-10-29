@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,9 +23,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <string>
 #include <string_view>
@@ -31,7 +30,6 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
-#endif
 
 #include "Builder3D.h"
 #include "Console.h"

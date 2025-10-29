@@ -21,10 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDir>
-#endif
+
 
 #include "ExamplesModel.h"
 #include <App/Application.h>

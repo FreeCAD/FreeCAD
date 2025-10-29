@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
 #include <boost/signals2/connection.hpp>
-#ifndef _PreComp_
+
 #include <QAction>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QTimer>
-#endif
 
 #include <Base/Parameter.h>
 #include <Base/Tools.h>

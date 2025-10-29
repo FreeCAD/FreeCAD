@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>499</width>
-    <height>600</height>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -137,25 +137,25 @@ in the corner in % of height/width of the viewport</string>
           <property name="text">
            <string/>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AxisXColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>204</red>
             <green>51</green>
             <blue>51</blue>
            </color>
           </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisXColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -177,25 +177,25 @@ in the corner in % of height/width of the viewport</string>
           <property name="text">
            <string/>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AxisYColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>51</red>
             <green>204</green>
             <blue>51</blue>
            </color>
           </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisYColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -217,18 +217,18 @@ in the corner in % of height/width of the viewport</string>
           <property name="text">
            <string/>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AxisZColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>51</red>
             <green>51</green>
             <blue>204</blue>
            </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisZColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>
@@ -324,73 +324,18 @@ report this setting as enabled when seeking support.</string>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="1">
-         <widget class="QComboBox" name="comboAliasing">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Method of multisample anti-aliasing</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="markerSizeLabel">
-          <property name="toolTip">
-           <string/>
-          </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="renderCacheLabel">
           <property name="text">
-           <string>Marker size</string>
+           <string>Render cache</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="aliasingLAbel">
+        <item row="5" column="0">
+         <widget class="QLabel" name="textLabel1">
           <property name="text">
-           <string>Anti-aliasing</string>
+           <string>Eye to eye distance for stereo modes</string>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="transparentRenderLabel">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="text">
-           <string>Transparent objects</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefComboBox" name="comboTransparentRender">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Render types of transparent objects</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TransparentObjectRenderType</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>One pass</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backface pass</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item row="0" column="1">
@@ -430,22 +375,8 @@ but slower response to any scene changes.</string>
           </item>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="renderCacheLabel">
-          <property name="text">
-           <string>Render cache</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="textLabel1">
-          <property name="text">
-           <string>Eye to eye distance for stereo modes</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="boxMarkerSize">
+        <item row="1" column="1">
+         <widget class="QComboBox" name="comboAliasing">
           <property name="minimumSize">
            <size>
             <width>120</width>
@@ -453,11 +384,18 @@ but slower response to any scene changes.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Size of vertices in the Sketcher, TechDraw and other workbenches</string>
+           <string>Method of multisample anti-aliasing</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="1" column="0">
+         <widget class="QLabel" name="aliasingLAbel">
+          <property name="text">
+           <string>Anti-aliasing</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_EyeDistance">
           <property name="minimumSize">
            <size>
@@ -487,6 +425,115 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EyeDistance</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefComboBox" name="comboTransparentRender">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Render types of transparent objects</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TransparentObjectRenderType</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>One pass</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Backface pass</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="transparentRenderLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Transparent objects</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="markerSizeLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Marker size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="boxMarkerSize">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of vertices in the Sketcher, TechDraw and other workbenches</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="markerSizeLabel_2">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Datum size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_DatumScale">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of core datum objects</string>
+          </property>
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="decimals">
+           <number>0</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>400.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DatumScale</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>

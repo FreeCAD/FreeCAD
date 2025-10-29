@@ -21,11 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -163,6 +158,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoBrepEdgeSet                          ::initClass();
     PartGui::SoBrepPointSet                         ::initClass();
     PartGui::SoFCControlPoints                      ::initClass();
+    PartGui::SoFCShape                              ::initClass();
     PartGui::SoPreviewShape                         ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();

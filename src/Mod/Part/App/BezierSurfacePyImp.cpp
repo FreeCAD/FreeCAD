@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_BezierSurface.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>

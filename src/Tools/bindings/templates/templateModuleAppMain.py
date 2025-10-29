@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2006 Juergen Riegel
 
 from . import template
@@ -23,10 +22,8 @@ class TemplateModuleAppMain(template.ModelTemplate):
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Python.h>
-#endif
+
 
 #include <Base/Console.h>
 

@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
@@ -28,7 +28,6 @@
 # endif
 #endif
 
-#ifndef _PreComp_
 # include <algorithm>
 # include <limits>
 # include <map>
@@ -66,15 +65,18 @@
 # endif //FC_OS_WIN32
 // Should come after glext.h to avoid warnings
 # include <Inventor/C/glue/gl.h>
-#endif
 
 #include <Base/Profiler.h>
 
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 
 #include "SoBrepFaceSet.h"
+#include "ViewProviderExt.h"
+#include "SoBrepEdgeSet.h"
+
 
 
 using namespace PartGui;
@@ -188,6 +190,9 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 ctx->highlightIndex = -1;
                 touch();
             }
+            if (viewProvider) {
+                viewProvider->setFaceHighlightActive(false);
+            }
             return;
         }
 
@@ -203,6 +208,9 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 if(ctx) {
                     ctx->highlightIndex = -1;
                     touch();
+                }
+                if (viewProvider) {
+                    viewProvider->setFaceHighlightActive(false);
                 }
             }else {
                 int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
@@ -521,6 +529,41 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     auto state = action->getState();
     selCounter.checkRenderCache(state);
+    
+    bool hasContextHighlight = ctx && ctx->isHighlighted() && !ctx->isHighlightAll()
+        && ctx->highlightIndex >= 0 && ctx->highlightIndex < partIndex.getNum();
+
+    // for the tool add this node to delayed paths as we want to render it on top of the scene
+    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight) {
+        
+        if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+            if (viewProvider) {
+                viewProvider->setFaceHighlightActive(true);
+            }
+            
+            const SoPath* currentPath = action->getCurPath();
+            Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
+                                                             currentPath->copy(),
+                                                             100);
+            return;
+        } else {
+            // during priority delayed paths processing:
+            // render base faces normally first, then render highlight on top
+            
+            inherited::GLRender(action);
+            
+            state->push();
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDepthMask(false);
+            glDisable(GL_DEPTH_TEST);
+            
+            renderHighlight(action, ctx);
+            
+            state->pop();
+            return;
+        }
+    }
 
     // override material binding to PER_PART_INDEX to achieve
     // preselection/selection with transparency
@@ -677,7 +720,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     for(int i=0;i<trans_size;++i) {
         if(trans[i]!=0.0) {
             hasTransparency = true;
-            trans0 = trans[i]>0.5?0.5:trans[i];
+            trans0 = trans[i];
             break;
         }
     }
@@ -710,13 +753,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
 
         if(ctx && Gui::Selection().needPickedList()) {
             hasTransparency = true;
-            if(trans0 < 0.5)
-                trans0=0.5;
             trans_size = 1;
-            if(ctx2)
+            if(ctx2) {
                 ctx2->trans0 = trans0;
-        }else if(ctx2)
+            }
+        }
+        else if(ctx2) {
             ctx2->trans0 = 0.0;
+        }
 
         uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
         int singleColor = 0;
@@ -730,7 +774,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
             singleColor = ctx?-1:1;
         }
 
-        bool partialRender = ctx2 && !ctx2->isSelectAll();
+        bool partialRender = (ctx2 && !ctx2->isSelectAll());
 
         if(singleColor>0 && !partialRender) {
             //optimization for single color non-partial rendering
@@ -772,7 +816,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
                 packedColors.push_back(ctx->highlightColor.getPackedValue(trans0));
                 matIndex[ctx->highlightIndex] = packedColors.size()-1;
             }
-        }else{
+        }
+         else{
             if(partialRender) {
                 packedColors.push_back(SbColor(1.0,1.0,1.0).getPackedValue(1.0));
                 matIndex.resize(partIndex.getNum(),0);
@@ -848,7 +893,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
         SoLazyElement::setPacked(state, this, packedColors.size(), packedColors.data(), hasTransparency);
         SoTextureEnabledElement::set(state,this,false);
 
-        if(hasTransparency && action->isRenderingDelayedPaths()) {
+        if (hasTransparency && action->isRenderingDelayedPaths()) {
             // rendering delayed paths means we are doing annotation (e.g.
             // always on top rendering). To render transparency correctly in
             // this case, we shall use openGL transparency blend. Override

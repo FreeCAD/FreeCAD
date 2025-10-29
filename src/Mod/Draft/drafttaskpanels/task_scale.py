@@ -57,59 +57,62 @@ class ScaleTaskPanel:
         self.xValue.setRange(-1000000.0, 1000000.0)
         self.xValue.setDecimals(decimals)
         self.xValue.setValue(1)
-        layout.addWidget(self.xValue,0,1,1,1)
+        layout.addWidget(self.xValue, 0, 1, 1, 1)
         self.yLabel = QtWidgets.QLabel()
         self.yLabel.setText(translate("Draft", "Y-factor"))
-        layout.addWidget(self.yLabel,1,0,1,1)
+        layout.addWidget(self.yLabel, 1, 0, 1, 1)
         self.yValue = QtWidgets.QDoubleSpinBox()
         self.yValue.setRange(-1000000.0, 1000000.0)
         self.yValue.setDecimals(decimals)
         self.yValue.setValue(1)
-        layout.addWidget(self.yValue,1,1,1,1)
+        layout.addWidget(self.yValue, 1, 1, 1, 1)
         self.zLabel = QtWidgets.QLabel()
         self.zLabel.setText(translate("Draft", "Z-factor"))
-        layout.addWidget(self.zLabel,2,0,1,1)
+        layout.addWidget(self.zLabel, 2, 0, 1, 1)
         self.zValue = QtWidgets.QDoubleSpinBox()
         self.zValue.setRange(-1000000.0, 1000000.0)
         self.zValue.setDecimals(decimals)
         self.zValue.setValue(1)
-        layout.addWidget(self.zValue,2,1,1,1)
+        layout.addWidget(self.zValue, 2, 1, 1, 1)
         self.lock = QtWidgets.QCheckBox()
         self.lock.setText(translate("Draft", "Uniform scaling"))
         self.lock.setChecked(params.get_param("ScaleUniform"))
-        layout.addWidget(self.lock,3,0,1,2)
+        layout.addWidget(self.lock, 3, 0, 1, 2)
 
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.setValue)
-        QtCore.QObject.connect(self.lock,QtCore.SIGNAL("toggled(bool)"),self.setLock)
+        QtCore.QObject.connect(self.xValue, QtCore.SIGNAL("valueChanged(double)"), self.setValue)
+        QtCore.QObject.connect(self.yValue, QtCore.SIGNAL("valueChanged(double)"), self.setValue)
+        QtCore.QObject.connect(self.zValue, QtCore.SIGNAL("valueChanged(double)"), self.setValue)
+        QtCore.QObject.connect(self.lock, QtCore.SIGNAL("toggled(bool)"), self.setLock)
 
         if self.__class__.__name__ != "ScaleTaskPanelEdit":
-            self.relative = QtWidgets.QCheckBox()
-            self.relative.setText(translate("Draft", "Working plane orientation"))
-            self.relative.setChecked(params.get_param("ScaleRelative"))
-            layout.addWidget(self.relative,4,0,1,2)
+            # ScaleRelative option removed in v1.1 as it does not work properly:
+            # self.relative = QtWidgets.QCheckBox()
+            # self.relative.setText(translate("Draft", "Working plane orientation"))
+            # self.relative.setChecked(params.get_param("ScaleRelative"))
+            # layout.addWidget(self.relative,4,0,1,2)
             self.isCopy = QtWidgets.QCheckBox()
             self.isCopy.setText(translate("Draft", "Copy"))
             self.isCopy.setChecked(params.get_param("ScaleCopy"))
-            layout.addWidget(self.isCopy,5,0,1,2)
+            layout.addWidget(self.isCopy, 5, 0, 1, 2)
             self.isSubelementMode = QtWidgets.QCheckBox()
             self.isSubelementMode.setText(translate("Draft", "Modify subelements"))
             self.isSubelementMode.setChecked(params.get_param("SubelementMode"))
-            layout.addWidget(self.isSubelementMode,6,0,1,2)
+            layout.addWidget(self.isSubelementMode, 6, 0, 1, 2)
             self.isClone = QtWidgets.QCheckBox()
             self.isClone.setText(translate("Draft", "Create a clone"))
             self.isClone.setChecked(params.get_param("ScaleClone"))
-            layout.addWidget(self.isClone,7,0,1,2)
+            layout.addWidget(self.isClone, 7, 0, 1, 2)
             self.pickrefButton = QtWidgets.QPushButton()
             self.pickrefButton.setText(translate("Draft", "Pick From/To Points"))
-            layout.addWidget(self.pickrefButton,8,0,1,2)
+            layout.addWidget(self.pickrefButton, 8, 0, 1, 2)
 
-            QtCore.QObject.connect(self.relative,QtCore.SIGNAL("toggled(bool)"),self.setRelative)
-            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("toggled(bool)"),self.setCopy)
-            QtCore.QObject.connect(self.isSubelementMode,QtCore.SIGNAL("toggled(bool)"),self.setSubelementMode)
-            QtCore.QObject.connect(self.isClone,QtCore.SIGNAL("toggled(bool)"),self.setClone)
-            QtCore.QObject.connect(self.pickrefButton,QtCore.SIGNAL("clicked()"),self.pickRef)
+            # QtCore.QObject.connect(self.relative,QtCore.SIGNAL("toggled(bool)"),self.setRelative)
+            QtCore.QObject.connect(self.isCopy, QtCore.SIGNAL("toggled(bool)"), self.setCopy)
+            QtCore.QObject.connect(
+                self.isSubelementMode, QtCore.SIGNAL("toggled(bool)"), self.setSubelementMode
+            )
+            QtCore.QObject.connect(self.isClone, QtCore.SIGNAL("toggled(bool)"), self.setClone)
+            QtCore.QObject.connect(self.pickrefButton, QtCore.SIGNAL("clicked()"), self.pickRef)
 
     def setValue(self, val=None):
         """Set the value of the scale factors."""
@@ -122,7 +125,9 @@ class ScaleTaskPanel:
                 self.zValue.setValue(val)
         if self.sourceCmd:
             # self.sourceCmd is always None for ScaleTaskPanelEdit
-            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(
+                self.xValue.value(), self.yValue.value(), self.zValue.value()
+            )
 
     def setLock(self, state):
         """Set the uniform scaling."""
@@ -138,7 +143,9 @@ class ScaleTaskPanel:
         """Set the relative scaling."""
         params.set_param("ScaleRelative", state)
         if self.sourceCmd:
-            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(
+                self.xValue.value(), self.yValue.value(), self.zValue.value()
+            )
 
     def setCopy(self, state):
         """Set the copy option."""
@@ -153,7 +160,9 @@ class ScaleTaskPanel:
             self.isClone.setChecked(False)
         if self.sourceCmd:
             self.sourceCmd.set_ghosts()
-            self.sourceCmd.scale_ghosts(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+            self.sourceCmd.scale_ghosts(
+                self.xValue.value(), self.yValue.value(), self.zValue.value()
+            )
 
     def setClone(self, state):
         """Set the clone option."""
@@ -219,7 +228,7 @@ class ScaleTaskPanelEdit(ScaleTaskPanel):
         mtx = mtx * self.global_place.Matrix.inverse()
 
         delta = self.global_place.inverse().Rotation.multVec(self.global_place.Base)
-        delta = -App.Vector(delta.x*x, delta.y*y, delta.z*z)
+        delta = -App.Vector(delta.x * x, delta.y * y, delta.z * z)
         delta = self.global_place.multVec(delta)
 
         self.ghost.setMatrix(mtx)
@@ -258,5 +267,6 @@ class ScaleTaskPanelEdit(ScaleTaskPanel):
         """Called by unsetEdit in view_clone.py."""
         Gui.Control.closeDialog()
         return None
+
 
 ## @}

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
@@ -63,7 +61,7 @@ void DlgSettingsNotificationArea::saveSettings()
 
     bool isNotificationAreaEnabled = ui->NotificationAreaEnabled->isChecked();
     hGrp->SetBool("NotificationAreaEnabled", isNotificationAreaEnabled);
-    bool isNonIntrusiveNotificationsEnabled = ui->NotificationAreaEnabled->isChecked();
+    bool isNonIntrusiveNotificationsEnabled = ui->NonIntrusiveNotificationsEnabled->isChecked();
     hGrp->SetBool("NonIntrusiveNotificationsEnabled", isNonIntrusiveNotificationsEnabled);
 
     ui->maxDuration->onSave();

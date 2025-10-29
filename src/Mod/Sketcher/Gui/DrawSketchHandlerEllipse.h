@@ -325,7 +325,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Ellipse parameters"));
+        return QString(tr("Ellipse Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -558,7 +558,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (thirdParam->isSet) {
                     length = thirdParam->getValue();
-                    if (length < Precision::Confusion()) {
+                    if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
                         return;
                     }
@@ -581,7 +581,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                     onSketchPos.y = fourthParam->getValue();
                 }
 
-                if (thirdParam->isSet && fourthParam->isSet
+                if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
                     && (onSketchPos - handler->apoapsis).Length() < Precision::Confusion()) {
                     unsetOnViewParameter(thirdParam.get());
                     unsetOnViewParameter(fourthParam.get());
@@ -612,7 +612,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                     onSketchPos.y = sixthParam->getValue();
                 }
 
-                if (fifthParam->isSet && sixthParam->isSet
+                if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing
                     && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
                     unsetOnViewParameter(fifthParam.get());
                     unsetOnViewParameter(sixthParam.get());
@@ -724,7 +724,7 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHEllipseController::doChangeDrawSketchHandlerMode()
+void DSHEllipseController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -732,7 +732,7 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -740,7 +740,7 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekThird);
+                handler->setNextState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
@@ -749,13 +749,13 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
                 if (fifthParam->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
             else {
                 auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
                 if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
         } break;

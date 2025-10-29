@@ -26,12 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
-
-#ifdef _PreComp_
-
 // standard
 #include <cinttypes>
 #include <cmath>
@@ -76,5 +70,4 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#endif  // _PreComp_
 #endif  // STARTGUI_PRECOMPILED_H

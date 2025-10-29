@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMessageBox>
 # include <gp_Pln.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <App/Origin.h>
 #include <App/Datums.h>
@@ -137,7 +135,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 DlgActiveBody dia(
                     Gui::getMainWindow(),
                     doc,
-                    QObject::tr("To use Part Design, an active body object is required in the document. "
+                    QObject::tr("To use Part Design, an active body is required in the document. "
                                 "Activate a body (double-click) or create a new one."
                                 "\n\nFor legacy documents with Part Design objects lacking a body, "
                                 "use the migrate function in Part Design to place them into a body."));
@@ -191,11 +189,22 @@ void needActiveBodyError()
 
 PartDesign::Body * makeBody(App::Document *doc)
 {
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+    bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+
     // This is intended as a convenience when starting a new document.
     auto bodyName( doc->getUniqueObjectName("Body") );
     Gui::Command::doCommand( Gui::Command::Doc,
                              "App.getDocument('%s').addObject('PartDesign::Body','%s')",
                              doc->getName(), bodyName.c_str() );
+    Gui::Command::doCommand( Gui::Command::Doc,
+                             "App.getDocument('%s').getObject('%s').AllowCompound = %s",
+                             doc->getName(), bodyName.c_str(), allowCompound ? "True" : "False" );
+
+
     auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
     if(body)
         makeBodyActive(body, doc);

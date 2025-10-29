@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include "PythonConsolePy.h"
 #include "PythonConsole.h"
@@ -57,10 +57,7 @@ Py::Object PythonStdout::getattr(const char *name)
 
 Py::Object PythonStdout::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonStdout";
-    return Py::String(s_out.str());
+    return Py::String("PythonStdout");
 }
 
 Py::Object PythonStdout::write(const Py::Tuple& args)
@@ -121,10 +118,7 @@ Py::Object PythonStderr::getattr(const char *name)
 
 Py::Object PythonStderr::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonStderr";
-    return Py::String(s_out.str());
+    return Py::String("PythonStderr");
 }
 
 Py::Object PythonStderr::write(const Py::Tuple& args)
@@ -182,10 +176,7 @@ Py::Object OutputStdout::getattr(const char *name)
 
 Py::Object OutputStdout::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "OutputStdout";
-    return Py::String(s_out.str());
+    return Py::String("OutputStdout");
 }
 
 Py::Object OutputStdout::write(const Py::Tuple& args)
@@ -243,10 +234,7 @@ Py::Object OutputStderr::getattr(const char *name)
 
 Py::Object OutputStderr::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "OutputStderr";
-    return Py::String(s_out.str());
+    return Py::String("OutputStderr");
 }
 
 Py::Object OutputStderr::write(const Py::Tuple& args)
@@ -297,10 +285,7 @@ PythonStdin::~PythonStdin() = default;
 
 Py::Object PythonStdin::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonStdin";
-    return Py::String(s_out.str());
+    return Py::String("PythonStdin");
 }
 
 Py::Object PythonStdin::getattr(const char *name)

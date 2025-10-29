@@ -21,18 +21,17 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QBuffer>
 # include <QPainter>
-#endif
+
+#include <FCConfig.h>
 
 #include <BitmapFactory.h>
 
 #include "InputHint.h"
 #include "InputHintWidget.h"
 
-Gui::InputHintWidget::InputHintWidget(QWidget* parent) : QLabel(parent)
+Gui::InputHintWidget::InputHintWidget(QWidget* parent) : StatusBarLabel(parent, "InputHintEnabled")
 {}
 
 void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)

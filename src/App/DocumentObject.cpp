@@ -21,16 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <stack>
 #include <memory>
 #include <map>
 #include <set>
 #include <vector>
 #include <string>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
@@ -232,6 +228,19 @@ void DocumentObject::touch(bool noRecompute)
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
+
+    // store read-only property names
+    this->readOnlyProperties.clear();
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+    for (auto pair: list){
+        if (pair.second->isReadOnly()){
+            this->readOnlyProperties.push_back(pair.first);
+        } else {
+            pair.second->setReadOnly(true);
+        }
+    }
+
     // use the signalTouchedObject to refresh the Gui
     if (_pDoc) {
         _pDoc->signalTouchedObject(*this);
@@ -245,6 +254,17 @@ void DocumentObject::freeze()
 void DocumentObject::unfreeze(bool noRecompute)
 {
     StatusBits.reset(ObjectStatus::Freeze);
+
+    // reset read-only property status
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+
+    for (auto pair: list){
+        if (! std::count(readOnlyProperties.begin(), readOnlyProperties.end(), pair.first)){
+            pair.second->setReadOnly(false);
+        }
+    }
+
     touch(noRecompute);
 }
 
@@ -804,12 +824,11 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     }
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
-        // We must ensure the Label is unique in the document (well, sort of...).
+        // The label already exists but settings are such that duplicate labels should not be assigned.
         std::string objName = getNameInDocument();
-        if (doc->haveSameBaseName(objName, newLabel)) {
-            // The base name of the proposed label equals the base name of the object Name, so we
-            // use the object Name, which could actually be identical to another object's Label, but
-            // probably isn't.
+        if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
+            // The object name is not already a Label and the base name of the proposed label
+            // equals the base name of the object Name, so we use the object Name as the replacement Label.
             newLabel = objName;
         }
         else {
@@ -844,6 +863,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
 void DocumentObject::onEarlyChange(const Property* prop)
 {
+    if (isFreezed() && prop != &Visibility) {
+        return;
+    }
+
     if (GetApplication().isClosingAll()) {
         return;
     }

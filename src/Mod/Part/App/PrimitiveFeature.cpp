@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
+
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -43,7 +42,6 @@
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Vertex.hxx>
-#endif
 
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Reader.h>

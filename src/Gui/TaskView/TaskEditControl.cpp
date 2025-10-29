@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <QDialogButtonBox>
 #include <QHBoxLayout>

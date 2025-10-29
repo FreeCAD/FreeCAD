@@ -145,8 +145,9 @@ protected:
     };
     //@}
 
-private:
     Base::Vector2d prevCursorPosition;
+
+private:
     Base::Vector2d lastControlEnforcedPosition;
 
     int nOnViewParameter = OnViewParametersT::defaultMethodSize();
@@ -209,6 +210,10 @@ private:
 
         bool isVisible(Gui::EditableDatumLabel* ovp) const
         {
+            if (ovp->getFunction() == Gui::EditableDatumLabel::Function::Forced) {
+                return true;
+            }
+
             switch (onViewParameterVisibility) {
 
                 case OnViewParameterVisibility::Hidden:
@@ -328,7 +333,8 @@ public:
             handler->reset();  // reset of handler to restart.
         }
 
-        handler->mouseMove(prevCursorPosition);
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+        handler->mouseMove(*snapHandle);
     }
     //@}
 
@@ -419,7 +425,7 @@ public:
         // -> A machine does not forward to a next state when adapting the parameter (though it
         // may forward to
         //    a next state if all the parameters are fulfilled, see
-        //    doChangeDrawSketchHandlerMode). This ensures that the geometry has been defined
+        //    computeNextDrawSketchHandlerMode). This ensures that the geometry has been defined
         //    (either by mouse clicking or by widget). Autoconstraints on point should be picked
         //    when the state is reached upon machine state advancement.
         //
@@ -476,7 +482,7 @@ public:
     /** Change DSH to reflect the SelectMode it should be in based on values entered in the
      * controls
      */
-    virtual void doChangeDrawSketchHandlerMode()
+    virtual void computeNextDrawSketchHandlerMode()
     {}
 
     /** function that is called by the handler when the selection mode changed */
@@ -529,7 +535,9 @@ public:
     virtual void afterHandlerModeChanged()
     {
         if (handler && (!handler->isState(SelectModeT::End) || handler->continuousMode)) {
-            handler->mouseMove(prevCursorPosition);
+            auto snapHandle =
+                std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+            handler->mouseMove(*snapHandle);
         }
     }
 
@@ -619,7 +627,8 @@ protected:
     /// change
     void finishControlsChanged()
     {
-        handler->mouseMove(prevCursorPosition);
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+        handler->mouseMove(*snapHandle);
 
         auto currentstate = handler->state();
         // ensure that object at point is preselected, so that autoconstraints are generated
@@ -628,13 +637,21 @@ protected:
         // preselectAtPoint.
         handler->updateDataAndDrawToPosition(lastControlEnforcedPosition);
 
-        doChangeDrawSketchHandlerMode();
+        computeNextDrawSketchHandlerMode();
+
+        auto nextState = handler->getNextState();
+        bool shouldProcessLastPosWithNextState =
+            nextState && nextState != SelectMode::End && nextState != currentstate && firstMoveInit;
+        // the handler will be destroyed in applyNextState if the nextState is End
+        handler->applyNextState();
 
         // if the state changed and is not the last state (End). And is init (ie tool has not
         // reset)
-        if (!handler->isLastState() && handler->state() != currentstate && firstMoveInit) {
+        if (shouldProcessLastPosWithNextState) {
             // mode has changed, so reprocess the previous position to the new widget state
-            handler->mouseMove(prevCursorPosition);
+            auto snapHandle =
+                std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+            handler->mouseMove(*snapHandle);
         }
     }
 
@@ -690,6 +707,7 @@ protected:
         onViewParameter->isSet = false;
         onViewParameter->hasFinishedEditing = false;
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
+        onViewParameter->setLockedAppearance(false);
     }
 
     void setOnViewParameterValue(OnViewParameter index,

@@ -345,7 +345,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Fillet/Chamfer parameters"));
+        return QString(tr("Fillet/Chamfer Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -414,17 +414,25 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
+        const Gui::InputHint switchModeHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint preserveCornerHint {.message = tr("%1 toggle preserve corner"),
+                                                 .sequences = {KeyU}};
+
         return Gui::lookupHints<SelectMode>(
             state(),
             {
                 {.state = SelectMode::SeekFirst,
-                 .hints = {{tr("%1 pick first edge or point", "Sketcher Fillet/Chamfer: hint"),
-                            {MouseLeft}}}},
+                 .hints = {{tr("%1 pick first edge or point"), {MouseLeft}},
+                           switchModeHint,
+                           preserveCornerHint}},
                 {.state = SelectMode::SeekSecond,
-                 .hints = {{tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
-                            {MouseLeft}}}},
+                 .hints = {{tr("%1 pick second edge"), {MouseLeft}},
+                           switchModeHint,
+                           preserveCornerHint}},
                 {.state = SelectMode::End,
-                 .hints = {{tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"), {MouseLeft}}}},
+                 .hints = {{tr("%1 create fillet"), {MouseLeft}},
+                           switchModeHint,
+                           preserveCornerHint}},
             });
     }
 };

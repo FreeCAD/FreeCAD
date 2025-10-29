@@ -114,7 +114,7 @@ class CommandPositionSectionView:
         Parameters:
         p1, p2 : vertices of the hypotenuse
         dir    : direction vector of one leg (kathete)
-        
+
         Returns:
         p3 : the third vertex completing the right triangle
         '''

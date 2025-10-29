@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -101,8 +101,8 @@ void CmdMeshPartTrimByPlane::activated(int)
 
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim by plane"));
-    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side to keep."));
+    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim With Plane"));
+    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side to keep"));
     QPushButton* inner =
         msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Below"), QMessageBox::ActionRole);
     QPushButton* outer =

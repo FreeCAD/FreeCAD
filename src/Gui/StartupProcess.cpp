@@ -21,18 +21,27 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
+
 #include <QApplication>
-#include <QDir>
 #include <QImageReader>
 #include <QLabel>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QProcess>
 #include <QStatusBar>
+#include <QThread>
+#include <QTimer>
 #include <QWindow>
 #include <Inventor/SoDB.h>
-#endif
+
+#include <set>
+#include <string>
+#include <ranges>
 
 #include "StartupProcess.h"
 #include "Application.h"
@@ -42,6 +51,7 @@
 #include "GuiApplication.h"
 #include "MainWindow.h"
 #include "Language/Translator.h"
+#include "Dialogs/DlgVersionMigrator.h"
 #include <App/Application.h>
 #include <Base/Console.h>
 
@@ -220,6 +230,7 @@ void StartupPostProcess::execute()
     showMainWindow();
     activateWorkbench();
     checkParameters();
+    checkVersionMigration();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -543,4 +554,10 @@ void StartupPostProcess::checkParameters()
         Base::Console().warning("User parameter file couldn't be opened.\n"
                                 "Continue with an empty configuration that won't be saved.\n");
     }
+}
+
+void StartupPostProcess::checkVersionMigration() const {
+    auto migrator = new Dialog::DlgVersionMigrator (mainWindow);
+    migrator->exec();
+    migrator->deleteLater();
 }

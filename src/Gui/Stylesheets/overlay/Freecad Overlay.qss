@@ -1,7 +1,3 @@
-QFrame {
-  border: none;
-}
-
 Gui--DockWnd--ReportOutput,
 Gui--TaskView--TaskView QScrollArea {
   border: none;
@@ -133,22 +129,13 @@ Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
   border: 0.5px solid @GeneralBorderColor;
   border-radius: 1px;
-  background-color: @UserHighlight1Color;
+  background-color: @ThemeAccentColor1;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 0.5px solid @UserHighlight1Color;
+  border: 0.5px solid @ThemeAccentColor1;
   background-color:  @3DViewBackgroundRefColor
 }
-
-Gui--OverlayToolButton{
-  image: url(qss:@IconsLocationFolderName/close-lightgray.svg);
-}
-
-Gui--OverlayToolButton:hover {
-  image: url(qss:@IconsLocationFolderName/close-red.svg);
-}
-
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
   image: url(qss:@IconsLocationFolderName/transparent-lightgray.svg);
   }

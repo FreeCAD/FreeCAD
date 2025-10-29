@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -19,9 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
-#include "PreCompiled.h"
 
 #include "Swap.h"
 

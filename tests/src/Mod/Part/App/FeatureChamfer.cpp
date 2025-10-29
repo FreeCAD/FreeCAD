@@ -31,6 +31,7 @@ protected:
         _fused = _doc->addObject<Part::Fuse>();
         _fused->Base.setValue(_boxes[0]);
         _fused->Tool.setValue(_boxes[1]);
+        _fused->Refine.setValue(false);
         _fused->execute();
         _chamfer = _doc->addObject<Part::Chamfer>();
     }

@@ -35,9 +35,7 @@ class BIM_Cut:
         return {
             "Pixmap": "Part_Cut",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Cut", "Difference"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Cut", "Creates a difference between two shapes"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Cut", "Creates a difference between two shapes"),
         }
 
     def IsActive(self):

@@ -24,9 +24,12 @@
 #ifndef SO_TOGGLE_SWITCH
 #define SO_TOGGLE_SWITCH
 
+#include <FCGlobal.h>
+
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoSwitch.h>
 
+#include <FCGlobal.h>
 
 /**
  * A switch that can be used to show or hide all child nodes

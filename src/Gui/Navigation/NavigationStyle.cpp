@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SbViewportRegion.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/draggers/SoDragger.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCamera.h>
@@ -37,7 +38,7 @@
 # include <QByteArray>
 # include <QCursor>
 # include <QMenu>
-#endif
+
 
 #include <cmath>
 #include <limits>
@@ -48,6 +49,8 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Command.h"
+#include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
@@ -198,11 +201,8 @@ public:
     SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
     {
         SbRotation rot = inherited::getRotation(point1, point2);
-        if (orbit == Turntable) {
+        if (orbit == Turntable || orbit == FreeTurntable) {
             return getTurntable(rot, point1, point2);
-        }
-        if (orbit == FreeTurntable) {
-            return getFreeTurntable(point1, point2);
         }
         if (orbit == TrackballClassic) {
             return getTrackballClassic(point1, point2);
@@ -253,23 +253,6 @@ private:
         }
 
         return rot;
-    }
-
-    SbRotation getFreeTurntable(const SbVec3f &point1, const SbVec3f &point2) const
-    {
-        // Turntable without constraints
-        SbRotation zrot;
-        SbRotation xrot;
-        SbVec3f dif = point1 - point2;
-
-        SbVec3f zaxis(1,0,0);
-        zrot.setValue(zaxis, dif[1]);
-
-        SbVec3f xaxis(0,0,1);
-        this->worldToScreen.multDirMatrix(xaxis, xaxis);
-        xrot.setValue(xaxis, -dif[0]);
-
-        return zrot * xrot;
     }
 
     SbRotation getTrackballClassic(const SbVec3f &point1, const SbVec3f &point2) const
@@ -1022,10 +1005,29 @@ SbVec3f NavigationStyle::getRotationCenter(SbBool& found) const
     return this->rotationCenter;
 }
 
+std::optional<SbVec2s>& NavigationStyle::getRightClickPosition()
+{
+    return rightClickPosition;
+}
+
 void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 {
     this->rotationCenter = cnt;
     this->rotationCenterFound = true;
+
+    const auto camera = getCamera();
+    if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
+        SbVec3f direction;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+
+        // Calculate distance from camera to rotation center
+        const auto rotationCenterDistance = rotationCenter - camera->position.getValue();
+        const auto rotationCenterDepth = rotationCenterDistance.dot(direction);
+
+        // Set focal distance to match rotation center depth so we can zoom at the new rotation
+        // center with a perspective camera
+        camera->focalDistance.setValue(rotationCenterDepth);
+    }
 }
 
 SbVec3f NavigationStyle::getFocalPoint() const
@@ -1057,6 +1059,22 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
 
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(lastpos[0], pointerpos[1]);
+        spinInternal(pointerpos, midpos);
+        spinInternal(midpos, lastpos);
+    }
+    else {
+        spinInternal(pointerpos, lastpos);
+    }
+
+    if (this->currentmode != NavigationStyle::IDLE) {
+        hasDragged = true;
+    }
+}
+
+void NavigationStyle::spinInternal(const SbVec2f & pointerpos, const SbVec2f & lastpos)
+{
     float sensitivity = getSensitivity();
 
     // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
@@ -1122,10 +1140,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // when the user quickly trigger (as in "click-drag-release") a spin
     // animation.
     if (this->spinsamplecounter > 3) this->spinsamplecounter = 3;
-
-    if (this->currentmode != NavigationStyle::IDLE) {
-        hasDragged = true;
-    }
 }
 
 /*!
@@ -1142,6 +1156,20 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 {
     assert(this->spinprojector);
 
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(prevpos[0], curpos[1]);
+        spinSimplifiedInternal(curpos, midpos);
+        spinSimplifiedInternal(midpos, prevpos);
+    }
+    else {
+        spinSimplifiedInternal(curpos, prevpos);
+    }
+
+    hasDragged = true;
+}
+
+void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
+{
     // 0000333: Turntable camera rotation
     SbMatrix mat;
     viewer->getSoRenderManager()->getCamera()->orientation.getValue().getValue(mat);
@@ -1166,8 +1194,6 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
     else {
         this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
     }
-
-    hasDragged = true;
 }
 
 SbBool NavigationStyle::doSpin()
@@ -1522,6 +1548,25 @@ const std::vector<SbVec2s>& NavigationStyle::getPolygon(SelectionRole* role) con
     return pcPolygon;
 }
 
+bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
+{
+    SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
+    rp.setRadius(viewer->getPickRadius());
+    rp.setPoint(pos);
+    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    SoPickedPoint* pick = rp.getPickedPoint();
+    if (pick) {
+        const auto fullpath = static_cast<const SoFullPath*>(pick->getPath());
+        for (int i = 0; i < fullpath->getLength(); ++i) {
+            if (fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    return false;
+}
+
 // This method adds another point to the mouse location log, used for spin
 // animation calculations.
 void NavigationStyle::addToLog(const SbVec2s pos, const SbTime time)
@@ -1577,6 +1622,14 @@ void NavigationStyle::syncModifierKeys(const SoEvent * const ev)
 void NavigationStyle::setViewingMode(const ViewerMode newmode)
 {
     const ViewerMode oldmode = this->currentmode;
+
+    // Reset flags when changing from IDLE to another mode or if the mode is IDLE and the buttons are released
+    if ((oldmode == IDLE && newmode != IDLE) || (newmode == IDLE && !button1down && !button2down && !button3down)) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode == oldmode) {
 
         // The rotation center could have been changed even if the mode has not changed
@@ -1585,12 +1638,6 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         }
 
         return;
-    }
-
-    if (newmode == NavigationStyle::IDLE) {
-        hasPanned = false;
-        hasDragged = false;
-        hasZoomed = false;
     }
 
     switch (newmode) {
@@ -1916,9 +1963,39 @@ SbBool NavigationStyle::isPopupMenuEnabled() const
     return this->menuenabled;
 }
 
+bool NavigationStyle::isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const
+{
+    return action && navMenuGroup->actions().indexOf(action) >= 0 && action->isChecked();
+}
+
+QWidget* NavigationStyle::findView3DInventorWidget() const
+{
+    QWidget* widget = viewer->getWidget();
+    while (widget && !widget->inherits("Gui::View3DInventor")) {
+        widget = widget->parentWidget();
+    }
+    return widget;
+}
+
+void NavigationStyle::applyNavigationStyleChange(QAction* selectedAction)
+{
+    QByteArray navigationStyleTypeName = selectedAction->data().toByteArray();
+    QWidget* view3DWidget = findView3DInventorWidget();
+    
+    if (view3DWidget) {
+        Base::Type newNavigationStyle = Base::Type::fromName(navigationStyleTypeName.constData());
+        if (newNavigationStyle != this->getTypeId()) {
+            QEvent* navigationChangeEvent = new NavigationStyleEvent(newNavigationStyle);
+            QApplication::postEvent(view3DWidget, navigationChangeEvent);
+        }
+    }
+}
+
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
-    Q_UNUSED(position);
+    // store the right-click position for potential use by Clarify Selection
+    rightClickPosition = position;
+
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("View", &view);
@@ -1937,6 +2014,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         QAction *item = navMenuGroup->addAction(name);
         navMenu->addAction(item);
         item->setCheckable(true);
+        item->setData(QByteArray(style.first.getName()));
 
         if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
             auto triggeredFun = [this, item_style](){
@@ -1954,7 +2032,58 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
             item->setChecked(true);
     }
 
-    contextMenu->popup(QCursor::pos());
+    // Add Clarify Selection option if there are objects under cursor
+    bool separator = false;
+    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
+
+    // Get picked objects at position
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
+    rp.setPoint(position);
+    rp.setRadius(viewer->getPickRadius());
+    rp.setPickAll(true);
+    rp.apply(viewer->getSoRenderManager()->getSceneGraph());
+    
+    const SoPickedPointList& pplist = rp.getPickedPointList();
+    QAction *pickAction = nullptr;
+    
+    if (pplist.getLength() > 0) {
+        separator = true;
+        if (auto cmd =
+                Application::Instance->commandManager().getCommandByName("Std_ClarifySelection")) {
+            pickAction = new QAction(cmd->getAction()->text(), contextMenu);
+            pickAction->setShortcut(cmd->getAction()->shortcut());
+        } else {
+            pickAction = new QAction(QObject::tr("Clarify Selection"), contextMenu);
+        }
+        if (posAction) {
+            contextMenu->insertAction(posAction, pickAction);
+            contextMenu->insertSeparator(posAction);
+        } else {
+            contextMenu->addAction(pickAction);
+        }
+    }
+
+    if (separator && posAction)
+        contextMenu->insertSeparator(posAction);
+
+    QAction* selectedAction = contextMenu->exec(QCursor::pos());
+    
+    // handle navigation style change if user selected a navigation style option
+    if (selectedAction && isNavigationStyleAction(selectedAction, navMenuGroup)) {
+        applyNavigationStyleChange(selectedAction);
+        rightClickPosition.reset();
+        return;
+    }
+
+    if (pickAction && selectedAction == pickAction) {
+        // Execute the Clarify Selection command at this position
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
+        if (cmd && cmd->isActive()) {
+            cmd->invoke(0); // required placeholder value - we don't use group command
+        }
+    }
+
+    rightClickPosition.reset();
 }
 
 PyObject* NavigationStyle::getPyObject()

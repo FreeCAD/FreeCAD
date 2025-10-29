@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // clang-format off
 // NOLINTBEGIN
 /**********************************************************************
@@ -84,7 +86,6 @@
  *
  **********************************************************************/
 
-#include <PreCompiled.h>
 #include "StackWalker.h"
 
 #include <stdio.h>

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <set>
 #include <limits>
@@ -31,7 +28,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
@@ -1509,6 +1505,14 @@ void PropertyString::setPyObject(PyObject* value)
 
 void PropertyString::Save(Base::Writer& writer) const
 {
+    auto verifyXMLString = [this](std::string& input) {
+        const std::string output = this->validateXMLString(input);
+        if (output != input) {
+            Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
+                                    input, output);
+        }
+        return output;
+    };
     std::string val;
     auto obj = freecad_cast<DocumentObject*>(getContainer());
     writer.Stream() << writer.ind() << "<String ";
@@ -1520,11 +1524,13 @@ void PropertyString::Save(Base::Writer& writer) const
         else if (_cValue == obj->getNameInDocument()) {
             writer.Stream() << "restore=\"0\" ";
             val = encodeAttribute(obj->getExportName());
+            val = verifyXMLString(val);
             exported = true;
         }
     }
     if (!exported) {
         val = encodeAttribute(_cValue);
+        val = verifyXMLString(val);
     }
     writer.Stream() << "value=\"" << val << "\"/>" << std::endl;
 }

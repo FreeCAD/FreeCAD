@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include "FeaturePartFuse.h"
 #include "TopoShape.h"
@@ -103,7 +101,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     const int maxIterations = 1'000'000; // will trigger "not enough shape objects linked" error below if ever reached
     for (int i = 0; shapes.size() == 1 && i < maxIterations; ++i) {
         compoundOfArguments = shapes[0];
-        if (compoundOfArguments.getShape().ShapeType() == TopAbs_COMPOUND) {
+        TopoDS_Shape shape = compoundOfArguments.getShape();
+        if (!shape.IsNull() && shape.ShapeType() == TopAbs_COMPOUND) {
             shapes.clear();
             shapes = compoundOfArguments.getSubTopoShapes();
             argumentsAreInCompound = true;

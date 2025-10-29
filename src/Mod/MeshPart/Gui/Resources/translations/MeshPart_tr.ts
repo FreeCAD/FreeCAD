@@ -167,7 +167,7 @@
       <translation>Mesafe şundan azsa kenarları birleştirin</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="383"/>
       <source>Failure</source>
       <translation>Başarısız</translation>
     </message>
@@ -175,32 +175,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Create</source>
       <translation>Oluştur</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Close wire</source>
       <translation>Telin Yakını</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Clear</source>
       <translation>Temizle</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Cancel</source>
       <translation>İptal</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
+      <location filename="../../CurveOnMesh.cpp" line="622"/>
       <source>Wrong mesh selected</source>
       <translation type="unfinished">Wrong mesh selected</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
+      <location filename="../../CurveOnMesh.cpp" line="661"/>
       <source>No point was selected</source>
       <translation type="unfinished">No point was selected</translation>
     </message>
@@ -216,10 +216,10 @@
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
       <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -314,7 +314,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Metal örgü bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır.
+      <translation>Metal örgü bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır. 
 Bu gruplar, bu özelliği destekleyen metal örgü çıktı biçimleri için dışa aktarılacaktır (ör. OBJ biçimi).</translation>
     </message>
     <message>
@@ -435,7 +435,7 @@ En küçük değer 0'dır.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir.
+      <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir. 
 0.1-1 aralığında bir değer.</translation>
     </message>
     <message>
@@ -494,9 +494,9 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</source>
+Either set the tip of the body or select a different shape.</source>
       <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</translation>
+Either set the tip of the body or select a different shape.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
@@ -532,19 +532,19 @@ Select a different shape.</translation>
       <translation>Bir düzlem seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Trim by plane</source>
-      <translation>Düzlemden Kırp</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
       <translation type="unfinished">Select a plane to trim the mesh with.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="104"/>
+      <source>Trim With Plane</source>
+      <translation type="unfinished">Trim With Plane</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="105"/>
-      <source>Select the side to keep.</source>
-      <translation type="unfinished">Select the side to keep.</translation>
+      <source>Select the side to keep</source>
+      <translation type="unfinished">Select the side to keep</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
@@ -573,12 +573,12 @@ Select a different shape.</translation>
   <context>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="49"/>
+      <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
       <translation type="unfinished">Unwrap Mesh</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="52"/>
+      <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
       <translation type="unfinished">Finds a flat representation of a mesh</translation>
     </message>
@@ -586,12 +586,12 @@ Select a different shape.</translation>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="88"/>
+      <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
       <translation type="unfinished">Unwrap Face</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="91"/>
+      <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
       <translation type="unfinished">Finds a flat representation of a face</translation>
     </message>

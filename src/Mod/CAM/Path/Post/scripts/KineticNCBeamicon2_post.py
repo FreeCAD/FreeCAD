@@ -116,7 +116,8 @@ M08
 """
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = """M05 M09
+POSTAMBLE = """M05
+M09
 G17 G90 G80 G40
 M30
 """
@@ -129,7 +130,8 @@ POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """M05
-M09"""
+M09
+"""
 
 
 def processArguments(argstring):

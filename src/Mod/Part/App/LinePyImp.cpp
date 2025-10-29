@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_Line.hxx>
 # include <GC_MakeLine.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>

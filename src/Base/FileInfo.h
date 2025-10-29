@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -127,8 +129,6 @@ public:
     unsigned int size() const;
     /// Returns the time when the file was last modified.
     TimeInfo lastModified() const;
-    /// Returns the time when the file was last read (accessed).
-    TimeInfo lastRead() const;
     //@}
 
     /** @name Directory management*/

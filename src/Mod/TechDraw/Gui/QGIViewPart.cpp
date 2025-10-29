@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <cstdio>
-#ifndef _PreComp_
-
 #include <QPainterPath>
 #include <QKeyEvent>
+#include <cstdio>
 #include <qmath.h>
-#endif// #ifndef _PreComp_
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -102,10 +98,20 @@ QGIViewPart::~QGIViewPart()
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        //There's nothing special for QGIVP to do when selection changes!
+        bool selectState = value.toBool();
+        if (!selectState && !isUnderMouse()) {
+            // hide everything
+            for (auto& child : childItems()) {
+                if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
+                    child->hide();
+                }
+            }
+            return QGIView::itemChange(change, value);
+        }
+        // we are selected
     }
     else if (change == ItemSceneChange && scene()) {
-        QObject::disconnect(m_selectionChangedConnection);
+        // This means we are finished?
         tidy();
     }
     else if (change == QGraphicsItem::ItemSceneHasChanged) {
@@ -114,9 +120,10 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
                 // When selection changes, if the mouse is not over the view,
                 // hide any non-selected vertices.
                 if (!isUnderMouse()) {
-                    for (QGraphicsItem* item : m_vertexItems) {
-                        if (item && !item->isSelected()) {
-                            item->setVisible(false);
+                    for (auto* child : childItems()) {
+                        if ((child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) &&
+                            !child->isSelected()) {
+                            child->hide();
                         }
                     }
                     update();
@@ -130,13 +137,11 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
 
 bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
-    // Base::Console().message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
-    //                         event->type(), watched->type() - QGraphicsItem::UserType);
     if (event->type() == QEvent::ShortcutOverride) {
         // if we accept this event, we should get a regular keystroke event next
         // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
         // Std_Delete
-        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        auto *keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->matches(QKeySequence::Delete))  {
             bool success = removeSelectedCosmetic();
             if (success) {
@@ -447,11 +452,9 @@ void QGIViewPart::drawAllEdges()
 
 void QGIViewPart::drawAllVertexes()
 {
-    m_vertexItems.clear();
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -459,29 +462,27 @@ void QGIViewPart::drawAllVertexes()
     for (int i = 0; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter()) {
             if (showCenterMarks()) {
-                QGICMark* cmItem = new QGICMark(i);
+                auto* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
-                m_vertexItems.append(cmItem);
                 cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 cmItem->setThick(0.5F * getLineWidth());//need minimum?
                 cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
                 cmItem->setPrettyNormal();
                 cmItem->setZValue(ZVALUE::VERTEX);
-                cmItem->setVisible(false);
+                cmItem->setVisible(m_isHovered);
             }
         } else {
             //regular Vertex
             if (showVertices()) {
-                QGIVertex* item = new QGIVertex(i);
+                auto* item = new QGIVertex(i);
                 addToGroup(item);
-                m_vertexItems.append(item);
                 item->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 item->setNormalColor(vertexColor);
                 item->setFillColor(vertexColor);
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(false);
+                item->setVisible(m_isHovered);
             }
         }
     }
@@ -842,7 +843,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 
     std::pair<Base::Vector3d, Base::Vector3d> dirsDCS = dcs->sectionLineArrowDirsMapped();
     sectionLine->setArrowDirections(dirsDCS.first, dirsDCS.second);
-    
+
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
 
@@ -1316,11 +1317,12 @@ void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverEnterEvent(event);
 
-    for (QGraphicsItem* item : m_vertexItems) {
-        if (item) {
-            item->setVisible(true);
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
+            child->show();
         }
     }
+
     update();
 }
 
@@ -1328,9 +1330,10 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverLeaveEvent(event);
 
-    for (QGraphicsItem* item : m_vertexItems) {
-        if (item && !item->isSelected()) {
-            item->setVisible(false);
+    for (auto& child : childItems()) {
+        if ((child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) &&
+            !child->isSelected()) {
+            child->hide();
         }
     }
     update();

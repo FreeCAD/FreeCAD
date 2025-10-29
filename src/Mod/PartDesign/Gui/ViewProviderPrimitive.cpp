@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QMenu>
 # include <QMessageBox>
-#endif
+
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>

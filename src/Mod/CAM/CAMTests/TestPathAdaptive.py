@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *                                                                         *
@@ -412,6 +411,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.StepOver = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
+        adaptive.ModelAwareExperiment = True
         adaptive.StepDown.Value = (
             5.0  # Have to set expression to None before numerical value assignment
         )
@@ -543,6 +543,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.StepOver = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
+        adaptive.ModelAwareExperiment = True
         adaptive.StepDown.Value = (
             5.0  # Have to set expression to None before numerical value assignment
         )
@@ -624,6 +625,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.StepOver = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
+        adaptive.ModelAwareExperiment = True
         adaptive.StepDown.Value = (
             5.0  # Have to set expression to None before numerical value assignment
         )

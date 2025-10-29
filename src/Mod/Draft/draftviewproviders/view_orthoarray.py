@@ -48,4 +48,5 @@ class ViewProviderOrthoArray(ViewProviderDraftArray):
         """Set the icon in the tree view."""
         return ":/icons/Draft_Array"
 
+
 ## @}

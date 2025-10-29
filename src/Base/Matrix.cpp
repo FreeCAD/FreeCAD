@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -21,11 +23,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cstring>
 #include <sstream>
-#endif
 
 #include "Matrix.h"
 #include "Converter.h"

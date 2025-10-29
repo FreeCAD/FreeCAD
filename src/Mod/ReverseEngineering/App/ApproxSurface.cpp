@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
@@ -30,7 +28,6 @@
 #include <Precision.hxx>
 #include <math_Gauss.hxx>
 #include <math_Householder.hxx>
-#endif
 
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>

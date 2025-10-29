@@ -25,6 +25,8 @@
 
 #include "Expression.h"
 
+#include "Document.h"
+
 namespace App
 {
 

@@ -4,202 +4,202 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="249"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="250"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Cylinder</source>
       <translation>Valjak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="251"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>Aproksimiraj valjak</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>Plane</source>
       <translation>Ravan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="140"/>
       <source>Approximates a plane</source>
-      <translation type="unfinished">Approximates a plane</translation>
+      <translation>Aproksimiraj ravan</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation type="unfinished">Polynomial Surface</translation>
+      <translation>Polinomska površ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation type="unfinished">Approximates a polynomial surface</translation>
+      <translation>Aproksimiraj polinomsku površ</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Sphere</source>
       <translation>Lopta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation type="unfinished">Approximates a sphere</translation>
+      <translation>Aproksimiraj loptu</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation type="unfinished">Approximate B-Spline Surface…</translation>
+      <translation>Aproksimiraj B-splajn površ…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Approximates a B-spline surface</source>
-      <translation type="unfinished">Approximates a B-spline surface</translation>
+      <translation>Aproksimiraj B-splajn površ</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>Žičani okvir od granica mreže…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="534"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>Napravi žičani okvir od granica mreže</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>Poason…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="602"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Performs Poisson surface reconstruction</source>
-      <translation type="unfinished">Performs Poisson surface reconstruction</translation>
+      <translation>Poasonova rekonstrukcija površi</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="420"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>Segmentacija mreže…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="425"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>Napravi posebne segmente mreže u zavisnosti od vrste površi</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="483"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>Od komponenti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="484"/>
       <source>Creates mesh segments from components</source>
-      <translation type="unfinished">Creates mesh segments from components</translation>
+      <translation>Napravi segmente mreže od komponenti</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="453"/>
       <source>Manual Segmentation…</source>
-      <translation type="unfinished">Manual Segmentation…</translation>
+      <translation>Ručna segmentacija…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Creates mesh segments manually</source>
-      <translation type="unfinished">Creates mesh segments manually</translation>
+      <translation>Napravi ručnu segmente mreže</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="634"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="632"/>
       <source>Structured Point Clouds</source>
-      <translation type="unfinished">Structured Point Clouds</translation>
+      <translation>Strukturirani oblaci tačaka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="636"/>
+      <location filename="../../Command.cpp" line="633"/>
       <source>Triangulates structured point clouds</source>
-      <translation type="unfinished">Triangulates structured point clouds</translation>
+      <translation>Triangulacija strukturiranih oblaka tačaka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="634"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Triangulacija strukturiranih oblaka tačaka</translation>
     </message>
@@ -207,48 +207,48 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="227"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Fit plane</source>
       <translation>Uklopi ravan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="256"/>
       <source>Fit cylinder</source>
       <translation>Uklopi valjak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Fit sphere</source>
       <translation>Uklopi loptu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
       <translation>Uklopi polinomsku površ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>View triangulation</source>
       <translation>Prikaz triangulacije</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="154"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <location filename="../../FitBSplineSurface.cpp" line="230"/>
+      <location filename="../../FitBSplineCurve.cpp" line="137"/>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-spline</source>
       <translation>Uklopi B-Splajn</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="83"/>
+      <location filename="../../Poisson.cpp" line="81"/>
       <source>Poisson reconstruction</source>
       <translation>Poasonova rekonstrukcija</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="281"/>
+      <location filename="../../SegmentationManual.cpp" line="279"/>
       <source>Segmentation</source>
       <translation>Segmentacija</translation>
     </message>
@@ -270,17 +270,17 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-Spline Surface</source>
-      <translation type="unfinished">Fit B-Spline Surface</translation>
+      <translation>Uklopi B-Splajn površ</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>U-Direction</source>
-      <translation type="unfinished">U-Direction</translation>
+      <translation>U-smer</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>V-Direction</source>
-      <translation type="unfinished">V-Direction</translation>
+      <translation>V-smer</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -300,17 +300,17 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation>Kirisnički definisani u/v smerovi</translation>
+      <translation>Zadaj u/v smerove</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create Placement</source>
-      <translation type="unfinished">Create Placement</translation>
+      <translation>Napravi Položaj</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total weight</source>
-      <translation type="unfinished">Total weight</translation>
+      <translation>Ukupna težina</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -336,20 +336,20 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="165"/>
-      <location filename="../../FitBSplineSurface.cpp" line="237"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="235"/>
       <source>Input error</source>
       <translation>Greška pri unosu</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="205"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="206"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Select a single placement object to get the local orientation.</source>
-      <translation type="unfinished">Select a single placement object to get the local orientation.</translation>
+      <translation>Izaberi jedan objekat Položaj da bi dobio lokalnu orijentaciju.</translation>
     </message>
   </context>
   <context>
@@ -380,7 +380,7 @@
       <translation>Broj diskretnih elemenata po čvoru</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="90"/>
+      <location filename="../../Poisson.cpp" line="88"/>
       <source>Input error</source>
       <translation>Greška pri unosu</translation>
     </message>
@@ -388,32 +388,32 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <location filename="../../Command.cpp" line="121"/>
-      <location filename="../../Command.cpp" line="614"/>
+      <location filename="../../Command.cpp" line="80"/>
+      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="611"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="81"/>
       <source>Select a point cloud.</source>
-      <translation type="unfinished">Select a point cloud.</translation>
+      <translation>Izaberi oblak tačaka.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>Select a point cloud or mesh.</source>
-      <translation type="unfinished">Select a point cloud or mesh.</translation>
+      <translation>Izaberi oblak tačaka ili mrežu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="615"/>
+      <location filename="../../Command.cpp" line="612"/>
       <source>Select a single point cloud.</source>
-      <translation type="unfinished">Select a single point cloud.</translation>
+      <translation>Izaberi jedan oblak tačaka.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="668"/>
+      <location filename="../../Command.cpp" line="665"/>
       <source>View triangulation failed</source>
       <translation>Prikaz triangulacije nije uspeo</translation>
     </message>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Segmentacija mreže</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -491,12 +491,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual Mesh Segmentation</source>
-      <translation type="unfinished">Manual Mesh Segmentation</translation>
+      <translation>Ručna segmentacija mreže</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Izaberi trougao</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -547,12 +547,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Parametri regiona</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Uvažite samo trouglove sa normalama okrenutim prema ekranu</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
@@ -578,7 +578,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="351"/>
+      <location filename="../../SegmentationManual.cpp" line="349"/>
       <source>Create</source>
       <translation>Napravi</translation>
     </message>
@@ -586,7 +586,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
@@ -596,7 +596,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-Spline Curve</source>
-      <translation type="unfinished">Fit B-Spline Curve</translation>
+      <translation>Uklopi B-Splajn krivu</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -702,25 +702,25 @@
   <context>
     <name>CmdApproxCurve</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
       <translation>Obrnuti inženjering</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Approximate B-Spline Curve…</source>
-      <translation type="unfinished">Approximate B-Spline Curve…</translation>
+      <translation>Aproksimiraj B-splajn krivu…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Approximates a B-spline curve</source>
-      <translation type="unfinished">Approximates a B-spline curve</translation>
+      <translation>Aproksimiraj B-splajn krivu</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="91"/>
+      <location filename="../../FitBSplineCurve.cpp" line="89"/>
       <source>Input error</source>
       <translation>Greška pri unosu</translation>
     </message>

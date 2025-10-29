@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <TopoDS.hxx>
-#endif
+
 
 #include "FeatureCut.h"
 

@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # include <array>
 # include <cmath>
 # include <cstdlib>
@@ -158,7 +157,6 @@
 
 # include <boost/algorithm/string/predicate.hpp>
 # include <boost/core/ignore_unused.hpp>
-#endif // _PreComp_
 
 #include <App/Material.h>
 #include <App/ElementNamingUtils.h>
@@ -3970,7 +3968,7 @@ bool TopoShape::findPlane(gp_Pln& pln, double tol, double atol) const
             else {
                 TopLoc_Location loc;
                 Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                GeomLib_IsPlanarSurface check(surf);
+                GeomLib_IsPlanarSurface check(surf, tol);
                 if (check.IsPlanar()) {
                     plane = check.Plan();
                 }

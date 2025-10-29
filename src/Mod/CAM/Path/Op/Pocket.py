@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -261,7 +260,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
-        obj.StepOver = 100
+        obj.StepOver = 50
         obj.ZigZagAngle = 45
         obj.HandleMultipleFeatures = "Collectively"
         obj.AdaptivePocketStart = False

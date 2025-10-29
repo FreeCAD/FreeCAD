@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -34,6 +36,8 @@
 
 // Python stuff
 using PyObject = struct _object;
+
+#include <FCConfig.h>
 
 #ifdef FC_OS_MACOSX
 #undef toupper

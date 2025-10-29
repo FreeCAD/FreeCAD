@@ -20,9 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "GeoEnum.h"
+
+#include <FCConfig.h>
 
 using namespace Sketcher;
 

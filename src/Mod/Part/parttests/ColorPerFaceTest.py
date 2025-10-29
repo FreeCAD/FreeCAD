@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # test to check color per face when after restore
 
@@ -49,7 +48,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(box.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        mat = paths.get(2).getTail()
+        mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
 
     def testBoxAndLink(self):
@@ -83,7 +82,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(box.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        mat = paths.get(2).getTail()
+        mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
 
     def testTransparency(self):
@@ -110,7 +109,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(box.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        bind = paths.get(2).getTail()
+        bind = paths.get(1).getTail()
         self.assertEqual(bind.value.getValue(), bind.PER_PART)
 
         sa = coin.SoSearchAction()
@@ -120,7 +119,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(box.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        mat = paths.get(2).getTail()
+        mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
 
     def testMultiFuse(self):
@@ -146,7 +145,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(fuse.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        bind = paths.get(2).getTail()
+        bind = paths.get(1).getTail()
         self.assertEqual(bind.value.getValue(), bind.PER_PART)
 
         sa = coin.SoSearchAction()
@@ -156,7 +155,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(fuse.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        mat = paths.get(2).getTail()
+        mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 11)
 
         self.assertEqual(len(fuse.Shape.Faces), 11)
@@ -195,7 +194,7 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(fuse.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        bind = paths.get(2).getTail()
+        bind = paths.get(1).getTail()
         self.assertEqual(bind.value.getValue(), bind.PER_PART)
 
         sa = coin.SoSearchAction()
@@ -205,5 +204,5 @@ class ColorPerFaceTest(unittest.TestCase):
         sa.apply(fuse.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        mat = paths.get(2).getTail()
+        mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 11)

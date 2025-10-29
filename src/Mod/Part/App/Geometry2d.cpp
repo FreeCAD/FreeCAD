@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge2d.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <Geom2dAPI_Interpolate.hxx>
@@ -55,7 +53,7 @@
 # include <GCE2d_MakeParabola.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>

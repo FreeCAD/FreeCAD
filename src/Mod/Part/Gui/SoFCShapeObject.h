@@ -23,13 +23,35 @@
 #ifndef PARTGUI_SOFCSHAPEOBJECT_H
 #define PARTGUI_SOFCSHAPEOBJECT_H
 
+#include "SoBrepEdgeSet.h"
+#include "SoBrepFaceSet.h"
+#include "SoBrepPointSet.h"
+
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFUInt32.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
+
 #include <Mod/Part/PartGlobal.h>
 
-
 namespace PartGui {
+
+class PartGuiExport SoFCShape : public SoSeparator {
+    using inherited = SoSeparator;
+    SO_NODE_HEADER(SoFCShape);
+
+public:
+    SoFCShape();
+    static void initClass();
+
+    SoCoordinate3* coords;
+    SoNormal* norm;
+    SoBrepFaceSet* faceset;
+    SoBrepEdgeSet* lineset;
+    SoBrepPointSet* nodeset;
+};
 
 class PartGuiExport SoFCControlPoints : public SoShape {
     using inherited = SoShape;

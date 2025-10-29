@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QPalette>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QTextDocument>
-#endif
+
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -643,12 +641,11 @@ SheetViewPy::~SheetViewPy() = default;
 
 Py::Object SheetViewPy::repr()
 {
-    std::ostringstream s_out;
     if (!getSheetViewPtr()) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
     }
-    s_out << "SheetView";
-    return Py::String(s_out.str());
+
+    return Py::String("SheetView");
 }
 
 // Since with PyCXX it's not possible to make a sub-class of MDIViewPy

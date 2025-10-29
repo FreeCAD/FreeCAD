@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *   Copyright (c) 2017 Christophe Grellier <cg[at]grellier.fr>            *
@@ -21,8 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <QTimer>
@@ -32,7 +32,6 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
 
 #include <App/Document.h>
 #include <Base/Tools.h>

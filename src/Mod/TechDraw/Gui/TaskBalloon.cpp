@@ -21,10 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
-#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <Base/Console.h>

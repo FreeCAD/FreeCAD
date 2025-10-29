@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
-      <translation>Полигональная сетка для детали</translation>
+      <translation>Полигональная сетка Детали</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Поперечные сечения</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Создаёт поперечные сечения сетки</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Кривая на сетке</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Создаёт приблизительную кривую на поверхности объекта сетки</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Сетка из фигуры</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Создаёт сечение из сетки и плоскости</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Обрезать сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Поперечные сечения</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Задающая плоскость</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -167,7 +167,7 @@
       <translation>Подключите рёбра, если расстояние меньше, чем</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="383"/>
       <source>Failure</source>
       <translation>Сбой</translation>
     </message>
@@ -175,34 +175,34 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Create</source>
       <translation>Создать</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Close wire</source>
       <translation>Замкнуть ломаную</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Clear</source>
       <translation>Очистить</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Cancel</source>
       <translation>Отмена</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
+      <location filename="../../CurveOnMesh.cpp" line="622"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Выбрана неправильная сетка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
+      <location filename="../../CurveOnMesh.cpp" line="661"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Не выбрано ни одной точки</translation>
     </message>
   </context>
   <context>
@@ -210,16 +210,16 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Кривая на сетке</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+      <translation>Нажмите "Пуск", затем выберите точки на сетке; когда точек будет установлено достаточно, щёлкните правой кнопкой мыши и выберите "Создать". Повторите этот процесс, чтобы создать больше сплайнов. Закройте эту панель задач, чтобы завершить операцию.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Эта команда работает только с объектами сетки, а не с обычной гранью или поверхностью. Чтобы преобразовать объект в сетку, воспользуйтесь инструментами верстака Сетка.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -336,29 +336,28 @@ this feature (e.g. the format OBJ).</source>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation type="unfinished">Meshing Options</translation>
+      <translation>Параметры построения сетки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Отклонение поверхности</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Угловое отклонение</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Максимальным линейным отклонением сегмента сетки будет заданное отклонение поверхности, умноженное на длину текущего сегмента сетки (ребра)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Максимальная длина ребра</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -420,17 +419,17 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Градуировка размеров сетки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Элементов на ребро</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Элементов на радиус кривизны</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -496,16 +495,16 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</translation>
+Either set the tip of the body or select a different shape.</source>
+      <translation>Ошибка: тело без выбранной точки окончания расчётов.
+Либо задайте точки окончания расчётов тела, либо выберите другую форму.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Ошибка: выбрана фигура без граней.
+Выберите другую фигуру.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="289"/>
@@ -523,7 +522,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Выберите плоскость для сечения сетки.</translation>
     </message>
   </context>
   <context>
@@ -534,19 +533,19 @@ Select a different shape.</translation>
       <translation>Выбрать плоскость</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Select a plane to trim the mesh with.</source>
+      <translation>Выберите плоскость для обрезки сетки.</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="104"/>
-      <source>Trim by plane</source>
+      <source>Trim With Plane</source>
       <translation>Обрезать плоскостью</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="105"/>
-      <source>Select the side to keep.</source>
-      <translation type="unfinished">Select the side to keep.</translation>
+      <source>Select the side to keep</source>
+      <translation>Выберите сторону, которую нужно сохранить</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
@@ -569,33 +568,33 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Полигональная сетка для детали</translation>
+      <translation>Полигональная сетка Детали</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="49"/>
+      <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Развернуть сетку</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="52"/>
+      <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Получает плоскую развёртку сетки</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="88"/>
+      <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Развернуть грань</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="91"/>
+      <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Получает плоскую развёртку грани</translation>
     </message>
   </context>
 </TS>

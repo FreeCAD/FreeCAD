@@ -4,40 +4,40 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="94"/>
+      <location filename="../../FirstStartWidget.cpp" line="92"/>
       <source>Done</source>
       <translation>მზადაა</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="96"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
       <translation>კეთილი იყოს თქვენი მობრძანება %1-ში</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>დააყენეთ თქვენი ძირითადი პარამეტრები ქვემოთ.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="100"/>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>ეს პარამეტრები (და ბევრი სხვა) მოგვიანებითაც, მორგების ფანჯარაში შეგიძლიათ, შეცვალოთ.</translation>
     </message>
   </context>
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="211"/>
       <source>Language</source>
       <translation>ენა</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="214"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Unit System</source>
       <translation>ერთეულების სისტემა</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="230"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="228"/>
       <source>Navigation Style</source>
       <translation>ნავიგაციის სტილი</translation>
     </message>
@@ -45,113 +45,113 @@
   <context>
     <name>CmdStart</name>
     <message>
-      <location filename="../../Manipulator.cpp" line="47"/>
+      <location filename="../../Manipulator.cpp" line="45"/>
       <source>Start</source>
       <translation>დაწყება</translation>
     </message>
     <message>
-      <location filename="../../Manipulator.cpp" line="48"/>
+      <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
       <translation>&amp;საწყისი გვერდი</translation>
     </message>
     <message>
-      <location filename="../../Manipulator.cpp" line="49"/>
+      <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>აჩვენებს საწყის გვერდს</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="209"/>
       <source>Open File</source>
       <translation>ფაილის გახსნა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Assembly</source>
       <translation>აწყობა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>2D Draft</source>
       <translation>2D მონახაზი</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="222"/>
+      <source>Creates a 2D Draft document</source>
+      <translation>შექმნის 2D მონახაზის დოკუმენტს</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>BIM/Architecture</source>
       <translation>BIM/არქიტექტურა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="207"/>
+      <location filename="../../StartView.cpp" line="205"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>ცარიელი ფაილი</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="208"/>
+      <location filename="../../StartView.cpp" line="206"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>ქმნის ცარიელ FreeCAD-ის ფაილს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="210"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>გახსნის არსებულ CAD ფაილს ან 3D მოდელს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>პარამეტრული სხეული</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="214"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>შექმნის სხეულს ნაწილის დიზაინის სამუშაო მაგიდით</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>აწყობის პროექტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
-      <source>Creates a 2D draft document</source>
-      <translation type="unfinished">Creates a 2D draft document</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>ქმნის არქიტექტურულ პროექტს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="459"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>ახალი ფაილი</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="460"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>მაგალითები</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="461"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>ბოლო ფაილები</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="476"/>
+      <location filename="../../StartView.cpp" line="511"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>მორგების ფაჯრის გახსნა პირველი გაშვების</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="478"/>
+      <location filename="../../StartView.cpp" line="513"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>აღარ მაჩვენო საწყისი გვერდი (დაწყება ცარიელი ეკრანით)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="453"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>დაწყება</translation>
     </message>
@@ -179,24 +179,24 @@
       <translation>თემა</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="240"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>ახალ თემებს ეძებთ? ისინი შეგიძლიათ, &lt;a href="freecad:Std_AddonMgr"&gt;დამატებების მმართველიდან&lt;/a&gt; დააყენოთ.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="246"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>მუქი FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>ღია FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>კლასიკური FreeCAD</translation>
@@ -218,34 +218,34 @@
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>დამატებით საქაღალდეში, მხოლოდ, FreeCAD-ის ფაილების ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>მაგალითების საქაღალდის შემცველობის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation>საქაღალდის დამატებითი შემცველობის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>არასავალდებულო საქაღალდე, რომელიც საწყის გვერდზე გამოჩნდება.
+შეგიძლიათ ერთზე მეტი საქაღალდის მითითება. ბილიკების გასაყოფად გამოიყენეთ ";;".</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>აჩვენებს მაგალითის ფაილებს საწყის გვერდზე</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>საწყისი გვერდი ავტომატურად დაიხურება FreeCAD-ის გაშვებისას</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -255,13 +255,13 @@ Multiple folders can be added using ";;" to separate paths.</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>საწყისი გვერდის დახურვა ჩატვირთვის შემდეგ</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="131"/>
+      <location filename="../../AppStartGui.cpp" line="129"/>
       <source>Start</source>
       <translation>დაწყება</translation>
     </message>

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QButtonGroup>
 # include <QCompleter>
@@ -40,7 +39,7 @@
 # include <QStandardPaths>
 # include <QStyle>
 # include <QUrl>
-#endif
+
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
@@ -202,11 +201,14 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
 
         QStringList filterSuffixes;
         getSuffixesDescription(filterSuffixes, filterToSearch);
-        QString fiSuffix = QLatin1String("*.") + fi.suffix();  // To match with filterSuffixes
-        if (fi.suffix().isEmpty() || !filterSuffixes.contains(fiSuffix)) {
+        const QString fiSuffix = fi.suffix();
+        const QString dotSuffix = QLatin1String("*.") + fiSuffix;  // To match with filterSuffixes
+        if (fiSuffix.isEmpty() || !filterSuffixes.contains(dotSuffix)) {
             // there is no suffix or not a suffix that matches the filter, so
             // default to the first suffix of the filter
-            dirName += filterSuffixes[0].mid(1);
+            if (!filterSuffixes.isEmpty()) {
+                dirName += filterSuffixes[0].mid(1);
+            }
         }
     }
 

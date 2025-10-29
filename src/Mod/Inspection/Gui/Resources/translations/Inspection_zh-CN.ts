@@ -4,45 +4,45 @@
   <context>
     <name>CmdInspectElement</name>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="72"/>
       <source>Inspection</source>
       <translation>检查</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="73"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>检查…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>Inspects distance information</source>
-      <translation type="unfinished">Inspects distance information</translation>
+      <translation>检查距离信息</translation>
     </message>
   </context>
   <context>
     <name>CmdVisualInspection</name>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Inspection</source>
       <translation>检查</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <translation>目视检查…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="50"/>
+      <location filename="../../Command.cpp" line="48"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>目视检查对象</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="237"/>
+      <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
-      <translation>可视性检查</translation>
+      <translation>目视检查</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>可视性检查</translation>
+      <translation>目视检查</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation>实际的</translation>
+      <translation>实际</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -82,7 +82,7 @@
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation> 毫米</translation>
+      <translation> mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
@@ -93,38 +93,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="502"/>
+      <location filename="../../ViewProviderInspection.cpp" line="499"/>
       <source>Remove annotations</source>
       <translation>移除标注</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="503"/>
+      <location filename="../../ViewProviderInspection.cpp" line="500"/>
       <source>Do you want to remove all annotations?</source>
       <translation>你想移除所有标注吗？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="561"/>
+      <location filename="../../ViewProviderInspection.cpp" line="558"/>
       <source>Annotation</source>
       <translation>注释</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="564"/>
+      <location filename="../../ViewProviderInspection.cpp" line="561"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>离开信息模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="695"/>
+      <location filename="../../ViewProviderInspection.cpp" line="692"/>
       <source>Distance: &gt; %1</source>
       <translation>距离: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
+      <location filename="../../ViewProviderInspection.cpp" line="696"/>
       <source>Distance: &lt; %1</source>
       <translation>距离: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="719"/>
-      <location filename="../../ViewProviderInspection.cpp" line="736"/>
+      <location filename="../../ViewProviderInspection.cpp" line="716"/>
+      <location filename="../../ViewProviderInspection.cpp" line="733"/>
       <source>Distance: %1</source>
       <translation>距离: %1</translation>
     </message>

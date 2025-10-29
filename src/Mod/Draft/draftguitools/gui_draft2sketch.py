@@ -53,9 +53,14 @@ class Draft2Sketch(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Draft2Sketch',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Converts bidirectionally between Draft objects and sketches.\nMultiple selected Draft objects are converted into a single sketch.\nHowever, a single sketch with disconnected traces is converted into several individual Draft objects.")}
+        return {
+            "Pixmap": "Draft_Draft2Sketch",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Draft2Sketch",
+                "Converts bidirectionally between Draft objects and sketches.\nMultiple selected Draft objects are converted into a single sketch.\nHowever, a single sketch with disconnected traces is converted into several individual Draft objects.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -80,8 +85,9 @@ class Draft2Sketch(gui_base_original.Modifier):
         for obj in sel:
             if obj.isDerivedFrom("Sketcher::SketchObject"):
                 allDraft = False
-            elif (obj.isDerivedFrom("Part::Part2DObjectPython")
-                  or obj.isDerivedFrom("Part::Feature")):
+            elif obj.isDerivedFrom("Part::Part2DObjectPython") or obj.isDerivedFrom(
+                "Part::Feature"
+            ):
                 allSketches = False
             else:
                 allDraft = False
@@ -95,10 +101,8 @@ class Draft2Sketch(gui_base_original.Modifier):
             _cmd += "FreeCADGui.Selection.getSelection(), "
             _cmd += "autoconstraints=True"
             _cmd += ")"
-            _cmd_list = ['sk = ' + _cmd,
-                         'FreeCAD.ActiveDocument.recompute()']
-            self.commit(translate("draft", "Convert to Sketch"),
-                        _cmd_list)
+            _cmd_list = ["sk = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+            self.commit(translate("draft", "Convert to Sketch"), _cmd_list)
         elif allSketches:
             n = 0
             _cmd_list = list()
@@ -111,9 +115,8 @@ class Draft2Sketch(gui_base_original.Modifier):
                 _cmd_list.append("df" + str(n) + " = " + _cmd)
                 n += 1
 
-            _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
-            self.commit(translate("draft", "Convert to Draft"),
-                        _cmd_list)
+            _cmd_list.append("FreeCAD.ActiveDocument.recompute()")
+            self.commit(translate("draft", "Convert to Draft"), _cmd_list)
         else:
             _cmd_list = list()
             n = 0
@@ -132,20 +135,20 @@ class Draft2Sketch(gui_base_original.Modifier):
 
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
                     _cmd_list.append("obj" + str(n) + " = " + _cmd_df)
-                elif (obj.isDerivedFrom("Part::Part2DObjectPython")
-                      or obj.isDerivedFrom("Part::Feature")):
+                elif obj.isDerivedFrom("Part::Part2DObjectPython") or obj.isDerivedFrom(
+                    "Part::Feature"
+                ):
                     _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
-                #elif obj.isDerivedFrom("Part::Feature"):
+                # elif obj.isDerivedFrom("Part::Feature"):
                 #    # if (len(obj.Shape.Wires) == 1
                 #    #     or len(obj.Shape.Edges) == 1):
                 #    _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
                 n += 1
-            _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
-            self.commit(translate("draft", "Convert Draft/Sketch"),
-                        _cmd_list)
+            _cmd_list.append("FreeCAD.ActiveDocument.recompute()")
+            self.commit(translate("draft", "Convert Draft/Sketch"), _cmd_list)
         self.finish()
 
 
-Gui.addCommand('Draft_Draft2Sketch', Draft2Sketch())
+Gui.addCommand("Draft_Draft2Sketch", Draft2Sketch())
 
 ## @}

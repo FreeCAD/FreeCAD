@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -114,6 +113,9 @@ class ObjectCustom(PathOp.ObjectOp):
     def onChanged(self, obj, prop):
         if prop == "Source":
             self.setEditorModes(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "Source"):

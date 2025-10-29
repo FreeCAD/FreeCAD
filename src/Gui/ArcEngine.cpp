@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "ArcEngine.h"
 #include <limits>
 #include <vector>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -23,13 +24,12 @@
 #ifndef GUI_SOFCSELECTION_H
 #define GUI_SOFCSELECTION_H
 
+#include <FCConfig.h>
+
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # else
 # ifdef FC_OS_WIN32
-#  ifndef NOMINMAX
-#  define NOMINMAX
-#  endif
 #  include <windows.h>
 # endif
 # include <GL/gl.h>

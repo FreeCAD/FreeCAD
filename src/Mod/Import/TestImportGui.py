@@ -77,7 +77,7 @@ class ExportImportTest(unittest.TestCase):
         sa.apply(feature.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        bind = paths.get(2).getTail()
+        bind = paths.get(1).getTail()
         self.assertEqual(bind.value.getValue(), bind.PER_PART)
 
         sa = coin.SoSearchAction()
@@ -87,5 +87,5 @@ class ExportImportTest(unittest.TestCase):
         sa.apply(feature.ViewObject.RootNode)
         paths = sa.getPaths()
 
-        mat = paths.get(2).getTail()
+        mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)

@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
@@ -41,7 +40,7 @@
 # include <QTimer>
 # include <QToolTip>
 # include <QVBoxLayout>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -580,11 +579,6 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::DocumentObject* obj = item->object()->getObject();
     auto& prop = index.column() ? obj->Label2 : obj->Label;
 
-    std::ostringstream str;
-    str << "Change " << obj->getNameInDocument() << '.' << prop.getName();
-    App::GetApplication().setActiveTransaction(str.str().c_str());
-    FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
-
     DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
         DynamicQLineEdit *le = new DynamicQLineEdit(parent);
@@ -683,8 +677,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->recomputeObjectAction, &QAction::triggered,
             this, &TreeWidget::onRecomputeObject);
     this->searchObjectsAction = new QAction(this);
-    this->searchObjectsAction->setText(tr("Search..."));
-    this->searchObjectsAction->setStatusTip(tr("Search for objects"));
+    this->searchObjectsAction->setText(tr("Search Objects"));
+    this->searchObjectsAction->setStatusTip(tr("Searches for objects in the tree"));
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
 
@@ -1156,7 +1150,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
     QAction* action = new QAction(tr("Show Description"), this);
     QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
-    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by by editing the 'label2' property."));
+    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by editing the 'label2' property."));
     action->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -1512,10 +1506,8 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
     }
 }
 
-std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+TreeWidget* TreeWidget::getTreeForSelection()
 {
-    std::vector<SelInfo> ret;
-
     TreeWidget* tree = instance();
     if (!tree || !tree->isSelectionAttached()) {
         for (auto pTree : Instances)
@@ -1524,13 +1516,52 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
                 break;
             }
     }
-    if (!tree)
-        return ret;
+    if (!tree) {
+        return nullptr;
+    }
 
-    if (tree->selectTimer->isActive())
+    if (tree->selectTimer->isActive()) {
         tree->onSelectTimer();
-    else
+    }
+    else {
         tree->_updateStatus(false);
+    }
+
+    return tree;
+}
+
+std::vector<Document*> TreeWidget::getSelectedDocuments()
+{
+    std::vector<Document*> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
+
+    const auto items = tree->selectedItems();
+    for (auto ti : items) {
+        if (ti->type() != DocumentType)
+            continue;
+        auto item = static_cast<DocumentItem*>(ti);
+        auto doc = item->document();
+        if (!doc || !doc->getDocument()) {
+            FC_WARN("skip invalid document");
+            continue;
+        }
+        ret.push_back(doc);
+    }
+    return ret;
+}
+
+std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+{
+    std::vector<SelInfo> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
 
     const auto items = tree->selectedItems();
     for (auto ti : items) {
@@ -4028,6 +4059,8 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
     // during item creation or deletion
     bool lock = blockSelection(true);
     bool needUpdate = false;
+    QTreeWidgetItem* newFocusItem = nullptr;
+    bool hadFocus = (QApplication::focusWidget() == this);
 
     for (const auto& data : itEntry->second) {
         DocumentItem* docItem = data->docItem;
@@ -4042,8 +4075,25 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
         for (auto cit = items.begin(), citNext = cit; cit != items.end(); cit = citNext) {
             ++citNext;
-            (*cit)->myOwner = nullptr;
-            delete* cit;
+            DocumentObjectItem* itemToDelete = *cit;
+
+            // get next item based on currently deleted item to select it
+            // as the next one
+            if (currentItem() == itemToDelete && !newFocusItem) {
+                QTreeWidgetItem* parent = itemToDelete->parent();
+                int index = parent->indexOfChild(itemToDelete);
+                if (index > 0) {
+                    newFocusItem = parent->child(index - 1);
+                } else if (parent->childCount() > 1) {
+                    newFocusItem = parent->child(index + 1);
+                } else {
+                    // no siblings, move to parent
+                    newFocusItem = parent;
+                }
+            }
+
+            itemToDelete->myOwner = nullptr;
+            delete itemToDelete;
         }
 
         // Check for any child of the deleted object that is not in the tree, and put it
@@ -4073,6 +4123,20 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     // Restore signal state
     blockSelection(lock);
+
+    // restore focus to the appropriate item after deletion
+    if (newFocusItem) {
+        setCurrentItem(newFocusItem);
+        newFocusItem->setSelected(true);
+    }
+
+    // restore focus to the tree widget if it had focus before deletion
+    if (hadFocus) {
+        QTimer::singleShot(0, this, [this]() {
+            setFocus(Qt::OtherFocusReason);
+            activateWindow();
+        });
+    }
 
     if (needUpdate)
         _updateStatus();
@@ -5917,3 +5981,4 @@ void DocumentObjectItem::applyExpandedSnapshot(const std::vector<bool>& snapshot
 }
 
 #include "moc_Tree.cpp"
+

@@ -25,8 +25,10 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-
 #include <App/Document.h>
+
+#include <Mod/Part/PartGlobal.h>
+
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"
 #include "ExtrusionHelper.h"

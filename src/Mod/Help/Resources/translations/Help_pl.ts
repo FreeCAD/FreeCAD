@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Pobiera dokumentację ze stron renderowanych na GitHub.
+To nie jest obecnie dostępne.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -27,9 +27,9 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy.
-Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków
-i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka
+      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy. 
+Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków 
+i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka 
 pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -60,16 +60,15 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Ustaw to na niestandardowy adres URL lub folder, w którym znajdują się pliki pomocy. 
+Dokumentację można pobrać do użytku offline, korzystając z Menedżera dodatków 
+i instalując dodatek "offline-documentation". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka 
+pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Przyrostek tłumaczenia</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -98,41 +97,40 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>Uwaga: Jeśli komponenty Web PySide nie zostaną znalezione w systemie, strony pomocy zostaną otwarte w domyślnej przeglądarce internetowej niezależnie od poniższych opcji.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Dokumentacja zostanie otwarta w domyślnej przeglądarce internetowej</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>W domyślnej przeglądarce internetowej</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Dokumentacja zostanie otwarta w nowej karcie wewnątrz interfejsu FreeCAD. Wymaga to komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Dokumentacja otwiera się w oknie dialogowym w obrębie FreeCAD, umożliwiając jednoczesną pracę w widoku 3D. Wymaga komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>Niestandardowy arkusz stylów</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>Określ ścieżkę do alternatywnego pliku CSS do stylizacji stron Markdown.
+Działa to tylko wtedy, gdy Markdown jest wybrany powyżej.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -153,28 +151,30 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Nie można pobrać zawartości tej strony. Sprawdź ustawienia w menu Edycja→Preferencje ... → Ogólne → Pomoc</translation>
+      <location filename="../../Help.py" line="73"/>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Nie można pobrać zawartości tej strony. 
+Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Nie można określić lokalizacji plików pomocy. Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
+      <location filename="../../Help.py" line="77"/>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Nie można określić lokalizacji plików pomocy. 
+Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny.
+      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny. 
 Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>W systemie nie ma zainstalowanego renderera Markdown, więc ta strona pomocy jest renderowana tak, jak jest. Zainstaluj moduły Markdown lub Pandoc Python, aby poprawić jakość renderowania tej strony.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>Pomoc</translation>
     </message>
@@ -182,7 +182,7 @@ Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>Ogólne</translation>
     </message>

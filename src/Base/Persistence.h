@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -147,6 +149,8 @@ public:
     virtual void RestoreDocFile(Reader& /*reader*/);
     /// Encodes an attribute upon saving.
     static std::string encodeAttribute(const std::string&);
+    /// Replaces all characters with '_' that are not allowed in XML
+    static std::string validateXMLString(const std::string& str);
 
     // dump the binary persistence data into into the stream
     void dumpToStream(std::ostream& stream, int compression);

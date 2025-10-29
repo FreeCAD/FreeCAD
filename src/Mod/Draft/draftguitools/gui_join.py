@@ -49,10 +49,15 @@ class Join(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_Join",
-                "Accel": "J, O",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Join", "Join"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Join", "Joins the selected lines or polylines into a single object.\nThe lines must share a common point at the start or at the end.")}
+        return {
+            "Pixmap": "Draft_Join",
+            "Accel": "J, O",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Join", "Join"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Join",
+                "Joins the selected lines or polylines into a single object.\nThe lines must share a common point at the start or at the end.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -83,10 +88,8 @@ class Join(gui_base_original.Modifier):
                 _cmd += "("
                 _cmd += "FreeCADGui.Selection.getSelection()"
                 _cmd += ")"
-                _cmd_list = ['j = ' + _cmd,
-                             'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Join Lines"),
-                            _cmd_list)
+                _cmd_list = ["j = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+                self.commit(translate("draft", "Join Lines"), _cmd_list)
             else:
                 _err(translate("draft", "Only Draft lines and wires can be joined"))
         self.finish()
@@ -98,9 +101,9 @@ class Join(gui_base_original.Modifier):
             labels.append(obj.Label)
 
         labels = ", ".join(labels)
-        _toolmsg(translate("draft","Selection:") + " {}".format(labels))
+        _toolmsg(translate("draft", "Selection:") + " {}".format(labels))
 
 
-Gui.addCommand('Draft_Join', Join())
+Gui.addCommand("Draft_Join", Join())
 
 ## @}

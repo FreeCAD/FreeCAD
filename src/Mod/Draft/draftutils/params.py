@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a parameter observer class and parameter related functions."""
+"""Contains a parameter observer class and parameter related functions."""
 
 import os
 import PySide.QtCore as QtCore
@@ -29,6 +29,7 @@ import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Draft_rc
+
 try:
     import Arch_rc
 except ModuleNotFoundError:
@@ -40,14 +41,23 @@ if App.GuiUp:
     import FreeCADGui as Gui
     from PySide import QtWidgets
 
+
 class ParamObserverDraft:
 
     def slotParamChanged(self, param_grp, typ, entry, value):
         if entry == "textheight":
             _param_observer_callback_tray()
             return
-        if entry in ("gridBorder", "gridShowHuman", "coloredGridAxes", "gridEvery",
-                    "gridSpacing", "gridSize", "gridTransparency", "gridColor"):
+        if entry in (
+            "gridBorder",
+            "gridShowHuman",
+            "coloredGridAxes",
+            "gridEvery",
+            "gridSpacing",
+            "gridSize",
+            "gridTransparency",
+            "gridColor",
+        ):
             _param_observer_callback_grid()
             return
         if entry == "DefaultAnnoScaleMultiplier":
@@ -83,6 +93,7 @@ class ParamObserverView:
             _param_observer_callback_snaptextsize()
             return
 
+
 def _param_observer_callback_tray():
     if not hasattr(Gui, "draftToolBar"):
         return
@@ -96,6 +107,7 @@ def _param_observer_callback_scalemultiplier(value):
     # value is a string.
     # import has to happen here to avoid circular imports
     from draftutils import init_draft_statusbar
+
     if not value:
         return
     value = float(value)
@@ -103,7 +115,7 @@ def _param_observer_callback_scalemultiplier(value):
         return
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
-    scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
     if scale_widget is not None:
         scale_label = init_draft_statusbar.scale_to_label(1 / value)
         scale_widget.scaleLabel.setText(scale_label)
@@ -136,12 +148,18 @@ def _param_observer_callback_snapbar(value):
 
 
 def _param_observer_callback_snapwidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
+
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
 
 
 def _param_observer_callback_scalewidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
+
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
@@ -172,6 +190,7 @@ def _param_observer_callback_svg_pattern():
     # imports have to happen here to avoid circular imports
     from draftutils import utils
     from draftviewproviders import view_base
+
     utils.load_svg_patterns()
     if App.ActiveDocument is None:
         return
@@ -186,22 +205,30 @@ def _param_observer_callback_svg_pattern():
         for obj in doc.Objects:
             if hasattr(obj, "ViewObject"):
                 vobj = obj.ViewObject
-                if hasattr(vobj, "Pattern") \
-                        and hasattr(vobj, "Proxy") \
-                        and isinstance(vobj.Proxy, view_base.ViewProviderDraft) \
-                        and vobj.getEnumerationsOfProperty("Pattern") != pats:
+                if (
+                    hasattr(vobj, "Pattern")
+                    and hasattr(vobj, "Proxy")
+                    and isinstance(vobj.Proxy, view_base.ViewProviderDraft)
+                    and vobj.getEnumerationsOfProperty("Pattern") != pats
+                ):
                     vobjs.append(vobj)
         if vobjs:
             data.append([doc, vobjs])
     if not data:
         return
 
-    msg = translate("draft",
-"""Do you want to update the SVG pattern options
-of existing objects in all opened documents?""")
-    res = QtWidgets.QMessageBox.question(None, "Update SVG patterns", msg,
-                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                     QtWidgets.QMessageBox.No)
+    msg = translate(
+        "draft",
+        """Do you want to update the SVG pattern options
+of existing objects in all opened documents?""",
+    )
+    res = QtWidgets.QMessageBox.question(
+        None,
+        "Update SVG patterns",
+        msg,
+        QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        QtWidgets.QMessageBox.No,
+    )
     if res == QtWidgets.QMessageBox.No:
         return
 
@@ -225,11 +252,13 @@ def _param_observer_start():
         _param_observer_start_view()
 
 
-def _param_observer_start_draft(param_grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")):
+def _param_observer_start_draft(
+    param_grp=App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft"),
+):
     param_grp.AttachManager(ParamObserverDraft())
 
 
-def _param_observer_start_view(param_grp = App.ParamGet("User parameter:BaseApp/Preferences/View")):
+def _param_observer_start_view(param_grp=App.ParamGet("User parameter:BaseApp/Preferences/View")):
     param_grp.AttachManager(ParamObserverView())
 
 
@@ -346,7 +375,7 @@ def _param_from_PrefLineEdit(widget):
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
-            if att_name == "text":                # Can be missing.
+            if att_name == "text":  # Can be missing.
                 value = elem.find("string").text  # If text is missing value will be None here.
             elif att_name == "prefEntry":
                 entry = elem.find("cstring").text
@@ -372,6 +401,7 @@ def _param_from_PrefFileChooser(widget):
 def _param_from_PrefFontBox(widget):
     if App.GuiUp:
         from PySide import QtGui
+
         font = QtGui.QFont()
         font.setStyleHint(QtGui.QFont.StyleHint.SansSerif)
         value = font.defaultFamily()
@@ -399,12 +429,12 @@ def _get_shape_string_font_file():
     # Mac fonts: "geneva" and "helvetica"
     # Linux fonts: "dejavusans" and "freesans"
     favorite_names = ("arial", "geneva", "helvetica", "dejavusans", "freesans")
-    font_file_sans = None   # Font with name containing "sans". 1st fallback.
+    font_file_sans = None  # Font with name containing "sans". 1st fallback.
     font_file_alpha = None  # Font with name starting with a letter. 2nd fallback.
     # Reverse the order of the paths so that user related paths come last:
     for path in QtCore.QStandardPaths.standardLocations(QtCore.QStandardPaths.FontsLocation)[::-1]:
         # We don't use os.path.join as dir_path has forward slashes even on Windows.
-        for (dir_path, dir_names, file_names) in os.walk(path):
+        for dir_path, dir_names, file_names in os.walk(path):
             for file_name in file_names:
                 base_name, ext = [s.lower() for s in os.path.splitext(file_name)]
                 if not ext in (".ttc", ".ttf"):
@@ -428,10 +458,12 @@ def _get_param_dictionary():
 
     param_dict = {}
 
-    hatch_pattern_file = App.getResourceDir().replace("\\", "/").rstrip("/") \
-            + "/Mod/TechDraw/PAT/FCPAT.pat"
+    hatch_pattern_file = (
+        App.getResourceDir().replace("\\", "/").rstrip("/") + "/Mod/TechDraw/PAT/FCPAT.pat"
+    )
 
     # Draft parameters that are not in the preferences:
+    # fmt: off
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
@@ -461,6 +493,7 @@ def _get_param_dictionary():
         "LayersManagerWidth":          ("int",       640),
         "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
+        "maxSnapFaces":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
         "RelativeMode":                ("bool",      True),
@@ -509,14 +542,14 @@ def _get_param_dictionary():
 
     start_val = App.Units.Quantity(100.0, App.Units.Length).Value
     param_dict["Mod/Draft/OrthoArrayLinearMode"] = {
-        "LinearModeOn": ("bool", True),
-        "AxisSelected": ("string", "X"),
-        "XInterval": ("float", start_val),
-        "YInterval": ("float", start_val),
-        "ZInterval": ("float", start_val),
-        "XNumOfElements": ("int", 2),
-        "YNumOfElements": ("int", 2),
-        "ZNumOfElements": ("int", 2)
+        "LinearModeOn":                ("bool",      True),
+        "AxisSelected":                ("string",    "X"),
+        "XInterval":                   ("float",     start_val),
+        "YInterval":                   ("float",     start_val),
+        "ZInterval":                   ("float",     start_val),
+        "XNumOfElements":              ("int",       2),
+        "YNumOfElements":              ("int",       2),
+        "ZNumOfElements":              ("int",       2)
     }
 
     # Arch parameters that are not in the preferences:
@@ -540,8 +573,8 @@ def _get_param_dictionary():
         "ifcMergeProfiles":            ("bool",      False),
         "IfcScalingFactor":            ("float",     1.0),    # importIFClegacy.py
         "ifcSeparatePlacements":       ("bool",      False),  # importIFClegacy.py
-        "MultiMaterialColumnWidth0":   ("int",       60),
-        "MultiMaterialColumnWidth1":   ("int",       60),
+        "MultiMaterialColumnWidth0":   ("int",       120),
+        "MultiMaterialColumnWidth1":   ("int",       120),
         "PanelLength":                 ("float",     1000.0),
         "PanelThickness":              ("float",     10.0),
         "PanelWidth":                  ("float",     1000.0),
@@ -625,27 +658,29 @@ def _get_param_dictionary():
         "MarkerSize":                  ("int",       9),
         "NewDocumentCameraScale":      ("float",     100.0),
     }
-
+    # fmt: on
 
     # Preferences ui files are stored in resource files.
     # For the Draft Workbench: /Mod/Draft/Draft_rc.py
     # For the Arch Workbench: /Mod/Arch/Arch_rc.py
-    for fnm in (":/ui/preferences-draft.ui",
-                ":/ui/preferences-draftinterface.ui",
-                ":/ui/preferences-draftsnap.ui",
-                ":/ui/preferences-drafttexts.ui",
-                ":/ui/preferences-draftvisual.ui",
-                ":/ui/preferences-dwg.ui",
-                ":/ui/preferences-dxf.ui",
-                ":/ui/preferences-oca.ui",
-                ":/ui/preferences-svg.ui",
-                ":/ui/preferences-arch.ui",
-                ":/ui/preferences-archdefaults.ui",
-                ":/ui/preferences-dae.ui",
-                ":/ui/preferences-ifc.ui",
-                ":/ui/preferences-ifc-export.ui",
-                ":/ui/preferences-sh3d-import.ui",
-                ":/ui/preferences-webgl.ui",):
+    for fnm in (
+        ":/ui/preferences-draft.ui",
+        ":/ui/preferences-draftinterface.ui",
+        ":/ui/preferences-draftsnap.ui",
+        ":/ui/preferences-drafttexts.ui",
+        ":/ui/preferences-draftvisual.ui",
+        ":/ui/preferences-dwg.ui",
+        ":/ui/preferences-dxf.ui",
+        ":/ui/preferences-oca.ui",
+        ":/ui/preferences-svg.ui",
+        ":/ui/preferences-arch.ui",
+        ":/ui/preferences-archdefaults.ui",
+        ":/ui/preferences-dae.ui",
+        ":/ui/preferences-ifc.ui",
+        ":/ui/preferences-ifc-export.ui",
+        ":/ui/preferences-sh3d-import.ui",
+        ":/ui/preferences-webgl.ui",
+    ):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)

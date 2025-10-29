@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -23,6 +25,8 @@
 
 #ifndef BASE_EXCEPTION_H
 #define BASE_EXCEPTION_H
+
+#include <FCConfig.h>
 
 #include <csignal>
 #include <source_location>

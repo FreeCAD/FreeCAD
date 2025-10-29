@@ -40,6 +40,7 @@ namespace TaskView {
 
 class SoTransformDragger;
 class View3DInventorViewer;
+class GizmoContainer;
 
 /**
  * The base class for all view providers modifying the placement
@@ -70,6 +71,8 @@ public:
     void setTransformOrigin(const Base::Placement& placement);
     /// Resets transform origin to the object origin
     void resetTransformOrigin();
+
+    void setGizmoContainer(Gui::GizmoContainer* gizmoContainer);
 
 public:
     /** @name Edit methods */
@@ -147,6 +150,8 @@ private:
                                   Base::Vector3d y,
                                   Base::Vector3d z,
                                   ViewProviderDragger::DraggerComponents components = DraggerComponent::All);
+
+    GizmoContainer* gizmoContainer = nullptr;
 };
 
 } // namespace Gui

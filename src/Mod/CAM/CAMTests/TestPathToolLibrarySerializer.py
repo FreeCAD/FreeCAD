@@ -144,13 +144,13 @@ class TestLinuxCNCLibrarySerializer(TestPathToolLibrarySerializerBase):
         # Verify the content format (basic check)
         lines = serialized_data.decode("ascii", "ignore").strip().split("\n")
         self.assertEqual(len(lines), 3)
-        self.assertEqual(lines[0], "T1 P0 D6.000 ;Endmill 6mm")
-        self.assertEqual(lines[1], "T2 P0 D3.000 ;Endmill 3mm")
-        self.assertEqual(lines[2], "T3 P0 D5.000 ;Ballend 5mm")
+        self.assertEqual(lines[0], "T1 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D6.00 I0 J0 Q0 ;Endmill 6mm")
+        self.assertEqual(lines[1], "T2 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D3.00 I0 J0 Q0 ;Endmill 3mm")
+        self.assertEqual(lines[2], "T3 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D5.00 I0 J0 Q0 ;Ballend 5mm")
 
     def test_linuxcnc_deserialize_not_implemented(self):
         serializer = LinuxCNCSerializer
-        dummy_data = b"T1 D6.0 ;Endmill 6mm\n"
+        dummy_data = b"T1 P0 X0 Y0 Z0 A0 B0 C0 U0 V0 W0 D6.00 I0 J0 Q0 ;Endmill 6mm\n"
         with self.assertRaises(NotImplementedError):
             serializer.deserialize(dummy_data, "dummy_id", {})
 

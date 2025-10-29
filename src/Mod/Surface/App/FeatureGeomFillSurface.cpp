@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
  *                           Balázs Bámer                                  *
@@ -21,9 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRep_Tool.hxx>
@@ -47,7 +47,7 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 #include <gp_Trsf.hxx>
-#endif
+
 
 #include "FeatureGeomFillSurface.h"
 

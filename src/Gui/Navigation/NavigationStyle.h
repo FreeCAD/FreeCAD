@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -36,11 +37,13 @@
 #include <Inventor/events/SoEvents.h>
 
 #include <QEvent>
+#include <QAction>
 #include <Base/BaseClass.h>
 #include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
 #include <memory>
+#include <optional>
 
 // forward declarations
 class SoEvent;
@@ -100,6 +103,11 @@ public:
         Rubberband  = 2,  /**< Select objects using a rubberband. */
         BoxZoom     = 3,  /**< Perform a box zoom. */
         Clip        = 4,  /**< Clip objects using a lasso. */
+    };
+
+    enum class ClarifySelectionMode {
+        Default,    /**< Long press with LMB to trigger clarify selection */
+        Ctrl        /**< Long press with Ctrl+LMB to trigger clarify selection */
     };
 
     enum OrbitStyle {
@@ -187,6 +195,10 @@ public:
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
 
+    bool isDraggerUnderCursor(const SbVec2s pos) const;
+
+    virtual ClarifySelectionMode clarifySelectionMode() const { return ClarifySelectionMode::Default; }
+
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
 
@@ -194,6 +206,8 @@ public:
     void setViewing(SbBool);
 
     SbVec3f getRotationCenter(SbBool&) const;
+
+    std::optional<SbVec2s>& getRightClickPosition();
 
     PyObject *getPyObject() override;
 
@@ -238,6 +252,15 @@ protected:
     virtual SbBool processSoEvent(const SoEvent * const ev);
     void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
+
+private:
+    void spinInternal(const SbVec2f & pointerpos, const SbVec2f & lastpos);
+    void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
+    bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
+    QWidget* findView3DInventorWidget() const;
+    void applyNavigationStyleChange(QAction* selectedAction);
+
+protected:
 
     void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
@@ -290,6 +313,10 @@ protected:
 
     Py::SmartPtr pythonObject;
 
+    // store the position where right-click occurred just before
+    // the menu popped up
+    std::optional<SbVec2s> rightClickPosition;
+
 private:
     friend class NavigationAnimator;
 
@@ -335,6 +362,7 @@ public:
     ~InventorNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
     std::string userFriendlyName() const override;
+    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
@@ -474,6 +502,7 @@ public:
     OpenSCADNavigationStyle();
     ~OpenSCADNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
+    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;

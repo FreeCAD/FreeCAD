@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -336,9 +337,9 @@ PyMOD_INIT_FUNC(FreeCADGui)
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
         App::Application::Config()["SplashScreen"] = "freecadsplash";
-        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2024\n";
+        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2025\n";
         App::Application::Config()["LicenseInfo"] = "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n";
-        App::Application::Config()["CreditsInfo"] = "FreeCAD wouldn't be possible without FreeCAD community.\n";
+        App::Application::Config()["CreditsInfo"] = "FreeCAD would not be possible without the FreeCAD community.\n";
         // clang-format on
 
         // it's possible that the GUI is already initialized when the Gui version of the executable

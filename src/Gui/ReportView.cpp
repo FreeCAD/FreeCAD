@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QGridLayout>
@@ -29,7 +28,7 @@
 # include <QTextCursor>
 # include <QTextStream>
 # include <QTime>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Base/Color.h>
@@ -464,8 +463,19 @@ ReportOutput::~ReportOutput()
 
 void ReportOutput::restoreFont()
 {
-    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    setFont(serifFont);
+    QFont font;
+    auto hPrefGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Editor");
+    int fontSize = hPrefGrp->GetInt("FontSize", 10);
+    auto serifFont = hPrefGrp->GetASCII("Font");
+    if (serifFont.empty()) {
+        font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        font.setPointSize(fontSize);
+    }
+    else {
+        font = QFont (QString::fromStdString(serifFont), fontSize);
+    }
+    setFont(font);
 }
 
 void ReportOutput::sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
@@ -555,7 +565,7 @@ bool ReportOutput::event(QEvent* event)
 {
     if (event && event->type() == QEvent::ShortcutOverride) {
         auto kevent = static_cast<QKeyEvent*>(event);
-        if (kevent == QKeySequence::Copy)
+        if (kevent == QKeySequence::Copy || kevent == QKeySequence::SelectAll)
             kevent->accept();
     }
     return QTextEdit::event(event);
@@ -590,7 +600,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     menu->addSeparator();
 
     auto displayMenu = new QMenu(optionMenu);
-    displayMenu->setTitle(tr("Display message types"));
+    displayMenu->setTitle(tr("Display Message Types"));
     optionMenu->addMenu(displayMenu);
 
     QAction* logMsg = displayMenu->addAction(tr("Normal Messages"), this, &ReportOutput::onToggleNormalMessage);
@@ -614,7 +624,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     logCritical->setChecked(bCritical);
 
     auto showOnMenu = new QMenu (optionMenu);
-    showOnMenu->setTitle(tr("Show report view on"));
+    showOnMenu->setTitle(tr("Show Report View On"));
     optionMenu->addMenu(showOnMenu);
 
     QAction* showNormAct = showOnMenu->addAction(tr("Normal Messages"), this, &ReportOutput::onToggleShowReportViewOnNormalMessage);
@@ -854,8 +864,15 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = rclGrp.GetInt("FontSize", 10);
-        QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-        font.setPointSize(fontSize);
+        QFont font;
+        auto fontName = rclGrp.GetASCII("Font");
+        if (fontName.empty()) {
+            font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+            font.setPointSize(fontSize);
+        }
+        else {
+            font = QFont (QString::fromStdString(fontName), fontSize);
+        }
         setFont(font);
         QFontMetrics metric(font);
         int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
@@ -877,3 +894,4 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
 }
 
 #include "moc_ReportView.cpp"
+

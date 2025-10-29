@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # (c) 2006 Werner Mayer LGPL
 #
 # FreeCAD RevInfo script to get the revision information from Subversion, Bazaar, and Git.
@@ -9,7 +8,7 @@
 # 2012/02/01: The script was extended to support git
 # 2011/02/05: The script was extended to support also Bazaar
 
-import os, sys, re, time, getopt
+import os, sys, re, datetime, time, getopt
 from urllib.parse import urlparse
 import xml.sax
 import xml.sax.handler
@@ -306,8 +305,10 @@ class GitControl(VersionControl):
         result = None
         countallfh = os.popen("git rev-list --count %s..HEAD" % referencecommit)
         countallstr = countallfh.read().strip()
-        if countallfh.close() is not None:  # reference commit not present
-            self.rev = "%04d (Git shallow)" % referencerevision
+        if countallfh.close() is not None:  # reference commit not present, use the date
+            date_object = datetime.datetime.strptime(self.date, "%Y/%m/%d %H:%M:%S")
+            formatted_date = date_object.strftime("%Y%m%d")
+            self.rev = f"{formatted_date} (Git shallow)"
             return
         else:
             countall = int(countallstr)

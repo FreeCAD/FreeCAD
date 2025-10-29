@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <memory>
 # include <string_view>
 # include <mutex>
-#endif
+
 
 #include <filesystem>
 #include <boost/algorithm/string.hpp>
@@ -361,9 +360,6 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
             // Same goes for toolbars:
             Gui::ToolBarManager* pToolbarMgr = Gui::ToolBarManager::getInstance();
             pToolbarMgr->restoreState();
-
-            // We need to reload stylesheet to apply any changed style parameters
-            Gui::Application::Instance->reloadStyleSheet();
 
             // TODO: Are there other things that have to be manually triggered?
         }

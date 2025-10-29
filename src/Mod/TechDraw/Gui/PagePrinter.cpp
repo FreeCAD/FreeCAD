@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <QPageLayout>
@@ -33,7 +31,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

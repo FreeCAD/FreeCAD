@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/SbSphere.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
@@ -32,9 +29,10 @@
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
-#endif
 
 #include <boost/algorithm/string/replace.hpp>
+
+#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -294,6 +292,12 @@ Application *Command::getGuiApplication()
     return Application::Instance;
 }
 
+App::Document* Command::getActiveDocument() const
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    return doc ? doc->getDocument() : nullptr;
+}
+
 Gui::Document* Command::getActiveGuiDocument() const
 {
     return getGuiApplication()->activeDocument();
@@ -304,22 +308,14 @@ App::Document* Command::getDocument(const char* Name) const
     if (Name) {
         return App::GetApplication().getDocument(Name);
     }
-    else {
-        Gui::Document * pcDoc = getGuiApplication()->activeDocument();
-        if (pcDoc)
-            return pcDoc->getDocument();
-        else
-            return nullptr;
-    }
+
+    return getActiveDocument();
 }
 
 App::DocumentObject* Command::getObject(const char* Name) const
 {
-    App::Document*pDoc = getDocument();
-    if (pDoc)
-        return pDoc->getObject(Name);
-    else
-        return nullptr;
+    App::Document* pDoc = getDocument();
+    return pDoc ? pDoc->getObject(Name) : nullptr;
 }
 
 int Command::_busy;
@@ -889,6 +885,12 @@ void Command::applyCommandData(const char* context, Action* action)
     else
         action->setStatusTip(QCoreApplication::translate(
             context, getToolTipText()));
+
+    // Default to QAction::NoRole instead of QAction::TextHeuristicRole to stop collisions with
+    // e.g. "Preferences" and "Copy"
+    if (action->action()->menuRole() == QAction::TextHeuristicRole) {
+        action->setMenuRole(QAction::NoRole);
+    }
 }
 
 
@@ -1583,6 +1585,7 @@ Action * PythonGroupCommand::createAction()
                 cmd->setChecked(pycmd->isChecked());
                 cmd->blockSignals(false);
             }
+            cmd->setShortcut(ShortcutManager::instance()->getShortcut(cmd->property("CommandName").toByteArray()));
         }
 
         if (cmd.hasAttr("GetDefaultCommand")) {
@@ -1642,9 +1645,25 @@ void PythonGroupCommand::languageChange()
     applyCommandData(this->getName(), _pcAction);
 
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    // Reapply setup to ensure group action tooltip includes shortcut
+    auto* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> groupActions = pcActionGroup->actions();
+    int idx = _pcAction->property("defaultAction").toInt();
+    if (idx >= 0 && idx < groupActions.size()) {
+        QAction* defaultAction = groupActions[idx];
+        Gui::Command* cmd = rcCmdMgr.getCommandByName(defaultAction->property("CommandName").toByteArray());
+        if (cmd) {
+            const char *context = cmd->getName();
+            QString tip = QApplication::translate(context, cmd->getToolTipText());
+            _pcAction->setShortcut(cmd->getShortcut());
+            QString newTip = Gui::Action::createToolTip(tip, _pcAction->text(), _pcAction->action()->font(), _pcAction->shortcut().toString(), cmd);
+            _pcAction->setToolTip(newTip);
+        }
+    }
     auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-    for (const auto & it : a) {
+    QList<QAction*> actions = pcAction->actions();
+    for (const auto & it : actions) {
         Gui::Command* cmd = rcCmdMgr.getCommandByName(it->property("CommandName").toByteArray());
         if (cmd) {
             // Python command use getName as context
@@ -1656,8 +1675,13 @@ void PythonGroupCommand::languageChange()
             }
 
             it->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
-            it->setText(QApplication::translate(context, cmd->getMenuText()));
-            it->setToolTip(QApplication::translate(context, tooltip));
+            QString text = QApplication::translate(context, cmd->getMenuText());
+            it->setText(text);
+            QString helpText = QApplication::translate(context, tooltip);
+            QString shortCut = it->shortcut().toString();
+            QFont font = it->font();
+            QString newTip = Gui::Action::createToolTip(helpText, text, font, shortCut, cmd);
+            it->setToolTip(newTip);
             it->setStatusTip(QApplication::translate(context, statustip));
         }
     }

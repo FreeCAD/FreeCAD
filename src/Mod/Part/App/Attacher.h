@@ -37,6 +37,8 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 
@@ -391,6 +393,7 @@ public: //members
     bool mapReverse = false;
     double attachParameter = 0.0;
     double surfU = 0.0, surfV = 0.0;
+    double precision = 1.0e-7;
     Base::Placement attachmentOffset;
 
     /**
@@ -489,6 +492,7 @@ public:
         const std::vector<App::DocumentObject*> &objs,
         const std::vector<std::string> &subs,
         const Base::Placement &origPlacement) const override;
+    static double planarPrecision();
 };
 
 //attacher specialized for datum lines

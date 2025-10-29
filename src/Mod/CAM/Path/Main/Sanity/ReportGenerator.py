@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -46,6 +46,18 @@ else:
 
 
 class ReportGenerator:
+    def bytes_to_base64_with_tag(self, image_bytes, mime_type="image/png", alt="Image"):
+        """
+        Takes image bytes and returns (base64_string, <img> tag) for embedding in HTML.
+        Default mime_type is image/png.
+        """
+
+        if not image_bytes:
+            return "", ""
+        encoded_string = base64.b64encode(image_bytes).decode()
+        html_tag = f'<img src="data:{mime_type};base64,{encoded_string}" alt="{alt}" />'
+        return encoded_string, html_tag
+
     def __init__(self, data, embed_images=False):
         self.embed_images = embed_images
         self.squawks = ""
@@ -128,7 +140,12 @@ class ReportGenerator:
                     Path.Log.debug(f"key: {key} val: {val}")
                     if self.embed_images:
                         Path.Log.debug("Embedding images")
-                        encoded_image, tag = self.file_to_base64_with_tag(val)
+                        if isinstance(val, bytes):
+                            encoded_image, tag = self.bytes_to_base64_with_tag(
+                                val, mime_type="image/png", alt=key
+                            )
+                        else:
+                            encoded_image, tag = self.file_to_base64_with_tag(val)
                     else:
                         Path.Log.debug("Not Embedding images")
                         tag = f"<img src={val} name='Image' alt={key} />"
@@ -140,13 +157,20 @@ class ReportGenerator:
         for key, val in data["toolData"].items():
             if key == "squawkData":
                 self._format_squawks(val)
-            # else:
-            #     self._format_tool(key, val)
-
             else:
                 toolNumber = key
                 toolAttributes = val
-                if "imagepath" in toolAttributes and toolAttributes["imagepath"] != "":
+                # Prefer imagebytes for embedding if present
+                if (
+                    self.embed_images
+                    and "imagebytes" in toolAttributes
+                    and toolAttributes["imagebytes"]
+                ):
+                    _, tag = self.bytes_to_base64_with_tag(
+                        toolAttributes["imagebytes"], mime_type="image/png", alt=key
+                    )
+                    toolAttributes["imagepath"] = tag
+                elif "imagepath" in toolAttributes and toolAttributes["imagepath"] != "":
                     if self.embed_images:
                         encoded_image, tag = self.file_to_base64_with_tag(
                             toolAttributes["imagepath"]
@@ -165,7 +189,6 @@ class ReportGenerator:
         # Path.Log.debug(self.formatted_data)
 
     def _format_tool_list(self, tool_data):
-
         tool_list = ""
         for key, val in tool_data.items():
             if key == "squawkData":
@@ -181,6 +204,8 @@ class ReportGenerator:
 
     def _format_tool(self, tool_number, tool_data):
         td = {}
+        td["toolNumber"] = tool_number
+
         for key, val in tool_data.items():
             if key == "squawkData":
                 self._format_squawks(val)
@@ -200,8 +225,8 @@ class ReportGenerator:
 
     def _format_bases(self, base_data):
         bases = ""
-        for base in base_data:
-            bases += base_template.substitute(base)
+        for key, val in base_data.items():
+            bases += base_template.substitute({"key": key, "val": val})
         self.formatted_data["bases"] = bases
 
     def _format_squawks(self, squawk_data):

@@ -19,15 +19,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QPushButton>
 #include <vector>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -426,7 +424,9 @@ void CmdTechDrawView::activated(int iMsg)
             // If nothing was selected, then we offer to insert SVG or Images files.
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
-                auto msgText = QObject::tr("If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.");
+                auto msgText = QObject::tr("To insert a view from existing objects, "
+                        "select them before invoking this tool. Without a selection, a "
+                        "file browser will open to insert an SVG or image file.");
                 QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(msgText);
                 auto dontShowMsg = QObject::tr("Do not show this message again");
@@ -795,7 +795,7 @@ void CmdTechDrawSectionGroup::languageChange()
     arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Insert simple Section View"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section"));
+    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section View"));
     arc2->setToolTip(
         QApplication::translate("TechDraw_ComplexSection", "Insert complex Section View"));
     arc2->setStatusTip(arc2->toolTip());
@@ -1307,14 +1307,14 @@ void CmdTechDrawBalloon::activated(int iMsg)
         QGVPage* viewPage = pageVP->getQGVPage();
         QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
-            viewPage->startBalloonPlacing(objFeat);
-
-            QGIView* view = dynamic_cast<QGIView*>(viewVP->getQView());
+            auto* view = dynamic_cast<QGIView*>(viewVP->getQView());
             QPointF placement;
             if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement)) {
                 //this creates the balloon if something is already selected
                 scenePage->createBalloon(placement, objFeat);
+                return;
             }
+            viewPage->startBalloonPlacing(objFeat);
         }
     }
 }
@@ -1404,7 +1404,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     }
     if (!view) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one View to add to group."));
+                             QObject::tr("Select exactly one view to add to clip group"));
         return;
     }
     if (!clip) {
@@ -1471,7 +1471,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     auto dObj(getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()));
     if (dObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one View to remove from Group."));
+                             QObject::tr("Select exactly one view to remove from clip group"));
         return;
     }
 
@@ -1867,8 +1867,8 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     for (auto& v : views) {
         if (v->isDerivedFrom<TechDraw::DrawViewArch>()) {
             QMessageBox::StandardButton rc = QMessageBox::question(
-                Gui::getMainWindow(), QObject::tr("Can not export selection"),
-                QObject::tr("Page contains DrawViewArch which will not be exported. Continue?"),
+                Gui::getMainWindow(), QObject::tr("Cannot export selection"),
+                QObject::tr("Page contains a BIM view which will not be exported. Continue?"),
                 QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No));
             if (rc == QMessageBox::No) {
                 return;

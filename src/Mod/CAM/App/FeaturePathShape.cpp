@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *   Copyright (c) 2017 Lei Zheng <realthunder.dev@gmail.com>             *
@@ -21,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
+
 
 #include "FeaturePathShape.h"
 

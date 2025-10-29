@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <limits>
 # include <QKeyEvent>
 # include <QLineEdit>
 # include <QStyle>
 # include <QStyleOptionSpinBox>
 # include <QStylePainter>
-#endif
 
 #include <boost/math/special_functions/round.hpp>
 
@@ -200,13 +196,13 @@ void ExpressionSpinBox::openFormulaDialog()
         else if (box->discardedFormula())
             setExpression(std::shared_ptr<Expression>());
 
+        updateExpression();
         box->deleteLater();
     });
     box->show();
 
     QPoint pos = spinbox->mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
-    box->setExpressionInputSize(spinbox->width(), spinbox->height());
     Gui::adjustDialogPosition(box);
 }
 

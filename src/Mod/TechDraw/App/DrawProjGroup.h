@@ -115,10 +115,10 @@ public:
     //return PyObject as DrawProjGroupPy
     PyObject *getPyObject() override;
 
-    /// Determines either "First Angle" or "Third Angle".
+    /// Determines either "First angle" or "Third angle".
     App::Enumeration usedProjectionType();
 
-    /// Allowed projection types - either Document, First Angle or Third Angle
+    /// Allowed projection types - either Document, First angle or Third angle
     static const char* ProjectionTypeEnums[];
 
     bool hasAnchor();
@@ -152,6 +152,7 @@ public:
     void dumpTouchedProps();
 
 protected:
+    void unsetupObject() override;
     void onChanged(const App::Property* prop) override;
 
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums

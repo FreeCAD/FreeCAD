@@ -44,8 +44,6 @@ public:
     /// grouping handling
     std::vector<App::DocumentObject*> claimChildren() const override;
 
-    bool onDelete(const std::vector<std::string> &) override;
-
 protected:
     QIcon getIcon() const override;
 

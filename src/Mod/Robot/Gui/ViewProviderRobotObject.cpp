@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFile>
 #include <sstream>
 
@@ -32,7 +30,6 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/draggers/SoJackDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <Base/Tools.h>
 #include <App/Document.h>

@@ -22,11 +22,12 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <limits>
+
+#ifndef _Standard_Version_HeaderFile
+# include <Standard_Version.hxx>
+#endif
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -82,9 +83,9 @@
 
 #include <utility>
 
-#endif
-
 #include <OSD_Parallel.hxx>
+
+#include <FCConfig.h>
 
 #include "modelRefine.h"
 #include "CrossSection.h"
@@ -2696,8 +2697,15 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
     if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
         if (!intersection) {
             // simply recursively process the children, independently
-            expandCompound(shape, shapesToProcess);
-            outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
+            for(TopoDS_Iterator it(shape.getShape()); it.More() ; it.Next()) {
+                shapesToReturn.push_back(TopoShape(it.Value()).makeElementOffset2D(offset,
+                                                                                   joinType,
+                                                                                   fill,
+                                                                                   allowOpenResult,
+                                                                                   intersection,
+                                                                                   op));
+                outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
+            }
         }
         else {
             // collect non-compounds from this compound for collective offset. Process other shapes
@@ -2747,8 +2755,9 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
                     haveWires = true;
                     break;
                 case TopAbs_FACE: {
-                    auto outerWire = s.splitWires(&sourceWires);
-                    sourceWires.push_back(outerWire);
+                    std::ranges::copy(s.getSubTopoShapes(TopAbs_WIRE),
+                                      std::back_inserter(sourceWires));
+
                     haveFaces = true;
                 } break;
                 default:
@@ -4142,6 +4151,84 @@ TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const char* op, 
     return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
 }
 
+TopoShape&
+TopoShape::makeElementXor(const std::vector<TopoShape>& shapes, const char* op, double tol)
+{
+    if (shapes.empty()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
+
+    if (!op) {
+        op = Part::OpCodes::Xor;
+    }
+
+    std::vector<TopoShape> expandedShapes;
+    // Same compound expansion as Fuse
+    for (auto it = shapes.begin(); it != shapes.end(); ++it) {
+        auto& shape = *it;
+        if (shape.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape for XOR operation");
+        }
+        if (shape.shapeType() == TopAbs_COMPOUND) {
+            if (expandedShapes.empty()) {
+                expandedShapes.insert(expandedShapes.end(), shapes.begin(), it);
+            }
+            expandCompound(shape, expandedShapes);
+        }
+        else if (!expandedShapes.empty()) {
+            expandedShapes.push_back(shape);
+        }
+    }
+
+    const auto& inputs = expandedShapes.empty() ? shapes : expandedShapes;
+    // Note: The inputs.empty() check is now redundant because of the check at the top,
+    // but it's harmless to leave it.
+    if (inputs.empty()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (inputs.size() == 1) {
+        *this = inputs[0];
+        if (shapes.size() == 1) {
+            FC_WARN("Boolean operation with only one shape input");
+        }
+        return *this;
+    }
+
+    TopoShape result = inputs[0];
+    for (size_t i = 1; i < inputs.size(); ++i) {
+        // The final op is only applied on the very last iteration.
+        const char* currentOp = (i == inputs.size() - 1) ? op : nullptr;
+
+        // Step 1: Union(A, B) - intermediate result, no op code.
+        TopoShape tempUnion(0, Hasher);
+        tempUnion.makeElementBoolean(Part::OpCodes::Fuse, {result, inputs[i]}, nullptr, tol);
+
+        // Step 2: Common(A, B) - intermediate result, no op code.
+        TopoShape tempCommon(0, Hasher);
+        tempCommon.makeElementBoolean(Part::OpCodes::Common, {result, inputs[i]}, nullptr, tol);
+
+        // Step 3: Compute the final result for this iteration
+        if (tempCommon.isNull() || tempCommon.getShape().IsNull()) {
+            // No intersection, XOR is the same as Union.
+            // We still call the boolean op to get the correct history.
+            result.makeElementBoolean(Part::OpCodes::Fuse, {result, inputs[i]}, currentOp, tol);
+        }
+        else {
+            // Final result is Cut(Union, Common).
+            result.makeElementBoolean(Part::OpCodes::Cut,
+                                      {tempUnion, tempCommon},
+                                      currentOp,
+                                      tol);
+        }
+    }
+
+    *this = result;
+    return *this;
+}
 
 TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
                                        const TopoShape& source,
@@ -5235,7 +5322,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     return TopoShape {};
 }
 
-bool TopoShape::isLinearEdge(Base::Vector3d* dir, Base::Vector3d* base) const
+bool TopoShape::isLinearEdge() const
 {
     if (isNull() || getShape().ShapeType() != TopAbs_EDGE) {
         return false;
@@ -5683,6 +5770,10 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
             // TODO: confirm the above won't change OCCT topological naming
         }
         return *this;
+    }
+
+    if (strcmp(maker, Part::OpCodes::Xor) == 0) {
+        return makeElementXor(shapes, op, tolerance);
     }
 
     bool buildShell = true;

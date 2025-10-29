@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
@@ -34,7 +34,6 @@
 #include <qinputdialog.h>
 #include <qmessagebox.h>
 #include <qstringlist.h>
-#endif
 
 #include <Gui/InventorAll.h>
 
@@ -84,7 +83,7 @@ CmdMeshUnion::CmdMeshUnion()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Union");
-    sToolTipText = QT_TR_NOOP("Unites the selected meshes");
+    sToolTipText = QT_TR_NOOP("Unifies the selected meshes");
     sWhatsThis = "Mesh_Union";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Union";
@@ -138,12 +137,11 @@ void CmdMeshUnion::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on the system.\n"
-                                "Visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -217,12 +215,11 @@ void CmdMeshDifference::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on the system.\n"
-                                "Visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -296,12 +293,11 @@ void CmdMeshIntersection::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on the system.\n"
-                                "Visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -1432,8 +1428,8 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Boundings Info");
-    sToolTipText = QT_TR_NOOP("Shows the boundings of the selected mesh");
+    sMenuText = QT_TR_NOOP("Bounding Box Info");
+    sToolTipText = QT_TR_NOOP("Shows the bounding box coordinates of the selected mesh");
     sWhatsThis = "Mesh_BoundingBox";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_BoundingBox";
@@ -1530,8 +1526,8 @@ void CmdMeshFillupHoles::activated(int)
     bool ok {};
     int FillupHolesOfLength =
         QInputDialog::getInt(Gui::getMainWindow(),
-                             QObject::tr("Fill holes"),
-                             QObject::tr("Fill holes with maximum number of edges:"),
+                             QObject::tr("Fill Holes"),
+                             QObject::tr("Fill holes with maximum number of edges"),
                              3,
                              3,
                              10000,
@@ -1567,8 +1563,8 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Close Holes");
-    sToolTipText = QT_TR_NOOP("Closes holes interactively in the mesh");
+    sMenuText = QT_TR_NOOP("Close Hole");
+    sToolTipText = QT_TR_NOOP("Closes a hole interactively in the mesh");
     sWhatsThis = "Mesh_FillInteractiveHole";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_FillInteractiveHole";

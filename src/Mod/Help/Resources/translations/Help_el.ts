@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Λαμβάνει την τεκμηρίωση (οδηγίες χρήσης) από σελίδες που έχουν αποδοθεί στο GitHub.
+Αυτό δεν είναι διαθέσιμο προς το παρόν.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -28,8 +28,10 @@ Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>Ρυθμίστε το σε μια προσαρμοσμένη διεύθυνση URL ή στον φάκελο όπου βρίσκονται τα αρχεία βοήθειας.
-Μπορείτε εύκολα να πραγματοποιήσετε λήψη των οδηγειών για χρήση εκτός σύνδεσης χρησιμοποιώντας το Addon Manager και εγκαθιστώντας την &quot;Οδηγείες εκτός σύνδεσης&quot; πρόσθετο.
-Εάν αυτό το πεδίο μείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας στην προεπιλεγμένη θέση ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+Μπορείτε εύκολα να πραγματοποιήσετε λήψη των οδηγειών για χρήση εκτός σύνδεσης χρησιμοποιώντας το Addon Manager 
+και εγκαθιστώντας την &quot;Οδηγείες εκτός σύνδεσης&quot; πρόσθετο.
+Εάν αυτό το πεδίο μείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας στην προεπιλεγμένη θέση 
+($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -60,16 +62,17 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Ορίστε το σε μια προσαρμοσμένη διεύθυνση URL ή στο φάκελο 
+όπου βρίσκονται τα αρχεία βοήθειας.
+Μπορείτε να κάνετε λήψη της τεκμηρίωσης (οδηγίες χρήσης) για χρήση εκτός σύνδεσης 
+μέσω του Addon Manager και εγκαθιστώντας το πρόσθετο &quot;Εκτός Σύνδεσης-Τεκμηρίωσης&quot;.
+ Εάν αυτό το πεδίο παραμείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας 
+στην προεπιλεγμένη θέση ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Επίθημα μετάφρασης</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -100,41 +103,43 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>Σημείωση: Εάν δεν βρεθούν στοιχεία PySide Web στο σύστημα, οι σελίδες βοήθειας θα ανοίξουν στο προεπιλεγμένο πρόγραμμα περιήγησης 
+ιστού ανεξάρτητα από τις παρακάτω επιλογές.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Η τεκμηρίωση θα ανοίξει στο προεπιλεγμένο πρόγραμμα περιήγησης ιστού</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>Στο προεπιλεγμένο πρόγραμμα περιήγησης ιστού</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Η τεκμηρίωση (οδηγίες χρήσης) θα ανοίξει σε μια νέα καρτέλα μέσα στη διεπαφή του FreeCAD. Αυτό απαιτεί το στοιχείο PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Η τεκμηρίωση (οδηγίες χρήσης) ανοίγει απο συνδεόμενο σε ένα παράθυρο διαλόγου μέσα στο FreeCAD, 
+επιτρέποντας την ταυτόχρονη εργασία στην τρισδιάστατη προβολή.
+Απαιτείται το στοιχείο PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>Προσαρμοσμένο φύλλο στυλ</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>Καθορίστε τη διαδρομή σε ένα εναλλακτικό αρχείο CSS για το στυλ Επισήμανση σελίδων.
+Αυτό ισχύει μόνο εάν έχει επιλεγεί Markdown παραπάνω.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -155,27 +160,28 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Δεν ήταν δυνατή η ανάκτηση του περιεχομένου αυτής της σελίδας. Ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία -&gt; Προτιμήσεις -&gt; Γενικά -&gt; Βοήθεια</translation>
+      <location filename="../../Help.py" line="73"/>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Δεν ήταν δυνατή η ανάκτηση των περιεχομένων αυτής της σελίδας. Ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία → Προτιμήσεις → Γενικά → Βοήθεια</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Δεν ήταν δυνατός ο προσδιορισμός της τοποθεσίας των αρχείων βοήθειας. Παρακαλώ ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία -&gt; Προτιμήσεις -&gt; General -&gt; Βοήθεια</translation>
+      <location filename="../../Help.py" line="77"/>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Δεν ήταν δυνατό να προσδιοριστεί η τοποθεσία των αρχείων βοήθειας. 
+Ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία → Προτιμήσεις → Γενικά → Βοήθεια</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Η λειτουργική μονάδα PySide QtWebEngineWidgets δεν είναι διαθέσιμη. Η απόδοση της βοήθειας πραγματοποιείται με το πρόγραμμα περιήγησης συστήματος</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Δεν υπάρχει εγκατεστημένο πρόγραμμα απόδοσης Markdown στο σύστημά σας, επομένως αυτή η σελίδα βοήθειας αποδίδεται ως έχει. Εγκαταστήστε τις λειτουργικές μονάδες Markdown ή Pandoc Python για να βελτιώσετε την απόδοση αυτής της σελίδας.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>Βοήθεια</translation>
     </message>
@@ -183,7 +189,7 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>Γενικές</translation>
     </message>

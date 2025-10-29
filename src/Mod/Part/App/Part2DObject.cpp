@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
@@ -37,7 +35,7 @@
 # include <GeomAPI.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <IntRes2d_IntersectionSegment.hxx>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/PropertyLinks.h>
@@ -60,7 +58,9 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::Part2DObject, Part::Feature)
 Part2DObject::Part2DObject()
 {
     AttachExtension::initExtension(this);
-    this->setAttacher(new Attacher::AttachEnginePlane);
+    auto engine = new Attacher::AttachEnginePlane;
+    engine->precision = Attacher::AttachEnginePlane::planarPrecision();
+    this->setAttacher(engine);
 }
 
 

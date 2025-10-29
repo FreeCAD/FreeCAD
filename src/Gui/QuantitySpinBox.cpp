@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <QApplication>
 # include <QDebug>
@@ -34,7 +31,6 @@
 # include <QStyle>
 # include <QStyleOptionSpinBox>
 # include <QToolTip>
-#endif
 
 #include <sstream>
 
@@ -611,6 +607,7 @@ void QuantitySpinBox::openFormulaDialog()
         else if (box->discardedFormula())
             setExpression(std::shared_ptr<Expression>());
 
+        updateExpression();
         box->deleteLater();
         Q_EMIT showFormulaDialog(false);
     });
@@ -618,7 +615,6 @@ void QuantitySpinBox::openFormulaDialog()
 
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
-    box->setExpressionInputSize(width(), height());
     Gui::adjustDialogPosition(box);
 
     Q_EMIT showFormulaDialog(true);
@@ -743,14 +739,14 @@ bool QuantitySpinBox::isCheckedRangeInExpresion() const
 int QuantitySpinBox::decimals() const
 {
     Q_D(const QuantitySpinBox);
-    return d->quantity.getFormat().precision;
+    return d->quantity.getFormat().getPrecision();
 }
 
 void QuantitySpinBox::setDecimals(int v)
 {
     Q_D(QuantitySpinBox);
     Base::QuantityFormat f = d->quantity.getFormat();
-    f.precision = v;
+    f.setPrecision(v);
     d->quantity.setFormat(f);
     updateText(d->quantity);
 }

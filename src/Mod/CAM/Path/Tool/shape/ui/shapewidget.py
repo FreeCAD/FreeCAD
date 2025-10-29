@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -44,7 +43,7 @@ class ShapeWidget(QtGui.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.shape = shape
-        self.icon_size = icon_size or QtCore.QSize(200, 235)
+        self.icon_size = icon_size or QtCore.QSize(140, 165)  # 200 x 235
         self.icon_widget = QtGui.QLabel()
         self.layout.addWidget(self.icon_widget)
 

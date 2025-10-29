@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -277,7 +277,7 @@ bool Tessellation::accept()
                 this,
                 windowTitle(),
                 tr("Error: body without a tip selected.\n"
-                   "Either set the tip of the body or select a different shapee."));
+                   "Either set the tip of the body or select a different shape."));
         }
         else if (partWithNoFace) {
             QMessageBox::critical(this,

@@ -20,9 +20,8 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <atomic>
 # include <cctype>
 # include <unordered_set>
@@ -54,7 +53,7 @@
 # include <QApplication>
 # include <QMenu>
 # include <QCheckBox>
-#endif
+
 
 #include <boost/range.hpp>
 #include <App/ElementNamingUtils.h>
@@ -403,6 +402,13 @@ public:
 
         for(int i=0,count=root->getNumChildren();i<count;++i) {
             SoNode *node = root->getChild(i);
+
+            // Exclude the linked object's pick style from the snapshot,
+            // so that the Link's own pick style is the only one in effect.
+            if (node->isOfType(SoPickStyle::getClassTypeId())) {
+                continue;
+            }
+
             if(node==pcLinked->getTransformNode()) {
                 if(type!=LinkView::SnapshotTransform)
                     pcSnapshot->addChild(node);
@@ -503,7 +509,7 @@ public:
     bool getElementPicked(bool addname, int type,
             const SoPickedPoint *pp, std::ostream &str) const
     {
-        if(!pp || !isLinked() || !pcLinked->isSelectable())
+        if(!pp || !isLinked())
             return false;
 
         if(addname)
@@ -1671,10 +1677,14 @@ ViewProviderLink::ViewProviderLink()
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
     linkView = new LinkView;
+
+    pcPickStyle = new SoPickStyle;
+    pcPickStyle->ref();
 }
 
 ViewProviderLink::~ViewProviderLink()
 {
+    pcPickStyle->unref();
     linkView->setInvalid();
 }
 
@@ -1682,7 +1692,12 @@ bool ViewProviderLink::isSelectable() const {
     return Selectable.getValue();
 }
 
-void ViewProviderLink::attach(App::DocumentObject *pcObj) {
+void ViewProviderLink::attach(App::DocumentObject* pcObj)
+{
+    if (pcRoot->findChild(pcPickStyle) < 0) {
+        pcRoot->insertChild(pcPickStyle, 0);
+    }
+
     SoNode *node = linkView->getLinkRoot();
     node->setName(pcObj->getFullName().c_str());
     addDisplayMaskMode(node,"Link");
@@ -1744,7 +1759,12 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
         return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px,px));
 }
 
-void ViewProviderLink::onChanged(const App::Property* prop) {
+void ViewProviderLink::onChanged(const App::Property* prop)
+{
+    if (prop == &Selectable) {
+        pcPickStyle->style = Selectable.getValue() ? SoPickStyle::SHAPE : SoPickStyle::UNPICKABLE;
+    }
+
     if(prop==&ChildViewProvider) {
         childVp = freecad_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
         if(childVp && getObject()) {
@@ -2059,18 +2079,57 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
     }
 }
 
-void ViewProviderLink::applyMaterial() {
-    if(OverrideMaterial.getValue())
-        linkView->setMaterial(-1,&ShapeMaterial.getValue());
+void ViewProviderLink::applyMaterial()
+{
+    if (OverrideMaterial.getValue()) {
+        // Dispatch a generic Coin3D action to the linked object's scene graph.
+        // If the linked object is a Part shape, its SoBrepFaceSet node will
+        // handle this action and apply the color to all its faces.
+        // This is decoupled and respects the core/module architecture.
+
+        // 1. Get the material from our property.
+        const auto& material = ShapeMaterial.getValue();
+
+        // 2. Prepare the color for the rendering action. The action's ultimate
+        // consumer (SoBrepFaceSet) expects a Base::Color where .a is transparency,
+        // so we must perform the conversion here at the boundary.
+        Base::Color renderColor = material.diffuseColor;
+        renderColor.a = 1.0f - material.transparency;
+
+        // 3. Create a map with the "Face" wildcard to signify "all faces".
+        std::map<std::string, Base::Color> colorMap;
+        colorMap["Face"] = renderColor;
+
+        // 4. Create and dispatch the action. We use a secondary context action,
+        // which is the established mechanism for this kind of override.
+        SoSelectionElementAction action(SoSelectionElementAction::Color,
+                                        true);  // true for secondary
+        action.swapColors(colorMap);
+        linkView->getLinkRoot()->doAction(&action);
+
+        // 5. Ensure the old global override mechanism is not used.
+        linkView->setMaterial(-1, nullptr);
+    }
     else {
-        for(int i=0;i<linkView->getSize();++i) {
-            if(MaterialList.getSize()>i &&
-               OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
-                linkView->setMaterial(i,&MaterialList[i]);
-            else
-                linkView->setMaterial(i,nullptr);
+        // OVERRIDE IS DISABLED:
+        // We must clear the per-face override we just applied.
+
+        // 1. Dispatch an empty Color action to clear the secondary context.
+        SoSelectionElementAction action(SoSelectionElementAction::Color, true);
+        linkView->getLinkRoot()->doAction(&action);
+
+        // 2. Re-apply any other material settings (e.g., for array elements,
+        // or clear the old global override if it was set).
+        linkView->setMaterial(-1, nullptr);
+        for (int i = 0; i < linkView->getSize(); ++i) {
+            if (MaterialList.getSize() > i && OverrideMaterialList.getSize() > i
+                && OverrideMaterialList[i]) {
+                linkView->setMaterial(i, &MaterialList[i]);
+            }
+            else {
+                linkView->setMaterial(i, nullptr);
+            }
         }
-        linkView->setMaterial(-1,nullptr);
     }
 }
 
@@ -2716,10 +2775,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     dragCtx = std::make_unique<DraggerContext>();
 
     dragCtx->preTransform = doc->getEditingTransform();
-    doc->setEditingTransform(dragCtx->preTransform);
-
-    const auto &pla = ext->getPlacementProperty()?
-        ext->getPlacementValue():ext->getLinkPlacementValue();
+    const auto &pla = getPlacementProperty()->getValue();
 
     // Cancel out our own transformation from the editing transform, because
     // the dragger is meant to change our transformation.
@@ -2733,38 +2789,16 @@ bool ViewProviderLink::initDraggingPlacement() {
     dragCtx->bbox.ScaleY(scale.y);
     dragCtx->bbox.ScaleZ(scale.z);
 
-    auto modifier = QApplication::queryKeyboardModifiers();
-    // Determine the dragger base position
-    // if CTRL key is down, force to use bound box center,
-    // if SHIFT key is down, force to use origine,
-    // if not a sub link, use origine,
-    // else (e.g. group, array, sub link), use bound box center
-    if(modifier != Qt::ShiftModifier
-            && ((ext->getLinkedObjectValue() && !linkView->hasSubs())
-                || modifier == Qt::ControlModifier))
-    {
-        App::PropertyPlacement *propPla = nullptr;
-        if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
-            propPla = freecad_cast<App::PropertyPlacement*>(
-                    ext->getLinkedObjectValue()->getPropertyByName("Placement"));
-        }
-        if(propPla) {
-            dragCtx->initialPlacement = pla * propPla->getValue();
-            dragCtx->mat *= propPla->getValue().inverse().toMatrix();
-        } else
-            dragCtx->initialPlacement = pla;
-
+    App::PropertyPlacement *propPla = nullptr;
+    if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
+        propPla = freecad_cast<App::PropertyPlacement*>(
+                ext->getLinkedObjectValue()->getPropertyByName("Placement"));
+    }
+    if(propPla) {
+        dragCtx->initialPlacement = pla * propPla->getValue();
+        dragCtx->mat *= propPla->getValue().inverse().toMatrix();
     } else {
-        auto offset = dragCtx->bbox.GetCenter();
-
-        // This determines the initial placement of the dragger. We place it at the
-        // center of our bounding box.
-        dragCtx->initialPlacement = pla * Base::Placement(offset, Base::Rotation());
-
-        // dragCtx->mat is to transform the dragger placement to our own placement.
-        // Since the dragger is placed at the center, we set the transformation by
-        // moving the same amount in reverse direction.
-        dragCtx->mat.move(Vector3d() - offset);
+        dragCtx->initialPlacement = pla;
     }
 
     return true;
@@ -2873,6 +2907,8 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
     }
 
     ViewProviderDragger::setEditViewer(viewer, ModNum);
+
+    viewer->setupEditingRoot(transformDragger, &dragCtx->preTransform);
 }
 
 void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)

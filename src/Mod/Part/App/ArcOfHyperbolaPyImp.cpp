@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GC_MakeArcOfHyperbola.hxx>
 # include <Geom_Hyperbola.hxx>
 # include <Geom_TrimmedCurve.hxx>
-#endif
+
 
 #include "ArcOfHyperbolaPy.h"
 #include "ArcOfHyperbolaPy.cpp"

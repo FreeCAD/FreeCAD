@@ -65,6 +65,7 @@ public:
 
     /** @name methods override Feature */
     //@{
+    App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     void onDocumentRestored() override;
@@ -125,6 +126,8 @@ public:
     virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
 
     static bool isProjGroupItem(DrawViewPart* item);
+
+    virtual bool snapsToPosition() const { return true; }
 
 protected:
     void onBeforeChange(const App::Property *prop) override;

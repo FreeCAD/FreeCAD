@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # _TEMPLATEPY_ gui init module
 # (c) 2001 Juergen Riegel
 # License LGPL

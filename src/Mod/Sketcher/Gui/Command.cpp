@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QCheckBox>
 #include <QGridLayout>
@@ -32,7 +30,7 @@
 #include <QMessageBox>
 #include <QSignalBlocker>
 #include <QWidgetAction>
-#endif
+
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>
@@ -211,7 +209,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
             }
             QString text = QInputDialog::getItem(
                 Gui::getMainWindow(),
-                qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
+                qApp->translate("Sketcher_NewSketch", "Sketch Attachment"),
                 qApp->translate("Sketcher_NewSketch",
                                 "Select the method to attach this sketch to selected object"),
                 items,
@@ -454,7 +452,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     if (sketch->AttachmentSupport.getValue()) {
         int ret = QMessageBox::question(
             Gui::getMainWindow(),
-            qApp->translate("Sketcher_ReorientSketch", "Sketch has support"),
+            qApp->translate("Sketcher_ReorientSketch", "Sketch Has Support"),
             qApp->translate("Sketcher_ReorientSketch",
                             "Sketch with a support face cannot be reoriented.\n"
                             "Detach it from the support?"),
@@ -640,7 +638,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             items.push_back(QString::fromUtf8((*it)->Label.getValue()));
         QString text = QInputDialog::getItem(
             Gui::getMainWindow(),
-            qApp->translate("Sketcher_MapSketch", "Select sketch"),
+            qApp->translate("Sketcher_MapSketch", "Select Sketch"),
             sketchInSelection
             ? qApp->translate("Sketcher_MapSketch",
                 "Select a sketch (some sketches not shown to prevent a circular dependency)")
@@ -696,7 +694,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         // bool ok; //already defined
         // QStringList items; //already defined
         items.clear();
-        items.push_back(QObject::tr("Don't attach"));
+        items.push_back(QObject::tr("Do not attach"));
         int iSugg = 0;// index of the auto-suggested mode in the list of valid modes
         int iCurr = 0;// index of current mode in the list of valid modes
         for (size_t i = 0; i < validModes.size(); ++i) {
@@ -725,7 +723,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         // * execute the dialog
         text = QInputDialog::getItem(
             Gui::getMainWindow(),
-            qApp->translate("Sketcher_MapSketch", "Sketch attachment"),
+            qApp->translate("Sketcher_MapSketch", "Sketch Attachment"),
             bCurIncompatible
                 ? qApp->translate(
                     "Sketcher_MapSketch",

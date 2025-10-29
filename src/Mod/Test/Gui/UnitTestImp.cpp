@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFontMetrics>
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Gui/MainWindow.h>

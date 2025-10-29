@@ -27,6 +27,8 @@
 #include "ViewProviderSpline.h"
 #include "ViewProviderPrimitive.h"
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace PartGui {
 
 

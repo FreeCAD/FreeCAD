@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <gp_Pln.hxx>
@@ -30,7 +28,7 @@
 # include <Standard_Failure.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-#endif
+
 
 #include "App/Datums.h"
 #include <App/Document.h>
@@ -351,6 +349,9 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
         if (!result.hasSubShape(TopAbs_SOLID)) {
             throw Base::ValueError("Base feature's shape is not a solid");
         }
+    }
+    else if (!result.hasSubShape(TopAbs_SOLID)) {
+        result.setShape(TopoDS_Shape());
     }
     return result;
 }

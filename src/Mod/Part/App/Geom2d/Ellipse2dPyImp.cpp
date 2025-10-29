@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GCE2d_MakeEllipse.hxx>
 # include <Geom2d_Ellipse.hxx>
 # include <gp_Elips2d.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

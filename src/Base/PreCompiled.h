@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -26,12 +28,12 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // Python
 #include <Python.h>
 
 // standard
+#include <algorithm>
+#include <array>
 #include <fcntl.h>
 #include <cstdio>
 #include <cassert>
@@ -39,13 +41,10 @@
 #include <chrono>
 #include <cmath>
 #include <codecvt>
+#include <locale>
 
 #ifdef FC_OS_WIN32
 #include <direct.h>
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
 #include <crtdbg.h>
 #include <shellapi.h>
@@ -83,42 +82,43 @@
 #include <sstream>
 
 // Xerces
-#include <xercesc/util/OutOfMemoryException.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMElement.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/dom/DOMText.hpp>
-#include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufFormatTarget.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/framework/MemoryManager.hpp>
+#include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/util/XMLUni.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/EntityResolver.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/SAXException.hpp>
+#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/util/OutOfMemoryException.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/util/XMLUni.hpp>
+#include <xercesc/util/XMLUniDefs.hpp>
+#include <xercesc/util/XercesVersion.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
+
+// Unicode
+#include <unicode/unistr.h>
+#include <unicode/uchar.h>
 
 // QtCore
 #include <QBuffer>
@@ -135,8 +135,5 @@
 #include <QTime>
 #include <QTimeZone>
 #include <QUuid>
-
-
-#endif  //_PreComp_
 
 #endif  // BASE_PRECOMPILED_H

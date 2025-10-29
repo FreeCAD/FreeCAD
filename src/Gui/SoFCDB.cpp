@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SbSphere.h>
 # include <Inventor/SbString.h>
 # include <Inventor/SoInteraction.h>
@@ -40,7 +39,7 @@
 # include <QProcess>
 # include <QTemporaryFile>
 # include <sstream>
-#endif
+
 
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -52,7 +51,10 @@
 #include "Flag.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
 #include "Inventor/Draggers/SoLinearDragger.h"
+#include "Inventor/Draggers/SoLinearDraggerGeometry.h"
 #include "Inventor/Draggers/SoRotationDragger.h"
+#include "Inventor/Draggers/SoRotationDraggerGeometry.h"
+#include "Inventor/Draggers/Gizmo.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
@@ -149,9 +151,16 @@ void Gui::SoFCDB::init()
     SoTransformDragger              ::initClass();
     SoLinearGeometryKit             ::initClass();
     SoArrowGeometry                 ::initClass();
+    SoLinearGeometryBaseKit         ::initClass();
+    SoArrowBase                     ::initClass();
     SoRotatorGeometryKit            ::initClass();
     SoRotatorGeometry               ::initClass();
+    SoRotatorGeometry2              ::initClass();
+    SoRotatorArrow                  ::initClass();
+    SoRotatorGeometryBaseKit        ::initClass();
+    SoRotatorBase                   ::initClass();
     SoToggleSwitch                  ::initClass();
+    GizmoContainer                  ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();

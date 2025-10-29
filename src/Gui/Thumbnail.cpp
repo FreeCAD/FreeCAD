@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QBuffer>
 # include <QByteArray>
 # include <QDateTime>
 # include <QImage>
 # include <QThread>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Reader.h>

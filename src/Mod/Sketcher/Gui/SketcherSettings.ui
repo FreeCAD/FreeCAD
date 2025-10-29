@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxAdvancedSolverTaskBox">
         <property name="toolTip">
-         <string>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</string>
+         <string>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</string>
         </property>
         <property name="text">
          <string>Show section 'Advanced solver control'</string>
@@ -231,6 +231,22 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxMakeInternals">
+        <property name="toolTip">
+         <string>Closed loops will automatically generate internal faces which are selectable to be used with other tools</string>
+        </property>
+        <property name="text">
+         <string>Generate internal faces</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MakeInternals</cstring>
         </property>
        </widget>
       </item>

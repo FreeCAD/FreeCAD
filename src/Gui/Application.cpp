@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
@@ -38,13 +35,17 @@
 #include <QScreen>
 #include <QStatusBar>
 #include <QStyle>
+#include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
 #include <QWindow>
-#endif
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <list>
+#include <ranges>
+
+#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -141,6 +142,7 @@
 #include "QtWidgets.h"
 
 #include <OverlayManager.h>
+#include <ParamHandler.h>
 #include <Base/ServiceProvider.h>
 
 #ifdef BUILD_TRACY_FRAME_PROFILER
@@ -152,6 +154,7 @@ using namespace Gui::DockWnd;
 using namespace std;
 namespace sp = std::placeholders;
 
+FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
 
@@ -381,24 +384,63 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 void Application::initStyleParameterManager()
 {
+    static ParamHandlers handlers;
+
+    const auto deduceParametersFilePath = []() -> std::string {
+        const auto hMainWindowGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+
+        if (const std::string& path = hMainWindowGrp->GetASCII("ThemeStyleParametersFile");
+            !path.empty()) {
+            return path;
+        }
+
+        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+    };
+
+    auto themeParametersSource = new StyleParameters::YamlParameterSource(
+        deduceParametersFilePath(),
+        {.name = QT_TR_NOOP("Theme Parameters"),
+         .options = StyleParameters::ParameterSourceOption::UserEditable});
+
+    auto reloadStylesheetHandler = handlers.addDelayedHandler(
+        "BaseApp/Preferences/MainWindow",
+        {"ThemeStyleParametersFiles", "Theme", "StyleSheet"},
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle hGrp) {
+            themeParametersSource->changeFilePath(deduceParametersFilePath());
+            styleParameterManager()->reload();
+
+            std::string sheet = hGrp->GetASCII("StyleSheet");
+            bool tiledBG = hGrp->GetBool("TiledBackground", false);
+
+            setStyleSheet(QString::fromStdString(sheet), tiledBG);
+        });
+
+    handlers.addHandler("BaseApp/Preferences/Themes",
+                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
+                        reloadStylesheetHandler);
+
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
 
-    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
-        new StyleParameters::UserParameterSource(
-            App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/Tokens"),
-            {.name = QT_TR_NOOP("Theme Parameters"),
-             .options = StyleParameters::ParameterSourceOption::UserEditable}));
-
+    // todo: left for compatibility with older theme versions, to be removed before release
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::UserParameterSource(
             App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+            {.name = QT_TR_NOOP("Theme Parameters - Fallback"),
+             .options = StyleParameters::ParameterSourceOption::ReadOnly}));
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(themeParametersSource);
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/UserParameters"),
             {.name = QT_TR_NOOP("User Parameters"),
              .options = StyleParameters::ParameterSource::UserEditable}));
 
-    for (auto* source : Base::provideServiceImplementations<StyleParameters::ParameterSource>()) {
+    const auto sources = Base::provideServiceImplementations<StyleParameters::ParameterSource>();
+    for (auto* source : std::views::all(sources) | std::views::reverse) {
         d->styleParameterManager->addSource(source);
     }
 
@@ -858,6 +900,10 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
+
+    if (strcmp(Module, "Part") == 0) {
+        FC_WARN("Exporting with 'Part' is deprecated, use 'ImportGui' instead");
+    }
 
     if (Module) {
         try {
@@ -1334,11 +1380,10 @@ Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 
 void Application::setEditDocument(Gui::Document* doc)
 {
-    if (doc == d->editDocument) {
-        return;
-    }
     if (!doc) {
         d->editDocument = nullptr;
+    } else if (doc == d->editDocument) {
+        return;
     }
     for (auto& v : d->documents) {
         v.second->_resetEdit();
@@ -2347,13 +2392,38 @@ void Application::runApplication()
 {
     StartupProcess::setupApplication();
 
+    {
+        QSurfaceFormat defaultFormat;
+        defaultFormat.setRenderableType(QSurfaceFormat::OpenGL);
+        defaultFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+        defaultFormat.setOption(QSurfaceFormat::DeprecatedFunctions, true);
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+        // QGuiApplication::platformName() doesn't yet work at this point, so we use the env var
+        if (getenv("WAYLAND_DISPLAY")) {
+            // In some settings (at least EGL on Wayland) we get RGB565 by default.
+            // Request something better.
+            defaultFormat.setRedBufferSize(8);
+            defaultFormat.setGreenBufferSize(8);
+            defaultFormat.setBlueBufferSize(8);
+            // Qt's behavior with format requests seems opaque, underdocumented and,
+            // unfortunately, inconsistent between platforms. Requesting an alpha
+            // channel tends to steer it away from weird legacy choices like RGB565.
+            defaultFormat.setAlphaBufferSize(8);
+            // And a depth/stencil buffer is generally useful if we can have it.
+            defaultFormat.setDepthBufferSize(24);
+            defaultFormat.setStencilBufferSize(8);
+        }
+#endif
+        QSurfaceFormat::setDefaultFormat(defaultFormat);
+    }
+
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))
     // If QT is running with native Wayland then inform Coin to use EGL
     if (QGuiApplication::platformName() == QString::fromStdString("wayland")) {
         setenv("COIN_EGL", "1", 1);

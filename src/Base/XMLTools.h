@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -29,6 +31,8 @@
 #include <ostream>
 #include <xercesc/util/TransService.hpp>
 #include <xercesc/framework/MemoryManager.hpp>
+
+#include <FCGlobal.h>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER

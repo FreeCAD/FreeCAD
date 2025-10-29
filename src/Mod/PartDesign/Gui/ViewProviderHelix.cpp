@@ -21,12 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
-#endif
+
 
 #include <Mod/PartDesign/App/FeatureHelix.h>
 #include <Gui/BitmapFactory.h>
@@ -76,20 +74,5 @@ std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const {
         temp.push_back(sketch);
 
     return temp;
-}
-
-bool ViewProviderHelix::onDelete(const std::vector<std::string> &s) {
-    PartDesign::ProfileBased* feature = getObject<PartDesign::ProfileBased>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = nullptr;
-    if (feature->Profile.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);
 }
 

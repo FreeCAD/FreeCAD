@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(CAMSimulator_LIBS
     Path
@@ -16,7 +10,7 @@ set(CAMSimulator_LIBS
 )
 
 SET(CAMSimulator_SRCS_Python
-    CAMSimPy.xml
+    CAMSim.pyi
     CAMSimPyImp.cpp
 )
 
@@ -28,7 +22,6 @@ SET(CAMSimulator_SRCS_Module
     CAMSimPyImp.cpp
     DlgCAMSimulator.cpp
     DlgCAMSimulator.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 
@@ -66,9 +59,7 @@ SET(CAMSimulator_SRCS_Core
     TextureLoader.h
 )
 
-
-generate_from_xml(CAMSimPy)
-
+generate_from_py(CAMSim)
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
 SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})
@@ -84,14 +75,24 @@ SET(CAMSimulator_SRCS
     ${CAMSimulator_SRCS_Core}
 )
 
+add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
+target_include_directories(
+    CAMSimulator
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${CAMSimulator_SRCS_precomp})
-    ADD_MSVC_PRECOMPILED_HEADER(CAMSimulator PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(CAMSimulator PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+    set_source_files_properties(${CAMSimulator_SRCS_Core} PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
-add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
-target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(CAMSimulator)
 endif()
