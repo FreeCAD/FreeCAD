@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QPushButton>
+#include <string>
+#include <vector>
 
+#include <QPushButton>
 
 #include <Gui/Application.h>
 #include <Gui/ParamHandler.h>
@@ -32,6 +34,21 @@
 #include "Dialogs/DlgThemeEditor.h"
 
 #include <Base/ServiceProvider.h>
+#include "ThemeDefaults.h"
+
+namespace
+{
+const std::vector<std::string>& accentColors()
+{
+    static const std::vector<std::string> colors = {
+        "ThemeAccentColor1",
+        "ThemeAccentColor2",
+        "ThemeAccentColor3",
+    };
+    return colors;
+}
+constexpr const char* themesGroup = "BaseApp/Preferences/Themes";
+}  // namespace
 
 
 using namespace Gui::Dialog;
@@ -124,6 +141,23 @@ void DlgSettingsUI::loadStyleSheet()
     translatedString = tr("No style sheet").toStdString();
     populateStylesheets("StyleSheet", "qss", ui->StyleSheets, translatedString.c_str());
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
+}
+
+void DlgSettingsUI::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(themesGroup, accentColors());
+}
+
+
+void DlgSettingsUI::resetSettingsToDefaults()
+{
+    ThemeDefaults::removeColors(themesGroup, accentColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget parameters
+    loadThemeDefaults();
+    loadSettings();
 }
 
 void DlgSettingsUI::populateStylesheets(
