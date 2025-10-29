@@ -82,6 +82,15 @@ class DressupPathBoundary(object):
             ),
         )
         obj.KeepToolDown = False
+        obj.addProperty(
+            "App::PropertyBool",
+            "ApplyToRestMachining",
+            "Boundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply boundary to Rest Machining.",
+            ),
+        )
 
         self.obj = obj
         self.safeHeight = None
@@ -103,6 +112,16 @@ class DressupPathBoundary(object):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Keep tool down.",
+                ),
+            )
+        if not hasattr(obj, "ApplyToRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ApplyToRestMachining",
+                "Boundary",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply boundary to Rest Machining.",
                 ),
             )
 
