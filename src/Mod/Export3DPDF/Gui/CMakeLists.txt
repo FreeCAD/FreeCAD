@@ -21,13 +21,13 @@ SET(Export3DPDFGui_SRCS
     PreCompiled.h
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Export3DPDFGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Export3DPDFGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(Export3DPDFGui SHARED ${Export3DPDFGui_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Export3DPDFGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 target_link_libraries(Export3DPDFGui ${Export3DPDFGui_LIBS})
 
 # Ensure FreeCADGui is built before Export3DPDFGui
