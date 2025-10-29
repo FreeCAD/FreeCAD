@@ -48,11 +48,14 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
+    static void loadThemeDefaults();
+
 protected:
     void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
+    void resetSettingsToDefaults() override;
 };
 
 }  // namespace PartGui

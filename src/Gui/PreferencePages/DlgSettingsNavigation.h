@@ -48,6 +48,8 @@ public:
     explicit DlgSettingsNavigation(QWidget* parent = nullptr);
     ~DlgSettingsNavigation() override;
 
+    static void loadThemeDefaults();
+
     void saveSettings() override;
     void loadSettings() override;
     void resetSettingsToDefaults() override;

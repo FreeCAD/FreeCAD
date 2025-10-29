@@ -50,6 +50,8 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
+    static void loadThemeDefaults();
+
     void loadStyleSheet();
 
 protected:
@@ -67,6 +69,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgSettingsUI> ui;
+    void resetSettingsToDefaults() override;
 };
 
 }  // namespace Dialog

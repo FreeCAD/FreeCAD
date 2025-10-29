@@ -56,6 +56,8 @@ public:
     explicit DlgSettingsLightSources(QWidget* parent = nullptr);
     ~DlgSettingsLightSources() override = default;
 
+    static void loadThemeDefaults();
+
     void saveSettings() override;
     void loadSettings() override;
     void resetSettingsToDefaults() override;
@@ -84,7 +86,6 @@ private:
     ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-
     float zoomStep = 3.0f;
 };
 
