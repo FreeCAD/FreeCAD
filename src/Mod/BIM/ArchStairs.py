@@ -1970,7 +1970,7 @@ class _Stairs(ArchComponent.Component):
                 else:
                     lProfile.append(lProfile[-1].add(Vector(h.x, h.y, -resHeight2)))
 
-                # Add back vertex before start vertext offsetted riser thickness
+                # Add back vertex before start vertex offsetted riser thickness
                 if vRiserThickness.Length and downstartstairs != "HorizontalCut":
                     lProfile.append(vBasedAligned)
 
