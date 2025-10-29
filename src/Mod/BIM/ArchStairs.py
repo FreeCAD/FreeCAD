@@ -1974,7 +1974,7 @@ class _Stairs(ArchComponent.Component):
                 if vRiserThickness.Length and downstartstairs != "HorizontalCut":
                     lProfile.append(vBasedAligned)
 
-                # Add start vertex as last vertext to complete a closed polygon
+                # Add start vertex as last vertex to complete a closed polygon
                 lProfile.append(vBase)
 
                 pol = Part.makePolygon(lProfile)
