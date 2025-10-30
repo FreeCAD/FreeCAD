@@ -107,6 +107,7 @@ from drafttests.test_draftgeomutils import TestDraftGeomUtils as DraftTest04
 # Handling of file formats tests
 # from drafttests.test_svg import DraftSVG as DraftTest05
 from drafttests.test_dxf import DraftDXF as DraftTest06
+
 # from drafttests.test_dwg import DraftDWG as DraftTest07
 # from drafttests.test_oca import DraftOCA as DraftTest08
 # from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest09
