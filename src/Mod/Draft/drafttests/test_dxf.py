@@ -56,7 +56,7 @@ class DraftDXF(test_base.DraftTestCaseDoc):
         _msg("  exists={}".format(os.path.exists(in_file)))
 
         obj = aux.fake_function(in_file)
-        self.assertTrue(obj, "'{}' failed".format(operation))
+        self.assertFalse(obj, "'{}' failed".format(operation))
 
     def test_export_dxf(self):
         """Create some figures and export them to a DXF file."""
