@@ -2168,7 +2168,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
         constraintIndex = std::distance(constrlist.begin(), it);
         if (ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider,
                                                                     constraintIndex)) {
-            fixedValueStr += QStringLiteral(" [ƒ𝑥]");
+            fixedValueStr += QStringLiteral(" (ƒ𝑥)");
         }
     }
 
@@ -2947,3 +2947,4 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     ps->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(ps);
 }
+
