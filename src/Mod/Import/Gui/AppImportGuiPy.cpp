@@ -70,6 +70,8 @@
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/encodeFilename.h>
+#include <Mod/Part/Gui/DlgExportGltf.h>
+#include <Mod/Part/Gui/DlgImportGltf.h>
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -161,6 +163,21 @@ private:
             options.setItem("expandCompound", Py::Boolean(stepSettings.expandCompound));
             options.setItem("mode", Py::Long(stepSettings.mode));
             options.setItem("codePage", Py::Long(stepSettings.codePage));
+        }
+        else if (file.hasExtension({"glb", "gltf"})) {
+            PartGui::TaskImportGltf dlg(Gui::getMainWindow());
+            if (dlg.showDialog()) {
+                if (!dlg.exec()) {
+                    throw Py::Exception(Base::PyExc_FC_AbortIOException, "User cancelled import");
+                }
+            }
+            auto gltfSettings = dlg.getSettings();
+            options.setItem("refinement", Py::Boolean(gltfSettings.refinement));
+            options.setItem("skipEmptyNodes", Py::Boolean(gltfSettings.skipEmptyNodes));
+            options.setItem("doublePrecision", Py::Boolean(gltfSettings.doublePrecision));
+            options.setItem("loadAllScenes", Py::Boolean(gltfSettings.loadAllScenes));
+            options.setItem("multiThreaded", Py::Boolean(gltfSettings.multiThreaded));
+            options.setItem("printDebugMessages", Py::Boolean(gltfSettings.printDebugMessages));
         }
         return options;
     }
@@ -312,7 +329,34 @@ private:
             }
             else if (file.hasExtension({"glb", "gltf"})) {
                 Import::ReaderGltf reader(file);
-                reader.read(hDoc);
+                if (pyoptions) {
+                    Py::Dict options(pyoptions);
+                    if (options.hasKey("refinement")) {
+                        reader.setSkipEmptyNodes(
+                            static_cast<bool>(Py::Boolean(options.getItem("refinement"))));
+                    }
+                    if (options.hasKey("skipEmptyNodes")) {
+                        reader.setSkipEmptyNodes(
+                            static_cast<bool>(Py::Boolean(options.getItem("skipEmptyNodes"))));
+                    }
+                    if (options.hasKey("doublePrecision")) {
+                        reader.setDoublePrecision(
+                            static_cast<bool>(Py::Boolean(options.getItem("doublePrecision"))));
+                    }
+                    if (options.hasKey("loadAllScenes")) {
+                        reader.setLoadAllScenes(
+                            static_cast<bool>(Py::Boolean(options.getItem("loadAllScenes"))));
+                    }
+                    if (options.hasKey("multiThreaded")) {
+                        reader.setMultiThreaded(
+                            static_cast<bool>(Py::Boolean(options.getItem("multiThreaded"))));
+                    }
+                    if (options.hasKey("printDebugMessages")) {
+                        reader.setPrintDebugMessages(
+                            static_cast<bool>(Py::Boolean(options.getItem("printDebugMessages"))));
+                    }
+                }
+                reader.read(hDoc, Message_ProgressIndicator::Start(pi));
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
@@ -441,7 +485,7 @@ private:
 
     Py::Object exportOptions(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
         }
@@ -462,14 +506,23 @@ private:
                 options.setItem("legacy", Py::Boolean(stepSettings.exportLegacy));
             }
         }
+        else if (file.hasExtension({"glb", "gltf"})) {
+            PartGui::TaskExportGltf dlg(Gui::getMainWindow());
+            if (!dlg.showDialog() || dlg.exec()) {
+                auto gltfSettings = dlg.getSettings();
+                options.setItem("exportUVCoords", Py::Boolean(gltfSettings.exportUVCoords));
+                options.setItem("mergeFaces", Py::Boolean(gltfSettings.mergeFaces));
+                options.setItem("multiThreaded", Py::Boolean(gltfSettings.multiThreaded));
+            }
+        }
 
         return options;
     }
 
     Py::Object exporter(const Py::Tuple& args, const Py::Dict& kwds)
     {
-        PyObject* object;
-        char* Name;
+        PyObject* object = nullptr;
+        char* Name = nullptr;
         PyObject* pyoptions = nullptr;
         PyObject* pyexportHidden = Py_None;
         PyObject* pylegacy = Py_None;
@@ -572,6 +625,21 @@ private:
             }
             else if (file.hasExtension({"glb", "gltf"})) {
                 Import::WriterGltf writer(file);
+                if (pyoptions) {
+                    Py::Dict options(pyoptions);
+                    if (options.hasKey("exportUVCoords")) {
+                        writer.setExportUVCoords(
+                            static_cast<bool>(Py::Boolean(options.getItem("exportUVCoords"))));
+                    }
+                    if (options.hasKey("mergeFaces")) {
+                        writer.setMergeFaces(
+                            static_cast<bool>(Py::Boolean(options.getItem("mergeFaces"))));
+                    }
+                    if (options.hasKey("multiThreaded")) {
+                        writer.setMultiThreaded(
+                            static_cast<bool>(Py::Boolean(options.getItem("multiThreaded"))));
+                    }
+                }
                 writer.write(hDoc);
             }
 

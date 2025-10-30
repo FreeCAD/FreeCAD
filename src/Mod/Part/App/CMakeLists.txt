@@ -524,6 +524,8 @@ SET(Part_SRCS
     ${HLRBRepPy_SRCS}
     ${ShapeFixPy_SRCS}
     ${ShapeUpgradePy_SRCS}
+    GLTF/ImportExportSettings.cpp
+    GLTF/ImportExportSettings.h
     IGES/ImportExportSettings.cpp
     IGES/ImportExportSettings.h
     OCAF/ImportExportSettings.cpp

@@ -50,10 +50,42 @@ void WriterGltf::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
     aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit(0.001);  // NOLINT
     aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem(RWMesh_CoordinateSystem_Zup);
 #if OCC_VERSION_HEX >= 0x070700
-    aWriter.SetParallel(true);
+    aWriter.SetParallel(multiThreaded());
 #endif
+    aWriter.SetForcedUVExport(exportUVCoords());
+    aWriter.SetMergeFaces(mergeFaces());
     Standard_Boolean ret = aWriter.Perform(hDoc, aMetadata, Message_ProgressRange());
     if (!ret) {
         throw Base::FileException("Cannot save to file: ", file);
     }
+}
+
+bool WriterGltf::exportUVCoords() const
+{
+    return exportUV;
+}
+
+void WriterGltf::setExportUVCoords(bool value)
+{
+    exportUV = value;
+}
+
+bool WriterGltf::mergeFaces() const
+{
+    return merge;
+}
+
+void WriterGltf::setMergeFaces(bool value)
+{
+    merge = value;
+}
+
+bool WriterGltf::multiThreaded() const
+{
+    return multiThread;
+}
+
+void WriterGltf::setMultiThreaded(bool value)
+{
+    multiThread = value;
 }

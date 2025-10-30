@@ -38,6 +38,8 @@
 #include "ui_DlgImportExportIges.h"
 #include "DlgExportStep.h"
 #include "DlgImportStep.h"
+#include "DlgExportGltf.h"
+#include "DlgImportGltf.h"
 
 
 using namespace PartGui;
@@ -219,6 +221,48 @@ void DlgImportExportStep::loadSettings()
 void DlgImportExportStep::changeEvent(QEvent *)
 {
     // do nothing
+}
+
+// ----------------------------------------------------------------------------
+
+DlgImportExportGltf::DlgImportExportGltf(QWidget* parent)
+    : PreferencePage(parent)
+    , exportGltf(new DlgExportGltf(this))
+    , importGltf(new DlgImportGltf(this))
+{
+    setWindowTitle(QLatin1String("glTF"));
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    setLayout(layout);
+
+    layout->addWidget(exportGltf);
+    layout->addWidget(importGltf);
+
+    QSpacerItem* verticalSpacer = new QSpacerItem(20, 82, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    layout->addItem(verticalSpacer);
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+DlgImportExportGltf::~DlgImportExportGltf() = default;
+
+void DlgImportExportGltf::saveSettings()
+{
+    exportGltf->saveSettings();
+    importGltf->saveSettings();
+}
+
+void DlgImportExportGltf::loadSettings()
+{
+    exportGltf->loadSettings();
+    importGltf->loadSettings();
+}
+
+void DlgImportExportGltf::changeEvent(QEvent *)
+{
+   // do nothing
 }
 
 

@@ -89,6 +89,26 @@ private:
     DlgExportHeaderStep* headerStep;
 };
 
+class DlgExportGltf;
+class DlgImportGltf;
+class DlgImportExportGltf : public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    explicit DlgImportExportGltf(QWidget* parent = nullptr);
+    ~DlgImportExportGltf() override;
+
+protected:
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
+
+private:
+    DlgExportGltf* exportGltf;
+    DlgImportGltf* importGltf;
+};
+
 } // namespace Gui
 
 #endif // PARTGUI_DLGSETTINGSGENERAL_H

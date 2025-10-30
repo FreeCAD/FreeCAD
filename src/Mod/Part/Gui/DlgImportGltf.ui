@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::DlgImportGltf</class>
+ <widget class="QWidget" name="PartGui::DlgImportGltf">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>445</width>
+    <height>224</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>glTF Import Settings</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox2">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxRefine">
+        <property name="text">
+         <string>Refine after loading</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Refine</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/glTF</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxPrintDebug">
+        <property name="text">
+         <string>Print debug messages</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PrintDebug</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/glTF</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxDoublePrec">
+        <property name="text">
+         <string>Double precision</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DoublePrecision</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/glTF</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxLoadAllScenes">
+        <property name="text">
+         <string>Load all scenes</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LoadAllScenes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/glTF</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxSkipEmpty">
+        <property name="text">
+         <string>Skip empty nodes</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SkipEmptyNodes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/glTF</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxParallel">
+        <property name="text">
+         <string>Enable multi-threading</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MultiThreadedImport</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/glTF</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>checkBoxPrintDebug</tabstop>
+  <tabstop>checkBoxDoublePrec</tabstop>
+  <tabstop>checkBoxLoadAllScenes</tabstop>
+  <tabstop>checkBoxParallel</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
