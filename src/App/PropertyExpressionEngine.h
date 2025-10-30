@@ -61,11 +61,46 @@ public:
     PropertyExpressionContainer();
     ~PropertyExpressionContainer() override;
 
+    /**
+     * @brief Get the expressions map.
+     *
+     * This function returns a mapping from object identifier to expression.
+     * The object identifier specifies the property in the document object that
+     * the expression is bound to.
+     *
+     * @return The map of ObjectIdentifier to Expression pointers.
+     */
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
+
+    /**
+     * @brief Set the expressions map.
+     *
+     * This function sets the mapping from object identifier to expression.
+     * The object identifier specifies the property in the document object that
+     * the expression is bound to.
+     *
+     * @param[in] exprs The new map of ObjectIdentifier to Expression pointers.
+     */
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr>&& exprs) = 0;
 
 protected:
+    /**
+     * @brief Handle document relabeling.
+     *
+     * Update the expressions in response to a document being relabeled.
+     *
+     * @param[in] doc The document that was relabeled.
+     */
     virtual void onRelabeledDocument(const App::Document& doc) = 0;
+
+    /**
+     * @brief Handle dynamic property renaming.
+     *
+     * Update the expressions in response to a dynamic property being renamed.
+     *
+     * @param[in] prop The property that was renamed.
+     * @param[in] oldName The old name of the property.
+     */
     virtual void onRenameDynamicProperty(const App::Property& prop, const char* oldName) = 0;
 
 private:
@@ -73,6 +108,18 @@ private:
     static void slotRenameDynamicProperty(const App::Property& prop, const char* oldName);
 };
 
+
+/**
+ * @brief The class that manages expressions that target a property in a
+ * document object.
+ * @ingroup ExpressionFramework
+ *
+ * This class manages a set of expressions that are bound to properties in
+ * document objects.  It provides functionality to evaluate the expressions,
+ * handle dependencies between expressions, and update the properties they
+ * are bound to.  For a high-level overview of the %Expression framework see
+ * topic @ref ExpressionFramework "Expression Framework".
+ */
 class AppExport PropertyExpressionEngine
     : public App::PropertyExpressionContainer,
       private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
@@ -98,7 +145,7 @@ public:
                                                     std::shared_ptr<const App::Expression> expr)>;
 
     /**
-     * @brief The ExpressionInfo struct encapsulates an expression.
+     * @brief This struct encapsulates an expression.
      */
     struct ExpressionInfo
     {
@@ -127,8 +174,8 @@ public:
     void onRelabeledDocument(const App::Document& doc) override;
     void onRenameDynamicProperty(const App::Property& prop, const char* oldName) override;
 
-    void setValue()
-    {}  // Dummy
+    /// Dummy setValue to satisfy a macro.
+    void setValue() {}
 
     Property* Copy() const override;
 
@@ -211,7 +258,11 @@ public:
      */
     bool depsAreTouched() const;
 
-    /* Expression validator */
+    /**
+     * @brief Set an extra validator function.
+     *
+     * @param[in] f The validator function.
+     */
     void setValidator(ValidatorFunc f)
     {
         validator = f;
