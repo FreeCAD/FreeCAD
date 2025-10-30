@@ -5,6 +5,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libPRC/src/asymptote
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libharu/include
+    ${CMAKE_BINARY_DIR}/src/3rdParty/libharu/include
 )
 
 set(Export3DPDF_LIBS
