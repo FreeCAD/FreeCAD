@@ -2947,4 +2947,3 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     ps->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(ps);
 }
-
