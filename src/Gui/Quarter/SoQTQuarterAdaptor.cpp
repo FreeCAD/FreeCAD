@@ -23,6 +23,8 @@
 #include <numbers>
 
 #include <Base/Console.h>
+#include <Gui/ViewVolumeUtils.h>
+
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoEventManager.h>
@@ -666,7 +668,12 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0.0, glsize[0], 0.0, glsize[1], -1, 1);
+    Gui::GL::loadOrthoMatrix(0.0F,
+                             static_cast<float>(glsize[0]),
+                             0.0F,
+                             static_cast<float>(glsize[1]),
+                             -1.0F,
+                             1.0F);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
