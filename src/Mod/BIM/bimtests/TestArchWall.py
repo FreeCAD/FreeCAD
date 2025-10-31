@@ -389,15 +389,23 @@ class TestArchWall(TestArchBase.TestArchBase):
 
         # 4. Assert
         self.assertTrue(wall.Shape.isValid(), "Wall shape became invalid after trimming.")
-        self.assertLess(wall.Shape.Volume, initial_volume,
-                        "Wall volume should decrease after being trimmed.")
+        self.assertLess(
+            wall.Shape.Volume, initial_volume, "Wall volume should decrease after being trimmed."
+        )
 
         # Assert that the bounding box has shrunk on the max X side
-        self.assertLess(wall.Shape.BoundBox.XMax, 1000.01,
-                        "Wall's XMax should be less than its original end position.")
+        self.assertLess(
+            wall.Shape.BoundBox.XMax,
+            1000.01,
+            "Wall's XMax should be less than its original end position.",
+        )
 
         # Reset the ending and check if the wall returns to its original state
         wall.EndingEnd = App.Placement()
         self.document.recompute()
-        self.assertAlmostEqual(wall.Shape.Volume, initial_volume, delta=1e-6,
-                               msg="Wall should return to its original volume after resetting the ending.")
+        self.assertAlmostEqual(
+            wall.Shape.Volume,
+            initial_volume,
+            delta=1e-6,
+            msg="Wall should return to its original volume after resetting the ending.",
+        )
