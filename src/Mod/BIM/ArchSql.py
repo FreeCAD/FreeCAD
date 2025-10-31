@@ -17,9 +17,11 @@ from collections import deque
 if FreeCAD.GuiUp:
     # In GUI mode, import PySide and create real translation functions.
     from PySide import QtCore
+
     def translate(context, text, comment=None):
         """Wraps the Qt translation function."""
         return QtCore.QCoreApplication.translate(context, text, comment)
+
     # QT_TRANSLATE_NOOP is used to mark strings for the translation tool but
     # does not perform the translation at definition time.
     QT_TRANSLATE_NOOP = QtCore.QT_TRANSLATE_NOOP
@@ -28,34 +30,41 @@ else:
     # return the original text. This ensures the code runs without a GUI.
     def translate(context, text, comment=None):
         return text
+
     def QT_TRANSLATE_NOOP(context, text):
         return text
+
 
 # Import exception types from the generated parser for type-safe handling.
 from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
 import generated_sql_parser
 
 from typing import List, Tuple, Any, Optional
+
 __all__ = [
-    'select',
-    'count',
-    'selectObjects',
-    'selectObjectsFromPipeline',
-    'getSqlKeywords',
-    'getSqlApiDocumentation',
-    'BimSqlSyntaxError',
-    'SqlEngineError',
-    'ReportStatement',
+    "select",
+    "count",
+    "selectObjects",
+    "selectObjectsFromPipeline",
+    "getSqlKeywords",
+    "getSqlApiDocumentation",
+    "BimSqlSyntaxError",
+    "SqlEngineError",
+    "ReportStatement",
 ]
 
 # --- Custom Exceptions for the SQL Engine ---
 
+
 class SqlEngineError(Exception):
     """Base class for all custom exceptions in this module."""
+
     pass
+
 
 class BimSqlSyntaxError(SqlEngineError):
     """Raised for any parsing or syntax error."""
+
     def __init__(self, message, is_incomplete=False):
         super().__init__(message)
         self.is_incomplete = is_incomplete
@@ -63,8 +72,10 @@ class BimSqlSyntaxError(SqlEngineError):
 
 # --- Debug Helpers for the SQL Engine ---
 
+
 def debug_transformer_method(func):
     """A decorator to add verbose logging to transformer methods for debugging."""
+
     def wrapper(self, items):
         print(f"\n>>> ENTERING: {func.__name__}")
         print(f"    RECEIVED: {repr(items)}")
@@ -72,45 +83,44 @@ def debug_transformer_method(func):
         print(f"    RETURNING: {repr(result)}")
         print(f"<<< EXITING:  {func.__name__}")
         return result
+
     return wrapper
 
 
 # --- Module-level Constants ---
 
-SELECT_STAR_HEADER = 'Object Label'
+SELECT_STAR_HEADER = "Object Label"
 _CUSTOM_FRIENDLY_TOKEN_NAMES = {
     # This dictionary provides overrides for tokens where the name is not user-friendly.
     # Punctuation
-    'RPAR': "')'",
-    'LPAR': "'('",
-    'COMMA': "','",
-    'ASTERISK': "'*'",
-    'DOT': "'.'",
-    'SEMICOLON': "';'",
-
+    "RPAR": "')'",
+    "LPAR": "'('",
+    "COMMA": "','",
+    "ASTERISK": "'*'",
+    "DOT": "'.'",
+    "SEMICOLON": "';'",
     # Arithmetic Operators
-    'ADD': "'+'",
-    'SUB': "'-'",
-    'MUL': "'*'",
-    'DIV': "'/'",
-
+    "ADD": "'+'",
+    "SUB": "'-'",
+    "MUL": "'*'",
+    "DIV": "'/'",
     # Comparison Operators (from the grammar)
-    'EQUAL': "'='",
-    'MORETHAN': "'>'",
-    'LESSTHAN': "'<'",
-
+    "EQUAL": "'='",
+    "MORETHAN": "'>'",
+    "LESSTHAN": "'<'",
     # Other non-keyword tokens
-    'CNAME': "a property or function name",
-    'STRING': "a quoted string like 'text'",
- }
+    "CNAME": "a property or function name",
+    "STRING": "a quoted string like 'text'",
+}
 
 
 # --- Internal Helper Functions ---
 
+
 def _get_property(obj, prop_name):
     """Gets a property from a FreeCAD object, including sub-properties."""
     # The property name implies sub-property access (e.g., 'Placement.Base.x')
-    is_nested_property = lambda prop_name: '.' in prop_name
+    is_nested_property = lambda prop_name: "." in prop_name
 
     if not is_nested_property(prop_name):
         # Handle simple, direct properties first, which is the most common case.
@@ -120,7 +130,7 @@ def _get_property(obj, prop_name):
     else:
         # Handle nested properties (e.g., Placement.Base.x)
         current_obj = obj
-        parts = prop_name.split('.')
+        parts = prop_name.split(".")
         for part in parts:
             if hasattr(current_obj, part):
                 current_obj = getattr(current_obj, part)
@@ -169,11 +179,11 @@ def _map_results_to_objects(headers, data_rows):
 
     # Find the index of the column that contains the object identifier.
     # Prefer 'Name' as it is guaranteed to be unique. Fallback to 'Label'.
-    if 'Name' in headers:
-        id_idx = headers.index('Name')
+    if "Name" in headers:
+        id_idx = headers.index("Name")
         lookup_dict = objects_by_name
-    elif 'Label' in headers:
-        id_idx = headers.index('Label')
+    elif "Label" in headers:
+        id_idx = headers.index("Label")
         objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
         lookup_dict = objects_by_label
     elif SELECT_STAR_HEADER in headers:  # Handle 'SELECT *' case
@@ -195,6 +205,7 @@ def _map_results_to_objects(headers, data_rows):
 
     return found_objects
 
+
 def _is_generic_group(obj):
     """
     Checks if an object is a generic group that should be excluded from
@@ -203,6 +214,7 @@ def _is_generic_group(obj):
     # A generic group is a group that is not an architecturally significant one
     # like a BuildingPart (which covers Floors, Buildings, etc.).
     return obj.isDerivedFrom("App::DocumentObjectGroup")
+
 
 def _get_bim_type(obj):
     """
@@ -236,14 +248,15 @@ def _get_bim_type(obj):
         return obj.Class
 
     # 3. Fallback to Proxy.Type for other scripted objects.
-    if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
+    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
 
     # 4. Final fallback to the object's internal TypeId.
-    if hasattr(obj, 'TypeId'):
+    if hasattr(obj, "TypeId"):
         return obj.TypeId
 
     return "Unknown"
+
 
 def _is_bim_group(obj):
     """
@@ -261,9 +274,18 @@ def _is_bim_group(obj):
     """
     bim_type = _get_bim_type(obj)
     # Note: 'Floor' and 'Building' are obsolete but kept for compatibility.
-    return ((obj.isDerivedFrom("App::DocumentObjectGroup") and bim_type != "LayerContainer")
-            or bim_type in ("Project", "Site", "Building", "Building Storey",
-                       "Floor", "Building Element Part", "Space"))
+    return (
+        obj.isDerivedFrom("App::DocumentObjectGroup") and bim_type != "LayerContainer"
+    ) or bim_type in (
+        "Project",
+        "Site",
+        "Building",
+        "Building Storey",
+        "Floor",
+        "Building Element Part",
+        "Space",
+    )
+
 
 def _get_direct_children(obj, discover_hosted_elements, include_components_from_additions):
     """
@@ -352,7 +374,7 @@ def _traverse_architectural_hierarchy(
     discover_hosted_elements=True,
     include_components_from_additions=False,
     include_groups_in_result=True,
-    include_initial_objects_in_result=True
+    include_initial_objects_in_result=True,
 ):
     """
     Traverses the BIM hierarchy to find all descendants of a given set of objects.
@@ -420,9 +442,7 @@ def _traverse_architectural_hierarchy(
             continue
 
         direct_children = _get_direct_children(
-            obj,
-            discover_hosted_elements,
-            include_components_from_additions
+            obj, discover_hosted_elements, include_components_from_additions
         )
 
         for child in direct_children:
@@ -436,9 +456,7 @@ def _traverse_architectural_hierarchy(
                 processed_or_queued_names.add(child.Name)
 
     if not include_groups_in_result:
-        filtered_list = [
-            obj for obj in final_contents_list if not _is_generic_group(obj)
-        ]
+        filtered_list = [obj for obj in final_contents_list if not _is_generic_group(obj)]
         return filtered_list
 
     return final_contents_list
@@ -474,25 +492,27 @@ def _execute_pipeline_for_objects(statements: List["ReportStatement"]) -> List:
 
 # --- Logical Classes for the SQL Statement Object Model ---
 
+
 class FunctionRegistry:
     """A simple class to manage the registration of SQL functions."""
+
     def __init__(self):
         self._functions = {}
 
     def register(self, name, function_class, category, signature, description, snippet=""):
         """Registers a class to handle a function with the given name."""
         self._functions[name.upper()] = {
-            'class': function_class,
-            'category': category,
-            'signature': signature,
-            'description': description,
-            'snippet': snippet,
+            "class": function_class,
+            "category": category,
+            "signature": signature,
+            "description": description,
+            "snippet": snippet,
         }
 
     def get_class(self, name):
         """Retrieves the class registered for a given function name."""
         data = self._functions.get(name.upper())
-        return data['class'] if data else None
+        return data["class"] if data else None
 
 
 # Create global, module-level registries that will be populated by decorators.
@@ -505,9 +525,11 @@ def register_select_function(name, category, signature, description, snippet="")
     A decorator that registers a class as a selectable SQL function.
     The decorated class must be a subclass of FunctionBase or similar.
     """
+
     def wrapper(cls):
         select_function_registry.register(name, cls, category, signature, description, snippet)
         return cls
+
     return wrapper
 
 
@@ -516,20 +538,25 @@ def register_from_function(name, category, signature, description, snippet=""):
     A decorator that registers a class as a FROM clause SQL function.
     The decorated class must be a subclass of FromFunctionBase.
     """
+
     def wrapper(cls):
         from_function_registry.register(name, cls, category, signature, description, snippet)
         return cls
+
     return wrapper
 
 
 class AggregateFunction:
     """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
+
     def __init__(self, name, arg_extractors):
         self.function_name = name.lower()
         self.arg_extractors = arg_extractors
 
         if len(self.arg_extractors) != 1:
-            raise ValueError(f"Aggregate function {self.function_name.upper()} requires exactly one argument.")
+            raise ValueError(
+                f"Aggregate function {self.function_name.upper()} requires exactly one argument."
+            )
 
         self.argument = self.arg_extractors[0]
 
@@ -537,59 +564,66 @@ class AggregateFunction:
         # This method should never be called directly in a row-by-row context like a WHERE clause.
         # Aggregates are handled in a separate path (_execute_grouped_query or
         # the single-row path in _execute_non_grouped_query). Calling it here is a semantic error.
-        raise SqlEngineError(f"Aggregate function '{self.function_name.upper()}' cannot be used in this context.")
+        raise SqlEngineError(
+            f"Aggregate function '{self.function_name.upper()}' cannot be used in this context."
+        )
 
 
 @register_select_function(
-    name='COUNT',
+    name="COUNT",
     category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
     signature="COUNT(* | property)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Counts rows that match criteria."),
-    snippet="SELECT COUNT(*) FROM document WHERE IfcType = 'Space'"
+    snippet="SELECT COUNT(*) FROM document WHERE IfcType = 'Space'",
 )
 class CountFunction(AggregateFunction):
     """Implements the COUNT() aggregate function."""
+
     pass
 
 
 @register_select_function(
-    name='SUM',
+    name="SUM",
     category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
     signature="SUM(property)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Calculates the sum of a numerical property."),
-    snippet="SELECT SUM(Area) FROM document WHERE IfcType = 'Space'"
+    snippet="SELECT SUM(Area) FROM document WHERE IfcType = 'Space'",
 )
 class SumFunction(AggregateFunction):
     """Implements the SUM() aggregate function."""
+
     pass
 
 
 @register_select_function(
-    name='MIN',
+    name="MIN",
     category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
     signature="MIN(property)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Finds the minimum value of a property."),
-    snippet="SELECT MIN(Length) FROM document WHERE IfcType = 'Wall'"
+    snippet="SELECT MIN(Length) FROM document WHERE IfcType = 'Wall'",
 )
 class MinFunction(AggregateFunction):
     """Implements the MIN() aggregate function."""
+
     pass
 
 
 @register_select_function(
-    name='MAX',
+    name="MAX",
     category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
     signature="MAX(property)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Finds the maximum value of a property."),
-    snippet="SELECT MAX(Height) FROM document WHERE IfcType = 'Wall'"
+    snippet="SELECT MAX(Height) FROM document WHERE IfcType = 'Wall'",
 )
 class MaxFunction(AggregateFunction):
     """Implements the MAX() aggregate function."""
+
     pass
 
 
 class FunctionBase:
     """A base class for non-aggregate functions like TYPE, CONCAT, etc."""
+
     def __init__(self, function_name, arg_extractors):
         self.function_name = function_name
         self.arg_extractors = arg_extractors
@@ -621,17 +655,18 @@ class FunctionBase:
 
 
 @register_select_function(
-    name='TYPE',
+    name="TYPE",
     category=QT_TRANSLATE_NOOP("ArchSql", "Utility"),
     signature="TYPE(*)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Returns the object's BIM type (e.g., 'Wall')."),
-    snippet="SELECT Label FROM document WHERE TYPE(*) = 'Wall'"
+    snippet="SELECT Label FROM document WHERE TYPE(*) = 'Wall'",
 )
 class TypeFunction(FunctionBase):
     """Implements the TYPE() function."""
+
     def __init__(self, function_name, arg_extractors):
         super().__init__(function_name, arg_extractors)
-        if len(self.arg_extractors) != 1 or self.arg_extractors[0] != '*':
+        if len(self.arg_extractors) != 1 or self.arg_extractors[0] != "*":
             raise ValueError(f"Function {self.function_name} requires exactly one argument: '*'")
 
     def get_value(self, obj):
@@ -640,14 +675,15 @@ class TypeFunction(FunctionBase):
 
 
 @register_select_function(
-    name='LOWER',
+    name="LOWER",
     category=QT_TRANSLATE_NOOP("ArchSql", "String"),
     signature="LOWER(property)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Converts text to lowercase."),
-    snippet="SELECT Label FROM document WHERE LOWER(Label) = 'exterior wall'"
+    snippet="SELECT Label FROM document WHERE LOWER(Label) = 'exterior wall'",
 )
 class LowerFunction(FunctionBase):
     """Implements the LOWER() string function."""
+
     def __init__(self, function_name, arg_extractors):
         super().__init__(function_name, arg_extractors)
         if len(self.arg_extractors) != 1:
@@ -659,14 +695,15 @@ class LowerFunction(FunctionBase):
 
 
 @register_select_function(
-    name='UPPER',
+    name="UPPER",
     category=QT_TRANSLATE_NOOP("ArchSql", "String"),
     signature="UPPER(property)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Converts text to uppercase."),
-    snippet="SELECT Label FROM document WHERE UPPER(IfcType) = 'WALL'"
+    snippet="SELECT Label FROM document WHERE UPPER(IfcType) = 'WALL'",
 )
 class UpperFunction(FunctionBase):
     """Implements the UPPER() string function."""
+
     def __init__(self, function_name, arg_extractors):
         super().__init__(function_name, arg_extractors)
         if len(self.arg_extractors) != 1:
@@ -678,37 +715,46 @@ class UpperFunction(FunctionBase):
 
 
 @register_select_function(
-    name='CONCAT',
+    name="CONCAT",
     category=QT_TRANSLATE_NOOP("ArchSql", "String"),
     signature="CONCAT(value1, value2, ...)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Joins multiple strings and properties together."),
-    snippet="SELECT CONCAT(Label, ': ', IfcType) FROM document"
+    snippet="SELECT CONCAT(Label, ': ', IfcType) FROM document",
 )
 class ConcatFunction(FunctionBase):
     """Implements the CONCAT() string function."""
+
     def __init__(self, function_name, arg_extractors):
         super().__init__(function_name, arg_extractors)
         if not self.arg_extractors:
             raise ValueError(f"Function {self.function_name} requires at least one argument.")
 
     def get_value(self, obj):
-        parts = [str(ex.get_value(obj)) if ex.get_value(obj) is not None else '' for ex in self.arg_extractors]
+        parts = [
+            str(ex.get_value(obj)) if ex.get_value(obj) is not None else ""
+            for ex in self.arg_extractors
+        ]
         return "".join(parts)
 
 
 @register_select_function(
-    name='CONVERT',
+    name="CONVERT",
     category=QT_TRANSLATE_NOOP("ArchSql", "Utility"),
     signature="CONVERT(quantity, 'unit')",
-    description=QT_TRANSLATE_NOOP("ArchSql", "Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm'))."),
-    snippet="SELECT CONVERT(Length, 'm') AS LengthInMeters FROM document"
+    description=QT_TRANSLATE_NOOP(
+        "ArchSql", "Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm'))."
+    ),
+    snippet="SELECT CONVERT(Length, 'm') AS LengthInMeters FROM document",
 )
 class ConvertFunction(FunctionBase):
     """Implements the CONVERT(Quantity, 'unit') function."""
+
     def __init__(self, function_name, arg_extractors):
         super().__init__(function_name, arg_extractors)
         if len(self.arg_extractors) != 2:
-            raise ValueError(f"Function {self.function_name} requires exactly two arguments: a property and a unit string.")
+            raise ValueError(
+                f"Function {self.function_name} requires exactly two arguments: a property and a unit string."
+            )
 
     def get_value(self, obj):
         # Evaluate the arguments to get the input value and target unit string.
@@ -717,7 +763,9 @@ class ConvertFunction(FunctionBase):
 
         # The first argument must be a Quantity object to be convertible.
         if not isinstance(input_value, FreeCAD.Units.Quantity):
-            raise SqlEngineError(f"CONVERT function requires a Quantity object as the first argument, but got {type(input_value).__name__}.")
+            raise SqlEngineError(
+                f"CONVERT function requires a Quantity object as the first argument, but got {type(input_value).__name__}."
+            )
 
         try:
             # Use the underlying API to perform the conversion.
@@ -730,6 +778,7 @@ class ConvertFunction(FunctionBase):
 
 class FromFunctionBase:
     """Base class for all functions used in a FROM clause."""
+
     def __init__(self, args):
         # args will be the SelectStatement to be executed
         self.args = args
@@ -754,8 +803,8 @@ class FromFunctionBase:
             return []
 
         # Determine which column to use for mapping back to objects
-        label_idx = headers.index('Label') if 'Label' in headers else -1
-        name_idx = headers.index('Name') if 'Name' in headers else -1
+        label_idx = headers.index("Label") if "Label" in headers else -1
+        name_idx = headers.index("Name") if "Name" in headers else -1
         # Handle the special header name from a 'SELECT *' query
         if headers == [SELECT_STAR_HEADER]:
             label_idx = 0
@@ -786,11 +835,11 @@ class FromFunctionBase:
 
 
 @register_from_function(
-    name='CHILDREN',
+    name="CHILDREN",
     category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
     signature="CHILDREN(subquery)",
     description=QT_TRANSLATE_NOOP("ArchSql", "Selects direct child objects of a given parent set."),
-    snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')"
+    snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')",
 )
 class ChildrenFromFunction(FromFunctionBase):
     """Implements the CHILDREN() function."""
@@ -800,7 +849,9 @@ class ChildrenFromFunction(FromFunctionBase):
 
         # Get the root objects to start from.
         subquery_statement = self.args[0]
-        parent_objects = recursive_handler._get_parent_objects_from_subquery(subquery_statement, source_objects)
+        parent_objects = recursive_handler._get_parent_objects_from_subquery(
+            subquery_statement, source_objects
+        )
         if not parent_objects:
             return []
 
@@ -809,16 +860,18 @@ class ChildrenFromFunction(FromFunctionBase):
             initial_objects=parent_objects,
             max_depth=1,
             include_groups_in_result=False,
-            include_initial_objects_in_result=False # Only return children
+            include_initial_objects_in_result=False,  # Only return children
         )
 
 
 @register_from_function(
-    name='CHILDREN_RECURSIVE',
+    name="CHILDREN_RECURSIVE",
     category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
     signature="CHILDREN_RECURSIVE(subquery, max_depth=15)",
-    description=QT_TRANSLATE_NOOP("ArchSql", "Selects all descendant objects of a given set, traversing the full hierarchy."),
-    snippet="SELECT * FROM CHILDREN_RECURSIVE(SELECT * FROM document WHERE Label = 'My Building')"
+    description=QT_TRANSLATE_NOOP(
+        "ArchSql", "Selects all descendant objects of a given set, traversing the full hierarchy."
+    ),
+    snippet="SELECT * FROM CHILDREN_RECURSIVE(SELECT * FROM document WHERE Label = 'My Building')",
 )
 class ChildrenRecursiveFromFunction(FromFunctionBase):
     """Implements the CHILDREN_RECURSIVE() function."""
@@ -844,7 +897,7 @@ class ChildrenRecursiveFromFunction(FromFunctionBase):
             initial_objects=parent_objects,
             max_depth=max_depth,
             include_groups_in_result=False,
-            include_initial_objects_in_result=False # Critical: Only return children
+            include_initial_objects_in_result=False,  # Critical: Only return children
         )
 
     def _get_parent_objects_from_subquery(self, substatement, source_objects=None):
@@ -861,17 +914,20 @@ class ChildrenRecursiveFromFunction(FromFunctionBase):
 
 
 @register_select_function(
-    name='PARENT',
+    name="PARENT",
     category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
     signature="PARENT(*)",
-    description=QT_TRANSLATE_NOOP("ArchSql", "Returns the immediate, architecturally significant parent of an object."),
-    snippet="SELECT Label, PARENT(*).Label AS Floor FROM document WHERE IfcType = 'Space'"
+    description=QT_TRANSLATE_NOOP(
+        "ArchSql", "Returns the immediate, architecturally significant parent of an object."
+    ),
+    snippet="SELECT Label, PARENT(*).Label AS Floor FROM document WHERE IfcType = 'Space'",
 )
 class ParentFunction(FunctionBase):
     """Implements the PARENT(*) function to find an object's container."""
+
     def __init__(self, function_name, arg_extractors):
         super().__init__(function_name, arg_extractors)
-        if len(self.arg_extractors) != 1 or self.arg_extractors[0] != '*':
+        if len(self.arg_extractors) != 1 or self.arg_extractors[0] != "*":
             raise ValueError(f"Function {self.function_name} requires exactly one argument: '*'")
 
     def _execute_function(self, on_object, original_obj):
@@ -887,19 +943,19 @@ class ParentFunction(FunctionBase):
             immediate_parent = None
 
             # Priority 1: Check for a host (for Windows, Doors, etc.)
-            if hasattr(current_obj, 'Hosts') and current_obj.Hosts:
+            if hasattr(current_obj, "Hosts") and current_obj.Hosts:
                 immediate_parent = current_obj.Hosts[0]
 
             # Priority 2: If no host, search InList for a true container.
             # A true container is an object that has the current object in its .Group list.
-            elif hasattr(current_obj, 'InList') and current_obj.InList:
+            elif hasattr(current_obj, "InList") and current_obj.InList:
                 for obj_in_list in current_obj.InList:
                     if hasattr(obj_in_list, "Group") and current_obj in obj_in_list.Group:
                         immediate_parent = obj_in_list
                         break
 
             if not immediate_parent:
-                return None # No parent found, top of branch.
+                return None  # No parent found, top of branch.
 
             # Check if the found parent is a generic group to be skipped.
             if _is_generic_group(immediate_parent):
@@ -910,11 +966,12 @@ class ParentFunction(FunctionBase):
                 # The parent is architecturally significant. This is our answer.
                 return immediate_parent
 
-        return None # Search limit reached.
+        return None  # Search limit reached.
 
 
 class GroupByClause:
     """Represents the GROUP BY clause of a SQL statement."""
+
     def __init__(self, columns):
         # columns is a list of ReferenceExtractor objects
         self.columns = columns
@@ -922,7 +979,8 @@ class GroupByClause:
 
 class OrderByClause:
     """Represents the ORDER BY clause of a SQL statement."""
-    def __init__(self, column_references, direction='ASC'):
+
+    def __init__(self, column_references, direction="ASC"):
         # Store the string names of the columns to sort by, which can be properties or aliases.
         self.column_names = [ref.value for ref in column_references]
         self.direction = direction.upper()
@@ -934,7 +992,7 @@ class OrderByClause:
 
 class SelectStatement:
     def __init__(self, columns_info, from_clause, where_clause, group_by_clause, order_by_clause):
-        self.columns_info = columns_info # Stores (extractor_object, display_name) tuples
+        self.columns_info = columns_info  # Stores (extractor_object, display_name) tuples
         self.from_clause = from_clause
         self.where_clause = where_clause
         self.group_by_clause = group_by_clause
@@ -965,7 +1023,7 @@ class SelectStatement:
                         f"ORDER BY column '{sort_column_name}' is not in the SELECT list."
                     )
 
-            is_descending = self.order_by_clause.direction == 'DESC'
+            is_descending = self.order_by_clause.direction == "DESC"
 
             # Define a sort key that can handle different data types.
             def sort_key(row):
@@ -980,10 +1038,12 @@ class SelectStatement:
                     if value is None:
                         keys.append((0, None))  # Nones sort first.
                     elif isinstance(value, (int, float, FreeCAD.Units.Quantity)):
-                        num_val = value.Value if isinstance(value, FreeCAD.Units.Quantity) else value
-                        keys.append((1, num_val)) # Numbers sort second.
+                        num_val = (
+                            value.Value if isinstance(value, FreeCAD.Units.Quantity) else value
+                        )
+                        keys.append((1, num_val))  # Numbers sort second.
                     else:
-                        keys.append((2, str(value))) # Everything else sorts as a string.
+                        keys.append((2, str(value)))  # Everything else sorts as a string.
                 return tuple(keys)
 
             results_data.sort(key=sort_key, reverse=is_descending)
@@ -1000,8 +1060,8 @@ class SelectStatement:
             # Recursively build a signature for functions, e.g., "LOWER(Label)"
             arg_sigs = []
             for arg_ex in extractor.arg_extractors:
-                if arg_ex == '*':
-                    arg_sigs.append('*')
+                if arg_ex == "*":
+                    arg_sigs.append("*")
                 else:
                     # This recursive call handles nested functions correctly
                     arg_sigs.append(self._get_extractor_signature(arg_ex))
@@ -1017,7 +1077,9 @@ class SelectStatement:
         if self.group_by_clause:
             # Rule: Every column in the SELECT list must either be an aggregate function,
             # a static value, or be part of the GROUP BY clause.
-            group_by_signatures = {self._get_extractor_signature(ex) for ex in self.group_by_clause.columns}
+            group_by_signatures = {
+                self._get_extractor_signature(ex) for ex in self.group_by_clause.columns
+            }
 
             for extractor, _ in self.columns_info:
                 # This check is for columns that are inherently valid (aggregates, static values).
@@ -1025,7 +1087,7 @@ class SelectStatement:
                 if isinstance(extractor, (AggregateFunction, StaticExtractor)):
                     continue
 
-                if extractor == '*':
+                if extractor == "*":
                     raise ValueError("Cannot use '*' in a SELECT statement with a GROUP BY clause.")
 
                 # This is the main check. It generates a signature for the current SELECT column
@@ -1042,8 +1104,9 @@ class SelectStatement:
         has_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
         # A non-aggregate is a ReferenceExtractor or a scalar function (FunctionBase).
         # StaticExtractors are always allowed.
-        has_non_aggregate = any(isinstance(ex, (ReferenceExtractor, FunctionBase))
-                                          for ex, _ in self.columns_info)
+        has_non_aggregate = any(
+            isinstance(ex, (ReferenceExtractor, FunctionBase)) for ex, _ in self.columns_info
+        )
 
         if has_aggregate and has_non_aggregate:
             raise ValueError(
@@ -1085,14 +1148,18 @@ class SelectStatement:
             for extractor, _ in self.columns_info:
                 value = None
                 if isinstance(extractor, AggregateFunction):
-                    if extractor.function_name == 'count':
+                    if extractor.function_name == "count":
                         # Distinguish between COUNT(*) and COUNT(property)
-                        if extractor.argument == '*':
+                        if extractor.argument == "*":
                             value = len(object_list)
                         else:
                             # Count only objects where the specified property is not None
                             prop_name = extractor.argument.value
-                            count = sum(1 for obj in object_list if _get_property(obj, prop_name) is not None)
+                            count = sum(
+                                1
+                                for obj in object_list
+                                if _get_property(obj, prop_name) is not None
+                            )
                             value = count
                     else:
                         # For other aggregates, extract the relevant property from all objects in the group
@@ -1109,12 +1176,12 @@ class SelectStatement:
                                     values.append(prop_val)
 
                         if not values:
-                            value = None # Return None if no valid numeric values were found
-                        elif extractor.function_name == 'sum':
+                            value = None  # Return None if no valid numeric values were found
+                        elif extractor.function_name == "sum":
                             value = sum(values)
-                        elif extractor.function_name == 'min':
+                        elif extractor.function_name == "min":
                             value = min(values)
-                        elif extractor.function_name == 'max':
+                        elif extractor.function_name == "max":
                             value = max(values)
                         else:
                             value = f"'{extractor.function_name}' NOT_IMPL"
@@ -1132,8 +1199,8 @@ class SelectStatement:
                     if isinstance(extractor, ReferenceExtractor):
                         for i, gb_extractor in enumerate(group_by_extractors):
                             if gb_extractor.value == extractor.value:
-                               key_index = i
-                               break
+                                key_index = i
+                                break
                     if key_index != -1:
                         value = key[key_index]
 
@@ -1157,13 +1224,15 @@ class SelectStatement:
                 if isinstance(extractor, StaticExtractor):
                     value = extractor.get_value(None)
                 elif isinstance(extractor, AggregateFunction):
-                    if extractor.function_name == 'count':
-                        if extractor.argument == '*':
+                    if extractor.function_name == "count":
+                        if extractor.argument == "*":
                             value = len(objects)
                         else:
                             # Count only objects where the specified property is not None
                             prop_name = extractor.argument.value
-                            count = sum(1 for obj in objects if _get_property(obj, prop_name) is not None)
+                            count = sum(
+                                1 for obj in objects if _get_property(obj, prop_name) is not None
+                            )
                             value = count
                     else:
                         # For other aggregates, they must have a property to act on.
@@ -1181,18 +1250,18 @@ class SelectStatement:
 
                             if not values:
                                 value = None
-                            elif extractor.function_name == 'sum':
+                            elif extractor.function_name == "sum":
                                 value = sum(values)
-                            elif extractor.function_name == 'min':
+                            elif extractor.function_name == "min":
                                 value = min(values)
-                            elif extractor.function_name == 'max':
+                            elif extractor.function_name == "max":
                                 value = max(values)
                             else:
                                 value = f"'{extractor.function_name}' NOT_IMPL"
                 elif isinstance(extractor, FunctionBase):
-                     # For non-aggregate functions, calculate based on the first object if available.
-                     if objects:
-                         value = extractor.get_value(objects[0])
+                    # For non-aggregate functions, calculate based on the first object if available.
+                    if objects:
+                        value = extractor.get_value(objects[0])
                 else:
                     # This case (a ReferenceExtractor) is correctly blocked by the
                     # validate() method and should not be reached.
@@ -1205,8 +1274,8 @@ class SelectStatement:
             for obj in objects:
                 row = []
                 for extractor, _ in self.columns_info:
-                    if extractor == '*':
-                        value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                    if extractor == "*":
+                        value = obj.Label if hasattr(obj, "Label") else getattr(obj, "Name", "")
                     else:
                         value = extractor.get_value(obj)
 
@@ -1231,7 +1300,9 @@ class SelectStatement:
         This is the fast part of the query that only deals with object lists.
         Returns a list of "groups", where each group is a list of objects.
         """
-        filtered_objects = [o for o in all_objects if self.where_clause is None or self.where_clause.matches(o)]
+        filtered_objects = [
+            o for o in all_objects if self.where_clause is None or self.where_clause.matches(o)
+        ]
 
         if not self.group_by_clause:
             # If no GROUP BY, every object is its own group.
@@ -1257,14 +1328,17 @@ class SelectStatement:
         results_data = []
 
         # Handle SELECT * as a special case for non-grouped queries
-        if not self.group_by_clause and self.columns_info and self.columns_info[0][0] == '*':
+        if not self.group_by_clause and self.columns_info and self.columns_info[0][0] == "*":
             for group in grouped_data:
                 obj = group[0]
-                value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                value = obj.Label if hasattr(obj, "Label") else getattr(obj, "Name", "")
                 results_data.append([value])
             return results_data
 
-        is_single_row_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info) and not self.group_by_clause
+        is_single_row_aggregate = (
+            any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
+            and not self.group_by_clause
+        )
         if is_single_row_aggregate:
             # A query with aggregates but no GROUP BY always returns one summary row
             # based on all objects that passed the filter.
@@ -1289,10 +1363,10 @@ class SelectStatement:
         row = []
         for extractor, _ in self.columns_info:
             # Add a specific handler for the SELECT * case.
-            if extractor == '*':
+            if extractor == "*":
                 if object_list:
                     obj = object_list[0]
-                    value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                    value = obj.Label if hasattr(obj, "Label") else getattr(obj, "Name", "")
                     row.append(value)
                 # '*' is the only column in this case, so we must stop here.
                 continue
@@ -1300,19 +1374,21 @@ class SelectStatement:
             value = None
             if isinstance(extractor, AggregateFunction):
                 value = self._calculate_aggregate(extractor, object_list)
-            elif isinstance(extractor, (StaticExtractor, FunctionBase, ReferenceExtractor, ArithmeticOperation)):
+            elif isinstance(
+                extractor, (StaticExtractor, FunctionBase, ReferenceExtractor, ArithmeticOperation)
+            ):
                 # For non-aggregate extractors, the value is based on the first object in the list.
                 if object_list:
                     value = extractor.get_value(object_list[0])
-            else: # Should not be reached with proper validation
+            else:  # Should not be reached with proper validation
                 value = "INVALID_EXTRACTOR"
             row.append(value)
         return row
 
     def _calculate_aggregate(self, extractor, object_list):
         """Helper to compute the value for a single aggregate function."""
-        if extractor.function_name == 'count':
-            if extractor.argument == '*':
+        if extractor.function_name == "count":
+            if extractor.argument == "*":
                 return len(object_list)
             else:
                 prop_name = extractor.argument.value
@@ -1331,11 +1407,11 @@ class SelectStatement:
 
         if not values:
             return None
-        elif extractor.function_name == 'sum':
+        elif extractor.function_name == "sum":
             return sum(values)
-        elif extractor.function_name == 'min':
+        elif extractor.function_name == "min":
             return min(values)
-        elif extractor.function_name == 'max':
+        elif extractor.function_name == "max":
             return max(values)
 
         return f"'{extractor.function_name}' NOT_IMPL"
@@ -1344,6 +1420,7 @@ class SelectStatement:
 class FromClause:
     def __init__(self, reference):
         self.reference = reference
+
     def get_objects(self, source_objects=None):
         """
         Delegates the object retrieval to the contained logical object.
@@ -1355,6 +1432,7 @@ class FromClause:
 class WhereClause:
     def __init__(self, expression):
         self.expression = expression
+
     def matches(self, obj):
         return self.expression.evaluate(obj)
 
@@ -1364,16 +1442,18 @@ class BooleanExpression:
         self.left = left
         self.op = op
         self.right = right
+
     def evaluate(self, obj):
         if self.op is None:
             return self.left.evaluate(obj)
-        elif self.op == 'and':
+        elif self.op == "and":
             return self.left.evaluate(obj) and self.right.evaluate(obj)
-        elif self.op == 'or':
+        elif self.op == "or":
             return self.left.evaluate(obj) or self.right.evaluate(obj)
         else:
             # An unknown operator is an invalid state and should raise an error.
             raise SqlEngineError(f"Unknown boolean operator: '{self.op}'")
+
 
 class BooleanComparison:
     def __init__(self, left, op, right):
@@ -1382,36 +1462,53 @@ class BooleanComparison:
         self.right = right
         # Validation: Aggregate functions are not allowed in WHERE clauses.
         if isinstance(self.left, AggregateFunction) or isinstance(self.right, AggregateFunction):
-            raise SqlEngineError("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause.")
+            raise SqlEngineError(
+                "Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause."
+            )
 
     def evaluate(self, obj):
         # The 'get_value' method is polymorphic and works for ReferenceExtractor,
         # StaticExtractor, and all FunctionBase derivatives.
         left_val = self.left.get_value(obj)
         right_val = self.right.get_value(obj)
-        if self.op == 'is': return left_val is right_val
-        if self.op == 'is_not': return left_val is not right_val
+        if self.op == "is":
+            return left_val is right_val
+        if self.op == "is_not":
+            return left_val is not right_val
         # Strict SQL-like NULL semantics: any comparison (except IS / IS NOT)
         # with a None (NULL) operand evaluates to False. Use IS / IS NOT for
         # explicit NULL checks.
         if left_val is None or right_val is None:
             return False
-        if isinstance(left_val, FreeCAD.Units.Quantity): left_val = left_val.Value
-        if isinstance(right_val, FreeCAD.Units.Quantity): right_val = right_val.Value
+        if isinstance(left_val, FreeCAD.Units.Quantity):
+            left_val = left_val.Value
+        if isinstance(right_val, FreeCAD.Units.Quantity):
+            right_val = right_val.Value
 
         def like_to_regex(pattern):
-            s = str(pattern).replace('%', '.*').replace('_', '.')
+            s = str(pattern).replace("%", ".*").replace("_", ".")
             return s
 
         ops = {
-            '=': lambda a,b: a == b, '!=': lambda a,b: a != b,
-            '>': lambda a,b: a > b, '<': lambda a,b: a < b,
-            '>=': lambda a,b: a >= b, '<=': lambda a,b: a <= b,
-            'like': lambda a,b: re.search(like_to_regex(b), str(a), re.IGNORECASE) is not None
+            "=": lambda a, b: a == b,
+            "!=": lambda a, b: a != b,
+            ">": lambda a, b: a > b,
+            "<": lambda a, b: a < b,
+            ">=": lambda a, b: a >= b,
+            "<=": lambda a, b: a <= b,
+            "like": lambda a, b: re.search(like_to_regex(b), str(a), re.IGNORECASE) is not None,
         }
 
         try:
-            if self.op in ['=', '!=', 'like', '>', '<', '>=', '<=']: # Explicitly list ops that need str conversion
+            if self.op in [
+                "=",
+                "!=",
+                "like",
+                ">",
+                "<",
+                ">=",
+                "<=",
+            ]:  # Explicitly list ops that need str conversion
                 left_val, right_val = str(left_val), str(right_val)
         except Exception:
             # This is a defensive catch. If an object's __str__ method is buggy and raises
@@ -1423,6 +1520,7 @@ class BooleanComparison:
 
 class InComparison:
     """Represents a SQL 'IN (values...)' comparison."""
+
     def __init__(self, reference_extractor, literal_extractors):
         self.reference_extractor = reference_extractor
         # Eagerly extract the static string values for efficient lookup
@@ -1436,6 +1534,7 @@ class InComparison:
 
 class ArithmeticOperation:
     """Represents a recursive arithmetic operation (e.g., a + (b * c))."""
+
     def __init__(self, left, op, right):
         self.left = left
         self.op = op
@@ -1454,7 +1553,9 @@ class ArithmeticOperation:
         else:
             # A non-numeric, non-None value is still an error.
             type_name = type(value).__name__
-            raise SqlEngineError(f"Cannot perform arithmetic on a non-numeric value of type '{type_name}'.")
+            raise SqlEngineError(
+                f"Cannot perform arithmetic on a non-numeric value of type '{type_name}'."
+            )
 
     def get_value(self, obj):
         """Recursively evaluates the calculation tree, propagating None."""
@@ -1466,14 +1567,14 @@ class ArithmeticOperation:
         if left_val is None or right_val is None:
             return None
 
-        if self.op == '+':
+        if self.op == "+":
             return left_val + right_val
-        if self.op == '-':
+        if self.op == "-":
             return left_val - right_val
-        if self.op == '*':
+        if self.op == "*":
             return left_val * right_val
-        if self.op == '/':
-            return left_val / right_val if right_val != 0 else float('inf')
+        if self.op == "/":
+            return left_val / right_val if right_val != 0 else float("inf")
 
         raise SqlEngineError(f"Unknown arithmetic operator: '{self.op}'")
 
@@ -1491,6 +1592,7 @@ class ReferenceExtractor:
     another extractor object (like `ParentFunction` or another `ReferenceExtractor`), which is
     evaluated first to get an intermediate object from which the final `value` is extracted.
     """
+
     def __init__(self, value, base=None):
         """
         Initializes the ReferenceExtractor.
@@ -1556,25 +1658,32 @@ class ReferenceExtractor:
         if source_objects is not None:
             # If source_objects are provided, they override 'FROM document'.
             return source_objects
-        if self.value == 'document' and not self.base:
+        if self.value == "document" and not self.base:
             found_objects = FreeCAD.ActiveDocument.Objects
             return found_objects
         return []
 
 
 class StaticExtractor:
-    def __init__(self, value): self.value = value
-    def get_value(self, obj): return self.value
+    def __init__(self, value):
+        self.value = value
+
+    def get_value(self, obj):
+        return self.value
 
 
 # --- Lark Transformer ---
+
 
 class SqlTransformerMixin:
     """
     A mixin class containing all our custom transformation logic for SQL rules.
     It has no __init__ to avoid conflicts in a multiple inheritance scenario.
     """
-    def start(self, i): return i[0]
+
+    def start(self, i):
+        return i[0]
+
     def statement(self, children):
         # The 'columns' rule produces a list of (extractor, display_name) tuples
         columns_info = next((c for c in children if c.__class__ == list), None)
@@ -1590,7 +1699,7 @@ class SqlTransformerMixin:
         # items[0] will either be a CNAME token (for 'document') or a
         # transformed FromFunctionBase object.
         item = items[0]
-        if isinstance(item, generated_sql_parser.Token) and item.type == 'CNAME':
+        if isinstance(item, generated_sql_parser.Token) and item.type == "CNAME":
             # If it's the CNAME 'document', create the base ReferenceExtractor for it.
             return ReferenceExtractor(str(item))
         else:
@@ -1600,7 +1709,8 @@ class SqlTransformerMixin:
     def from_clause(self, i):
         return FromClause(i[1])
 
-    def where_clause(self, i): return WhereClause(i[1])
+    def where_clause(self, i):
+        return WhereClause(i[1])
 
     def from_function(self, items):
         function_name_token = items[0]
@@ -1615,7 +1725,9 @@ class SqlTransformerMixin:
 
     def group_by_clause(self, items):
         # Allow both property references and function calls as grouping keys.
-        references = [item for item in items if isinstance(item, (ReferenceExtractor, FunctionBase))]
+        references = [
+            item for item in items if isinstance(item, (ReferenceExtractor, FunctionBase))
+        ]
         return GroupByClause(references)
 
     def order_by_clause(self, items):
@@ -1634,10 +1746,10 @@ class SqlTransformerMixin:
                     "as a column in the SELECT list with an alias, and ORDER BY the alias."
                 )
 
-        direction = 'ASC'
+        direction = "ASC"
         # The optional direction token will be the last item if it exists.
         last_item = items[-1]
-        if isinstance(last_item, generated_sql_parser.Token) and last_item.type in ('ASC', 'DESC'):
+        if isinstance(last_item, generated_sql_parser.Token) and last_item.type in ("ASC", "DESC"):
             direction = last_item.value.upper()
 
         return OrderByClause(column_references, direction)
@@ -1667,8 +1779,8 @@ class SqlTransformerMixin:
         alias = items[1] if len(items) > 1 else None
 
         # Determine the default display name first
-        default_name = 'Unknown Column'
-        if extractor == '*':
+        default_name = "Unknown Column"
+        if extractor == "*":
             default_name = SELECT_STAR_HEADER
         elif isinstance(extractor, ReferenceExtractor):
             default_name = extractor.value
@@ -1677,24 +1789,24 @@ class SqlTransformerMixin:
         elif isinstance(extractor, AggregateFunction):
             # Correctly handle the argument for default name generation.
             arg = extractor.argument
-            arg_display = "?" # fallback
-            if arg == '*':
-                arg_display = '*'
-            elif hasattr(arg, 'value'): # It's a ReferenceExtractor
+            arg_display = "?"  # fallback
+            if arg == "*":
+                arg_display = "*"
+            elif hasattr(arg, "value"):  # It's a ReferenceExtractor
                 arg_display = arg.value
             default_name = f"{extractor.function_name.upper()}({arg_display})"
         elif isinstance(extractor, FunctionBase):
             # Create a nice representation for multi-arg functions
             arg_strings = []
             for arg_ex in extractor.arg_extractors:
-                if arg_ex == '*':
-                    arg_strings.append('*')
+                if arg_ex == "*":
+                    arg_strings.append("*")
                 elif isinstance(arg_ex, ReferenceExtractor):
                     arg_strings.append(arg_ex.value)
                 elif isinstance(arg_ex, StaticExtractor):
                     arg_strings.append(f"'{arg_ex.get_value(None)}'")
                 else:
-                    arg_strings.append('?') # Fallback
+                    arg_strings.append("?")  # Fallback
             default_name = f"{extractor.function_name.upper()}({', '.join(arg_strings)})"
 
         # Use the alias if provided, otherwise fall back to the default name.
@@ -1704,10 +1816,17 @@ class SqlTransformerMixin:
     def boolean_expression_recursive(self, items):
         return BooleanExpression(items[0], items[1].value.lower(), items[2])
 
-    def boolean_expression(self, i): return BooleanExpression(i[0], None, None)
-    def boolean_or(self, i): return i[0]
-    def boolean_and(self, i): return i[0]
-    def boolean_term(self, i): return i[0]
+    def boolean_expression(self, i):
+        return BooleanExpression(i[0], None, None)
+
+    def boolean_or(self, i):
+        return i[0]
+
+    def boolean_and(self, i):
+        return i[0]
+
+    def boolean_term(self, i):
+        return i[0]
 
     def boolean_comparison(self, items):
         return BooleanComparison(items[0], items[1], items[2])
@@ -1718,7 +1837,7 @@ class SqlTransformerMixin:
         # All other items (functions, literals, numbers) are already transformed
         # by their own methods, so we just pass them up.
         item = items[0]
-        if isinstance(item, generated_sql_parser.Token) and item.type == 'CNAME':
+        if isinstance(item, generated_sql_parser.Token) and item.type == "CNAME":
             return ReferenceExtractor(str(item))
         return item
 
@@ -1745,30 +1864,51 @@ class SqlTransformerMixin:
         literal_extractors = [item for item in items[1:] if isinstance(item, StaticExtractor)]
         return InComparison(factor_to_check, literal_extractors)
 
-    def comparison_operator(self, i): return i[0]
-    def eq_op(self, _): return "="
-    def neq_op(self, _): return "!="
-    def like_op(self, _): return "like"
-    def is_op(self, _): return "is"
-    def is_not_op(self, _): return "is_not"
-    def gt_op(self, _): return ">"
-    def lt_op(self, _): return "<"
-    def gte_op(self, _): return ">="
-    def lte_op(self, _): return "<="
+    def comparison_operator(self, i):
+        return i[0]
+
+    def eq_op(self, _):
+        return "="
+
+    def neq_op(self, _):
+        return "!="
+
+    def like_op(self, _):
+        return "like"
+
+    def is_op(self, _):
+        return "is"
+
+    def is_not_op(self, _):
+        return "is_not"
+
+    def gt_op(self, _):
+        return ">"
+
+    def lt_op(self, _):
+        return "<"
+
+    def gte_op(self, _):
+        return ">="
+
+    def lte_op(self, _):
+        return "<="
 
     def operand(self, items):
         # This method is now "dumb" and simply passes up the already-transformed object.
         # The transformation of terminals happens in their own dedicated methods below.
         return items[0]
 
-    def literal(self, items): return StaticExtractor(items[0].value[1:-1])
+    def literal(self, items):
+        return StaticExtractor(items[0].value[1:-1])
+
     def NUMBER(self, token):
         # This method is automatically called by Lark for any NUMBER terminal.
         return StaticExtractor(float(token.value))
 
     def NULL(self, token):
         # This method is automatically called by Lark for any NULL terminal.
-         return StaticExtractor(None)
+        return StaticExtractor(None)
 
     def ASTERISK(self, token):
         # This method is automatically called by Lark for any ASTERISK terminal.
@@ -1787,7 +1927,7 @@ class SqlTransformerMixin:
         tree = items[0]
         for i in range(1, len(items), 2):
             op_token = items[i]
-            right = items[i+1]
+            right = items[i + 1]
             tree = ArithmeticOperation(tree, op_token.value, right)
         return tree
 
@@ -1796,7 +1936,7 @@ class SqlTransformerMixin:
         tree = items[0]
         for i in range(1, len(items), 2):
             op_token = items[i]
-            right = items[i+1]
+            right = items[i + 1]
             tree = ArithmeticOperation(tree, op_token.value, right)
         return tree
 
@@ -1810,7 +1950,7 @@ class SqlTransformerMixin:
 
         # The rest of the items are a mix of CNAME tokens and transformed Function objects.
         for member in items[1:]:
-            if isinstance(member, generated_sql_parser.Token) and member.type == 'CNAME':
+            if isinstance(member, generated_sql_parser.Token) and member.type == "CNAME":
                 # Case 1: A simple property access like '.Label'
                 # Wrap the current chain in a new ReferenceExtractor.
                 base_extractor = ReferenceExtractor(str(member), base=base_extractor)
@@ -1854,12 +1994,14 @@ class SqlTransformerMixin:
 
 # --- Engine Initialization ---
 
+
 def _initialize_engine():
     """
     Creates and configures all components of the SQL engine.
     Function registration is now handled automatically via decorators on each
     function's class definition.
     """
+
     # 1. Define and instantiate the transformer.
     class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
         def __init__(self):
@@ -1888,6 +2030,7 @@ except Exception as e:
 
 
 # --- Internal API Functions ---
+
 
 def _run_query(query_string: str, mode: str, source_objects: Optional[List] = None):
     """
@@ -1924,10 +2067,13 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
         For any syntax, parsing, or transformation error, with a flag to
         indicate if the query was simply incomplete.
     """
+
     def _parse_and_transform(query_string_internal: str) -> "SelectStatement":
         """Parses and transforms the string into a logical statement object."""
         if not _parser or not _transformer:
-            raise SqlEngineError("BIM SQL engine is not initialized. Check console for errors on startup.")
+            raise SqlEngineError(
+                "BIM SQL engine is not initialized. Check console for errors on startup."
+            )
         try:
             tree = _parser.parse(query_string_internal)
             statement_obj = _transformer.transform(tree)
@@ -1939,15 +2085,16 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
             message = f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
             raise BimSqlSyntaxError(message) from e
         except UnexpectedToken as e:
-            is_incomplete = e.token.type == '$END'
+            is_incomplete = e.token.type == "$END"
             # Filter out internal Lark tokens before creating the message
             friendly_expected = [
-                _FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'")
-                for t in e.expected if not t.startswith('__')
+                _FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'") for t in e.expected if not t.startswith("__")
             ]
-            expected_str = ', '.join(friendly_expected)
-            message = (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
-                       f"Expected {expected_str}.")
+            expected_str = ", ".join(friendly_expected)
+            message = (
+                f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
+                f"Expected {expected_str}."
+            )
             raise BimSqlSyntaxError(message, is_incomplete=is_incomplete) from e
         except UnexpectedEOF as e:
             raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
@@ -1956,7 +2103,7 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
 
     all_objects = statement.from_clause.get_objects(source_objects=source_objects)
 
-    if mode == 'count_only':
+    if mode == "count_only":
         # Phase 1: Perform the fast filtering and grouping to get the
         # correct final row count.
         grouped_data = statement._get_grouped_data(all_objects)
@@ -1970,7 +2117,10 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
         # to validate the SELECT clause and catch any execution-time errors.
         # We only care if it runs without error; the result is discarded.
         # For aggregates without GROUP BY, the "group" is all filtered objects.
-        is_single_row_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in statement.columns_info) and not statement.group_by_clause
+        is_single_row_aggregate = (
+            any(isinstance(ex, AggregateFunction) for ex, _ in statement.columns_info)
+            and not statement.group_by_clause
+        )
         if is_single_row_aggregate:
             sample_group = [obj for group in grouped_data for obj in group]
         else:
@@ -1986,13 +2136,14 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
         # but are returned for API consistency.
         resulting_objects = _map_results_to_objects(headers, data)
         return row_count, headers, resulting_objects
-    else: # 'full_data'
+    else:  # 'full_data'
         headers, results_data = statement.execute(all_objects)
         resulting_objects = _map_results_to_objects(headers, results_data)
         return headers, results_data, resulting_objects
 
 
 # --- Public API Objects ---
+
 
 class ReportStatement:
     """A data model for a single statement within a BIM Report.
@@ -2043,10 +2194,17 @@ class ReportStatement:
     _validation_count : int
         A transient (not saved) count of objects found during validation.
     """
-    def __init__(self, description="", query_string="",
-                 use_description_as_header=False, include_column_names=True,
-                 add_empty_row_after=False, print_results_in_bold=False,
-                 is_pipelined=False):
+
+    def __init__(
+        self,
+        description="",
+        query_string="",
+        use_description_as_header=False,
+        include_column_names=True,
+        add_empty_row_after=False,
+        print_results_in_bold=False,
+        is_pipelined=False,
+    ):
         self.description = description
         self.query_string = query_string
         self.use_description_as_header = use_description_as_header
@@ -2056,31 +2214,33 @@ class ReportStatement:
         self.is_pipelined = is_pipelined
 
         # Internal validation state (transient, not serialized)
-        self._validation_status = "Ready" # e.g., "OK", "0_RESULTS", "ERROR", "INCOMPLETE"
-        self._validation_message = translate("Arch", "Ready") # e.g., "Found 5 objects.", "Syntax Error: ..."
+        self._validation_status = "Ready"  # e.g., "OK", "0_RESULTS", "ERROR", "INCOMPLETE"
+        self._validation_message = translate(
+            "Arch", "Ready"
+        )  # e.g., "Found 5 objects.", "Syntax Error: ..."
         self._validation_count = 0
 
     def dumps(self):
         """Returns the internal state for serialization."""
         return {
-            'description': self.description,
-            'query_string': self.query_string,
-            'use_description_as_header': self.use_description_as_header,
-            'include_column_names': self.include_column_names,
-            'add_empty_row_after': self.add_empty_row_after,
-            'print_results_in_bold': self.print_results_in_bold,
-            'is_pipelined': self.is_pipelined,
+            "description": self.description,
+            "query_string": self.query_string,
+            "use_description_as_header": self.use_description_as_header,
+            "include_column_names": self.include_column_names,
+            "add_empty_row_after": self.add_empty_row_after,
+            "print_results_in_bold": self.print_results_in_bold,
+            "is_pipelined": self.is_pipelined,
         }
 
     def loads(self, state):
         """Restores the internal state from serialized data."""
-        self.description = state.get('description', '')
-        self.query_string = state.get('query_string', '')
-        self.use_description_as_header = state.get('use_description_as_header', False)
-        self.include_column_names = state.get('include_column_names', True)
-        self.add_empty_row_after = state.get('add_empty_row_after', False)
-        self.print_results_in_bold = state.get('print_results_in_bold', False)
-        self.is_pipelined = state.get('is_pipelined', False)
+        self.description = state.get("description", "")
+        self.query_string = state.get("query_string", "")
+        self.use_description_as_header = state.get("use_description_as_header", False)
+        self.include_column_names = state.get("include_column_names", True)
+        self.add_empty_row_after = state.get("add_empty_row_after", False)
+        self.print_results_in_bold = state.get("print_results_in_bold", False)
+        self.is_pipelined = state.get("is_pipelined", False)
 
         # Validation state is transient and re-calculated on UI load/edit
         self._validation_status = "Ready"
@@ -2090,7 +2250,7 @@ class ReportStatement:
     def validate_and_update_status(self):
         """Runs validation for this statement's query and updates its internal status."""
         if not self.query_string.strip():
-            self._validation_status = "OK" # Empty query is valid, no error
+            self._validation_status = "OK"  # Empty query is valid, no error
             self._validation_message = translate("Arch", "Ready")
             self._validation_count = 0
             return
@@ -2113,10 +2273,14 @@ class ReportStatement:
             self._validation_count = 0
         else:
             self._validation_status = "OK"
-            self._validation_message = f"{translate('Arch', 'Found')} {count_result} {translate('Arch', 'objects')}."
+            self._validation_message = (
+                f"{translate('Arch', 'Found')} {count_result} {translate('Arch', 'objects')}."
+            )
             self._validation_count = count_result
 
+
 # --- Public API Functions ---
+
 
 def selectObjectsFromPipeline(statements: list) -> list:
     """
@@ -2151,7 +2315,7 @@ def selectObjectsFromPipeline(statements: list) -> list:
     return _map_results_to_objects(final_headers, final_data)
 
 
-def execute_pipeline(statements: List['ReportStatement']):
+def execute_pipeline(statements: List["ReportStatement"]):
     """
     Executes a list of statements, handling chained data flow as a generator.
 
@@ -2185,9 +2349,7 @@ def execute_pipeline(statements: List['ReportStatement']):
 
         try:
             headers, data, resulting_objects = _run_query(
-                statement.query_string,
-                mode='full_data',
-                source_objects=source
+                statement.query_string, mode="full_data", source_objects=source
             )
         except (SqlEngineError, BimSqlSyntaxError) as e:
             # If a step fails, yield an error block and reset the pipeline
@@ -2201,14 +2363,14 @@ def execute_pipeline(statements: List['ReportStatement']):
         # If this statement is NOT pipelined, it breaks any previous chain.
         # Its own output becomes the new potential start for a subsequent chain.
         if not statement.is_pipelined:
-            pass # The pipeline_input_objects is already correctly set for the next step.
+            pass  # The pipeline_input_objects is already correctly set for the next step.
 
         # Determine if this statement's results should be part of the final output.
-        is_last_statement = (i == len(statements) - 1)
+        is_last_statement = i == len(statements) - 1
 
         # A statement's results are yielded UNLESS it is an intermediate step.
         # An intermediate step is any statement that is immediately followed by a pipelined statement.
-        is_intermediate_step = not is_last_statement and statements[i+1].is_pipelined
+        is_intermediate_step = not is_last_statement and statements[i + 1].is_pipelined
 
         if not is_intermediate_step:
             yield (statement, headers, data)
@@ -2242,7 +2404,9 @@ def count(query_string: str, source_objects: Optional[List] = None) -> Tuple[int
         return -1, "INCOMPLETE"
 
     try:
-        count_result, _, _ = _run_query(query_string, mode='count_only', source_objects=source_objects)
+        count_result, _, _ = _run_query(
+            query_string, mode="count_only", source_objects=source_objects
+        )
         return count_result, None
     except BimSqlSyntaxError as e:
         if e.is_incomplete:
@@ -2277,11 +2441,11 @@ def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     # This is the "unsafe" API. It performs no error handling and lets all
     # exceptions propagate up to the caller, who is responsible for logging
     # or handling them as needed.
-    headers, results_data, _ = _run_query(query_string, mode='full_data')
+    headers, results_data, _ = _run_query(query_string, mode="full_data")
     return headers, results_data
 
 
-def selectObjects(query_string: str) -> List['FreeCAD.DocumentObject']:
+def selectObjects(query_string: str) -> List["FreeCAD.DocumentObject"]:
     """
     Selects objects from the active document using a SQL-like query.
 
@@ -2339,15 +2503,13 @@ def getSqlKeywords() -> List[str]:
     keywords = []
     # This blocklist contains all uppercase terminals from the grammar that are NOT
     # actual keywords a user would type. This provides a robust filter.
-    NON_KEYWORD_TERMINALS = {
-        'WS', 'CNAME', 'STRING', 'NUMBER', 'LPAR', 'RPAR', 'COMMA', 'ASTERISK'
-    }
+    NON_KEYWORD_TERMINALS = {"WS", "CNAME", "STRING", "NUMBER", "LPAR", "RPAR", "COMMA", "ASTERISK"}
 
     # 1. Get all keywords from the parser's terminals.
     # A terminal is a keyword if its name is uppercase and not in our blocklist.
     for term in _parser.terminals:
         # Filter out internal, anonymous tokens generated by Lark.
-        is_internal = term.name.startswith('__') # Filter out internal __ANON tokens
+        is_internal = term.name.startswith("__")  # Filter out internal __ANON tokens
         if term.name.isupper() and term.name not in NON_KEYWORD_TERMINALS and not is_internal:
             keywords.append(term.name)
 
@@ -2356,7 +2518,7 @@ def getSqlKeywords() -> List[str]:
     keywords.extend(list(_transformer.select_function_registry._functions.keys()))
     keywords.extend(list(_transformer.from_function_registry._functions.keys()))
 
-    return sorted(list(set(keywords))) # Return a sorted, unique list.
+    return sorted(list(set(keywords)))  # Return a sorted, unique list.
 
 
 def getSqlApiDocumentation() -> dict:
@@ -2373,39 +2535,50 @@ def getSqlApiDocumentation() -> dict:
         A dictionary with keys 'clauses' and 'functions'. 'functions' is a
         dict of lists, categorized by function type.
     """
-    api_data = {
-        'clauses': [],
-        'functions': {}
-    }
+    api_data = {"clauses": [], "functions": {}}
 
     # Combine all function registries into one for easier iteration.
     all_registries = {
         **_transformer.select_function_registry._functions,
-        **_transformer.from_function_registry._functions
+        **_transformer.from_function_registry._functions,
     }
 
     # Group functions by their registered category, translating as we go.
     for name, data in all_registries.items():
         # The category and description strings were marked for translation
         # with a context of "ArchSql" when they were registered.
-        translated_category = translate("ArchSql", data['category'])
+        translated_category = translate("ArchSql", data["category"])
 
-        if translated_category not in api_data['functions']:
-            api_data['functions'][translated_category] = []
+        if translated_category not in api_data["functions"]:
+            api_data["functions"][translated_category] = []
 
-        api_data['functions'][translated_category].append({
-            'name': name,
-            'signature': data['signature'],
-            'description': translate("ArchSql", data['description']),
-            'snippet': data['snippet'],
-        })
+        api_data["functions"][translated_category].append(
+            {
+                "name": name,
+                "signature": data["signature"],
+                "description": translate("ArchSql", data["description"]),
+                "snippet": data["snippet"],
+            }
+        )
 
     # To get a clean list of "Clauses" for the cheatsheet, we use an explicit
     # whitelist of keywords that represent major SQL clauses.
     CLAUSE_KEYWORDS = {
-        'SELECT', 'FROM', 'WHERE', 'GROUP', 'BY', 'ORDER', 'AS', 'AND', 'OR', 'IS', 'NOT', 'IN', 'LIKE'
+        "SELECT",
+        "FROM",
+        "WHERE",
+        "GROUP",
+        "BY",
+        "ORDER",
+        "AS",
+        "AND",
+        "OR",
+        "IS",
+        "NOT",
+        "IN",
+        "LIKE",
     }
     all_terminals = {term.name for term in _parser.terminals}
-    api_data['clauses'] = sorted([k for k in CLAUSE_KEYWORDS if k in all_terminals])
+    api_data["clauses"] = sorted([k for k in CLAUSE_KEYWORDS if k in all_terminals])
 
     return api_data
