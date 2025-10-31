@@ -67,6 +67,7 @@ SET(Draft_tests
     drafttests/test_pivy.py
     drafttests/test_svg.py
     drafttests/README.md
+    drafttests/Issue24314.dxf
 )
 
 SET(Draft_utilities

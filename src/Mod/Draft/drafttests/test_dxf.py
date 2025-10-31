@@ -44,14 +44,14 @@ from draftutils.messages import _msg
 class DraftDXF(test_base.DraftTestCaseDoc):
     """Test reading and writing of DXF files with Draft."""
 
-    def test_read_dxf(self):
-        """Read a DXF file and import its elements as Draft objects."""
+    def test_read_dxf_Issue24314(self):
+        """Verify that reading a DXF file does not leave pending Python error states"""
         operation = "importDXF.import"
         _msg("  Test '{}'".format(operation))
         _msg("  This test requires a DXF file to read.")
 
-        file = "Mod/Draft/drafttest/test.dxf"
-        in_file = os.path.join(App.getResourceDir(), file)
+        file = "Mod/Draft/drafttests/Issue24314.dxf"
+        in_file = os.path.join(App.getHomePath(), file)
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
