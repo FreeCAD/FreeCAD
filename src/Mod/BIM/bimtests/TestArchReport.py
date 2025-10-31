@@ -21,11 +21,13 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         self.wall_ext = Arch.makeWall(length=1000, name="Exterior Wall")
         self.wall_ext.IfcType = "Wall"
-        self.wall_ext.Height = FreeCAD.Units.Quantity(3000, "mm") # Store as Quantity for robust comparison
+        self.wall_ext.Height = FreeCAD.Units.Quantity(
+            3000, "mm"
+        )  # Store as Quantity for robust comparison
 
         self.wall_int = Arch.makeWall(length=500, name="Interior partition wall")
         self.wall_int.IfcType = "Wall"
-        self.wall_int.Height = FreeCAD.Units.Quantity(2500, "mm") # Store as Quantity
+        self.wall_int.Height = FreeCAD.Units.Quantity(2500, "mm")  # Store as Quantity
 
         self.column = Arch.makeStructure(length=300, width=330, height=2000, name="Main Column")
         self.column.IfcType = "Column"
@@ -36,18 +38,24 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.window = Arch.makeWindow(name="Living Room Window")
         self.window.IfcType = "Window"
 
-        self.part_box = self.doc.addObject("Part::Box", "Generic Box") # This object has no IfcType property
+        self.part_box = self.doc.addObject(
+            "Part::Box", "Generic Box"
+        )  # This object has no IfcType property
 
         # Define a clean list of *only* the objects created by the test setUp
         self.test_objects_in_doc = [
-            self.wall_ext, self.wall_int, self.column, self.beam, self.window, self.part_box
+            self.wall_ext,
+            self.wall_int,
+            self.column,
+            self.beam,
+            self.window,
+            self.part_box,
         ]
         self.test_object_labels = sorted([o.Label for o in self.test_objects_in_doc])
 
         # We create the spreadsheet here, but it's part of the test setup, not a queryable object
         self.spreadsheet = self.doc.addObject("Spreadsheet::Sheet", "ReportTarget")
         self.doc.recompute()
-
 
     def _run_query_for_objects(self, query_string):
         """
@@ -63,20 +71,26 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.fail(f"The query '{query_string}' failed to execute with an exception: {e}")
 
         self.assertIsInstance(headers, list, f"Headers should be a list for: {query_string}")
-        self.assertIsInstance(results_data_from_sql, list, f"Results data should be a list for: {query_string}")
+        self.assertIsInstance(
+            results_data_from_sql, list, f"Results data should be a list for: {query_string}"
+        )
 
         # For aggregate queries (e.g., containing COUNT, GROUP BY), the results are summaries,
         # not direct object properties. The filtering logic below does not apply.
-        is_aggregate_query = any(agg in h for h in headers for agg in ['COUNT', 'SUM', 'MIN', 'MAX'])
+        is_aggregate_query = any(
+            agg in h for h in headers for agg in ["COUNT", "SUM", "MIN", "MAX"]
+        )
         if is_aggregate_query:
             return headers, results_data_from_sql
 
         # If SELECT *, results_data_from_sql is a list of lists, e.g., [['Exterior Wall'], ...].
         # Extract a flat list of labels for easier assertion.
-        if headers == ['Object Label']:
+        if headers == ["Object Label"]:
             extracted_labels = [row[0] for row in results_data_from_sql]
             # Filter against our defined test objects only.
-            filtered_labels = [label for label in extracted_labels if label in self.test_object_labels]
+            filtered_labels = [
+                label for label in extracted_labels if label in self.test_object_labels
+            ]
             return headers, filtered_labels
 
         # For specific column selections, results_data_from_sql is a list of lists of values.
@@ -90,7 +104,6 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         return headers, filtered_results_for_specific_columns
 
-
     # Category 1: Basic Object Creation and Validation
     def test_makeReport_default(self):
         report = Arch.makeReport()
@@ -99,23 +112,27 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     def test_report_properties(self):
         report = Arch.makeReport()
-        self.assertTrue(hasattr(report, "Statements"), "Report object is missing 'Statements' property.")
+        self.assertTrue(
+            hasattr(report, "Statements"), "Report object is missing 'Statements' property."
+        )
         self.assertTrue(hasattr(report, "Target"), "Report object is missing 'Target' property.")
 
     # Category 2: Core SELECT Functionality
     def test_select_all_from_document(self):
         """Test a 'SELECT * FROM document' query."""
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document')
+        headers, results_labels = self._run_query_for_objects("SELECT * FROM document")
 
-        self.assertEqual(headers, ['Object Label'])
-        self.assertCountEqual(results_labels, self.test_object_labels, "Should find all queryable objects.")
+        self.assertEqual(headers, ["Object Label"])
+        self.assertCountEqual(
+            results_labels, self.test_object_labels, "Should find all queryable objects."
+        )
 
     def test_select_specific_columns_from_document(self):
         """Test a 'SELECT Label, IfcType, Height FROM document' query."""
         query_string = 'SELECT Label, IfcType, Height FROM document WHERE IfcType = "Wall"'
         headers, results_data = self._run_query_for_objects(query_string)
 
-        self.assertEqual(headers, ['Label', 'IfcType', 'Height'])
+        self.assertEqual(headers, ["Label", "IfcType", "Height"])
         self.assertEqual(len(results_data), 2)
 
         expected_rows = [
@@ -126,13 +143,17 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     # Category 3: WHERE Clause Filtering
     def test_where_equals_string(self):
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = "Wall"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE IfcType = "Wall"'
+        )
         self.assertEqual(len(results_labels), 2)
         self.assertCountEqual(results_labels, [self.wall_ext.Label, self.wall_int.Label])
 
     def test_where_not_equals_string(self):
         """Test a WHERE clause with a not-equals check."""
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE IfcType != "Wall"'
+        )
         # Strict SQL semantics: comparisons with NULL are treated as UNKNOWN
         # and therefore excluded. Use IS NULL / IS NOT NULL to test for nulls.
         expected_labels = [self.column.Label, self.beam.Label, self.window.Label]
@@ -141,47 +162,63 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     def test_where_is_null(self):
         """Test a WHERE clause with an IS NULL check."""
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
+        _, results_labels = self._run_query_for_objects(
+            "SELECT * FROM document WHERE IfcType IS NULL"
+        )
         # This expects only self.part_box as it's the only one in self.test_objects_in_doc with IfcType=None.
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.part_box.Label)
 
     def test_where_is_not_null(self):
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
+        _, results_labels = self._run_query_for_objects(
+            "SELECT * FROM document WHERE IfcType IS NOT NULL"
+        )
         self.assertEqual(len(results_labels), 5)
         self.assertNotIn(self.part_box.Label, results_labels)
 
     def test_where_like_case_insensitive(self):
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "exterior wall"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE Label LIKE "exterior wall"'
+        )
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_like_wildcard_middle(self):
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "%wall%"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE Label LIKE "%wall%"'
+        )
         self.assertEqual(len(results_labels), 2)
         self.assertCountEqual(results_labels, [self.wall_ext.Label, self.wall_int.Label])
 
     def test_null_equality_is_excluded(self):
         """Strict SQL: comparisons with NULL should be excluded; use IS NULL."""
-        _, results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = NULL')
+        _, results = self._run_query_for_objects("SELECT * FROM document WHERE IfcType = NULL")
         # '=' with NULL should not match (UNKNOWN -> excluded)
         self.assertEqual(len(results), 0)
 
     def test_null_inequality_excludes_nulls(self):
         """Strict SQL: IfcType != 'Wall' should exclude rows where IfcType is NULL."""
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE IfcType != "Wall"'
+        )
         expected_labels = [self.column.Label, self.beam.Label, self.window.Label]
         self.assertCountEqual(results_labels, expected_labels)
 
     def test_is_null_and_is_not_null_behaviour(self):
-        _, isnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
+        _, isnull_labels = self._run_query_for_objects(
+            "SELECT * FROM document WHERE IfcType IS NULL"
+        )
         self.assertIn(self.part_box.Label, isnull_labels)
 
-        _, isnotnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
+        _, isnotnull_labels = self._run_query_for_objects(
+            "SELECT * FROM document WHERE IfcType IS NOT NULL"
+        )
         self.assertNotIn(self.part_box.Label, isnotnull_labels)
 
     def test_where_like_wildcard_end(self):
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "Exterior%"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE Label LIKE "Exterior%"'
+        )
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.wall_ext.Label)
 
@@ -199,21 +236,25 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     # Category 4: Edge Cases and Error Handling
     def test_query_no_results(self):
-        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label = "NonExistentObject"')
+        _, results_labels = self._run_query_for_objects(
+            'SELECT * FROM document WHERE Label = "NonExistentObject"'
+        )
         self.assertEqual(len(results_labels), 0)
 
-    @patch('FreeCAD.Console.PrintError')
+    @patch("FreeCAD.Console.PrintError")
     def test_query_invalid_syntax(self, mock_print_error):
         # The low-level function now raises an exception on failure.
         with self.assertRaises(Arch.BimSqlSyntaxError) as cm:
-            Arch.select('SELECT FROM document WHERE')
-        self.assertFalse(cm.exception.is_incomplete, "A syntax error should not be marked as incomplete.")
+            Arch.select("SELECT FROM document WHERE")
+        self.assertFalse(
+            cm.exception.is_incomplete, "A syntax error should not be marked as incomplete."
+        )
 
         # The high-level function for the UI catches it and returns a simple string.
-        count, error_str = Arch.count('SELECT FROM document WHERE')
+        count, error_str = Arch.count("SELECT FROM document WHERE")
         self.assertEqual(count, -1)
         self.assertIsInstance(error_str, str)
-        self.assertIn('Syntax Error', error_str)
+        self.assertIn("Syntax Error", error_str)
 
     def test_incomplete_queries_are_handled_gracefully(self):
         incomplete_queries = [
@@ -223,13 +264,15 @@ class TestArchReport(TestArchBase.TestArchBase):
             "SELECT * FROM document WHERE",
             "SELECT * FROM document WHERE Label =",
             "SELECT * FROM document WHERE Label LIKE",
-            "SELECT * FROM document WHERE Label like \"%wa", # Test case for incomplete string literal
+            'SELECT * FROM document WHERE Label like "%wa',  # Test case for incomplete string literal
         ]
 
         for query in incomplete_queries:
             with self.subTest(query=query):
                 count, error = Arch.count(query)
-                self.assertEqual(error, "INCOMPLETE", f"Query '{query}' should be marked as INCOMPLETE.")
+                self.assertEqual(
+                    error, "INCOMPLETE", f"Query '{query}' should be marked as INCOMPLETE."
+                )
 
     def test_invalid_partial_tokens_are_errors(self):
         invalid_queries = {
@@ -240,7 +283,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         for name, query in invalid_queries.items():
             with self.subTest(name=name, query=query):
                 _, error = Arch.count(query)
-                self.assertNotEqual(error, "INCOMPLETE", f"Query '{query}' should be a syntax error, not incomplete.")
+                self.assertNotEqual(
+                    error,
+                    "INCOMPLETE",
+                    f"Query '{query}' should be a syntax error, not incomplete.",
+                )
                 self.assertIsNotNone(error, f"Query '{query}' should have returned an error.")
 
     def test_report_no_target(self):
@@ -250,24 +297,36 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.assertIsNotNone(report.Target, "Report Target should be set on creation.")
             # Set the first statement's query string
             # Prefer operating on the proxy runtime objects when available
-            if hasattr(report, 'Proxy'):
+            if hasattr(report, "Proxy"):
                 # Ensure live statements are hydrated from persisted storage
                 report.Proxy.hydrate_live_statements(report)
 
-                if not getattr(report.Proxy, 'live_statements', None):
+                if not getattr(report.Proxy, "live_statements", None):
                     # No live statements: create a persisted starter and hydrate again
-                    report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document').dumps()]
+                    report.Statements = [
+                        ArchReport.ReportStatement(
+                            description="Statement 1", query_string="SELECT * FROM document"
+                        ).dumps()
+                    ]
                     report.Proxy.hydrate_live_statements(report)
                 else:
-                    report.Proxy.live_statements[0].query_string = 'SELECT * FROM document'
+                    report.Proxy.live_statements[0].query_string = "SELECT * FROM document"
                     report.Proxy.commit_statements()
             else:
                 # Fallback for environments without a proxy: persist a dict
-                if not hasattr(report, 'Statements') or not report.Statements:
-                    report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document').dumps()]
+                if not hasattr(report, "Statements") or not report.Statements:
+                    report.Statements = [
+                        ArchReport.ReportStatement(
+                            description="Statement 1", query_string="SELECT * FROM document"
+                        ).dumps()
+                    ]
                 else:
-                        # Persist a fresh statement dict in the fallback path
-                        report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document').dumps()]
+                    # Persist a fresh statement dict in the fallback path
+                    report.Statements = [
+                        ArchReport.ReportStatement(
+                            description="Statement 1", query_string="SELECT * FROM document"
+                        ).dumps()
+                    ]
             self.doc.recompute()
         except Exception as e:
             self.fail(f"Recomputing a report with no Target raised an unexpected exception: {e}")
@@ -275,52 +334,66 @@ class TestArchReport(TestArchBase.TestArchBase):
         # UX: when the report runs without a pre-set Target, it should create
         # a spreadsheet, set the sheet.ReportName, and persist the Target link
         # so subsequent runs are deterministic.
-        self.assertIsNotNone(report.Target, "Report Target should be set after running with no pre-existing Target.")
-        self.assertEqual(getattr(report.Target, 'ReportName', None), report.Name)
+        self.assertIsNotNone(
+            report.Target, "Report Target should be set after running with no pre-existing Target."
+        )
+        self.assertEqual(getattr(report.Target, "ReportName", None), report.Name)
 
     def test_group_by_ifctype_with_count(self):
         """Test GROUP BY with COUNT(*) to summarize objects by type."""
         # Add a WHERE clause to exclude test scaffolding objects from the count.
-        query = "SELECT IfcType, COUNT(*) FROM document " \
-                "WHERE TypeId != 'App::FeaturePython' AND TypeId != 'Spreadsheet::Sheet' " \
-                "GROUP BY IfcType"
+        query = (
+            "SELECT IfcType, COUNT(*) FROM document "
+            "WHERE TypeId != 'App::FeaturePython' AND TypeId != 'Spreadsheet::Sheet' "
+            "GROUP BY IfcType"
+        )
         headers, results_data = self._run_query_for_objects(query)
 
-        self.assertEqual(headers, ['IfcType', 'COUNT(*)'])
+        self.assertEqual(headers, ["IfcType", "COUNT(*)"])
 
         # Convert results to a dict for easy, order-independent comparison.
         # Handle the case where IfcType is None, which becomes a key in the dict.
-        results_dict = {row[0] if row[0] != 'None' else None: int(row[1]) for row in results_data}
+        results_dict = {row[0] if row[0] != "None" else None: int(row[1]) for row in results_data}
 
         expected_counts = {
             "Wall": 2,
             "Column": 1,
             "Beam": 1,
             "Window": 1,
-            None: 1  # The Part::Box has a NULL IfcType, which forms its own group
+            None: 1,  # The Part::Box has a NULL IfcType, which forms its own group
         }
-        self.assertDictEqual(results_dict, expected_counts, "The object counts per IfcType are incorrect.")
+        self.assertDictEqual(
+            results_dict, expected_counts, "The object counts per IfcType are incorrect."
+        )
 
     def test_count_all_without_group_by(self):
         """Test COUNT(*) on the whole dataset without grouping."""
         # Add a WHERE clause to exclude test scaffolding objects from the count.
-        query = "SELECT COUNT(*) FROM document " \
-                "WHERE TypeId != 'App::FeaturePython' AND TypeId != 'Spreadsheet::Sheet'"
+        query = (
+            "SELECT COUNT(*) FROM document "
+            "WHERE TypeId != 'App::FeaturePython' AND TypeId != 'Spreadsheet::Sheet'"
+        )
         headers, results_data = self._run_query_for_objects(query)
 
-        self.assertEqual(headers, ['COUNT(*)'])
+        self.assertEqual(headers, ["COUNT(*)"])
         self.assertEqual(len(results_data), 1, "Non-grouped aggregate should return a single row.")
-        self.assertEqual(int(results_data[0][0]), len(self.test_objects_in_doc), "COUNT(*) did not return the total number of test objects.")
+        self.assertEqual(
+            int(results_data[0][0]),
+            len(self.test_objects_in_doc),
+            "COUNT(*) did not return the total number of test objects.",
+        )
 
     def test_group_by_with_sum(self):
         """Test GROUP BY with SUM() on a numeric property."""
         # Note: We filter for objects that are likely to have a Height property to get a clean sum.
-        query = "SELECT IfcType, SUM(Height) FROM document " \
-                "WHERE IfcType = 'Wall' OR IfcType = 'Column' " \
-                "GROUP BY IfcType"
+        query = (
+            "SELECT IfcType, SUM(Height) FROM document "
+            "WHERE IfcType = 'Wall' OR IfcType = 'Column' "
+            "GROUP BY IfcType"
+        )
         headers, results_data = self._run_query_for_objects(query)
 
-        self.assertEqual(headers, ['IfcType', 'SUM(Height)'])
+        self.assertEqual(headers, ["IfcType", "SUM(Height)"])
         results_dict = {row[0]: float(row[1]) for row in results_data}
 
         # Expected sums:
@@ -338,8 +411,10 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT MIN(Length), MAX(Length) FROM document WHERE IfcType = 'Wall'"
         headers, results_data = self._run_query_for_objects(query)
 
-        self.assertEqual(headers, ['MIN(Length)', 'MAX(Length)'])
-        self.assertEqual(len(results_data), 1, "Aggregate query without GROUP BY should return one row.")
+        self.assertEqual(headers, ["MIN(Length)", "MAX(Length)"])
+        self.assertEqual(
+            len(results_data), 1, "Aggregate query without GROUP BY should return one row."
+        )
 
         # Expected: Interior wall is 500, Exterior wall is 1000
         min_length = float(results_data[0][0])
@@ -351,15 +426,18 @@ class TestArchReport(TestArchBase.TestArchBase):
     def test_invalid_group_by_raises_error(self):
         """A SELECT column not in GROUP BY and not in an aggregate should fail validation."""
         # 'Label' is not aggregated and not in the 'GROUP BY' clause, making this query invalid.
-        query = 'SELECT Label, COUNT(*) FROM document GROUP BY IfcType'
+        query = "SELECT Label, COUNT(*) FROM document GROUP BY IfcType"
 
         # _run_query should raise an exception for validation errors.
         with self.assertRaises(ArchSql.SqlEngineError) as cm:
             Arch.select(query)
 
         # Check for the specific, user-friendly error message within the exception.
-        self.assertIn("must appear in the GROUP BY clause", str(cm.exception),
-                      "The validation error message is not descriptive enough.")
+        self.assertIn(
+            "must appear in the GROUP BY clause",
+            str(cm.exception),
+            "The validation error message is not descriptive enough.",
+        )
 
     def test_non_grouped_sum_calculates_correctly(self):
         """
@@ -375,7 +453,9 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # --- Assertions ---
         # 1. An aggregate query without a GROUP BY should always return exactly one row.
-        self.assertEqual(len(results_data), 1, "A non-grouped aggregate query should return exactly one row.")
+        self.assertEqual(
+            len(results_data), 1, "A non-grouped aggregate query should return exactly one row."
+        )
 
         # 2. The result in that row should be the correct sum.
         actual_sum = float(results_data[0][0])
@@ -383,7 +463,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertAlmostEqual(
             actual_sum,
             expected_sum,
-            "The SUM() result is incorrect. The engine is not accumulating the values correctly."
+            "The SUM() result is incorrect. The engine is not accumulating the values correctly.",
         )
 
     def test_non_grouped_query_with_mixed_extractors(self):
@@ -397,7 +477,9 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # --- Assertions ---
         # 1. The query should still return exactly one row.
-        self.assertEqual(len(results_data), 1, "A non-grouped mixed query should return exactly one row.")
+        self.assertEqual(
+            len(results_data), 1, "A non-grouped mixed query should return exactly one row."
+        )
 
         # 2. Check the content of the single row.
         #    The first column should be the static string.
@@ -406,9 +488,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         actual_sum = float(results_data[0][1])
         expected_sum = 5500.0
         self.assertAlmostEqual(
-            actual_sum,
-            expected_sum,
-            "The SUM() result in a mixed non-grouped query is incorrect."
+            actual_sum, expected_sum, "The SUM() result in a mixed non-grouped query is incorrect."
         )
 
     def test_sum_of_space_area_is_correct_and_returns_float(self):
@@ -430,7 +510,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         base_box2.Width = 1500
         _ = Arch.makeSpace(base_box2, name="Workshop")
 
-        self.doc.recompute() # Ensure space areas are calculated
+        self.doc.recompute()  # Ensure space areas are calculated
 
         query = "SELECT SUM(Area) FROM document WHERE IfcType = 'Space'"
 
@@ -439,7 +519,9 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # --- Assertions ---
         # 1. An aggregate query should return exactly one row.
-        self.assertEqual(len(results_data), 1, "A non-grouped aggregate query should return exactly one row.")
+        self.assertEqual(
+            len(results_data), 1, "A non-grouped aggregate query should return exactly one row."
+        )
 
         # 2. The result in the row should be a float. This verifies the engine's
         #    design to return raw numbers for aggregates.
@@ -450,9 +532,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         expected_sum = 6500000.0  # 2,000,000 + 4,500,000
 
         self.assertAlmostEqual(
-            actual_sum,
-            expected_sum,
-            "The SUM(Area) for Space objects is incorrect."
+            actual_sum, expected_sum, "The SUM(Area) for Space objects is incorrect."
         )
 
     def test_min_and_max_aggregates(self):
@@ -499,8 +579,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         # This query should now only find the two objects we explicitly modified.
         query_count_prop = f"SELECT COUNT({unique_prop_name}) FROM document"
         headers_prop, results_prop = Arch.select(query_count_prop)
-        self.assertEqual(int(results_prop[0][0]), 2,
-                         f"COUNT({unique_prop_name}) should count exactly the 2 objects where the property was added.")
+        self.assertEqual(
+            int(results_prop[0][0]),
+            2,
+            f"COUNT({unique_prop_name}) should count exactly the 2 objects where the property was added.",
+        )
 
         # --- Test COUNT(*) ---
         # Build the WHERE clause dynamically from the actual object labels.
@@ -512,7 +595,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.column.Label,
             self.beam.Label,
             self.window.Label,
-            self.part_box.Label
+            self.part_box.Label,
         ]
 
         # Create a chain of "Label = '...'" conditions
@@ -528,27 +611,35 @@ class TestArchReport(TestArchBase.TestArchBase):
         can be parsed and executed without errors against a sample model.
         """
         # 1. Load presets.
-        report_presets = ArchReport._get_presets('report')
-        self.assertGreater(len(report_presets), 0, "No bundled report templates were found. Check CMakeLists.txt and file paths.")
+        report_presets = ArchReport._get_presets("report")
+        self.assertGreater(
+            len(report_presets),
+            0,
+            "No bundled report templates were found. Check CMakeLists.txt and file paths.",
+        )
 
         # 2. Verify that the expected templates were loaded by their display name.
-        loaded_template_names = {preset['name'] for preset in report_presets.values()}
+        loaded_template_names = {preset["name"] for preset in report_presets.values()}
         self.assertIn("Room and Area Schedule", loaded_template_names)
         self.assertIn("Wall Quantities", loaded_template_names)
 
         # 3. Execute every query in every statement of every template.
         for filename, preset in report_presets.items():
             # This test should only validate bundled system presets.
-            if preset.get('is_user'):
+            if preset.get("is_user"):
                 continue
 
-            template_name = preset['name']
-            statements = preset['data'].get('statements', [])
-            self.assertGreater(len(statements), 0, f"Template '{template_name}' contains no statements.")
+            template_name = preset["name"]
+            statements = preset["data"].get("statements", [])
+            self.assertGreater(
+                len(statements), 0, f"Template '{template_name}' contains no statements."
+            )
 
             for i, statement_data in enumerate(statements):
                 query = statement_data.get("query_string")
-                self.assertIsNotNone(query, f"Statement {i} in '{template_name}' is missing a 'query_string'.")
+                self.assertIsNotNone(
+                    query, f"Statement {i} in '{template_name}' is missing a 'query_string'."
+                )
 
                 with self.subTest(template=template_name, statement_index=i):
                     # We only care that the query executes without raising an exception.
@@ -556,7 +647,9 @@ class TestArchReport(TestArchBase.TestArchBase):
                         headers, _ = Arch.select(query)
                         self.assertIsInstance(headers, list)
                     except Exception as e:
-                        self.fail(f"Query '{query}' from template '{template_name}' (file: {filename}) failed with an exception: {e}")
+                        self.fail(
+                            f"Query '{query}' from template '{template_name}' (file: {filename}) failed with an exception: {e}"
+                        )
 
     def test_bundled_query_presets_are_valid(self):
         """
@@ -564,22 +657,26 @@ class TestArchReport(TestArchBase.TestArchBase):
         are syntactically valid and executable.
         """
         # 1. Load presets using the new, correct backend function.
-        query_presets = ArchReport._get_presets('query')
-        self.assertGreater(len(query_presets), 0, "No bundled query presets were found. Check CMakeLists.txt and file paths.")
+        query_presets = ArchReport._get_presets("query")
+        self.assertGreater(
+            len(query_presets),
+            0,
+            "No bundled query presets were found. Check CMakeLists.txt and file paths.",
+        )
 
         # 2. Verify that the expected presets were loaded.
-        loaded_preset_names = {preset['name'] for preset in query_presets.values()}
+        loaded_preset_names = {preset["name"] for preset in query_presets.values()}
         self.assertIn("All Walls", loaded_preset_names)
         self.assertIn("Count by IfcType", loaded_preset_names)
 
         # 3. Execute every query in the presets file.
         for filename, preset in query_presets.items():
             # This test should only validate bundled system presets.
-            if preset.get('is_user'):
+            if preset.get("is_user"):
                 continue
 
-            preset_name = preset['name']
-            query = preset['data'].get("query")
+            preset_name = preset["name"]
+            query = preset["data"].get("query")
             self.assertIsNotNone(query, f"Preset '{preset_name}' is missing a 'query'.")
 
             with self.subTest(preset=preset_name):
@@ -588,7 +685,9 @@ class TestArchReport(TestArchBase.TestArchBase):
                     headers, _ = Arch.select(query)
                     self.assertIsInstance(headers, list)
                 except Exception as e:
-                    self.fail(f"Query '{query}' from preset '{preset_name}' (file: {filename}) failed with an exception: {e}")
+                    self.fail(
+                        f"Query '{query}' from preset '{preset_name}' (file: {filename}) failed with an exception: {e}"
+                    )
 
     def test_where_in_clause(self):
         """
@@ -602,12 +701,16 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # --- Assertions ---
         # 1. The query should return exactly two rows.
-        self.assertEqual(len(results_data), 2, "The IN clause should have found exactly two matching objects.")
+        self.assertEqual(
+            len(results_data), 2, "The IN clause should have found exactly two matching objects."
+        )
 
         # 2. Verify the labels of the returned objects.
         returned_labels = sorted([row[0] for row in results_data])
         expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
-        self.assertListEqual(returned_labels, expected_labels, "The objects returned by the IN clause are incorrect.")
+        self.assertListEqual(
+            returned_labels, expected_labels, "The objects returned by the IN clause are incorrect."
+        )
 
     def test_type_function(self):
         """
@@ -630,11 +733,11 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # 1. Verify the type of the Part::Box.
         #    The expected value is the C++ class name.
-        self.assertIn('Part::Box', type_names, "TYPE() failed to identify the Part::Box.")
+        self.assertIn("Part::Box", type_names, "TYPE() failed to identify the Part::Box.")
 
         # 2. Verify the type of the Arch Wall.
         #    Draft.get_type() returns the user-facing 'Wall' type from the proxy.
-        self.assertIn('Wall', type_names, "TYPE() failed to identify the ArchWall proxy class.")
+        self.assertIn("Wall", type_names, "TYPE() failed to identify the ArchWall proxy class.")
 
     def test_children_function(self):
         """
@@ -661,16 +764,18 @@ class TestArchReport(TestArchBase.TestArchBase):
         group = self.doc.addObject("App::DocumentObjectGroup", "Room Group")
 
         # 5. Establish relationships
-        floor.addObject(space1)       # Floor directly contains Space1
-        floor.addObject(group)        # Floor also contains the Group
-        group.addObject(space2)       # The Group contains Space2
+        floor.addObject(space1)  # Floor directly contains Space1
+        floor.addObject(group)  # Floor also contains the Group
+        group.addObject(space2)  # The Group contains Space2
         Arch.addComponents(window, host=host_wall)
         # Ensure the document is recomputed before running the report query
         self.doc.recompute()
 
         # --- Sub-Test 1: Direct containment and group traversal ---
         with self.subTest(description="Direct containment with group traversal"):
-            query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{floor.Label}')"
+            query = (
+                f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{floor.Label}')"
+            )
             _, results = Arch.select(query)
 
             returned_labels = sorted([row[0] for row in results])
@@ -700,8 +805,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         # In descending order, "Interior..." should come first.
         expected_order = sorted([self.wall_ext.Label, self.wall_int.Label], reverse=True)
 
-        self.assertListEqual(returned_labels, expected_order,
-                             "The results were not sorted by Label in descending order.")
+        self.assertListEqual(
+            returned_labels,
+            expected_order,
+            "The results were not sorted by Label in descending order.",
+        )
 
     def test_column_aliasing(self):
         """Tests renaming columns using the AS keyword."""
@@ -710,7 +818,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         headers, results_data = Arch.select(query)
 
         # 1. Assert that the header is the alias, not the original property name.
-        self.assertEqual(headers, ['Wall Name'])
+        self.assertEqual(headers, ["Wall Name"])
 
         # 2. Assert that the data is still correct.
         self.assertEqual(len(results_data), 2)
@@ -723,8 +831,8 @@ class TestArchReport(TestArchBase.TestArchBase):
         """Tests the CONCAT, LOWER, and UPPER string functions."""
         # Use a predictable object for testing, e.g., the Main Column.
         target_obj_name = self.column.Name
-        target_obj_label = self.column.Label # "Main Column"
-        target_obj_ifctype = self.column.IfcType # "Column"
+        target_obj_label = self.column.Label  # "Main Column"
+        target_obj_ifctype = self.column.IfcType  # "Column"
 
         with self.subTest(description="LOWER function"):
             query = f"SELECT LOWER(Label) FROM document WHERE Name = '{target_obj_name}'"
@@ -799,8 +907,11 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # 1. Test the "unsafe" public API: select() should re-raise the exception.
         with self.assertRaises(Arch.SqlEngineError) as cm:
-             Arch.select(error_query)
-        self.assertIn("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause", str(cm.exception))
+            Arch.select(error_query)
+        self.assertIn(
+            "Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause",
+            str(cm.exception),
+        )
 
         # 2. Test the "safe" public API: count() should catch the exception and return an error tuple.
         count, error_str = Arch.count(error_query)
@@ -815,7 +926,9 @@ class TestArchReport(TestArchBase.TestArchBase):
         # NULL terminal transformer is working correctly.
         query = "SELECT * FROM document WHERE IfcType = NULL"
         _, results_data = Arch.select(query)
-        self.assertEqual(len(results_data), 0, "Comparing a column to NULL with '=' should return no rows.")
+        self.assertEqual(
+            len(results_data), 0, "Comparing a column to NULL with '=' should return no rows."
+        )
 
     def test_arithmetic_in_select_clause(self):
         """Tests arithmetic operations in the SELECT clause."""
@@ -887,19 +1000,21 @@ class TestArchReport(TestArchBase.TestArchBase):
         api_data = Arch.getSqlApiDocumentation()
 
         self.assertIsInstance(api_data, dict)
-        self.assertIn('clauses', api_data)
-        self.assertIn('functions', api_data)
+        self.assertIn("clauses", api_data)
+        self.assertIn("functions", api_data)
 
         # Check for a known clause and a known function category
-        self.assertIn('SELECT', api_data['clauses'])
-        self.assertIn('Aggregate', api_data['functions'])
+        self.assertIn("SELECT", api_data["clauses"])
+        self.assertIn("Aggregate", api_data["functions"])
 
         # Check for a specific function's data
-        count_func = next((f for f in api_data['functions']['Aggregate'] if f['name'] == 'COUNT'), None)
+        count_func = next(
+            (f for f in api_data["functions"]["Aggregate"] if f["name"] == "COUNT"), None
+        )
         self.assertIsNotNone(count_func)
-        self.assertIn('description', count_func)
-        self.assertIn('snippet', count_func)
-        self.assertGreater(len(count_func['description']), 0)
+        self.assertIn("description", count_func)
+        self.assertIn("snippet", count_func)
+        self.assertGreater(len(count_func["description"]), 0)
 
     # GUI-specific tests were moved to TestArchReportGui.py
 
@@ -917,7 +1032,9 @@ class TestArchReport(TestArchBase.TestArchBase):
         count, error = Arch.count(query)
 
         self.assertIsNone(error, "The query should be valid.")
-        self.assertEqual(count, 4, "Count should return the number of groups, not the number of objects.")
+        self.assertEqual(
+            count, 4, "Count should return the number of groups, not the number of objects."
+        )
 
     def test_sql_comment_support(self):
         """Tests that single-line and multi-line SQL comments are correctly ignored."""
@@ -965,7 +1082,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Test Setup ---
         # Add a dynamic property with a German name containing a non-ASCII character.
         # This simulates a common international use case.
-        prop_name_unicode = "Fläche" # "Area" in German
+        prop_name_unicode = "Fläche"  # "Area" in German
         self.column.addProperty("App::PropertyFloat", prop_name_unicode, "BIM")
         setattr(self.column, prop_name_unicode, 42.5)
         self.doc.recompute()
@@ -980,7 +1097,9 @@ class TestArchReport(TestArchBase.TestArchBase):
         try:
             headers, results_data = Arch.select(query)
             # --- Assertions for when the test passes ---
-            self.assertEqual(len(results_data), 1, "The query should find the single target object.")
+            self.assertEqual(
+                len(results_data), 1, "The query should find the single target object."
+            )
             self.assertEqual(headers, [prop_name_unicode])
             self.assertAlmostEqual(results_data[0][0], 42.5)
 
@@ -1009,10 +1128,10 @@ class TestArchReport(TestArchBase.TestArchBase):
         # The engine should sort by IfcType first ('Beam' < 'Column' < 'Wall'),
         # and then by Label for the two 'Wall' objects.
         expected_order = [
-            [self.beam.Label, self.beam.IfcType],         # Type: Beam
-            [self.column.Label, self.column.IfcType],       # Type: Column
-            [self.wall_ext.Label, self.wall_ext.IfcType],   # Type: Wall, Label: Exterior...
-            [self.wall_int.Label, self.wall_int.IfcType],   # Type: Wall, Label: Interior...
+            [self.beam.Label, self.beam.IfcType],  # Type: Beam
+            [self.column.Label, self.column.IfcType],  # Type: Column
+            [self.wall_ext.Label, self.wall_ext.IfcType],  # Type: Wall, Label: Exterior...
+            [self.wall_int.Label, self.wall_int.IfcType],  # Type: Wall, Label: Interior...
         ]
 
         # We sort our expected list's inner items to be sure, in case the test setup changes.
@@ -1052,7 +1171,9 @@ class TestArchReport(TestArchBase.TestArchBase):
         with self.subTest(description="Skipping generic group"):
             query = f"SELECT PARENT(*).Label FROM document WHERE Label = '{space.Label}'"
             _, data = Arch.select(query)
-            self.assertEqual(data[0][0], floor.Label, "PARENT(Space) should skip the group and return the Floor.")
+            self.assertEqual(
+                data[0][0], floor.Label, "PARENT(Space) should skip the group and return the Floor."
+            )
 
         # Sub-Test B: Chained parent finding for a contained object
         # The significant grandparent of the Wall (Wall -> Floor -> Building) is the Building.
@@ -1072,12 +1193,20 @@ class TestArchReport(TestArchBase.TestArchBase):
         # This query should find all objects whose significant grandparent is the Building.
         # This includes the Space (grandparent is Floor's parent) and the Wall (grandparent is Floor's parent).
         with self.subTest(description="Filtering by logical grandparent"):
-            query = f"SELECT Label FROM document WHERE PARENT(*).PARENT(*).Label = '{building.Label}'"
+            query = (
+                f"SELECT Label FROM document WHERE PARENT(*).PARENT(*).Label = '{building.Label}'"
+            )
             _, data = Arch.select(query)
 
             found_labels = sorted([row[0] for row in data])
-            expected_labels = sorted([space.Label, wall.Label, generic_group.Label]) # The group's logical grandparent is also the building.
-            self.assertListEqual(found_labels, expected_labels, "Query did not find all objects with the correct logical grandparent.")
+            expected_labels = sorted(
+                [space.Label, wall.Label, generic_group.Label]
+            )  # The group's logical grandparent is also the building.
+            self.assertListEqual(
+                found_labels,
+                expected_labels,
+                "Query did not find all objects with the correct logical grandparent.",
+            )
 
     def test_ppa_and_query_permutations(self):
         """
@@ -1102,9 +1231,13 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Sub-Test A: Chained PARENT in SELECT clause
         with self.subTest(description="PPA in SELECT clause"):
-            query = f"SELECT PARENT(*).PARENT(*).Label FROM document WHERE Label = '{front_door.Label}'"
+            query = (
+                f"SELECT PARENT(*).PARENT(*).Label FROM document WHERE Label = '{front_door.Label}'"
+            )
             _, data = Arch.select(query)
-            self.assertEqual(data[0][0], ground_floor.Label, "Grandparent of Front Door should be Ground Floor")
+            self.assertEqual(
+                data[0][0], ground_floor.Label, "Grandparent of Front Door should be Ground Floor"
+            )
 
         # Sub-Test B: Chained PARENT in WHERE clause
         with self.subTest(description="PPA in WHERE clause"):
@@ -1112,7 +1245,9 @@ class TestArchReport(TestArchBase.TestArchBase):
             _, data = Arch.select(query)
             found_labels = sorted([row[0] for row in data])
             expected_labels = sorted([front_door.Label, living_window.Label])
-            self.assertListEqual(found_labels, expected_labels, "Should find the Door and Window on the Ground Floor")
+            self.assertListEqual(
+                found_labels, expected_labels, "Should find the Door and Window on the Ground Floor"
+            )
 
         # Sub-Test C: Chained PARENT in ORDER BY clause
         with self.subTest(description="PPA in ORDER BY clause"):
@@ -1134,7 +1269,11 @@ class TestArchReport(TestArchBase.TestArchBase):
             # The assertion now directly checks the parent label returned by the query.
             # This is self-contained and does not require error-prone lookups.
             parent_label_of_first_result = data[0][1]
-            self.assertEqual(parent_label_of_first_result, upper_floor.Label, "The first item in the sorted list should belong to the Upper Floor.")
+            self.assertEqual(
+                parent_label_of_first_result,
+                upper_floor.Label,
+                "The first item in the sorted list should belong to the Upper Floor.",
+            )
 
         # Sub-Test D: Accessing a sub-property of a parent
         with self.subTest(description="PPA with sub-property access"):
@@ -1143,7 +1282,11 @@ class TestArchReport(TestArchBase.TestArchBase):
             _, data = Arch.select(query)
             found_labels = sorted([row[0] for row in data])
             expected_labels = sorted([office_space.Label, living_space.Label])
-            self.assertListEqual(found_labels, expected_labels, "Should find spaces on the ground floor by parent's placement")
+            self.assertListEqual(
+                found_labels,
+                expected_labels,
+                "Should find spaces on the ground floor by parent's placement",
+            )
 
         # === Advanced Cross-Feature Permutation Tests ===
 
@@ -1161,8 +1304,8 @@ class TestArchReport(TestArchBase.TestArchBase):
             query = "SELECT TYPE(*) AS BimType, COUNT(*) FROM document WHERE IfcType IS NOT NULL GROUP BY TYPE(*) ORDER BY BimType"
             _, data = Arch.select(query)
             results_dict = {row[0]: row[1] for row in data}
-            self.assertGreaterEqual(results_dict.get('Wall', 0), 2)
-            self.assertGreaterEqual(results_dict.get('Space', 0), 2)
+            self.assertGreaterEqual(results_dict.get("Wall", 0), 2)
+            self.assertGreaterEqual(results_dict.get("Space", 0), 2)
 
         with self.subTest(description="Permutation: Complex WHERE with PPA and Functions"):
             query = f"SELECT Label FROM document WHERE TYPE(*) = 'Wall' AND LOWER(PARENT(*).Label) = 'ground floor' AND FireRating IS NOT NULL"
@@ -1179,7 +1322,9 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         with self.subTest(description="Permutation: Arithmetic with parent properties"):
             # The Interior Partition has height 3000, its parent (Ground Floor) has height 3200.
-            query = f"SELECT Label FROM document WHERE TYPE(*) = 'Wall' AND Height < PARENT(*).Height"
+            query = (
+                f"SELECT Label FROM document WHERE TYPE(*) = 'Wall' AND Height < PARENT(*).Height"
+            )
             _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertEqual(data[0][0], interior_wall.Label)
@@ -1192,7 +1337,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         """
         # ARRANGE: Create a simple, self-contained model for this test.
         # This makes the test independent of the main setUp fixture.
-        doc = self.document # Use the document created by TestArchBase
+        doc = self.document  # Use the document created by TestArchBase
         Arch.makeWall(name="Unit Test Wall 1")
         Arch.makeWall(name="Unit Test Wall 2")
         Arch.makeSpace(baseobj=doc.addObject("Part::Box"), name="Unit Test Space")
@@ -1223,7 +1368,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # ARRANGE: Use the complex model from the ppa_and_query_permutations test
         model = create_test_model(self.document)
         ground_floor = model["ground_floor"]
-        upper_floor = model["upper_floor"] # Has one space
+        upper_floor = model["upper_floor"]  # Has one space
 
         # Add one more space to the upper floor for a meaningful group
         upper_box = self.document.addObject("Part::Box", "UpperSpaceVolume2")
@@ -1259,7 +1404,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         _, data = Arch.select(query)
 
         # ASSERT: Find the specific row for IfcType='Column' and TYPE='Column'
-        column_row = next((row for row in data if row[0] == 'Column' and row[1] == 'Column'), None)
+        column_row = next((row for row in data if row[0] == "Column" and row[1] == "Column"), None)
         self.assertIsNotNone(column_row, "A group for (Column, Column) should exist.")
         self.assertEqual(column_row[2], 2, "The count for (Column, Column) should be 2.")
 
@@ -1289,13 +1434,17 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.document.recompute()
 
         # ACT: Select walls where the calculated area is greater than 150,000.
-        query = "SELECT Label FROM document WHERE Label LIKE 'Unit Test %' AND Length * Width > 150000"
+        query = (
+            "SELECT Label FROM document WHERE Label LIKE 'Unit Test %' AND Length * Width > 150000"
+        )
         _, data = Arch.select(query)
         print(data)
 
         # ASSERT: Only the "Large Wall" should be returned.
         self.assertEqual(len(data), 1, "The query should find exactly one matching wall.")
-        self.assertEqual(data[0][0], f"{large_wall.Label}", "The found wall should be the large one.")
+        self.assertEqual(
+            data[0][0], f"{large_wall.Label}", "The found wall should be the large one."
+        )
 
     def test_select_with_nested_functions(self):
         """
@@ -1315,7 +1464,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         # ASSERT: The engine should correctly evaluate all parts and concatenate them.
         self.assertEqual(len(data), 1, "The query should have found the target object.")
         expected_string = "My Test Wall (Type: Wall)"
-        self.assertEqual(data[0][0], expected_string, "The nested function expression was not evaluated correctly.")
+        self.assertEqual(
+            data[0][0],
+            expected_string,
+            "The nested function expression was not evaluated correctly.",
+        )
 
     def test_group_by_with_alias_is_not_supported(self):
         """
@@ -1374,7 +1527,9 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # ASSERT: The engine's transformer must raise an error with a clear
         # message explaining the correct syntax.
-        with self.assertRaisesRegex(ArchSql.SqlEngineError, "ORDER BY expressions are not supported directly"):
+        with self.assertRaisesRegex(
+            ArchSql.SqlEngineError, "ORDER BY expressions are not supported directly"
+        ):
             Arch.select(query)
 
     def test_core_engine_enhancements_for_pipeline(self):
@@ -1388,7 +1543,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         # We will create a specific list to act as our pipeline's source data.
         pipeline_source_objects = [self.wall_ext, self.wall_int, self.window]
         pipeline_source_labels = sorted([o.Label for o in pipeline_source_objects])
-        self.assertEqual(len(pipeline_source_objects), 3, "Pre-condition failed: Source object list should have 3 items.")
+        self.assertEqual(
+            len(pipeline_source_objects),
+            3,
+            "Pre-condition failed: Source object list should have 3 items.",
+        )
 
         # --- 2. ACT & ASSERT (REGRESSION TEST) ---
         # First, prove that the existing public APIs still work perfectly.
@@ -1412,41 +1571,63 @@ class TestArchReport(TestArchBase.TestArchBase):
 
             # Execute the query, passing our specific list as the source.
             _, data_rows, resulting_objects = ArchSql._run_query(
-                query,
-                mode='full_data',
-                source_objects=pipeline_source_objects
+                query, mode="full_data", source_objects=pipeline_source_objects
             )
 
             # Assertions for the new behavior:
             # a) The number of data rows should match the size of our source list.
-            self.assertEqual(len(data_rows), 3, "_run_query did not return the correct number of rows for the provided source.")
+            self.assertEqual(
+                len(data_rows),
+                3,
+                "_run_query did not return the correct number of rows for the provided source.",
+            )
 
             # b) The content of the data should match the objects from our source list.
             found_labels = sorted([row[0] for row in data_rows])
-            self.assertListEqual(found_labels, pipeline_source_labels, "The data returned does not match the source objects.")
+            self.assertListEqual(
+                found_labels,
+                pipeline_source_labels,
+                "The data returned does not match the source objects.",
+            )
 
             # c) The new third return value, `resulting_objects`, should contain the correct FreeCAD objects.
-            self.assertEqual(len(resulting_objects), 3, "The returned object list has the wrong size.")
-            self.assertIsInstance(resulting_objects[0], FreeCAD.DocumentObject, "The resulting_objects list should contain DocumentObject instances.")
+            self.assertEqual(
+                len(resulting_objects), 3, "The returned object list has the wrong size."
+            )
+            self.assertIsInstance(
+                resulting_objects[0],
+                FreeCAD.DocumentObject,
+                "The resulting_objects list should contain DocumentObject instances.",
+            )
             resulting_object_labels = sorted([o.Label for o in resulting_objects])
-            self.assertListEqual(resulting_object_labels, pipeline_source_labels, "The list of resulting objects is incorrect.")
+            self.assertListEqual(
+                resulting_object_labels,
+                pipeline_source_labels,
+                "The list of resulting objects is incorrect.",
+            )
 
         with self.subTest(description="Test _run_query with filtering on a source_objects list"):
             # This query applies a WHERE clause to the pre-filtered source list.
             query = "SELECT Label FROM document WHERE IfcType = 'Wall'"
 
             _, data_rows, resulting_objects = ArchSql._run_query(
-                query,
-                mode='full_data',
-                source_objects=pipeline_source_objects
+                query, mode="full_data", source_objects=pipeline_source_objects
             )
 
             # Of the 3 source objects, only the 2 walls should be returned.
             self.assertEqual(len(data_rows), 2, "Filtering on the source object list failed.")
             found_labels = sorted([row[0] for row in data_rows])
             expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
-            self.assertListEqual(found_labels, expected_labels, "The data returned after filtering the source is incorrect.")
-            self.assertEqual(len(resulting_objects), 2, "The object list returned after filtering the source is incorrect.")
+            self.assertListEqual(
+                found_labels,
+                expected_labels,
+                "The data returned after filtering the source is incorrect.",
+            )
+            self.assertEqual(
+                len(resulting_objects),
+                2,
+                "The object list returned after filtering the source is incorrect.",
+            )
 
     def test_execute_pipeline_orchestrator(self):
         """
@@ -1457,30 +1638,26 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Statement 1: Get all Wall objects. (Result: 2 objects)
         stmt1 = ArchSql.ReportStatement(
-            query_string="SELECT * FROM document WHERE IfcType = 'Wall'",
-            is_pipelined=False
+            query_string="SELECT * FROM document WHERE IfcType = 'Wall'", is_pipelined=False
         )
 
         # Statement 2: From the walls, get the one with "Exterior" in its name. (Result: 1 object)
         stmt2 = ArchSql.ReportStatement(
-            query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'",
-            is_pipelined=True
+            query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'", is_pipelined=True
         )
 
         # Statement 3: A standalone query to get the Column object. (Result: 1 object)
         stmt3 = ArchSql.ReportStatement(
-            query_string="SELECT * FROM document WHERE IfcType = 'Column'",
-            is_pipelined=False
+            query_string="SELECT * FROM document WHERE IfcType = 'Column'", is_pipelined=False
         )
 
         # Statement 4: A pipelined query that will run on an empty set from a failing previous step.
         stmt4_failing = ArchSql.ReportStatement(
             query_string="SELECT * FROM document WHERE IfcType = 'NonExistentType'",
-            is_pipelined=False
+            is_pipelined=False,
         )
         stmt5_piped_from_fail = ArchSql.ReportStatement(
-            query_string="SELECT * FROM document",
-            is_pipelined=True
+            query_string="SELECT * FROM document", is_pipelined=True
         )
 
         # --- ACT & ASSERT ---
@@ -1491,13 +1668,23 @@ class TestArchReport(TestArchBase.TestArchBase):
 
             # The generator should yield exactly one result: the final one from stmt2.
             output_list = list(results_generator)
-            self.assertEqual(len(output_list), 1, "A simple pipeline should only yield one final result.")
+            self.assertEqual(
+                len(output_list), 1, "A simple pipeline should only yield one final result."
+            )
 
             # Check the content of the single yielded result.
             result_stmt, _, result_data = output_list[0]
-            self.assertIs(result_stmt, stmt2, "The yielded statement should be the last one in the chain.")
-            self.assertEqual(len(result_data), 1, "The final pipeline result should contain one row.")
-            self.assertEqual(result_data[0][0], self.wall_ext.Label, "The final result is not the expected 'Exterior Wall'.")
+            self.assertIs(
+                result_stmt, stmt2, "The yielded statement should be the last one in the chain."
+            )
+            self.assertEqual(
+                len(result_data), 1, "The final pipeline result should contain one row."
+            )
+            self.assertEqual(
+                result_data[0][0],
+                self.wall_ext.Label,
+                "The final result is not the expected 'Exterior Wall'.",
+            )
 
         with self.subTest(description="Test a mixed report with pipeline and standalone"):
             statements = [stmt1, stmt2, stmt3]
@@ -1525,7 +1712,9 @@ class TestArchReport(TestArchBase.TestArchBase):
             # Check that the single yielded result has zero data rows.
             result_stmt, _, result_data = output_list[0]
             self.assertIs(result_stmt, stmt5_piped_from_fail)
-            self.assertEqual(len(result_data), 0, "The final pipelined statement should yield 0 rows.")
+            self.assertEqual(
+                len(result_data), 0, "The final pipelined statement should yield 0 rows."
+            )
 
     def test_public_api_for_pipelines(self):
         """
@@ -1550,12 +1739,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         with self.subTest(description="Test Arch.selectObjectsFromPipeline"):
             # Define a simple two-step pipeline.
             stmt1 = ArchSql.ReportStatement(
-                query_string="SELECT * FROM document WHERE IfcType = 'Wall'",
-                is_pipelined=False
+                query_string="SELECT * FROM document WHERE IfcType = 'Wall'", is_pipelined=False
             )
             stmt2 = ArchSql.ReportStatement(
                 query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'",
-                is_pipelined=True
+                is_pipelined=True,
             )
 
             # Execute the pipeline via the new high-level API.
@@ -1563,9 +1751,15 @@ class TestArchReport(TestArchBase.TestArchBase):
 
             # Assert that the result is correct.
             self.assertIsInstance(resulting_objects, list)
-            self.assertEqual(len(resulting_objects), 1, "Pipeline should result in one final object.")
+            self.assertEqual(
+                len(resulting_objects), 1, "Pipeline should result in one final object."
+            )
             self.assertIsInstance(resulting_objects[0], FreeCAD.DocumentObject)
-            self.assertEqual(resulting_objects[0].Name, self.wall_ext.Name, "The final object from the pipeline is incorrect.")
+            self.assertEqual(
+                resulting_objects[0].Name,
+                self.wall_ext.Name,
+                "The final object from the pipeline is incorrect.",
+            )
 
     def test_pipeline_with_children_function(self):
         """
@@ -1586,13 +1780,13 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Step 1: Select only the 'Pipeline Test Floor'.
         stmt1 = ArchReport.ReportStatement(
             query_string="SELECT * FROM document WHERE Label = 'Pipeline Test Floor'",
-            is_pipelined=False
+            is_pipelined=False,
         )
 
         # Step 2: Use CHILDREN to get the walls from the previous step's result.
         stmt2 = ArchReport.ReportStatement(
             query_string="SELECT * FROM CHILDREN(SELECT * FROM document) WHERE IfcType = 'Wall'",
-            is_pipelined=True
+            is_pipelined=True,
         )
 
         # --- ACT ---
@@ -1602,8 +1796,14 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- ASSERT ---
         # With the bug present, `resulting_objects` will be an empty list,
         # causing this assertion to fail as expected.
-        self.assertEqual(len(resulting_objects), 1, "The pipeline should have resulted in exactly one child object.")
-        self.assertEqual(resulting_objects[0].Name, wall.Name, "The object found via the pipeline is incorrect.")
+        self.assertEqual(
+            len(resulting_objects),
+            1,
+            "The pipeline should have resulted in exactly one child object.",
+        )
+        self.assertEqual(
+            resulting_objects[0].Name, wall.Name, "The object found via the pipeline is incorrect."
+        )
 
     def test_group_by_with_function_and_literal_argument(self):
         """
@@ -1638,7 +1838,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Assertions for the passing test
         self.assertEqual(len(results_data), 1, "The query should return exactly one row.")
-        self.assertEqual(headers, ['Label', "CONVERT(Area, 'm^2')"])
+        self.assertEqual(headers, ["Label", "CONVERT(Area, 'm^2')"])
 
         # Check the content of the result
         self.assertEqual(results_data[0][0], space.Label)
@@ -1669,15 +1869,14 @@ class TestArchReport(TestArchBase.TestArchBase):
         result_labels = sorted([obj.Label for obj in results])
 
         # ASSERT: The final list must contain the initial object and all its descendants.
-        expected_labels = sorted([
-            "TraversalTestFloor",
-            "TraversalTestWall",
-            "TraversalTestWindow"
-        ])
+        expected_labels = sorted(["TraversalTestFloor", "TraversalTestWall", "TraversalTestWindow"])
 
         self.assertEqual(len(results), 3, "The traversal should have found 3 objects.")
-        self.assertListEqual(result_labels, expected_labels,
-                             "The list of discovered objects does not match the expected hierarchy.")
+        self.assertListEqual(
+            result_labels,
+            expected_labels,
+            "The list of discovered objects does not match the expected hierarchy.",
+        )
 
     def test_traverse_skips_generic_groups_in_results(self):
         """
@@ -1700,22 +1899,21 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # ACT: Run the traversal, but this time with a flag to exclude groups
         # The new `include_groups_in_result=False` parameter will be used here.
-        results = ArchSql._traverse_architectural_hierarchy(
-            [floor],
-            include_groups_in_result=False
-        )
+        results = ArchSql._traverse_architectural_hierarchy([floor], include_groups_in_result=False)
         result_labels = sorted([obj.Label for obj in results])
 
         # ASSERT: The final list must contain the floor and the space,
         # but NOT the generic group.
-        expected_labels = sorted([
-            "GroupTestFloor",
-            "GroupTestSpace"
-        ])
+        expected_labels = sorted(["GroupTestFloor", "GroupTestSpace"])
 
-        self.assertEqual(len(results), 2, "The traversal should have found 2 objects (and skipped the group).")
-        self.assertListEqual(result_labels, expected_labels,
-                             "The traversal incorrectly included the generic group in its results.")
+        self.assertEqual(
+            len(results), 2, "The traversal should have found 2 objects (and skipped the group)."
+        )
+        self.assertListEqual(
+            result_labels,
+            expected_labels,
+            "The traversal incorrectly included the generic group in its results.",
+        )
 
     def test_traverse_respects_max_depth(self):
         """
@@ -1736,36 +1934,32 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Sub-Test 1: max_depth = 1 (should find direct children only)
         with self.subTest(depth=1):
-            results_depth_1 = ArchSql._traverse_architectural_hierarchy(
-                [floor],
-                max_depth=1
-            )
+            results_depth_1 = ArchSql._traverse_architectural_hierarchy([floor], max_depth=1)
             labels_depth_1 = sorted([o.Label for o in results_depth_1])
             expected_labels_1 = sorted(["DepthTestFloor", "DepthTestWall"])
-            self.assertListEqual(labels_depth_1, expected_labels_1,
-                                 "With max_depth=1, should only find direct children.")
+            self.assertListEqual(
+                labels_depth_1,
+                expected_labels_1,
+                "With max_depth=1, should only find direct children.",
+            )
 
         # Sub-Test 2: max_depth = 2 (should find grandchildren)
         with self.subTest(depth=2):
-            results_depth_2 = ArchSql._traverse_architectural_hierarchy(
-                [floor],
-                max_depth=2
-            )
+            results_depth_2 = ArchSql._traverse_architectural_hierarchy([floor], max_depth=2)
             labels_depth_2 = sorted([o.Label for o in results_depth_2])
             expected_labels_2 = sorted(["DepthTestFloor", "DepthTestWall", "DepthTestWindow"])
-            self.assertListEqual(labels_depth_2, expected_labels_2,
-                                 "With max_depth=2, should find grandchildren.")
+            self.assertListEqual(
+                labels_depth_2, expected_labels_2, "With max_depth=2, should find grandchildren."
+            )
 
         # Sub-Test 3: max_depth = 0 (unlimited, should find all)
         with self.subTest(depth=0):
-            results_depth_0 = ArchSql._traverse_architectural_hierarchy(
-                [floor],
-                max_depth=0
-            )
+            results_depth_0 = ArchSql._traverse_architectural_hierarchy([floor], max_depth=0)
             labels_depth_0 = sorted([o.Label for o in results_depth_0])
             expected_labels_0 = sorted(["DepthTestFloor", "DepthTestWall", "DepthTestWindow"])
-            self.assertListEqual(labels_depth_0, expected_labels_0,
-                                 "With max_depth=0, should find all descendants.")
+            self.assertListEqual(
+                labels_depth_0, expected_labels_0, "With max_depth=0, should find all descendants."
+            )
 
     def test_sql_children_and_children_recursive_functions(self):
         """
@@ -1846,7 +2040,9 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.doc.recompute()
 
             report = Arch.makeReport(name="UnitHeaderTestReport")
-            report.Proxy.live_statements[0].query_string = "SELECT Label, Length FROM document WHERE Name = 'UnitHeaderTestBox'"
+            report.Proxy.live_statements[0].query_string = (
+                "SELECT Label, Length FROM document WHERE Name = 'UnitHeaderTestBox'"
+            )
             report.Proxy.commit_statements()
 
             # ACT: Execute the report.
@@ -1856,7 +2052,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             spreadsheet = report.Target
             self.assertIsNotNone(spreadsheet)
 
-            header_length = spreadsheet.get('B1')
+            header_length = spreadsheet.get("B1")
 
             self.assertEqual(header_length, "Length (mm)")
 
