@@ -5,6 +5,7 @@
 import FreeCAD
 import FreeCADGui
 
+
 class BIM_Report:
     """The command to create a new BIM Report object."""
 
@@ -12,7 +13,7 @@ class BIM_Report:
         return {
             "Pixmap": "BIM_Report",
             "MenuText": "BIM Report",
-            "ToolTip": "Create a new BIM Report to query model data with SQL"
+            "ToolTip": "Create a new BIM Report to query model data with SQL",
         }
 
     def Activated(self):
@@ -21,5 +22,6 @@ class BIM_Report:
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
+
 
 FreeCADGui.addCommand("BIM_Report", BIM_Report())
