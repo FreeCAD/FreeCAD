@@ -36,9 +36,9 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"

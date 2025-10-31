@@ -62,9 +62,14 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_Slope",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Slope", "Set Slope"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn on the XY-plane.")}
+        return {
+            "Pixmap": "Draft_Slope",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Slope", "Set Slope"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Slope",
+                "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn on the XY-plane.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -92,11 +97,13 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
         self.spinbox.setMaximum(9999.99)
         self.spinbox.setSingleStep(0.01)
 
-        _tip = ("New slope of the selected lines.\n"
-                "This is the tangent of the horizontal angle:\n"
-                "0 = horizontal\n"
-                "1 = 45 deg up\n"
-                "-1 = 45deg down\n")
+        _tip = (
+            "New slope of the selected lines.\n"
+            "This is the tangent of the horizontal angle:\n"
+            "0 = horizontal\n"
+            "1 = 45 deg up\n"
+            "-1 = 45deg down\n"
+        )
         label.setToolTip(translate("Draft", _tip))
         self.spinbox.setToolTip(translate("Draft", _tip))
         layout.addWidget(self.spinbox)
@@ -145,6 +152,6 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
 
 
 Draft_Slope = LineSlope
-Gui.addCommand('Draft_Slope', LineSlope())
+Gui.addCommand("Draft_Slope", LineSlope())
 
 ## @}

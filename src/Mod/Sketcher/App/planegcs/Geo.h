@@ -107,10 +107,10 @@ public:
     // of the result is written into argument dprd.
     double scalarProd(const DeriVector2& v2, double* dprd = nullptr) const;
 
-    // calculates the norm of the cross product of the two vectors.
+    // calculates the z coordinate of the cross product of the two vectors.
     // DeriVector2 are considered as 3d vectors with null z. The derivative
     // of the result is written into argument dprd.
-    double crossProdNorm(const DeriVector2& v2, double& dprd) const;
+    double crossProdZ(const DeriVector2& v2, double& dprd) const;
 
     // adds two vectors and returns result
     DeriVector2 sum(const DeriVector2& v2) const

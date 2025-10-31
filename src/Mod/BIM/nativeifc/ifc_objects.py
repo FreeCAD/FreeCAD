@@ -31,8 +31,19 @@ translate = FreeCAD.Qt.translate
 
 
 # the property groups below should not be treated as psets
-NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension",
-             "SectionPlane", "Axis", "PhysicalProperties", "BuildingPart", "IFC Attributes"]
+NON_PSETS = [
+    "Base",
+    "IFC",
+    "",
+    "Geometry",
+    "Dimension",
+    "Linear/radial dimension",
+    "SectionPlane",
+    "Axis",
+    "PhysicalProperties",
+    "BuildingPart",
+    "IFC Attributes",
+]
 
 
 class ifc_object:
@@ -42,9 +53,7 @@ class ifc_object:
         self.cached = True  # this marks that the object is freshly created and its shape should be taken from cache
         self.virgin_placement = True  # this allows one to set the initial placement without triggering any placement change
         if otype:
-            self.Type = (
-                otype[0].upper() + otype[1:]
-            )  # capitalize to match Draft standard
+            self.Type = otype[0].upper() + otype[1:]  # capitalize to match Draft standard
         else:
             self.Type = "IfcObject"
 
@@ -80,7 +89,7 @@ class ifc_object:
             self.edit_annotation(obj, "Text", "\n".join(obj.Text))
         elif prop in ["Start", "End"]:
             self.edit_annotation(obj, prop)
-        elif prop in ["DisplayLength","DisplayHeight","Depth"]:
+        elif prop in ["DisplayLength", "DisplayHeight", "Depth"]:
             self.edit_annotation(obj, prop)
         elif prop == "Placement":
             if getattr(self, "virgin_placement", False):
@@ -244,8 +253,8 @@ class ifc_object:
                                     value[-1] = ifc_export.get_scaled_point(obj.End, ifcfile, is2d)
                                 ifc_tools.set_attribute(ifcfile, points, "CoordList", value)
                             else:
-                                print("DEBUG: unknown dimension curve type:",sub)
-            elif attribute in ["DisplayLength","DisplayHeight","Depth"]:
+                                print("DEBUG: unknown dimension curve type:", sub)
+            elif attribute in ["DisplayLength", "DisplayHeight", "Depth"]:
                 l = w = h = 1000.0
                 if obj.ViewObject:
                     if obj.ViewObject.DisplayLength.Value:
@@ -264,7 +273,9 @@ class ifc_object:
                                     ifc_tools.set_attribute(ifcfile, block, "XLength", l)
                                     ifc_tools.set_attribute(ifcfile, block, "YLength", w)
                                     ifc_tools.set_attribute(ifcfile, block, "ZLength", h)
-                                    ifc_tools.set_attribute(ifcfile, loc, "Coordinates", (-l/2, -h/2, -h))
+                                    ifc_tools.set_attribute(
+                                        ifcfile, loc, "Coordinates", (-l / 2, -h / 2, -h)
+                                    )
 
     def edit_geometry(self, obj, prop):
         """Edits a geometry property of an object"""
@@ -294,11 +305,7 @@ class ifc_object:
             ifcfile, migration_table = ifc_tools.migrate_schema(ifcfile, schema)
             self.ifcfile = ifcfile
             for old_id, new_id in migration_table.items():
-                child = [
-                    o
-                    for o in obj.OutListRecursive
-                    if getattr(o, "StepId", None) == old_id
-                ]
+                child = [o for o in obj.OutListRecursive if getattr(o, "StepId", None) == old_id]
                 if len(child) == 1:
                     child[0].StepId = new_id
 
@@ -331,10 +338,7 @@ class ifc_object:
                 return
             newlist = []
             for child in obj.Group:
-                if (
-                    not getattr(child, "StepId", None)
-                    or ifc_tools.get_ifcfile(child) != ifcfile
-                ):
+                if not getattr(child, "StepId", None) or ifc_tools.get_ifcfile(child) != ifcfile:
                     print(
                         "DEBUG: Not an IFC object. Removing",
                         child.Label,
@@ -386,21 +390,20 @@ class ifc_object:
             if s:
                 FreeCAD.Console.PrintLog("DEBUG: Generating shapes. This might take some time...\n")
                 for o in s:
-                        o.ShapeMode = "Shape"
-                        o.recompute()
+                    o.ShapeMode = "Shape"
+                    o.recompute()
             l = 1
             h = 1
             if obj.ViewObject:
-                if hasattr(obj.ViewObject,"DisplayLength"):
+                if hasattr(obj.ViewObject, "DisplayLength"):
                     l = obj.ViewObject.DisplayLength.Value
                     h = obj.ViewObject.DisplayHeight.Value
-            plane = Part.makePlane(l,h,FreeCAD.Vector(l/2,-h/2,0),FreeCAD.Vector(0,0,1))
+            plane = Part.makePlane(l, h, FreeCAD.Vector(l / 2, -h / 2, 0), FreeCAD.Vector(0, 0, 1))
             plane.Placement = obj.Placement
             return objs, plane
         else:
             print("DEBUG: Section plane returned no objects")
             return [], None
-
 
     def edit_classification(self, obj):
         """Edits the classification of this object"""

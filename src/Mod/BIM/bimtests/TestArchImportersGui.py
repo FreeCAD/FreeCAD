@@ -1,12 +1,11 @@
-
 import FreeCAD as App
 from bimtests.TestArchBaseGui import TestArchBaseGui
+
 
 class TestArchImportersGui(TestArchBaseGui):
 
     def testImportSH3D(self):
-        """Import a SweetHome 3D file
-        """
+        """Import a SweetHome 3D file"""
         import BIM.importers.importSH3DHelper
 
         importer = BIM.importers.importSH3DHelper.SH3DImporter(None)

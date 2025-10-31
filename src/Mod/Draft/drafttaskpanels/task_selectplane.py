@@ -53,4 +53,5 @@ class SelectPlaneTaskPanel:
         """Execute to set the standard buttons."""
         return QtWidgets.QDialogButtonBox.Close
 
+
 ## @}

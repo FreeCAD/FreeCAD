@@ -39,6 +39,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -181,16 +182,18 @@ public:
             else {
                 EditCurve.resize(32);
             }
-            mouseMove(onSketchPos);  // trigger an update of EditCurve
+            auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, onSketchPos);
+            mouseMove(*snapHandle);  // trigger an update of EditCurve
         }
         else {
             DrawSketchHandler::registerPressedKey(pressed, key);
         }
     }
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         suppressTransition = false;
         if (Mode == STATUS_SEEK_First) {
@@ -711,7 +714,8 @@ public:
                 SegmentMode = SEGMENT_MODE_Line;
                 SnapMode = SNAP_MODE_Free;
                 EditCurve[1] = EditCurve[0];
-                mouseMove(onSketchPos);  // trigger an update of EditCurve
+                auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, onSketchPos);
+                mouseMove(*snapHandle);  // trigger an update of EditCurve
             }
         }
 

@@ -399,6 +399,7 @@ double Measurement::length() const
                     case GeomAbs_Ellipse:
                     case GeomAbs_BSplineCurve:
                     case GeomAbs_Hyperbola:
+                    case GeomAbs_Parabola:
                     case GeomAbs_BezierCurve: {
                         result += GCPnts_AbscissaPoint::Length(curve);
                         break;

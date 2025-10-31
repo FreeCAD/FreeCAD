@@ -402,13 +402,22 @@ void Application::initStyleParameterManager()
         {.name = QT_TR_NOOP("Theme Parameters"),
          .options = StyleParameters::ParameterSourceOption::UserEditable});
 
-    handlers.addDelayedHandler(
+    auto reloadStylesheetHandler = handlers.addDelayedHandler(
         "BaseApp/Preferences/MainWindow",
-        {"ThemeStyleParametersFiles", "Theme"},
-        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle) {
+        {"ThemeStyleParametersFiles", "Theme", "StyleSheet"},
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle hGrp) {
             themeParametersSource->changeFilePath(deduceParametersFilePath());
-            reloadStyleSheet();
+            styleParameterManager()->reload();
+
+            std::string sheet = hGrp->GetASCII("StyleSheet");
+            bool tiledBG = hGrp->GetBool("TiledBackground", false);
+
+            setStyleSheet(QString::fromStdString(sheet), tiledBG);
         });
+
+    handlers.addHandler("BaseApp/Preferences/Themes",
+                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
+                        reloadStylesheetHandler);
 
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
@@ -1371,11 +1380,10 @@ Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 
 void Application::setEditDocument(Gui::Document* doc)
 {
-    if (doc == d->editDocument) {
-        return;
-    }
     if (!doc) {
         d->editDocument = nullptr;
+    } else if (doc == d->editDocument) {
+        return;
     }
     for (auto& v : d->documents) {
         v.second->_resetEdit();
@@ -2384,11 +2392,30 @@ void Application::runApplication()
 {
     StartupProcess::setupApplication();
 
-    QSurfaceFormat fmt;
-    fmt.setRenderableType(QSurfaceFormat::OpenGL);
-    fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
-    fmt.setOption(QSurfaceFormat::DeprecatedFunctions, true);
-    QSurfaceFormat::setDefaultFormat(fmt);
+    {
+        QSurfaceFormat defaultFormat;
+        defaultFormat.setRenderableType(QSurfaceFormat::OpenGL);
+        defaultFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+        defaultFormat.setOption(QSurfaceFormat::DeprecatedFunctions, true);
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+        // QGuiApplication::platformName() doesn't yet work at this point, so we use the env var
+        if (getenv("WAYLAND_DISPLAY")) {
+            // In some settings (at least EGL on Wayland) we get RGB565 by default.
+            // Request something better.
+            defaultFormat.setRedBufferSize(8);
+            defaultFormat.setGreenBufferSize(8);
+            defaultFormat.setBlueBufferSize(8);
+            // Qt's behavior with format requests seems opaque, underdocumented and,
+            // unfortunately, inconsistent between platforms. Requesting an alpha
+            // channel tends to steer it away from weird legacy choices like RGB565.
+            defaultFormat.setAlphaBufferSize(8);
+            // And a depth/stencil buffer is generally useful if we can have it.
+            defaultFormat.setDepthBufferSize(24);
+            defaultFormat.setStencilBufferSize(8);
+        }
+#endif
+        QSurfaceFormat::setDefaultFormat(defaultFormat);
+    }
 
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");

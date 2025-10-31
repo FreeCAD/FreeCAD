@@ -142,10 +142,10 @@ def sortEdgesOld(lEdges, aVertex=None):
         linstances = []  # lists the instances of aVertex
         for i in range(len(inEdges)):
             for j in range(2):
-                if aVertex.Point == inEdges[i].Vertexes[j-1].Point:
+                if aVertex.Point == inEdges[i].Vertexes[j - 1].Point:
                     instance = inEdges[i]
                     count += 1
-                    linstances += [i, j-1, instance]
+                    linstances += [i, j - 1, instance]
         return [count] + linstances
 
     if len(lEdges) < 2:
@@ -158,18 +158,22 @@ def sortEdgesOld(lEdges, aVertex=None):
                     return lEdges
                 else:
                     if geomType(result[3]) == "Line":
-                        return [Part.LineSegment(aVertex.Point,
-                                                 result[3].Vertexes[0].Point).toShape()]
+                        return [
+                            Part.LineSegment(aVertex.Point, result[3].Vertexes[0].Point).toShape()
+                        ]
                     elif geomType(result[3]) == "Circle":
                         mp = findMidpoint(result[3])
-                        return [Part.Arc(aVertex.Point,
-                                         mp,
-                                         result[3].Vertexes[0].Point).toShape()]
-                    elif (geomType(result[3]) == "BSplineCurve"
-                          or geomType(result[3]) == "BezierCurve"):
+                        return [Part.Arc(aVertex.Point, mp, result[3].Vertexes[0].Point).toShape()]
+                    elif (
+                        geomType(result[3]) == "BSplineCurve"
+                        or geomType(result[3]) == "BezierCurve"
+                    ):
                         if isLine(result[3].Curve):
-                            return [Part.LineSegment(aVertex.Point,
-                                                     result[3].Vertexes[0].Point).toShape()]
+                            return [
+                                Part.LineSegment(
+                                    aVertex.Point, result[3].Vertexes[0].Point
+                                ).toShape()
+                            ]
                         else:
                             return lEdges
                     else:
@@ -177,12 +181,11 @@ def sortEdgesOld(lEdges, aVertex=None):
 
     olEdges = []  # ol stands for ordered list
     if aVertex is None:
-        for i in range(len(lEdges)*2):
-            if len(lEdges[i/2].Vertexes) > 1:
-                result = lookfor(lEdges[i/2].Vertexes[i % 2], lEdges)
+        for i in range(len(lEdges) * 2):
+            if len(lEdges[i / 2].Vertexes) > 1:
+                result = lookfor(lEdges[i / 2].Vertexes[i % 2], lEdges)
                 if result[0] == 1:  # Have we found an end ?
-                    olEdges = sortEdgesOld(lEdges,
-                                           result[3].Vertexes[result[2]])
+                    olEdges = sortEdgesOld(lEdges, result[3].Vertexes[result[2]])
                     return olEdges
         # if the wire is closed there is no end so choose 1st Vertex
         # print("closed wire, starting from ",lEdges[0].Vertexes[0].Point)
@@ -192,8 +195,7 @@ def sortEdgesOld(lEdges, aVertex=None):
         result = lookfor(aVertex, lEdges)
         if result[0] != 0:
             del lEdges[result[1]]
-            _next = sortEdgesOld(lEdges,
-                                 result[3].Vertexes[-((-result[2])^1)])
+            _next = sortEdgesOld(lEdges, result[3].Vertexes[-((-result[2]) ^ 1)])
             # print("result ", result[3].Vertexes[0].Point, "    ",
             #       result[3].Vertexes[1].Point, " compared to ",aVertex.Point)
             if aVertex.Point == result[3].Vertexes[0].Point:
@@ -202,20 +204,17 @@ def sortEdgesOld(lEdges, aVertex=None):
             else:
                 # print("inverting", result[3].Curve)
                 if geomType(result[3]) == "Line":
-                    newedge = Part.LineSegment(aVertex.Point,
-                                               result[3].Vertexes[0].Point).toShape()
+                    newedge = Part.LineSegment(aVertex.Point, result[3].Vertexes[0].Point).toShape()
                     olEdges += [newedge] + _next
                 elif geomType(result[3]) == "Circle":
                     mp = findMidpoint(result[3])
-                    newedge = Part.Arc(aVertex.Point,
-                                       mp,
-                                       result[3].Vertexes[0].Point).toShape()
+                    newedge = Part.Arc(aVertex.Point, mp, result[3].Vertexes[0].Point).toShape()
                     olEdges += [newedge] + _next
-                elif (geomType(result[3]) == "BSplineCurve"
-                      or geomType(result[3]) == "BezierCurve"):
+                elif geomType(result[3]) == "BSplineCurve" or geomType(result[3]) == "BezierCurve":
                     if isLine(result[3].Curve):
-                        newedge = Part.LineSegment(aVertex.Point,
-                                                   result[3].Vertexes[0].Point).toShape()
+                        newedge = Part.LineSegment(
+                            aVertex.Point, result[3].Vertexes[0].Point
+                        ).toShape()
                         olEdges += [newedge] + _next
                     else:
                         olEdges += [result[3]] + _next
@@ -224,5 +223,6 @@ def sortEdgesOld(lEdges, aVertex=None):
             return olEdges
         else:
             return []
+
 
 ## @}

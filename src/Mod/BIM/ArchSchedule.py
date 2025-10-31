@@ -45,19 +45,20 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+
+    def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
-VERBOSE = True # change this for silent recomputes
+VERBOSE = True  # change this for silent recomputes
 
 
 class _ArchScheduleDocObserver:
-
     "doc observer to monitor all recomputes"
 
     # https://forum.freecad.org/viewtopic.php?style=3&p=553377#p553377
@@ -76,16 +77,15 @@ class _ArchScheduleDocObserver:
 
 
 class _ArchSchedule:
-
     "the Arch Schedule object"
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
         self.setProperties(obj)
         obj.Proxy = self
         self.Type = "Schedule"
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
         if hasattr(obj, "Result"):
@@ -93,8 +93,9 @@ class _ArchSchedule:
         if hasattr(obj, "Description"):
             self.update_properties_1v1(obj)
 
-    def update_properties_0v21(self,obj):
+    def update_properties_0v21(self, obj):
         from draftutils.messages import _log
+
         sp = obj.Result
         if sp is not None:
             self.setSchedulePropertySpreadsheet(sp, obj)
@@ -103,37 +104,103 @@ class _ArchSchedule:
         if sp is not None:
             _log("v0.21, " + sp.Name + ", added property 'Schedule'")
 
-    def update_properties_1v1(self,obj):
+    def update_properties_1v1(self, obj):
         from draftutils.messages import _log
+
         if obj.getTypeIdOfProperty("Description") == "App::PropertyStringList":
             obj.Operation = obj.Description
             obj.removeProperty("Description")
             _log("v1.1, " + obj.Name + ", renamed property 'Description' to 'Operation'")
-        for prop in ("Operation", "Value", "Unit", "Objects", "Filter", "CreateSpreadsheet", "DetailedResults"):
-            obj.setGroupOfProperty(prop,"Schedule")
+        for prop in (
+            "Operation",
+            "Value",
+            "Unit",
+            "Objects",
+            "Filter",
+            "CreateSpreadsheet",
+            "DetailedResults",
+        ):
+            obj.setGroupOfProperty(prop, "Schedule")
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         if not "Operation" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"), locked=True)
+            obj.addProperty(
+                "App::PropertyStringList",
+                "Operation",
+                "Schedule",
+                QT_TRANSLATE_NOOP("App::Property", "The operation column"),
+                locked=True,
+            )
         if not "Value" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"), locked=True)
+            obj.addProperty(
+                "App::PropertyStringList",
+                "Value",
+                "Schedule",
+                QT_TRANSLATE_NOOP("App::Property", "The values column"),
+                locked=True,
+            )
         if not "Unit" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Unit",              "Schedule",QT_TRANSLATE_NOOP("App::Property","The units column"), locked=True)
+            obj.addProperty(
+                "App::PropertyStringList",
+                "Unit",
+                "Schedule",
+                QT_TRANSLATE_NOOP("App::Property", "The units column"),
+                locked=True,
+            )
         if not "Objects" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Objects",           "Schedule",QT_TRANSLATE_NOOP("App::Property","The objects column"), locked=True)
+            obj.addProperty(
+                "App::PropertyStringList",
+                "Objects",
+                "Schedule",
+                QT_TRANSLATE_NOOP("App::Property", "The objects column"),
+                locked=True,
+            )
         if not "Filter" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Filter",            "Schedule",QT_TRANSLATE_NOOP("App::Property","The filter column"), locked=True)
+            obj.addProperty(
+                "App::PropertyStringList",
+                "Filter",
+                "Schedule",
+                QT_TRANSLATE_NOOP("App::Property", "The filter column"),
+                locked=True,
+            )
         if not "CreateSpreadsheet" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "CreateSpreadsheet",
+                "Schedule",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If True, a spreadsheet containing the results is recreated when needed",
+                ),
+                locked=True,
+            )
         if not "DetailedResults" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "DetailedResults",
+                "Schedule",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If True, additional lines with each individual object are added to the results",
+                ),
+                locked=True,
+            )
         if not "AutoUpdate" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "AutoUpdate",
+                "Schedule",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed",
+                ),
+                locked=True,
+            )
             obj.AutoUpdate = True
 
         # To add the doc observer:
-        self.onChanged(obj,"AutoUpdate")
+        self.onChanged(obj, "AutoUpdate")
 
     def setSchedulePropertySpreadsheet(self, sp, obj):
         if not hasattr(sp, "Schedule"):
@@ -142,25 +209,26 @@ class _ArchSchedule:
                 "Schedule",
                 "Arch",
                 QT_TRANSLATE_NOOP("App::Property", "The BIM Schedule that uses this spreadsheet"),
-                locked=True)
+                locked=True,
+            )
         sp.Schedule = obj
 
     def getSpreadSheet(self, obj, force=False):
-
         """Get the spreadsheet and store it in self.spreadsheet.
 
         If force is True the spreadsheet is created if required.
         """
-        try: # Required as self.spreadsheet may get deleted.
-            if getattr(self, "spreadsheet", None) is not None \
-                    and getattr(self.spreadsheet, "Schedule", None) == obj:
+        try:  # Required as self.spreadsheet may get deleted.
+            if (
+                getattr(self, "spreadsheet", None) is not None
+                and getattr(self.spreadsheet, "Schedule", None) == obj
+            ):
                 return self.spreadsheet
         except:
             pass
         else:
             for o in FreeCAD.ActiveDocument.Objects:
-                if o.TypeId == "Spreadsheet::Sheet" \
-                        and getattr(o, "Schedule", None) == obj:
+                if o.TypeId == "Spreadsheet::Sheet" and getattr(o, "Schedule", None) == obj:
                     self.spreadsheet = o
                     return self.spreadsheet
             if force:
@@ -170,7 +238,7 @@ class _ArchSchedule:
             else:
                 return None
 
-    def onChanged(self,obj,prop):
+    def onChanged(self, obj, prop):
 
         if prop == "CreateSpreadsheet":
             if obj.CreateSpreadsheet:
@@ -189,13 +257,12 @@ class _ArchSchedule:
                 FreeCAD.removeDocumentObserver(self.docObserver)
                 self.docObserver = None
 
-    def setSpreadsheetData(self,obj,force=False):
-
+    def setSpreadsheetData(self, obj, force=False):
         """Fills a spreadsheet with the stored data"""
 
-        if not hasattr(self,"data"):
+        if not hasattr(self, "data"):
             self.execute(obj)
-        if not hasattr(self,"data"):
+        if not hasattr(self, "data"):
             return
         if not self.data:
             return
@@ -213,29 +280,29 @@ class _ArchSchedule:
         sp.set("C1", "Unit")
         sp.setStyle("A1:C1", "bold", "add")
         # write contents
-        for k,v in self.data.items():
-            sp.set(k,v)
+        for k, v in self.data.items():
+            sp.set(k, v)
         # recompute
         sp.recompute()
-        sp.purgeTouched()   # Remove the confusing blue checkmark from the spreadsheet.
-        for o in sp.InList: # Also recompute TechDraw views.
+        sp.purgeTouched()  # Remove the confusing blue checkmark from the spreadsheet.
+        for o in sp.InList:  # Also recompute TechDraw views.
             o.TypeId == "TechDraw::DrawViewSpreadsheet"
             o.recompute()
 
-    def execute(self,obj):
+    def execute(self, obj):
 
         # verify the data
 
         if not obj.Operation:
             # empty description column
             return
-        for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
+        for p in [obj.Value, obj.Unit, obj.Objects, obj.Filter]:
             # different number of items in each column
             if len(obj.Operation) != len(p):
                 return
 
-        self.data = {} # store all results in self.data, so it lives even without spreadsheet
-        self.li = 1 # row index - starts at 2 to leave 2 blank rows for the title
+        self.data = {}  # store all results in self.data, so it lives even without spreadsheet
+        self.li = 1  # row index - starts at 2 to leave 2 blank rows for the title
 
         for i in range(len(obj.Operation)):
             self.li += 1
@@ -243,12 +310,12 @@ class _ArchSchedule:
                 # blank line
                 continue
             # write description
-            self.data["A"+str(self.li)] = obj.Operation[i]
+            self.data["A" + str(self.li)] = obj.Operation[i]
             if VERBOSE:
-                l= "OPERATION: "+obj.Operation[i]
+                l = "OPERATION: " + obj.Operation[i]
                 print("")
-                print (l)
-                print (len(l)*"=")
+                print(l)
+                print(len(l) * "=")
 
             # build set of valid objects
 
@@ -261,6 +328,7 @@ class _ArchSchedule:
             if val:
                 import Draft
                 import Arch
+
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
@@ -272,6 +340,7 @@ class _ArchSchedule:
                 if len(objs) == 1:
                     if hasattr(objs[0], "StepId"):
                         from nativeifc import ifc_tools
+
                         ifcfile = ifc_tools.get_ifcfile(objs[0])
                     # remove object itself if the object is a group
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
@@ -282,7 +351,9 @@ class _ArchSchedule:
                 # base geometry, etc)
                 objs = Arch.pruneIncluded(objs, strict=True, silent=True)
                 # Remove all schedules and spreadsheets:
-                objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
+                objs = [
+                    o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]
+                ]
 
                 # filter elements
 
@@ -324,14 +395,14 @@ class _ArchSchedule:
                 if inv:
                     if prop in props:
                         csprop = o.PropertiesList[props.index(prop)]
-                        if fval in getattr(o,csprop).upper():
+                        if fval in getattr(o, csprop).upper():
                             ok = False
                 else:
                     if not (prop in props):
                         ok = False
                     else:
                         csprop = o.PropertiesList[props.index(prop)]
-                        if not (fval in getattr(o,csprop).upper()):
+                        if not (fval in getattr(o, csprop).upper()):
                             ok = False
             if ok:
                 nobjs.append(o)
@@ -358,7 +429,7 @@ class _ArchSchedule:
                     if prop == "is_a":
                         if not fval.upper().startswith("IFC"):
                             fval = "Ifc" + fval
-                        fval = fval.replace(" ","")
+                        fval = fval.replace(" ", "")
                         if el.is_a(fval):
                             ok = False
                     else:
@@ -373,7 +444,7 @@ class _ArchSchedule:
                     if prop == "is_a":
                         if not fval.upper().startswith("IFC"):
                             fval = "Ifc" + fval
-                        fval = fval.replace(" ","")
+                        fval = fval.replace(" ", "")
                         if not el.is_a(fval):
                             ok = False
                     else:
@@ -396,12 +467,12 @@ class _ArchSchedule:
         if val.upper() == "COUNT":
             val = len(objs)
             if VERBOSE:
-                print (val, ",".join([o.Label for o in objs]))
-            self.data["B"+str(self.li)] = str(val)
+                print(val, ",".join([o.Label for o in objs]))
+            self.data["B" + str(self.li)] = str(val)
             if details:
                 # additional blank line...
                 self.li += 1
-                self.data["A"+str(self.li)] = " "
+                self.data["A" + str(self.li)] = " "
         else:
             vals = val.split(".")
             if vals[0][0].islower():
@@ -414,11 +485,11 @@ class _ArchSchedule:
             unit = None
             q = None
             if unit:
-                unit = unit.replace("^","")  # get rid of existing power symbol
-                unit = unit.replace("2","^2")
-                unit = unit.replace("3","^3")
-                unit = unit.replace("²","^2")
-                unit = unit.replace("³","^3")
+                unit = unit.replace("^", "")  # get rid of existing power symbol
+                unit = unit.replace("2", "^2")
+                unit = unit.replace("3", "^3")
+                unit = unit.replace("²", "^2")
+                unit = unit.replace("³", "^3")
                 if "2" in unit:
                     tp = FreeCAD.Units.Area
                 elif "3" in unit:
@@ -429,28 +500,28 @@ class _ArchSchedule:
                     tp = FreeCAD.Units.Length
 
             # format value
-            dv = params.get_param("Decimals",path="Units")
-            fs = "{:."+str(dv)+"f}" # format string
+            dv = params.get_param("Decimals", path="Units")
+            fs = "{:." + str(dv) + "f}"  # format string
             for o in objs:
                 if VERBOSE:
-                    l = o.Name+" ("+o.Label+"):"
-                    print (l+(40-len(l))*" ",end="")
+                    l = o.Name + " (" + o.Label + "):"
+                    print(l + (40 - len(l)) * " ", end="")
                 try:
                     d = o
                     for v in vals:
-                        d = getattr(d,v)
-                    if hasattr(d,"Value"):
+                        d = getattr(d, v)
+                    if hasattr(d, "Value"):
                         d = d.Value
                 except Exception:
-                    t = translate("Arch","Unable to retrieve value from object")
-                    FreeCAD.Console.PrintWarning(t+": "+o.Name+"."+".".join(vals)+"\n")
+                    t = translate("Arch", "Unable to retrieve value from object")
+                    FreeCAD.Console.PrintWarning(t + ": " + o.Name + "." + ".".join(vals) + "\n")
                 else:
                     if VERBOSE:
                         if tp and unit:
-                            v = fs.format(FreeCAD.Units.Quantity(d,tp).getValueAs(unit).Value)
-                            print(v,unit)
+                            v = fs.format(FreeCAD.Units.Quantity(d, tp).getValueAs(unit).Value)
+                            print(v, unit)
                         elif isinstance(d, str):
-                            if d.replace('.', '', 1).isdigit():
+                            if d.replace(".", "", 1).isdigit():
                                 print(fs.format(d))
                             else:
                                 print(d)
@@ -458,13 +529,13 @@ class _ArchSchedule:
                             print(fs.format(d))
                     if details:
                         self.li += 1
-                        self.data["A"+str(self.li)] = o.Name+" ("+o.Label+")"
+                        self.data["A" + str(self.li)] = o.Name + " (" + o.Label + ")"
                         if tp and unit:
-                            q = FreeCAD.Units.Quantity(d,tp)
-                            self.data["B"+str(self.li)] = str(q.getValueAs(unit).Value)
-                            self.data["C"+str(self.li)] = unit
+                            q = FreeCAD.Units.Quantity(d, tp)
+                            self.data["B" + str(self.li)] = str(q.getValueAs(unit).Value)
+                            self.data["C" + str(self.li)] = unit
                         else:
-                            self.data["B"+str(self.li)] = str(d)
+                            self.data["B" + str(self.li)] = str(d)
 
                     if sumval:
                         sumval += d
@@ -472,30 +543,30 @@ class _ArchSchedule:
                         sumval = d
             val = sumval
             if tp:
-                q = FreeCAD.Units.Quantity(val,tp)
+                q = FreeCAD.Units.Quantity(val, tp)
 
             # write data
             if details:
                 self.li += 1
-                self.data["A"+str(self.li)] = "TOTAL"
+                self.data["A" + str(self.li)] = "TOTAL"
             if q and unit:
-                self.data["B"+str(self.li)] = str(q.getValueAs(unit).Value)
-                self.data["C"+str(self.li)] = unit
+                self.data["B" + str(self.li)] = str(q.getValueAs(unit).Value)
+                self.data["C" + str(self.li)] = unit
             else:
-                self.data["B"+str(self.li)] = str(val)
+                self.data["B" + str(self.li)] = str(val)
             if VERBOSE:
                 if tp and unit:
-                    v = fs.format(FreeCAD.Units.Quantity(val,tp).getValueAs(unit).Value)
-                    print("TOTAL:"+34*" "+v+" "+unit)
+                    v = fs.format(FreeCAD.Units.Quantity(val, tp).getValueAs(unit).Value)
+                    print("TOTAL:" + 34 * " " + v + " " + unit)
                 elif isinstance(val, str):
-                    if val.replace('.', '', 1).isdigit():
+                    if val.replace(".", "", 1).isdigit():
                         v = fs.format(val)
-                        print("TOTAL:"+34*" "+v)
+                        print("TOTAL:" + 34 * " " + v)
                     else:
-                        print("TOTAL:"+34*" "+val)
+                        print("TOTAL:" + 34 * " " + val)
                 else:
                     v = fs.format(val)
-                    print("TOTAL:"+34*" "+v)
+                    print("TOTAL:" + 34 * " " + v)
 
     def update_from_elts(self, elts, val, unit, details):
         """Updates the spreadsheet data from IFC elements"""
@@ -503,12 +574,12 @@ class _ArchSchedule:
         if val.upper() == "COUNT":
             val = len(elts)
             if VERBOSE:
-                print ("COUNT:", val, "(", ",".join(["#"+str(e.id()) for e in elts]), ")")
-            self.data["B"+str(self.li)] = str(val)
+                print("COUNT:", val, "(", ",".join(["#" + str(e.id()) for e in elts]), ")")
+            self.data["B" + str(self.li)] = str(val)
             if details:
                 # additional blank line...
                 self.li += 1
-                self.data["A"+str(self.li)] = " "
+                self.data["A" + str(self.li)] = " "
         else:
             total = 0
             for el in elts:
@@ -533,21 +604,21 @@ class _ArchSchedule:
                     if details:
                         self.li += 1
                         name = el.Name if el.Name else ""
-                        self.data["A"+str(self.li)] = "#" + str(el.id()) + name
-                        self.data["B"+str(self.li)] = str(elval)
+                        self.data["A" + str(self.li)] = "#" + str(el.id()) + name
+                        self.data["B" + str(self.li)] = str(elval)
                         if VERBOSE:
-                            print("#"+str(el.id())+"."+val+" = "+str(elval))
-                    if isinstance(elval, str) and elval.replace('.', '', 1).isdigit():
+                            print("#" + str(el.id()) + "." + val + " = " + str(elval))
+                    if isinstance(elval, str) and elval.replace(".", "", 1).isdigit():
                         total += float(elval)
                     elif isinstance(elval, (int, float)):
                         total += elval
             if total:
                 if details:
                     self.li += 1
-                    self.data["A"+str(self.li)] = "TOTAL"
-                self.data["B"+str(self.li)] = str(total)
+                    self.data["A" + str(self.li)] = "TOTAL"
+                self.data["B" + str(self.li)] = str(total)
                 if VERBOSE:
-                    print("TOTAL:",str(total))
+                    print("TOTAL:", str(total))
 
     def create_ifc(self, obj, ifcfile, export=False):
         """Creates an IFC element for this object"""
@@ -557,7 +628,9 @@ class _ArchSchedule:
         proj = ifcfile.by_type("IfcProject")[0]
         elt = ifc_tools.api_run("root.create_entity", ifcfile, ifc_class="IfcControl")
         ifc_tools.set_attribute(ifcfile, elt, "Name", obj.Label)
-        ifc_tools.api_run("project.assign_declaration", ifcfile, definitions=[elt], relating_context=proj)
+        ifc_tools.api_run(
+            "project.assign_declaration", ifcfile, definitions=[elt], relating_context=proj
+        )
         if not export:
             ifc_tools.add_properties(obj, ifcfile, elt)
         return elt
@@ -567,13 +640,15 @@ class _ArchSchedule:
 
         from nativeifc import ifc_psets  # lazy loading
 
-        ifc_psets.edit_pset(obj, "Operation", "::".join(obj.Operation), ifcfile=ifcfile, element=elt)
+        ifc_psets.edit_pset(
+            obj, "Operation", "::".join(obj.Operation), ifcfile=ifcfile, element=elt
+        )
         ifc_psets.edit_pset(obj, "Value", "::".join(obj.Value), ifcfile=ifcfile, element=elt)
         ifc_psets.edit_pset(obj, "Unit", "::".join(obj.Unit), ifcfile=ifcfile, element=elt)
         ifc_psets.edit_pset(obj, "Objects", "::".join(obj.Objects), ifcfile=ifcfile, element=elt)
         ifc_psets.edit_pset(obj, "Filter", "::".join(obj.Filter), ifcfile=ifcfile, element=elt)
 
-    def  export_ifc(self, obj, ifcfile):
+    def export_ifc(self, obj, ifcfile):
         """Exports the object to IFC (does not modify the FreeCAD object)."""
 
         elt = self.create_ifc(obj, ifcfile, export=True)
@@ -584,7 +659,7 @@ class _ArchSchedule:
 
         return self.Type
 
-    def loads(self,state):
+    def loads(self, state):
 
         if state:
             self.Type = state
@@ -630,23 +705,25 @@ class _ArchSchedule:
                 # If the object is in an array, add it and the rest of its elements
                 # to the list.
                 array = self.getArray(obj)
-                for i in range(1, array): # The first element (0) was already added
+                for i in range(1, array):  # The first element (0) was already added
                     expandedobjs.append(obj)
 
         return expandedobjs
 
-class _ViewProviderArchSchedule:
 
+class _ViewProviderArchSchedule:
     "A View Provider for Schedules"
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
         if self.Object.AutoUpdate is False:
             import TechDrawGui
+
             return ":/icons/TechDraw_TreePageUnsync.svg"
         import Arch_rc
+
         return ":/icons/Arch_Schedule.svg"
 
     def isShow(self):
@@ -662,6 +739,7 @@ class _ViewProviderArchSchedule:
         self.taskd = ArchScheduleTaskPanel(vobj.Object)
         if not self.taskd.form.isVisible():
             from PySide import QtCore
+
             QtCore.QTimer.singleShot(100, self.showEditor)
         return True
 
@@ -682,26 +760,21 @@ class _ViewProviderArchSchedule:
 
     def setupContextMenu(self, vobj, menu):
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
-        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
-                                   menu)
-        QtCore.QObject.connect(actionEdit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"), menu)
+        QtCore.QObject.connect(actionEdit, QtCore.SIGNAL("triggered()"), self.edit)
         menu.addAction(actionEdit)
 
         if self.Object.CreateSpreadsheet is True:
             msg = translate("Arch", "Remove spreadsheet")
         else:
             msg = translate("Arch", "Attach spreadsheet")
-        actionToggleSpreadsheet = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"),
-                                                msg,
-                                                menu)
-        QtCore.QObject.connect(actionToggleSpreadsheet,
-                               QtCore.SIGNAL("triggered()"),
-                               self.toggleSpreadsheet)
+        actionToggleSpreadsheet = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"), msg, menu)
+        QtCore.QObject.connect(
+            actionToggleSpreadsheet, QtCore.SIGNAL("triggered()"), self.toggleSpreadsheet
+        )
         menu.addAction(actionToggleSpreadsheet)
 
     def edit(self):
@@ -711,31 +784,29 @@ class _ViewProviderArchSchedule:
         self.Object.CreateSpreadsheet = not self.Object.CreateSpreadsheet
 
     def claimChildren(self):
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             return [self.Object.Proxy.getSpreadSheet(self.Object)]
 
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
-    def getDisplayModes(self,vobj):
+    def getDisplayModes(self, vobj):
         return ["Default"]
 
     def getDefaultDisplayMode(self):
         return "Default"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         return mode
 
 
 class ArchScheduleTaskPanel:
+    """The editmode TaskPanel for Schedules"""
 
-    '''The editmode TaskPanel for Schedules'''
-
-    def __init__(self,obj=None):
-
+    def __init__(self, obj=None):
         """Sets the panel up"""
 
         self.obj = obj
@@ -751,20 +822,20 @@ class ArchScheduleTaskPanel:
         self.form.buttonSelect.setIcon(QtGui.QIcon(":/icons/edit-select-all.svg"))
 
         # restore widths
-        self.form.list.setColumnWidth(0,params.get_param_arch("ScheduleColumnWidth0"))
-        self.form.list.setColumnWidth(1,params.get_param_arch("ScheduleColumnWidth1"))
-        self.form.list.setColumnWidth(2,params.get_param_arch("ScheduleColumnWidth2"))
-        self.form.list.setColumnWidth(3,params.get_param_arch("ScheduleColumnWidth3"))
+        self.form.list.setColumnWidth(0, params.get_param_arch("ScheduleColumnWidth0"))
+        self.form.list.setColumnWidth(1, params.get_param_arch("ScheduleColumnWidth1"))
+        self.form.list.setColumnWidth(2, params.get_param_arch("ScheduleColumnWidth2"))
+        self.form.list.setColumnWidth(3, params.get_param_arch("ScheduleColumnWidth3"))
         w = params.get_param_arch("ScheduleDialogWidth")
         h = params.get_param_arch("ScheduleDialogHeight")
-        self.form.resize(w,h)
+        self.form.resize(w, h)
 
         # restore default states
         self.form.checkAutoUpdate.setChecked(PARAMS.GetBool("ScheduleAutoUpdate", False))
 
         # set delegate - Not using custom delegates for now...
-        #self.form.list.setItemDelegate(ScheduleDelegate())
-        #self.form.list.setEditTriggers(QtGui.QAbstractItemView.DoubleClicked)
+        # self.form.list.setItemDelegate(ScheduleDelegate())
+        # self.form.list.setEditTriggers(QtGui.QAbstractItemView.DoubleClicked)
 
         # connect slots
         self.form.buttonAdd.clicked.connect(self.add)
@@ -779,18 +850,18 @@ class ArchScheduleTaskPanel:
         self.form.list.clearContents()
 
         if self.obj:
-            #for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
+            # for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
             #    if len(obj.Operation) != len(p):
             #        return
             self.form.list.setRowCount(len(obj.Operation))
             for i in range(5):
                 for j in range(len(obj.Operation)):
                     try:
-                        text = [obj.Operation,obj.Value,obj.Unit,obj.Objects,obj.Filter][i][j]
+                        text = [obj.Operation, obj.Value, obj.Unit, obj.Objects, obj.Filter][i][j]
                     except:
                         text = ""
                     item = QtGui.QTableWidgetItem(text)
-                    self.form.list.setItem(j,i,item)
+                    self.form.list.setItem(j, i, item)
             self.form.lineEditName.setText(self.obj.Label)
             self.form.checkSpreadsheet.setChecked(self.obj.CreateSpreadsheet)
             self.form.checkDetailed.setChecked(self.obj.DetailedResults)
@@ -798,75 +869,84 @@ class ArchScheduleTaskPanel:
 
         # center over FreeCAD window
         mw = FreeCADGui.getMainWindow()
-        self.form.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center())
+        self.form.move(
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center()
+        )
 
         self.form.show()
 
     def add(self):
-
         """Adds a new row below the last one"""
 
-        self.form.list.insertRow(self.form.list.currentRow()+1)
+        self.form.list.insertRow(self.form.list.currentRow() + 1)
 
     def remove(self):
-
         """Removes the current row"""
 
         if self.form.list.currentRow() >= 0:
             self.form.list.removeRow(self.form.list.currentRow())
 
     def clear(self):
-
         """Clears the list"""
 
         self.form.list.clearContents()
         self.form.list.setRowCount(0)
 
     def importCSV(self):
-
         """Imports a CSV file"""
 
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV file"), None, "CSV files (*.csv *.CSV)")
+        filename = QtGui.QFileDialog.getOpenFileName(
+            QtGui.QApplication.activeWindow(),
+            translate("Arch", "Import CSV file"),
+            None,
+            "CSV files (*.csv *.CSV)",
+        )
         if filename:
             filename = filename[0]
             self.form.list.clearContents()
             import csv
-            with open(filename,'r') as csvfile:
+
+            with open(filename, "r") as csvfile:
                 r = 0
                 for row in csv.reader(csvfile):
                     self.form.list.insertRow(r)
                     for i in range(5):
                         if len(row) > i:
                             t = row[i]
-                            #t = t.replace("²","^2")
-                            #t = t.replace("³","^3")
-                            self.form.list.setItem(r,i,QtGui.QTableWidgetItem(t))
+                            # t = t.replace("²","^2")
+                            # t = t.replace("³","^3")
+                            self.form.list.setItem(r, i, QtGui.QTableWidgetItem(t))
                     r += 1
 
     def export(self):
-
         """Exports the results as MD or CSV"""
 
         # commit latest changes
         self.writeValues()
 
         # tests
-        if not("Up-to-date" in self.obj.State):
+        if not ("Up-to-date" in self.obj.State):
             self.obj.Proxy.execute(self.obj)
-        if not hasattr(self.obj.Proxy,"data"):
+        if not hasattr(self.obj.Proxy, "data"):
             return
         if not self.obj.Proxy.data:
             return
 
-        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
-                                                     translate("Arch","Export CSV file"),
-                                                     None,
-                                                     "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)");
+        filename = QtGui.QFileDialog.getSaveFileName(
+            QtGui.QApplication.activeWindow(),
+            translate("Arch", "Export CSV file"),
+            None,
+            "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)",
+        )
         if filename:
             filt = filename[1]
             filename = filename[0]
             # add missing extension
-            if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".tsv")) and (not filename.lower().endswith(".md")):
+            if (
+                (not filename.lower().endswith(".csv"))
+                and (not filename.lower().endswith(".tsv"))
+                and (not filename.lower().endswith(".md"))
+            ):
                 if "csv" in filt:
                     filename += ".csv"
                 elif "tsv" in filt:
@@ -874,20 +954,21 @@ class ArchScheduleTaskPanel:
                 else:
                     filename += ".md"
             if filename.lower().endswith(".csv"):
-                self.exportCSV(filename,delimiter=",")
+                self.exportCSV(filename, delimiter=",")
             elif filename.lower().endswith(".tsv"):
-                self.exportCSV(filename,delimiter="\t")
+                self.exportCSV(filename, delimiter="\t")
             elif filename.lower().endswith(".md"):
                 self.exportMD(filename)
             else:
-                FreeCAD.Console.PrintError(translate("Arch","Unable to recognize that file type")+":"+filename+"\n")
+                FreeCAD.Console.PrintError(
+                    translate("Arch", "Unable to recognize that file type") + ":" + filename + "\n"
+                )
 
     def getRows(self):
-
         """get the rows that contain data"""
 
         rows = []
-        if hasattr(self.obj.Proxy,"data") and self.obj.Proxy.data:
+        if hasattr(self.obj.Proxy, "data") and self.obj.Proxy.data:
             for key in self.obj.Proxy.data.keys():
                 n = key[1:]
                 if not n in rows:
@@ -895,47 +976,59 @@ class ArchScheduleTaskPanel:
         rows.sort(key=int)
         return rows
 
-    def exportCSV(self,filename,delimiter="\t"):
-
+    def exportCSV(self, filename, delimiter="\t"):
         """Exports the results as a CSV/TSV file"""
 
         import csv
-        with open(filename, 'w') as csvfile:
-            csvfile = csv.writer(csvfile,delimiter=delimiter)
-            csvfile.writerow([translate("Arch","Operation"),translate("Arch","Value"),translate("Arch","Unit")])
+
+        with open(filename, "w") as csvfile:
+            csvfile = csv.writer(csvfile, delimiter=delimiter)
+            csvfile.writerow(
+                [
+                    translate("Arch", "Operation"),
+                    translate("Arch", "Value"),
+                    translate("Arch", "Unit"),
+                ]
+            )
             if self.obj.DetailedResults:
-                csvfile.writerow(["","",""])
+                csvfile.writerow(["", "", ""])
             for i in self.getRows():
                 r = []
-                for j in ["A","B","C"]:
-                    if j+i in self.obj.Proxy.data:
-                        r.append(str(self.obj.Proxy.data[j+i]))
+                for j in ["A", "B", "C"]:
+                    if j + i in self.obj.Proxy.data:
+                        r.append(str(self.obj.Proxy.data[j + i]))
                     else:
                         r.append("")
                 csvfile.writerow(r)
-        print("successfully exported ",filename)
+        print("successfully exported ", filename)
 
-    def exportMD(self,filename):
-
+    def exportMD(self, filename):
         """Exports the results as a Markdown file"""
 
-        with open(filename, 'w') as mdfile:
-            mdfile.write("| "+translate("Arch","Operation")+" | "+translate("Arch","Value")+" | "+translate("Arch","Unit")+" |\n")
+        with open(filename, "w") as mdfile:
+            mdfile.write(
+                "| "
+                + translate("Arch", "Operation")
+                + " | "
+                + translate("Arch", "Value")
+                + " | "
+                + translate("Arch", "Unit")
+                + " |\n"
+            )
             mdfile.write("| --- | --- | --- |\n")
             if self.obj.DetailedResults:
                 mdfile.write("| | | |\n")
             for i in self.getRows():
                 r = []
-                for j in ["A","B","C"]:
-                    if j+i in self.obj.Proxy.data:
-                        r.append(str(self.obj.Proxy.data[j+i]))
+                for j in ["A", "B", "C"]:
+                    if j + i in self.obj.Proxy.data:
+                        r.append(str(self.obj.Proxy.data[j + i]))
                     else:
                         r.append("")
-                mdfile.write("| "+" | ".join(r)+" |\n")
-        print("successfully exported ",filename)
+                mdfile.write("| " + " | ".join(r) + " |\n")
+        print("successfully exported ", filename)
 
     def select(self):
-
         """Adds selected objects to current row"""
 
         if self.form.list.currentRow() >= 0:
@@ -946,19 +1039,18 @@ class ArchScheduleTaskPanel:
                         sel += ";"
                     sel += o.Name
             if sel:
-                self.form.list.setItem(self.form.list.currentRow(),3,QtGui.QTableWidgetItem(sel))
+                self.form.list.setItem(self.form.list.currentRow(), 3, QtGui.QTableWidgetItem(sel))
 
     def accept(self):
-
         """Saves the changes and closes the dialog"""
 
         # store widths
-        params.set_param_arch("ScheduleColumnWidth0",self.form.list.columnWidth(0))
-        params.set_param_arch("ScheduleColumnWidth1",self.form.list.columnWidth(1))
-        params.set_param_arch("ScheduleColumnWidth2",self.form.list.columnWidth(2))
-        params.set_param_arch("ScheduleColumnWidth3",self.form.list.columnWidth(3))
-        params.set_param_arch("ScheduleDialogWidth",self.form.width())
-        params.set_param_arch("ScheduleDialogHeight",self.form.height())
+        params.set_param_arch("ScheduleColumnWidth0", self.form.list.columnWidth(0))
+        params.set_param_arch("ScheduleColumnWidth1", self.form.list.columnWidth(1))
+        params.set_param_arch("ScheduleColumnWidth2", self.form.list.columnWidth(2))
+        params.set_param_arch("ScheduleColumnWidth3", self.form.list.columnWidth(3))
+        params.set_param_arch("ScheduleDialogWidth", self.form.width())
+        params.set_param_arch("ScheduleDialogHeight", self.form.height())
 
         # store default states
         PARAMS.SetBool("ScheduleAutoUpdate", self.form.checkAutoUpdate.isChecked())
@@ -970,7 +1062,6 @@ class ArchScheduleTaskPanel:
         return True
 
     def reject(self):
-
         """Close dialog without saving"""
 
         self.form.hide()
@@ -978,16 +1069,16 @@ class ArchScheduleTaskPanel:
         return True
 
     def writeValues(self):
-
         """commits values and recalculate"""
 
         if not self.obj:
             import Arch
+
             self.obj = Arch.makeSchedule()
-        lists = [ [], [], [], [], [] ]
+        lists = [[], [], [], [], []]
         for i in range(self.form.list.rowCount()):
             for j in range(5):
-                cell = self.form.list.item(i,j)
+                cell = self.form.list.item(i, j)
                 if cell:
                     lists[j].append(cell.text())
                 else:

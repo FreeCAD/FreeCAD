@@ -45,53 +45,45 @@ class Wire(DraftObject):
     def __init__(self, obj):
         super().__init__(obj, "Wire")
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The vertices of the wire")
-        obj.addProperty("App::PropertyVectorList","Points", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The vertices of the wire")
+        obj.addProperty("App::PropertyVectorList", "Points", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "If the wire is closed or not")
-        obj.addProperty("App::PropertyBool","Closed", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "If the wire is closed or not")
+        obj.addProperty("App::PropertyBool", "Closed", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The base object is the wire, it's formed from 2 objects")
-        obj.addProperty("App::PropertyLink","Base", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property", "The base object is the wire, it's formed from 2 objects"
+        )
+        obj.addProperty("App::PropertyLink", "Base", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The tool object is the wire, it's formed from 2 objects")
-        obj.addProperty("App::PropertyLink","Tool", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property", "The tool object is the wire, it's formed from 2 objects"
+        )
+        obj.addProperty("App::PropertyLink", "Tool", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The start point of this line")
-        obj.addProperty("App::PropertyVectorDistance","Start", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The start point of this line")
+        obj.addProperty("App::PropertyVectorDistance", "Start", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The end point of this line")
-        obj.addProperty("App::PropertyVectorDistance","End", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The end point of this line")
+        obj.addProperty("App::PropertyVectorDistance", "End", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The length of this line")
-        obj.addProperty("App::PropertyLength","Length", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The length of this line")
+        obj.addProperty("App::PropertyLength", "Length", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyLength","FilletRadius", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyLength","ChamferSize", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Create a face if this object is closed")
-        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face if this object is closed")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The number of subdivisions of each edge")
-        obj.addProperty("App::PropertyInteger","Subdivisions", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The number of subdivisions of each edge")
+        obj.addProperty("App::PropertyInteger", "Subdivisions", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The area of this object")
-        obj.addProperty("App::PropertyArea","Area", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
@@ -126,23 +118,26 @@ class Wire(DraftObject):
         _log("v1.1, " + obj.Name + ", migrated view properties")
 
     def execute(self, obj):
-        if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.
+        if self.props_changed_placement_only(
+            obj
+        ):  # Supplying obj is required because of `Base` and `Tool`.
             obj.positionBySupport()
             self.update_start_end(obj)
             self.props_changed_clear()
             return
 
         import Part
+
         plm = obj.Placement
         if obj.Base and (not obj.Tool):
             if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                 shape = obj.Base.Shape.copy()
                 if obj.Base.Shape.isClosed():
-                    if getattr(obj,"MakeFace",True):
+                    if getattr(obj, "MakeFace", True):
                         shape = Part.Face(shape)
                 obj.Shape = shape
         elif obj.Base and obj.Tool:
-            if hasattr(obj.Base,'Shape') and hasattr(obj.Tool,'Shape'):
+            if hasattr(obj.Base, "Shape") and hasattr(obj.Tool, "Shape"):
                 if (not obj.Base.Shape.isNull()) and (not obj.Tool.Shape.isNull()):
                     sh1 = obj.Base.Shape.copy()
                     sh2 = obj.Tool.Shape.copy()
@@ -151,41 +146,44 @@ class Wire(DraftObject):
                         shape = DraftGeomUtils.concatenate(shape)
                         obj.Shape = shape
                         p = []
-                        for v in shape.Vertexes: p.append(v.Point)
-                        if obj.Points != p: obj.Points = p
+                        for v in shape.Vertexes:
+                            p.append(v.Point)
+                        if obj.Points != p:
+                            obj.Points = p
         elif obj.Points:
             if obj.Points[0] == obj.Points[-1]:
-                if not obj.Closed: obj.Closed = True
+                if not obj.Closed:
+                    obj.Closed = True
                 obj.Points.pop()
             if obj.Closed and (len(obj.Points) > 2):
                 pts = obj.Points
-                if getattr(obj,"Subdivisions",0) > 0:
+                if getattr(obj, "Subdivisions", 0) > 0:
                     npts = []
                     for i in range(len(pts)):
                         p1 = pts[i]
                         npts.append(pts[i])
-                        if i == len(pts)-1:
+                        if i == len(pts) - 1:
                             p2 = pts[0]
                         else:
-                            p2 = pts[i+1]
+                            p2 = pts[i + 1]
                         v = p2.sub(p1)
-                        v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
+                        v = DraftVecUtils.scaleTo(v, v.Length / (obj.Subdivisions + 1))
                         for j in range(obj.Subdivisions):
-                            npts.append(p1.add(App.Vector(v).multiply(j+1)))
+                            npts.append(p1.add(App.Vector(v).multiply(j + 1)))
                     pts = npts
-                shape = Part.makePolygon(pts+[pts[0]])
+                shape = Part.makePolygon(pts + [pts[0]])
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
+                        w = DraftGeomUtils.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                         if w:
                             shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
+                        w = DraftGeomUtils.filletWire(shape, obj.FilletRadius.Value)
                         if w:
                             shape = w
                 try:
-                    if getattr(obj,"MakeFace",True):
+                    if getattr(obj, "MakeFace", True):
                         shape = Part.Face(shape)
                 except Part.OCCError:
                     pass
@@ -194,18 +192,18 @@ class Wire(DraftObject):
                 pts = obj.Points[1:]
                 lp = obj.Points[0]
                 for p in pts:
-                    if not DraftVecUtils.equals(lp,p):
-                        if getattr(obj,"Subdivisions",0) > 0:
+                    if not DraftVecUtils.equals(lp, p):
+                        if getattr(obj, "Subdivisions", 0) > 0:
                             npts = []
                             v = p.sub(lp)
-                            v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
-                            edges.append(Part.LineSegment(lp,lp.add(v)).toShape())
+                            v = DraftVecUtils.scaleTo(v, v.Length / (obj.Subdivisions + 1))
+                            edges.append(Part.LineSegment(lp, lp.add(v)).toShape())
                             lv = lp.add(v)
                             for j in range(obj.Subdivisions):
-                                edges.append(Part.LineSegment(lv,lv.add(v)).toShape())
+                                edges.append(Part.LineSegment(lv, lv.add(v)).toShape())
                                 lv = lv.add(v)
                         else:
-                            edges.append(Part.LineSegment(lp,p).toShape())
+                            edges.append(Part.LineSegment(lp, p).toShape())
                         lp = p
                 try:
                     shape = Part.Wire(edges)
@@ -214,19 +212,19 @@ class Wire(DraftObject):
                     shape = None
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
+                        w = DraftGeomUtils.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                         if w:
                             shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
+                        w = DraftGeomUtils.filletWire(shape, obj.FilletRadius.Value)
                         if w:
                             shape = w
             if shape:
                 obj.Shape = shape
-                if hasattr(obj,"Area") and hasattr(shape,"Area"):
+                if hasattr(obj, "Area") and hasattr(shape, "Area"):
                     obj.Area = shape.Area
-                if hasattr(obj,"Length"):
+                if hasattr(obj, "Length"):
                     obj.Length = shape.Length
 
         obj.Placement = plm

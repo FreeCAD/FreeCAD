@@ -54,12 +54,12 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
 
     configureViewer();
 
-    const auto connectLightEvents = [&](QuantitySpinBox* horizontalAngleSpinBox,
-                                        QuantitySpinBox* verticalAngleSpinBox,
-                                        QSpinBox* intensitySpinBox,
-                                        ColorButton* colorButton,
-                                        QCheckBox* enabledCheckbox,
-                                        auto updateLightFunction) {
+    const auto connectLightEvents = [this](QuantitySpinBox* horizontalAngleSpinBox,
+                                           QuantitySpinBox* verticalAngleSpinBox,
+                                           QSpinBox* intensitySpinBox,
+                                           ColorButton* colorButton,
+                                           QCheckBox* enabledCheckbox,
+                                           auto updateLightFunction) {
         connect(horizontalAngleSpinBox,
                 qOverload<double>(&QuantitySpinBox::valueChanged),
                 this,
@@ -80,13 +80,13 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
 #endif
     };
 
-    const auto updateLight = [&](SoDirectionalLight* light,
-                                 QuantitySpinBox* horizontalAngleSpinBox,
-                                 QuantitySpinBox* verticalAngleSpinBox,
-                                 QSpinBox* intensitySpinBox,
-                                 ColorButton* colorButton,
-                                 QCheckBox* enabledCheckbox,
-                                 std::function<void(bool)> setLightEnabled) {
+    const auto updateLight = [this](SoDirectionalLight* light,
+                                    QuantitySpinBox* horizontalAngleSpinBox,
+                                    QuantitySpinBox* verticalAngleSpinBox,
+                                    QSpinBox* intensitySpinBox,
+                                    ColorButton* colorButton,
+                                    QCheckBox* enabledCheckbox,
+                                    std::function<void(bool)> setLightEnabled) {
         light->color = Base::convertTo<SbColor>(colorButton->color());
         light->intensity = Base::fromPercent(intensitySpinBox->value());
         light->direction =
@@ -95,38 +95,38 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
         setLightEnabled(enabledCheckbox->isChecked());
     };
 
-    const auto updateHeadLight = [&] {
+    const auto updateHeadLight = [this, updateLight] {
         updateLight(view->getHeadlight(),
                     ui->mainLightHorizontalAngle,
                     ui->mainLightVerticalAngle,
                     ui->mainLightIntensitySpinBox,
                     ui->mainLightColor,
                     ui->mainLightEnable,
-                    [&](bool enabled) {
+                    [this](bool enabled) {
                         view->setHeadlightEnabled(enabled);
                     });
     };
 
-    const auto updateFillLight = [&] {
+    const auto updateFillLight = [this, updateLight] {
         updateLight(view->getFillLight(),
                     ui->fillLightHorizontalAngle,
                     ui->fillLightVerticalAngle,
                     ui->fillLightIntensitySpinBox,
                     ui->fillLightColor,
                     ui->fillLightEnable,
-                    [&](bool enabled) {
+                    [this](bool enabled) {
                         view->setFillLightEnabled(enabled);
                     });
     };
 
-    const auto updateBackLight = [&] {
+    const auto updateBackLight = [this, updateLight] {
         updateLight(view->getBacklight(),
                     ui->backLightHorizontalAngle,
                     ui->backLightVerticalAngle,
                     ui->backLightIntensitySpinBox,
                     ui->backLightColor,
                     ui->backLightEnable,
-                    [&](bool enabled) {
+                    [this](bool enabled) {
                         view->setBacklightEnabled(enabled);
                     });
     };
@@ -150,7 +150,7 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
                        ui->fillLightEnable,
                        updateFillLight);
 
-    const auto updateAmbientLight = [&] {
+    const auto updateAmbientLight = [this] {
         view->getEnvironment()->ambientColor =
             Base::convertTo<SbColor>(ui->ambientLightColor->color());
         view->getEnvironment()->ambientIntensity =
@@ -269,9 +269,9 @@ void DlgSettingsLightSources::saveSettings()
         }
     }
 
-    const auto saveAngles = [&](QuantitySpinBox* horizontalAngleSpinBox,
-                                QuantitySpinBox* verticalAngleSpinBox,
-                                const char* parameter) {
+    const auto saveAngles = [this](QuantitySpinBox* horizontalAngleSpinBox,
+                                   QuantitySpinBox* verticalAngleSpinBox,
+                                   const char* parameter) {
         try {
             const auto direction = azimuthElevationToDirection(horizontalAngleSpinBox->rawValue(),
                                                                verticalAngleSpinBox->rawValue());
@@ -296,9 +296,9 @@ void DlgSettingsLightSources::loadSettings()
         }
     }
 
-    const auto loadAngles = [&](QuantitySpinBox* horizontalAngleSpinBox,
-                                QuantitySpinBox* verticalAngleSpinBox,
-                                const char* parameter) {
+    const auto loadAngles = [this](QuantitySpinBox* horizontalAngleSpinBox,
+                                   QuantitySpinBox* verticalAngleSpinBox,
+                                   const char* parameter) {
         try {
             const auto direction = Base::stringToVector(hGrp->GetASCII(parameter));
             const auto [azimuth, elevation] =

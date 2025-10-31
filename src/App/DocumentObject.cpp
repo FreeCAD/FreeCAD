@@ -824,12 +824,11 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     }
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
-        // We must ensure the Label is unique in the document (well, sort of...).
+        // The label already exists but settings are such that duplicate labels should not be assigned.
         std::string objName = getNameInDocument();
-        if (doc->haveSameBaseName(objName, newLabel)) {
-            // The base name of the proposed label equals the base name of the object Name, so we
-            // use the object Name, which could actually be identical to another object's Label, but
-            // probably isn't.
+        if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
+            // The object name is not already a Label and the base name of the proposed label
+            // equals the base name of the object Name, so we use the object Name as the replacement Label.
             newLabel = objName;
         }
         else {

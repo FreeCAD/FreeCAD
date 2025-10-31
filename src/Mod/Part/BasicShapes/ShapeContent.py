@@ -1,5 +1,4 @@
 #! python
-# -*- coding: utf-8 -*-
 # ShapeContent.py
 # 2021, by Mark Ganson <TheMarkster>
 # LGPL 2.1 or later

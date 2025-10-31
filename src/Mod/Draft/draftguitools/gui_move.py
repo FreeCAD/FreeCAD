@@ -50,16 +50,21 @@ class Move(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Move",
-                "Accel": "M, V",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Move", "Move"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects.\nIf the \"Copy\" option is active, it creates displaced copies.")}
+        return {
+            "Pixmap": "Draft_Move",
+            "Accel": "M, V",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Move", "Move"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Move",
+                'Moves the selected objects.\nIf the "Copy" option is active, it creates displaced copies.',
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name="Move",
-                          is_subtool=isinstance(App.activeDraftCommand,
-                                                SubelementHighlight))
+        super().Activated(
+            name="Move", is_subtool=isinstance(App.activeDraftCommand, SubelementHighlight)
+        )
         if not self.ui:
             return
         self.ghosts = []
@@ -78,7 +83,7 @@ class Move(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selection = Gui.Selection.getSelectionEx("", 0)
-        Gui.doCommand("selection = FreeCADGui.Selection.getSelectionEx(\"\", 0)")
+        Gui.doCommand('selection = FreeCADGui.Selection.getSelectionEx("", 0)')
         self.ui.lineUi(title=translate("draft", self.featureName), icon="Draft_Move")
         self.ui.modUi()
         if self.copymode:
@@ -119,9 +124,11 @@ class Move(gui_base_original.Modifier):
             self.finish()
         elif arg["Type"] == "SoLocation2Event":
             self.handle_mouse_move_event(arg)
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+        elif (
+            arg["Type"] == "SoMouseButtonEvent"
+            and arg["State"] == "DOWN"
+            and arg["Button"] == "BUTTON1"
+        ):
             self.handle_mouse_click_event(arg)
 
     def handle_mouse_move_event(self, arg):
@@ -162,8 +169,10 @@ class Move(gui_base_original.Modifier):
         else:
             last = self.node[0]
             self.vector = self.point.sub(last)
-            self.move(self.ui.isCopy.isChecked()
-                      or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+            self.move(
+                self.ui.isCopy.isChecked()
+                or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
+            )
             if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.extendedCopy = True
             else:
@@ -179,12 +188,15 @@ class Move(gui_base_original.Modifier):
             if not self.ghosts:
                 _err(translate("draft", "No valid subelements selected"))
         else:
-            objs, places, _ = utils._modifiers_process_selection(self.selection, copy, add_movable_children=(not copy))
+            objs, places, _ = utils._modifiers_process_selection(
+                self.selection, copy, add_movable_children=(not copy)
+            )
             self.ghosts = [trackers.ghostTracker(objs, parent_places=places)]
 
     def get_subelement_ghosts(self, selection, copy):
         """Get ghost for the subelements (vertices, edges)."""
         import Part
+
         ghosts = []
         for sel in selection:
             for sub in sel.SubElementNames if sel.SubElementNames else [""]:
@@ -228,6 +240,6 @@ class Move(gui_base_original.Modifier):
             self.finish(cont=None)
 
 
-Gui.addCommand('Draft_Move', Move())
+Gui.addCommand("Draft_Move", Move())
 
 ## @}

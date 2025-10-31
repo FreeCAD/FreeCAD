@@ -43,8 +43,7 @@ from draftutils import params
 from draftutils import utils
 
 
-def scale(selection, scale, center=App.Vector(0, 0, 0),
-          copy=False, clone=False, subelements=False):
+def scale(selection, scale, center=App.Vector(0, 0, 0), copy=False, clone=False, subelements=False):
     """scale(selection, scale, [center], [copy], [clone], [subelements])
 
     Scales or copies selected objects.
@@ -82,8 +81,16 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
     single object / list with 2 or more objects / empty list
         The objects (or their copies).
     """
-    utils.type_check([(scale, App.Vector), (center, App.Vector),
-                      (copy, bool), (clone, bool), (subelements, bool)], "scale")
+    utils.type_check(
+        [
+            (scale, App.Vector),
+            (center, App.Vector),
+            (copy, bool),
+            (clone, bool),
+            (subelements, bool),
+        ],
+        "scale",
+    )
     sx, sy, sz = scale
     if sx * sy * sz == 0:
         raise ValueError("Zero component in scale vector")
@@ -98,9 +105,13 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
         if subelements:
             return _scale_subelements(selection, scale, center, copy)
         else:
-            objs, parent_places, sel_info = utils._modifiers_process_selection(selection, (copy or clone), scale=True)
+            objs, parent_places, sel_info = utils._modifiers_process_selection(
+                selection, (copy or clone), scale=True
+            )
     else:
-        objs = utils._modifiers_filter_objects(utils._modifiers_get_group_contents(selection), (copy or clone), scale=True)
+        objs = utils._modifiers_filter_objects(
+            utils._modifiers_get_group_contents(selection), (copy or clone), scale=True
+        )
         parent_places = None
         sel_info = None
 
@@ -113,7 +124,9 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
     if copy or clone:
         for obj in objs:
             if obj.isDerivedFrom("App::DocumentObjectGroup") and obj.Name not in newgroups:
-                newgroups[obj.Name] = obj.Document.addObject(obj.TypeId, utils.get_real_name(obj.Name))
+                newgroups[obj.Name] = obj.Document.addObject(
+                    obj.TypeId, utils.get_real_name(obj.Name)
+                )
 
     for idx, obj in enumerate(objs):
         newobj = None
@@ -174,7 +187,9 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
                 continue
             if sx == sy == sz:
                 newobj = make_clone.make_clone(obj, forcedraft=True)
-                newobj.Placement.Base = scale_vector_from_center(newobj.Placement.Base, scale, center)
+                newobj.Placement.Base = scale_vector_from_center(
+                    newobj.Placement.Base, scale, center
+                )
                 newobj.Scale = scale
             else:
                 if parent_place.isIdentity():
@@ -221,10 +236,10 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
             else:
                 pla = parent_place * obj.Placement
             pts = [
-                App.Vector (0.0, 0.0, 0.0),
-                App.Vector (obj.Length.Value, 0.0, 0.0),
-                App.Vector (obj.Length.Value, obj.Height.Value, 0.0),
-                App.Vector (0.0, obj.Height.Value, 0.0)
+                App.Vector(0.0, 0.0, 0.0),
+                App.Vector(obj.Length.Value, 0.0, 0.0),
+                App.Vector(obj.Length.Value, obj.Height.Value, 0.0),
+                App.Vector(0.0, obj.Height.Value, 0.0),
             ]
             pts = [pla.multVec(p) for p in pts]
             pts = [scale_vector_from_center(p, scale, center) for p in pts]
@@ -232,7 +247,7 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
             x_vec = pts[1] - pts[0]
             y_vec = pts[3] - pts[0]
             ang = x_vec.getAngle(y_vec)
-            if math.isclose(ang % math.pi/2, math.pi/4, abs_tol=1e-6):
+            if math.isclose(ang % math.pi / 2, math.pi / 4, abs_tol=1e-6):
                 if copy:
                     newobj = make_copy.make_copy(obj)
                     newobj.Placement = pla
@@ -275,6 +290,7 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
 
         if create_non_parametric:
             import Part
+
             if parent_place.isIdentity():
                 pla = obj.Placement
             else:
@@ -288,6 +304,7 @@ def scale(selection, scale, center=App.Vector(0, 0, 0),
             if App.GuiUp:
                 if utils.get_type(obj) in ("Circle", "Ellipse"):
                     from draftviewproviders.view_base import ViewProviderDraft
+
                     ViewProviderDraft(newobj.ViewObject)
                 else:
                     newobj.ViewObject.Proxy = 0
@@ -384,7 +401,7 @@ def scale_edge(obj, edge_idx, scale, center, global_place=None):
     if utils.is_closed_edge(edge_idx, obj):
         scale_vertex(obj, 0, scale, center, global_place)
     else:
-        scale_vertex(obj, edge_idx+1, scale, center, global_place)
+        scale_vertex(obj, edge_idx + 1, scale, center, global_place)
 
 
 def copy_scaled_edge(obj, edge_idx, scale, center, global_place=None):
@@ -400,9 +417,10 @@ def copy_scaled_edge(obj, edge_idx, scale, center, global_place=None):
     if utils.is_closed_edge(edge_idx, obj):
         vertex2 = scale_vector_from_center(glp.multVec(obj.Points[0]), scale, center)
     else:
-        vertex2 = scale_vector_from_center(glp.multVec(obj.Points[edge_idx+1]), scale, center)
+        vertex2 = scale_vector_from_center(glp.multVec(obj.Points[edge_idx + 1]), scale, center)
     newobj = make_line.make_line(vertex1, vertex2)
     gui_utils.format_object(newobj, obj)
     return newobj
+
 
 ## @}

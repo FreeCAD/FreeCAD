@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -132,7 +131,6 @@ class CAMWorkbench(Workbench):
             "CAM_OpActiveToggle",
         ]
         prepcmdlist = [
-            "CAM_Fixture",
             "CAM_Comment",
             "CAM_Stop",
             "CAM_Custom",

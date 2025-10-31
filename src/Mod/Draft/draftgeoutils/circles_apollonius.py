@@ -68,9 +68,11 @@ def outerSoddyCircle(circle1, circle2, circle3):
     Either Creative Commons Attribution 3.0, the MIT license,
     or the GNU Lesser General License LGPL.
     """
-    if (geomType(circle1) != "Circle"
-            or geomType(circle2) != "Circle"
-            or geomType(circle3) != "Circle"):
+    if (
+        geomType(circle1) != "Circle"
+        or geomType(circle2) != "Circle"
+        or geomType(circle3) != "Circle"
+    ):
         print("debug: outerSoddyCircle bad parameters! Must be circles.")
         return None
 
@@ -93,7 +95,7 @@ def outerSoddyCircle(circle1, circle2, circle3):
     q2 = (k2 + 0j) * (B.x + B.y * 1j)
     q3 = (k3 + 0j) * (C.x + C.y * 1j)
 
-    temp = ((q1 * q2) + (q2 * q3) + (q3 * q1))
+    temp = (q1 * q2) + (q2 * q3) + (q3 * q1)
     q4 = q1 + q2 + q3 - ((2 + 0j) * cmath.sqrt(temp))
 
     z = q4 / (k4 + 0j)
@@ -121,9 +123,11 @@ def innerSoddyCircle(circle1, circle2, circle3):
     Converted to python by Martin Buerbaum 2009
     http://www.randelshofer.ch/treeviz/
     """
-    if (geomType(circle1) != "Circle"
-            and geomType(circle2) != "Circle"
-            and geomType(circle3) != "Circle"):
+    if (
+        geomType(circle1) != "Circle"
+        and geomType(circle2) != "Circle"
+        and geomType(circle3) != "Circle"
+    ):
         print("debug: innerSoddyCircle bad parameters! Must be circles.")
         return None
 
@@ -146,13 +150,13 @@ def innerSoddyCircle(circle1, circle2, circle3):
     q2 = (k2 + 0j) * (B.x + B.y * 1j)
     q3 = (k3 + 0j) * (C.x + C.y * 1j)
 
-    temp = ((q1 * q2) + (q2 * q3) + (q3 * q1))
+    temp = (q1 * q2) + (q2 * q3) + (q3 * q1)
     q4 = q1 + q2 + q3 + ((2 + 0j) * cmath.sqrt(temp))
 
     z = q4 / (k4 + 0j)
 
     # If the formula is not solvable, we return no circle.
-    if (not z or not (1 / k4)):
+    if not z or not (1 / k4):
         return None
 
     X = z.real
@@ -186,9 +190,11 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
       inversion pole and the radical center) with the circle.
     * This gives us all the tangent points.
     """
-    if (geomType(circle1) != "Circle"
-            and geomType(circle2) != "Circle"
-            and geomType(circle3) == "Circle"):
+    if (
+        geomType(circle1) != "Circle"
+        and geomType(circle2) != "Circle"
+        and geomType(circle3) == "Circle"
+    ):
         print("debug: circleFrom3CircleTangents bad input! Must be circles")
         return None
 
@@ -221,5 +227,6 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
     else:
         # Some circles are inside each other or an error has occurred.
         return None
+
 
 ## @}

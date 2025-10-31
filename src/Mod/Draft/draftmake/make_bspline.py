@@ -67,16 +67,16 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    if not isinstance(pointslist,list):
+    if not isinstance(pointslist, list):
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         pointslist = nlist
     if len(pointslist) < 2:
         _err = "Draft.make_bspline: not enough points"
-        App.Console.PrintError(translate("draft", _err)+"\n")
+        App.Console.PrintError(translate("draft", _err) + "\n")
         return
-    if (pointslist[0] == pointslist[-1]):
+    if pointslist[0] == pointslist[-1]:
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
@@ -85,13 +85,15 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         else:
             # len == 2 and first == last   GIGO
             _err = "Draft.make_bspline: Invalid pointslist"
-            App.Console.PrintError(translate("Draft", _err)+"\n")
+            App.Console.PrintError(translate("Draft", _err) + "\n")
             return
     # should have sensible parms from here on
     if placement:
-        utils.type_check([(placement,App.Placement)], "make_bspline")
-    if len(pointslist) == 2: fname = "Line"
-    else: fname = "BSpline"
+        utils.type_check([(placement, App.Placement)], "make_bspline")
+    if len(pointslist) == 2:
+        fname = "Line"
+    else:
+        fname = "BSpline"
     obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
     obj.addExtension("Part::AttachExtensionPython")
     BSpline(obj)
@@ -100,7 +102,8 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     obj.AttachmentSupport = support
     if face is not None:
         obj.MakeFace = face
-    if placement: obj.Placement = placement
+    if placement:
+        obj.Placement = placement
     if App.GuiUp:
         ViewProviderBSpline(obj.ViewObject)
         gui_utils.format_object(obj)

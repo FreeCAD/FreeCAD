@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -41,6 +42,7 @@ public:
     GestureNavigationStyle();
     ~GestureNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
+    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
 
 protected:
     SbBool processSoEvent(const SoEvent* const ev) override;
@@ -98,8 +100,6 @@ protected: // members variables
     int rollDir = 0;
     bool logging = false;
 
-protected: //helper functions
-    bool isDraggerUnderCursor(SbVec2s pos);
 public:
     bool is2DViewing() const;
 

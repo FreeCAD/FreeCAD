@@ -45,32 +45,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="260"/>
       <source>X-axis</source>
-      <translation>X-축</translation>
+      <translation>X축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="261"/>
       <source>Y-axis</source>
-      <translation>Y-축</translation>
+      <translation>Y축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="262"/>
       <source>Z-axis</source>
-      <translation>Z-축</translation>
+      <translation>Z축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="263"/>
       <source>XY-plane</source>
-      <translation>XY-평면</translation>
+      <translation>XY평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="264"/>
       <source>XZ-plane</source>
-      <translation>XZ-평면</translation>
+      <translation>XZ평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="265"/>
       <source>YZ-plane</source>
-      <translation>YZ-평면</translation>
+      <translation>YZ평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="266"/>

@@ -110,6 +110,7 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
         connect(parametersWidget2, &PartGui::PatternParametersWidget::parametersChanged,
             this, &TaskPatternParameters::onParameterWidgetParametersChanged);
         parametersWidget2->setTitle(tr("Direction 2"));
+        parametersWidget2->setCheckable(true);
     }
 
     bindProperties();

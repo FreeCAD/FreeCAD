@@ -41,32 +41,61 @@ from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.translate import translate
 
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # SCALE WIDGET FUNCTIONS
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
-draft_scales_metrics =  ["1:1000", "1:500", "1:250", "1:200", "1:100",
-                         "1:50", "1:25","1:20", "1:10", "1:5","1:2",
-                         "1:1",
-                         "2:1", "5:1", "10:1", "20:1",
-                         translate("draft", "Custom"),
-                        ]
+draft_scales_metrics = [
+    "1:1000",
+    "1:500",
+    "1:250",
+    "1:200",
+    "1:100",
+    "1:50",
+    "1:25",
+    "1:20",
+    "1:10",
+    "1:5",
+    "1:2",
+    "1:1",
+    "2:1",
+    "5:1",
+    "10:1",
+    "20:1",
+    translate("draft", "Custom"),
+]
 
-draft_scales_arch_imperial =  ["1/16in=1ft", "3/32in=1ft", "1/8in=1ft",
-                               "3/16in=1ft", "1/4in=1ft","3/8in=1ft",
-                               "1/2in=1ft", "3/4in=1ft", "1in=1ft",
-                               "1.5in=1ft", "3in=1ft",
-                               translate("draft", "Custom"),
-                              ]
+draft_scales_arch_imperial = [
+    "1/16in=1ft",
+    "3/32in=1ft",
+    "1/8in=1ft",
+    "3/16in=1ft",
+    "1/4in=1ft",
+    "3/8in=1ft",
+    "1/2in=1ft",
+    "3/4in=1ft",
+    "1in=1ft",
+    "1.5in=1ft",
+    "3in=1ft",
+    translate("draft", "Custom"),
+]
 
-draft_scales_eng_imperial =  ["1in=10ft", "1in=20ft", "1in=30ft",
-                              "1in=40ft", "1in=50ft", "1in=60ft",
-                              "1in=70ft", "1in=80ft", "1in=90ft",
-                              "1in=100ft",
-                              translate("draft", "Custom"),
-                             ]
+draft_scales_eng_imperial = [
+    "1in=10ft",
+    "1in=20ft",
+    "1in=30ft",
+    "1in=40ft",
+    "1in=50ft",
+    "1in=60ft",
+    "1in=70ft",
+    "1in=80ft",
+    "1in=90ft",
+    "1in=100ft",
+    translate("draft", "Custom"),
+]
 
-def get_scales(unit_system = 0):
+
+def get_scales(unit_system=0):
     """
     returns the list of preset scales according to unit system.
 
@@ -107,17 +136,18 @@ def scale_to_label(scale):
         if f[1] == 1:
             return str(f[0]) + ":1"
         return str(scale)
-    f = round(1/scale, 2)
+    f = round(1 / scale, 2)
     f = f.as_integer_ratio()
     if f[1] == 1:
         return "1:" + str(f[0])
     return str(scale)
 
+
 def label_to_scale(label):
     """
     transform a scale string into scale factor as float
     """
-    try :
+    try:
         scale = float(label)
         return scale
     except Exception:
@@ -131,13 +161,13 @@ def label_to_scale(label):
             try:
                 num = App.Units.Quantity(f[0]).Value
                 den = App.Units.Quantity(f[1]).Value
-                scale = num/den
+                scale = num / den
                 return scale
             except Exception:
-                err = translate("draft",
-                                "Unable to convert input into a scale factor")
+                err = translate("draft", "Unable to convert input into a scale factor")
                 App.Console.PrintWarning(err)
                 return None
+
 
 def _set_scale(action):
     """
@@ -146,12 +176,11 @@ def _set_scale(action):
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
-    scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
 
     if action.text() == translate("draft", "Custom"):
         title_text = translate("draft", "Set Custom Scale")
-        dialog_text = translate("draft",
-                                "Set custom annotation scale in format x:x, x=x")
+        dialog_text = translate("draft", "Set custom annotation scale in format x:x, x=x")
         custom_scale = QtWidgets.QInputDialog.getText(None, title_text, dialog_text)
         if custom_scale[1]:
             print(custom_scale[0])
@@ -169,9 +198,11 @@ def _set_scale(action):
         scale = label_to_scale(text_scale)
         params.set_param("DefaultAnnoScaleMultiplier", 1 / scale)
 
-#----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
 # MAIN DRAFT STATUSBAR FUNCTIONS
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 def init_draft_statusbar_scale():
     """
@@ -184,8 +215,11 @@ def init_draft_statusbar_scale():
     # prevent the widget from showing up in the toolbar area context menu:
     scale_widget.toggleViewAction().setVisible(False)
     scale_widget.setObjectName("draft_scale_widget")
-    text = translate("draft", "Draft Scale Widget",
-    "A context menu action used to show or hide this toolbar widget")
+    text = translate(
+        "draft",
+        "Draft Scale Widget",
+        "A context menu action used to show or hide this toolbar widget",
+    )
     scale_widget.setWindowTitle(text)
 
     # get scales list according to system units
@@ -210,8 +244,7 @@ def init_draft_statusbar_scale():
     gUnits.triggered.connect(_set_scale)
     scale_label = scale_to_label(annotation_scale)
     scaleLabel.setText(scale_label)
-    scaleLabel.setToolTip(translate("draft",
-                                    "Set the scale used by Draft annotation tools"))
+    scaleLabel.setToolTip(translate("draft", "Set the scale used by Draft annotation tools"))
     scale_widget.addWidget(scaleLabel)
     scale_widget.scaleLabel = scaleLabel
 
@@ -246,8 +279,11 @@ def init_draft_statusbar_snap():
     # prevent the widget from showing up in the toolbar area context menu:
     snap_widget.toggleViewAction().setVisible(False)
     snap_widget.setObjectName("draft_snap_widget")
-    text = translate("draft", "Draft Snap Widget",
-    "A context menu action used to show or hide this toolbar widget")
+    text = translate(
+        "draft",
+        "Draft Snap Widget",
+        "A context menu action used to show or hide this toolbar widget",
+    )
     snap_widget.setWindowTitle(text)
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.setIconSize(QtCore.QSize(16, 16))
@@ -261,7 +297,7 @@ def init_draft_statusbar_snap():
     # lock button:
     snap_widget.addAction(Gui.Command.get("Draft_Snap_Lock").getAction()[0])
     snap_action = snap_widget.children()[-1]
-    snap_action.setFixedWidth(40) # Widen the button.
+    snap_action.setFixedWidth(40)  # Widen the button.
 
     snap_widget.addWidget(_spacer())
 
@@ -280,12 +316,14 @@ def init_draft_statusbar_snap():
 
     # menu for lock button:
     for cmd in get_draft_snap_commands():
-        if cmd not in ["Separator",
-                       "Draft_ToggleGrid",
-                       "Draft_Snap_Lock", # Is automatically added to the menu anyway.
-                       "Draft_Snap_Dimensions",
-                       "Draft_Snap_Ortho",
-                       "Draft_Snap_WorkingPlane"]:
+        if cmd not in [
+            "Separator",
+            "Draft_ToggleGrid",
+            "Draft_Snap_Lock",  # Is automatically added to the menu anyway.
+            "Draft_Snap_Dimensions",
+            "Draft_Snap_Ortho",
+            "Draft_Snap_WorkingPlane",
+        ]:
             snap_action.addAction(Gui.Command.get(cmd).getAction()[0])
 
 
@@ -352,11 +390,11 @@ def hide_draft_statusbar_snap():
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
-    snap_widget = sb.findChild(QtWidgets.QToolBar,"draft_snap_widget")
+    snap_widget = sb.findChild(QtWidgets.QToolBar, "draft_snap_widget")
     if snap_widget is None:
         # when switching workbenches, the toolbar sometimes "jumps"
         # out of the status bar to any other dock area...
-        snap_widget = mw.findChild(QtWidgets.QToolBar,"draft_snap_widget")
+        snap_widget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
     if snap_widget:
         snap_widget.hide()
 
@@ -379,5 +417,6 @@ def hide_draft_statusbar():
     # else show_draft_statusbar will not yet be done.
     QtCore.QTimer().singleShot(500, hide_draft_statusbar_scale)
     QtCore.QTimer().singleShot(500, hide_draft_statusbar_snap)
+
 
 ## @}

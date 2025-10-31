@@ -57,11 +57,13 @@ import FreeCAD
 
 from draftutils.messages import _wrn
 from draftgeoutils.general import geomType
-from draftgeoutils.circles import (circlefrom2Lines1Point,
-                                   circleFrom2LinesRadius,
-                                   circlefrom1Line2Points,
-                                   circleFromPointLineRadius,
-                                   circleFrom3LineTangents)
+from draftgeoutils.circles import (
+    circlefrom2Lines1Point,
+    circleFrom2LinesRadius,
+    circlefrom1Line2Points,
+    circleFromPointLineRadius,
+    circleFrom3LineTangents,
+)
 from draftgeoutils.circles_apollonius import circleFrom3CircleTangents
 
 
@@ -81,24 +83,28 @@ def circleFrom2tan1pt(tan1, tan2, point):
     The tangents should be edges, and they may be either straight line edges
     or circular edges, so four combinations are possible.
     """
-    if (geomType(tan1) == "Line"
-            and geomType(tan2) == "Line"
-            and isinstance(point, FreeCAD.Vector)):
+    if geomType(tan1) == "Line" and geomType(tan2) == "Line" and isinstance(point, FreeCAD.Vector):
         return circlefrom2Lines1Point(tan1, tan2, point)
 
-    elif (geomType(tan1) == "Circle"
-          and geomType(tan2) == "Line"
-          and isinstance(point, FreeCAD.Vector)):
+    elif (
+        geomType(tan1) == "Circle"
+        and geomType(tan2) == "Line"
+        and isinstance(point, FreeCAD.Vector)
+    ):
         return circlefromCircleLinePoint(tan1, tan2, point)
 
-    elif (geomType(tan2) == "Circle"
-          and geomType(tan1) == "Line"
-          and isinstance(point, FreeCAD.Vector)):
+    elif (
+        geomType(tan2) == "Circle"
+        and geomType(tan1) == "Line"
+        and isinstance(point, FreeCAD.Vector)
+    ):
         return circlefromCircleLinePoint(tan2, tan1, point)
 
-    elif (geomType(tan2) == "Circle"
-          and geomType(tan1) == "Circle"
-          and isinstance(point, FreeCAD.Vector)):
+    elif (
+        geomType(tan2) == "Circle"
+        and geomType(tan1) == "Circle"
+        and isinstance(point, FreeCAD.Vector)
+    ):
         return circlefrom2Circles1Point(tan2, tan1, point)
 
 
@@ -142,14 +148,18 @@ def circleFrom1tan2pt(tan1, p1, p2):
     The tangents should be edges, and they may be either straight line edges
     or circular edges, so two combinations are possible.
     """
-    if (geomType(tan1) == "Line"
-            and isinstance(p1, FreeCAD.Vector)
-            and isinstance(p2, FreeCAD.Vector)):
+    if (
+        geomType(tan1) == "Line"
+        and isinstance(p1, FreeCAD.Vector)
+        and isinstance(p2, FreeCAD.Vector)
+    ):
         return circlefrom1Line2Points(tan1, p1, p2)
 
-    elif (geomType(tan1) == "Circle"
-            and isinstance(p1, FreeCAD.Vector)
-            and isinstance(p2, FreeCAD.Vector)):
+    elif (
+        geomType(tan1) == "Circle"
+        and isinstance(p1, FreeCAD.Vector)
+        and isinstance(p2, FreeCAD.Vector)
+    ):
         return circlefrom1Circle2Points(tan1, p1, p2)
 
 
@@ -187,13 +197,13 @@ def circleFrom3tan(tan1, tan2, tan3):
     The tangents should be edges, and they may be either straight line edges
     or circular edges, so eight combinations are possible.
     """
-    tan1IsLine = (geomType(tan1) == "Line")
-    tan2IsLine = (geomType(tan2) == "Line")
-    tan3IsLine = (geomType(tan3) == "Line")
+    tan1IsLine = geomType(tan1) == "Line"
+    tan2IsLine = geomType(tan2) == "Line"
+    tan3IsLine = geomType(tan3) == "Line"
 
-    tan1IsCircle = (geomType(tan1) == "Circle")
-    tan2IsCircle = (geomType(tan2) == "Circle")
-    tan3IsCircle = (geomType(tan3) == "Circle")
+    tan1IsCircle = geomType(tan1) == "Circle"
+    tan2IsCircle = geomType(tan2) == "Circle"
+    tan3IsCircle = geomType(tan3) == "Circle"
 
     if tan1IsLine and tan2IsLine and tan3IsLine:
         return circleFrom3LineTangents(tan1, tan2, tan3)
@@ -218,5 +228,6 @@ def circleFrom3tan(tan1, tan2, tan3):
 
     elif tan1IsCircle and tan2IsCircle and tan3IsLine:
         return circleFrom2Circle1Lines(tan1, tan2, tan3)
+
 
 ## @}

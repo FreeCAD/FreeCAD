@@ -40,26 +40,31 @@ from draftutils.translate import translate
 
 class Facebinder(DraftObject):
     """The Draft Facebinder object"""
-    def __init__(self,obj):
+
+    def __init__(self, obj):
         super().__init__(obj, "Facebinder")
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","Linked faces")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Linked faces")
         obj.addProperty("App::PropertyLinkSubList", "Faces", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed")
-        obj.addProperty("App::PropertyBool","RemoveSplitter", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Specifies if splitter lines must be removed")
+        obj.addProperty("App::PropertyBool", "RemoveSplitter", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces")
-        obj.addProperty("App::PropertyDistance","Extrusion", "Draft" , _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property", "An optional extrusion value to be applied to all faces"
+        )
+        obj.addProperty("App::PropertyDistance", "Extrusion", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","An optional offset value to be applied to all faces")
-        obj.addProperty("App::PropertyDistance","Offset", "Draft" , _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property", "An optional offset value to be applied to all faces"
+        )
+        obj.addProperty("App::PropertyDistance", "Offset", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","This specifies if the shapes sew")
-        obj.addProperty("App::PropertyBool","Sew", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "This specifies if the shapes sew")
+        obj.addProperty("App::PropertyBool", "Sew", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","The area of the faces of this Facebinder")
-        obj.addProperty("App::PropertyArea","Area", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The area of the faces of this Facebinder")
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip, locked=True)
         obj.setEditorMode("Area", 1)
 
     def onDocumentRestored(self, obj):
@@ -78,6 +83,7 @@ class Facebinder(DraftObject):
             return
 
         import Part
+
         faces = []
         try:
             for sel in obj.Faces:
@@ -131,11 +137,16 @@ class Facebinder(DraftObject):
         _wrn(obj.Label + ": " + translate("draft", "No valid faces for facebinder"))
 
     def _report_sew_error(self, obj):
-        _wrn(obj.Label + ": " + translate("draft", "Unable to build facebinder, resuming with sew disabled"))
+        _wrn(
+            obj.Label
+            + ": "
+            + translate("draft", "Unable to build facebinder, resuming with sew disabled")
+        )
 
     def _build_shape(self, obj, faces, sew=False):
         """returns the built shape and the area of the offset faces"""
         import Part
+
         offs_val = getattr(obj, "Offset", 0)
         extr_val = getattr(obj, "Extrusion", 0)
 
@@ -175,6 +186,7 @@ class Facebinder(DraftObject):
     def _convert_to_planar(self, obj, shp):
         """convert flat B-spline faces to planar faces if possible"""
         import Part
+
         faces = []
         for face in shp.Faces:
             if face.Surface.TypeId == "Part::GeomPlane":
@@ -196,9 +208,13 @@ class Facebinder(DraftObject):
         solid = Part.makeSolid(Part.makeShell(faces))
         if solid.isValid():
             return solid
-        _msg(obj.Label + ": " + translate("draft",
-            "Converting flat B-spline faces of facebinder to planar faces failed"
-        ))
+        _msg(
+            obj.Label
+            + ": "
+            + translate(
+                "draft", "Converting flat B-spline faces of facebinder to planar faces failed"
+            )
+        )
         return shp
 
     def onChanged(self, obj, prop):

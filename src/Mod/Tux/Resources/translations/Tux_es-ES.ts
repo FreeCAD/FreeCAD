@@ -101,7 +101,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>Bola de arco redondeada</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>

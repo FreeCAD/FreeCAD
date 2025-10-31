@@ -282,7 +282,7 @@
          <cstring>EnableGizmos</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/PartDesign</cstring>
+         <cstring>Gui/Gizmos</cstring>
         </property>
        </widget>
       </item>
@@ -295,7 +295,7 @@
          <cstring>DelayedGizmoUpdate</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/PartDesign</cstring>
+         <cstring>Gui/Gizmos</cstring>
         </property>
        </widget>
       </item>

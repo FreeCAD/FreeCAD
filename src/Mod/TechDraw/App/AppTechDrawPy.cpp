@@ -629,7 +629,7 @@ private:
             shape = mkTrf.Shape();
             writer.exportShape(shape);
         }
-        //add the cosmetic edges also
+        //add the cosmetic edges also (centerlines, cosmetic lines, etc)
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
         for (auto& g : geoms) {
@@ -638,9 +638,14 @@ private:
             }
         }
         if (!cosmeticEdges.empty()) {
-            shape = ShapeUtils::mirrorShape(DrawUtil::vectorToCompound(cosmeticEdges));
-            mkTrf.Perform(shape);
-            shape = mkTrf.Shape();
+            // cosmetic edges (centerlines, etc) are already in correct Y orientation
+            // so they only need translation, not mirroring like the regular geometry
+            // issue #22470
+            shape = DrawUtil::vectorToCompound(cosmeticEdges);
+            gp_Trsf xLateCosmetics;
+            xLateCosmetics.SetTranslation(gp_Vec(dvpX, dvpY, 0.0));
+            BRepBuilderAPI_Transform mkTrfCosmetics(shape, xLateCosmetics);
+            shape = mkTrfCosmetics.Shape();
             writer.exportShape(shape);
         }
     }

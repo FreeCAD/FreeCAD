@@ -27,14 +27,16 @@ import Arch
 import Part
 from bimtests import TestArchBase
 
+
 class TestArchRebar(TestArchBase.TestArchBase):
 
     def _create_sketch(self, add_line=True, length=500.0):
         """Helper function to create a basic sketch."""
         sketch = self.document.addObject("Sketcher::SketchObject")
         if add_line:
-            sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(0,0,0),
-                                                FreeCAD.Vector(length,0,0)), False)
+            sketch.addGeometry(
+                Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(length, 0, 0)), False
+            )
         self.document.recompute()
         return sketch
 
@@ -55,8 +57,9 @@ class TestArchRebar(TestArchBase.TestArchBase):
 
         self.assertIsNotNone(rebar, "makeRebar failed to create a rebar object.")
         self.assertEqual(rebar.Label, "Rebar", "Rebar default label should be 'Rebar'.")
-        self.assertTrue(rebar.Name.startswith("Rebar"),
-                        "Rebar internal name should start with 'Rebar'.")
+        self.assertTrue(
+            rebar.Name.startswith("Rebar"), "Rebar internal name should start with 'Rebar'."
+        )
 
     def test_makeRebar_custom_name(self):
         """Test makeRebar with a custom name sets Label and Mark correctly."""
@@ -67,8 +70,7 @@ class TestArchRebar(TestArchBase.TestArchBase):
 
         self.assertIsNotNone(rebar, "makeRebar failed to create a rebar object.")
         self.assertEqual(rebar.Label, custom_name, "Rebar label is incorrect.")
-        self.assertEqual(rebar.Mark, custom_name,
-                         "Rebar mark should match label by default.")
+        self.assertEqual(rebar.Mark, custom_name, "Rebar mark should match label by default.")
 
     def test_makeRebar_with_sketch_and_host(self):
         """Test makeRebar with both sketch and host object links them correctly."""
@@ -91,8 +93,9 @@ class TestArchRebar(TestArchBase.TestArchBase):
         self.assertIsNotNone(rebar.Shape, "Rebar.Shape should not be None after recompute.")
         self.assertTrue(rebar.Shape.isValid(), "Rebar.Shape should be valid.")
         self.assertGreater(rebar.Shape.Length, 0, "Rebar shape seems to have no length.")
-        self.assertGreater(rebar.TotalLength.Value, 0,
-                           "Rebar total length should be greater than 0.")
+        self.assertGreater(
+            rebar.TotalLength.Value, 0, "Rebar total length should be greater than 0."
+        )
 
     def test_makeRebar_with_sketch_only(self):
         """Test makeRebar with only sketch results in no host and valid geometry."""
@@ -119,21 +122,14 @@ class TestArchRebar(TestArchBase.TestArchBase):
         self.assertIsNone(rebar.Base, "Rebar.Base should be None in this mode.")
         self.assertIsNotNone(rebar.Shape, "Rebar.Shape should be set from baseobj.")
         self.assertTrue(rebar.Shape.isValid())
-        self.assertGreater(rebar.Shape.Volume, 0,
-                           "Converted rebar shape should have volume.")
+        self.assertGreater(rebar.Shape.Volume, 0, "Converted rebar shape should have volume.")
 
     def test_makeRebar_properties_set_correctly(self):
         """Test makeRebar sets dimensional and calculated properties correctly."""
         sketch = self._create_sketch(length=900)
         host = self._create_host_structure(length=1200)
 
-        rebar = Arch.makeRebar(
-            baseobj=host,
-            sketch=sketch,
-            diameter=12.5,
-            amount=7,
-            offset=30.0
-        )
+        rebar = Arch.makeRebar(baseobj=host, sketch=sketch, diameter=12.5, amount=7, offset=30.0)
         # Default label "Rebar" will be used, and Mark will also be "Rebar"
         self.document.recompute()
 
@@ -147,19 +143,26 @@ class TestArchRebar(TestArchBase.TestArchBase):
 
         self.assertTrue(hasattr(rebar, "Length"), "Rebar should have Length property.")
         self.assertTrue(hasattr(rebar, "TotalLength"), "Rebar should have TotalLength property.")
-        self.assertAlmostEqual(rebar.Length.Value, sketch.Shape.Length, delta=1e-9,
-                               msg="Single rebar length should match sketch length.")
+        self.assertAlmostEqual(
+            rebar.Length.Value,
+            sketch.Shape.Length,
+            delta=1e-9,
+            msg="Single rebar length should match sketch length.",
+        )
         expected_total_length = rebar.Length.Value * rebar.Amount
-        self.assertAlmostEqual(rebar.TotalLength.Value, expected_total_length, delta=1e-9,
-                               msg="TotalLength calculation is incorrect.")
+        self.assertAlmostEqual(
+            rebar.TotalLength.Value,
+            expected_total_length,
+            delta=1e-9,
+            msg="TotalLength calculation is incorrect.",
+        )
 
     def test_makeRebar_no_sketch_no_baseobj(self):
         """Test makeRebar with no sketch/baseobj creates object with no meaningful shape."""
         rebar = Arch.makeRebar(diameter=10, amount=1)
         self.document.recompute()
 
-        self.assertIsNotNone(rebar,
-                             "makeRebar should create an object even with minimal inputs.")
+        self.assertIsNotNone(rebar, "makeRebar should create an object even with minimal inputs.")
         self.assertIsNone(rebar.Base, "Rebar.Base should be None.")
         self.assertIsNone(rebar.Host, "Rebar.Host should be None.")
         self.assertAlmostEqual(rebar.Diameter.Value, 10.0, delta=1e-9)
@@ -169,28 +172,38 @@ class TestArchRebar(TestArchBase.TestArchBase):
         # For a rebar with no Base, its execute() returns early, so no geometry is made.
         # The Shape should be the default null/empty shape.
         self.assertIsNotNone(rebar.Shape, "Rebar object should always have a Shape attribute.")
-        self.assertTrue(rebar.Shape.isNull(),
-                        "Rebar.Shape should be a null shape if no Base is provided.")
+        self.assertTrue(
+            rebar.Shape.isNull(), "Rebar.Shape should be a null shape if no Base is provided."
+        )
 
     def test_RebarMe(self):
         """
         Tests the creation of an Arch Rebar
         """
         import Sketcher
-        self.printTestMessage('Checking Arch Rebar...\n')
+
+        self.printTestMessage("Checking Arch Rebar...\n")
         s = Arch.makeStructure(length=2, width=3, height=5)
-        sk = self.document.addObject('Sketcher::SketchObject', 'Sketch')
+        sk = self.document.addObject("Sketcher::SketchObject", "Sketch")
         sk.AttachmentSupport = (s, ["Face6"])
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85, 1.25, 0), FreeCAD.Vector(0.75, 1.25, 0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75, 1.25, 0), FreeCAD.Vector(0.75, -1.20, 0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75, -1.20, 0), FreeCAD.Vector(-0.85, -1.20, 0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85, -1.20, 0), FreeCAD.Vector(-0.85, 1.25, 0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        sk.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(-0.85, 1.25, 0), FreeCAD.Vector(0.75, 1.25, 0))
+        )
+        sk.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0.75, 1.25, 0), FreeCAD.Vector(0.75, -1.20, 0))
+        )
+        sk.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0.75, -1.20, 0), FreeCAD.Vector(-0.85, -1.20, 0))
+        )
+        sk.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(-0.85, -1.20, 0), FreeCAD.Vector(-0.85, 1.25, 0))
+        )
+        sk.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
         self.document.recompute()
-        r = Arch.makeRebar(s, sk, diameter=.1, amount=2)
+        r = Arch.makeRebar(s, sk, diameter=0.1, amount=2)
         self.document.recompute()
         self.assertTrue(r, "Arch Rebar creation failed")
         self.assertFalse(r.Shape.isNull(), "Rebar shape is null")

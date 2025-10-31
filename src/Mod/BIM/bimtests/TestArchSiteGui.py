@@ -46,30 +46,35 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         vobj = site.ViewObject
         props = vobj.PropertiesList
         expected = [
-            'ShowSunPosition', 'SunDateMonth', 'SunDateDay', 'SunTimeHour',
-            'SolarDiagramScale', 'SolarDiagramPosition', 'ShowHourLabels'
+            "ShowSunPosition",
+            "SunDateMonth",
+            "SunDateDay",
+            "SunTimeHour",
+            "SolarDiagramScale",
+            "SolarDiagramPosition",
+            "ShowHourLabels",
         ]
         for p in expected:
             self.assertIn(p, props, f"Property '{p}' missing from ViewObject")
 
         # Check defaults where applicable
-        if hasattr(vobj, 'SunDateMonth'):
+        if hasattr(vobj, "SunDateMonth"):
             self.assertEqual(vobj.SunDateMonth, 6)
-        if hasattr(vobj, 'SunDateDay'):
+        if hasattr(vobj, "SunDateDay"):
             self.assertEqual(vobj.SunDateDay, 21)
-        if hasattr(vobj, 'SunTimeHour'):
+        if hasattr(vobj, "SunTimeHour"):
             self.assertAlmostEqual(vobj.SunTimeHour, 12.0)
-        if hasattr(vobj, 'SolarDiagramScale'):
+        if hasattr(vobj, "SolarDiagramScale"):
             self.assertAlmostEqual(vobj.SolarDiagramScale, 20000.0)
 
     def test_new_site_save_and_reopen(self):
         """Test: save document and reopen; view properties must be present and constrained."""
-        self.printTestMessage('Save and reopen new Site...')
+        self.printTestMessage("Save and reopen new Site...")
         site = Arch.makeSite()
         FreeCAD.ActiveDocument.recompute()
 
         # Save to a temporary file
-        tf = tempfile.NamedTemporaryFile(delete=False, suffix='.FCStd')
+        tf = tempfile.NamedTemporaryFile(delete=False, suffix=".FCStd")
         tf.close()
         path = tf.name
         try:
@@ -81,10 +86,10 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
                 # Find the Site object in the reopened document by checking proxy type
                 found = None
                 for o in reopened.Objects:
-                    if hasattr(o, 'Proxy') and getattr(o.Proxy, 'Type', None) == 'Site':
+                    if hasattr(o, "Proxy") and getattr(o.Proxy, "Type", None) == "Site":
                         found = o
                         break
-                self.assertIsNotNone(found, 'Site object not found after reopen')
+                self.assertIsNotNone(found, "Site object not found after reopen")
 
                 # Ensure async GUI setup completes
                 self.pump_gui_events()
@@ -95,10 +100,14 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
                 # Setting an out-of-bounds value should not raise an exception but
                 # should coerce the value to the nearest limit.
                 vobj.SunDateMonth = 13
-                self.assertEqual(vobj.SunDateMonth, 12, "Property should be clamped to its max value")
+                self.assertEqual(
+                    vobj.SunDateMonth, 12, "Property should be clamped to its max value"
+                )
 
                 vobj.SunDateMonth = 0
-                self.assertEqual(vobj.SunDateMonth, 1, "Property should be clamped to its min value")
+                self.assertEqual(
+                    vobj.SunDateMonth, 1, "Property should be clamped to its min value"
+                )
 
             finally:
                 # Close reopened document to keep test isolation
@@ -124,11 +133,11 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         The test waits briefly for the loader's deferred binding and normalization callbacks to run
         before asserting the migrated value.
         """
-        self.printTestMessage('Save and reopen legacy Site...')
-        fixtures_dir = os.path.join(os.path.dirname(__file__), 'fixtures')
-        fname = os.path.join(fixtures_dir, 'FC_site_simple-102.FCStd')
+        self.printTestMessage("Save and reopen legacy Site...")
+        fixtures_dir = os.path.join(os.path.dirname(__file__), "fixtures")
+        fname = os.path.join(fixtures_dir, "FC_site_simple-102.FCStd")
         if not os.path.exists(fname):
-            raise unittest.SkipTest('Legacy migration fixture not found; skipping test.')
+            raise unittest.SkipTest("Legacy migration fixture not found; skipping test.")
 
         # If fixture exists, open and validate migration
         d = FreeCAD.openDocument(fname)
@@ -139,12 +148,12 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
             self.pump_gui_events()
             site = None
             for o in d.Objects:
-                if hasattr(o, 'Proxy') and getattr(o.Proxy, 'Type', None) == 'Site':
+                if hasattr(o, "Proxy") and getattr(o.Proxy, "Type", None) == "Site":
                     site = o
                     break
-            assert site is not None, 'No Site found in fixture document'
+            assert site is not None, "No Site found in fixture document"
             vobj = site.ViewObject
             # Example assertion: SolarDiagramScale should be normalized to 20000
-            self.assertAlmostEqual(getattr(vobj, 'SolarDiagramScale', 1.0), 20000.0)
+            self.assertAlmostEqual(getattr(vobj, "SolarDiagramScale", 1.0), 20000.0)
         finally:
             FreeCAD.closeDocument(d.Name)

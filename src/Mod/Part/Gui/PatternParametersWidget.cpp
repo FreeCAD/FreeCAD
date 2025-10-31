@@ -75,6 +75,8 @@ void PatternParametersWidget::setupUiElements()
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part");
     ui->addSpacingButton->setVisible(hPart->GetBool("ExperimentalFeatures", false));
+
+    ui->enableCheckbox->setVisible(false);
 }
 
 void PatternParametersWidget::connectSignals()
@@ -97,6 +99,11 @@ void PatternParametersWidget::connectSignals()
     connect(ui->addSpacingButton, &QToolButton::clicked,
         this, &PatternParametersWidget::onAddSpacingButtonClicked);
 
+    connect(ui->groupBox, &QGroupBox::toggled, this, &PatternParametersWidget::onGroupBoxToggled);
+    connect(ui->enableCheckbox,
+            &QCheckBox::toggled,
+            this,
+            &PatternParametersWidget::onEnableCheckBoxToggled);
     // Note: Connections for dynamic rows are done in addSpacingRow()
 }
 
@@ -136,6 +143,10 @@ void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp
     ui->spinOccurrences->setMaximum(m_occurrencesProp->getMaximum());
     ui->spinOccurrences->setMinimum(m_occurrencesProp->getMinimum());
     ui->spinOccurrences->blockSignals(false);
+
+    if (ui->groupBox->isCheckable()) {
+        setChecked(m_occurrencesProp->getValue() > 1);
+    }
 
     // Initial UI update from properties
     updateUI();
@@ -177,6 +188,39 @@ void PatternParametersWidget::updateUI()
     adaptVisibilityToMode();
 }
 
+void PatternParametersWidget::onGroupBoxToggled(bool checked)
+{
+    if (blockUpdate || !m_occurrencesProp) {
+        return;
+    }
+
+    if (!checked) {
+        // When unchecked, the pattern in this direction is disabled.
+        // Set occurrences to 1, which effectively removes the pattern effect.
+        if (m_occurrencesProp->getValue() != 1) {
+            ui->spinOccurrences->setValue(1);
+        }
+
+        ui->groupBox->setVisible(false);
+        ui->enableCheckbox->setVisible(true);
+        ui->enableCheckbox->setChecked(false);
+    }
+}
+
+void PatternParametersWidget::onEnableCheckBoxToggled(bool checked)
+{
+    if (blockUpdate || !m_occurrencesProp) {
+        return;
+    }
+
+    if (checked) {
+        // When unchecked, the pattern in this direction is disabled.
+        // Set occurrences to 1, which effectively removes the pattern effect.
+        ui->groupBox->setChecked(true);
+        ui->groupBox->setVisible(true);
+        ui->enableCheckbox->setVisible(false);
+    }
+}
 
 void PatternParametersWidget::adaptVisibilityToMode()
 {
@@ -216,6 +260,7 @@ void PatternParametersWidget::setCheckable(bool on)
 void PatternParametersWidget::setChecked(bool on)
 {
     ui->groupBox->setChecked(on);
+    ui->enableCheckbox->setChecked(on);
 }
 
 // --- Slots ---
@@ -488,3 +533,4 @@ void PatternParametersWidget::applyQuantitySpinboxes() const
 }
 
 //#include "moc_PatternParametersWidget.cpp"
+

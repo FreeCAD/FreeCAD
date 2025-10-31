@@ -37,6 +37,7 @@ from draftguitools import gui_base_original
 from draftutils.translate import translate
 from draftutils import groups
 
+
 class ApplyStyle(gui_base_original.Modifier):
     """Gui Command for the ApplyStyle tool."""
 
@@ -45,7 +46,9 @@ class ApplyStyle(gui_base_original.Modifier):
         return {
             "Pixmap": "Draft_Apply",
             "MenuText": QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Apply Current Style"),
-            "ToolTip": QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Applies the current style to the selected objects and groups")
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_ApplyStyle", "Applies the current style to the selected objects and groups"
+            ),
         }
 
     def IsActive(self):
@@ -60,8 +63,10 @@ class ApplyStyle(gui_base_original.Modifier):
             Gui.addModule("Draft")
             cmd_list = [
                 "doc = FreeCAD.ActiveDocument",
-                "Draft.apply_current_style([" + ", ".join(["doc." + obj.Name for obj in objs]) + "])",
-                "doc.recompute()"
+                "Draft.apply_current_style(["
+                + ", ".join(["doc." + obj.Name for obj in objs])
+                + "])",
+                "doc.recompute()",
             ]
             self.commit(translate("draft", "Change Style"), cmd_list)
         self.finish()

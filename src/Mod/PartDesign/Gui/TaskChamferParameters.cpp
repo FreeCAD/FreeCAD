@@ -31,12 +31,12 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include <TopoDS.hxx>
 #include <BRep_Tool.hxx>

@@ -102,32 +102,32 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="165"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>Help</source>
       <translation>Súgó</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="166"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
       <translation>Írja be a nevét a hívható objektumnak, amely hívásakor, visszatér egy Tesztre.
-Nyomjon 'Indítás'-t, és az így készült vizsgálat futni fog.
+Nyomjon 'Indítás'-t, és az így készült vizsgálat futni fog. 
 
 Dupla kattintással, a fa nézeten további információkat kap, beleértve a verem-nyomkövetést.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="179"/>
+      <location filename="../../UnitTestImp.cpp" line="177"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD Egység-Teszt névjegye</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="180"/>
+      <location filename="../../UnitTestImp.cpp" line="178"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Copyright (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer 
 
 FreeCAD UnitTest része a FreeCAD programnak és támogatja a saját modulokra a Unit tesztek írását.</translation>
     </message>

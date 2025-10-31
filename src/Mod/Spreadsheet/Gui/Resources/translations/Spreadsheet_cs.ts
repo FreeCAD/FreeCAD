@@ -380,8 +380,8 @@
       <translation type="unfinished">Insert Columns</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="680"/>
       <location filename="../../SpreadsheetView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="680"/>
       <source>Clear Cells</source>
       <translation type="unfinished">Clear Cells</translation>
     </message>
@@ -680,8 +680,8 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Vše (*)</translation>
     </message>

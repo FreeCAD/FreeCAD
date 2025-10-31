@@ -64,13 +64,16 @@ class IFC_UpdateIOS:
             else:
                 self.show_dialog("failed")
 
-
     def show_dialog(self, mode, version=None):
         """Shows a dialog to the user"""
 
         from PySide import QtGui
+
         title = translate("BIM", "IfcOpenShell update")
-        note = translate("BIM", "The update is installed in your FreeCAD's user directory and will not affect the rest of your system.")
+        note = translate(
+            "BIM",
+            "The update is installed in your FreeCAD's user directory and will not affect the rest of your system.",
+        )
         if mode == "update":
             text = translate("BIM", "An update to your installed IfcOpenShell version is available")
             text += ": " + version + ". "
@@ -87,7 +90,10 @@ class IFC_UpdateIOS:
             text += " (" + version + ") " + note
             buttons = QtGui.QMessageBox.Cancel | QtGui.QMessageBox.Ok
         elif mode == "failed":
-            text = translate("BIM", "IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.")
+            text = translate(
+                "BIM",
+                "IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.",
+            )
             buttons = QtGui.QMessageBox.Ok
         reply = QtGui.QMessageBox.information(None, title, text, buttons)
         if reply == QtGui.QMessageBox.Ok:
@@ -99,19 +105,25 @@ class IFC_UpdateIOS:
                     buttons = QtGui.QMessageBox.Ok
                     reply = QtGui.QMessageBox.information(None, title, text, buttons)
 
-
     def install(self):
         """Installs the given version"""
 
         import addonmanager_utilities as utils
         from PySide import QtCore, QtGui
+
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         vendor_path = utils.get_pip_target_directory()
-        args = ["install", "--upgrade", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
+        args = [
+            "install",
+            "--upgrade",
+            "--disable-pip-version-check",
+            "--target",
+            vendor_path,
+            "ifcopenshell",
+        ]
         result = self.run_pip(args)
         QtGui.QApplication.restoreOverrideCursor()
         return result
-
 
     def run_pip(self, args):
         """Runs a pip command"""
@@ -127,10 +139,9 @@ class IFC_UpdateIOS:
         except CalledProcessError as pe:
             FreeCAD.Console.PrintError(pe.stderr)
         except Exception as e:
-            text = translate("BIM","Unable to run pip. Ensure pip is installed on your system.")
+            text = translate("BIM", "Unable to run pip. Ensure pip is installed on your system.")
             FreeCAD.Console.PrintError(f"{text} {str(e)}\n")
         return result
-
 
     def get_current_version(self):
         """Retrieves the current ifcopenshell version"""
@@ -140,6 +151,7 @@ class IFC_UpdateIOS:
 
         try:
             import ifcopenshell
+
             version = ifcopenshell.version
             try:
                 Version(version)
@@ -151,7 +163,6 @@ class IFC_UpdateIOS:
 
         return version
 
-
     def get_avail_version(self):
         """Retrieves an available ifcopenshell version"""
 
@@ -159,14 +170,13 @@ class IFC_UpdateIOS:
         if result:
             if result.stdout and "versions" in result.stdout:
                 result = result.stdout.split()
-                result = result[result.index("versions:")+1:]
+                result = result[result.index("versions:") + 1 :]
                 result = [r.strip(",") for r in result]
                 return result[0]  # we return the biggest
         return None
 
 
 FreeCADGui.addCommand("IFC_UpdateIOS", IFC_UpdateIOS())
-
 
 
 # >>> utils.get_pip_target_directory()

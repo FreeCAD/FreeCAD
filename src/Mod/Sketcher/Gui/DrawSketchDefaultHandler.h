@@ -39,6 +39,7 @@
 #include "AutoConstraint.h"
 #include "DrawSketchHandler.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 #include "Utils.h"
 
@@ -425,9 +426,9 @@ public:
      * overridden/specialised instead.
      */
     //@{
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        updateDataAndDrawToPosition(onSketchPos);
+        updateDataAndDrawToPosition(snapHandle.compute());
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -1204,10 +1205,13 @@ protected:
                                     Sketcher::PythonConverter::Mode::OmitInternalGeometry)
                                     .c_str());
 
+        size_t initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
         auto shapeConstraints = toPointerVector(ShapeConstraints);
         Gui::Command::doCommand(
             Gui::Command::Doc,
             Sketcher::PythonConverter::convert(sketchObj, shapeConstraints).c_str());
+
+        reassignVirtualSpace(initialConstraintCount);
     }
 
     /** @brief Function to draw as an edit curve all the geometry in the ShapeGeometry vector.*/
@@ -1224,6 +1228,39 @@ protected:
     }
 
     //@}
+
+private:
+    // Reassign the correct virtual space index for the added constraints
+    void reassignVirtualSpace(size_t startIndex)
+    {
+        if (ShapeConstraints.empty()) {
+            return;
+        }
+
+        std::stringstream stream;
+        bool hasConstraintsInVirtualSpace = false;
+        for (size_t i = 0; i < ShapeConstraints.size(); ++i) {
+            if (ShapeConstraints[i]->isInVirtualSpace) {
+                if (hasConstraintsInVirtualSpace) {
+                    stream << ",";
+                }
+                stream << i + startIndex;
+                hasConstraintsInVirtualSpace = true;
+            }
+        }
+        if (!hasConstraintsInVirtualSpace) {
+            return;
+        }
+
+        try {
+            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                  "setVirtualSpace([%s], True)",
+                                  stream.str().c_str());
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("%s\n", e.what());
+        }
+    }
 
 protected:
     std::vector<std::vector<AutoConstraint>> sugConstraints;

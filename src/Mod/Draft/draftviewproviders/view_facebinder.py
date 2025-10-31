@@ -31,6 +31,7 @@ import FreeCADGui as Gui
 
 from draftviewproviders.view_base import ViewProviderDraft
 
+
 class ViewProviderFacebinder(ViewProviderDraft):
 
     def __init__(self, vobj):
@@ -43,7 +44,8 @@ class ViewProviderFacebinder(ViewProviderDraft):
         if mode != 0:
             return None
 
-        import DraftGui # Moving this to the top of the file results in a circular import.
+        import DraftGui  # Moving this to the top of the file results in a circular import.
+
         taskd = DraftGui.FacebinderTaskPanel()
         taskd.obj = vobj.Object
         taskd.update()

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="714"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>三角形を追加</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="715"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>メッシュに三角形を手動で追加</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1431"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>バウンディングボックス情報</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1432"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>選択したメッシュのバウンディングボックス座標を表示</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="951"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>断面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="952"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>メッシュの断面を作成</translation>
     </message>
   </context>
   <context>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="1327"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>間引き</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1328"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>選択したメッシュのブーリアン差分を作成</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>面情報</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>選択した面に関する情報を表示</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>ソリッドを検査</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="1038"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>検査と修復</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1039"/>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="372"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>メッシュをエクスポート…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>メッシュをファイルにエクスポート</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>穴をふさぐ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>メッシュの穴をインタラクティブにふさぎます</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1515"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>穴埋め</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1516"/>
       <source>Fills holes in the mesh</source>
-      <translation type="unfinished">Fills holes in the mesh</translation>
+      <translation>メッシュの穴を穴埋め</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1395"/>
       <source>Flip Normals</source>
-      <translation type="unfinished">Flip Normals</translation>
+      <translation>法線を反転</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1396"/>
       <source>Flips the normals of the selected mesh</source>
-      <translation type="unfinished">Flips the normals of the selected mesh</translation>
+      <translation>選択したメッシュの法線を反転</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="455"/>
       <source>Mesh From Geometry</source>
-      <translation type="unfinished">Mesh From Geometry</translation>
+      <translation>ジオメトリーからメッシュへ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="456"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
+      <translation>選択したジオメトリーからメッシュを作成</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>シェイプからメッシュへ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>Tessellates the selected shape to a mesh</source>
-      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
+      <translation>選択したシェイプをメッシュへ分割</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1359"/>
       <source>Harmonize Normals</source>
-      <translation type="unfinished">Harmonize Normals</translation>
+      <translation>法線を統一</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1360"/>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="319"/>
       <source>Import Mesh…</source>
-      <translation type="unfinished">Import Mesh…</translation>
+      <translation>メッシュをインポート…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>ファイルからメッシュをインポート</translation>
     </message>
   </context>
   <context>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>Creates a boolean intersection from the selected meshes</source>
-      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
+      <translation>選択したメッシュからブーリアン交差を作成</translation>
     </message>
   </context>
   <context>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Cuts the mesh with a selected polygon</source>
-      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
+      <translation>選択した多角形でメッシュを切断</translation>
     </message>
   </context>
   <context>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../Command.cpp" line="981"/>
       <source>Splits a mesh into 2 meshes</source>
-      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
+      <translation>メッシュを2つのメッシュに分割</translation>
     </message>
   </context>
   <context>
@@ -412,12 +412,12 @@
     <message>
       <location filename="../../Command.cpp" line="829"/>
       <source>Trims a mesh with a selected polygon</source>
-      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+      <translation>選択した多角形でメッシュをトリム</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="831"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>選択ポリゴンでメッシュをトリムします</translation>
+      <translation>ピックした多角形でメッシュをトリム</translation>
     </message>
   </context>
   <context>
@@ -430,12 +430,12 @@
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Refinement</source>
-      <translation type="unfinished">Refinement</translation>
+      <translation>再分割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Refines an existing mesh</source>
-      <translation type="unfinished">Refines an existing mesh</translation>
+      <translation>既存のメッシュを再分割</translation>
     </message>
   </context>
   <context>
@@ -448,12 +448,12 @@
     <message>
       <location filename="../../Command.cpp" line="1210"/>
       <source>Remove Components Manually</source>
-      <translation type="unfinished">Remove Components Manually</translation>
+      <translation>コンポーネントを手動で削除</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1211"/>
       <source>Marks a component to remove it from the mesh</source>
-      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
+      <translation>メッシュから削除するコンポーネントをマーク</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../Command.cpp" line="1128"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>コンポーネントを削除</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>Removes topologically independent components from the mesh</source>
-      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
+      <translation>メッシュから位相的に独立したコンポーネントを削除</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../Command.cpp" line="1779"/>
       <source>Scales the selected mesh objects</source>
-      <translation type="unfinished">Scales the selected mesh objects</translation>
+      <translation>選択したメッシュオブジェクトを拡大縮小</translation>
     </message>
   </context>
   <context>
@@ -502,12 +502,12 @@
     <message>
       <location filename="../../Command.cpp" line="922"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>平面から断面へ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="923"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>選択した平面でメッシュを分割</translation>
     </message>
   </context>
   <context>
@@ -525,7 +525,7 @@
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>メッシュから新しいメッシュセグメントを作成</translation>
     </message>
   </context>
   <context>
@@ -538,12 +538,12 @@
     <message>
       <location filename="../../Command.cpp" line="1649"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
+      <translation>最適合サーフェスからセグメントへ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
-      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
+      <translation>最も一致するサーフェスから新しいメッシュセグメントを作成</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location filename="../../Command.cpp" line="1298"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>平滑化</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1299"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>選択したメッシュを平滑化</translation>
     </message>
   </context>
   <context>
@@ -574,12 +574,12 @@
     <message>
       <location filename="../../Command.cpp" line="1730"/>
       <source>Split by Components</source>
-      <translation type="unfinished">Split by Components</translation>
+      <translation>コンポーネントで分割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1731"/>
       <source>Splits the selected mesh into its components</source>
-      <translation type="unfinished">Splits the selected mesh into its components</translation>
+      <translation>選択したメッシュをコンポーネントに分割</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>平面でトリム</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>選択した平面の片側にある面を削除するようにメッシュをトリム</translation>
     </message>
   </context>
   <context>
@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>選択したメッシュを統合</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Curvature Plot</source>
-      <translation type="unfinished">Curvature Plot</translation>
+      <translation>曲率プロット</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -646,12 +646,12 @@
     <message>
       <location filename="../../Command.cpp" line="607"/>
       <source>Curvature Info</source>
-      <translation type="unfinished">Curvature Info</translation>
+      <translation>曲率情報</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="608"/>
       <source>Displays information about the curvature</source>
-      <translation type="unfinished">Displays information about the curvature</translation>
+      <translation>曲率に関する情報を表示</translation>
     </message>
   </context>
   <context>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1177"/>
       <source>Repair Mesh</source>
-      <translation type="unfinished">Repair Mesh</translation>
+      <translation>メッシュを修復</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="162"/>
@@ -863,7 +863,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
-      <translation type="unfinished">Mesh Information</translation>
+      <translation>メッシュ情報</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="772"/>
@@ -873,7 +873,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
-      <translation type="unfinished">Number of edges</translation>
+      <translation>エッジの数</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate and Repair Mesh</source>
-      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+      <translation>メッシュの検査と修復</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
@@ -1139,7 +1139,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation Settings</source>
-      <translation type="unfinished">Evaluation Settings</translation>
+      <translation>検査設定</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1231,7 +1231,7 @@
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length</source>
-      <translation type="unfinished">Edge length</translation>
+      <translation>エッジの長さ</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1240,7 +1240,7 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>サンプリング</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1442,12 +1442,12 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh View</source>
-      <translation type="unfinished">Mesh View</translation>
+      <translation>メッシュ表示</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation type="unfinished">Default Appearance for New Meshes</translation>
+      <translation>新しいメッシュのデフォルトの外観</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1519,12 +1519,12 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>λ</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>μ</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1557,12 +1557,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="102"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>フロンタル・クアッド法</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>準構造化四辺形</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="198"/>
@@ -1573,7 +1573,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="244"/>
       <source>Running Gmsh…</source>
-      <translation type="unfinished">Running Gmsh…</translation>
+      <translation>Gmshを実行中…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="267"/>
@@ -1591,12 +1591,12 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>三角形を追加</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>法線を反転</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
@@ -1622,7 +1622,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="170"/>
       <source>Surface Fit</source>
-      <translation type="unfinished">Surface Fit</translation>
+      <translation>サーフェス適合</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="177"/>
@@ -1685,12 +1685,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
+      <translation>最大要素サイズ (0.0 = 自動)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
+      <translation>最小要素サイズ (0.0 = 自動)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1710,7 +1710,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>デフォルトのgmsh実行ファイルを使用する場合は空のままにしてください</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1733,7 +1733,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>コンポーネントを削除</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1767,17 +1767,17 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>三角形を選択</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>領域オプション</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>画面に向いた法線を持つ三角形のみを考慮</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1810,7 +1810,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>メッシュのセグメント化</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1852,22 +1852,22 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
       <source>Tolerance (flat)</source>
-      <translation type="unfinished">Tolerance (flat)</translation>
+      <translation>許容誤差（平面）</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
       <source>Tolerance (curved)</source>
-      <translation type="unfinished">Tolerance (curved)</translation>
+      <translation>許容誤差（曲面）</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Maximum curvature</source>
-      <translation type="unfinished">Maximum curvature</translation>
+      <translation>最大曲率</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Minimum curvature</source>
-      <translation type="unfinished">Minimum curvature</translation>
+      <translation>最小曲率</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1890,7 +1890,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>メッシュのセグメント化</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1972,12 +1972,12 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Accept only visible triangles</source>
-      <translation type="unfinished">Accept only visible triangles</translation>
+      <translation>表示されている三角形のみに適用</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Accept only triangles with screen-facing normals</source>
-      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
+      <translation>画面に向いた法線を持つ三角形のみに適用</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="85"/>
@@ -2047,8 +2047,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="298"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>OpenSCAD がシステムに見つかりません。
+インストール方法については https://openscad.org を参照してください。</translation>
     </message>
   </context>
   <context>
@@ -2192,7 +2192,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Export Mesh</source>
-      <translation type="unfinished">Export Mesh</translation>
+      <translation>メッシュをエクスポート</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
@@ -2227,12 +2227,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>穴埋め</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>最大エッジ数を持つ穴を埋めます</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1794"/>
@@ -2252,23 +2252,23 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display Components</source>
-      <translation type="unfinished">Display Components</translation>
+      <translation>コンポーネントを表示</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="800"/>
       <source>Display Segments</source>
-      <translation type="unfinished">Display Segments</translation>
+      <translation>セグメントを表示</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="808"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>表示色</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1678"/>
       <location filename="../../ViewProviderCurvature.cpp" line="537"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>情報モードを終了</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1745"/>
@@ -2278,22 +2278,22 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1771"/>
       <source>Leave Hole-Filling Mode</source>
-      <translation type="unfinished">Leave Hole-Filling Mode</translation>
+      <translation>穴埋めモードを終了</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1819"/>
       <source>Leave Removal Mode</source>
-      <translation type="unfinished">Leave Removal Mode</translation>
+      <translation>削除モードを終了</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1820"/>
       <source>Delete Selected Faces</source>
-      <translation type="unfinished">Delete Selected Faces</translation>
+      <translation>選択した面を削除</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1821"/>
       <source>Clear Selected Faces</source>
-      <translation type="unfinished">Clear Selected Faces</translation>
+      <translation>選択した面をクリア</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="534"/>
@@ -2308,27 +2308,27 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Number of facets</source>
-      <translation type="unfinished">Number of facets</translation>
+      <translation>面の数</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
       <source>Minimum bound</source>
-      <translation type="unfinished">Minimum bound</translation>
+      <translation>最小範囲</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="79"/>
       <source>Maximum bound</source>
-      <translation type="unfinished">Maximum bound</translation>
+      <translation>最大範囲</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Mesh Info Box</source>
-      <translation type="unfinished">Mesh Info Box</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="87"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>メッシュ情報</translation>
     </message>
   </context>
   <context>
@@ -2356,12 +2356,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>メッシュツール</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>メッシュの変更</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -2371,17 +2371,17 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>メッシュの切断</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>メッシュのセグメント化</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>メッシュの分析</translation>
     </message>
   </context>
 </TS>

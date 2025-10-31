@@ -239,9 +239,12 @@ void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
         return;
 
     App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.contains(parent)
-            || propertyEditorView->propOwners.contains(parent))
-    {
+    if (propertyEditorData->propOwners.contains(parent)) {
+        propertyEditorData->blockCollapseAll();
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    }
+    if ( propertyEditorView->propOwners.contains(parent)) {
+        propertyEditorView->blockCollapseAll();
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }

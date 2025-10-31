@@ -1219,7 +1219,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
       <source>Height</source>
-      <translation>Alçària</translation>
+      <translation>Alçada</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
@@ -1353,7 +1353,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height</source>
-      <translation>Alçària</translation>
+      <translation>Alçada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -1480,7 +1480,7 @@ Amb l'ombrejat pla, les normals de la superfície no es defineixen per vèrtex, 
  If face angle &lt; crease angle, smooth shading is used</source>
       <translation>L’angle de plec és un angle llindar entre dues cares.
 
-Si l'angle de la cara ≥ l'angle de plec, s'utilitza l'ombrejat de facetes
+Si l'angle de la cara ≥ l'angle de plec, s'utilitza l'ombrejat de facetes 
 Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translation>
     </message>
   </context>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # This package aggregates tool bit shape classes.
 
 # Import the base class and all concrete shape classes

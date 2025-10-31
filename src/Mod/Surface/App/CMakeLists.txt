@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
 
 generate_from_py(Blending/BlendPoint)

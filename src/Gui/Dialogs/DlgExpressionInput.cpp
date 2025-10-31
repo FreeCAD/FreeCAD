@@ -659,6 +659,7 @@ static App::Document* getPreselectedDocument()
     return doc;
 }
 
+
 int DlgExpressionInput::getVarSetIndex(const App::Document* doc) const
 {
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(

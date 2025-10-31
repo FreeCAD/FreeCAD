@@ -1628,7 +1628,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="170"/>
       <source>Surface Fit</source>
-      <translation type="unfinished">Surface Fit</translation>
+      <translation>Ytpassning</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="177"/>
@@ -1983,7 +1983,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Accept only triangles with screen-facing normals</source>
-      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
+      <translation>Acceptera endast trianglar med normaler som vetter mot skärmen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="85"/>
@@ -2116,7 +2116,7 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>

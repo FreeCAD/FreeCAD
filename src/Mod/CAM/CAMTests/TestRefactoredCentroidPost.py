@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *

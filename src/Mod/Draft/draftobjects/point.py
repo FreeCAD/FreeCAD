@@ -54,7 +54,7 @@ class Point(DraftObject):
         obj.Y = y
         obj.Z = z
 
-        obj.setPropertyStatus('Placement', 'Hidden')
+        obj.setPropertyStatus("Placement", "Hidden")
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -73,6 +73,7 @@ class Point(DraftObject):
             return
 
         import Part
+
         obj.Shape = Part.Vertex(App.Vector(0, 0, 0))
         if base != xyz_vec:
             obj.Placement.Base = xyz_vec

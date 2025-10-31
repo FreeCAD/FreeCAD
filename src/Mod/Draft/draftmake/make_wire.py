@@ -72,12 +72,12 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
     import Part
 
-    if isinstance(pointslist, (list,tuple)):
+    if isinstance(pointslist, (list, tuple)):
         for pnt in pointslist:
             if not isinstance(pnt, App.Vector):
                 App.Console.PrintError(
-                    "Items must be Base.Vector objects, not {}\n".format(
-                    type(pnt)))
+                    "Items must be Base.Vector objects, not {}\n".format(type(pnt))
+                )
                 return None
 
     elif isinstance(pointslist, Part.Wire):
@@ -89,10 +89,8 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
         pointslist = [v.Point for v in pointslist.OrderedVertexes]
 
     else:
-        App.Console.PrintError("Can't make Draft Wire from {}\n".format(
-            type(pointslist)))
+        App.Console.PrintError("Can't make Draft Wire from {}\n".format(type(pointslist)))
         return None
-
 
     if len(pointslist) == 0:
         App.Console.PrintWarning("Draft Wire created with empty point list\n")

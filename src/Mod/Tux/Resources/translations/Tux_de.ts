@@ -96,12 +96,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Trackball Classic</source>
-      <translation>Trackball Classic</translation>
+      <translation>Steuerkugel klassisch</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Rounded Arcball</source>
-      <translation>360-Grad-Anzeige</translation>
+      <translation>Abgerundeter Bogenball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>

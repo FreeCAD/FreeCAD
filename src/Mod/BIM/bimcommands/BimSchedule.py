@@ -34,19 +34,23 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Schedule:
-
     "the Arch Schedule command definition"
 
     def GetResources(self):
-        return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
+        return {
+            "Pixmap": "Arch_Schedule",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Schedule", "Schedule"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Schedule", "Creates a schedule to collect data from the model"
+            ),
+        }
 
     def Activated(self):
-        if hasattr(self,"taskd"):
+        if hasattr(self, "taskd"):
             if self.taskd:
                 self.taskd.form.hide()
         import ArchSchedule
+
         self.taskd = ArchSchedule.ArchScheduleTaskPanel()
 
     def IsActive(self):
@@ -54,4 +58,4 @@ class Arch_Schedule:
         return v
 
 
-FreeCADGui.addCommand('Arch_Schedule',Arch_Schedule())
+FreeCADGui.addCommand("Arch_Schedule", Arch_Schedule())

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -62,6 +64,11 @@ bool UnitsApi::isMultiUnitLength()
 std::string UnitsApi::getBasicLengthUnit()
 {
     return schemas->currentSchema()->getBasicLengthUnit();
+}
+
+std::string UnitsApi::getUnitText(const Quantity& quant)
+{
+    return schemas->currentSchema()->getUnitText(quant);
 }
 
 void UnitsApi::setDecimals(const int prec)

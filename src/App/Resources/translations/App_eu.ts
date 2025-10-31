@@ -34,10 +34,8 @@ that reference the same configurable object</source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation type="unfinished">
-It is recommended that the user right-click the root of the document and select Mark to recompute.
-The user should then click the Refresh button in the main toolbar.
-</translation>
+      <translation>Gomendagarria da erabiltzaileak dokumentuaren erroan eskumako botoiarekin klikatu eta Mark to recompute sakatzea.
+Erabiltzaileak orduan, Refresh button sakatu beharko du tresna-barra nagusian.</translation>
     </message>
   </context>
   <context>
@@ -45,32 +43,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="260"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>X ardatza</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="261"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Y ardatza</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="262"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Z ardatza</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="263"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY planoa</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="264"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ planoa</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="265"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ planoa</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="266"/>

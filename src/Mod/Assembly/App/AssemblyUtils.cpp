@@ -433,6 +433,11 @@ double getJointDistance(const App::DocumentObject* joint, const char* propertyNa
     return prop->getValue();
 }
 
+double getJointAngle(const App::DocumentObject* joint)
+{
+    return getJointDistance(joint, "Angle");
+}
+
 double getJointDistance(const App::DocumentObject* joint)
 {
     return getJointDistance(joint, "Distance");

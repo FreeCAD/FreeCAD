@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /* config.h.  Generated from config.h.cmake by cmake.  */
 
 /* Define to 1 if you have the <bits/sigset.h> header file. */

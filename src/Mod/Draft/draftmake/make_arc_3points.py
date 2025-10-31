@@ -84,37 +84,35 @@ def make_arc_3points(points, placement=None, face=False, support=None, primitive
     try:
         utils.type_check([(points, (list, tuple))], name=_name)
     except TypeError:
-        _err(translate("draft","Points:") + " {}".format(points))
-        _err(translate("draft","Wrong input: must be a list or tuple of 3 points exactly."))
+        _err(translate("draft", "Points:") + " {}".format(points))
+        _err(translate("draft", "Wrong input: must be a list or tuple of 3 points exactly."))
         return None
 
     if len(points) != 3:
-        _err(translate("draft","Points:") + " {}".format(points))
-        _err(translate("draft","Wrong input: must be list or tuple of 3 points exactly."))
+        _err(translate("draft", "Points:") + " {}".format(points))
+        _err(translate("draft", "Wrong input: must be list or tuple of 3 points exactly."))
         return None
 
     p1, p2, p3 = points
 
     try:
-        utils.type_check([(p1, App.Vector),
-                          (p2, App.Vector),
-                          (p3, App.Vector)], name=_name)
+        utils.type_check([(p1, App.Vector), (p2, App.Vector), (p3, App.Vector)], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: incorrect type of points."))
+        _err(translate("draft", "Wrong input: incorrect type of points."))
         return None
 
     if placement is not None:
         try:
             utils.type_check([(placement, App.Placement)], name=_name)
         except TypeError:
-            _err(translate("draft","Placement:") + " {}".format(placement))
-            _err(translate("draft","Wrong input: incorrect type of placement."))
+            _err(translate("draft", "Placement:") + " {}".format(placement))
+            _err(translate("draft", "Wrong input: incorrect type of placement."))
             return None
 
     try:
         edge = Part.Arc(p1, p2, p3).toShape()
     except Part.OCCError as error:
-        _err(translate("draft","Cannot generate shape:") + " " + "{}".format(error))
+        _err(translate("draft", "Cannot generate shape:") + " " + "{}".format(error))
         return None
 
     if primitive:
@@ -123,5 +121,6 @@ def make_arc_3points(points, placement=None, face=False, support=None, primitive
         return obj
 
     return make_circle.make_circle(edge, placement=placement, face=face, support=support)
+
 
 ## @}

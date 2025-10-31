@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Standard C++ GTest tests
 add_executable(Gui_tests_run
         Assistant.cpp

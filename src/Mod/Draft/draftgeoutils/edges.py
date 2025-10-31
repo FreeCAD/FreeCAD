@@ -44,10 +44,8 @@ def findEdge(anEdge, aList):
     """Return True if edge is found in list of edges."""
     for e in range(len(aList)):
         if str(anEdge.Curve) == str(aList[e].Curve):
-            if DraftVecUtils.equals(anEdge.Vertexes[0].Point,
-                                    aList[e].Vertexes[0].Point):
-                if DraftVecUtils.equals(anEdge.Vertexes[-1].Point,
-                                        aList[e].Vertexes[-1].Point):
+            if DraftVecUtils.equals(anEdge.Vertexes[0].Point, aList[e].Vertexes[0].Point):
+                if DraftVecUtils.equals(anEdge.Vertexes[-1].Point, aList[e].Vertexes[-1].Point):
                     return e
     return None
 
@@ -75,19 +73,15 @@ def orientEdge(edge, normal=None, make_arc=False):
     if angle:
         edge.rotate(base, axis, angle)
     if isinstance(edge.Curve, Part.Line):
-        return Part.LineSegment(edge.Curve,
-                                edge.FirstParameter,
-                                edge.LastParameter)
+        return Part.LineSegment(edge.Curve, edge.FirstParameter, edge.LastParameter)
     elif make_arc and isinstance(edge.Curve, Part.Circle) and not edge.Closed:
-        return Part.ArcOfCircle(edge.Curve,
-                                edge.FirstParameter,
-                                edge.LastParameter,
-                                edge.Curve.Axis.z > 0)
+        return Part.ArcOfCircle(
+            edge.Curve, edge.FirstParameter, edge.LastParameter, edge.Curve.Axis.z > 0
+        )
     elif make_arc and isinstance(edge.Curve, Part.Ellipse) and not edge.Closed:
-        return Part.ArcOfEllipse(edge.Curve,
-                                 edge.FirstParameter,
-                                 edge.LastParameter,
-                                 edge.Curve.Axis.z > 0)
+        return Part.ArcOfEllipse(
+            edge.Curve, edge.FirstParameter, edge.LastParameter, edge.Curve.Axis.z > 0
+        )
     return edge.Curve
 
 
@@ -98,15 +92,13 @@ def isSameLine(e1, e2):
     if not isinstance(e2.Curve, Part.LineSegment):
         return False
 
-    if (DraftVecUtils.equals(e1.Vertexes[0].Point,
-                             e2.Vertexes[0].Point)
-        and DraftVecUtils.equals(e1.Vertexes[-1].Point,
-                                 e2.Vertexes[-1].Point)):
+    if DraftVecUtils.equals(e1.Vertexes[0].Point, e2.Vertexes[0].Point) and DraftVecUtils.equals(
+        e1.Vertexes[-1].Point, e2.Vertexes[-1].Point
+    ):
         return True
-    elif (DraftVecUtils.equals(e1.Vertexes[-1].Point,
-                               e2.Vertexes[0].Point)
-          and DraftVecUtils.equals(e1.Vertexes[0].Point,
-                                   e2.Vertexes[-1].Point)):
+    elif DraftVecUtils.equals(e1.Vertexes[-1].Point, e2.Vertexes[0].Point) and DraftVecUtils.equals(
+        e1.Vertexes[0].Point, e2.Vertexes[-1].Point
+    ):
         return True
     return False
 
@@ -114,15 +106,15 @@ def isSameLine(e1, e2):
 def is_line(bspline):
     """Return True if the given BSpline curve is a straight line."""
 
-# previous implementation may fail for a multipole straight spline due
-# a second order error in tolerance, which introduce a difference of 1e-14
-# in the values of the tangents. Also, may fail on a periodic spline.
-#    step = bspline.LastParameter/10
-#    b = bspline.tangent(0)
-#
-#    for i in range(10):
-#        if bspline.tangent(i * step) != b:
-#            return False
+    # previous implementation may fail for a multipole straight spline due
+    # a second order error in tolerance, which introduce a difference of 1e-14
+    # in the values of the tangents. Also, may fail on a periodic spline.
+    #    step = bspline.LastParameter/10
+    #    b = bspline.tangent(0)
+    #
+    #    for i in range(10):
+    #        if bspline.tangent(i * step) != b:
+    #            return False
 
     start_point = bspline.StartPoint
     end_point = bspline.EndPoint
@@ -131,7 +123,6 @@ def is_line(bspline):
         return True
 
     return False
-
 
 
 def invert(shape):
@@ -144,17 +135,13 @@ def invert(shape):
         if len(shape.Vertexes) == 1:
             return shape
         if geomType(shape) == "Line":
-            return Part.LineSegment(shape.Vertexes[-1].Point,
-                                    shape.Vertexes[0].Point).toShape()
+            return Part.LineSegment(shape.Vertexes[-1].Point, shape.Vertexes[0].Point).toShape()
         elif geomType(shape) == "Circle":
             mp = findMidpoint(shape)
-            return Part.Arc(shape.Vertexes[-1].Point,
-                            mp,
-                            shape.Vertexes[0].Point).toShape()
+            return Part.Arc(shape.Vertexes[-1].Point, mp, shape.Vertexes[0].Point).toShape()
         elif geomType(shape) in ["BSplineCurve", "BezierCurve"]:
             if isLine(shape.Curve):
-                return Part.LineSegment(shape.Vertexes[-1].Point,
-                                        shape.Vertexes[0].Point).toShape()
+                return Part.LineSegment(shape.Vertexes[-1].Point, shape.Vertexes[0].Point).toShape()
 
         print("DraftGeomUtils.invert: unable to invert", shape.Curve)
         return shape
@@ -168,7 +155,7 @@ def findMidpoint(edge):
     if edge.Length == 0:
         return None
     else:
-        return edge.valueAt(edge.Curve.parameterAtDistance(edge.Length/2, edge.FirstParameter))
+        return edge.valueAt(edge.Curve.parameterAtDistance(edge.Length / 2, edge.FirstParameter))
 
 
 def getTangent(edge, from_point=None):
@@ -180,8 +167,7 @@ def getTangent(edge, from_point=None):
     if geomType(edge) == "Line":
         return vec(edge)
 
-    elif (geomType(edge) == "BSplineCurve"
-          or geomType(edge) == "BezierCurve"):
+    elif geomType(edge) == "BSplineCurve" or geomType(edge) == "BezierCurve":
         if not from_point:
             return None
         cp = edge.Curve.parameter(from_point)
@@ -199,7 +185,7 @@ def getTangent(edge, from_point=None):
 
 def get_referenced_edges(property_value):
     """Return the Edges referenced by the value of a App:PropertyLink, App::PropertyLinkList,
-       App::PropertyLinkSub or App::PropertyLinkSubList property."""
+    App::PropertyLinkSub or App::PropertyLinkSubList property."""
     edges = []
     if not isinstance(property_value, list):
         property_value = [property_value]
@@ -218,6 +204,7 @@ def get_referenced_edges(property_value):
                             if edge_number < len(object.Shape.Edges):
                                 edges.append(object.Shape.Edges[edge_number])
     return edges
+
 
 # compatibility layer
 

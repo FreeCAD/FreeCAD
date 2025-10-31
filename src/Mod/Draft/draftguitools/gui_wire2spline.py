@@ -60,9 +60,14 @@ class WireToBSpline(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_WireToBSpline',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Convert Wire/B-Spline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts the selected polyline to a B-spline, or the selected B-spline to a polyline")}
+        return {
+            "Pixmap": "Draft_WireToBSpline",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Convert Wire/B-Spline"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_WireToBSpline",
+                "Converts the selected polyline to a B-spline, or the selected B-spline to a polyline",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -76,7 +81,7 @@ class WireToBSpline(gui_base_original.Modifier):
         # in order to properly open a transaction and commit it.
         selection = Gui.Selection.getSelection()
         if selection:
-            if utils.getType(selection[0]) in ['Wire', 'BSpline']:
+            if utils.getType(selection[0]) in ["Wire", "BSpline"]:
                 super(WireToBSpline, self).Activated(name="Convert polyline/B-spline")
                 if self.doc:
                     self.obj = Gui.Selection.getSelection()
@@ -88,18 +93,20 @@ class WireToBSpline(gui_base_original.Modifier):
                         self.Points = self.obj.Points
                         self.closed = self.obj.Closed
                         n = None
-                        if utils.getType(self.obj) == 'Wire':
-                            n = Draft.make_bspline(self.Points,
-                                                   closed=self.closed,
-                                                   placement=self.pl)
-                        elif utils.getType(self.obj) == 'BSpline':
+                        if utils.getType(self.obj) == "Wire":
+                            n = Draft.make_bspline(
+                                self.Points, closed=self.closed, placement=self.pl
+                            )
+                        elif utils.getType(self.obj) == "BSpline":
                             self.bs2wire = True
-                            n = Draft.make_wire(self.Points,
-                                                closed=self.closed,
-                                                placement=self.pl,
-                                                face=None,
-                                                support=None,
-                                                bs2wire=self.bs2wire)
+                            n = Draft.make_wire(
+                                self.Points,
+                                closed=self.closed,
+                                placement=self.pl,
+                                face=None,
+                                support=None,
+                                bs2wire=self.bs2wire,
+                            )
                         if n:
                             Draft.formatObject(n, self.obj)
                             self.doc.recompute()
@@ -107,6 +114,6 @@ class WireToBSpline(gui_base_original.Modifier):
                         self.finish()
 
 
-Gui.addCommand('Draft_WireToBSpline', WireToBSpline())
+Gui.addCommand("Draft_WireToBSpline", WireToBSpline())
 
 ## @}

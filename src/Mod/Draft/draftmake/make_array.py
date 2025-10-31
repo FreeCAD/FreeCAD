@@ -43,10 +43,7 @@ if App.GuiUp:
     from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
 
-def make_array(base_object,
-               arg1, arg2, arg3,
-               arg4=None, arg5=None, arg6=None,
-               use_link=True):
+def make_array(base_object, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None, use_link=True):
     """Create a Draft Array of the given object.
 
     Rectangular array
@@ -82,14 +79,13 @@ def make_array(base_object,
     """
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     if use_link:
         # The Array class must be called in this special way
         # to make it a LinkArray
-        new_obj = doc.addObject("Part::FeaturePython", "Array",
-                                Array(None), None, True)
+        new_obj = doc.addObject("Part::FeaturePython", "Array", Array(None), None, True)
     else:
         new_obj = doc.addObject("Part::FeaturePython", "Array")
         Array(new_obj)
@@ -129,7 +125,9 @@ def make_array(base_object,
             ViewProviderDraftLink(new_obj.ViewObject)
         else:
             if new_obj.ArrayType == "circular":
-                new_obj.Proxy.execute(new_obj) # Updates Count which is required for correct DiffuseColor.
+                new_obj.Proxy.execute(
+                    new_obj
+                )  # Updates Count which is required for correct DiffuseColor.
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.format_object(new_obj, new_obj.Base)
             new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
@@ -139,17 +137,17 @@ def make_array(base_object,
     return new_obj
 
 
-def makeArray(baseobject,
-              arg1, arg2, arg3,
-              arg4=None, arg5=None, arg6=None,
-              name="Array", use_link=False):
+def makeArray(
+    baseobject, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None, name="Array", use_link=False
+):
     """Create an Array. DEPRECATED. Use 'make_array'."""
-    _wrn("Do not use this function directly; instead, use "
-         "'make_ortho_array', 'make_polar_array', "
-         "or 'make_circular_array'.")
+    _wrn(
+        "Do not use this function directly; instead, use "
+        "'make_ortho_array', 'make_polar_array', "
+        "or 'make_circular_array'."
+    )
 
-    return make_array(baseobject,
-                      arg1, arg2, arg3,
-                      arg4, arg5, arg6, use_link)
+    return make_array(baseobject, arg1, arg2, arg3, arg4, arg5, arg6, use_link)
+
 
 ## @}

@@ -43,6 +43,7 @@ import draftmake.make_arc_3points as make_arc_3points
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
+
 def draftify(objectslist, makeblock=False, delete=True):
     """draftify(objectslist,[makeblock],[delete])
 
@@ -62,11 +63,11 @@ def draftify(objectslist, makeblock=False, delete=True):
         If delete = False, old objects are not deleted
     """
 
-    if not isinstance(objectslist,list):
+    if not isinstance(objectslist, list):
         objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
-        if hasattr(obj,'Shape'):
+        if hasattr(obj, "Shape"):
             for cluster in Part.sortEdges(obj.Shape.Edges):
                 w = Part.Wire(cluster)
                 nobj = draftify_shape(w)
@@ -88,11 +89,12 @@ def draftify(objectslist, makeblock=False, delete=True):
             return newobjlist[0]
         return newobjlist
 
+
 def draftify_shape(shape):
 
     nobj = None
     if DraftGeomUtils.hasCurves(shape):
-        if (len(shape.Edges) == 1):
+        if len(shape.Edges) == 1:
             edge = shape.Edges[0]
             edge_type = DraftGeomUtils.geomType(edge)
             if edge_type == "Circle":
@@ -101,21 +103,24 @@ def draftify_shape(shape):
                 else:
                     first_parameter = edge.FirstParameter
                     last_parameter = edge.LastParameter
-                    points = [edge.Curve.value(first_parameter),
-                              edge.Curve.value((first_parameter + last_parameter)/2),
-                              edge.Curve.value(last_parameter)]
+                    points = [
+                        edge.Curve.value(first_parameter),
+                        edge.Curve.value((first_parameter + last_parameter) / 2),
+                        edge.Curve.value(last_parameter),
+                    ]
                     nobj = make_arc_3points.make_arc_3points(points)
-           # TODO: take into consideration trimmed curves and capture the specific
-           # type of BSpline and Bezier that can be converted to a draft object.
-           # elif edge_type == "BSplineCurve":
-           #     knots = [edge.Curve.value(p) for p in edge.Curve.getKnots()]
-           #     nobj = make_bspline.make_bspline(knots, closed=edge.isClosed())
-           # elif edge_type == "BezierCurve":
-           #     nobj = make_bezcurve.make_bezcurve(edge.Curve.getPoles(),
-           #                                        closed=edge.isClosed())
+        # TODO: take into consideration trimmed curves and capture the specific
+        # type of BSpline and Bezier that can be converted to a draft object.
+        # elif edge_type == "BSplineCurve":
+        #     knots = [edge.Curve.value(p) for p in edge.Curve.getKnots()]
+        #     nobj = make_bspline.make_bspline(knots, closed=edge.isClosed())
+        # elif edge_type == "BezierCurve":
+        #     nobj = make_bezcurve.make_bezcurve(edge.Curve.getPoles(),
+        #                                        closed=edge.isClosed())
     else:
         nobj = make_wire.make_wire(shape)
 
     return nobj
+
 
 ## @}

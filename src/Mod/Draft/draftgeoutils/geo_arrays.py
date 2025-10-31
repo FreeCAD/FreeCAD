@@ -48,7 +48,7 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 def print_places(places, title="Places"):
     """Print a vector with a title."""
-    _msg(12*"-")
+    _msg(12 * "-")
     _msg(title)
     for i in places:
         _msg("{}".format(i))
@@ -87,8 +87,7 @@ def get_twisted_placements(path, count=15, rot_factor=0.25):
     """Get the placements of the twisted array elements."""
     count = max(count, 1)
 
-    (norm, edge,
-     step, inc) = get_init_values(path, count)
+    (norm, edge, step, inc) = get_init_values(path, count)
 
     increment = 0
     places = []
@@ -111,24 +110,18 @@ def get_twisted_placements(path, count=15, rot_factor=0.25):
 
 def get_twisted_array_shape(base, path, count=15, rot_factor=0.25):
     """Get the twisted array shape as a compound."""
-    places, _ = get_twisted_placements(path,
-                                       count=count,
-                                       rot_factor=rot_factor)
+    places, _ = get_twisted_placements(path, count=count, rot_factor=rot_factor)
     shapes, _ = create_frames(base, places)
 
     shape = Part.makeCompound(shapes)
     return shape
 
 
-def get_twisted_bridge_shape(base, path, count=15, rot_factor=0.25,
-                             width=100,
-                             thickness=10):
+def get_twisted_bridge_shape(base, path, count=15, rot_factor=0.25, width=100, thickness=10):
     """Get the twisted bridge array shape as a compound."""
     compound = list()
 
-    places, _ = get_twisted_placements(path,
-                                       count=count,
-                                       rot_factor=rot_factor)
+    places, _ = get_twisted_placements(path, count=count, rot_factor=rot_factor)
     # print_places(places)
 
     shapes, profiles = create_frames(base, places)
@@ -175,7 +168,7 @@ def make_walkway(path, width=100, thickness=10):
     """Construct the walkway of the twisted bridge array."""
     spine = path.Shape.Edges[0]
 
-    half_size = width/2
+    half_size = width / 2
     offset_height = thickness
 
     norm1 = App.Vector(0, 0, 1)
@@ -187,8 +180,7 @@ def make_walkway(path, width=100, thickness=10):
     place.Rotation = App.Rotation(binorm1, norm1, tan1)
     place.move(v1 - App.Vector(0, 0, 3 * offset_height))
 
-    plane = Part.makePlane(width, thickness,
-                           App.Vector(-half_size, -2 * offset_height, 0))
+    plane = Part.makePlane(width, thickness, App.Vector(-half_size, -2 * offset_height, 0))
     face = Part.Face(plane)
     face.Placement = place.multiply(face.Placement)
 
@@ -196,5 +188,6 @@ def make_walkway(path, width=100, thickness=10):
     sweep = wire.makePipe(face)
 
     return sweep
+
 
 ## @}

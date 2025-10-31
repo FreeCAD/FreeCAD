@@ -47,38 +47,22 @@ class Fillet(DraftObject):
         """Set the properties of objects if they don't exist."""
         if not hasattr(obj, "Start"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "The start point of this line.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "Start",
-                            "Draft",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyVectorDistance", "Start", "Draft", _tip, locked=True)
             obj.Start = App.Vector(0, 0, 0)
 
         if not hasattr(obj, "End"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "The end point of this line.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "End",
-                            "Draft",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyVectorDistance", "End", "Draft", _tip, locked=True)
             obj.End = App.Vector(0, 0, 0)
 
         if not hasattr(obj, "Length"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "The length of this line.")
-            obj.addProperty("App::PropertyLength",
-                            "Length",
-                            "Draft",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyLength", "Length", "Draft", _tip, locked=True)
             obj.Length = 0
 
         if not hasattr(obj, "FilletRadius"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corner.")
-            obj.addProperty("App::PropertyLength",
-                            "FilletRadius",
-                            "Draft",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip, locked=True)
             obj.FilletRadius = 0
 
         # TODO: these two properties should link two straight lines
@@ -117,7 +101,7 @@ class Fillet(DraftObject):
             obj.End = obj.Shape.Vertexes[-1].Point
 
     def _update_radius(self, obj, radius):
-        #if (hasattr(obj, "Line1") and hasattr(obj, "Line2")
+        # if (hasattr(obj, "Line1") and hasattr(obj, "Line2")
         #        and obj.Line1 and obj.Line2):
         # do the unimplemented work
         pass
@@ -130,5 +114,6 @@ class Fillet(DraftObject):
         """
         if prop in "FilletRadius":
             self._update_radius(obj, obj.FilletRadius)
+
 
 ## @}

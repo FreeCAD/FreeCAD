@@ -34,11 +34,21 @@ from FreeCAD import Units
 from bimtests import TestArchBase
 import WorkingPlane
 
+
 def like(a, b):
-    return abs(a-b) < 0.001
+    return abs(a - b) < 0.001
+
 
 def checkBB(a, b):
-    return like(a.XMin, b.XMin) and like(a.YMin, b.YMin) and like(a.ZMin, b.ZMin) and like(a.XMax, b.XMax) and like(a.YMax, b.YMax) and like(a.ZMax, b.ZMax)
+    return (
+        like(a.XMin, b.XMin)
+        and like(a.YMin, b.YMin)
+        and like(a.ZMin, b.ZMin)
+        and like(a.XMax, b.XMax)
+        and like(a.YMax, b.YMax)
+        and like(a.ZMax, b.ZMax)
+    )
+
 
 class TestArchSpace(TestArchBase.TestArchBase):
 
@@ -46,11 +56,11 @@ class TestArchSpace(TestArchBase.TestArchBase):
         operation = "Checking Arch Space..."
         self.printTestMessage(operation)
 
-        sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        sb = Part.makeBox(1, 1, 1)
+        b = App.ActiveDocument.addObject("Part::Feature", "Box")
         b.Shape = sb
         s = Arch.makeSpace([b])
-        self.assertTrue(s,"Arch Space failed")
+        self.assertTrue(s, "Arch Space failed")
 
     def testSpaceBBox(self):
         operation = "Checking Arch Space bound box..."
@@ -59,15 +69,14 @@ class TestArchSpace(TestArchBase.TestArchBase):
         shape = Part.Shape()
         shape.importBrepFromString(brepArchiCAD)
         bborig = shape.BoundBox
-        App.Console.PrintLog ("Original BB: "+str(bborig))
-        baseobj = App.ActiveDocument.addObject("Part::Feature","brepArchiCAD_body")
+        App.Console.PrintLog("Original BB: " + str(bborig))
+        baseobj = App.ActiveDocument.addObject("Part::Feature", "brepArchiCAD_body")
         baseobj.Shape = shape
         space = Arch.makeSpace(baseobj)
         space.recompute()
         bbnew = space.Shape.BoundBox
-        App.Console.PrintLog ("New BB: "+str(bbnew))
-        self.assertTrue(checkBB(bborig,bbnew),"Arch Space has wrong Placement")
-
+        App.Console.PrintLog("New BB: " + str(bbnew))
+        self.assertTrue(checkBB(bborig, bbnew), "Arch Space has wrong Placement")
 
     def test_addSpaceBoundaries(self):
         """Test the Arch.addSpaceBoundaries method.
@@ -82,21 +91,21 @@ class TestArchSpace(TestArchBase.TestArchBase):
         pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
         pl.Base = App.Vector(-2000.0, -2000.0, 0.0)
         rectangleBase = Draft.make_rectangle(
-            length=4000.0, height=4000.0, placement=pl, face=True, support=None)
+            length=4000.0, height=4000.0, placement=pl, face=True, support=None
+        )
         App.ActiveDocument.recompute()
-        extr = rectangleBase.Shape.extrude(App.Vector(0,0,2000))
-        Part.show(extr, 'Extrusion')
-        space = Arch.makeSpace(App.activeDocument().getObject('Extrusion'))
+        extr = rectangleBase.Shape.extrude(App.Vector(0, 0, 2000))
+        Part.show(extr, "Extrusion")
+        space = Arch.makeSpace(App.activeDocument().getObject("Extrusion"))
         App.ActiveDocument.recompute()  # To calculate area
 
         # Create the wall
-        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0),
-                                 App.Vector (-3000.0, 1000.0, 0.0))
+        trace = Part.LineSegment(App.Vector(3000.0, 1000.0, 0.0), App.Vector(-3000.0, 1000.0, 0.0))
         wp = WorkingPlane.get_working_plane()
-        base = App.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+        base = App.ActiveDocument.addObject("Sketcher::SketchObject", "WallTrace")
         base.Placement = wp.get_placement()
         base.addGeometry(trace)
-        wall = Arch.makeWall(base,width=200.0,height=3000.0,align="Left")
+        wall = Arch.makeWall(base, width=200.0, height=3000.0, align="Left")
         wall.Normal = wp.axis
 
         # Add the boundary
@@ -105,18 +114,20 @@ class TestArchSpace(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()  # To recalculate area
 
         # Assert if area is as expected
-        expectedArea = Units.parseQuantity('12 m^2')
+        expectedArea = Units.parseQuantity("12 m^2")
         actualArea = Units.parseQuantity(str(space.Area))
 
         self.assertAlmostEqual(
             expectedArea.Value,
             actualArea.Value,
-            msg = (f"Invalid area value. " +
-                   f"Expected: {expectedArea.UserString}, actual: {actualArea.UserString}"))
+            msg=(
+                f"Invalid area value. "
+                + f"Expected: {expectedArea.UserString}, actual: {actualArea.UserString}"
+            ),
+        )
 
     def test_SpaceFromSingleWall(self):
-        """Create a space from boundaries of a single wall.
-        """
+        """Create a space from boundaries of a single wall."""
         operation = "Arch Space from single wall"
         self.printTestMessage(operation)
 
@@ -128,19 +139,24 @@ class TestArchSpace(TestArchBase.TestArchBase):
         pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
         pl.Base = App.Vector(0.0, 0.0, 0.0)
         rectangleBase = Draft.make_rectangle(
-            length=wallInnerLength, height=wallInnerLength, placement=pl, face=True, support=None)
-        App.ActiveDocument.recompute() # To calculate rectangle area
+            length=wallInnerLength, height=wallInnerLength, placement=pl, face=True, support=None
+        )
+        App.ActiveDocument.recompute()  # To calculate rectangle area
         rectangleArea = rectangleBase.Area
         App.ActiveDocument.getObject(rectangleBase.Name).MakeFace = False
         wall = Arch.makeWall(baseobj=rectangleBase, height=wallHeight, align="Left")
-        App.ActiveDocument.recompute() # To calculate face areas
+        App.ActiveDocument.recompute()  # To calculate face areas
 
         # Create a space from the wall's inner faces
-        boundaries = [f"Face{ind+1}" for ind, face in enumerate(wall.Shape.Faces)
-                      if round(face.Area) == round(wallInnerFaceArea)]
+        boundaries = [
+            f"Face{ind+1}"
+            for ind, face in enumerate(wall.Shape.Faces)
+            if round(face.Area) == round(wallInnerFaceArea)
+        ]
 
         if App.GuiUp:
             import FreeCADGui
+
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(wall, boundaries)
 
@@ -154,7 +170,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
             # [ (<Part::Feature>, ["Face1", ...]), ... ]
             space = Arch.makeSpace([(wall, boundaries)])
 
-        App.ActiveDocument.recompute() # To calculate space area
+        App.ActiveDocument.recompute()  # To calculate space area
 
         # Assert if area is as expected
         expectedArea = Units.parseQuantity(str(rectangleArea))
@@ -163,7 +179,8 @@ class TestArchSpace(TestArchBase.TestArchBase):
         self.assertAlmostEqual(
             expectedArea.Value,
             actualArea.Value,
-            msg = f"Invalid area value. Expected: {expectedArea.UserString}, actual: {actualArea.UserString}")
+            msg=f"Invalid area value. Expected: {expectedArea.UserString}, actual: {actualArea.UserString}",
+        )
 
 
 brepArchiCAD = """

@@ -90,7 +90,7 @@ bool ViewProvider::doubleClicked()
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
         Gui::Command::openCommand(text.toUtf8());
-        Gui::cmdSetEdit(pcObject);
+        Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();

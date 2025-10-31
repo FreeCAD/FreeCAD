@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
 # *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *

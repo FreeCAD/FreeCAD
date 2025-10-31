@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -128,69 +128,60 @@ class DimensionBase(DraftAnnotation):
         properties = obj.PropertiesList
 
         if "Normal" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The normal direction of the text "
-                                     "of the dimension")
-            obj.addProperty("App::PropertyVector",
-                            "Normal",
-                            "Dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "The normal direction of the text " "of the dimension"
+            )
+            obj.addProperty("App::PropertyVector", "Normal", "Dimension", _tip, locked=True)
             obj.Normal = App.Vector(0, 0, 1)
 
         # TODO: remove Support property as it is not used at all.
         # It is just set at creation time by the make_dimension function
         # but it is not used.
         if "Support" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The object measured by this dimension")
-            obj.addProperty("App::PropertyLink",
-                            "Support",
-                            "Dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The object measured by this dimension")
+            obj.addProperty("App::PropertyLink", "Support", "Dimension", _tip, locked=True)
             obj.Support = None
 
         if "LinkedGeometry" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The object, and specific subelements "
-                                     "of it,\n"
-                                     "that this dimension "
-                                     "is measuring.\n"
-                                     "\n"
-                                     "There are various possibilities:\n"
-                                     "- An object, and one of its edges.\n"
-                                     "- An object, and two of its vertices.\n"
-                                     "- An arc object, and its edge.")
-            obj.addProperty("App::PropertyLinkSubList",
-                            "LinkedGeometry",
-                            "Dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The object, and specific subelements "
+                "of it,\n"
+                "that this dimension "
+                "is measuring.\n"
+                "\n"
+                "There are various possibilities:\n"
+                "- An object, and one of its edges.\n"
+                "- An object, and two of its vertices.\n"
+                "- An arc object, and its edge.",
+            )
+            obj.addProperty(
+                "App::PropertyLinkSubList", "LinkedGeometry", "Dimension", _tip, locked=True
+            )
             obj.LinkedGeometry = []
 
         if "Dimline" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "A point through which the dimension "
-                                     "line, or an extrapolation of it, "
-                                     "will pass.\n"
-                                     "\n"
-                                     "- For linear dimensions, this property "
-                                     "controls how close the dimension line\n"
-                                     "is to the measured object.\n"
-                                     "- For radial dimensions, this controls "
-                                     "the direction of the dimension line\n"
-                                     "that displays the measured radius or "
-                                     "diameter.\n"
-                                     "- For angular dimensions, "
-                                     "this controls the radius of the "
-                                     "dimension arc\n"
-                                     "that displays the measured angle.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "Dimline",
-                            "Dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "A point through which the dimension "
+                "line, or an extrapolation of it, "
+                "will pass.\n"
+                "\n"
+                "- For linear dimensions, this property "
+                "controls how close the dimension line\n"
+                "is to the measured object.\n"
+                "- For radial dimensions, this controls "
+                "the direction of the dimension line\n"
+                "that displays the measured radius or "
+                "diameter.\n"
+                "- For angular dimensions, "
+                "this controls the radius of the "
+                "dimension arc\n"
+                "that displays the measured angle.",
+            )
+            obj.addProperty(
+                "App::PropertyVectorDistance", "Dimline", "Dimension", _tip, locked=True
+            )
             obj.Dimline = App.Vector(0, 1, 0)
 
     def update_properties_0v21(self, obj, vobj):
@@ -223,77 +214,75 @@ class LinearDimension(DimensionBase):
         properties = obj.PropertiesList
 
         if "Start" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Starting point of the dimension line.\n"
-                                     "\n"
-                                     "If it is a radius dimension it will be "
-                                     "the center of the arc.\n"
-                                     "If it is a diameter dimension "
-                                     "it will be a point that lies "
-                                     "on the arc.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "Start",
-                            "Linear/radial dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Starting point of the dimension line.\n"
+                "\n"
+                "If it is a radius dimension it will be "
+                "the center of the arc.\n"
+                "If it is a diameter dimension "
+                "it will be a point that lies "
+                "on the arc.",
+            )
+            obj.addProperty(
+                "App::PropertyVectorDistance", "Start", "Linear/radial dimension", _tip, locked=True
+            )
             obj.Start = App.Vector(0, 0, 0)
 
         if "End" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Ending point of the dimension line.\n"
-                                     "\n"
-                                     "If it is a radius or diameter "
-                                     "dimension\n"
-                                     "it will be a point that lies "
-                                     "on the arc.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "End",
-                            "Linear/radial dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Ending point of the dimension line.\n"
+                "\n"
+                "If it is a radius or diameter "
+                "dimension\n"
+                "it will be a point that lies "
+                "on the arc.",
+            )
+            obj.addProperty(
+                "App::PropertyVectorDistance", "End", "Linear/radial dimension", _tip, locked=True
+            )
             obj.End = App.Vector(1, 0, 0)
 
         if "Direction" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The direction of the dimension line.\n"
-                                     "If this remains '(0,0,0)', "
-                                     "the direction will be calculated "
-                                     "automatically.")
-            obj.addProperty("App::PropertyVector",
-                            "Direction",
-                            "Linear/radial dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The direction of the dimension line.\n"
+                "If this remains '(0,0,0)', "
+                "the direction will be calculated "
+                "automatically.",
+            )
+            obj.addProperty(
+                "App::PropertyVector", "Direction", "Linear/radial dimension", _tip, locked=True
+            )
 
         if "Distance" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The value of the measurement.\n"
-                                     "\n"
-                                     "This property is read-only because "
-                                     "the value is calculated\n"
-                                     "from the 'Start' and 'End' properties.\n"
-                                     "\n"
-                                     "If the 'Linked Geometry' "
-                                     "is an arc or circle, this 'Distance'\n"
-                                     "is the radius or diameter, depending "
-                                     "on the 'Diameter' property.")
-            obj.addProperty("App::PropertyLength",
-                            "Distance",
-                            "Linear/radial dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The value of the measurement.\n"
+                "\n"
+                "This property is read-only because "
+                "the value is calculated\n"
+                "from the 'Start' and 'End' properties.\n"
+                "\n"
+                "If the 'Linked Geometry' "
+                "is an arc or circle, this 'Distance'\n"
+                "is the radius or diameter, depending "
+                "on the 'Diameter' property.",
+            )
+            obj.addProperty(
+                "App::PropertyLength", "Distance", "Linear/radial dimension", _tip, locked=True
+            )
             obj.Distance = 0
 
         if "Diameter" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "When measuring circular arcs, "
-                                     "it determines whether to display\n"
-                                     "the radius or the diameter value")
-            obj.addProperty("App::PropertyBool",
-                            "Diameter",
-                            "Radial dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "When measuring circular arcs, "
+                "it determines whether to display\n"
+                "the radius or the diameter value",
+            )
+            obj.addProperty("App::PropertyBool", "Diameter", "Radial dimension", _tip, locked=True)
             obj.Diameter = False
 
     def onDocumentRestored(self, obj):
@@ -320,12 +309,12 @@ class LinearDimension(DimensionBase):
         as they aren't used.
         """
         if hasattr(obj, "Distance"):
-            obj.setPropertyStatus('Distance', 'ReadOnly')
+            obj.setPropertyStatus("Distance", "ReadOnly")
 
         # if hasattr(obj, "Normal"):
         #    obj.setPropertyStatus('Normal', 'Hidden')
         if hasattr(obj, "Support"):
-            obj.setPropertyStatus('Support', 'Hidden')
+            obj.setPropertyStatus("Support", "Hidden")
 
     def transform(self, obj, pla):
         """Transform the object by applying a placement."""
@@ -353,24 +342,20 @@ class LinearDimension(DimensionBase):
                     # If it has one subelement, we assume an edge
                     # that can be a straight line, or a circular edge
                     subelement = sub_list[0]
-                    (obj.Start,
-                     obj.End) = measure_one_obj_edge(linked_obj,
-                                                     subelement,
-                                                     obj.Dimline,
-                                                     obj.Diameter)
+                    (obj.Start, obj.End) = measure_one_obj_edge(
+                        linked_obj, subelement, obj.Dimline, obj.Diameter
+                    )
                 elif len(sub_list) == 2:
                     # If it has two subelements, we assume a straight edge
                     # that is measured by two vertices
-                    (obj.Start,
-                     obj.End) = measure_one_obj_vertices(linked_obj,
-                                                         sub_list)
+                    (obj.Start, obj.End) = measure_one_obj_vertices(linked_obj, sub_list)
 
             elif len(obj.LinkedGeometry) == 2:
                 # If the list has two objects, it measures the distance
                 # between the two vertices in those two objects
-                (obj.Start,
-                 obj.End) = measure_two_objects(obj.LinkedGeometry[0],
-                                                obj.LinkedGeometry[1])
+                (obj.Start, obj.End) = measure_two_objects(
+                    obj.LinkedGeometry[0], obj.LinkedGeometry[1]
+                )
 
         # Update the distance property by comparing the floats
         # with the precision
@@ -521,58 +506,56 @@ class AngularDimension(DimensionBase):
         properties = obj.PropertiesList
 
         if "FirstAngle" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Starting angle of the dimension line "
-                                     "(circular arc).\n"
-                                     "The arc is drawn counter-clockwise.")
-            obj.addProperty("App::PropertyAngle",
-                            "FirstAngle",
-                            "Angular dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Starting angle of the dimension line "
+                "(circular arc).\n"
+                "The arc is drawn counter-clockwise.",
+            )
+            obj.addProperty(
+                "App::PropertyAngle", "FirstAngle", "Angular dimension", _tip, locked=True
+            )
             obj.FirstAngle = 0
 
         if "LastAngle" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Ending angle of the dimension line "
-                                     "(circular arc).\n"
-                                     "The arc is drawn counter-clockwise.")
-            obj.addProperty("App::PropertyAngle",
-                            "LastAngle",
-                            "Angular dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Ending angle of the dimension line "
+                "(circular arc).\n"
+                "The arc is drawn counter-clockwise.",
+            )
+            obj.addProperty(
+                "App::PropertyAngle", "LastAngle", "Angular dimension", _tip, locked=True
+            )
             obj.LastAngle = 90
 
         if "Center" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The center point of the dimension "
-                                     "line, which is a circular arc.\n"
-                                     "\n"
-                                     "This is normally the point where two "
-                                     "line segments, or their extensions\n"
-                                     "intersect, resulting in the "
-                                     "measured 'Angle' between them.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "Center",
-                            "Angular dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The center point of the dimension "
+                "line, which is a circular arc.\n"
+                "\n"
+                "This is normally the point where two "
+                "line segments, or their extensions\n"
+                "intersect, resulting in the "
+                "measured 'Angle' between them.",
+            )
+            obj.addProperty(
+                "App::PropertyVectorDistance", "Center", "Angular dimension", _tip, locked=True
+            )
             obj.Center = App.Vector(0, 0, 0)
 
         if "Angle" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The value of the measurement.\n"
-                                     "\n"
-                                     "This property is read-only because "
-                                     "the value is calculated from\n"
-                                     "the 'First Angle' and "
-                                     "'Last Angle' properties.")
-            obj.addProperty("App::PropertyAngle",
-                            "Angle",
-                            "Angular dimension",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The value of the measurement.\n"
+                "\n"
+                "This property is read-only because "
+                "the value is calculated from\n"
+                "the 'First Angle' and "
+                "'Last Angle' properties.",
+            )
+            obj.addProperty("App::PropertyAngle", "Angle", "Angular dimension", _tip, locked=True)
             obj.Angle = 0
 
     def onDocumentRestored(self, obj):
@@ -644,14 +627,14 @@ class AngularDimension(DimensionBase):
         as they aren't used.
         """
         if hasattr(obj, "Angle"):
-            obj.setPropertyStatus('Angle', 'ReadOnly')
+            obj.setPropertyStatus("Angle", "ReadOnly")
 
         if hasattr(obj, "Normal"):
-            obj.setPropertyStatus('Normal', 'Hidden')
+            obj.setPropertyStatus("Normal", "Hidden")
         if hasattr(obj, "Support"):
-            obj.setPropertyStatus('Support', 'Hidden')
+            obj.setPropertyStatus("Support", "Hidden")
         if hasattr(obj, "LinkedGeometry"):
-            obj.setPropertyStatus('LinkedGeometry', 'Hidden')
+            obj.setPropertyStatus("LinkedGeometry", "Hidden")
 
 
 def measure_two_obj_angles(link_sub_1, link_sub_2):

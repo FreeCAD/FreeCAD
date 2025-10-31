@@ -33,33 +33,34 @@ from draftutils.messages import _msg
 
 from math import pi, cos, sin, radians
 
+
 class TestArchComponent(TestArchBase.TestArchBase):
 
     def testAdd(self):
-        App.Console.PrintLog ('Checking Arch Add...\n')
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
-        w = Arch.makeWall(l,width=0.2,height=2)
-        sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        App.Console.PrintLog("Checking Arch Add...\n")
+        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
+        w = Arch.makeWall(l, width=0.2, height=2)
+        sb = Part.makeBox(1, 1, 1)
+        b = App.ActiveDocument.addObject("Part::Feature", "Box")
         b.Shape = sb
         App.ActiveDocument.recompute()
-        Arch.addComponents(b,w)
+        Arch.addComponents(b, w)
         App.ActiveDocument.recompute()
-        r = (w.Shape.Volume > 1.5)
-        self.assertTrue(r,"Arch Add failed")
+        r = w.Shape.Volume > 1.5
+        self.assertTrue(r, "Arch Add failed")
 
     def testRemove(self):
-        App.Console.PrintLog ('Checking Arch Remove...\n')
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
-        w = Arch.makeWall(l,width=0.2,height=2,align="Right")
-        sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        App.Console.PrintLog("Checking Arch Remove...\n")
+        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
+        w = Arch.makeWall(l, width=0.2, height=2, align="Right")
+        sb = Part.makeBox(1, 1, 1)
+        b = App.ActiveDocument.addObject("Part::Feature", "Box")
         b.Shape = sb
         App.ActiveDocument.recompute()
-        Arch.removeComponents(b,w)
+        Arch.removeComponents(b, w)
         App.ActiveDocument.recompute()
-        r = (w.Shape.Volume < 0.75)
-        self.assertTrue(r,"Arch Remove failed")
+        r = w.Shape.Volume < 0.75
+        self.assertTrue(r, "Arch Remove failed")
 
     def testBsplineSlabAreas(self):
         """Test the HorizontalArea and VerticalArea properties of a Bspline-based slab.
@@ -76,8 +77,8 @@ class TestArchComponent(TestArchBase.TestArchBase):
         radius = 10000  # 10 meters in mm
         extrusionLength = 100  # 10 cm in mm
         numPoints = 50  # Number of points for B-spline
-        startAngle = 0   # Start at 0 degrees (right)
-        endAngle = 180   # End at 180 degrees (left)
+        startAngle = 0  # Start at 0 degrees (right)
+        endAngle = 180  # End at 180 degrees (left)
 
         # Create points for semicircle
         points = []
@@ -97,9 +98,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         # Create sketch
         # We do this because Draft.make_wires does not support B-splines
         # and we need a closed wire for the slab
-        sketch = Draft.makeSketch([bspline, closingLine],
-                               autoconstraints=True,
-                               delete=True)
+        sketch = Draft.makeSketch([bspline, closingLine], autoconstraints=True, delete=True)
         if sketch is None:
             self.fail("Sketch creation failed")
         sketch.recompute()
@@ -120,21 +119,25 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         # Optimally wrapped assertions
         self.assertAlmostEqual(
-            actualHorizontalArea, theoreticalHorizontalArea, places=3,
+            actualHorizontalArea,
+            theoreticalHorizontalArea,
+            places=3,
             msg=(
                 "Horizontal area > 0.1% tolerance | "
                 f"Exp: {theoreticalHorizontalArea:.3f} m² | "
                 f"Got: {actualHorizontalArea:.3f} m²"
-            )
+            ),
         )
 
         self.assertAlmostEqual(
-            actualVerticalArea, theoreticalVerticalArea, places=3,
+            actualVerticalArea,
+            theoreticalVerticalArea,
+            places=3,
             msg=(
                 "Vertical area > 0.1% tolerance | "
                 f"Exp: {theoreticalVerticalArea:.3f} m² | "
                 f"Got: {actualVerticalArea:.3f} m²"
-            )
+            ),
         )
 
     def testHouseSpaceAreas(self):
@@ -150,9 +153,9 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         # Dimensional parameters (all in mm)
         baseLength = 5000  # 5m along X-axis
-        baseWidth = 5000   # 5m along Y-axis (extrusion depth)
+        baseWidth = 5000  # 5m along Y-axis (extrusion depth)
         rectangleHeight = 2500  # 2.5m lower rectangular portion
-        triangleHeight = 2500   # 2.5m upper triangular portion
+        triangleHeight = 2500  # 2.5m upper triangular portion
         totalHeight = rectangleHeight + triangleHeight  # 5m total height
 
         # Create envelope profile points (XZ plane)
@@ -160,8 +163,8 @@ class TestArchComponent(TestArchBase.TestArchBase):
             App.Vector(0, 0, 0),
             App.Vector(baseLength, 0, 0),
             App.Vector(baseLength, 0, rectangleHeight),
-            App.Vector(baseLength/2, 0, totalHeight),
-            App.Vector(0, 0, rectangleHeight)
+            App.Vector(baseLength / 2, 0, totalHeight),
+            App.Vector(0, 0, rectangleHeight),
         ]
 
         # Create wire with automatic face creation
@@ -203,15 +206,19 @@ class TestArchComponent(TestArchBase.TestArchBase):
         actualVerticalArea = space.VerticalArea.getValueAs("m^2").Value
 
         self.assertAlmostEqual(
-            actualHorizontalArea, theoreticalHorizontalArea, places=3,
+            actualHorizontalArea,
+            theoreticalHorizontalArea,
+            places=3,
             msg=f"Horizontal area > 0.1% | Exp: {theoreticalHorizontalArea:.3f} | "
-                f"Got: {actualHorizontalArea:.3f}"
+            f"Got: {actualHorizontalArea:.3f}",
         )
 
         self.assertAlmostEqual(
-            actualVerticalArea, theoreticalVerticalArea, places=3,
+            actualVerticalArea,
+            theoreticalVerticalArea,
+            places=3,
             msg=f"Vertical area > 0.1% | Exp: {theoreticalVerticalArea:.3f} | "
-                f"Got: {actualVerticalArea:.3f}"
+            f"Got: {actualVerticalArea:.3f}",
         )
 
     def test_remove_single_window_from_wall_host_is_none(self):
@@ -223,7 +230,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         """
 
         # Create a basic wall
-        wall_base = Draft.makeLine(App.Vector(0,0,0), App.Vector(3000,0,0))
+        wall_base = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
         wall = Arch.makeWall(wall_base, width=200, height=2500)
 
         # Create a window to be added to the wall
@@ -235,8 +242,8 @@ class TestArchComponent(TestArchBase.TestArchBase):
         window_base = Draft.makeRectangle(length=window_width, height=window_height)
 
         window = Arch.makeWindow(baseobj=window_base)
-        window.Width = window_width   # Manually set as makeWindow(base) doesn't
-        window.Height = window_height # Manually set
+        window.Width = window_width  # Manually set as makeWindow(base) doesn't
+        window.Height = window_height  # Manually set
 
         self.document.recompute()
 
@@ -251,7 +258,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         # Simulate the Arch_Remove command with the scenario where only the window
         # is selected and "Remove" is used.
         Arch.removeComponents([window], host=None)
-        self.document.recompute() # Important for Arch objects to update their state.
+        self.document.recompute()  # Important for Arch objects to update their state.
 
         # Assert: the wall should no longer be in the window's Hosts list.
         self.assertNotIn(wall, window.Hosts, "Wall should not be in window.Hosts after removal.")

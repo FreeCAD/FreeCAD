@@ -132,7 +132,7 @@ class DraftTool:
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()
 
-        _toolmsg("{}".format(16*"-"))
+        _toolmsg("{}".format(16 * "-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
 
         # update hints after the tool is fully initialized
@@ -231,18 +231,18 @@ class DraftTool:
 
         # Support object
         if self.support and params.get_param("useSupport"):
-            sup = 'FreeCAD.ActiveDocument.getObject'
+            sup = "FreeCAD.ActiveDocument.getObject"
             sup += '("{}")'.format(self.support.Name)
         else:
-            sup = 'None'
+            sup = "None"
 
         # Contents of self.node
-        points = '['
+        points = "["
         for n in self.node:
             if len(points) > 1:
-                points += ', '
+                points += ", "
             points += DraftVecUtils.toString(n)
-        points += ']'
+        points += "]"
 
         # Make face
         if self.ui:
@@ -293,4 +293,6 @@ class Modifier(DraftTool):
         super().Activated(name, is_subtool)
         # call _save to sync with _restore called in finish method
         self.wp._save()
+
+
 ## @}

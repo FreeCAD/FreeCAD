@@ -90,7 +90,7 @@ class ifc_vp_object:
         from . import ifc_types
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
@@ -100,10 +100,7 @@ class ifc_vp_object:
         # IFC actions
         actions = []
         if element.is_a("IfcSpatialElement"):
-            if (
-                FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
-                == vobj.Object
-            ):
+            if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == vobj.Object:
                 t = translate("BIM", "Deactivate Container")
             else:
                 t = translate("BIM", "Make Active Container")
@@ -324,6 +321,7 @@ class ifc_vp_object:
         """Add an object to the view provider by d&d"""
 
         from PySide import QtCore  # lazy import
+
         # delay the action to prevent the object to be deleted
         # before the end of the drop
         QtCore.QTimer.singleShot(100, lambda: self.onDrop(incoming_object))
@@ -332,6 +330,7 @@ class ifc_vp_object:
         """Delayed action to be taken when dropping an object"""
 
         from . import ifc_tools  # lazy import
+
         ifc_tools.aggregate(incoming_object, self.Object)
         if self.hasChildren(self.Object):
             self.expandChildren(self.Object)
@@ -339,15 +338,10 @@ class ifc_vp_object:
     def activate(self):
         """Marks this container as active"""
 
-        if (
-            FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
-            == self.Object
-        ):
+        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == self.Object:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
         else:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject(
-                "NativeIFC", self.Object
-            )
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", self.Object)
 
     def createGroup(self):
         """Creates a group under this object"""
@@ -402,9 +396,9 @@ class ifc_vp_object:
         if not hasattr(self, "Object"):
             return
         from . import ifc_types
+
         ifc_types.convert_to_type(self.Object)
         self.Object.Document.recompute()
-
 
 
 class ifc_vp_document(ifc_vp_object):
@@ -423,7 +417,7 @@ class ifc_vp_document(ifc_vp_object):
 
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         ifc_menu = super().setupContextMenu(vobj, menu)
@@ -576,17 +570,13 @@ class ifc_vp_material:
         im = QtGui.QImage(48, 48, QtGui.QImage.Format_ARGB32)
         im.fill(QtCore.Qt.transparent)
         pt = QtGui.QPainter(im)
-        pt.setPen(
-            QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap)
-        )
+        pt.setPen(QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
         gradient = QtGui.QLinearGradient(0, 0, 48, 48)
         gradient.setColorAt(0, matcolor)
         gradient.setColorAt(1, darkcolor)
         pt.setBrush(QtGui.QBrush(gradient))
         pt.drawEllipse(6, 6, 36, 36)
-        pt.setPen(
-            QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap)
-        )
+        pt.setPen(QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
         pt.setBrush(QtGui.QBrush(QtCore.Qt.white, QtCore.Qt.SolidPattern))
         pt.drawEllipse(12, 12, 12, 12)
         pt.end()
@@ -606,7 +596,7 @@ class ifc_vp_material:
         from . import ifc_psets
         from PySide import QtGui  # lazy import
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
@@ -628,7 +618,7 @@ class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPa
     """A vp that inherits the Arch BuildingPart vp, but keeps aggregating properties of ifc vp"""
 
     def __init__(self, vobj):
-        ArchBuildingPart.ViewProviderBuildingPart.__init__(self,vobj)
+        ArchBuildingPart.ViewProviderBuildingPart.__init__(self, vobj)
 
 
 def overlay(icon1, icon2):
@@ -686,8 +676,8 @@ def get_icon(vp):
 
     if hasattr(vp, "Object"):
         if hasattr(vp.Object, "IfcClass"):
-            rclass = vp.Object.IfcClass.replace("StandardCase","")
-            rclass = vp.Object.IfcClass.replace("Type","")
+            rclass = vp.Object.IfcClass.replace("StandardCase", "")
+            rclass = vp.Object.IfcClass.replace("Type", "")
             ifcicon = ":/icons/IFC/" + rclass + ".svg"
             if QtCore.QFile.exists(ifcicon):
                 if getattr(vp, "ifcclass", "") != rclass:

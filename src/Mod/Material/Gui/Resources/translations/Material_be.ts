@@ -583,7 +583,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
-      <translation>Рэдактар матэрыялу</translation>
+      <translation>Сродак праўкі матэрыялу</translation>
     </message>
   </context>
   <context>
@@ -1044,7 +1044,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation>Рэдактар матэрыялу</translation>
+      <translation>Сродак праўкі матэрыялу</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>

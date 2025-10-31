@@ -14,8 +14,14 @@
       <translation>Kilde</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="29"/>
+      <source>Fetches the documentation from pages rendered on GitHub.
+This is currently not available.</source>
+      <translation>Henter dokumentationen fra sider der gengives på GitHub.
+Dette er aktuelt ikke tilgængeligt.</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
-      <location filename="../../dlgPreferencesHelp.ui" line="86"/>
       <source>Set this to a custom URL or the folder where the help files are located.
 You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
@@ -33,21 +39,9 @@ standardplacringen ($USERAPPDATADIR/Mod/Documentation).</translation>
       <translation>Brugerdefineret placering</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="112"/>
-      <source>    Translation suffix:</source>
-      <translation>    Oversættelsessuffiks:</translation>
-    </message>
-    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
       <translation>FreeCAD Wiki (online)</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="29"/>
-      <source>This will fetch the documentation from pages rendered on GitHub.
-This is currently not available...</source>
-      <translation>Dette vil hente dokumentationen fra sider der findes på GitHub.
-Denne mulighed er i øjeblikket ikke tilgængelig...</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
@@ -60,6 +54,24 @@ Denne mulighed er i øjeblikket ikke tilgængelig...</translation>
 to get French translation of the documentation.</source>
       <translation>Det oversættelsessuffiks som skal bruges, for eksempel &quot;fr&quot;
 for at få fransk oversættelse af dokumentationen.</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="86"/>
+      <source>Set this to a custom URL or the folder where the help files are located.
+Documentation can be downloaded for offline use via the Addon Manager and installing the
+&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
+automatically search for the help files at the default location
+($USERAPPDATADIR/Mod/offline-documentation).</source>
+      <translation>Sæt dette til en brugerdefineret URL eller til en mappe hvor hjælpefilerne findes.
+Dokumentationen kan downloades til offline brug ved at bruge Addon Manager 
+til at installere &quot;offline dokumentation&quot; tilføjelsen. 
+Hvis dette felt er tomt, vil FreeCAD automatisk søge efter hjælpefilerne på
+standardplacringen ($USERAPPDATADIR/Mod/Documentation).</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="112"/>
+      <source>Translation suffix</source>
+      <translation>Oversættelsessuffiks</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -91,44 +103,46 @@ stylesheet som angives nedenfor, og kan blive pænere end wiki-versionen. &apos;
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
-      <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
+      <translation>Bemærk: Hvis PySide Web-komponenter ikke findes på systemet, vil hjælpesider åbne i standard webbrowseren uanset mulighederne nedenfor.</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
+      <source>The documentation will open in the default web browser</source>
+      <translation>Dokumentationen vil blive åbnet i standard webbrowseren</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
+      <source>In the default web browser</source>
+      <translation>I standard webbrowseren</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
+      <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
+      <translation>Dokumentationen vises på et nyt faneblad i FreeCAD grænsefladen. Dette kræver at PySide QtWebengineWidgets er installeret.</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
+      <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
+Requires the PySide QtWebengineWidgets component.</source>
+      <translation>Dokumentationen åbnes i en dialogboks i FreeCAD, som tillader at der samtidigt kan arbejdes i 3D-visningen. Kræver installation af PySide QtWebengineWidgets komponenten.</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
+      <source>Custom stylesheet</source>
+      <translation>Brugertilpasset stilark</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
+      <source>Specify the path to an alternative CSS file for styling Markdown pages.
+This only applies if Markdown is selected above.</source>
+      <translation>Angiv stien til en alternativ CSS-fil til styling Markdown sider.
+Dette gælder kun, hvis Markdown er valgt ovenfor.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
       <source>In a FreeCAD tab</source>
       <translation>I et faneblad i FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
-      <source>The documentation will open in your default web browser.</source>
-      <translation>Dokumentationen vil åbne i din standard webbrowser.</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
-      <source>You can here indicate the path to an alternative CSS file to be used
-to style the Markdown pages. This will only work if you have selected the
-Markdown version above.</source>
-      <translation>Her kan du angive stien til en alternativ CSS-fil, der skal bruges
-til at style Markdown sider. Dette vil kun fungere, hvis du har valgt
-Markdown versionen ovenfor.</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
-      <source>In your default web browser</source>
-      <translation>I din standard webbrowser</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
-      <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Dokumentationen vises på et nyt faneblad i FreeCAD grænsefladen. Dette kræver at PySide QtWebengineWidgets er installeret</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
@@ -140,36 +154,31 @@ Markdown versionen ovenfor.</translation>
       <source>Options</source>
       <translation>Indstillinger</translation>
     </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
-      <source>      Custom stylesheet:</source>
-      <translation>      Brugerdefineret stylesheet:</translation>
-    </message>
   </context>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Indholdet fra denne side kunne ikke hentes. Kontroller indstillingerne under menuen Rediger -&gt; Indstillinger -&gt; Generelt -&gt; Hjælp</translation>
+      <location filename="../../Help.py" line="73"/>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Indholdet for denne side kunne ikke hentes. Kontroller indstillingerne under menuen Rediger → Indstillinger → Generelt → Hjælp</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Placeringen af hjælpefiler kunne ikke bestemmes. Kontroller indstillingerne under menuen Rediger -&gt; Indstillinger -&gt; Generelt -&gt; Hjælp</translation>
+      <location filename="../../Help.py" line="77"/>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Placeringen af hjælpefiler kunne ikke bestemmes. Kontroller indstillingerne i menuen Rediger → Indstillinger → Generelt → Hjælp</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Modulet, PySide QtWebEngineWidgets, er ikke tilgængeligt. Visning af hjælp foretages med Webbrowseren</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Der er ikke installeret et program til markdown rendering på dit system, så denne hjælpeside gengives som den er. Installér et markdown eller pandoc-python-modul for at forbedre gengivelsen af denne side.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>Hjælp</translation>
     </message>
@@ -177,9 +186,9 @@ Markdown versionen ovenfor.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="432"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
-      <translation>Generel</translation>
+      <translation>Generelt</translation>
     </message>
   </context>
 </TS>

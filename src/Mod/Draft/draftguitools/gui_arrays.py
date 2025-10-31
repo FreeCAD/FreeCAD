@@ -53,24 +53,35 @@ class ArrayGroup:
 
     def GetCommands(self):
         """Tuple of array commands."""
-        return ("Draft_OrthoArray",
-                "Draft_PolarArray", "Draft_CircularArray",
-                "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray", "Draft_PointLinkArray",
-                "Draft_PathTwistedArray", "Draft_PathTwistedLinkArray")
+        return (
+            "Draft_OrthoArray",
+            "Draft_PolarArray",
+            "Draft_CircularArray",
+            "Draft_PathArray",
+            "Draft_PathLinkArray",
+            "Draft_PointArray",
+            "Draft_PointLinkArray",
+            "Draft_PathTwistedArray",
+            "Draft_PathTwistedLinkArray",
+        )
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_Array",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ArrayTools", "Array Tools"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArrayTools", "Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays")}
+        return {
+            "Pixmap": "Draft_Array",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_ArrayTools", "Array Tools"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_ArrayTools",
+                "Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays",
+            ),
+        }
 
     def IsActive(self):
         """Return True when this command should be available."""
         return bool(gui_utils.get_3d_view())
 
 
-Gui.addCommand('Draft_ArrayTools', ArrayGroup())
+Gui.addCommand("Draft_ArrayTools", ArrayGroup())
 
 ## @}

@@ -69,8 +69,8 @@ void Workbench::activated()
         wc.restoreCursor();
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("No robot files installed"),
-                             QObject::tr("Visit %1 and copy the files to %2")
-                                 .arg(QStringLiteral("https://github.com/FreeCAD/FreeCAD/tree/main"
+                             QObject::tr("Visit %1 and copy the robot VRML and CSV files to %2")
+                                 .arg(QStringLiteral("https://www.kuka.com/en-us/services/downloads"
                                                      "/src/Mod/Robot/Lib/Kuka"),
                                       dir));
         wc.setWaitCursor();

@@ -27,10 +27,10 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći.
-Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću
-Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot.
-Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na
+      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći. 
+Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću 
+Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot. 
+Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na 
 zadanoj lokaciji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -155,27 +155,27 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="73"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="77"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="81"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgets modul nije dostupan. Prikazivanje pomoći vrši se preglednikom sustava</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="85"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Na vašem sustavu nije instaliran Markdown renderer, pa se ova stranica pomoći prikazuje kakva jest. Instalirajte module Markdown ili Pandoc Python kako biste poboljšali prikaz ove stranice.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="117"/>
       <source>Help</source>
       <translation>Pomoć</translation>
     </message>
@@ -183,7 +183,7 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="433"/>
       <source>General</source>
       <translation>Općenito</translation>
     </message>

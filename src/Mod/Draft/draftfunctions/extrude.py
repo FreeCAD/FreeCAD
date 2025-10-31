@@ -55,9 +55,10 @@ def extrude(obj, vector, solid=False):
     newobj.Solid = solid
     if App.GuiUp:
         obj.ViewObject.Visibility = False
-        gui_utils.format_object(newobj,obj)
+        gui_utils.format_object(newobj, obj)
         gui_utils.select(newobj)
 
     return newobj
+
 
 ## @}

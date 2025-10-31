@@ -90,9 +90,7 @@ def insert(
         prj_obj = ifc_tools.convert_document(document, filename, shapemode, strategy)
         QtCore.QTimer.singleShot(100, toggle_lock_on)
     else:
-        prj_obj = ifc_tools.create_document_object(
-            document, filename, shapemode, strategy
-        )
+        prj_obj = ifc_tools.create_document_object(document, filename, shapemode, strategy)
         QtCore.QTimer.singleShot(100, toggle_lock_off)
     if PARAMS.GetBool("LoadOrphans", True):
         ifc_tools.load_orphans(prj_obj)
@@ -148,7 +146,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         switchwb = PARAMS.GetBool("SwitchWB", True)
     if silent:
         return strategy, shapemode, switchwb
-    ask = PARAMS.GetBool("AskAgain", False)
+    ask = PARAMS.GetBool("AskAgain", True)
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
 
@@ -207,6 +205,7 @@ def get_project_type(silent=False):
 
 
 # convenience functions
+
 
 def toggle_lock_on():
     ifc_status.on_toggle_lock(True, noconvert=True, setchecked=True)

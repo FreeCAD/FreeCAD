@@ -36,7 +36,7 @@ if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftAlt
 
 
-def make_shape2dview(baseobj,projectionVector=None,facenumbers=[]):
+def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
     """make_shape2dview(object, [projectionVector], [facenumbers])
 
     Add a 2D shape to the document, which is a 2D projection of the given object.
@@ -55,7 +55,7 @@ def make_shape2dview(baseobj,projectionVector=None,facenumbers=[]):
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
+    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Shape2DView")
     Shape2DView(obj)
     if App.GuiUp:
         ViewProviderDraftAlt(obj.ViewObject)

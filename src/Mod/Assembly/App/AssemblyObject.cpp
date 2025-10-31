@@ -375,7 +375,7 @@ bool AssemblyObject::validateNewPlacements()
                     newPlacement = newPlacement * it->second.offsetPlc;
                 }
 
-                if (!oldPlc.isSame(newPlacement)) {
+                if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
                         obj->getFullLabel());
@@ -781,6 +781,11 @@ std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
         if (propObj) {
             App::DocumentObject* objToGround = propObj->getValue();
             if (objToGround) {
+                if (auto* asmLink = dynamic_cast<AssemblyLink*>(objToGround)) {
+                    if (!asmLink->isRigid()) {
+                        continue;
+                    }
+                }
                 groundedSet.insert(objToGround);
             }
         }
@@ -1132,7 +1137,7 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
             return CREATE<ASMTPerpendicularJoint>::With();
 
         case JointType::Angle: {
-            double angle = fabs(Base::toRadians(getJointDistance(joint)));
+            double angle = fabs(Base::toRadians(getJointAngle(joint)));
             if (fmod(angle, 2 * std::numbers::pi) < Precision::Confusion()) {
                 return CREATE<ASMTParallelAxesJoint>::With();
             }

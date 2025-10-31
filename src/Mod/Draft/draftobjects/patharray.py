@@ -69,7 +69,12 @@ import lazy_loader.lazy_loader as lz
 
 from draftutils.messages import _err, _log, _wrn
 from draftutils.translate import translate
-def QT_TRANSLATE_NOOP(ctx,txt): return txt
+
+
+def QT_TRANSLATE_NOOP(ctx, txt):
+    return txt
+
+
 from draftobjects.base import DraftObject
 from draftobjects.draftlink import DraftLink
 
@@ -212,21 +217,16 @@ class PathArray(DraftLink):
     def set_general_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
         if "Base" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated")
-            obj.addProperty("App::PropertyLinkGlobal",
-                            "Base",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The base object that will be duplicated")
+            obj.addProperty("App::PropertyLinkGlobal", "Base", "Objects", _tip, locked=True)
             obj.Base = None
 
         if "PathObject" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'.")
-            obj.addProperty("App::PropertyLinkGlobal",
-                            "PathObject",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The object along which the copies will be distributed. It must contain 'Edges'.",
+            )
+            obj.addProperty("App::PropertyLinkGlobal", "PathObject", "Objects", _tip, locked=True)
             obj.PathObject = None
 
         # TODO: the 'PathSubelements' property must be changed,
@@ -237,199 +237,161 @@ class PathArray(DraftLink):
         # as this property can be used to select a single object,
         # or a single object with its subelements.
         if "PathSubelements" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","List of connected edges in the 'Path Object'.\nIf these are present, the copies will be created along these subelements only.\nLeave this property empty to create copies along the entire 'Path Object'.")
-            obj.addProperty("App::PropertyLinkSubListGlobal",
-                            "PathSubelements",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "List of connected edges in the 'Path Object'.\nIf these are present, the copies will be created along these subelements only.\nLeave this property empty to create copies along the entire 'Path Object'.",
+            )
+            obj.addProperty(
+                "App::PropertyLinkSubListGlobal", "PathSubelements", "Objects", _tip, locked=True
+            )
             obj.PathSubelements = []
 
         if "Fuse" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Specifies if the copies "
-                                     "should be fused together "
-                                     "if they touch each other (slower)")
-            obj.addProperty("App::PropertyBool",
-                            "Fuse",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Specifies if the copies "
+                "should be fused together "
+                "if they touch each other (slower)",
+            )
+            obj.addProperty("App::PropertyBool", "Fuse", "Objects", _tip, locked=True)
             obj.Fuse = False
 
         if self.use_link and "ExpandArray" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)")
-            obj.addProperty("App::PropertyBool",
-                            "ExpandArray",
-                            "Objects",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Show the individual array elements (only for Link arrays)"
+            )
+            obj.addProperty("App::PropertyBool", "ExpandArray", "Objects", _tip, locked=True)
             obj.ExpandArray = False
-            obj.setPropertyStatus('Shape', 'Transient')
+            obj.setPropertyStatus("Shape", "Transient")
 
         if not self.use_link:
             if "PlacementList" not in properties:
-                _tip = QT_TRANSLATE_NOOP("App::Property",
-                                         "The placement for each array element")
-                obj.addProperty("App::PropertyPlacementList",
-                                "PlacementList",
-                                "Objects",
-                                _tip,
-                                locked=True)
+                _tip = QT_TRANSLATE_NOOP("App::Property", "The placement for each array element")
+                obj.addProperty(
+                    "App::PropertyPlacementList", "PlacementList", "Objects", _tip, locked=True
+                )
                 obj.PlacementList = []
 
     def set_align_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
         if "ExtraTranslation" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Additional translation that will be applied to each copy.\nThis is useful to adjust for the difference between shape centre and shape reference point.")
-            obj.addProperty("App::PropertyVectorDistance",
-                            "ExtraTranslation",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Additional translation that will be applied to each copy.\nThis is useful to adjust for the difference between shape centre and shape reference point.",
+            )
+            obj.addProperty(
+                "App::PropertyVectorDistance", "ExtraTranslation", "Alignment", _tip, locked=True
+            )
             obj.ExtraTranslation = App.Vector(0, 0, 0)
 
         if "TangentVector" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Alignment vector for 'Tangent' mode")
-            obj.addProperty("App::PropertyVector",
-                            "TangentVector",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Alignment vector for 'Tangent' mode")
+            obj.addProperty("App::PropertyVector", "TangentVector", "Alignment", _tip, locked=True)
             obj.TangentVector = App.Vector(1, 0, 0)
 
         if "ForceVertical" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode")
-            obj.addProperty("App::PropertyBool",
-                            "ForceVertical",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode",
+            )
+            obj.addProperty("App::PropertyBool", "ForceVertical", "Alignment", _tip, locked=True)
             obj.ForceVertical = False
 
         if "VerticalVector" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Direction of the local Z axis when 'Force Vertical' is true")
-            obj.addProperty("App::PropertyVector",
-                            "VerticalVector",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Direction of the local Z axis when 'Force Vertical' is true"
+            )
+            obj.addProperty("App::PropertyVector", "VerticalVector", "Alignment", _tip, locked=True)
             obj.VerticalVector = App.Vector(0, 0, 1)
 
         if "AlignMode" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Method to orient the copies along the path.\n- Original: X is curve tangent, Y is normal, and Z is the cross product.\n- Frenet: aligns the object following the local coordinate system along the path.\n- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.\n\nTo get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.")
-            obj.addProperty("App::PropertyEnumeration",
-                            "AlignMode",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Method to orient the copies along the path.\n- Original: X is curve tangent, Y is normal, and Z is the cross product.\n- Frenet: aligns the object following the local coordinate system along the path.\n- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.\n\nTo get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.",
+            )
+            obj.addProperty("App::PropertyEnumeration", "AlignMode", "Alignment", _tip, locked=True)
             obj.AlignMode = ["Original", "Frenet", "Tangent"]
             obj.AlignMode = "Original"
 
         if "ReversePath" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Walk the path backwards.")
-            obj.addProperty("App::PropertyBool",
-                            "ReversePath",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Walk the path backwards.")
+            obj.addProperty("App::PropertyBool", "ReversePath", "Alignment", _tip, locked=True)
             obj.ReversePath = False
 
         # The Align property must be attached after other align properties
         # so that onChanged works properly
         if "Align" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Orient the copies along the path depending on the 'Align Mode'.\nOtherwise the copies will have the same orientation as the original Base object.")
-            obj.addProperty("App::PropertyBool",
-                            "Align",
-                            "Alignment",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Orient the copies along the path depending on the 'Align Mode'.\nOtherwise the copies will have the same orientation as the original Base object.",
+            )
+            obj.addProperty("App::PropertyBool", "Align", "Alignment", _tip, locked=True)
             obj.Align = False
 
     def set_spacing_properties(self, obj, properties):
 
         if "Count" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Number of copies to create")
-            obj.addProperty("App::PropertyInteger",
-                            "Count",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Number of copies to create")
+            obj.addProperty("App::PropertyInteger", "Count", "Spacing", _tip, locked=True)
             obj.Count = 4
 
         if "SpacingMode" not in properties:
             _tip = QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How copies are spaced.\n" +
-                " - Fixed count: available path length (minus start and end offsets) is evenly divided into n.\n" +
-                " - Fixed spacing: start at \"Start offset\" and place new copies after traveling a fixed distance along the path.\n" +
-                " - Fixed count and spacing: same as \"Fixed spacing\", but also stop at given number of copies."
-                )
-            obj.addProperty("App::PropertyEnumeration",
-                            "SpacingMode",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+                "How copies are spaced.\n"
+                + " - Fixed count: available path length (minus start and end offsets) is evenly divided into n.\n"
+                + ' - Fixed spacing: start at "Start offset" and place new copies after traveling a fixed distance along the path.\n'
+                + ' - Fixed count and spacing: same as "Fixed spacing", but also stop at given number of copies.',
+            )
+            obj.addProperty("App::PropertyEnumeration", "SpacingMode", "Spacing", _tip, locked=True)
             obj.SpacingMode = ["Fixed count", "Fixed spacing", "Fixed count and spacing"]
             obj.SpacingMode = "Fixed count"
 
         if "SpacingUnit" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Base fixed distance between elements.")
-            obj.addProperty("App::PropertyLength",
-                            "SpacingUnit",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Base fixed distance between elements.")
+            obj.addProperty("App::PropertyLength", "SpacingUnit", "Spacing", _tip, locked=True)
             obj.SpacingUnit = 20.0
             obj.setPropertyStatus("SpacingUnit", "Hidden")
 
         if "UseSpacingPattern" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Use repeating spacing patterns instead of uniform spacing.")
-            obj.addProperty("App::PropertyBool",
-                            "UseSpacingPattern",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Use repeating spacing patterns instead of uniform spacing."
+            )
+            obj.addProperty("App::PropertyBool", "UseSpacingPattern", "Spacing", _tip, locked=True)
             obj.UseSpacingPattern = False
 
         if "SpacingPattern" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Spacing is multiplied by a corresponding number in this sequence.")
-            obj.addProperty("App::PropertyFloatList",
-                            "SpacingPattern",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Spacing is multiplied by a corresponding number in this sequence."
+            )
+            obj.addProperty(
+                "App::PropertyFloatList", "SpacingPattern", "Spacing", _tip, locked=True
+            )
             obj.SpacingPattern = [1, 2]
             obj.setPropertyStatus("SpacingPattern", "Hidden")
 
         if "StartOffset" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Length from the start of the path to the first copy.")
-            obj.addProperty("App::PropertyLength",
-                            "StartOffset",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Length from the start of the path to the first copy."
+            )
+            obj.addProperty("App::PropertyLength", "StartOffset", "Spacing", _tip, locked=True)
             obj.StartOffset = 0.0
 
         if "EndOffset" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Length from the end of the path to the last copy.")
-            obj.addProperty("App::PropertyLength",
-                            "EndOffset",
-                            "Spacing",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "Length from the end of the path to the last copy."
+            )
+            obj.addProperty("App::PropertyLength", "EndOffset", "Spacing", _tip, locked=True)
             obj.EndOffset = 0.0
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
         super().linkSetup(obj)
-        obj.configLinkProperty(ElementCount='Count')
+        obj.configLinkProperty(ElementCount="Count")
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if self.props_changed_placement_only(obj) \
-                or not obj.Base \
-                or not obj.PathObject:
+        if self.props_changed_placement_only(obj) or not obj.Base or not obj.PathObject:
             self.props_changed_clear()
             return
 
@@ -438,15 +400,13 @@ class PathArray(DraftLink):
 
         w = self.get_wires(obj.PathObject, obj.PathSubelements)
         if not w:
-            _err(obj.PathObject.Label
-                 + translate("draft",", path object does not have 'Edges'."))
+            _err(obj.PathObject.Label + translate("draft", ", path object does not have 'Edges'."))
             return
 
         base_rotation = obj.Base.Shape.Placement.Rotation
         final_rotation = base_rotation
 
-        if (obj.Align and obj.AlignMode == "Tangent"
-                and hasattr(obj, "TangentVector")):
+        if obj.Align and obj.AlignMode == "Tangent" and hasattr(obj, "TangentVector"):
             Xaxis = App.Vector(1.0, 0.0, 0.0)  # default TangentVector
 
             if not DraftVecUtils.equals(Xaxis, obj.TangentVector):
@@ -454,30 +414,33 @@ class PathArray(DraftLink):
                 pre_rotation = App.Rotation(obj.TangentVector, Xaxis)
                 final_rotation = base_rotation.multiply(pre_rotation)
 
-        copy_placements = placements_on_path(final_rotation,
-                                             w, obj.Count,
-                                             obj.ExtraTranslation,
-                                             obj.Align, obj.AlignMode,
-                                             obj.ForceVertical,
-                                             obj.VerticalVector,
-                                             obj.StartOffset.Value,
-                                             obj.EndOffset.Value,
-                                             obj.ReversePath,
-                                             obj.SpacingMode,
-                                             obj.SpacingUnit.Value,
-                                             obj.UseSpacingPattern,
-                                             obj.SpacingPattern)
+        copy_placements = placements_on_path(
+            final_rotation,
+            w,
+            obj.Count,
+            obj.ExtraTranslation,
+            obj.Align,
+            obj.AlignMode,
+            obj.ForceVertical,
+            obj.VerticalVector,
+            obj.StartOffset.Value,
+            obj.EndOffset.Value,
+            obj.ReversePath,
+            obj.SpacingMode,
+            obj.SpacingUnit.Value,
+            obj.UseSpacingPattern,
+            obj.SpacingPattern,
+        )
 
         self.buildShape(obj, array_placement, copy_placements)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
 
     def get_wires(self, path_object, subelements):
         """Get wires from the path object."""
         if subelements:
             w = self.get_wire_from_subelements(subelements)
-        elif (hasattr(path_object.Shape, 'Wires')
-              and path_object.Shape.Wires):
+        elif hasattr(path_object.Shape, "Wires") and path_object.Shape.Wires:
             w = path_object.Shape.Wires[0]
         elif path_object.Shape.Edges:
             w = Part.Wire(path_object.Shape.Edges)
@@ -511,10 +474,7 @@ class PathArray(DraftLink):
         if prop == "SpacingMode":
 
             # Check if all referenced properties are available:
-            for pr in ("SpacingMode",
-                "SpacingUnit",
-                "UseSpacingPattern",
-                "SpacingPattern"):
+            for pr in ("SpacingMode", "SpacingUnit", "UseSpacingPattern", "SpacingPattern"):
                 if not hasattr(obj, pr):
                     return
 
@@ -544,8 +504,7 @@ class PathArray(DraftLink):
         if prop in ("Align", "AlignMode"):
 
             # Check if all referenced properties are available:
-            for pr in ("Align", "AlignMode", "ForceVertical",
-                       "VerticalVector", "TangentVector"):
+            for pr in ("Align", "AlignMode", "ForceVertical", "VerticalVector", "TangentVector"):
                 if not hasattr(obj, pr):
                     return
 
@@ -565,8 +524,7 @@ class PathArray(DraftLink):
                     obj.setPropertyStatus("TangentVector", "Hidden")
 
             else:
-                for pr in ("AlignMode", "ForceVertical",
-                           "VerticalVector", "TangentVector"):
+                for pr in ("AlignMode", "ForceVertical", "VerticalVector", "TangentVector"):
                     obj.setPropertyStatus(pr, "Hidden")
 
     def onDocumentRestored(self, obj):
@@ -609,22 +567,30 @@ class PathArray(DraftLink):
         if hasattr(obj, "Xlate"):
             obj.ExtraTranslation = obj.Xlate
             obj.removeProperty("Xlate")
-        self.execute(obj) # Required to update PlacementList.
+        self.execute(obj)  # Required to update PlacementList.
 
 
 # Alias for compatibility with v0.18 and earlier
 _PathArray = PathArray
 
 
-def placements_on_path(shapeRotation, pathwire, count, xlate, align,
-                       mode="Original", forceNormal=False,
-                       normalOverride=None,
-                       startOffset=0.0, endOffset=0.0,
-                       reversePath=False,
-                       spacingMode="Fixed count",
-                       spacingUnit=20.0,
-                       useSpacingPattern=False,
-                       spacingPattern=[1, 1, 1, 1]):
+def placements_on_path(
+    shapeRotation,
+    pathwire,
+    count,
+    xlate,
+    align,
+    mode="Original",
+    forceNormal=False,
+    normalOverride=None,
+    startOffset=0.0,
+    endOffset=0.0,
+    reversePath=False,
+    spacingMode="Fixed count",
+    spacingUnit=20.0,
+    useSpacingPattern=False,
+    spacingPattern=[1, 1, 1, 1],
+):
     """Calculate the placements of a shape along a given path.
 
     Copies will be distributed according to spacing mode - evenly or in fixed offsets.
@@ -658,12 +624,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
 
     if startOffset > (totalDist - minLength):
         if startOffset != 0:
-            _wrn(
-                translate(
-                    "draft",
-                    "Start Offset too large for path length. Using 0 instead."
-                )
-            )
+            _wrn(translate("draft", "Start Offset too large for path length. Using 0 instead."))
         startOffset = 0
 
     if endOffset > (totalDist - startOffset - minLength):
@@ -671,7 +632,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             _wrn(
                 translate(
                     "draft",
-                    "End Offset too large for path length minus Start Offset. Using 0 instead."
+                    "End Offset too large for path length minus Start Offset. Using 0 instead.",
                 )
             )
         endOffset = 0
@@ -728,7 +689,6 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             # Each interval will be the same:
             steps = [spacingUnit]
 
-
     remains = 0
     travel = startOffset
     endTravel = startOffset + totalDist
@@ -750,18 +710,27 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
 
         # place shape at proper spot on proper edge
         pt = path[iend].valueAt(get_parameter_from_v0(path[iend], offset))
-        place = calculate_placement(shapeRotation,
-                                    path[iend], offset,
-                                    pt, xlate, align, normal,
-                                    mode, forceNormal,
-                                    reversePath)
+        place = calculate_placement(
+            shapeRotation,
+            path[iend],
+            offset,
+            pt,
+            xlate,
+            align,
+            normal,
+            mode,
+            forceNormal,
+            reversePath,
+        )
         placements.append(place)
         travel += steps[i % len(steps)]
         i = i + 1
 
         # End conditions:
-        if stopAfterDistance and travel > endTravel: break
-        if stopAfterCount and i >= count: break
+        if stopAfterDistance and travel > endTravel:
+            break
+        if stopAfterCount and i >= count:
+            break
 
         # Failsafe:
         if i > 10_000:
@@ -774,11 +743,18 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
 calculatePlacementsOnPath = placements_on_path
 
 
-def calculate_placement(globalRotation,
-                        edge, offset, RefPt, xlate, align,
-                        normal=App.Vector(0.0, 0.0, 1.0),
-                        mode="Original", overrideNormal=False,
-                        reversePath=False):
+def calculate_placement(
+    globalRotation,
+    edge,
+    offset,
+    RefPt,
+    xlate,
+    align,
+    normal=App.Vector(0.0, 0.0, 1.0),
+    mode="Original",
+    overrideNormal=False,
+    reversePath=False,
+):
     """Orient shape in the local coordinate system at parameter offset.
 
     http://en.wikipedia.org/wiki/Euler_angles (previous version)
@@ -792,7 +768,7 @@ def calculate_placement(globalRotation,
     if not align:
         return placement
 
-    tol = 1e-6 # App.Rotation() tolerance is 1e-7. Shorter vectors are ignored.
+    tol = 1e-6  # App.Rotation() tolerance is 1e-7. Shorter vectors are ignored.
     nullv = App.Vector()
 
     t = edge.tangentAt(get_parameter_from_v0(edge, offset))
@@ -821,19 +797,28 @@ def calculate_placement(globalRotation,
             n_nor = n.normalize()
             t_nor = t.normalize()
             if n_nor.isEqual(t_nor, tol) or n_nor.isEqual(t_nor.negative(), tol):
-                _wrn(translate("draft", "Tangent and normal vectors are parallel. Normal replaced by a default axis."))
+                _wrn(
+                    translate(
+                        "draft",
+                        "Tangent and normal vectors are parallel. Normal replaced by a default axis.",
+                    )
+                )
                 n = t
 
         if overrideNormal:
-            onPathRotation = App.Rotation(t, nullv, n, "XZY") # priority = "XZY"
+            onPathRotation = App.Rotation(t, nullv, n, "XZY")  # priority = "XZY"
         else:
-            onPathRotation = App.Rotation(t, n, nullv, "XYZ") # priority = "XYZ"
+            onPathRotation = App.Rotation(t, n, nullv, "XYZ")  # priority = "XYZ"
 
     elif mode == "Frenet":
         try:
             n = edge.normalAt(get_parameter_from_v0(edge, offset))
-        except App.Base.FreeCADError: # no/infinite normals here
-            _wrn(translate("draft", "Cannot calculate normal vector. Using the default normal instead."))
+        except App.Base.FreeCADError:  # no/infinite normals here
+            _wrn(
+                translate(
+                    "draft", "Cannot calculate normal vector. Using the default normal instead."
+                )
+            )
             n = normal
 
         if n.isEqual(nullv, tol):
@@ -843,10 +828,15 @@ def calculate_placement(globalRotation,
             n_nor = n.normalize()
             t_nor = t.normalize()
             if n_nor.isEqual(t_nor, tol) or n_nor.isEqual(t_nor.negative(), tol):
-                _wrn(translate("draft", "Tangent and normal vectors are parallel. Normal replaced by a default axis."))
+                _wrn(
+                    translate(
+                        "draft",
+                        "Tangent and normal vectors are parallel. Normal replaced by a default axis.",
+                    )
+                )
                 n = t
 
-        onPathRotation = App.Rotation(t, n, nullv, "XYZ") # priority = "XYZ"
+        onPathRotation = App.Rotation(t, n, nullv, "XYZ")  # priority = "XYZ"
 
     else:
         _err(translate("draft", "AlignMode {} is not implemented").format(mode))
@@ -859,6 +849,7 @@ def calculate_placement(globalRotation,
 
 
 calculatePlacement = calculate_placement
+
 
 def get_parameter_from_v0(edge, offset):
     """Return parameter at distance offset from edge.Vertexes[0].

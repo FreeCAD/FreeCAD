@@ -92,7 +92,9 @@ def move(selection, vector, copy=False, subelements=False):
     if copy:
         for obj in objs:
             if obj.isDerivedFrom("App::DocumentObjectGroup") and obj.Name not in newgroups:
-                newgroups[obj.Name] = obj.Document.addObject(obj.TypeId, utils.get_real_name(obj.Name))
+                newgroups[obj.Name] = obj.Document.addObject(
+                    obj.TypeId, utils.get_real_name(obj.Name)
+                )
 
     for idx, obj in enumerate(objs):
         newobj = None
@@ -217,7 +219,7 @@ def move_edge(obj, edge_idx, vector, global_place=None):
     if utils.is_closed_edge(edge_idx, obj):
         move_vertex(obj, 0, vector, global_place)
     else:
-        move_vertex(obj, edge_idx+1, vector, global_place)
+        move_vertex(obj, edge_idx + 1, vector, global_place)
 
 
 def copy_moved_edge(obj, edge_idx, vector, global_place=None):
@@ -233,9 +235,10 @@ def copy_moved_edge(obj, edge_idx, vector, global_place=None):
     if utils.is_closed_edge(edge_idx, obj):
         vertex2 = glp.multVec(obj.Points[0]).add(vector)
     else:
-        vertex2 = glp.multVec(obj.Points[edge_idx+1]).add(vector)
+        vertex2 = glp.multVec(obj.Points[edge_idx + 1]).add(vector)
     newobj = make_line.make_line(vertex1, vertex2)
     gui_utils.format_object(newobj, obj)
     return newobj
+
 
 ## @}

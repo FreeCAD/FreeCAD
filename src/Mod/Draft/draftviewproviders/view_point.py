@@ -32,23 +32,24 @@ from draftviewproviders.view_base import ViewProviderDraft
 
 class ViewProviderPoint(ViewProviderDraft):
     """A viewprovider for the Draft Point object"""
+
     def __init__(self, obj):
         super(ViewProviderPoint, self).__init__(obj)
 
     def onChanged(self, vobj, prop):
         mode = 2
-        vobj.setEditorMode('AngularDeflection', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Deviation', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('DrawStyle', mode)
-        vobj.setEditorMode('Lighting', mode)
-        vobj.setEditorMode('LineColor', mode)
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('Pattern', mode)
-        vobj.setEditorMode('PatternSize', mode)
-        vobj.setEditorMode('ShapeAppearance', mode)
-        vobj.setEditorMode('Transparency', mode)
+        vobj.setEditorMode("AngularDeflection", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Deviation", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("DrawStyle", mode)
+        vobj.setEditorMode("Lighting", mode)
+        vobj.setEditorMode("LineColor", mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("Pattern", mode)
+        vobj.setEditorMode("PatternSize", mode)
+        vobj.setEditorMode("ShapeAppearance", mode)
+        vobj.setEditorMode("Transparency", mode)
 
     def getIcon(self):
         return ":/icons/Draft_Dot.svg"
@@ -56,6 +57,7 @@ class ViewProviderPoint(ViewProviderDraft):
     def doubleClicked(self, vobj):
         # See setEdit in ViewProviderDraft.
         import FreeCADGui as Gui
+
         Gui.runCommand("Std_TransformManip")
         return True
 

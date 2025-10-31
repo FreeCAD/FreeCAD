@@ -36,13 +36,13 @@ from draftutils import gui_utils
 class WorkingPlaneProxy:
     """The Draft working plane proxy object"""
 
-    def __init__(self,obj):
+    def __init__(self, obj):
         obj.Proxy = self
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The placement of this object")
         obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip, locked=True)
 
-        obj.addProperty("Part::PropertyPartShape","Shape","Base","", locked=True)
+        obj.addProperty("Part::PropertyPartShape", "Shape", "Base", "", locked=True)
 
         obj.addExtension("Part::AttachExtensionPython")
         obj.changeAttacherType("Attacher::AttachEnginePlane")
@@ -54,33 +54,32 @@ class WorkingPlaneProxy:
             obj, vp_module="view_wpproxy", vp_class="ViewProviderWorkingPlaneProxy", format=False
         )
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         l = 1
         if obj.ViewObject:
-            if hasattr(obj.ViewObject,"DisplaySize"):
+            if hasattr(obj.ViewObject, "DisplaySize"):
                 l = obj.ViewObject.DisplaySize.Value
-        p = Part.makePlane(l,
-                           l,
-                           App.Vector(l/2, -l/2, 0),
-                           App.Vector(0, 0, -1))
+        p = Part.makePlane(l, l, App.Vector(l / 2, -l / 2, 0), App.Vector(0, 0, -1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
-        if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(App.Vector(0,0,1))) > 1:
+        if p.normalAt(0, 0).getAngle(obj.Placement.Rotation.multVec(App.Vector(0, 0, 1))) > 1:
             p.reverse()
         p.Placement = obj.Placement
         obj.Shape = p
 
-    def onChanged(self,obj,prop):
+    def onChanged(self, obj, prop):
         pass
 
-    def getNormal(self,obj):
-        return obj.Shape.Faces[0].normalAt(0,0)
+    def getNormal(self, obj):
+        return obj.Shape.Faces[0].normalAt(0, 0)
 
     def dumps(self):
         return self.Type
 
-    def loads(self,state):
+    def loads(self, state):
         if state:
             self.Type = state
+
 
 ## @}

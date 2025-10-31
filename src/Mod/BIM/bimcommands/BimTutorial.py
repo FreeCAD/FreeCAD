@@ -97,11 +97,7 @@ class BIM_Tutorial:
         import codecs
         import re
         import sys
-
-        if sys.version_info.major < 3:
-            import urllib2
-        else:
-            import urllib.request as urllib2
+        from urllib.request import urlopen
 
         # initial loading
 
@@ -109,19 +105,15 @@ class BIM_Tutorial:
             return
 
         # load tutorial from wiki
-        offlineloc = os.path.join(
-            FreeCAD.getUserAppDataDir(), "BIM", "Tutorial", "Tutorial.html"
-        )
+        offlineloc = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Tutorial", "Tutorial.html")
         try:
-            u = urllib2.urlopen(URL)
+            u = urlopen(URL)
             html = u.read()
             if sys.version_info.major >= 3:
                 html = html.decode("utf8")
             html = html.replace("\n", " ")
             html = html.replace('href="/', 'href="https://wiki.freecad.org/')
-            html = re.sub(
-                '<div id="toc".*?</ul> </div>', "", html
-            )  # remove table of contents
+            html = re.sub('<div id="toc".*?</ul> </div>', "", html)  # remove table of contents
             u.close()
         except:
             # unable to load tutorial. Look for offline version
@@ -187,7 +179,7 @@ class BIM_Tutorial:
                                 fullpath = "https://www.freecadweb.org/wiki" + path
                             else:
                                 fullpath = path
-                            u = urllib2.urlopen(fullpath)
+                            u = urlopen(fullpath)
                             imagedata = u.read()
                             f = open(storename, "wb")
                             f.write(imagedata)
@@ -195,9 +187,7 @@ class BIM_Tutorial:
                             u.close()
                         # descr = descr.replace(path,"file://"+storename.replace("\\","/"))
                         # fix for windows - seems to work everywhere else too...
-                        descr = descr.replace(
-                            path, "file:///" + storename.replace("\\", "/")
-                        )
+                        descr = descr.replace(path, "file:///" + storename.replace("\\", "/"))
             nd.append(descr)
         self.descriptions = nd
 
@@ -249,11 +239,7 @@ class BIM_Tutorial:
         else:
             self.form.labelTasks.hide()
         self.dock.setWindowTitle(
-            translate("BIM", "BIM Tutorial - step")
-            + " "
-            + str(self.step)
-            + " / "
-            + str(self.steps)
+            translate("BIM", "BIM Tutorial - step") + " " + str(self.step) + " / " + str(self.steps)
         )
         self.form.progressBar.setValue(int((float(self.step) / self.steps) * 100))
 

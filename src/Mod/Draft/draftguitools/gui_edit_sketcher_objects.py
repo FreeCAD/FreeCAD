@@ -26,8 +26,9 @@
 # \brief Provides support functions to edit Sketch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
-__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
-              "Dmitry Chigrin, Carlo Pavan")
+__author__ = (
+    "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, " "Dmitry Chigrin, Carlo Pavan"
+)
 __url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
@@ -50,16 +51,22 @@ class SketcherSketchObjectGuiTools(GuiTools):
         1 : endpoint
         """
         import Part
+
         editpoints = []
-        if (obj.ConstraintCount == 0
-                and obj.GeometryCount == 1
-                and type(obj.Geometry[0]) == Part.LineSegment):
-            editpoints.append(obj.getPoint(0,1))
-            editpoints.append(obj.getPoint(0,2))
+        if (
+            obj.ConstraintCount == 0
+            and obj.GeometryCount == 1
+            and type(obj.Geometry[0]) == Part.LineSegment
+        ):
+            editpoints.append(obj.getPoint(0, 1))
+            editpoints.append(obj.getPoint(0, 2))
             return editpoints
         else:
-            _wrn = translate("draft", "Sketch is too complex to edit: "
-                                    "it is suggested to use the default Sketcher editor")
+            _wrn = translate(
+                "draft",
+                "Sketch is too complex to edit: "
+                "it is suggested to use the default Sketcher editor",
+            )
             App.Console.PrintWarning(_wrn + "\n")
             return None
 
@@ -78,5 +85,6 @@ class SketcherSketchObjectGuiTools(GuiTools):
             line.EndPoint = v
         obj.Geometry = [line]
         obj.recompute()
+
 
 ## @}

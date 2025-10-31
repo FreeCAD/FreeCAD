@@ -93,6 +93,8 @@ public:
 
     Base::Vector3d lastSegmentDirection() const;
 
+    bool snapsToPosition() const override { return false; }
+
 private:
 
 

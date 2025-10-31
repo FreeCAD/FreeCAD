@@ -2172,8 +2172,7 @@ bool CDxfRead::ReadText()
     ResolveEntityAttributes();
 
     if ((this->*stringToUTF8)(textPrefix)) {
-        OnReadText(insertionPoint, height * 25.4 / 72.0, textPrefix, rotation);
-        // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+        OnReadText(insertionPoint, height, textPrefix, rotation);
     }
     else {
         ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);

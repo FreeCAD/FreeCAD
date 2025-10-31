@@ -606,7 +606,7 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
       <source>Height</source>
-      <translation>Alçària</translation>
+      <translation>Alçada</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="111"/>
@@ -1376,7 +1376,7 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
     <message>
       <location filename="../../Command.cpp" line="200"/>
       <source>Migrate</source>
-      <translation>Migra</translation>
+      <translation>Migrar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="201"/>

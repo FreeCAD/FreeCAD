@@ -34,6 +34,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -100,9 +101,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        Q_UNUSED(onSketchPos);
+        Q_UNUSED(snapHandle);
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override

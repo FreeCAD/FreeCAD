@@ -380,8 +380,8 @@
       <translation type="unfinished">Insert Columns</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="680"/>
       <location filename="../../SpreadsheetView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="680"/>
       <source>Clear Cells</source>
       <translation type="unfinished">Clear Cells</translation>
     </message>
@@ -680,8 +680,8 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Kaikki (*)</translation>
     </message>
@@ -916,7 +916,7 @@ Continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="272"/>
       <source>Error:
 </source>
-      <translation>Virhe:
+      <translation>Virhe: 
 </translation>
     </message>
     <message>

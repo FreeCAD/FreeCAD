@@ -49,23 +49,13 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         super().set_text_properties(vobj, properties)
 
         if "Justification" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Horizontal alignment")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "Justification",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal alignment")
+            vobj.addProperty("App::PropertyEnumeration", "Justification", "Text", _tip, locked=True)
             vobj.Justification = ["Left", "Center", "Right"]
 
         if "LineSpacing" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Line spacing (relative to font size)")
-            vobj.addProperty("App::PropertyFloat",
-                             "LineSpacing",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Line spacing (relative to font size)")
+            vobj.addProperty("App::PropertyFloat", "LineSpacing", "Text", _tip, locked=True)
             vobj.LineSpacing = params.get_param("LineSpacing")
 
     def getIcon(self):
@@ -79,8 +69,8 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         # Main attributes of the Coin scenegraph
         self.mattext = coin.SoMaterial()
         self.font = coin.SoFont()
-        self.text_wld = coin.SoAsciiText() # World orientation. Can be oriented in 3D space.
-        self.text_scr = coin.SoText2()     # Screen orientation. Always faces the camera.
+        self.text_wld = coin.SoAsciiText()  # World orientation. Can be oriented in 3D space.
+        self.text_scr = coin.SoText2()  # Screen orientation. Always faces the camera.
 
         textdrawstyle = coin.SoDrawStyle()
         textdrawstyle.style = coin.SoDrawStyle.FILLED
@@ -133,8 +123,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
         properties = vobj.PropertiesList
 
-        if (prop == "ScaleMultiplier" and "ScaleMultiplier" in properties
-                and vobj.ScaleMultiplier):
+        if prop == "ScaleMultiplier" and "ScaleMultiplier" in properties and vobj.ScaleMultiplier:
             if "FontSize" in properties:
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
 
@@ -145,8 +134,12 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         elif prop == "FontName" and "FontName" in properties:
             self.font.name = vobj.FontName.encode("utf8")
 
-        elif (prop == "FontSize" and "FontSize" in properties
-              and "ScaleMultiplier" in properties and vobj.ScaleMultiplier):
+        elif (
+            prop == "FontSize"
+            and "FontSize" in properties
+            and "ScaleMultiplier" in properties
+            and vobj.ScaleMultiplier
+        ):
             # In v0.19 this code causes an `AttributeError` exception
             # during loading of the document as `ScaleMultiplier`
             # apparently isn't set immediately when the document loads.
@@ -189,7 +182,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         Gui.draftToolBar.textValue.setFocus()
 
     def createObject(self):
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             txt = self.text
             if not txt:
                 self.finish()
@@ -199,7 +192,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
                 txt.pop()
             t_list = ['"' + l + '"' for l in txt]
             list_as_text = ", ".join(t_list)
-            string = '[' + list_as_text + ']'
+            string = "[" + list_as_text + "]"
             Gui.doCommand("FreeCAD.ActiveDocument." + self.Object.Name + ".Text = " + string)
             App.ActiveDocument.recompute()
             self.finish()

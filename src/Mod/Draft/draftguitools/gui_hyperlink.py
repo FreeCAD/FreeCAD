@@ -38,14 +38,18 @@ if FreeCAD.GuiUp:
     import Draft_rc
     from PySide.QtCore import QUrl
     from PySide.QtGui import QDesktopServices
-def QT_TRANSLATE_NOOP(ctx,txt):
+
+
+def QT_TRANSLATE_NOOP(ctx, txt):
     return txt
+
+
 translate = FreeCAD.Qt.translate
 
 from PySide import QtWidgets
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Hyperlinks tools"
-__author__ = ("")
+__author__ = ""
 __url__ = "https://www.freecad.org"
 
 
@@ -53,10 +57,12 @@ class Draft_Hyperlink:
     """The Draft_Hyperlink FreeCAD command definition."""
 
     def GetResources(self):
-        d = {'Pixmap': '',
-             'Accel': "",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_Hyperlink", "Open Links"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_Hyperlink", "Opens linked documents")}
+        d = {
+            "Pixmap": "",
+            "Accel": "",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Hyperlink", "Open Links"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Hyperlink", "Opens linked documents"),
+        }
         return d
 
     def Activated(self):
@@ -66,17 +72,9 @@ class Draft_Hyperlink:
         if len(self.hyperlinks_list) > 1:
             m = QtWidgets.QMessageBox()
             m.setWindowTitle(translate("draft", "Opening Multiple Links"))
-            m.setText(
-                translate(
-                    "draft",
-                    "Multiple links found"
-                )
-            )
+            m.setText(translate("draft", "Multiple links found"))
             m.setInformativeText(
-                translate(
-                    "draft",
-                    "This may lead to the opening of various windows"
-                )
+                translate("draft", "This may lead to the opening of various windows")
             )
             m.setStandardButtons(m.Ok | m.Cancel)
             ret = m.exec_()
@@ -92,7 +90,9 @@ class Draft_Hyperlink:
             if hasattr(o.Object, "Text"):
 
                 for text in o.Object.Text:
-                    hyperlinks = re.findall(r"((\w:[\\/]|%\w+%|\\\\\w+|/\w+|\w{3,5}://)[\w\\/: ]+\.[\S]+)", text)
+                    hyperlinks = re.findall(
+                        r"((\w:[\\/]|%\w+%|\\\\\w+|/\w+|\w{3,5}://)[\w\\/: ]+\.[\S]+)", text
+                    )
 
                     for hyperlink in hyperlinks:
                         self.hyperlinks_list.append(hyperlink[0])
@@ -116,8 +116,11 @@ class Draft_Hyperlink:
 
         _toolmsg(translate("draft", "Opening hyperlink") + " " + hyperlink)
 
-        QDesktopServices.openUrl(url) #ToDo: add management to open FCStd files in the current instance and to open web pages with the Web Workbench
+        QDesktopServices.openUrl(
+            url
+        )  # ToDo: add management to open FCStd files in the current instance and to open web pages with the Web Workbench
 
-FreeCADGui.addCommand('Draft_Hyperlink', Draft_Hyperlink())
+
+FreeCADGui.addCommand("Draft_Hyperlink", Draft_Hyperlink())
 
 ## @}

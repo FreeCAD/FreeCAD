@@ -47,12 +47,12 @@ bool(Draft_rc.__name__)
 
 
 def getColorIcon(color):
-
     "returns a QtGui.QIcon from a color 3-float tuple"
 
-    from PySide import QtCore,QtGui
-    c = QtGui.QColor(int(color[0]*255),int(color[1]*255),int(color[2]*255))
-    im = QtGui.QImage(48,48,QtGui.QImage.Format_ARGB32)
+    from PySide import QtCore, QtGui
+
+    c = QtGui.QColor(int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+    im = QtGui.QImage(48, 48, QtGui.QImage.Format_ARGB32)
     im.fill(c)
     px = QtGui.QPixmap.fromImage(im)
     return QtGui.QIcon(px)
@@ -66,9 +66,14 @@ class Layer(gui_base.GuiCommandSimplest):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Layer",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "New Layer"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties.")}
+        return {
+            "Pixmap": "Draft_Layer",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "New Layer"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Layer",
+                "Adds a layer to the document.\nObjects added to this layer can share the same visual properties.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called.
@@ -79,7 +84,9 @@ class Layer(gui_base.GuiCommandSimplest):
 
         self.doc.openTransaction(translate("draft", "Create layer"))
         Gui.addModule("Draft")
-        Gui.doCommand("layer = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)")
+        Gui.doCommand(
+            "layer = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)"
+        )
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
         self.doc.commitTransaction()
 
@@ -92,9 +99,14 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_AddToLayer",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to Layer"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds selected objects to a layer, or removes them from any layer")}
+        return {
+            "Pixmap": "Draft_AddToLayer",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to Layer"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_AddToLayer",
+                "Adds selected objects to a layer, or removes them from any layer",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -106,19 +118,21 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
         self.ui = Gui.draftToolBar
         objs = [obj for obj in App.ActiveDocument.Objects if utils.get_type(obj) == "Layer"]
         objs.sort(key=lambda obj: obj.Label)
-        self.objects = [None] \
-                       + [None] \
-                       + objs
-        self.labels  = [translate("draft", "Remove From Layer")] \
-                       + ["---"] \
-                       + [obj.Label for obj in objs] \
-                       + ["---"] \
-                       + [translate("draft", "Add to New Layer")]
-        self.icons   = [self.ui.getIcon(":/icons/list-remove.svg")] \
-                       + [None] \
-                       + [obj.ViewObject.Icon for obj in objs] \
-                       + [None] \
-                       + [self.ui.getIcon(":/icons/list-add.svg")]
+        self.objects = [None] + [None] + objs
+        self.labels = (
+            [translate("draft", "Remove From Layer")]
+            + ["---"]
+            + [obj.Label for obj in objs]
+            + ["---"]
+            + [translate("draft", "Add to New Layer")]
+        )
+        self.icons = (
+            [self.ui.getIcon(":/icons/list-remove.svg")]
+            + [None]
+            + [obj.ViewObject.Icon for obj in objs]
+            + [None]
+            + [self.ui.getIcon(":/icons/list-add.svg")]
+        )
         self.ui.sourceCmd = self
         self.ui.popupMenu(self.labels, self.icons)
 
@@ -143,19 +157,26 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
         if option == self.labels[-1]:
             # "Add to new layer..."
             from PySide import QtWidgets
+
             txt, ok = QtWidgets.QInputDialog.getText(
                 None,
                 translate("draft", "New Layer"),
                 translate("draft", "Layer name"),
-                text=translate("draft", "Layer", "Object label")
+                text=translate("draft", "Layer", "Object label"),
             )
             if not ok:
                 return
             if not txt:
                 return
             self.doc.openTransaction(translate("draft", "Add to new layer"))
-            lyr = make_layer.make_layer(name=txt, line_color=None, shape_color=None,
-                                        line_width=None, draw_style=None, transparency=None)
+            lyr = make_layer.make_layer(
+                name=txt,
+                line_color=None,
+                shape_color=None,
+                line_width=None,
+                draw_style=None,
+                transparency=None,
+            )
             for obj in Gui.Selection.getSelection():
                 lyr.Proxy.addObject(lyr, obj)
             self.doc.commitTransaction()
@@ -173,14 +194,15 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
 
 
 class LayerManager:
-
     """GuiCommand that displays a Layers manager dialog"""
 
     def GetResources(self):
 
-        return {"Pixmap"  : "Draft_LayerManager",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage Layers"),
-                "ToolTip" : QT_TRANSLATE_NOOP("Draft_LayerManager", "Allows to modify the layers")}
+        return {
+            "Pixmap": "Draft_LayerManager",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage Layers"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_LayerManager", "Allows to modify the layers"),
+        }
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -209,11 +231,13 @@ class LayerManager:
         # restore window geometry from stored state
         w = params.get_param("LayersManagerWidth")
         h = params.get_param("LayersManagerHeight")
-        self.dialog.resize(w,h)
+        self.dialog.resize(w, h)
 
         # center the dialog over FreeCAD window
         mw = Gui.getMainWindow()
-        self.dialog.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center())
+        self.dialog.move(
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center()
+        )
 
         # connect signals/slots
         self.dialog.buttonNew.clicked.connect(self.addItem)
@@ -231,8 +255,10 @@ class LayerManager:
         self.dialog.tree.setUniformRowHeights(True)
         self.dialog.tree.setItemDelegate(Layers_Delegate())
         self.dialog.tree.setItemsExpandable(False)
-        self.dialog.tree.setRootIsDecorated(False) # removes spacing in first column
-        self.dialog.tree.setSelectionMode(QtWidgets.QTreeView.ExtendedSelection) # allow one to select many
+        self.dialog.tree.setRootIsDecorated(False)  # removes spacing in first column
+        self.dialog.tree.setSelectionMode(
+            QtWidgets.QTreeView.ExtendedSelection
+        )  # allow one to select many
 
         # fill the tree view
         self.update()
@@ -241,7 +267,6 @@ class LayerManager:
         self.dialog.exec_()
 
     def accept(self):
-
         "when OK button is pressed"
 
         doc = App.ActiveDocument
@@ -267,8 +292,14 @@ class LayerManager:
                 if not changed:
                     doc.openTransaction(trans_name)
                     changed = True
-                obj = make_layer.make_layer(name=None, line_color=None, shape_color=None,
-                                            line_width=None, draw_style=None, transparency=None)
+                obj = make_layer.make_layer(
+                    name=None,
+                    line_color=None,
+                    shape_color=None,
+                    line_width=None,
+                    draw_style=None,
+                    transparency=None,
+                )
             vobj = obj.ViewObject
 
             # visibility
@@ -346,7 +377,6 @@ class LayerManager:
         self.dialog.reject()
 
     def reject(self):
-
         "when Cancel button is pressed or dialog is closed"
 
         # save dialog size
@@ -356,32 +386,34 @@ class LayerManager:
         return True
 
     def update(self):
-
         "rebuild the model from document contents"
 
         self.model.clear()
 
         # set header
-        self.model.setHorizontalHeaderLabels([translate("Draft","On"),
-                                              translate("Draft","Name"),
-                                              translate("Draft","Line Width"),
-                                              translate("Draft","Draw Style"),
-                                              translate("Draft","Line Color"),
-                                              translate("Draft","Face Color"),
-                                              translate("Draft","Transparency"),
-                                              translate("Draft","Line Print Color")])
+        self.model.setHorizontalHeaderLabels(
+            [
+                translate("Draft", "On"),
+                translate("Draft", "Name"),
+                translate("Draft", "Line Width"),
+                translate("Draft", "Draw Style"),
+                translate("Draft", "Line Color"),
+                translate("Draft", "Face Color"),
+                translate("Draft", "Transparency"),
+                translate("Draft", "Line Print Color"),
+            ]
+        )
         self.dialog.tree.header().setDefaultSectionSize(72)
-        self.dialog.tree.setColumnWidth(0,32) # on/off column
-        self.dialog.tree.setColumnWidth(1,128) # name column
+        self.dialog.tree.setColumnWidth(0, 32)  # on/off column
+        self.dialog.tree.setColumnWidth(1, 128)  # name column
 
         # populate
         objs = [obj for obj in App.ActiveDocument.Objects if utils.get_type(obj) == "Layer"]
-        objs.sort(key=lambda o:o.Label)
+        objs.sort(key=lambda o: o.Label)
         for obj in objs:
             self.addItem(obj)
 
-    def addItem(self,obj=None):
-
+    def addItem(self, obj=None):
         "adds a row to the model"
 
         from PySide import QtCore, QtGui
@@ -397,22 +429,19 @@ class LayerManager:
         lineColorItem = QtGui.QStandardItem()
         lineColorItem.setData(
             utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3],
-            QtCore.Qt.UserRole
+            QtCore.Qt.UserRole,
         )
         shapeColorItem = QtGui.QStandardItem()
         shapeColorItem.setData(
-            utils.get_rgba_tuple(params.get_param_view("DefaultShapeColor"))[:3],
-            QtCore.Qt.UserRole
+            utils.get_rgba_tuple(params.get_param_view("DefaultShapeColor"))[:3], QtCore.Qt.UserRole
         )
         transparencyItem = QtGui.QStandardItem()
         transparencyItem.setData(
-            params.get_param_view("DefaultShapeTransparency"),
-            QtCore.Qt.DisplayRole
+            params.get_param_view("DefaultShapeTransparency"), QtCore.Qt.DisplayRole
         )
         linePrintColorItem = QtGui.QStandardItem()
         linePrintColorItem.setData(
-            utils.get_rgba_tuple(params.get_param("DefaultPrintColor"))[:3],
-            QtCore.Qt.UserRole
+            utils.get_rgba_tuple(params.get_param("DefaultPrintColor"))[:3], QtCore.Qt.UserRole
         )
 
         # populate with object data
@@ -421,29 +450,32 @@ class LayerManager:
             onItem.setCheckState(QtCore.Qt.Checked if vobj.Visibility else QtCore.Qt.Unchecked)
             nameItem.setText(obj.Label)
             nameItem.setToolTip(obj.Name)
-            widthItem.setData(vobj.LineWidth,QtCore.Qt.DisplayRole)
+            widthItem.setData(vobj.LineWidth, QtCore.Qt.DisplayRole)
             styleItem.setText(vobj.DrawStyle)
-            lineColorItem.setData(vobj.LineColor[:3],QtCore.Qt.UserRole)
-            shapeColorItem.setData(vobj.ShapeColor[:3],QtCore.Qt.UserRole)
-            transparencyItem.setData(vobj.Transparency,QtCore.Qt.DisplayRole)
-            if hasattr(vobj,"LinePrintColor"):
-                linePrintColorItem.setData(vobj.LinePrintColor[:3],QtCore.Qt.UserRole)
+            lineColorItem.setData(vobj.LineColor[:3], QtCore.Qt.UserRole)
+            shapeColorItem.setData(vobj.ShapeColor[:3], QtCore.Qt.UserRole)
+            transparencyItem.setData(vobj.Transparency, QtCore.Qt.DisplayRole)
+            if hasattr(vobj, "LinePrintColor"):
+                linePrintColorItem.setData(vobj.LinePrintColor[:3], QtCore.Qt.UserRole)
         lineColorItem.setIcon(getColorIcon(lineColorItem.data(QtCore.Qt.UserRole)))
         shapeColorItem.setIcon(getColorIcon(shapeColorItem.data(QtCore.Qt.UserRole)))
         linePrintColorItem.setIcon(getColorIcon(linePrintColorItem.data(QtCore.Qt.UserRole)))
 
         # append row
-        self.model.appendRow([onItem,
-                              nameItem,
-                              widthItem,
-                              styleItem,
-                              lineColorItem,
-                              shapeColorItem,
-                              transparencyItem,
-                              linePrintColorItem])
+        self.model.appendRow(
+            [
+                onItem,
+                nameItem,
+                widthItem,
+                styleItem,
+                lineColorItem,
+                shapeColorItem,
+                transparencyItem,
+                linePrintColorItem,
+            ]
+        )
 
     def onDelete(self):
-
         "delete selected rows"
 
         rows = []
@@ -465,7 +497,6 @@ class LayerManager:
             self.model.takeRow(row)
 
     def onToggle(self):
-
         "toggle selected layers on/off"
 
         from PySide import QtCore
@@ -482,7 +513,6 @@ class LayerManager:
                 self.model.itemFromIndex(index).setCheckState(state)
 
     def onIsolate(self):
-
         "isolates the selected layers (turns all the others off"
 
         from PySide import QtCore
@@ -501,7 +531,6 @@ if App.GuiUp:
     from PySide import QtCore, QtGui, QtWidgets
 
     class Layers_Delegate(QtWidgets.QStyledItemDelegate):
-
         "model delegate"
 
         def __init__(self, parent=None, *args):
@@ -511,91 +540,97 @@ if App.GuiUp:
             # But we want to show the color dialog only the first time
             self.first = True
 
-        def createEditor(self,parent,option,index):
+        def createEditor(self, parent, option, index):
 
-            if index.column() == 0: # Layer on/off
+            if index.column() == 0:  # Layer on/off
                 editor = QtWidgets.QCheckBox(parent)
-            if index.column() == 1: # Layer name
+            if index.column() == 1:  # Layer name
                 editor = QtWidgets.QLineEdit(parent)
-            elif index.column() == 2: # Line width
+            elif index.column() == 2:  # Line width
                 editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(99)
-            elif index.column() == 3: # Line style
+            elif index.column() == 3:  # Line style
                 editor = QtWidgets.QComboBox(parent)
                 editor.addItems(utils.DRAW_STYLES)
-            elif index.column() == 4: # Line color
+            elif index.column() == 4:  # Line color
                 editor = QtWidgets.QLineEdit(parent)
                 self.first = True
-            elif index.column() == 5: # Shape color
+            elif index.column() == 5:  # Shape color
                 editor = QtWidgets.QLineEdit(parent)
                 self.first = True
-            elif index.column() == 6: # Transparency
+            elif index.column() == 6:  # Transparency
                 editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(100)
-            elif index.column() == 7: # Line print color
+            elif index.column() == 7:  # Line print color
                 editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             return editor
 
         def setEditorData(self, editor, index):
 
-            if index.column() == 0: # Layer on/off
+            if index.column() == 0:  # Layer on/off
                 editor.setChecked(index.data())
-            elif index.column() == 1: # Layer name
+            elif index.column() == 1:  # Layer name
                 editor.setText(index.data())
-            elif index.column() == 2: # Line width
+            elif index.column() == 2:  # Line width
                 editor.setValue(index.data())
-            elif index.column() == 3: # Line style
+            elif index.column() == 3:  # Line style
                 editor.setCurrentIndex(utils.DRAW_STYLES.index(index.data()))
-            elif index.column() == 4: # Line color
+            elif index.column() == 4:  # Line color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(
+                        QtGui.QColor(int(c[0] * 255), int(c[1] * 255), int(c[2] * 255))
+                    )
                     editor.setText(str(color.getRgbF()))
                     self.first = False
-            elif index.column() == 5: # Shape color
+            elif index.column() == 5:  # Shape color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(
+                        QtGui.QColor(int(c[0] * 255), int(c[1] * 255), int(c[2] * 255))
+                    )
                     editor.setText(str(color.getRgbF()))
                     self.first = False
-            elif index.column() == 6: # Transparency
+            elif index.column() == 6:  # Transparency
                 editor.setValue(index.data())
             elif index.column() == 7:  # Line print color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(
+                        QtGui.QColor(int(c[0] * 255), int(c[1] * 255), int(c[2] * 255))
+                    )
                     editor.setText(str(color.getRgbF()))
                     self.first = False
 
         def setModelData(self, editor, model, index):
 
-            if index.column() == 0: # Layer on/off
-                model.setData(index,editor.isChecked())
-            elif index.column() == 1: # Layer name
-                model.setData(index,editor.text())
-            elif index.column() == 2: # Line width
-                model.setData(index,editor.value())
-            elif index.column() == 3: # Line style
-                model.setData(index,utils.DRAW_STYLES[editor.currentIndex()])
-            elif index.column() == 4: # Line color
-                model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
+            if index.column() == 0:  # Layer on/off
+                model.setData(index, editor.isChecked())
+            elif index.column() == 1:  # Layer name
+                model.setData(index, editor.text())
+            elif index.column() == 2:  # Line width
+                model.setData(index, editor.value())
+            elif index.column() == 3:  # Line style
+                model.setData(index, utils.DRAW_STYLES[editor.currentIndex()])
+            elif index.column() == 4:  # Line color
+                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
-            elif index.column() == 5: # Shape color
-                model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
+            elif index.column() == 5:  # Shape color
+                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
-            elif index.column() == 6: # Transparency
-                model.setData(index,editor.value())
-            elif index.column() == 7: # Line prin color
-                model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
+            elif index.column() == 6:  # Transparency
+                model.setData(index, editor.value())
+            elif index.column() == 7:  # Line prin color
+                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
 
 
-Gui.addCommand('Draft_Layer', Layer())
-Gui.addCommand('Draft_AddToLayer', AddToLayer())
-Gui.addCommand('Draft_LayerManager', LayerManager())
+Gui.addCommand("Draft_Layer", Layer())
+Gui.addCommand("Draft_AddToLayer", AddToLayer())
+Gui.addCommand("Draft_LayerManager", LayerManager())
 
 ## @}

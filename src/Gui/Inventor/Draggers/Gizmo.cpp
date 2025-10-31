@@ -64,7 +64,7 @@ bool Gizmo::isDelayedUpdateEnabled()
 {
     static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
         .GetUserParameter()
-        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+        .GetGroup("BaseApp/Preferences/Gui/Gizmos");
 
     return hGrp->GetBool("DelayedGizmoUpdate", false);
 }
@@ -775,7 +775,7 @@ bool GizmoContainer::isEnabled()
 {
     static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
         .GetUserParameter()
-        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+        .GetGroup("BaseApp/Preferences/Gui/Gizmos");
 
     return hGrp->GetBool("EnableGizmos", true);
 }

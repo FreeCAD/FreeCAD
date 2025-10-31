@@ -43,36 +43,31 @@ class Polygon(DraftObject):
     def __init__(self, obj):
         super().__init__(obj, "Polygon")
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Number of faces")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Number of faces")
         obj.addProperty("App::PropertyInteger", "FacesNumber", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Radius of the control circle")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Radius of the control circle")
         obj.addProperty("App::PropertyLength", "Radius", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "How the polygon must be drawn from the control circle")
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property", "How the polygon must be drawn from the control circle"
+        )
         obj.addProperty("App::PropertyEnumeration", "DrawMode", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Radius to use to fillet the corners")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Size of the chamfer to give to the corners")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Create a face")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face")
         obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The area of this object")
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
-        obj.DrawMode = ['inscribed','circumscribed']
+        obj.DrawMode = ["inscribed", "circumscribed"]
         obj.FacesNumber = 0
         obj.Radius = 1
 
@@ -88,33 +83,30 @@ class Polygon(DraftObject):
 
         if (obj.FacesNumber >= 3) and (obj.Radius.Value > 0):
             import Part
+
             plm = obj.Placement
             angle = (math.pi * 2) / obj.FacesNumber
-            if obj.DrawMode == 'inscribed':
+            if obj.DrawMode == "inscribed":
                 delta = obj.Radius.Value
             else:
                 delta = obj.Radius.Value / math.cos(angle / 2.0)
             pts = [App.Vector(delta, 0, 0)]
             for i in range(obj.FacesNumber - 1):
                 ang = (i + 1) * angle
-                pts.append(App.Vector(delta * math.cos(ang),
-                                      delta*math.sin(ang),
-                                      0))
+                pts.append(App.Vector(delta * math.cos(ang), delta * math.sin(ang), 0))
             pts.append(pts[0])
             shape = Part.makePolygon(pts)
             if "ChamferSize" in obj.PropertiesList:
                 if obj.ChamferSize.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,
-                                                  chamfer=True)
+                    w = DraftGeomUtils.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                     if w:
                         shape = w
             if "FilletRadius" in obj.PropertiesList:
                 if obj.FilletRadius.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,
-                                                  obj.FilletRadius.Value)
+                    w = DraftGeomUtils.filletWire(shape, obj.FilletRadius.Value)
                     if w:
                         shape = w
-            if hasattr(obj,"MakeFace"):
+            if hasattr(obj, "MakeFace"):
                 if obj.MakeFace:
                     shape = Part.Face(shape)
             else:

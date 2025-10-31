@@ -48,6 +48,7 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 ## \addtogroup draftmake
 # @{
 
+
 def _preprocess(objs, radius, chamfer):
     """Check the inputs and return the edges for the fillet and the objects to be deleted."""
     edges = []
@@ -138,5 +139,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         gui_utils.select(obj)
 
     return obj
+
 
 ## @}

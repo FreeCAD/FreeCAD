@@ -220,8 +220,9 @@ def upgrade(objects, delete=False, force=None):
                     new_area = new_face.Area
                     new_cen = new_face.CenterOfMass
                     for old_area, old_cen, old_color in old_data:
-                        if math.isclose(new_area, old_area, abs_tol=1e-7) \
-                                and new_cen.isEqual(old_cen, 1e-7):
+                        if math.isclose(new_area, old_area, abs_tol=1e-7) and new_cen.isEqual(
+                            old_cen, 1e-7
+                        ):
                             new_colors.append(old_color)
                             break
                 newobj.ViewObject.DiffuseColor = new_colors
@@ -316,8 +317,11 @@ def upgrade(objects, delete=False, force=None):
                 for cluster in sorted_edges:
                     for edge in cluster:
                         print("Curve: {}".format(edge.Curve))
-                        print("first: {}, last: {}".format(edge.Vertexes[0].Point,
-                                                           edge.Vertexes[-1].Point))
+                        print(
+                            "first: {}, last: {}".format(
+                                edge.Vertexes[0].Point, edge.Vertexes[-1].Point
+                            )
+                        )
             wires = [Part.Wire(cluster) for cluster in sorted_edges]
         except Part.OCCError:
             return False
@@ -348,7 +352,6 @@ def upgrade(objects, delete=False, force=None):
         add_list.extend(new_list)
         delete_list.append(obj)
         return True
-
 
     # helper functions (same as in downgrade.py)
 
@@ -413,7 +416,6 @@ def upgrade(objects, delete=False, force=None):
         for newobj in new_list:
             gui_utils.format_object(newobj, obj, ignore_construction=True)
 
-
     doc = App.ActiveDocument
     add_list = []
     delete_list = []
@@ -476,17 +478,21 @@ def upgrade(objects, delete=False, force=None):
             result = turnToParts(meshes)
         else:
             # functions that work on a single object:
-            single_funcs = {"closeWire": closeWire,
-                            "draftify": _draftify,
-                            "makeSketchFace": makeSketchFace,
-                            "makeSolid": makeSolid}
+            single_funcs = {
+                "closeWire": closeWire,
+                "draftify": _draftify,
+                "makeSketchFace": makeSketchFace,
+                "makeSolid": makeSolid,
+            }
             # functions that work on multiple objects:
-            multi_funcs = {"joinFaces": joinFaces,
-                           "makeCompound": makeCompound,
-                           "makeFaces": makeFaces,
-                           "makeFusion": makeFusion,
-                           "makeShell": makeShell,
-                           "makeWires": makeWires}
+            multi_funcs = {
+                "joinFaces": joinFaces,
+                "makeCompound": makeCompound,
+                "makeFaces": makeFaces,
+                "makeFusion": makeFusion,
+                "makeShell": makeShell,
+                "makeWires": makeWires,
+            }
             if force in single_funcs:
                 result = any([single_funcs[force](obj) for obj in objects])
             elif force in multi_funcs:
@@ -536,39 +542,55 @@ def upgrade(objects, delete=False, force=None):
                     _msg(translate("draft", "Found 1 solidifiable object: solidifying it"))
 
             # we have exactly 2 objects: we fuse them
-            elif len(objects) == 2 \
-                    and not faces_coplanarity \
-                    and same_parent \
-                    and same_parent_type != "PartDesign::Body":
+            elif (
+                len(objects) == 2
+                and not faces_coplanarity
+                and same_parent
+                and same_parent_type != "PartDesign::Body"
+            ):
                 result = makeFusion(objects)
                 if result:
                     _msg(translate("draft", "Found 2 objects: fusing them"))
 
             # we have many separate faces: we try to make a shell or compound
-            elif len(objects) > 1 \
-                    and len(faces) > 1 \
-                    and same_parent \
-                    and same_parent_type != "PartDesign::Body":
+            elif (
+                len(objects) > 1
+                and len(faces) > 1
+                and same_parent
+                and same_parent_type != "PartDesign::Body"
+            ):
                 result = makeShell(objects)
                 if result:
-                    _msg(translate(
-                        "draft",
-                        "Found several objects: creating a " + result.Shape.ShapeType
-                    ))
+                    _msg(
+                        translate(
+                            "draft", "Found several objects: creating a " + result.Shape.ShapeType
+                        )
+                    )
 
             # we have faces: we try to join them if they are coplanar
             elif len(objects) == 1 and len(faces) > 1 and faces_coplanarity:
                 result = joinFaces(objects)
                 if result:
-                    _msg(translate("draft", "Found object with several coplanar faces: refining them"))
+                    _msg(
+                        translate(
+                            "draft", "Found object with several coplanar faces: refining them"
+                        )
+                    )
 
             # only one object: if not parametric, we "draftify" it
-            elif len(objects) == 1 \
-                    and not objects[0].isDerivedFrom("Part::Part2DObjectPython") \
-                    and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]:
+            elif (
+                len(objects) == 1
+                and not objects[0].isDerivedFrom("Part::Part2DObjectPython")
+                and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]
+            ):
                 result = _draftify(objects[0])
                 if result:
-                    _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
+                    _msg(
+                        translate(
+                            "draft",
+                            "Found 1 non-parametric object: replacing it with a Draft object",
+                        )
+                    )
 
         # in the following cases there are no faces
         elif not faces:
@@ -579,7 +601,11 @@ def upgrade(objects, delete=False, force=None):
                 if len(objects) == 1 and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                     result = makeSketchFace(objects[0])
                     if result:
-                        _msg(translate("draft", "Found 1 closed sketch object: creating a face from it"))
+                        _msg(
+                            translate(
+                                "draft", "Found 1 closed sketch object: creating a face from it"
+                            )
+                        )
                 # only closed wires
                 else:
                     result = makeFaces(objects)
@@ -594,7 +620,11 @@ def upgrade(objects, delete=False, force=None):
                 else:
                     result = makeCompound(objects)
                     if result:
-                        _msg(translate("draft", "Found several non-treatable objects: creating compound"))
+                        _msg(
+                            translate(
+                                "draft", "Found several non-treatable objects: creating compound"
+                            )
+                        )
 
             # special case, we have only one open wire. We close it, unless it has only 1 edge!
             elif len(objects) == 1 and len(openwires) == 1:
@@ -603,16 +633,23 @@ def upgrade(objects, delete=False, force=None):
                     _msg(translate("draft", "Found 1 open wire: closing it"))
 
             # only one object: if not parametric, we "draftify" it
-            elif len(objects) == 1 \
-                    and len(edges) == 1 \
-                    and not objects[0].isDerivedFrom("Part::Part2DObjectPython") \
-                    and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]:
+            elif (
+                len(objects) == 1
+                and len(edges) == 1
+                and not objects[0].isDerivedFrom("Part::Part2DObjectPython")
+                and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]
+            ):
                 edge_type = DraftGeomUtils.geomType(objects[0].Shape.Edges[0])
                 # currently only support Line and Circle
                 if edge_type in ("Line", "Circle"):
                     result = _draftify(objects[0])
                     if result:
-                        _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
+                        _msg(
+                            translate(
+                                "draft",
+                                "Found 1 non-parametric object: replacing it with a Draft object",
+                            )
+                        )
 
             # only points, no edges
             elif not edges and len(objects) > 1:
@@ -636,5 +673,6 @@ def upgrade(objects, delete=False, force=None):
 
     gui_utils.select(add_list)
     return add_list, delete_list
+
 
 ## @}

@@ -63,9 +63,14 @@ class PointArray(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_PointArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PointArray", "Point Array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected object at the points of a point object")}
+        return {
+            "Pixmap": "Draft_PointArray",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_PointArray", "Point Array"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_PointArray",
+                "Creates copies of the selected object at the points of a point object",
+            ),
+        }
 
     def Activated(self, name="Point array"):
         """Execute when the command is called."""
@@ -92,32 +97,40 @@ class PointArray(gui_base_original.Modifier):
         """Proceed with the command if one object was selected."""
         sel = Gui.Selection.getSelectionEx()
         if len(sel) != 2:
-            _err(translate("draft","Select exactly 2 objects, the base object and the point object, before calling this command"))
+            _err(
+                translate(
+                    "draft",
+                    "Select exactly 2 objects, the base object and the point object, before calling this command",
+                )
+            )
         else:
             base_object = sel[0].Object
             point_object = sel[1].Object
             extra = None
 
-            Gui.addModule('Draft')
+            Gui.addModule("Draft")
             _cmd = "Draft.make_point_array"
             _cmd += "("
             _cmd += "App.ActiveDocument." + base_object.Name + ", "
             _cmd += "App.ActiveDocument." + point_object.Name + ", "
             _cmd += "extra=" + str(extra) + ", "
-            _cmd += 'use_link=' + str(self.use_link)
+            _cmd += "use_link=" + str(self.use_link)
             _cmd += ")"
 
-            _cmd_list = ["_obj_ = " + _cmd,
-                         "Draft.autogroup(_obj_)",
-                         "App.ActiveDocument.recompute()"]
-            self.commit(translate("draft","Create Point Array"), _cmd_list)
+            _cmd_list = [
+                "_obj_ = " + _cmd,
+                "Draft.autogroup(_obj_)",
+                "App.ActiveDocument.recompute()",
+            ]
+            self.commit(translate("draft", "Create Point Array"), _cmd_list)
 
         # Commit the transaction and execute the commands
         # through the parent class
         self.finish()
 
 
-Gui.addCommand('Draft_PointArray', PointArray())
+Gui.addCommand("Draft_PointArray", PointArray())
+
 
 class PointLinkArray(PointArray):
     """Gui Command for the PointLinkArray tool based on the PointArray tool."""
@@ -128,15 +141,20 @@ class PointLinkArray(PointArray):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_PointLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Point Link Array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Creates linked copies of the selected object at the points of a point object")}
+        return {
+            "Pixmap": "Draft_PointLinkArray",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Point Link Array"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_PointLinkArray",
+                "Creates linked copies of the selected object at the points of a point object",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
         super(PointLinkArray, self).Activated(name="Point link array")
 
 
-Gui.addCommand('Draft_PointLinkArray', PointLinkArray())
+Gui.addCommand("Draft_PointLinkArray", PointLinkArray())
 
 ## @}

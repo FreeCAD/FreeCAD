@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -48,6 +50,7 @@ public:
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] std::string getDescription() const;
     [[nodiscard]] int getNum() const;
+    [[nodiscard]] std::string getUnitText(const Quantity& quant) const;
 
     std::string translate(const Quantity& quant) const;
     std::string translate(const Quantity& quant, double& factor, std::string& unitString) const;

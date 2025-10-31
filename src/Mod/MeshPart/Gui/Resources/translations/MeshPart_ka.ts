@@ -167,7 +167,7 @@
       <translation>წიბოების დაკავშირება, თუ დაშორება ნაკლებია, ვიდრე</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="383"/>
       <source>Failure</source>
       <translation>შეცდომა</translation>
     </message>
@@ -175,32 +175,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Create</source>
       <translation>შექმნა</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Close wire</source>
       <translation>პოლიხაზის დახურვა</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Clear</source>
       <translation>გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
+      <location filename="../../CurveOnMesh.cpp" line="622"/>
       <source>Wrong mesh selected</source>
       <translation>არჩეულია არასწორი ბადე</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
+      <location filename="../../CurveOnMesh.cpp" line="661"/>
       <source>No point was selected</source>
       <translation>წერტილი მონიშნული არაა</translation>
     </message>
@@ -315,7 +315,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>ქსელის სეგმენტები დაჯგუფდება ობიექტის ზედაპირის ფერის მიხედვით.
-ეს ჯგუფები გატანილი იქნება ბადის გამომავალი ფორმატებისთვის,
+ეს ჯგუფები გატანილი იქნება ბადის გამომავალი ფორმატებისთვის, 
 რომლებსაც აქვთ ამ თვისების მხარდაჭერა(მაგ. ფორმატი OBJ).</translation>
     </message>
     <message>
@@ -575,12 +575,12 @@ Select a different shape.</source>
   <context>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="49"/>
+      <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
       <translation>ბადის განშლა</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="52"/>
+      <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
       <translation>იპოვის ბადის ბრტყელ რეპრეზენტაციას</translation>
     </message>
@@ -588,12 +588,12 @@ Select a different shape.</source>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="88"/>
+      <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
       <translation>სიბრტყის განშლა</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="91"/>
+      <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
       <translation>იპოვის ზედაპირის ბრტყელ რეპრეზენტაციას</translation>
     </message>

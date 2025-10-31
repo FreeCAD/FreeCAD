@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation>Material-Eigenschaften des ausgewählten Objekts untersuchen</translation>
+      <translation>Untersucht die Materialeigenschaften des ausgewählten Objekts</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>

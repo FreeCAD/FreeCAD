@@ -129,6 +129,11 @@ public:
     void transform(const Base::Matrix4D& mat) const;
     void translate(const Base::Vector3d& vec) const;
 
+    virtual bool reverseIfReversed()
+    {
+        return false;
+    };
+
 protected:
     /// create a new tag for the geometry object
     void createNewTag();
@@ -420,6 +425,7 @@ public:
     double getAngleXU() const;
     void setAngleXU(double angle);
     bool isReversed() const;
+    bool reverseIfReversed() override;
 
     Base::Vector3d getAxisDirection() const;
 
@@ -505,6 +511,7 @@ public:
     inline void setRange(double u, double v) override { setRange(u,v,false);}
 
     bool isReversed() const;
+    bool reverseIfReversed() override;
     double getAngleXU() const;
     void setAngleXU(double angle);
 

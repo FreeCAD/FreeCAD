@@ -41,20 +41,17 @@ class BSpline(DraftObject):
     def __init__(self, obj):
         super().__init__(obj, "BSpline")
 
-        _tip =  QT_TRANSLATE_NOOP("App::Property",
-                "The points of the B-spline")
-        obj.addProperty("App::PropertyVectorList","Points", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The points of the B-spline")
+        obj.addProperty("App::PropertyVectorList", "Points", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "If the B-spline is closed or not")
-        obj.addProperty("App::PropertyBool","Closed", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "If the B-spline is closed or not")
+        obj.addProperty("App::PropertyBool", "Closed", "Draft", _tip, locked=True)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "Create a face if this B-spline is closed")
-        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face if this B-spline is closed")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
-        obj.addProperty("App::PropertyArea","Area", "Draft", _tip, locked=True)
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
@@ -63,28 +60,26 @@ class BSpline(DraftObject):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        gui_utils.restore_view_object(
-            obj, vp_module="view_bspline", vp_class="ViewProviderBSpline"
-        )
+        gui_utils.restore_view_object(obj, vp_module="view_bspline", vp_class="ViewProviderBSpline")
 
-    def assureProperties(self, obj): # for Compatibility with older versions
+    def assureProperties(self, obj):  # for Compatibility with older versions
         if not hasattr(obj, "Parameterization"):
-            _tip = QT_TRANSLATE_NOOP("App::Property","Parameterization factor")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Parameterization factor")
             obj.addProperty("App::PropertyFloat", "Parameterization", "Draft", _tip, locked=True)
             obj.Parameterization = 1.0
             self.knotSeq = []
 
-    def parameterization (self, pts, a, closed):
+    def parameterization(self, pts, a, closed):
         """Computes a knot Sequence for a set of points.
         fac (0-1) : parameterization factor
         fac = 0 -> Uniform / fac=0.5 -> Centripetal / fac=1.0 -> Chord-Length
         """
-        if closed: # we need to add the first point as the end point
+        if closed:  # we need to add the first point as the end point
             pts.append(pts[0])
         params = [0]
-        for i in range(1,len(pts)):
-            p = pts[i].sub(pts[i-1])
-            pl = pow(p.Length,a)
+        for i in range(1, len(pts)):
+            p = pts[i].sub(pts[i - 1])
+            pl = pow(p.Length, a)
             params.append(params[-1] + pl)
         return params
 
@@ -92,14 +87,13 @@ class BSpline(DraftObject):
         self.props_changed_store(prop)
 
         if prop == "Parameterization":
-            if fp.Parameterization < 0.:
-                fp.Parameterization = 0.
+            if fp.Parameterization < 0.0:
+                fp.Parameterization = 0.0
             if fp.Parameterization > 1.0:
                 fp.Parameterization = 1.0
 
     def execute(self, obj):
-        if self.props_changed_placement_only() \
-                or not obj.Points:
+        if self.props_changed_placement_only() or not obj.Points:
             obj.positionBySupport()
             self.props_changed_clear()
             return
@@ -112,18 +106,21 @@ class BSpline(DraftObject):
         plm = obj.Placement
         if obj.Closed and (len(obj.Points) > 2):
             if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash
-                _err = QT_TRANSLATE_NOOP('Draft', "_BSpline.createGeometry: "
-                        "Closed with same first/last Point. Geometry not updated.")
-                App.Console.PrintError(_err+"\n")
+                _err = QT_TRANSLATE_NOOP(
+                    "Draft",
+                    "_BSpline.createGeometry: "
+                    "Closed with same first/last Point. Geometry not updated.",
+                )
+                App.Console.PrintError(_err + "\n")
                 return
             spline = Part.BSplineCurve()
-            spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)
+            spline.interpolate(obj.Points, PeriodicFlag=True, Parameters=self.knotSeq)
             # DNC: bug fix: convert to face if closed
             shape = Part.Wire(spline.toShape())
             # Creating a face from a closed spline cannot be expected to always work
             # Usually, if the spline is not flat the call of Part.Face() fails
             try:
-                if hasattr(obj,"MakeFace"):
+                if hasattr(obj, "MakeFace"):
                     if obj.MakeFace:
                         shape = Part.Face(shape)
                 else:
@@ -131,14 +128,14 @@ class BSpline(DraftObject):
             except Part.OCCError:
                 pass
             obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"):
+            if hasattr(obj, "Area") and hasattr(shape, "Area"):
                 obj.Area = shape.Area
         else:
             spline = Part.BSplineCurve()
-            spline.interpolate(obj.Points, PeriodicFlag = False, Parameters = self.knotSeq)
+            spline.interpolate(obj.Points, PeriodicFlag=False, Parameters=self.knotSeq)
             shape = spline.toShape()
             obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"):
+            if hasattr(obj, "Area") and hasattr(shape, "Area"):
                 obj.Area = shape.Area
         obj.Placement = plm
         obj.positionBySupport()

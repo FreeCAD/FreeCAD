@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>统一选定的网格</translation>
     </message>
   </context>
   <context>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate and Repair Mesh</source>
-      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+      <translation>评估和修复网格</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
@@ -1556,12 +1556,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="102"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>正面四边形</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>准结构四边形</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="198"/>
@@ -1709,7 +1709,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>留空则使用默认的 gmsh 可执行文件</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1971,12 +1971,12 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Accept only visible triangles</source>
-      <translation type="unfinished">Accept only visible triangles</translation>
+      <translation>仅接受可见的三角形</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Accept only triangles with screen-facing normals</source>
-      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
+      <translation>仅接受法线朝向屏幕的三角形</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="85"/>
@@ -2231,7 +2231,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>用最大边数填充孔</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1794"/>

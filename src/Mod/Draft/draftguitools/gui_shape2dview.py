@@ -55,9 +55,14 @@ class Shape2DView(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_2DShapeView',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D View"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates a 2D projection of the selected objects on the XY-plane.\nThe initial projection direction is the opposite of the current active view direction.")}
+        return {
+            "Pixmap": "Draft_2DShapeView",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D View"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Shape2DView",
+                "Creates a 2D projection of the selected objects on the XY-plane.\nThe initial projection direction is the opposite of the current active view direction.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -112,11 +117,10 @@ class Shape2DView(gui_base_original.Modifier):
                 n += 1
         if commitlist:
             commitlist.append("FreeCAD.ActiveDocument.recompute()")
-            self.commit(translate("draft", "Create 2D View"),
-                        commitlist)
+            self.commit(translate("draft", "Create 2D View"), commitlist)
         self.finish()
 
 
-Gui.addCommand('Draft_Shape2DView', Shape2DView())
+Gui.addCommand("Draft_Shape2DView", Shape2DView())
 
 ## @}

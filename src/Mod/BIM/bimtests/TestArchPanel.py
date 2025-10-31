@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchPanel(TestArchBase.TestArchBase):
 
     def test_makePanel(self):

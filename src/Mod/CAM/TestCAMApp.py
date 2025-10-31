@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # flake8: noqa import
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *

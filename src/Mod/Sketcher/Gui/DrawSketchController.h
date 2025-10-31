@@ -333,7 +333,8 @@ public:
             handler->reset();  // reset of handler to restart.
         }
 
-        handler->mouseMove(prevCursorPosition);
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+        handler->mouseMove(*snapHandle);
     }
     //@}
 
@@ -534,7 +535,9 @@ public:
     virtual void afterHandlerModeChanged()
     {
         if (handler && (!handler->isState(SelectModeT::End) || handler->continuousMode)) {
-            handler->mouseMove(prevCursorPosition);
+            auto snapHandle =
+                std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+            handler->mouseMove(*snapHandle);
         }
     }
 
@@ -624,7 +627,8 @@ protected:
     /// change
     void finishControlsChanged()
     {
-        handler->mouseMove(prevCursorPosition);
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+        handler->mouseMove(*snapHandle);
 
         auto currentstate = handler->state();
         // ensure that object at point is preselected, so that autoconstraints are generated
@@ -645,7 +649,9 @@ protected:
         // reset)
         if (shouldProcessLastPosWithNextState) {
             // mode has changed, so reprocess the previous position to the new widget state
-            handler->mouseMove(prevCursorPosition);
+            auto snapHandle =
+                std::make_unique<SnapManager::SnapHandle>(nullptr, prevCursorPosition);
+            handler->mouseMove(*snapHandle);
         }
     }
 

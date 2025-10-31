@@ -63,52 +63,65 @@ def array(objectslist, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None):
     if arg6:
         rectArray2(objectslist, arg1, arg2, arg3, arg4, arg5, arg6)
     elif arg4:
-        rectArray(objectslist, arg1,arg2, arg3, arg4)
+        rectArray(objectslist, arg1, arg2, arg3, arg4)
     else:
         polarArray(objectslist, arg1, arg2, arg3)
 
 
-def rectArray(objectslist,xvector,yvector,xnum,ynum):
-    utils.type_check([(xvector, App.Vector),
-                        (yvector, App.Vector),
-                        (xnum,int), (ynum,int)],
-                        "rectArray")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
+def rectArray(objectslist, xvector, yvector, xnum, ynum):
+    utils.type_check(
+        [(xvector, App.Vector), (yvector, App.Vector), (xnum, int), (ynum, int)], "rectArray"
+    )
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
     for xcount in range(xnum):
-        currentxvector=App.Vector(xvector).multiply(xcount)
-        if not xcount==0:
-            move.move(objectslist,currentxvector,True)
+        currentxvector = App.Vector(xvector).multiply(xcount)
+        if not xcount == 0:
+            move.move(objectslist, currentxvector, True)
         for ycount in range(ynum):
-            currentxvector=App.Vector(currentxvector)
-            currentyvector=currentxvector.add(App.Vector(yvector).multiply(ycount))
-            if not ycount==0:
-                move.move(objectslist,currentyvector,True)
+            currentxvector = App.Vector(currentxvector)
+            currentyvector = currentxvector.add(App.Vector(yvector).multiply(ycount))
+            if not ycount == 0:
+                move.move(objectslist, currentyvector, True)
 
 
-def rectArray2(objectslist,xvector,yvector,zvector,xnum,ynum,znum):
-    utils.type_check([(xvector,App.Vector), (yvector,App.Vector), (zvector,App.Vector),(xnum,int), (ynum,int),(znum,int)], "rectArray2")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
+def rectArray2(objectslist, xvector, yvector, zvector, xnum, ynum, znum):
+    utils.type_check(
+        [
+            (xvector, App.Vector),
+            (yvector, App.Vector),
+            (zvector, App.Vector),
+            (xnum, int),
+            (ynum, int),
+            (znum, int),
+        ],
+        "rectArray2",
+    )
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
     for xcount in range(xnum):
-        currentxvector=App.Vector(xvector).multiply(xcount)
-        if not xcount==0:
-            move.move(objectslist,currentxvector,True)
+        currentxvector = App.Vector(xvector).multiply(xcount)
+        if not xcount == 0:
+            move.move(objectslist, currentxvector, True)
         for ycount in range(ynum):
-            currentxvector=App.Vector(currentxvector)
-            currentyvector=currentxvector.add(App.Vector(yvector).multiply(ycount))
-            if not ycount==0:
-                move.move(objectslist,currentyvector,True)
+            currentxvector = App.Vector(currentxvector)
+            currentyvector = currentxvector.add(App.Vector(yvector).multiply(ycount))
+            if not ycount == 0:
+                move.move(objectslist, currentyvector, True)
             for zcount in range(znum):
-                currentzvector=currentyvector.add(App.Vector(zvector).multiply(zcount))
-                if not zcount==0:
-                    move.move(objectslist,currentzvector,True)
+                currentzvector = currentyvector.add(App.Vector(zvector).multiply(zcount))
+                if not zcount == 0:
+                    move.move(objectslist, currentzvector, True)
 
 
-def polarArray(objectslist,center,angle,num):
-    utils.type_check([(center,App.Vector), (num,int)], "polarArray")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
-    fraction = float(angle)/num
+def polarArray(objectslist, center, angle, num):
+    utils.type_check([(center, App.Vector), (num, int)], "polarArray")
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+    fraction = float(angle) / num
     for i in range(num):
-        currangle = fraction + (i*fraction)
-        rotate.rotate(objectslist,currangle,center,copy=True)
+        currangle = fraction + (i * fraction)
+        rotate.rotate(objectslist, currangle, center, copy=True)
+
 
 ## @}

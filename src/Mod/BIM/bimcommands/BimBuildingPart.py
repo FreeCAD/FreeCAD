@@ -37,15 +37,18 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Level:
-
     """The command definition for the Arch workbench's gui tool, Arch Floor"""
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Level","Level"),
-                'Accel': "L, V",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Level","Creates a building part object that represents a level")}
+        return {
+            "Pixmap": "Arch_Floor",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Level", "Level"),
+            "Accel": "L, V",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Level", "Creates a building part object that represents a level"
+            ),
+        }
 
     def IsActive(self):
 
@@ -54,7 +57,7 @@ class Arch_Level:
 
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Level"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Level"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
@@ -66,15 +69,16 @@ class Arch_Level:
 
 
 class Arch_Building:
-
     "the Arch Building command definition"
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Building',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Building","Building"),
-                'Accel': "B, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Building","Creates a building object")}
+        return {
+            "Pixmap": "Arch_Building",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Building", "Building"),
+            "Accel": "B, U",
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_Building", "Creates a building object"),
+        }
 
     def IsActive(self):
 
@@ -83,7 +87,7 @@ class Arch_Building:
 
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Building"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Building"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("obj = Arch.makeBuilding()")
@@ -92,5 +96,5 @@ class Arch_Building:
         FreeCAD.ActiveDocument.recompute()
 
 
-FreeCADGui.addCommand('Arch_Building', Arch_Building())
-FreeCADGui.addCommand('Arch_Level', Arch_Level())
+FreeCADGui.addCommand("Arch_Building", Arch_Building())
+FreeCADGui.addCommand("Arch_Level", Arch_Level())

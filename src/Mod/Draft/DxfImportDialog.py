@@ -2,10 +2,12 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
 
+
 class DxfImportDialog:
     """
     A controller class that creates, manages, and shows the DXF import dialog.
     """
+
     def __init__(self, entity_counts, parent=None):
         # Step 1: Load the UI from the resource file. This returns a new QDialog instance.
         self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/preferences-dxf-import.ui")
@@ -21,7 +23,9 @@ class DxfImportDialog:
 
     def setup_ui(self):
         """Perform initial UI setup."""
-        self.dialog.label_Summary.setText(f"File contains approximately {self.total_entities} geometric entities.")
+        self.dialog.label_Summary.setText(
+            f"File contains approximately {self.total_entities} geometric entities."
+        )
         self.dialog.label_Warning.hide()
 
     def connect_signals(self):
@@ -42,14 +46,18 @@ class DxfImportDialog:
 
     def on_accept(self):
         """Custom slot to debug the OK button click."""
-        FreeCAD.Console.PrintLog("DxfImportDialog: 'OK' button clicked. Calling self.dialog.accept().\n")
+        FreeCAD.Console.PrintLog(
+            "DxfImportDialog: 'OK' button clicked. Calling self.dialog.accept().\n"
+        )
         # Manually call the original slot
         self.dialog.accept()
         FreeCAD.Console.PrintLog("DxfImportDialog: self.dialog.accept() has been called.\n")
 
     def on_reject(self):
         """Custom slot to debug the Cancel button click."""
-        FreeCAD.Console.PrintLog("DxfImportDialog: 'Cancel' button clicked. Calling self.dialog.reject().\n")
+        FreeCAD.Console.PrintLog(
+            "DxfImportDialog: 'Cancel' button clicked. Calling self.dialog.reject().\n"
+        )
         # Manually call the original slot
         self.dialog.reject()
         FreeCAD.Console.PrintLog("DxfImportDialog: self.dialog.reject() has been called.\n")
@@ -89,26 +97,40 @@ class DxfImportDialog:
         current_mode = self.get_selected_mode()
 
         if self.total_entities > 5000 and (current_mode == 0 or current_mode == 1):
-            self.dialog.label_Warning.setText("Warning: Importing over 5000 entities as editable objects can be very slow.")
+            self.dialog.label_Warning.setText(
+                "Warning: Importing over 5000 entities as editable objects can be very slow."
+            )
             self.dialog.label_Warning.show()
         elif self.total_entities > 20000 and current_mode == 2:
-            self.dialog.label_Warning.setText("Warning: Importing over 20,000 entities as individual shapes may be slow.")
+            self.dialog.label_Warning.setText(
+                "Warning: Importing over 20,000 entities as individual shapes may be slow."
+            )
             self.dialog.label_Warning.show()
 
     def exec_(self):
         FreeCAD.Console.PrintLog("DxfImportDialog: Calling self.dialog.exec_()...\n")
         result = self.dialog.exec_()
-        FreeCAD.Console.PrintLog("DxfImportDialog: self.dialog.exec_() returned with result: {}\n".format(result))
+        FreeCAD.Console.PrintLog(
+            "DxfImportDialog: self.dialog.exec_() returned with result: {}\n".format(result)
+        )
         # QDialog.Accepted is usually 1, Rejected is 0.
-        FreeCAD.Console.PrintLog("(Note: QDialog.Accepted = {}, QDialog.Rejected = {})\n".format(QtGui.QDialog.Accepted, QtGui.QDialog.Rejected))
+        FreeCAD.Console.PrintLog(
+            "(Note: QDialog.Accepted = {}, QDialog.Rejected = {})\n".format(
+                QtGui.QDialog.Accepted, QtGui.QDialog.Rejected
+            )
+        )
         return result
 
     def get_selected_mode(self):
         """Return the integer value of the selected import mode."""
-        if self.dialog.radio_ImportAs_Draft.isChecked(): return 0
-        if self.dialog.radio_ImportAs_Primitives.isChecked(): return 1
-        if self.dialog.radio_ImportAs_Fused.isChecked(): return 3
-        if self.dialog.radio_ImportAs_Shapes.isChecked(): return 2
+        if self.dialog.radio_ImportAs_Draft.isChecked():
+            return 0
+        if self.dialog.radio_ImportAs_Primitives.isChecked():
+            return 1
+        if self.dialog.radio_ImportAs_Fused.isChecked():
+            return 3
+        if self.dialog.radio_ImportAs_Shapes.isChecked():
+            return 2
         return 2
 
     def get_show_dialog_again(self):

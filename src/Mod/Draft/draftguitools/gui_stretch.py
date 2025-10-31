@@ -59,10 +59,12 @@ class Stretch(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Stretch',
-                'Accel': "S, H",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Stretch", "Stretch"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Stretch", "Stretches the selected objects")}
+        return {
+            "Pixmap": "Draft_Stretch",
+            "Accel": "S, H",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Stretch", "Stretch"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Stretch", "Stretches the selected objects"),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -73,9 +75,7 @@ class Stretch(gui_base_original.Modifier):
             if not Gui.Selection.getSelection():
                 self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to stretch"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
             else:
                 self.proceed()
 
@@ -104,7 +104,9 @@ class Stretch(gui_base_original.Modifier):
                     elif hasattr(obj.Base, "Base"):
                         if obj.Base.Base:
                             if utils.getType(obj.Base.Base) in supported:
-                                self.sel.append([obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)])
+                                self.sel.append(
+                                    [obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)]
+                                )
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
@@ -119,9 +121,9 @@ class Stretch(gui_base_original.Modifier):
             self.refpoint = None
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Stretch")
             self.call = self.view.addEventCallback("SoEvent", self.action)
-            self.rectracker = trackers.rectangleTracker(dotted=True,
-                                                        scolor=(0.0, 0.0, 1.0),
-                                                        swidth=2)
+            self.rectracker = trackers.rectangleTracker(
+                dotted=True, scolor=(0.0, 0.0, 1.0), swidth=2
+            )
             self.nodetracker = []
             self.displacement = None
             _toolmsg(translate("draft", "Pick first point of selection rectangle"))
@@ -158,8 +160,7 @@ class Stretch(gui_base_original.Modifier):
         """Add point to defined selection rectangle."""
         if self.step == 1:
             # first rctangle point
-            _toolmsg(translate("draft", "Pick the opposite point "
-                                    "of the selection rectangle"))
+            _toolmsg(translate("draft", "Pick the opposite point " "of the selection rectangle"))
             self.ui.setRelative(-1)
             self.rectracker.setorigin(point)
             self.rectracker.on()
@@ -294,7 +295,9 @@ class Stretch(gui_base_original.Modifier):
                         _cmd = _doc + ops[0].Name + ".Points=" + pts
                         commitops.append(_cmd)
                     elif tp in ["Sketch"]:
-                        baseverts = [ops[0].Shape.Vertexes[i].Point for i in range(len(ops[1])) if ops[1][i]]
+                        baseverts = [
+                            ops[0].Shape.Vertexes[i].Point for i in range(len(ops[1])) if ops[1][i]
+                        ]
                         for i in range(ops[0].GeometryCount):
                             j = 0
                             while True:
@@ -325,9 +328,7 @@ class Stretch(gui_base_original.Modifier):
                     elif tp in ["Rectangle"]:
                         p1 = App.Vector(0, 0, 0)
                         p2 = App.Vector(ops[0].Length.Value, 0, 0)
-                        p3 = App.Vector(ops[0].Length.Value,
-                                        ops[0].Height.Value,
-                                        0)
+                        p3 = App.Vector(ops[0].Length.Value, ops[0].Height.Value, 0)
                         p4 = App.Vector(0, ops[0].Height.Value, 0)
                         if ops[1] == [False, True, True, False]:
                             optype = 1
@@ -486,6 +487,6 @@ class Stretch(gui_base_original.Modifier):
         self.finish()
 
 
-Gui.addCommand('Draft_Stretch', Stretch())
+Gui.addCommand("Draft_Stretch", Stretch())
 
 ## @}

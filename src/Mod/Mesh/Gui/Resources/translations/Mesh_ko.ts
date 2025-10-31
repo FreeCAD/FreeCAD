@@ -1485,7 +1485,7 @@ to a smoother appearance.
  If face angle &lt; crease angle, smooth shading is used</source>
       <translation>크리즈 각도는 두 면사이의 임계각도입니다.
 
-만약 면의 각도 ≥ 크리즈 각도일 경우 패싯 쉐이딩이 사용되고
+만약 면의 각도 ≥ 크리즈 각도일 경우 패싯 쉐이딩이 사용되고 
 면의 각도 &lt; 크리즈 각도일 경우,  스무스 쉐이딩이 사용됩니다</translation>
     </message>
   </context>

@@ -43,18 +43,38 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
                     try:
                         extended = DraftGeomUtils.get_extended_wire(wire, offset_start, offset_end)
                         # Test that the extended wire's length is correctly changed
-                        self.assertAlmostEqual(extended.Length, wire.Length + offset_start + offset_end,
-                                               DraftGeomUtils.precision(), "'start={0}, end={1}' failed".format(offset_start, offset_end))
+                        self.assertAlmostEqual(
+                            extended.Length,
+                            wire.Length + offset_start + offset_end,
+                            DraftGeomUtils.precision(),
+                            "'start={0}, end={1}' failed".format(offset_start, offset_end),
+                        )
                         if offset_start == 0.0:
                             # If offset_start is 0.0, check that the wire's start point is unchanged
-                            self.assertAlmostEqual(extended.OrderedVertexes[0].Point.distanceToPoint(wire.OrderedVertexes[0].Point), 0.0,
-                                                   DraftGeomUtils.precision(), "'start={0}, end={1}' failed".format(offset_start, offset_end))
+                            self.assertAlmostEqual(
+                                extended.OrderedVertexes[0].Point.distanceToPoint(
+                                    wire.OrderedVertexes[0].Point
+                                ),
+                                0.0,
+                                DraftGeomUtils.precision(),
+                                "'start={0}, end={1}' failed".format(offset_start, offset_end),
+                            )
                         if offset_end == 0.0:
                             # If offset_end is 0.0, check that the wire's end point is unchanged
-                            self.assertAlmostEqual(extended.OrderedVertexes[-1].Point.distanceToPoint(wire.OrderedVertexes[-1].Point), 0.0,
-                                                   DraftGeomUtils.precision(), "'start={0}, end={1}' failed".format(offset_start, offset_end))
+                            self.assertAlmostEqual(
+                                extended.OrderedVertexes[-1].Point.distanceToPoint(
+                                    wire.OrderedVertexes[-1].Point
+                                ),
+                                0.0,
+                                DraftGeomUtils.precision(),
+                                "'start={0}, end={1}' failed".format(offset_start, offset_end),
+                            )
                     except Exception as exc:
-                        print ("get_extended_wire failed for 'start={0}, end={1}'".format(offset_start, offset_end))
+                        print(
+                            "get_extended_wire failed for 'start={0}, end={1}'".format(
+                                offset_start, offset_end
+                            )
+                        )
                         raise exc
 
     def test_get_extended_wire1(self):
@@ -63,10 +83,12 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 2500.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 2500.0),
+        ]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -81,10 +103,12 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 2500.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 2500.0),
+        ]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -100,10 +124,12 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 2500.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 2500.0),
+        ]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -120,10 +146,12 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with straight edges and various combination of Orientation: the wires 1-4 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 0.0),
-                  Vector(4500.0, 2000.0, 2500.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 0.0),
+            Vector(4500.0, 2000.0, 2500.0),
+        ]
 
         edges = []
         for start, end in zip(points[:-1], points[1:]):
@@ -139,11 +167,13 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1000.0, 1000.0, 0.0),
-                  Vector(2000.0, 0.0, 0.0),
-                  Vector(3000.0, 0.0, 1000.0),
-                  Vector(4000.0, 0.0, 0.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1000.0, 1000.0, 0.0),
+            Vector(2000.0, 0.0, 0.0),
+            Vector(3000.0, 0.0, 1000.0),
+            Vector(4000.0, 0.0, 0.0),
+        ]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -158,11 +188,13 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1000.0, 1000.0, 0.0),
-                  Vector(2000.0, 0.0, 0.0),
-                  Vector(3000.0, 0.0, 1000.0),
-                  Vector(4000.0, 0.0, 0.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1000.0, 1000.0, 0.0),
+            Vector(2000.0, 0.0, 0.0),
+            Vector(3000.0, 0.0, 1000.0),
+            Vector(4000.0, 0.0, 0.0),
+        ]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -178,11 +210,13 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1000.0, 1000.0, 0.0),
-                  Vector(2000.0, 0.0, 0.0),
-                  Vector(3000.0, 0.0, 1000.0),
-                  Vector(4000.0, 0.0, 0.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1000.0, 1000.0, 0.0),
+            Vector(2000.0, 0.0, 0.0),
+            Vector(3000.0, 0.0, 1000.0),
+            Vector(4000.0, 0.0, 0.0),
+        ]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -199,11 +233,13 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         _msg("  Test '{}'".format(operation))
 
         # Build wires made with arcs and various combination of Orientation: the wires 5-8 are all equivalent
-        points = [Vector(0.0, 0.0, 0.0),
-                  Vector(1000.0, 1000.0, 0.0),
-                  Vector(2000.0, 0.0, 0.0),
-                  Vector(3000.0, 0.0, 1000.0),
-                  Vector(4000.0, 0.0, 0.0)]
+        points = [
+            Vector(0.0, 0.0, 0.0),
+            Vector(1000.0, 1000.0, 0.0),
+            Vector(2000.0, 0.0, 0.0),
+            Vector(3000.0, 0.0, 1000.0),
+            Vector(4000.0, 0.0, 0.0),
+        ]
 
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
@@ -212,6 +248,7 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         wire = Part.Wire(edges)
         wire.Orientation = "Reversed"
         self.check_wire(wire)
+
 
 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestDraftGeomUtils)
 # unittest.TextTestRunner().run(suite)

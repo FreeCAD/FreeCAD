@@ -628,6 +628,12 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
 
+    if (auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(obj)) {
+        if (!asmLink->isRigid()) {
+            return false;
+        }
+    }
+
     auto* assemblyPart = getObject<AssemblyObject>();
 
     // Check if the selected object is a child of the assembly
@@ -1105,6 +1111,13 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     Base::Placement draggerPlc = sudoThis->getDraggerPlacement();
     Base::Placement movePlc = draggerPlc * sudoThis->draggerInitPlc.inverse();
 
+    // Transform the global delta `movePlc` in case the assembly is transformed.
+    Base::Placement asmPlc =
+        App::GeoFeature::getGlobalPlacement(sudoThis->getObject<AssemblyObject>());
+    if (!asmPlc.isIdentity()) {
+        movePlc = asmPlc.inverse() * movePlc * asmPlc;
+    }
+
     for (auto& movingObj : sudoThis->docsToMove) {
         App::DocumentObject* obj = movingObj.obj;
 
@@ -1370,6 +1383,22 @@ void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* curren
         vpg->Selectable.setValue(isolate);
         if (!isolate) {
             vpg->ShapeAppearance.setValue(mat);
+
+            // Note, this geometric object could have a link linking to it in the assembly
+            // and this link may be in isolate set! If so it will inherit the isolation
+            // from 'current'! So we need to manually handle it to visible.
+            const std::vector<App::DocumentObject*> inList = current->getInList();
+            for (auto* child : inList) {
+                if (child->isDerivedFrom<App::Link>() && child->getLinkedObject() == current) {
+                    // In this case we need to reverse isolate this!
+                    auto* childVp = freecad_cast<Gui::ViewProviderLink*>(
+                        Gui::Application::Instance->getViewProvider(child));
+
+                    // we give the child the color the current had before we changed it
+                    childVp->OverrideMaterial.setValue(true);
+                    childVp->ShapeMaterial.setValue(state.shapeMaterial);
+                }
+            }
         }
     }
 }

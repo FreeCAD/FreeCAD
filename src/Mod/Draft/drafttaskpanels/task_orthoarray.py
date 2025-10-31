@@ -94,17 +94,17 @@ class TaskPanelOrthoArray:
         self.v_y = App.Vector(0, start_y, 0)
         self.v_z = App.Vector(0, 0, start_z)
 
-        self.form.input_X_x.setProperty('rawValue', self.v_x.x)
-        self.form.input_X_y.setProperty('rawValue', self.v_x.y)
-        self.form.input_X_z.setProperty('rawValue', self.v_x.z)
+        self.form.input_X_x.setProperty("rawValue", self.v_x.x)
+        self.form.input_X_y.setProperty("rawValue", self.v_x.y)
+        self.form.input_X_z.setProperty("rawValue", self.v_x.z)
 
-        self.form.input_Y_x.setProperty('rawValue', self.v_y.x)
-        self.form.input_Y_y.setProperty('rawValue', self.v_y.y)
-        self.form.input_Y_z.setProperty('rawValue', self.v_y.z)
+        self.form.input_Y_x.setProperty("rawValue", self.v_y.x)
+        self.form.input_Y_y.setProperty("rawValue", self.v_y.y)
+        self.form.input_Y_z.setProperty("rawValue", self.v_y.z)
 
-        self.form.input_Z_x.setProperty('rawValue', self.v_z.x)
-        self.form.input_Z_y.setProperty('rawValue', self.v_z.y)
-        self.form.input_Z_z.setProperty('rawValue', self.v_z.z)
+        self.form.input_Z_x.setProperty("rawValue", self.v_z.x)
+        self.form.input_Z_y.setProperty("rawValue", self.v_z.y)
+        self.form.input_Z_z.setProperty("rawValue", self.v_z.z)
 
         self.n_x = params.get_param("XNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
         self.n_y = params.get_param("YNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
@@ -154,10 +154,10 @@ class TaskPanelOrthoArray:
         self.form.button_reset_Z.clicked.connect(lambda: self.reset_v("Z"))
 
         # When the checkbox changes, change the internal value
-        if hasattr(self.form.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.checkbox_fuse, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.checkbox_fuse.checkStateChanged.connect(self.set_fuse)
             self.form.checkbox_link.checkStateChanged.connect(self.set_link)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
             self.form.checkbox_link.stateChanged.connect(self.set_link)
 
@@ -167,71 +167,72 @@ class TaskPanelOrthoArray:
         self.form.radiobutton_y_axis.clicked.connect(lambda: self.set_active_axis("Y"))
         self.form.radiobutton_z_axis.clicked.connect(lambda: self.set_active_axis("Z"))
 
-
     def accept(self):
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.v_x,
-         self.v_y,
-         self.v_z) = self.get_intervals()
+        (self.v_x, self.v_y, self.v_z) = self.get_intervals()
 
-        (self.n_x,
-         self.n_y,
-         self.n_z) = self.get_numbers()
+        (self.n_x, self.n_y, self.n_z) = self.get_numbers()
 
-        self.valid_input = self.validate_input(self.selection,
-                                               self.v_x, self.v_y, self.v_z,
-                                               self.n_x, self.n_y, self.n_z)
+        self.valid_input = self.validate_input(
+            self.selection, self.v_x, self.v_y, self.v_z, self.n_x, self.n_y, self.n_z
+        )
         if self.valid_input:
             axis_values = {
-                'X': (self.v_x.x, self.n_x),
-                'Y': (self.v_y.y, self.n_y),
-                'Z': (self.v_z.z, self.n_z),
+                "X": (self.v_x.x, self.n_x),
+                "Y": (self.v_y.y, self.n_y),
+                "Z": (self.v_z.z, self.n_z),
             }
 
             values = axis_values.get(self.active_axis)
             if values is not None:
                 interval, num_elements = values
                 # Set interval
-                params.set_param(f"{self.active_axis}Interval", interval, "Mod/Draft/OrthoArrayLinearMode")
+                params.set_param(
+                    f"{self.active_axis}Interval", interval, "Mod/Draft/OrthoArrayLinearMode"
+                )
                 # Set number of elements
-                params.set_param(f"{self.active_axis}NumOfElements", num_elements, "Mod/Draft/OrthoArrayLinearMode")
+                params.set_param(
+                    f"{self.active_axis}NumOfElements",
+                    num_elements,
+                    "Mod/Draft/OrthoArrayLinearMode",
+                )
 
             self.create_object()
             # The internal function already displays messages
             self.finish()
 
-    def validate_input(self, selection,
-                       v_x, v_y, v_z,
-                       n_x, n_y, n_z):
+    def validate_input(self, selection, v_x, v_y, v_z, n_x, n_y, n_z):
         """Check that the input is valid.
 
         Some values may not need to be checked because
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least 1 element must be selected"))
+            _err(translate("draft", "At least 1 element must be selected"))
             return False
 
         if n_x < 1 or n_y < 1 or n_z < 1:
-            _err(translate("draft","Number of elements must be at least 1"))
+            _err(translate("draft", "Number of elements must be at least 1"))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(translate("draft","Selection is not suitable for array"))
-            _err(translate("draft","Object:") + " {0} ({1})".format(obj.Label, obj.TypeId))
+            _err(translate("draft", "Selection is not suitable for array"))
+            _err(translate("draft", "Object:") + " {0} ({1})".format(obj.Label, obj.TypeId))
             return False
 
         # we should not ever do this but maybe a sanity check here?
         if self.linear_mode:
-            if not (self.form.radiobutton_x_axis.isChecked() or
-                    self.form.radiobutton_y_axis.isChecked() or
-                    self.form.radiobutton_z_axis.isChecked()):
-                _err(translate("draft","In linear mode, at least 1 axis must be selected"))
+            if not (
+                self.form.radiobutton_x_axis.isChecked()
+                or self.form.radiobutton_y_axis.isChecked()
+                or self.form.radiobutton_z_axis.isChecked()
+            ):
+                _err(translate("draft", "In linear mode, at least 1 axis must be selected"))
                 return False
 
         # The other arguments are not tested but they should be present.
@@ -293,44 +294,48 @@ class TaskPanelOrthoArray:
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
-        Gui.addModule('Draft')
+        Gui.addModule("Draft")
 
-        _cmd_list = ["_obj_ = " + _cmd,
-                     "_obj_.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(_obj_)",
-                     "App.ActiveDocument.recompute()"]
+        _cmd_list = [
+            "_obj_ = " + _cmd,
+            "_obj_.Fuse = " + str(self.fuse),
+            "Draft.autogroup(_obj_)",
+            "App.ActiveDocument.recompute()",
+        ]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Create Orthogonal Array"), _cmd_list)
+        self.source_command.commit(translate("draft", "Create Orthogonal Array"), _cmd_list)
 
     def get_numbers(self):
         """Get the number of elements from the widgets."""
-        return (self.form.spinbox_n_X.value(),
-                self.form.spinbox_n_Y.value(),
-                self.form.spinbox_n_Z.value())
+        return (
+            self.form.spinbox_n_X.value(),
+            self.form.spinbox_n_Y.value(),
+            self.form.spinbox_n_Z.value(),
+        )
 
     def get_intervals(self):
         """Get the interval vectors from the widgets."""
         v_x_x_str = self.form.input_X_x.text()
         v_x_y_str = self.form.input_X_y.text()
         v_x_z_str = self.form.input_X_z.text()
-        v_x = App.Vector(U.Quantity(v_x_x_str).Value,
-                         U.Quantity(v_x_y_str).Value,
-                         U.Quantity(v_x_z_str).Value)
+        v_x = App.Vector(
+            U.Quantity(v_x_x_str).Value, U.Quantity(v_x_y_str).Value, U.Quantity(v_x_z_str).Value
+        )
 
         v_y_x_str = self.form.input_Y_x.text()
         v_y_y_str = self.form.input_Y_y.text()
         v_y_z_str = self.form.input_Y_z.text()
-        v_y = App.Vector(U.Quantity(v_y_x_str).Value,
-                         U.Quantity(v_y_y_str).Value,
-                         U.Quantity(v_y_z_str).Value)
+        v_y = App.Vector(
+            U.Quantity(v_y_x_str).Value, U.Quantity(v_y_y_str).Value, U.Quantity(v_y_z_str).Value
+        )
 
         v_z_x_str = self.form.input_Z_x.text()
         v_z_y_str = self.form.input_Z_y.text()
         v_z_z_str = self.form.input_Z_z.text()
-        v_z = App.Vector(U.Quantity(v_z_x_str).Value,
-                         U.Quantity(v_z_y_str).Value,
-                         U.Quantity(v_z_z_str).Value)
+        v_z = App.Vector(
+            U.Quantity(v_z_x_str).Value, U.Quantity(v_z_y_str).Value, U.Quantity(v_z_z_str).Value
+        )
         return v_x, v_y, v_z
 
     def reset_v(self, interval):
@@ -343,19 +348,19 @@ class TaskPanelOrthoArray:
             for that direction.
         """
         if interval == "X":
-            self.form.input_X_x.setProperty('rawValue', 100)
-            self.form.input_X_y.setProperty('rawValue', 0)
-            self.form.input_X_z.setProperty('rawValue', 0)
+            self.form.input_X_x.setProperty("rawValue", 100)
+            self.form.input_X_y.setProperty("rawValue", 0)
+            self.form.input_X_z.setProperty("rawValue", 0)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
         elif interval == "Y":
-            self.form.input_Y_x.setProperty('rawValue', 0)
-            self.form.input_Y_y.setProperty('rawValue', 100)
-            self.form.input_Y_z.setProperty('rawValue', 0)
+            self.form.input_Y_x.setProperty("rawValue", 0)
+            self.form.input_Y_y.setProperty("rawValue", 100)
+            self.form.input_Y_z.setProperty("rawValue", 0)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
         elif interval == "Z":
-            self.form.input_Z_x.setProperty('rawValue', 0)
-            self.form.input_Z_y.setProperty('rawValue', 0)
-            self.form.input_Z_z.setProperty('rawValue', 100)
+            self.form.input_Z_x.setProperty("rawValue", 0)
+            self.form.input_Z_y.setProperty("rawValue", 0)
+            self.form.input_Z_z.setProperty("rawValue", 100)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
 
     def print_fuse_state(self, fuse):
@@ -364,7 +369,7 @@ class TaskPanelOrthoArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Fuse:") + " {}".format(state))
+        _msg(translate("draft", "Fuse:") + " {}".format(state))
 
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
@@ -377,7 +382,7 @@ class TaskPanelOrthoArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Create link array:") + " {}".format(state))
+        _msg(translate("draft", "Create link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
@@ -393,23 +398,23 @@ class TaskPanelOrthoArray:
             # For example, it could take the shapes of all objects,
             # make a compound and then use it as input for the array function.
             sel_obj = self.selection[0]
-        _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
+        _msg(translate("draft", "Object:") + " {}".format(sel_obj.Label))
 
-        _msg(translate("draft","Number of X elements:") + " {}".format(self.n_x))
-        _msg(translate("draft","Interval X:")
-             + " ({0}, {1}, {2})".format(self.v_x.x,
-                                         self.v_x.y,
-                                         self.v_x.z))
-        _msg(translate("draft","Number of Y elements:") + " {}".format(self.n_y))
-        _msg(translate("draft","Interval Y:")
-             + " ({0}, {1}, {2})".format(self.v_y.x,
-                                         self.v_y.y,
-                                         self.v_y.z))
-        _msg(translate("draft","Number of Z elements:") + " {}".format(self.n_z))
-        _msg(translate("draft","Interval Z:")
-             + " ({0}, {1}, {2})".format(self.v_z.x,
-                                         self.v_z.y,
-                                         self.v_z.z))
+        _msg(translate("draft", "Number of X elements:") + " {}".format(self.n_x))
+        _msg(
+            translate("draft", "Interval X:")
+            + " ({0}, {1}, {2})".format(self.v_x.x, self.v_x.y, self.v_x.z)
+        )
+        _msg(translate("draft", "Number of Y elements:") + " {}".format(self.n_y))
+        _msg(
+            translate("draft", "Interval Y:")
+            + " ({0}, {1}, {2})".format(self.v_y.x, self.v_y.y, self.v_y.z)
+        )
+        _msg(translate("draft", "Number of Z elements:") + " {}".format(self.n_z))
+        _msg(
+            translate("draft", "Interval Z:")
+            + " ({0}, {1}, {2})".format(self.v_z.x, self.v_z.y, self.v_z.z)
+        )
         self.print_fuse_state(self.fuse)
         self.print_link_state(self.use_link)
 
@@ -421,7 +426,7 @@ class TaskPanelOrthoArray:
         """Toggle between Linear mode and Orthogonal mode."""
         self.linear_mode = self.form.button_linear_mode.isChecked()
         self.toggle_axis_radiobuttons(self.linear_mode)
-        params.set_param("LinearModeOn" , self.linear_mode, "Mod/Draft/OrthoArrayLinearMode")
+        params.set_param("LinearModeOn", self.linear_mode, "Mod/Draft/OrthoArrayLinearMode")
 
         if self.linear_mode:
             self.form.button_linear_mode.setText(translate("draft", "Switch to Ortho Mode"))
@@ -446,7 +451,7 @@ class TaskPanelOrthoArray:
                 case "Z":
                     title = translate("draft", "Z-Axis")
             self.form.group_linearmode.setTitle(title)
-        else: # ortho mode
+        else:  # ortho mode
             self.form.button_linear_mode.setText(translate("draft", "Switch to Linear Mode"))
 
             # For ortho mode we're showing back default groupboxes and we reparent everything
@@ -458,9 +463,11 @@ class TaskPanelOrthoArray:
 
     def toggle_axis_radiobuttons(self, show):
         """Show or hide the axis radio buttons."""
-        for radiobutton in [self.form.radiobutton_x_axis,
-                        self.form.radiobutton_y_axis,
-                        self.form.radiobutton_z_axis]:
+        for radiobutton in [
+            self.form.radiobutton_x_axis,
+            self.form.radiobutton_y_axis,
+            self.form.radiobutton_z_axis,
+        ]:
             radiobutton.setVisible(show)
 
     def set_active_axis(self, axis):
@@ -483,7 +490,6 @@ class TaskPanelOrthoArray:
                         title = translate("draft", "Z-Axis")
                 self.form.group_linearmode.setTitle(title)
 
-
     def update_axis_ui(self):
         """Update the UI to reflect the current axis selection."""
         # Make sure only one axis is selected
@@ -494,9 +500,9 @@ class TaskPanelOrthoArray:
     def _get_axis_widgets(self, axis):
         """Get all widgets for a specific axis."""
         return {
-            'spinbox_elements': getattr(self.form, f"spinbox_n_{axis}", None),
-            'spinbox_interval': getattr(self.form, f"input_{axis}_{axis.lower()}", None),
-            'button_reset': getattr(self.form, f"button_reset_{axis}", None)
+            "spinbox_elements": getattr(self.form, f"spinbox_n_{axis}", None),
+            "spinbox_interval": getattr(self.form, f"input_{axis}_{axis.lower()}", None),
+            "button_reset": getattr(self.form, f"button_reset_{axis}", None),
         }
 
     def _clear_linear_mode_layout(self):
@@ -525,8 +531,8 @@ class TaskPanelOrthoArray:
 
         # Add widgets to layout
         widget_pairs = [
-            (label_elements, widgets['spinbox_elements']),
-            (label_interval, widgets['spinbox_interval'])
+            (label_elements, widgets["spinbox_elements"]),
+            (label_interval, widgets["spinbox_interval"]),
         ]
 
         for row_index, (label, widget) in enumerate(widget_pairs):
@@ -536,8 +542,8 @@ class TaskPanelOrthoArray:
             group_layout.addWidget(widget, row_index, 1)
 
         # Add reset button spanning both columns
-        widgets['button_reset'].setParent(self.form.group_linearmode)
-        group_layout.addWidget(widgets['button_reset'], 2, 0, 1, 2)
+        widgets["button_reset"].setParent(self.form.group_linearmode)
+        group_layout.addWidget(widgets["button_reset"], 2, 0, 1, 2)
 
     def _restore_axis_to_ortho_layout(self, axis, row_index):
         """Restore widgets for a specific axis back to their original Ortho layout positions."""
@@ -545,16 +551,16 @@ class TaskPanelOrthoArray:
 
         # Restore spinbox elements to grid layout
         grid_number_layout = self.form.findChild(QtWidgets.QGridLayout, "grid_number")
-        grid_number_layout.addWidget(widgets['spinbox_elements'], row_index, 1)
+        grid_number_layout.addWidget(widgets["spinbox_elements"], row_index, 1)
 
         # Restore interval input to its axis-specific inner grid layout
         inner_grid_layout = self.form.findChild(QtWidgets.QGridLayout, f"grid_{axis}")
-        inner_grid_layout.addWidget(widgets['spinbox_interval'], row_index, 1)
+        inner_grid_layout.addWidget(widgets["spinbox_interval"], row_index, 1)
 
         # Restore reset button to its axis group
         group_box = self.form.findChild(QtWidgets.QGroupBox, f"group_{axis}")
         group_axis_layout = group_box.layout()
-        group_axis_layout.addWidget(widgets['button_reset'], 1, 0)
+        group_axis_layout.addWidget(widgets["button_reset"], 1, 0)
 
     def _setup_ortho_mode_layout(self):
         """Restore all widgets back to their original Ortho mode layout positions."""
@@ -591,5 +597,6 @@ class TaskPanelOrthoArray:
             Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
 
 ## @}

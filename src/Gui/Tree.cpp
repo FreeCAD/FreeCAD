@@ -579,11 +579,6 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::DocumentObject* obj = item->object()->getObject();
     auto& prop = index.column() ? obj->Label2 : obj->Label;
 
-    std::ostringstream str;
-    str << "Change " << obj->getNameInDocument() << '.' << prop.getName();
-    App::GetApplication().setActiveTransaction(str.str().c_str());
-    FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
-
     DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
         DynamicQLineEdit *le = new DynamicQLineEdit(parent);
@@ -4064,6 +4059,8 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
     // during item creation or deletion
     bool lock = blockSelection(true);
     bool needUpdate = false;
+    QTreeWidgetItem* newFocusItem = nullptr;
+    bool hadFocus = (QApplication::focusWidget() == this);
 
     for (const auto& data : itEntry->second) {
         DocumentItem* docItem = data->docItem;
@@ -4078,8 +4075,25 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
         for (auto cit = items.begin(), citNext = cit; cit != items.end(); cit = citNext) {
             ++citNext;
-            (*cit)->myOwner = nullptr;
-            delete* cit;
+            DocumentObjectItem* itemToDelete = *cit;
+
+            // get next item based on currently deleted item to select it
+            // as the next one
+            if (currentItem() == itemToDelete && !newFocusItem) {
+                QTreeWidgetItem* parent = itemToDelete->parent();
+                int index = parent->indexOfChild(itemToDelete);
+                if (index > 0) {
+                    newFocusItem = parent->child(index - 1);
+                } else if (parent->childCount() > 1) {
+                    newFocusItem = parent->child(index + 1);
+                } else {
+                    // no siblings, move to parent
+                    newFocusItem = parent;
+                }
+            }
+
+            itemToDelete->myOwner = nullptr;
+            delete itemToDelete;
         }
 
         // Check for any child of the deleted object that is not in the tree, and put it
@@ -4109,6 +4123,20 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     // Restore signal state
     blockSelection(lock);
+
+    // restore focus to the appropriate item after deletion
+    if (newFocusItem) {
+        setCurrentItem(newFocusItem);
+        newFocusItem->setSelected(true);
+    }
+
+    // restore focus to the tree widget if it had focus before deletion
+    if (hadFocus) {
+        QTimer::singleShot(0, this, [this]() {
+            setFocus(Qt::OtherFocusReason);
+            activateWindow();
+        });
+    }
 
     if (needUpdate)
         _updateStatus();
@@ -5953,3 +5981,4 @@ void DocumentObjectItem::applyExpandedSnapshot(const std::vector<bool>& snapshot
 }
 
 #include "moc_Tree.cpp"
+

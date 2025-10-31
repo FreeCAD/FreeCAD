@@ -61,7 +61,7 @@ def heal(objlist=None, delete=True, reparent=True):
     else:
         print("Manual mode: Force-healing selected objects…")
 
-    if not isinstance(objlist,list):
+    if not isinstance(objlist, list):
         objlist = [objlist]
 
     dellist = []
@@ -70,34 +70,34 @@ def heal(objlist=None, delete=True, reparent=True):
     for obj in objlist:
         dtype = utils.get_type(obj)
         ftype = obj.TypeId
-        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
+        if ftype in ["Part::FeaturePython", "App::FeaturePython", "Part::Part2DObjectPython"]:
             proxy = obj.Proxy
-            if hasattr(obj,"ViewObject"):
-                if hasattr(obj.ViewObject,"Proxy"):
+            if hasattr(obj, "ViewObject"):
+                if hasattr(obj.ViewObject, "Proxy"):
                     proxy = obj.ViewObject.Proxy
-            if (proxy == 1) or (dtype in ["Unknown","Part"]) or (not auto):
+            if (proxy == 1) or (dtype in ["Unknown", "Part"]) or (not auto):
                 got = True
                 dellist.append(obj.Name)
                 props = obj.PropertiesList
                 if ("Dimline" in props) and ("Start" in props):
                     print("Healing " + obj.Name + " of type Dimension")
-                    nobj = make_copy(obj,force="Dimension",reparent=reparent)
+                    nobj = make_copy(obj, force="Dimension", reparent=reparent)
                 elif ("Height" in props) and ("Length" in props):
                     print("Healing " + obj.Name + " of type Rectangle")
-                    nobj = make_copy(obj,force="Rectangle",reparent=reparent)
+                    nobj = make_copy(obj, force="Rectangle", reparent=reparent)
                 elif ("Points" in props) and ("Closed" in props):
                     if "BSpline" in obj.Name:
                         print("Healing " + obj.Name + " of type BSpline")
-                        nobj = make_copy(obj,force="BSpline",reparent=reparent)
+                        nobj = make_copy(obj, force="BSpline", reparent=reparent)
                     else:
                         print("Healing " + obj.Name + " of type Wire")
-                        nobj = make_copy(obj,force="Wire",reparent=reparent)
+                        nobj = make_copy(obj, force="Wire", reparent=reparent)
                 elif ("Radius" in props) and ("FirstAngle" in props):
                     print("Healing " + obj.Name + " of type Circle")
-                    nobj = make_copy(obj,force="Circle",reparent=reparent)
+                    nobj = make_copy(obj, force="Circle", reparent=reparent)
                 elif ("DrawMode" in props) and ("FacesNumber" in props):
                     print("Healing " + obj.Name + " of type Polygon")
-                    nobj = make_copy(obj,force="Polygon",reparent=reparent)
+                    nobj = make_copy(obj, force="Polygon", reparent=reparent)
                 else:
                     dellist.pop()
                     print("Object " + obj.Name + " is not healable")
@@ -105,10 +105,11 @@ def heal(objlist=None, delete=True, reparent=True):
     if not got:
         print("No object seems to need healing")
     else:
-        print("Healed ",len(dellist)," objects")
+        print("Healed ", len(dellist), " objects")
 
     if dellist and delete:
         for n in dellist:
             App.ActiveDocument.removeObject(n)
+
 
 ## @}

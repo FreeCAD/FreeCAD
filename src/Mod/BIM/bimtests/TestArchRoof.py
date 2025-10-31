@@ -32,31 +32,31 @@ import FreeCAD as App
 from bimtests import TestArchBase
 from draftutils.messages import _msg
 
+
 class TestArchRoof(TestArchBase.TestArchBase):
 
     def testRoof(self):
         operation = "Checking Arch Roof..."
         self.printTestMessage(operation)
 
-        r = Draft.makeRectangle(length=2,height=-1)
-        r.recompute() # required before calling Arch.makeRoof
+        r = Draft.makeRectangle(length=2, height=-1)
+        r.recompute()  # required before calling Arch.makeRoof
         ro = Arch.makeRoof(r)
-        self.assertTrue(ro,"Arch Roof failed")
+        self.assertTrue(ro, "Arch Roof failed")
 
     def testRoof81Permutations(self):
-        """Create 81 roofs using a range of arguments.
-        """
+        """Create 81 roofs using a range of arguments."""
         operation = "Arch Roof testRoof81Permutations"
         self.printTestMessage(operation)
 
-        pts = [App.Vector(   0,    0, 0),
-               App.Vector(2000,    0, 0),
-               App.Vector(4000,    0, 0),
-               App.Vector(4000, 4000, 0),
-               App.Vector(   0, 4000, 0)]
-        ptsMod = [App.Vector(2000,     0, 0),
-                  App.Vector(2000, -1000, 0),
-                  App.Vector(2000,  1000, 0)]
+        pts = [
+            App.Vector(0, 0, 0),
+            App.Vector(2000, 0, 0),
+            App.Vector(4000, 0, 0),
+            App.Vector(4000, 4000, 0),
+            App.Vector(0, 4000, 0),
+        ]
+        ptsMod = [App.Vector(2000, 0, 0), App.Vector(2000, -1000, 0), App.Vector(2000, 1000, 0)]
         angsMod = [[60, 60], [30, 60], [60, 30]]
         runsMod = [[500, 500], [400, 500], [500, 400]]
         overhangsMod = [[100, 100], [100, 200], [200, 100]]
@@ -64,24 +64,19 @@ class TestArchRoof(TestArchBase.TestArchBase):
         pla = App.Placement()
         for iY in range(9):
             for iX in range(9):
-                pts[1] = ptsMod[iY % 3] # to get different edge angles
+                pts[1] = ptsMod[iY % 3]  # to get different edge angles
                 angsLst = angsMod[iY // 3] + [90, 90, 90]
                 runsLst = runsMod[iX % 3] + [0, 0, 0]
-                overhangsLst = overhangsMod[iX // 3] +  [0, 0, 0]
+                overhangsLst = overhangsMod[iX // 3] + [0, 0, 0]
                 pla.Base = App.Vector(iX * delta, iY * delta, 0)
-                wire = Draft.makeWire(pts, closed = True)
+                wire = Draft.makeWire(pts, closed=True)
                 wire.MakeFace = False
                 wire.Placement = pla
-                wire.recompute() # required before calling Arch.makeRoof
-                roof = Arch.makeRoof(wire,
-                                     angles = angsLst,
-                                     run = runsLst,
-                                     overhang = overhangsLst)
+                wire.recompute()  # required before calling Arch.makeRoof
+                roof = Arch.makeRoof(wire, angles=angsLst, run=runsLst, overhang=overhangsLst)
                 roof.recompute()
-                self.assertFalse(roof.Shape.isNull(),
-                                 "'{}' failed".format(operation))
-                self.assertTrue(roof.Shape.isValid(),
-                                "'{}' failed".format(operation))
+                self.assertFalse(roof.Shape.isNull(), "'{}' failed".format(operation))
+                self.assertTrue(roof.Shape.isValid(), "'{}' failed".format(operation))
 
     def testRoofAllAngles90(self):
         """Create a roof with the angles of all segments set at 90 degrees.
@@ -90,16 +85,17 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Arch Roof testRoofAllAngles90"
         self.printTestMessage(operation)
 
-        pts = [App.Vector(   0,    0, 0),
-               App.Vector(2000,    0, 0),
-               App.Vector(2000, 2000, 0),
-               App.Vector(   0, 2000, 0)]
+        pts = [
+            App.Vector(0, 0, 0),
+            App.Vector(2000, 0, 0),
+            App.Vector(2000, 2000, 0),
+            App.Vector(0, 2000, 0),
+        ]
 
-        wire = Draft.makeWire(pts, closed = True)
+        wire = Draft.makeWire(pts, closed=True)
         wire.MakeFace = False
-        wire.recompute() # required before calling Arch.makeRoof
-        roof = Arch.makeRoof(wire,
-                             angles = [90, 90, 90, 90])
+        wire.recompute()  # required before calling Arch.makeRoof
+        roof = Arch.makeRoof(wire, angles=[90, 90, 90, 90])
         roof.recompute()
         self.assertFalse(roof.Shape.isNull(), "'{}' failed".format(operation))
         self.assertTrue(roof.Shape.isValid(), "'{}' failed".format(operation))
@@ -111,16 +107,16 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Arch Roof testRoofApex"
         self.printTestMessage(operation)
 
-        rec = Draft.makeRectangle(length = 4000,
-                                  height = 3000,
-                                  face = False)
-        rec.recompute() # required before calling Arch.makeRoof
-        roof = Arch.makeRoof(rec,
-                             angles = [30, 40, 50, 60],
-                             run = [2000, 0, 2000, 0],
-                             idrel = [-1, 0, -1, 0],
-                             thickness = [50.0],
-                             overhang = [100.0])
+        rec = Draft.makeRectangle(length=4000, height=3000, face=False)
+        rec.recompute()  # required before calling Arch.makeRoof
+        roof = Arch.makeRoof(
+            rec,
+            angles=[30, 40, 50, 60],
+            run=[2000, 0, 2000, 0],
+            idrel=[-1, 0, -1, 0],
+            thickness=[50.0],
+            overhang=[100.0],
+        )
         roof.recompute()
         self.assertFalse(roof.Shape.isNull(), "'{}' failed".format(operation))
         self.assertTrue(roof.Shape.isValid(), "'{}' failed".format(operation))
@@ -132,17 +128,18 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Arch Roof testRoofSingleEavePoint"
         self.printTestMessage(operation)
 
-        pts = [App.Vector(    0,    0, 0),
-               App.Vector( 2000,    0, 0),
-               App.Vector( 4000, 2000, 0),
-               App.Vector(-2000, 2000, 0)]
-        wire = Draft.makeWire(pts, closed = True)
+        pts = [
+            App.Vector(0, 0, 0),
+            App.Vector(2000, 0, 0),
+            App.Vector(4000, 2000, 0),
+            App.Vector(-2000, 2000, 0),
+        ]
+        wire = Draft.makeWire(pts, closed=True)
         wire.MakeFace = False
-        wire.recompute() # required before calling Arch.makeRoof
-        roof = Arch.makeRoof(wire,
-                             angles = [45, 90, 90, 90],
-                             run = [1000, 0, 0, 0],
-                             overhang = [1000, 0, 0, 0])
+        wire.recompute()  # required before calling Arch.makeRoof
+        roof = Arch.makeRoof(
+            wire, angles=[45, 90, 90, 90], run=[1000, 0, 0, 0], overhang=[1000, 0, 0, 0]
+        )
         roof.recompute()
         self.assertFalse(roof.Shape.isNull(), "'{}' failed".format(operation))
         self.assertTrue(roof.Shape.isValid(), "'{}' failed".format(operation))

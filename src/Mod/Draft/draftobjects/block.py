@@ -39,9 +39,8 @@ class Block(DraftObject):
     def __init__(self, obj):
         super().__init__(obj, "Block")
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The components of this block")
-        obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The components of this block")
+        obj.addProperty("App::PropertyLinkList", "Components", "Draft", _tip, locked=True)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -56,6 +55,7 @@ class Block(DraftObject):
             return
 
         import Part
+
         plm = obj.Placement
         shps = []
         for c in obj.Components:

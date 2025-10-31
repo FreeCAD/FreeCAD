@@ -51,9 +51,13 @@ class OrthoArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Array",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Creates copies of the selected object in an orthogonal pattern")}
+        return {
+            "Pixmap": "Draft_Array",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Array"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_OrthoArray", "Creates copies of the selected object in an orthogonal pattern"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called.
@@ -67,8 +71,7 @@ class OrthoArray(gui_base.GuiCommandBase):
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
         # self.callback_move = \
         #     self.view.addEventCallbackPivy(self.location, self.move)
-        self.callback_click = \
-            self.view.addEventCallbackPivy(self.mouse_event, self.click)
+        self.callback_click = self.view.addEventCallbackPivy(self.mouse_event, self.click)
 
         self.ui = task_orthoarray.TaskPanelOrthoArray()
         # The calling class (this one) is saved in the object
@@ -86,8 +89,10 @@ class OrthoArray(gui_base.GuiCommandBase):
         """
         if event_cb:
             event = event_cb.getEvent()
-            if (event.getState() != coin.SoMouseButtonEvent.DOWN
-                    or event.getButton() != coin.SoMouseButtonEvent.BUTTON1):
+            if (
+                event.getState() != coin.SoMouseButtonEvent.DOWN
+                or event.getButton() != coin.SoMouseButtonEvent.BUTTON1
+            ):
                 return
         if self.ui and self.point:
             # The accept function of the interface
@@ -113,6 +118,6 @@ class OrthoArray(gui_base.GuiCommandBase):
         self.finish()
 
 
-Gui.addCommand('Draft_OrthoArray', OrthoArray())
+Gui.addCommand("Draft_OrthoArray", OrthoArray())
 
 ## @}

@@ -177,10 +177,18 @@ void Boolean::updatePreviewShape()
     }
 
     if (strcmp(Type.getValueAsString(), "Fuse") == 0) {
+        // if there are no other shapes to fuse just return itself
+        if (Group.getValues().empty()) {
+            PreviewShape.setValue(Shape.getShape());
+            return;
+        }
+
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {
-            shapes.push_back(getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform));
+            auto shape = getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+            shape.setPlacement(shape.getPlacement().inverse() * globalPlacement());
+            shapes.push_back(shape);
         }
 
         TopoShape result;

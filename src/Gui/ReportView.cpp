@@ -463,8 +463,19 @@ ReportOutput::~ReportOutput()
 
 void ReportOutput::restoreFont()
 {
-    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    setFont(serifFont);
+    QFont font;
+    auto hPrefGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Editor");
+    int fontSize = hPrefGrp->GetInt("FontSize", 10);
+    auto serifFont = hPrefGrp->GetASCII("Font");
+    if (serifFont.empty()) {
+        font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        font.setPointSize(fontSize);
+    }
+    else {
+        font = QFont (QString::fromStdString(serifFont), fontSize);
+    }
+    setFont(font);
 }
 
 void ReportOutput::sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
@@ -853,8 +864,15 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = rclGrp.GetInt("FontSize", 10);
-        QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-        font.setPointSize(fontSize);
+        QFont font;
+        auto fontName = rclGrp.GetASCII("Font");
+        if (fontName.empty()) {
+            font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+            font.setPointSize(fontSize);
+        }
+        else {
+            font = QFont (QString::fromStdString(fontName), fontSize);
+        }
         setFont(font);
         QFontMetrics metric(font);
         int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));

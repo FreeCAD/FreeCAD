@@ -51,8 +51,7 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",
-                                       "ShapeString")
+    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "ShapeString")
     ShapeString(obj)
     obj.String = String
     obj.FontFile = FontFile
@@ -63,7 +62,8 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
         ViewProviderShapeString(obj.ViewObject)
         gui_utils.format_object(obj)
         obrep = obj.ViewObject
-        if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1 # hide the segment end points
+        if "PointSize" in obrep.PropertiesList:
+            obrep.PointSize = 1  # hide the segment end points
         gui_utils.select(obj)
     obj.recompute()
     return obj

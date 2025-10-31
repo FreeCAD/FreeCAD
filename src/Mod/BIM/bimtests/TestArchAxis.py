@@ -26,6 +26,7 @@ import FreeCAD as App
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchAxis(TestArchBase.TestArchBase):
 
     def test_make_axis_default(self):

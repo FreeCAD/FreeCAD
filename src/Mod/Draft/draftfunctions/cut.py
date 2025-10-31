@@ -54,7 +54,7 @@ def cut(object1, object2):
         If there is a problem and the new object can't be created.
     """
     if not App.activeDocument():
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return
 
     obj = App.activeDocument().addObject("Part::Cut", "Cut")
@@ -68,5 +68,6 @@ def cut(object1, object2):
         object2.ViewObject.Visibility = False
 
     return obj
+
 
 ## @}

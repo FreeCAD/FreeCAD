@@ -65,9 +65,7 @@ class BIM_Text:
             pagescale = page.Scale
             if not pagescale:
                 pagescale = 1
-            anno = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawViewAnnotation", "Annotation"
-            )
+            anno = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewAnnotation", "Annotation")
             anno.Text = self.text
             page.addView(anno)
             param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")

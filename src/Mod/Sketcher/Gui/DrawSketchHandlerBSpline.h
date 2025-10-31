@@ -794,6 +794,9 @@ private:
         if (onlyeditoutline && (points.empty() || len >= Precision::Confusion())) {
             bsplinePoints3D.emplace_back(prevCursorPosition.x, prevCursorPosition.y, 0.0);
         }
+        if (bsplinePoints3D.size() < 2) {
+            return;
+        }
 
         if (constructionMethod() == ConstructionMethod::ControlPoints) {
             size_t vSize = bsplinePoints3D.size();

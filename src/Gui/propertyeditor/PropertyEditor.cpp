@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -672,6 +673,11 @@ void Gui::PropertyEditor::PropertyEditor::drawRow(QPainter* painter,
     QTreeView::drawRow(painter, options, index);
 }
 
+void PropertyEditor::blockCollapseAll()
+{
+    blockCollapse = true;
+}
+
 void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDocument)
 {
     checkDocument = _checkDocument;
@@ -723,7 +729,10 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
         expandAll();
         break;
     case ExpansionMode::AutoCollapse:
-        collapseAll();
+        if (!blockCollapse) {
+            collapseAll();
+        }
+        blockCollapse = false;
         break;
     }
 }
@@ -734,6 +743,7 @@ void PropertyEditor::updateProperty(const App::Property& prop)
     if (!committing) {
         propertyModel->updateProperty(prop);
     }
+    blockCollapseAll();
 }
 
 void PropertyEditor::setEditorMode(const QModelIndex& parent, int start, int end)
@@ -750,10 +760,9 @@ void PropertyEditor::setEditorMode(const QModelIndex& parent, int start, int end
 
 void PropertyEditor::removeProperty(const App::Property& prop)
 {
-    for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
+    for (auto it = propList.begin(); it != propList.end(); ++it) {
         // find the given property in the list and remove it if it's there
-        std::vector<App::Property*>::iterator pos =
-            std::ranges::find(it->second, &prop);
+        auto pos = std::ranges::find(it->second, &prop);
         if (pos != it->second.end()) {
             it->second.erase(pos);
             // if the last property of this name is removed then also remove the whole group
@@ -764,6 +773,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
             break;
         }
     }
+    blockCollapseAll();
 }
 
 void PropertyEditor::renameProperty(const App::Property& prop)
@@ -776,6 +786,7 @@ void PropertyEditor::renameProperty(const App::Property& prop)
             break;
         }
     }
+    blockCollapseAll();
 }
 
 enum MenuAction

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from Base.Metadata import class_declarations, constmethod, export
 from Base.Persistence import Persistence
 from Base.Placement import Placement

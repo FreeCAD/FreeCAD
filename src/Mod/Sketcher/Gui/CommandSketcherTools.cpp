@@ -64,6 +64,7 @@
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
 #include "DrawSketchHandlerSymmetry.h"
+#include "SnapManager.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
@@ -1211,9 +1212,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -1789,9 +1791,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 

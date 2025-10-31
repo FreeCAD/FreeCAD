@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from Metadata import export, constmethod, class_declarations
 from PyObjectBase import PyObjectBase
 from Vector import Vector

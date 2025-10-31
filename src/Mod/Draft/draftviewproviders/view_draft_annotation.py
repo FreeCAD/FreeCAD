@@ -76,34 +76,34 @@ class ViewProviderDraftAnnotation(object):
     def set_annotation_properties(self, vobj, properties):
         """Set annotation properties only if they don't already exist."""
         if "ScaleMultiplier" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "General scaling factor that affects "
-                                     "the annotation consistently\n"
-                                     "because it scales the text, "
-                                     "and the line decorations, if any,\n"
-                                     "in the same proportion.")
-            vobj.addProperty("App::PropertyFloat",
-                             "ScaleMultiplier",
-                             "Annotation",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "General scaling factor that affects "
+                "the annotation consistently\n"
+                "because it scales the text, "
+                "and the line decorations, if any,\n"
+                "in the same proportion.",
+            )
+            vobj.addProperty(
+                "App::PropertyFloat", "ScaleMultiplier", "Annotation", _tip, locked=True
+            )
             vobj.ScaleMultiplier = params.get_param("DefaultAnnoScaleMultiplier")
 
         if "AnnotationStyle" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Annotation style to apply "
-                                     "to this object.\n"
-                                     "When using a saved style "
-                                     "some of the view properties "
-                                     "will become read-only;\n"
-                                     "they will only be editable by changing "
-                                     "the style through "
-                                     "the 'Annotation style editor' tool.")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "AnnotationStyle",
-                             "Annotation",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Annotation style to apply "
+                "to this object.\n"
+                "When using a saved style "
+                "some of the view properties "
+                "will become read-only;\n"
+                "they will only be editable by changing "
+                "the style through "
+                "the 'Annotation style editor' tool.",
+            )
+            vobj.addProperty(
+                "App::PropertyEnumeration", "AnnotationStyle", "Annotation", _tip, locked=True
+            )
             styles = []
             for key in vobj.Object.Document.Meta.keys():
                 if key.startswith("Draft_Style_"):
@@ -114,33 +114,18 @@ class ViewProviderDraftAnnotation(object):
     def set_text_properties(self, vobj, properties):
         """Set text properties only if they don't already exist."""
         if "FontName" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Font name")
-            vobj.addProperty("App::PropertyFont",
-                             "FontName",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Font name")
+            vobj.addProperty("App::PropertyFont", "FontName", "Text", _tip, locked=True)
             vobj.FontName = params.get_param("textfont")
 
         if "FontSize" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Font size")
-            vobj.addProperty("App::PropertyLength",
-                             "FontSize",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Font size")
+            vobj.addProperty("App::PropertyLength", "FontSize", "Text", _tip, locked=True)
             vobj.FontSize = params.get_param("textheight")
 
         if "TextColor" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Text color")
-            vobj.addProperty("App::PropertyColor",
-                             "TextColor",
-                             "Text",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Text color")
+            vobj.addProperty("App::PropertyColor", "TextColor", "Text", _tip, locked=True)
             vobj.TextColor = params.get_param("DefaultTextColor") | 0x000000FF
 
     def set_units_properties(self, vobj, properties):
@@ -152,65 +137,43 @@ class ViewProviderDraftAnnotation(object):
             return
 
         if "ArrowSizeStart" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Arrow size")
-            vobj.addProperty("App::PropertyLength",
-                             "ArrowSizeStart",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
+            vobj.addProperty("App::PropertyLength", "ArrowSizeStart", "Graphics", _tip, locked=True)
             vobj.ArrowSizeStart = params.get_param("arrowsizestart")
 
         if "ArrowTypeStart" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Arrow type")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowTypeStart",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
+            vobj.addProperty(
+                "App::PropertyEnumeration", "ArrowTypeStart", "Graphics", _tip, locked=True
+            )
             vobj.ArrowTypeStart = utils.ARROW_TYPES
             vobj.ArrowTypeStart = "None"
 
         if vobj.Object.Proxy.Type != "Label":
 
             if "ArrowSizeEnd" not in properties:
-                _tip = QT_TRANSLATE_NOOP("App::Property",
-                                         "Arrow size")
-                vobj.addProperty("App::PropertyLength",
-                                 "ArrowSizeEnd",
-                                 "Graphics",
-                                 _tip,
-                                 locked=True)
+                _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
+                vobj.addProperty(
+                    "App::PropertyLength", "ArrowSizeEnd", "Graphics", _tip, locked=True
+                )
                 vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
 
             if "ArrowTypeEnd" not in properties:
-                _tip = QT_TRANSLATE_NOOP("App::Property",
-                                         "Arrow type")
-                vobj.addProperty("App::PropertyEnumeration",
-                                 "ArrowTypeEnd",
-                                 "Graphics",
-                                 _tip,
-                                 locked=True)
+                _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
+                vobj.addProperty(
+                    "App::PropertyEnumeration", "ArrowTypeEnd", "Graphics", _tip, locked=True
+                )
                 vobj.ArrowTypeEnd = utils.ARROW_TYPES
                 vobj.ArrowTypeEnd = "None"
 
         if "LineWidth" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line width")
-            vobj.addProperty("App::PropertyFloat",
-                             "LineWidth",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            vobj.addProperty("App::PropertyFloat", "LineWidth", "Graphics", _tip, locked=True)
             vobj.LineWidth = params.get_param("DefaultAnnoLineWidth")
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
-            vobj.addProperty("App::PropertyColor",
-                             "LineColor",
-                             "Graphics",
-                             _tip,
-                             locked=True)
+            vobj.addProperty("App::PropertyColor", "LineColor", "Graphics", _tip, locked=True)
             vobj.LineColor = params.get_param("DefaultAnnoLineColor") | 0x000000FF
 
     def dumps(self):
@@ -252,7 +215,7 @@ class ViewProviderDraftAnnotation(object):
                 for visprop in utils.get_default_annotation_style().keys():
                     if visprop in properties:
                         # make property writable
-                        vobj.setPropertyStatus(visprop, '-ReadOnly')
+                        vobj.setPropertyStatus(visprop, "-ReadOnly")
             else:
                 # set style
                 for key, value in meta.items():
@@ -284,7 +247,7 @@ class ViewProviderDraftAnnotation(object):
             return None
 
         if utils.get_type(vobj.Object) == "AngularDimension":
-            return False # Required, else edit mode is entered.
+            return False  # Required, else edit mode is entered.
 
         if not "Draft_Edit" in Gui.listCommands():
             self.wb_before_edit = Gui.activeWorkbench()
@@ -315,11 +278,8 @@ class ViewProviderDraftAnnotation(object):
         if utils.get_type(self.Object) in ("AngularDimension", "Label"):
             return
 
-        action_edit = QtGui.QAction(translate("draft", "Edit"),
-                                    menu)
-        QtCore.QObject.connect(action_edit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        action_edit = QtGui.QAction(translate("draft", "Edit"), menu)
+        QtCore.QObject.connect(action_edit, QtCore.SIGNAL("triggered()"), self.edit)
         menu.addAction(action_edit)
 
     def edit(self):
@@ -328,5 +288,6 @@ class ViewProviderDraftAnnotation(object):
     def getIcon(self):
         """Return the path to the icon used by the view provider."""
         return ":/icons/Draft_Text.svg"
+
 
 ## @}

@@ -38,8 +38,15 @@ from draftutils import utils
 from draftutils.translate import translate
 
 
-def make_sketch(objects_list, autoconstraints=False, addTo=None,
-                delete=False, name="Sketch", radiusPrecision=-1, tol=1e-3):
+def make_sketch(
+    objects_list,
+    autoconstraints=False,
+    addTo=None,
+    delete=False,
+    name="Sketch",
+    radiusPrecision=-1,
+    tol=1e-3,
+):
     """make_sketch(objects_list, [autoconstraints], [addTo], [delete],
                    [name], [radiusPrecision], [tol])
 
@@ -82,22 +89,20 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     shape_norm_yes = list()
     shape_norm_no = list()
 
-    if not isinstance(objects_list,(list,tuple)):
+    if not isinstance(objects_list, (list, tuple)):
         objects_list = [objects_list]
 
     for obj in objects_list:
-        if isinstance(obj,Part.Shape):
+        if isinstance(obj, Part.Shape):
             shape = obj
         elif not hasattr(obj, "Shape"):
-            App.Console.PrintError(translate("draft",
-                                   "No shape found") + "\n")
+            App.Console.PrintError(translate("draft", "No shape found") + "\n")
             return None
         else:
             shape = obj.Shape
 
         if not DraftGeomUtils.is_planar(shape, tol):
-            App.Console.PrintError(translate("draft",
-                                   "All shapes must be planar") + "\n")
+            App.Console.PrintError(translate("draft", "All shapes must be planar") + "\n")
             return None
 
         if DraftGeomUtils.get_normal(shape, tol):
@@ -105,15 +110,13 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         else:
             shape_norm_no.append(shape)
 
-
     shapes_list = shape_norm_yes + shape_norm_no
 
     # test if all shapes are coplanar
     if len(shape_norm_yes) >= 1:
         for shape in shapes_list[1:]:
             if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
-                App.Console.PrintError(translate("draft",
-                                       "All shapes must be coplanar") + "\n")
+                App.Console.PrintError(translate("draft", "All shapes must be coplanar") + "\n")
                 return None
         # define sketch normal
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
@@ -129,8 +132,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
                 normal = App.Vector(0, 0, 1)
             else:
                 if not DraftGeomUtils.is_planar(poly, tol):
-                    App.Console.PrintError(translate("draft",
-                                           "All shapes must be coplanar") + "\n")
+                    App.Console.PrintError(translate("draft", "All shapes must be coplanar") + "\n")
                     return None
                 normal = DraftGeomUtils.get_shape_normal(poly)
         else:
@@ -148,24 +150,22 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
     def addRadiusConstraint(edge):
         try:
-            if radiusPrecision<0:
+            if radiusPrecision < 0:
                 return
-            if radiusPrecision==0:
-                constraints.append(Constraint("Radius",
-                        nobj.GeometryCount-1, edge.Curve.Radius))
+            if radiusPrecision == 0:
+                constraints.append(Constraint("Radius", nobj.GeometryCount - 1, edge.Curve.Radius))
                 return
-            r = round(edge.Curve.Radius,radiusPrecision)
-            constraints.append(Constraint("Equal",
-                    radiuses[r], nobj.GeometryCount-1))
+            r = round(edge.Curve.Radius, radiusPrecision)
+            constraints.append(Constraint("Equal", radiuses[r], nobj.GeometryCount - 1))
         except KeyError:
-            radiuses[r] = nobj.GeometryCount-1
-            constraints.append(Constraint("Radius", nobj.GeometryCount-1, r))
+            radiuses[r] = nobj.GeometryCount - 1
+            constraints.append(Constraint("Radius", nobj.GeometryCount - 1, r))
         except AttributeError:
             pass
 
     def convertBezier(edge):
         if DraftGeomUtils.geomType(edge) == "BezierCurve":
-            return(edge.Curve.toBSpline(edge.FirstParameter,edge.LastParameter).toShape())
+            return edge.Curve.toBSpline(edge.FirstParameter, edge.LastParameter).toShape()
         else:
             return edge
 
@@ -181,7 +181,9 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
     point = shapes_list[0].Vertexes[0].Point
     base = App.Vector(normal)
-    base.Length = point.dot(base.normalize()) # See https://forum.freecad.org/viewtopic.php?f=22&t=69304#p601149
+    base.Length = point.dot(
+        base.normalize()
+    )  # See https://forum.freecad.org/viewtopic.php?f=22&t=69304#p601149
 
     nobj.Placement = App.Placement(base, rotation)
 
@@ -204,18 +206,23 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
             shape = obj if tp == "Shape" else obj.Shape
             for e in shape.Edges:
                 newedge = convertBezier(e)
-                nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                    newedge, normal, make_arc=True))
+                nobj.addGeometry(DraftGeomUtils.orientEdge(newedge, normal, make_arc=True))
                 addRadiusConstraint(newedge)
             ok = True
 
         if ok and delete:
+
             def delObj(obj):
                 if obj.InList:
-                    App.Console.PrintWarning(translate("draft",
-                        "Cannot delete object {} with dependency".format(obj.Label)) + "\n")
+                    App.Console.PrintWarning(
+                        translate(
+                            "draft", "Cannot delete object {} with dependency".format(obj.Label)
+                        )
+                        + "\n"
+                    )
                 else:
                     obj.Document.removeObject(obj.Name)
+
             try:
                 if delete == "all":
                     objs = [obj]
@@ -226,8 +233,10 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
                 else:
                     delObj(obj)
             except Exception as ex:
-                App.Console.PrintWarning(translate("draft",
-                    "Failed to delete object {}: {}".format(obj.Label, ex)) + "\n")
+                App.Console.PrintWarning(
+                    translate("draft", "Failed to delete object {}: {}".format(obj.Label, ex))
+                    + "\n"
+                )
 
     nobj.addConstraint(constraints)
     if autoconstraints:

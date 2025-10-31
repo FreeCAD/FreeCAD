@@ -48,6 +48,30 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="hLayoutAngle">
+     <item>
+      <widget class="QLabel" name="angleLabel">
+       <property name="text">
+        <string>Angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="angleSpinbox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutDistance">
      <item>
       <widget class="QLabel" name="distanceLabel">
@@ -71,7 +95,7 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutDistance2">
      <item>
       <widget class="QLabel" name="distanceLabel2">
@@ -95,7 +119,7 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0" colspan="2">
+   <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayout">
      <item>
       <widget class="QLabel" name="offsetLabel">
@@ -119,7 +143,7 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutRotation">
      <item>
       <widget class="QLabel" name="rotationLabel">
@@ -143,7 +167,7 @@
      </item>
     </layout>
    </item>
-   <item row="6" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutOffset1">
      <item>
       <widget class="QLabel" name="offset1Label">
@@ -164,7 +188,7 @@
      </item>
     </layout>
    </item>
-   <item row="7" column="0" colspan="2">
+   <item row="8" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutOffset2">
      <item>
       <widget class="QLabel" name="offset2Label">
@@ -185,7 +209,7 @@
      </item>
     </layout>
    </item>
-   <item row="8" column="0" colspan="2">
+   <item row="9" column="0" colspan="2">
     <widget class="QCheckBox" name="advancedOffsetCheckbox">
      <property name="text">
       <string>Show advanced offsets</string>
@@ -195,7 +219,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="10" column="0">
     <widget class="QToolButton" name="PushButtonReverse">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -215,7 +239,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="11" column="0">
     <widget class="QGroupBox" name="groupBox_limits">
      <property name="title">
       <string>Limits</string>
@@ -328,7 +352,7 @@
      </layout>
     </widget>
    </item>
-   <item row="11" column="0">
+   <item row="12" column="0">
     <widget class="QCheckBox" name="reverseRotCheckbox">
      <property name="text">
       <string>Reverse rotation</string>

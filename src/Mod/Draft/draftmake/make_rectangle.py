@@ -65,7 +65,7 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    if isinstance(length,(list,tuple)) and (len(length) == 4):
+    if isinstance(length, (list, tuple)) and (len(length) == 4):
         verts = length
         xv = verts[1].sub(verts[0])
         yv = verts[3].sub(verts[0])
@@ -75,9 +75,9 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
         return make_rectangle(xv.Length, yv.Length, rp, face, support)
 
     if placement:
-        utils.type_check([(placement,App.Placement)], "make_rectangle")
+        utils.type_check([(placement, App.Placement)], "make_rectangle")
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
+    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Rectangle")
     Rectangle(obj)
 
     obj.Length = length
@@ -87,7 +87,8 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
     if face is not None:
         obj.MakeFace = face
 
-    if placement: obj.Placement = placement
+    if placement:
+        obj.Placement = placement
 
     if App.GuiUp:
         ViewProviderRectangle(obj.ViewObject)

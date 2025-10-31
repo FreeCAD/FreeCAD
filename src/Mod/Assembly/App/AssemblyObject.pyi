@@ -148,5 +148,28 @@ class AssemblyObject(Part):
         Args:
         fileName: The name of the file where the ASMT will be exported."""
         ...
+
+    @constmethod
+    def getDownstreamParts(
+        self, start_part: "App.DocumentObject", joint_to_ignore: "App.DocumentObject", /
+    ) -> list["App.DocumentObject"]:
+        """
+        Finds all parts connected to a start_part that are not connected to ground
+        when a specific joint is ignored.
+
+        getDownstreamParts(start_part, joint_to_ignore) -> list
+
+        This is used to find the entire rigid group of unconstrained components that
+        should be moved together during a pre-solve operation or a drag.
+
+        Args:
+            start_part: The App.DocumentObject to begin the search from.
+            joint_to_ignore: The App.DocumentObject (a joint) to temporarily
+                             suppress during the connectivity check.
+
+        Returns:
+            A list of App.DocumentObject instances representing the downstream parts.
+        """
+        ...
     Joints: Final[list]
     """A list of all joints this assembly has."""

@@ -49,10 +49,15 @@ class Arch_Wall:
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch Wall tool."""
 
-        return {'Pixmap'  : 'Arch_Wall',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
-                'Accel': "W, A",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
+        return {
+            "Pixmap": "Arch_Wall",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Wall", "Wall"),
+            "Accel": "W, A",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Wall",
+                "Creates a wall object from scratch or from a selected object (wire, face or solid)",
+            ),
+        }
 
     def IsActive(self):
 
@@ -73,7 +78,7 @@ class Arch_Wall:
         import draftguitools.gui_trackers as DraftTrackers
 
         self.doc = FreeCAD.ActiveDocument
-        self.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
+        self.Align = ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
         self.MultiMat = None
         self.Length = None
         self.lengthValue = 0
@@ -90,16 +95,26 @@ class Arch_Wall:
         if sel:
             # automatic mode
             if Draft.getType(sel[0].Object) != "Wall":
-                self.doc.openTransaction(translate("Arch","Create Wall"))
+                self.doc.openTransaction(translate("Arch", "Create Wall"))
                 FreeCADGui.addModule("Arch")
                 for selobj in sel:
-                    if Draft.getType(selobj.Object) == "Space" \
-                            and selobj.HasSubObjects \
-                            and "Face" in selobj.SubElementNames[0]:
+                    if (
+                        Draft.getType(selobj.Object) == "Space"
+                        and selobj.HasSubObjects
+                        and "Face" in selobj.SubElementNames[0]
+                    ):
                         idx = int(selobj.SubElementNames[0][4:])
-                        FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+",face="+str(idx)+")")
+                        FreeCADGui.doCommand(
+                            "obj = Arch.makeWall(FreeCAD.ActiveDocument."
+                            + selobj.Object.Name
+                            + ",face="
+                            + str(idx)
+                            + ")"
+                        )
                     else:
-                        FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+")")
+                        FreeCADGui.doCommand(
+                            "obj = Arch.makeWall(FreeCAD.ActiveDocument." + selobj.Object.Name + ")"
+                        )
                 FreeCADGui.addModule("Draft")
                 FreeCADGui.doCommand("Draft.autogroup(obj)")
                 self.doc.commitTransaction()
@@ -112,12 +127,14 @@ class Arch_Wall:
         self.points = []
         self.wp = WorkingPlane.get_working_plane()
         self.tracker = DraftTrackers.boxTracker()
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,
-                                    extradlg=self.taskbox(),
-                                    title=translate("Arch", "First point of wall"))
+        FreeCADGui.Snapper.getPoint(
+            callback=self.getPoint,
+            extradlg=self.taskbox(),
+            title=translate("Arch", "First point of wall"),
+        )
         FreeCADGui.draftToolBar.continueCmd.show()
 
-    def getPoint(self,point=None,obj=None):
+    def getPoint(self, point=None, obj=None):
         """Callback for clicks during interactive mode.
 
         When method _CommandWall.Activated() has entered the interactive mode,
@@ -134,6 +151,7 @@ class Arch_Wall:
         import Draft
         import ArchWall
         from draftutils import gui_utils
+
         if obj:
             if Draft.getType(obj) == "Wall":
                 if not obj in self.existing:
@@ -148,12 +166,14 @@ class Arch_Wall:
             self.tracker.width(self.Width)
             self.tracker.height(self.Height)
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[0],
-                                        callback=self.getPoint,
-                                        movecallback=self.update,
-                                        extradlg=self.taskbox(),
-                                        title=translate("Arch", "Next point"),
-                                        mode="line")
+            FreeCADGui.Snapper.getPoint(
+                last=self.points[0],
+                callback=self.getPoint,
+                movecallback=self.update,
+                extradlg=self.taskbox(),
+                title=translate("Arch", "Next point"),
+                mode="line",
+            )
 
         elif len(self.points) == 2:
             FreeCAD.activeDraftCommand = None
@@ -168,13 +188,17 @@ class Arch_Wall:
             wall = self.doc.Objects[-1]
             wallGrp = wall.getParentGroup()
 
-            if (self.JOIN_WALLS_SKETCHES or self.AUTOJOIN) \
-                    and self.existing \
-                    and self.existing[-1].getParentGroup() == wallGrp:
+            if (
+                (self.JOIN_WALLS_SKETCHES or self.AUTOJOIN)
+                and self.existing
+                and self.existing[-1].getParentGroup() == wallGrp
+            ):
                 oldWall = self.existing[-1]
                 if self.JOIN_WALLS_SKETCHES and ArchWall.areSameWallTypes([wall, oldWall]):
                     FreeCADGui.doCommand(
-                        "Arch.joinWalls([wall, doc." + oldWall.Name + "], "
+                        "Arch.joinWalls([wall, doc."
+                        + oldWall.Name
+                        + "], "
                         + "delete=True, deletebase=True)"
                     )
                 elif self.AUTOJOIN:
@@ -213,12 +237,11 @@ class Arch_Wall:
             # Use ArchSketch if SketchArch add-on is present
             try:
                 import ArchSketchObject
+
                 FreeCADGui.doCommand("import ArchSketchObject")
                 FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
             except:
-                FreeCADGui.doCommand(
-                    "base = doc.addObject(\"Sketcher::SketchObject\", \"WallTrace\")"
-                )
+                FreeCADGui.doCommand('base = doc.addObject("Sketcher::SketchObject", "WallTrace")')
             FreeCADGui.doCommand("base.Placement = wp.get_placement()")
             FreeCADGui.doCommand("base.addGeometry(trace)")
         else:
@@ -229,16 +252,23 @@ class Arch_Wall:
             FreeCADGui.doCommand("base.Placement = wp.get_placement()")
             FreeCADGui.doCommand("doc.recompute()")
         FreeCADGui.doCommand(
-            "wall = Arch.makeWall(base, width=" + str(self.Width)
-            + ", height=" + str(self.Height) + ", align=\"" + str(self.Align) + "\")"
+            "wall = Arch.makeWall(base, width="
+            + str(self.Width)
+            + ", height="
+            + str(self.Height)
+            + ', align="'
+            + str(self.Align)
+            + '")'
         )
         FreeCADGui.doCommand("wall.Normal = wp.axis")
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = doc." + self.MultiMat.Name)
-        FreeCADGui.doCommand("doc.recompute()")  # required as some autogroup code requires the wall shape
+        FreeCADGui.doCommand(
+            "doc.recompute()"
+        )  # required as some autogroup code requires the wall shape
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
-    def update(self,point,info):
+    def update(self, point, info):
         # info parameter is not used but needed for compatibility with the snapper
 
         """Callback for the mouse moving during the interactive mode.
@@ -254,21 +284,24 @@ class Arch_Wall:
         """
 
         import DraftVecUtils
+
         if FreeCADGui.Control.activeDialog():
             b = self.points[0]
             n = self.wp.axis
             bv = point.sub(b)
             dv = bv.cross(n)
-            dv = DraftVecUtils.scaleTo(dv,self.Width/2)
+            dv = DraftVecUtils.scaleTo(dv, self.Width / 2)
             if self.Align == "Center":
-                self.tracker.update([b,point])
+                self.tracker.update([b, point])
             elif self.Align == "Left":
-                self.tracker.update([b.add(dv),point.add(dv)])
+                self.tracker.update([b.add(dv), point.add(dv)])
             else:
                 dv = dv.negative()
-                self.tracker.update([b.add(dv),point.add(dv)])
+                self.tracker.update([b.add(dv), point.add(dv)])
             if self.Length:
-                self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
+                self.Length.setText(
+                    FreeCAD.Units.Quantity(bv.Length, FreeCAD.Units.Length).UserString
+                )
 
     def taskbox(self):
         """Set up a simple gui widget for the interactive mode."""
@@ -276,76 +309,80 @@ class Arch_Wall:
         from PySide import QtCore, QtGui
         import Draft
         from draftutils import params
+
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Wall options"))
+        w.setWindowTitle(translate("Arch", "Wall options"))
         grid = QtGui.QGridLayout(w)
 
         # Wall presets input
         comboWallPresets = QtGui.QComboBox()
-        comboWallPresets.addItem(translate("Arch","Wall Presets"))
-        comboWallPresets.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
+        comboWallPresets.addItem(translate("Arch", "Wall Presets"))
+        comboWallPresets.setToolTip(
+            translate(
+                "Arch",
+                "This list shows all the MultiMaterials objects of this document. Create some to define wall types.",
+            )
+        )
         self.multimats = []
         self.MultiMat = None
         for o in self.doc.Objects:
             if Draft.getType(o) == "MultiMaterial":
                 self.multimats.append(o)
                 comboWallPresets.addItem(o.Label)
-        if hasattr(FreeCAD,"LastArchMultiMaterial"):
-            for i,o in enumerate(self.multimats):
+        if hasattr(FreeCAD, "LastArchMultiMaterial"):
+            for i, o in enumerate(self.multimats):
                 if o.Name == FreeCAD.LastArchMultiMaterial:
-                    comboWallPresets.setCurrentIndex(i+1)
+                    comboWallPresets.setCurrentIndex(i + 1)
                     self.MultiMat = o
-        grid.addWidget(comboWallPresets,0,0,1,2)
+        grid.addWidget(comboWallPresets, 0, 0, 1, 2)
 
         # Wall length input
-        labelLength = QtGui.QLabel(translate("Arch","Length"))
+        labelLength = QtGui.QLabel(translate("Arch", "Length"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
-        grid.addWidget(labelLength,1,0,1,1)
-        grid.addWidget(self.Length,1,1,1,1)
+        grid.addWidget(labelLength, 1, 0, 1, 1)
+        grid.addWidget(self.Length, 1, 1, 1, 1)
 
         # Wall width input
-        labelWidth = QtGui.QLabel(translate("Arch","Width"))
+        labelWidth = QtGui.QLabel(translate("Arch", "Width"))
         inputWidth = ui.createWidget("Gui::InputField")
-        inputWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
-        grid.addWidget(labelWidth,2,0,1,1)
-        grid.addWidget(inputWidth,2,1,1,1)
+        inputWidth.setText(FreeCAD.Units.Quantity(self.Width, FreeCAD.Units.Length).UserString)
+        grid.addWidget(labelWidth, 2, 0, 1, 1)
+        grid.addWidget(inputWidth, 2, 1, 1, 1)
 
         # Wall height input
-        labelHeight = QtGui.QLabel(translate("Arch","Height"))
+        labelHeight = QtGui.QLabel(translate("Arch", "Height"))
         inputHeight = ui.createWidget("Gui::InputField")
-        inputHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
-        grid.addWidget(labelHeight,3,0,1,1)
-        grid.addWidget(inputHeight,3,1,1,1)
+        inputHeight.setText(FreeCAD.Units.Quantity(self.Height, FreeCAD.Units.Length).UserString)
+        grid.addWidget(labelHeight, 3, 0, 1, 1)
+        grid.addWidget(inputHeight, 3, 1, 1, 1)
 
         # Wall alignment input
-        labelAlignment = QtGui.QLabel(translate("Arch","Alignment"))
+        labelAlignment = QtGui.QLabel(translate("Arch", "Alignment"))
         comboAlignment = QtGui.QComboBox()
-        items = [translate("Arch","Center"),translate("Arch","Left"),translate("Arch","Right")]
+        items = [translate("Arch", "Center"), translate("Arch", "Left"), translate("Arch", "Right")]
         comboAlignment.addItems(items)
-        comboAlignment.setCurrentIndex(["Center","Left","Right"].index(self.Align))
-        grid.addWidget(labelAlignment,4,0,1,1)
-        grid.addWidget(comboAlignment,4,1,1,1)
+        comboAlignment.setCurrentIndex(["Center", "Left", "Right"].index(self.Align))
+        grid.addWidget(labelAlignment, 4, 0, 1, 1)
+        grid.addWidget(comboAlignment, 4, 1, 1, 1)
 
         # Wall offset input
         labelOffset = QtGui.QLabel(translate("Arch", "Offset"))
         inputOffset = ui.createWidget("Gui::InputField")
-        inputOffset.setText(FreeCAD.Units.Quantity(
-            self.Offset,
-            FreeCAD.Units.Length).UserString)
+        inputOffset.setText(FreeCAD.Units.Quantity(self.Offset, FreeCAD.Units.Length).UserString)
         grid.addWidget(labelOffset, 5, 0, 1, 1)
         grid.addWidget(inputOffset, 5, 1, 1, 1)
 
         # Wall "use sketches" checkbox
-        labelUseSketches = QtGui.QLabel(translate("Arch","Use sketches"))
+        labelUseSketches = QtGui.QLabel(translate("Arch", "Use sketches"))
         checkboxUseSketches = QtGui.QCheckBox()
         checkboxUseSketches.setObjectName("UseSketches")
         checkboxUseSketches.setLayoutDirection(QtCore.Qt.RightToLeft)
         labelUseSketches.setBuddy(checkboxUseSketches)
         checkboxUseSketches.setChecked(params.get_param_arch("WallSketches"))
-        grid.addWidget(labelUseSketches,6,0,1,1)
-        grid.addWidget(checkboxUseSketches,6,1,1,1)
+        grid.addWidget(labelUseSketches, 6, 0, 1, 1)
+        grid.addWidget(checkboxUseSketches, 6, 1, 1, 1)
 
         # Enable/disable inputOffset based on inputAlignment
         def updateOffsetState(index):
@@ -364,9 +401,9 @@ class Arch_Wall:
         inputHeight.valueChanged.connect(self.setHeight)
         comboAlignment.currentIndexChanged.connect(self.setAlign)
         inputOffset.valueChanged.connect(self.setOffset)
-        if hasattr(checkboxUseSketches, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(checkboxUseSketches, "checkStateChanged"):  # Qt version >= 6.7.0
             checkboxUseSketches.checkStateChanged.connect(self.setUseSketch)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             checkboxUseSketches.stateChanged.connect(self.setUseSketch)
         comboWallPresets.currentIndexChanged.connect(self.setMat)
 
@@ -382,55 +419,58 @@ class Arch_Wall:
 
         return w
 
-    def setMat(self,d):
+    def setMat(self, d):
         """Simple callback for the interactive mode gui widget to set material."""
 
         if d == 0:
             self.MultiMat = None
             del FreeCAD.LastArchMultiMaterial
         elif d <= len(self.multimats):
-            self.MultiMat = self.multimats[d-1]
+            self.MultiMat = self.multimats[d - 1]
             FreeCAD.LastArchMultiMaterial = self.MultiMat.Name
 
-    def setLength(self,d):
+    def setLength(self, d):
         """Simple callback for the interactive mode gui widget to set length."""
 
         if isinstance(d, FreeCAD.Units.Quantity):
             d = d.Value
         self.lengthValue = d
 
-    def setWidth(self,d):
+    def setWidth(self, d):
         """Simple callback for the interactive mode gui widget to set width."""
 
         from draftutils import params
+
         if isinstance(d, FreeCAD.Units.Quantity):
             d = d.Value
         self.Width = d
         self.tracker.width(d)
-        params.set_param_arch("WallWidth",d)
+        params.set_param_arch("WallWidth", d)
 
-
-    def setHeight(self,d):
+    def setHeight(self, d):
         """Simple callback for the interactive mode gui widget to set height."""
 
         from draftutils import params
+
         if isinstance(d, FreeCAD.Units.Quantity):
             d = d.Value
         self.Height = d
         self.tracker.height(d)
-        params.set_param_arch("WallHeight",d)
+        params.set_param_arch("WallHeight", d)
 
-    def setAlign(self,i):
+    def setAlign(self, i):
         """Simple callback for the interactive mode gui widget to set alignment."""
 
         from draftutils import params
-        self.Align = ["Center","Left","Right"][i]
-        params.set_param_arch("WallAlignment",i)
+
+        self.Align = ["Center", "Left", "Right"][i]
+        params.set_param_arch("WallAlignment", i)
 
     def setOffset(self, d):
         """Simple callback for the interactive mode GUI widget to set offset."""
 
         from draftutils import params
+
         if isinstance(d, FreeCAD.Units.Quantity):
             d = d.Value
         self.Offset = d
@@ -440,20 +480,31 @@ class Arch_Wall:
         """Simple callback to set if walls should based on sketches."""
 
         from draftutils import params
-        params.set_param_arch("WallSketches",bool(getattr(i, "value", i)))
+
+        params.set_param_arch("WallSketches", bool(getattr(i, "value", i)))
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
 
-        self.doc.openTransaction(translate("Arch","Create Wall"))
+        self.doc.openTransaction(translate("Arch", "Create Wall"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand('wall = Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCADGui.doCommand(
+            "wall = Arch.makeWall(length="
+            + str(self.lengthValue)
+            + ",width="
+            + str(self.Width)
+            + ",height="
+            + str(self.Height)
+            + ',align="'
+            + str(self.Align)
+            + '")'
+        )
         if self.MultiMat:
-            FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
+            FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument." + self.MultiMat.Name)
         self.doc.commitTransaction()
         self.doc.recompute()
-        if hasattr(FreeCADGui,"draftToolBar"):
+        if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.escape()
 
 
-FreeCADGui.addCommand('Arch_Wall', Arch_Wall())
+FreeCADGui.addCommand("Arch_Wall", Arch_Wall())

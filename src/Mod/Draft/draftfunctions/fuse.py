@@ -49,6 +49,7 @@ def fuse(object1, object2):
         return
     import Part
     import DraftGeomUtils
+
     # testing if we have holes:
     holes = False
     fshape = object1.Shape.fuse(object2.Shape)
@@ -74,9 +75,10 @@ def fuse(object1, object2):
     if App.GuiUp:
         object1.ViewObject.Visibility = False
         object2.ViewObject.Visibility = False
-        gui_utils.format_object(obj,object1)
+        gui_utils.format_object(obj, object1)
         gui_utils.select(obj)
 
     return obj
+
 
 ## @}

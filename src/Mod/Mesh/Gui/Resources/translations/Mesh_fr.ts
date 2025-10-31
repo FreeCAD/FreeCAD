@@ -775,7 +775,7 @@
       <location filename="../../ViewProvider.cpp" line="953"/>
       <location filename="../../ViewProvider.cpp" line="1014"/>
       <source>Cut</source>
-      <translation>Soustraire</translation>
+      <translation>Soustraction</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="963"/>

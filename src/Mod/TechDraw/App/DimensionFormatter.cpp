@@ -51,19 +51,19 @@ std::string DimensionFormatter::formatValue(const qreal value,
                                             const Format partial,
                                             const bool isDim) const
 {
+   bool distanceMeasure{true};
     const bool angularMeasure =
         m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
     const bool areaMeasure = m_dimension->Type.isValue("Area");
 
-    Base::Unit unit;
+    Base::Unit unit{Base::Unit::Length};
     if (angularMeasure) {
         unit = Base::Unit::Angle;
+        distanceMeasure = false;
     }
     else if (areaMeasure) {
         unit = Base::Unit::Area;
-    }
-    else {
-        unit = Base::Unit::Length;
+        distanceMeasure = false;
     }
 
     Base::Quantity asQuantity {value, unit};
@@ -101,26 +101,32 @@ std::string DimensionFormatter::formatValue(const qreal value,
         formatSpecifier.replace(QStringLiteral("%g"), newSpecifier, Qt::CaseInsensitive);
     }
 
-    // since we are not using a multiValueSchema, we know that angles are in '°' and for
-    // lengths we can get the unit of measure from UnitsApi::getBasicLengthUnit.
+    std::string unitText = Base::UnitsApi::getUnitText(asQuantity);
+    std::string super2{"²"};
+    std::string squareTag{"^2"};
 
-    // TODO: check the weird schemas (MKS, Imperial1) that report different UoM for different values
+    if (unitText.empty()) {
+        if (distanceMeasure) {
+            unitText = Base::UnitsApi::getBasicLengthUnit();
+        } else if (areaMeasure) {
+            unitText = Base::UnitsApi::getBasicLengthUnit() + squareTag;
+        } else if (angularMeasure) {
+            unitText = "°";
+        }
+    }
 
-    // get value in the base unit with default decimals
-    // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
-    // get the conversion factor for the unit
-    // the result is now just val / convertValue because val is always in the base unit
-    // don't do this for angular values since they are not in the BaseLengthUnit
-    std::string qBasicUnit =
-        angularMeasure ? "°" : Base::UnitsApi::getBasicLengthUnit();
     double userVal = asQuantity.getValue();
 
-    if (!angularMeasure) {
-        const double convertValue = Base::Quantity::parse("1" + qBasicUnit).getValue();
+    if (distanceMeasure || areaMeasure) {
+        const double convertValue = Base::Quantity::parse("1" + unitText).getValue();
         userVal /= convertValue;
-        if (areaMeasure) {
-            userVal /= convertValue;  // divide again as area is length²
-            qBasicUnit += "²";
+    }
+
+    // convert ^2 to superscript 2 for display
+    if (areaMeasure) {
+        size_t tagPosition = unitText.find(squareTag);
+        if (tagPosition != std::string::npos) {
+            unitText = unitText.replace(tagPosition, 2, super2);
         }
     }
 
@@ -147,14 +153,14 @@ std::string DimensionFormatter::formatValue(const qreal value,
         }
         else if ((m_dimension->showUnits() || areaMeasure)
                  && !(isDim && m_dimension->haveTolerance())) {
-            unitStr = " " + qBasicUnit;
+            unitStr = " " + unitText;
         }
 
         return formatPrefix + formattedValueString + unitStr + formatSuffix;
     }
 
     if (partial == Format::UNIT) {
-        return angularMeasure || m_dimension->showUnits() || areaMeasure ? qBasicUnit : "";
+        return angularMeasure || m_dimension->showUnits() || areaMeasure ? unitText : "";
     }
 
     return formattedValueString;

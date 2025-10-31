@@ -100,4 +100,5 @@ class DraftSVG(test_base.DraftTestCaseDoc):
         else:
             self.fail("no exception thrown")
 
+
 ## @}

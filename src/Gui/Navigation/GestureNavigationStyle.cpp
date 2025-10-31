@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -957,25 +958,6 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
 SbBool GestureNavigationStyle::processSoEvent_bypass(const SoEvent* const ev)
 {
     return superclass::processSoEvent(ev);
-}
-
-bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
-{
-    SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
-    rp.setRadius(viewer->getPickRadius());
-    rp.setPoint(pos);
-    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
-    SoPickedPoint* pick = rp.getPickedPoint();
-    if (pick){
-        const auto fullpath = static_cast<const SoFullPath*>(pick->getPath());
-        for(int i = 0; i < fullpath->getLength(); ++i){
-            if(fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId()))
-                return true;
-        }
-        return false;
-    } else {
-        return false;
-    }
 }
 
 bool GestureNavigationStyle::is2DViewing() const

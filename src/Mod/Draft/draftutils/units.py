@@ -38,10 +38,10 @@ def get_default_unit(dim):
 
     It is based on the user preferences.
     """
-    if dim == 'Length':
+    if dim == "Length":
         qty = App.Units.Quantity(1.0, App.Units.Length)
         uom = qty.getUserPreferred()[2]
-    elif dim == 'Angle':
+    elif dim == "Angle":
         qty = App.Units.Quantity(1.0, App.Units.Angle)
         uom = qty.getUserPreferred()[2]
     else:
@@ -52,15 +52,15 @@ def get_default_unit(dim):
 getDefaultUnit = get_default_unit
 
 
-def make_format_spec(decimals=4, dim='Length'):
+def make_format_spec(decimals=4, dim="Length"):
     """Return a string format specifier with decimals for a dimension.
 
     It is based on the user preferences.
     """
-    if dim == 'Length':
-        fmt_spec = "%." + str(decimals) + "f " + get_default_unit('Length')
-    elif dim == 'Angle':
-        fmt_spec = "%." + str(decimals) + "f " + get_default_unit('Angle')
+    if dim == "Length":
+        fmt_spec = "%." + str(decimals) + "f " + get_default_unit("Length")
+    elif dim == "Angle":
+        fmt_spec = "%." + str(decimals) + "f " + get_default_unit("Angle")
     else:
         fmt_spec = "%." + str(decimals) + "f " + "??"
     return fmt_spec
@@ -69,8 +69,7 @@ def make_format_spec(decimals=4, dim='Length'):
 makeFormatSpec = make_format_spec
 
 
-def display_external(internal_value,
-                     decimals=None, dim='Length', showUnit=True, unit=None):
+def display_external(internal_value, decimals=None, dim="Length", showUnit=True, unit=None):
     """Return a converted value for display, according to the unit schema.
 
     Parameters
@@ -92,7 +91,7 @@ def display_external(internal_value,
         A unit string such as `'mm'`, `'cm'`, `'m'`, `'in'`, `'ft'`,
         in which to express the returned value.
     """
-    if dim == 'Length':
+    if dim == "Length":
         q = App.Units.Quantity(internal_value, App.Units.Length)
         if not unit:
             if decimals is None and showUnit:
@@ -101,7 +100,7 @@ def display_external(internal_value,
             conversion = q.getUserPreferred()[1]
             uom = q.getUserPreferred()[2]
         elif unit.lower() == "arch":
-            return App.Units.schemaTranslate(q,5)[0].replace("+"," ")
+            return App.Units.schemaTranslate(q, 5)[0].replace("+", " ")
         else:
             try:
                 uom = unit
@@ -110,7 +109,7 @@ def display_external(internal_value,
             except Exception:
                 conversion = q.getUserPreferred()[1]
                 uom = q.getUserPreferred()[2]
-    elif dim == 'Angle':
+    elif dim == "Angle":
         q = App.Units.Quantity(internal_value, App.Units.Angle)
         if decimals is None:
             return q.UserString

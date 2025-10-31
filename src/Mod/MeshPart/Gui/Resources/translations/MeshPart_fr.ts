@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Cross-Sections</source>
-      <translation>Coupes</translation>
+      <translation>Créer des coupes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -167,7 +167,7 @@
       <translation>Relier les arêtes si la distance est inférieure à</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="384"/>
+      <location filename="../../CrossSections.cpp" line="383"/>
       <source>Failure</source>
       <translation>Échec</translation>
     </message>
@@ -175,32 +175,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Create</source>
       <translation>Créer</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Close wire</source>
       <translation>Fermer une polyligne</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Clear</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="367"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="623"/>
+      <location filename="../../CurveOnMesh.cpp" line="622"/>
       <source>Wrong mesh selected</source>
       <translation>Le maillage sélectionné est incorrect.</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="662"/>
+      <location filename="../../CurveOnMesh.cpp" line="661"/>
       <source>No point was selected</source>
       <translation>Aucun point n'a été sélectionné.</translation>
     </message>
@@ -575,12 +575,12 @@ Sélectionnez une forme différente.</translation>
   <context>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="49"/>
+      <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
       <translation>Développer un maillage</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="52"/>
+      <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
       <translation>Trouve une représentation plane d'un maillage.</translation>
     </message>
@@ -588,12 +588,12 @@ Sélectionnez une forme différente.</translation>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="88"/>
+      <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
       <translation>Développer une face</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="91"/>
+      <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
       <translation>Trouve une représentation plane d'une face.</translation>
     </message>

@@ -34,12 +34,13 @@ from draftviewproviders.view_base import ViewProviderDraft
 
 class ViewProviderRectangle(ViewProviderDraft):
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         super(ViewProviderRectangle, self).__init__(vobj)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property","Defines a texture image (overrides hatch patterns)")
-        vobj.addProperty("App::PropertyFile","TextureImage",
-                         "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP(
+            "App::Property", "Defines a texture image (overrides hatch patterns)"
+        )
+        vobj.addProperty("App::PropertyFile", "TextureImage", "Draft", _tip, locked=True)
 
 
 # Alias for compatibility with v0.18 and earlier

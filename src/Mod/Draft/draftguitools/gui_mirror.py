@@ -59,10 +59,14 @@ class Mirror(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Mirror',
-                'Accel': "M, I",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirror"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by 2 points")}
+        return {
+            "Pixmap": "Draft_Mirror",
+            "Accel": "M, I",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Mirror", "Mirror"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Mirror", "Mirrors the selected objects along a line defined by 2 points"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -72,9 +76,7 @@ class Mirror(gui_base_original.Modifier):
             if not Gui.Selection.getSelection():
                 self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to mirror"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
             else:
                 self.proceed()
 
@@ -101,23 +103,21 @@ class Mirror(gui_base_original.Modifier):
 
     def mirror(self, p1, p2, copy=False):
         """Mirror the real shapes."""
-        sel = '['
+        sel = "["
         for o in self.sel:
             if len(sel) > 1:
-                sel += ', '
-            sel += 'FreeCAD.ActiveDocument.' + o.Name
-        sel += ']'
+                sel += ", "
+            sel += "FreeCAD.ActiveDocument." + o.Name
+        sel += "]"
         Gui.addModule("Draft")
-        _cmd = 'Draft.mirror'
-        _cmd += '('
-        _cmd += sel + ', '
-        _cmd += DraftVecUtils.toString(p1) + ', '
+        _cmd = "Draft.mirror"
+        _cmd += "("
+        _cmd += sel + ", "
+        _cmd += DraftVecUtils.toString(p1) + ", "
         _cmd += DraftVecUtils.toString(p2)
-        _cmd += ')'
-        _cmd_list = ['m = ' + _cmd,
-                     'FreeCAD.ActiveDocument.recompute()']
-        self.commit(translate("draft", "Mirror"),
-                    _cmd_list)
+        _cmd += ")"
+        _cmd_list = ["m = " + _cmd, "FreeCAD.ActiveDocument.recompute()"]
+        self.commit(translate("draft", "Mirror"), _cmd_list)
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -147,7 +147,7 @@ class Mirror(gui_base_original.Modifier):
                         if nor.Length > tol:
                             nor.normalize()
                             mtx = DraftGeomUtils.mirror_matrix(App.Matrix(), last, nor)
-                            self.ghost.setMatrix(mtx) # Ignores the position of the matrix.
+                            self.ghost.setMatrix(mtx)  # Ignores the position of the matrix.
                             self.ghost.move(App.Vector(mtx.col(3)[:3]))
             if self.extendedCopy:
                 if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
@@ -157,19 +157,19 @@ class Mirror(gui_base_original.Modifier):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
                     self.ui.redraw()
-                    if (self.node == []):
+                    if self.node == []:
                         self.node.append(self.point)
                         self.ui.isRelative.show()
                         if self.ghost:
                             self.ghost.on()
-                        _toolmsg(translate("draft",
-                                       "Pick end point of mirror line"))
+                        _toolmsg(translate("draft", "Pick end point of mirror line"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     else:
                         last = self.node[0]
-                        if (self.ui.isCopy.isChecked()
-                                or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())):
+                        if self.ui.isCopy.isChecked() or gui_tool_utils.hasMod(
+                            arg, gui_tool_utils.get_mod_alt_key()
+                        ):
                             self.mirror(last, self.point, True)
                         else:
                             self.mirror(last, self.point)
@@ -199,6 +199,6 @@ class Mirror(gui_base_original.Modifier):
             self.finish()
 
 
-Gui.addCommand('Draft_Mirror', Mirror())
+Gui.addCommand("Draft_Mirror", Mirror())
 
 ## @}

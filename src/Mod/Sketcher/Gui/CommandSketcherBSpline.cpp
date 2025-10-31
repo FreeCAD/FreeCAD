@@ -39,6 +39,7 @@
 #include "DrawSketchHandler.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 using namespace std;
@@ -765,9 +766,10 @@ public:
     ~DrawSketchHandlerBSplineInsertKnot() override
     {}
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         auto bsp = static_cast<const Part::GeomBSplineCurve*>(Obj->getGeometry(GeoId));
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         // get closest parameter using OCC
         // TODO: This is called every time we move the cursor. Can get overwhelming.

@@ -380,8 +380,8 @@
       <translation>Уставіць слупкі</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="680"/>
       <location filename="../../SpreadsheetView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="680"/>
       <source>Clear Cells</source>
       <translation>Ачысціць клеткі</translation>
     </message>
@@ -675,8 +675,8 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Усе (*)</translation>
     </message>
@@ -983,7 +983,10 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак, які ўжываецца ў якасці падзельніка палёў. Першапачаткова ўжываецца табуляцыя, але таксама часта ўжываюцца коскі (,) і кропкі з коскай (;). Абярыце з спісу ці ўвядзіце свой уласны падзельнік у поле. Ён павінен складацца з аднаго знака альбо  слоў &lt;span style=" font-style:italic;"&gt;табуляцыя&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;коска&lt;/span&gt; ці &lt;span style=" font-style:italic;"&gt;кропка з коскай&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Знак, які ўжываецца ў якасці падзельніка палёў.
+Першапачаткова ўжываецца табуляцыя, але таксама часта ўжываюцца коскі (,) і кропкі з коскай (;).
+Абярыце з спісу ці ўвядзіце свой уласны падзельнік у поле.
+Ён павінен складацца з аднаго знака альбо слоў 'табуляцыя', 'коска' ці 'кропка з коскай'.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="167"/>

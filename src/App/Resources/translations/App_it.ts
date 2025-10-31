@@ -44,37 +44,37 @@ L'utente dovrebbe quindi cliccare il pulsante Aggiorna nella barra degli strumen
     <message>
       <location filename="../../Datums.cpp" line="260"/>
       <source>X-axis</source>
-      <translation>Asse X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="261"/>
       <source>Y-axis</source>
-      <translation>Asse Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="262"/>
       <source>Z-axis</source>
-      <translation>Asse Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="263"/>
       <source>XY-plane</source>
-      <translation>Piano XY</translation>
+      <translation>Superiore</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="264"/>
       <source>XZ-plane</source>
-      <translation>Piano XZ</translation>
+      <translation>Frontale</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="265"/>
       <source>YZ-plane</source>
-      <translation>Piano YZ</translation>
+      <translation>Destro</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="266"/>
       <source>Origin</source>
-      <translation>Origine</translation>
+      <translation>O</translation>
     </message>
   </context>
 </TS>

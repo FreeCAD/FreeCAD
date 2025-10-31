@@ -62,10 +62,14 @@ class Scale(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_Scale",
-                "Accel": "S, C",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point")}
+        return {
+            "Pixmap": "Draft_Scale",
+            "Accel": "S, C",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Scale", "Scales the selected objects from a base point"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -88,9 +92,9 @@ class Scale(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selection = Gui.Selection.getSelectionEx("", 0)
-        Gui.doCommand("selection = FreeCADGui.Selection.getSelectionEx(\"\", 0)")
+        Gui.doCommand('selection = FreeCADGui.Selection.getSelectionEx("", 0)')
         self.refs = []
-        self.ui.pointUi(title=translate("draft",self.featureName), icon="Draft_Scale")
+        self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Scale")
         self.ui.isRelative.hide()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
@@ -116,12 +120,15 @@ class Scale(gui_base_original.Modifier):
             if not self.ghosts:
                 _err(translate("draft", "No valid subelements selected"))
         else:
-            objs, places, _ = utils._modifiers_process_selection(self.selection, (copy or clone), scale=True)
+            objs, places, _ = utils._modifiers_process_selection(
+                self.selection, (copy or clone), scale=True
+            )
             self.ghosts = [trackers.ghostTracker(objs, parent_places=places)]
 
     def get_subelement_ghosts(self, selection, copy):
         """Get ghost for the subelements (vertices, edges)."""
         import Part
+
         ghosts = []
         for sel in selection:
             for sub in sel.SubElementNames if sel.SubElementNames else [""]:
@@ -135,7 +142,7 @@ class Scale(gui_base_original.Modifier):
         delta = App.Vector(x, y, z)
         # ScaleRelative option removed in v1.1 as it does not work properly:
         # if rel:
-            # delta = self.wp.get_local_coords(delta)
+        # delta = self.wp.get_local_coords(delta)
         for ghost in self.ghosts:
             ghost.scale(delta)
         # calculate a correction factor depending on the scaling center
@@ -170,10 +177,12 @@ class Scale(gui_base_original.Modifier):
             self.finish()
         elif arg["Type"] == "SoLocation2Event":
             self.handle_mouse_move_event(arg)
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"
-              and self.point):
+        elif (
+            arg["Type"] == "SoMouseButtonEvent"
+            and arg["State"] == "DOWN"
+            and arg["Button"] == "BUTTON1"
+            and self.point
+        ):
             self.handle_mouse_click_event()
 
     def handle_mouse_move_event(self, arg):
@@ -204,7 +213,7 @@ class Scale(gui_base_original.Modifier):
         self.delta = App.Vector(sx, sy, sz)
         # ScaleRelative option removed in v1.1 as it does not work properly:
         # if self.task.relative.isChecked():
-            # self.delta = self.wp.get_local_coords(self.delta)
+        # self.delta = self.wp.get_local_coords(self.delta)
         self.center = self.node[0]
         if self.task.isCopy.isChecked():
             cmd_name = translate("draft", "Copy")
@@ -255,7 +264,7 @@ class Scale(gui_base_original.Modifier):
             if hasattr(self, "task"):
                 if self.task:
                     self.task.lock.setChecked(True)
-                    self.task.setValue(d2/d1)
+                    self.task.setValue(d2 / d1)
 
     def finish(self, cont=False):
         """Terminate the operation."""
@@ -265,6 +274,6 @@ class Scale(gui_base_original.Modifier):
         super().finish()
 
 
-Gui.addCommand('Draft_Scale', Scale())
+Gui.addCommand("Draft_Scale", Scale())
 
 ## @}

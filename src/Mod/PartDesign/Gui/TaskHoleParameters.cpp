@@ -21,21 +21,24 @@
  ***************************************************************************/
 
 
+#include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <TopoDS.hxx>
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
-#include "Gui/Inventor/Draggers/SoLinearDragger.h"
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
+#include <Mod/Part/App/GizmoHelper.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "ui_TaskHoleParameters.h"
 #include "TaskHoleParameters.h"
