@@ -1135,8 +1135,9 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
         auto selection = Gui::Selection().getSelection();
         if (selection.size() == 1) {
             App::DocumentObject* obj = selection[0].pObject;
-            if (obj && (obj->getPropertyByName("JointType")
-                || obj->getPropertyByName("ObjectToGround"))) {
+            if (obj
+                && (obj->getPropertyByName("JointType")
+                    || obj->getPropertyByName("ObjectToGround"))) {
                 isolateJointReferences(obj);
                 return;
             }
