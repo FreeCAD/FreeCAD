@@ -1,7 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
-# *   Copyright (c) 2024 Carl Slater <CandLWorkshopllc@gmail.com>           *
+# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,19 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-# ***************************************************************************
-# *  Note: This file is a modified clone of TestRefactoredLinuxCNCPost.py   *
-# *        any changes to this file should be applied to the other          *
-# *                                                                         *
-# *                                                                         *
-# ***************************************************************************
-
-from importlib import reload
 
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
+import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 
 
@@ -41,10 +33,13 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredMassoG3Post(PathTestUtils.PathTestBase):
+class TestGenericPost(PathTestUtils.PathTestBase):
+    """Test the generic postprocessor."""
+
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
+
         This method is called upon instantiation of this test class.  Add code
         and objects here that are needed for the duration of the test() methods
         in this class.  In other words, set up the 'global' test environment
@@ -53,32 +48,32 @@ class TestRefactoredMassoG3Post(PathTestUtils.PathTestBase):
         is able to call static methods within this same class.
         """
 
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_masso_g3")
-        # locate the operation named "Profile"
-        for op in cls.job.Operations.Group:
-            if op.Label == "Profile":
-                # remember the "Profile" operation
-                cls.profile_op = op
-                return
+        # Create mock job with default operation and tool controller
+        cls.job, cls.profile_op, cls.tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
+
+        # Create postprocessor using the mock job
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "generic")
 
     @classmethod
     def tearDownClass(cls):
         """tearDownClass()...
+
         This method is called prior to destruction of this test class.  Add
         code and objects here that cleanup the test environment after the
         test() methods in this class have been executed.  This method does not
         have access to the class `self` reference.  This method
         is able to call static methods within this same class.
         """
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+        # No cleanup needed for mock objects
+        pass
 
     # Setup and tear down methods called before and after each unit test
+
     def setUp(self):
         """setUp()...
+
         This method is called prior to each `test()` method.  Add code and
         objects here that are needed for multiple `test()` methods.
         """
@@ -89,6 +84,7 @@ class TestRefactoredMassoG3Post(PathTestUtils.PathTestBase):
 
     def tearDown(self):
         """tearDown()...
+
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
@@ -107,56 +103,51 @@ class TestRefactoredMassoG3Post(PathTestUtils.PathTestBase):
         # Only test length of result.
         self.job.PostProcessorArgs = "--no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertTrue(len(gcode.splitlines()) == 26)
+        # print(f"--------{nl}Actual line count: {len(gcode.splitlines())}{nl}{gcode}--------{nl}")
+        self.assertTrue(len(gcode.splitlines()) == 23)
 
         # Test without header
         expected = """(Begin preamble)
-G17 G54 G40 G49 G80 G90
+G90
 G21
+(Begin operation: TC: Default Tool)
+(Machine units: mm/min)
+(Begin toolchange)
+M5
+M6 T1
+G43 H1
+M3 S1000
+(Finish operation: TC: Default Tool)
 (Begin operation: Fixture)
 (Machine units: mm/min)
 G54
 (Finish operation: Fixture)
-(Begin operation: TC: Default Tool)
-(Machine units: mm/min)
-(TC: Default Tool)
-(Begin toolchange)
-M5
-T1 M6
-G43 H1
-(Finish operation: TC: Default Tool)
 (Begin operation: Profile)
 (Machine units: mm/min)
 (Finish operation: Profile)
 (Begin postamble)
-M05
-G17 G54 G90 G80 G40
-M2
 """
 
         self.profile_op.Path = Path.Path([])
 
-        self.job.PostProcessorArgs = "--no-header --no-show-editor"
         # args = ("--no-header --no-comments --no-show-editor --precision=2")
+        self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
 
         # test without comments
-        expected = """G17 G54 G40 G49 G80 G90
+        expected = """G90
 G21
-G54
 M5
-T1 M6
+M6 T1
 G43 H1
-M05
-G17 G54 G90 G80 G40
-M2
+M3 S1000
+G54
 """
 
-        self.job.PostProcessorArgs = "--no-header --no-comments --no-show-editor"
         # args = ("--no-header --no-comments --no-show-editor --precision=2")
+        self.job.PostProcessorArgs = "--no-header --no-comments --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
@@ -215,8 +206,9 @@ M2
         )
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[0]
-        self.assertEqual(result, "G18 G55")
+        lines = gcode.splitlines()
+        # Preamble should be in the output
+        self.assertIn("G18 G55", gcode)
 
     def test040(self):
         """
@@ -313,10 +305,11 @@ M2
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[18], "M5")
-        self.assertEqual(gcode.splitlines()[19], "T2 M6")
-        self.assertEqual(gcode.splitlines()[20], "G43 H2")
-        self.assertEqual(gcode.splitlines()[21], "M3 S3000")
+        split_gcode = gcode.splitlines()
+        self.assertEqual(split_gcode[18], "M5")
+        self.assertEqual(split_gcode[19], "M6 T2")
+        self.assertEqual(split_gcode[20], "G43 H2")
+        self.assertEqual(split_gcode[21], "M3 S3000")
 
         # suppress TLO
         self.job.PostProcessorArgs = "--no-header --no-tlo --no-show-editor"
