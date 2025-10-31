@@ -191,6 +191,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             ),
+            (
+                "App::PropertyBool",
+                "UseLongestEdge",
+                "Start Point",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Override start point"
+                    "\nShoud be used only with Individually HandleMultipleFeatures"
+                    "and disabled UseStartPoint",
+                ),
+            ),
         ]
 
     @classmethod
@@ -294,6 +305,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         elif opType == "Edge":
             pass
 
+        useLongestEdgeMode = (
+            0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
+        )
+
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
@@ -301,6 +316,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processCircles", fc)
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
+        obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
 
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
@@ -318,9 +334,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
-        if prop in ["UseComp", "JoinType", "Base"]:
-            if hasattr(self, "propertiesReady") and self.propertiesReady:
-                self.setOpEditorProperties(obj)
+        if hasattr(self, "propertiesReady") and self.propertiesReady:
+            self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
@@ -560,9 +575,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
             self.tmpGrp.purgeTouched()
 
-        # for shape in shapes:
-        #     Part.show(shape[0])
-        #     print(shape)
         return shapes
 
     # Method to handle each model as a whole, when no faces are selected
