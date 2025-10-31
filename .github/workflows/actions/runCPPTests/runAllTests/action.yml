@@ -68,6 +68,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Gui_tests_run --gtest_output=json:${{ inputs.reportdir }}gui_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}gui_gtest_test_log.txt
           testName: Gui
+      - name: C++ Import tests
+        id: import
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Import_tests_run --gtest_output=json:${{ inputs.reportdir }}import_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}import_gtest_test_log.txt
+          testName: Import
       - name: C++ Material tests
         id: material
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
