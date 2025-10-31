@@ -35,7 +35,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <cmath>
 
 
