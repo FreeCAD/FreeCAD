@@ -28,24 +28,25 @@ def main():
         print(f"Error: Input grammar file not found at '{input_file}'")
         return 1
 
-    print(f"Generating standalone parser from '{os.path.basename(input_file)}' to '{os.path.basename(output_file)}'...")
+    print(
+        f"Generating standalone parser from '{os.path.basename(input_file)}' to '{os.path.basename(output_file)}'..."
+    )
 
     # 1. Read the grammar file content.
-    with open(input_file, 'r', encoding='utf8') as f:
+    with open(input_file, "r", encoding="utf8") as f:
         grammar_text = f.read()
 
     # 2. Create an instance of the Lark parser.
     #    The 'lalr' parser is recommended for performance.
-    lark_instance = Lark(grammar_text, parser='lalr')
+    lark_instance = Lark(grammar_text, parser="lalr")
 
     # 3. Open the output file and call the gen_standalone() API function.
-    with open(output_file, 'w', encoding='utf8') as f:
+    with open(output_file, "w", encoding="utf8") as f:
         gen_standalone(lark_instance, out=f)
 
     print("Parser generation complete.")
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
-

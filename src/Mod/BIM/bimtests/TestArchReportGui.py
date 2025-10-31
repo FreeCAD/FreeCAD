@@ -52,7 +52,7 @@ class TestArchReportGui(TestArchBaseGui):
         if self.panel:
             # If a panel was created, ensure it is closed.
             FreeCADGui.Control.closeDialog()
-            self.panel = None # Clear the reference
+            self.panel = None  # Clear the reference
         super().tearDown()
 
     def test_cheatsheet_dialog_creation(self):
@@ -74,8 +74,9 @@ class TestArchReportGui(TestArchBaseGui):
         self.panel._start_edit_session(row_index=0)
 
         # 2. Assert Initial State: The preview pane should be hidden.
-        self.assertFalse(self.panel.preview_pane.isVisible(),
-                         "Preview pane should be hidden by default.")
+        self.assertFalse(
+            self.panel.preview_pane.isVisible(), "Preview pane should be hidden by default."
+        )
 
         # 3. Act: Toggle the preview pane to show it.
         # A user click on a checkable button toggles its checked state.
@@ -83,12 +84,19 @@ class TestArchReportGui(TestArchBaseGui):
         self.pump_gui_events()
 
         # 4. Assert Visibility: The pane and its contents should now be visible.
-        self.assertTrue(self.panel.preview_pane.isVisible(),
-                        "Preview pane should be visible after toggling it on.")
-        self.assertEqual(self.panel.btn_toggle_preview.text(), "Hide Preview",
-                         "Button text should update to 'Hide Preview'.")
-        self.assertTrue(self.panel.btn_refresh_preview.isVisible(),
-                        "Refresh button should be visible when pane is open.")
+        self.assertTrue(
+            self.panel.preview_pane.isVisible(),
+            "Preview pane should be visible after toggling it on.",
+        )
+        self.assertEqual(
+            self.panel.btn_toggle_preview.text(),
+            "Hide Preview",
+            "Button text should update to 'Hide Preview'.",
+        )
+        self.assertTrue(
+            self.panel.btn_refresh_preview.isVisible(),
+            "Refresh button should be visible when pane is open.",
+        )
 
         # 5. Act: Set a valid query and refresh the preview.
         query = "SELECT Label, IfcType FROM document WHERE IfcType = 'Wall' ORDER BY Label"
@@ -97,10 +105,16 @@ class TestArchReportGui(TestArchBaseGui):
         self.pump_gui_events()
 
         # 6. Assert Correctness: The preview table should be populated correctly.
-        self.assertEqual(self.panel.table_preview_results.columnCount(), 2,
-                         "Preview table should have 2 columns for the valid query.")
-        self.assertEqual(self.panel.table_preview_results.rowCount(), 2,
-                         "Preview table should have 2 rows for the two wall objects.")
+        self.assertEqual(
+            self.panel.table_preview_results.columnCount(),
+            2,
+            "Preview table should have 2 columns for the valid query.",
+        )
+        self.assertEqual(
+            self.panel.table_preview_results.rowCount(),
+            2,
+            "Preview table should have 2 rows for the two wall objects.",
+        )
         # Check cell content to confirm the query ran correctly.
         self.assertEqual(self.panel.table_preview_results.item(0, 0).text(), self.wall_ext.Label)
         self.assertEqual(self.panel.table_preview_results.item(1, 1).text(), self.wall_int.IfcType)
@@ -110,10 +124,15 @@ class TestArchReportGui(TestArchBaseGui):
         self.pump_gui_events()
 
         # 8. Assert Final State: The pane should be hidden.
-        self.assertFalse(self.panel.preview_pane.isVisible(),
-                         "Preview pane should be hidden after toggling it off.")
-        self.assertEqual(self.panel.btn_toggle_preview.text(), "Show Preview",
-                         "Button text should revert to 'Show Preview'.")
+        self.assertFalse(
+            self.panel.preview_pane.isVisible(),
+            "Preview pane should be hidden after toggling it off.",
+        )
+        self.assertEqual(
+            self.panel.btn_toggle_preview.text(),
+            "Show Preview",
+            "Button text should revert to 'Show Preview'.",
+        )
 
     def DISABLED_test_preview_pane_displays_errors_gracefully(self):
         """
@@ -135,21 +154,30 @@ class TestArchReportGui(TestArchBaseGui):
         self.pump_gui_events()
 
         # 3. Assert: The preview table should be visible and display the error.
-        self.assertTrue(self.panel.table_preview_results.isVisible(),
-                        "Preview table should remain visible to display the error.")
-        self.assertEqual(self.panel.table_preview_results.rowCount(), 1,
-                         "Error display should occupy a single row.")
-        self.assertEqual(self.panel.table_preview_results.columnCount(), 1,
-                         "Error display should occupy a single column.")
+        self.assertTrue(
+            self.panel.table_preview_results.isVisible(),
+            "Preview table should remain visible to display the error.",
+        )
+        self.assertEqual(
+            self.panel.table_preview_results.rowCount(),
+            1,
+            "Error display should occupy a single row.",
+        )
+        self.assertEqual(
+            self.panel.table_preview_results.columnCount(),
+            1,
+            "Error display should occupy a single column.",
+        )
 
         error_item = self.panel.table_preview_results.item(0, 0)
-        self.assertIsNotNone(error_item,
-                             "An error item should have been placed in the table.")
+        self.assertIsNotNone(error_item, "An error item should have been placed in the table.")
         # Check for keywords that indicate a graceful error message.
-        self.assertIn("Syntax Error", error_item.text(),
-                      "The error message should indicate a syntax error.")
-        self.assertIn("❌", error_item.text(),
-                      "The error message should contain a visual error indicator.")
+        self.assertIn(
+            "Syntax Error", error_item.text(), "The error message should indicate a syntax error."
+        )
+        self.assertIn(
+            "❌", error_item.text(), "The error message should contain a visual error indicator."
+        )
 
     def test_hover_tooltips(self):
         """Tests that the SQL editor can generate tooltips."""
