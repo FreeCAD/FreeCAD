@@ -24,6 +24,8 @@
 
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
+#include <format>
+
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -34,8 +36,6 @@
 # include <GL/glext.h>
 # include <GL/glu.h>
 # endif
-
-# include <fmt/format.h>
 
 # include <Inventor/SbBox.h>
 # include <Inventor/SoEventManager.h>
@@ -2641,7 +2641,7 @@ void View3DInventorViewer::printDimension() const
         auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
+        dim = std::format("{} x {}", wStr, hStr);
     }
 
     getMainWindow()->setPaneText(2, QString::fromStdString(dim));

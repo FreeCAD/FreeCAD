@@ -30,6 +30,7 @@
 #include <QColor>
 #include <QRegularExpression>
 #include <QString>
+#include <format>
 #include <ranges>
 #include <variant>
 
@@ -56,7 +57,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
     const auto lightenOrDarken = [this](const EvaluationContext& context) -> Value {
         if (arguments.size() != 2) {
             THROWM(Base::ExpressionError,
-                   fmt::format("Function '{}' expects 2 arguments, got {}",
+                   std::format("Function '{}' expects 2 arguments, got {}",
                                functionName,
                                arguments.size()));
         }
@@ -66,7 +67,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
 
         if (!std::holds_alternative<Base::Color>(colorArg)) {
             THROWM(Base::ExpressionError,
-                   fmt::format("'{}' is not supported for colors", functionName));
+                   std::format("'{}' is not supported for colors", functionName));
         }
 
         auto color = std::get<Base::Color>(colorArg).asValue<QColor>();
@@ -92,7 +93,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
     const auto blend = [this](const EvaluationContext& context) -> Value {
         if (arguments.size() != 3) {
             THROWM(Base::ExpressionError,
-                   fmt::format("Function '{}' expects 3 arguments, got {}",
+                   std::format("Function '{}' expects 3 arguments, got {}",
                                functionName,
                                arguments.size()));
         }
@@ -103,12 +104,12 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
 
         if (!std::holds_alternative<Base::Color>(firstColorArg)) {
             THROWM(Base::ExpressionError,
-                   fmt::format("first argument of '{}' must be color", functionName));
+                   std::format("first argument of '{}' must be color", functionName));
         }
 
         if (!std::holds_alternative<Base::Color>(secondColorArg)) {
             THROWM(Base::ExpressionError,
-                   fmt::format("second argument of '{}' must be color", functionName));
+                   std::format("second argument of '{}' must be color", functionName));
         }
 
         auto firstColor = std::get<Base::Color>(firstColorArg);
@@ -134,7 +135,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return function(context);
     }
 
-    THROWM(Base::ExpressionError, fmt::format("Unknown function '{}'", functionName));
+    THROWM(Base::ExpressionError, std::format("Unknown function '{}'", functionName));
 }
 
 Value BinaryOp::evaluate(const EvaluationContext& context) const
@@ -187,7 +188,7 @@ std::unique_ptr<Expr> Parser::parse()
     skipWhitespace();
     if (pos != input.size()) {
         THROWM(Base::ParserError,
-               fmt::format("Unexpected characters at end of input: {}", input.substr(pos)));
+               std::format("Unexpected characters at end of input: {}", input.substr(pos)));
     }
     return expr;
 }
@@ -243,7 +244,7 @@ std::unique_ptr<Expr> Parser::parseFactor()
     if (match('(')) {
         auto expr = parseExpression();
         if (!match(')')) {
-            THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
+            THROWM(Base::ParserError, std::format("Expected ')', got '{}'", input[pos]));
         }
         return expr;
     }
@@ -293,22 +294,22 @@ std::unique_ptr<Expr> Parser::parseColor()
 
         int r = parseInt();
         if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after red, got '{}'", input[pos]));
+                THROWM(Base::ParserError, std::format("Expected ',' after red, got '{}'", input[pos]));
         }
         int g = parseInt();
         if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after green, got '{}'", input[pos]));
+                THROWM(Base::ParserError, std::format("Expected ',' after green, got '{}'", input[pos]));
         }
         int b = parseInt();
         int a = 255;  // NOLINT(*-magic-numbers)
         if (hasAlpha) {
             if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after blue, got '{}'", input[pos]));
+                THROWM(Base::ParserError, std::format("Expected ',' after blue, got '{}'", input[pos]));
             }
             a = parseInt();
         }
         if (!match(')')) {
-            THROWM(Base::ParserError, fmt::format("Expected ')' after color arguments, got '{}'", input[pos]));
+            THROWM(Base::ParserError, std::format("Expected ')' after color arguments, got '{}'", input[pos]));
         }
         return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0));
     };
@@ -340,7 +341,7 @@ std::unique_ptr<Expr> Parser::parseParameter()
 {
     skipWhitespace();
     if (!match('@')) {
-        THROWM(Base::ParserError, fmt::format("Expected '@' for parameter, got '{}'", input[pos]));
+        THROWM(Base::ParserError, std::format("Expected '@' for parameter, got '{}'", input[pos]));
     }
     size_t start = pos;
     while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
@@ -348,7 +349,7 @@ std::unique_ptr<Expr> Parser::parseParameter()
     }
     if (start == pos) {
         THROWM(Base::ParserError,
-               fmt::format("Expected parameter name after '@', got '{}'", input[pos]));
+               std::format("Expected parameter name after '@', got '{}'", input[pos]));
     }
     return std::make_unique<ParameterReference>(input.substr(start, pos - start));
 }
@@ -370,7 +371,7 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
 
     if (!match('(')) {
         THROWM(Base::ParserError,
-               fmt::format("Expected '(' after function name, got '{}'", input[pos]));
+               std::format("Expected '(' after function name, got '{}'", input[pos]));
     }
 
     std::vector<std::unique_ptr<Expr>> arguments;
@@ -381,7 +382,7 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
 
         if (!match(')')) {
             THROWM(Base::ParserError,
-                   fmt::format("Expected ')' after function arguments, got '{}'", input[pos]));
+                   std::format("Expected ')' after function arguments, got '{}'", input[pos]));
         }
     }
 
@@ -414,7 +415,7 @@ std::unique_ptr<Expr> Parser::parseNumber()
         return std::make_unique<Number>(value, unit);
     }
     catch (std::invalid_argument&) {
-        THROWM(Base::ParserError, fmt::format("Invalid number: {}", number));
+        THROWM(Base::ParserError, std::format("Invalid number: {}", number));
     }
 }
 

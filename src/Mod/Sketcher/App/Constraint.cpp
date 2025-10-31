@@ -24,12 +24,11 @@
 #include <boost/random.hpp>
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <ranges>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-#include <fmt/ranges.h>
 
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -184,11 +183,19 @@ void Constraint::Save(Writer& writer) const
                           return e.posIdAsInt();
                       });
 
-        const std::string ids = fmt::format("{}", fmt::join(geoIds, " "));
-        const std::string positions = fmt::format("{}", fmt::join(posIds, " "));
+        auto writeOut = [&](const auto& name, const auto& ids) {
+            if (!ids.empty()) {
+                auto id = ids.begin();
+                writer.Stream() << name << "=\"" << *id;
+                while (ids.end() != ++id) {
+                    writer.Stream() << " " << *id;
+                }
+                writer.Stream() << "\" ";
+            }
+        };
 
-        writer.Stream() << "ElementIds=\"" << ids << "\" "
-                        << "ElementPositions=\"" << positions << "\" ";
+        writeOut("ElementIds", geoIds);
+        writeOut("ElementPositions", posIds);
     }
 
     writer.Stream() << "/>\n";
@@ -266,7 +273,7 @@ void Constraint::Restore(XMLReader& reader)
         const auto positions = splitAndClean(elementPositions);
 
         if (ids.size() != positions.size()) {
-            throw Base::ParserError(fmt::format("ElementIds and ElementPositions do not match in "
+            throw Base::ParserError(std::format("ElementIds and ElementPositions do not match in "
                                                 "size. Got {} ids and {} positions.",
                                                 ids.size(),
                                                 positions.size()));
