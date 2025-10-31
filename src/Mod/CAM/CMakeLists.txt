@@ -499,6 +499,7 @@ SET(Tests_SRCS
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestPathAdaptive.py
+    CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py

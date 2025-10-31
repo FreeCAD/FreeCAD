@@ -28,6 +28,7 @@ from CAMTests.TestCAMSanity import TestCAMSanity
 from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
+from CAMTests.TestPathCommandAnnotations import TestPathCommandAnnotations
 from CAMTests.TestPathCore import TestPathCore
 from CAMTests.TestPathDepthParams import depthTestCases
 from CAMTests.TestPathDressupDogbone import TestDressupDogbone
