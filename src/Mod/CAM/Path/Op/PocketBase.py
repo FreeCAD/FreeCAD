@@ -172,10 +172,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Set distance which will attempts to avoid unnecessary retractions.",
+            ),
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -200,10 +203,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             setattr(obj, n[0], n[1])
 
         self.initPocketOp(obj)
-
-    def areaOpRetractTool(self, obj):
-        Path.Log.debug("retracting tool: %d" % (not obj.KeepToolDown))
-        return not obj.KeepToolDown
 
     def areaOpUseProjection(self, obj):
         """areaOpUseProjection(obj) ... return False"""
@@ -245,6 +244,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         super().opOnDocumentRestored(obj)
+
+        if hasattr(obj, "OffsetPattern"):
+            obj.setGroupOfProperty("OffsetPattern", "Pocket")
+            obj.renameProperty("OffsetPattern", "ClearingPattern")
+
         if not hasattr(obj, "PocketLastStepOver"):
             obj.addProperty(
                 "App::PropertyPercent",
@@ -267,14 +271,24 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Skips machining regions that have already been cleared by previous operations.",
                 ),
             )
-
-        if hasattr(obj, "OffsetPattern"):
-            obj.setGroupOfProperty("OffsetPattern", "Pocket")
-            obj.renameProperty("OffsetPattern", "ClearingPattern")
+        if not hasattr(obj, "RetractThreshold"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
+                ),
+            )
         if hasattr(obj, "RestMachiningRegions"):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
             obj.removeProperty("RestMachiningRegionsNeedRecompute")
+        if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                obj.RetractThreshold = obj.ToolController.Tool.Diameter
+            obj.removeProperty("KeepToolDown")
 
         Path.Log.track()
 
@@ -296,7 +310,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         #
         if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
             params["sort_mode"] = 3
-            params["threshold"] = self.radius * 2
         return params
 
 
@@ -309,5 +322,4 @@ def SetupProperties():
     setup.append("ClearingPattern")
     setup.append("StartAt")
     setup.append("MinTravel")
-    setup.append("KeepToolDown")
     return setup
