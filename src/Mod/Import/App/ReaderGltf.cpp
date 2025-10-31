@@ -69,7 +69,32 @@ void ReaderGltf::read(Handle(TDocStd_Document) hDoc)
         throw Base::FileException("Cannot read from file: ", file);
     }
 
-    processDocument(hDoc);
+    if (!loadTessellationOnly()) {
+        processDocument(hDoc);
+    }
+}
+
+TopoDS_Shape ReaderGltf::singleShape(Handle(TDocStd_Document) hDoc,
+                                     const Message_ProgressRange& theProgress) const
+{
+    const double unit = 0.001;  // mm
+    RWGltf_CafReader aReader;
+    aReader.SetSystemLengthUnit(unit);
+    aReader.SetSystemCoordinateSystem(RWMesh_CoordinateSystem_Zup);
+    aReader.SetDocument(hDoc);
+    aReader.SetParallel(multiThreaded());
+    aReader.SetSkipEmptyNodes(skipEmptyNodes());
+    aReader.SetLoadAllScenes(loadAllScenes());
+    aReader.SetDoublePrecision(doublePrecision());
+    aReader.SetToPrintDebugMessages(printDebugMessages());
+
+    TCollection_AsciiString filename(file.filePath().c_str());
+    Standard_Boolean ret = aReader.Perform(filename, theProgress);
+    if (!ret) {
+        throw Base::FileException("Cannot read from file: ", file);
+    }
+
+    return aReader.SingleShape();
 }
 
 // NOLINTNEXTLINE
@@ -131,6 +156,16 @@ TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
     }
 
     return {std::move(compound)};
+}
+
+bool ReaderGltf::loadTessellationOnly() const
+{
+    return meshOnly;
+}
+
+void ReaderGltf::setLoadTessellationOnly(bool value)
+{
+    meshOnly = value;
 }
 
 bool ReaderGltf::refinement() const

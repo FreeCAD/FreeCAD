@@ -43,32 +43,35 @@ public:
     void setVisibleImportDialog(bool);
     bool isVisibleImportDialog() const;
 
+    bool isTessellationOnly() const;
+    void setTessellationOnly(bool);
+
     bool getRefinement() const;
-    void setRefinement(bool) const;
+    void setRefinement(bool);
 
     bool getSkipEmptyNodes() const;
-    void setSkipEmptyNodes(bool) const;
+    void setSkipEmptyNodes(bool);
 
     bool getDoublePrecision() const;
-    void setDoublePrecision(bool) const;
+    void setDoublePrecision(bool);
 
     bool getLoadAllScenes() const;
-    void setLoadAllScenes(bool) const;
+    void setLoadAllScenes(bool);
 
     bool getMultiThreadedExport() const;
-    void setMultiThreadedExport(bool) const;
+    void setMultiThreadedExport(bool);
 
     bool getMultiThreadedImport() const;
-    void setMultiThreadedImport(bool) const;
+    void setMultiThreadedImport(bool);
 
     bool getPrintDebugMessages() const;
-    void setPrintDebugMessages(bool) const;
+    void setPrintDebugMessages(bool);
 
     bool getUVCoords() const;
-    void setUVCoords(bool) const;
+    void setUVCoords(bool);
 
     bool getMergeFaces() const;
-    void setMergeFaces(bool) const;
+    void setMergeFaces(bool);
 
 private:
     ParameterGrp::handle pGroup;

@@ -57,12 +57,22 @@ bool ImportExportSettings::isVisibleImportDialog() const
     return pGroup->GetBool("VisibleImportDialog", true);
 }
 
+bool ImportExportSettings::isTessellationOnly() const
+{
+    return pGroup->GetBool("MeshOnly", true);
+}
+
+void ImportExportSettings::setTessellationOnly(bool on)
+{
+    pGroup->SetBool("MeshOnly", on);
+}
+
 bool ImportExportSettings::getRefinement() const
 {
     return pGroup->GetBool("Refine", false);
 }
 
-void ImportExportSettings::setRefinement(bool on) const
+void ImportExportSettings::setRefinement(bool on)
 {
     pGroup->SetBool("Refine", on);
 }
@@ -72,7 +82,7 @@ bool ImportExportSettings::getSkipEmptyNodes() const
     return pGroup->GetBool("SkipEmptyNodes", true);
 }
 
-void ImportExportSettings::setSkipEmptyNodes(bool on) const
+void ImportExportSettings::setSkipEmptyNodes(bool on)
 {
     pGroup->SetBool("SkipEmptyNodes", on);
 }
@@ -82,7 +92,7 @@ bool ImportExportSettings::getDoublePrecision() const
     return pGroup->GetBool("DoublePrecision", false);
 }
 
-void ImportExportSettings::setDoublePrecision(bool on) const
+void ImportExportSettings::setDoublePrecision(bool on)
 {
     pGroup->SetBool("DoublePrecision", on);
 }
@@ -92,7 +102,7 @@ bool ImportExportSettings::getLoadAllScenes() const
     return pGroup->GetBool("LoadAllScenes", false);
 }
 
-void ImportExportSettings::setLoadAllScenes(bool on) const
+void ImportExportSettings::setLoadAllScenes(bool on)
 {
     pGroup->SetBool("LoadAllScenes", on);
 }
@@ -102,7 +112,7 @@ bool ImportExportSettings::getMultiThreadedExport() const
     return pGroup->GetBool("MultiThreadedExport", false);
 }
 
-void ImportExportSettings::setMultiThreadedExport(bool on) const
+void ImportExportSettings::setMultiThreadedExport(bool on)
 {
     pGroup->SetBool("MultiThreadedExport", on);
 }
@@ -112,7 +122,7 @@ bool ImportExportSettings::getMultiThreadedImport() const
     return pGroup->GetBool("MultiThreadedImport", false);
 }
 
-void ImportExportSettings::setMultiThreadedImport(bool on) const
+void ImportExportSettings::setMultiThreadedImport(bool on)
 {
     pGroup->SetBool("MultiThreadedImport", on);
 }
@@ -122,7 +132,7 @@ bool ImportExportSettings::getPrintDebugMessages() const
     return pGroup->GetBool("PrintDebug", false);
 }
 
-void ImportExportSettings::setPrintDebugMessages(bool on) const
+void ImportExportSettings::setPrintDebugMessages(bool on)
 {
     pGroup->SetBool("PrintDebug", on);
 }
@@ -132,7 +142,7 @@ bool ImportExportSettings::getUVCoords() const
     return pGroup->GetBool("ExportUVCoords", false);
 }
 
-void ImportExportSettings::setUVCoords(bool on) const
+void ImportExportSettings::setUVCoords(bool on)
 {
     pGroup->SetBool("ExportUVCoords", on);
 }
@@ -142,7 +152,7 @@ bool ImportExportSettings::getMergeFaces() const
     return pGroup->GetBool("MergeFaces", false);
 }
 
-void ImportExportSettings::setMergeFaces(bool on) const
+void ImportExportSettings::setMergeFaces(bool on)
 {
     pGroup->SetBool("MergeFaces", on);
 }

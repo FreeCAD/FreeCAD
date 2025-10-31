@@ -41,6 +41,7 @@ DlgImportGltf::DlgImportGltf(QWidget* parent)
 {
     ui->setupUi(this);
     Part::GLTF::ImportExportSettings settings;
+    ui->checkBoxMeshOnly->setChecked(settings.isTessellationOnly());
     ui->checkBoxRefine->setChecked(settings.getRefinement());
     ui->checkBoxPrintDebug->setChecked(settings.getPrintDebugMessages());
     ui->checkBoxDoublePrec->setChecked(settings.getDoublePrecision());
@@ -56,6 +57,7 @@ DlgImportGltf::~DlgImportGltf() = default;
 
 void DlgImportGltf::saveSettings()
 {
+    ui->checkBoxMeshOnly->onSave();
     ui->checkBoxRefine->onSave();
     ui->checkBoxPrintDebug->onSave();
     ui->checkBoxDoublePrec->onSave();
@@ -66,6 +68,7 @@ void DlgImportGltf::saveSettings()
 
 void DlgImportGltf::loadSettings()
 {
+    ui->checkBoxMeshOnly->onRestore();
     ui->checkBoxRefine->onRestore();
     ui->checkBoxPrintDebug->onRestore();
     ui->checkBoxDoublePrec->onRestore();
@@ -78,6 +81,7 @@ GltfImportSettings DlgImportGltf::getSettings() const
 {
     GltfImportSettings set;
     Part::GLTF::ImportExportSettings settings;
+    set.tessellationOnly = settings.isTessellationOnly();
     set.refinement = settings.getRefinement();
     set.skipEmptyNodes = settings.getSkipEmptyNodes();
     set.doublePrecision = settings.getDoublePrecision();
