@@ -277,6 +277,9 @@ private:
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
 
+    void highlightJointElements(App::DocumentObject* joint);
+    void clearJointElementHighlight();
+
     void applyIsolationRecursively(
         App::DocumentObject* current,
         std::set<App::DocumentObject*>& isolateSet,

@@ -42,6 +42,8 @@
 #include <set>
 #include <algorithm>
 #include <iterator>
+#include <Inventor/SoPath.h>
+#include <Inventor/details/SoDetail.h>
 
 #include <App/Link.h>
 #include <App/Document.h>
@@ -63,6 +65,7 @@
 #include <Gui/ViewProviderLink.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewParams.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
 
 #include <Mod/Assembly/App/AssemblyLink.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
@@ -1372,17 +1375,13 @@ void ViewProviderAssembly::applyIsolationRecursively(
     state.visibility = current->Visibility.getValue();
     if (vpl) {
         state.selectable = vpl->Selectable.getValue();
-        state.overrideMaterial = vpl->OverrideMaterial.getValue();
-        state.shapeMaterial = vpl->ShapeMaterial.getValue();
     }
-    else {  // vpg
+    else {
         state.selectable = vpg->Selectable.getValue();
-        state.shapeMaterial = vpg->ShapeAppearance.getValue()[0];
     }
     stateBackup[current] = state;
 
     if (mode == IsolateMode::Hidden) {
-        stateBackup[current] = state;
         current->Visibility.setValue(isolate);
         return;
     }
@@ -1391,39 +1390,23 @@ void ViewProviderAssembly::applyIsolationRecursively(
         current->Visibility.setValue(true);
     }
 
-    App::Material mat = App::Material::getDefaultAppearance();
-    float trans = mode == IsolateMode::Transparent ? 0.8 : 1.0;
-    mat.transparency = trans;
-
     if (vpl) {
         vpl->Selectable.setValue(isolate);
-        if (!isolate) {
-            vpl->OverrideMaterial.setValue(true);
-            vpl->ShapeMaterial.setValue(mat);
-        }
     }
     else if (vpg) {
         vpg->Selectable.setValue(isolate);
-        if (!isolate) {
-            vpg->ShapeAppearance.setValue(mat);
+    }
 
-            // Note, this geometric object could have a link linking to it in the assembly
-            // and this link may be in isolate set! If so it will inherit the isolation
-            // from 'current'! So we need to manually handle it to visible.
-            const std::vector<App::DocumentObject*> inList = current->getInList();
-            for (auto* child : inList) {
-                if (child->isDerivedFrom<App::Link>() && child->getLinkedObject() == current) {
-                    // In this case we need to reverse isolate this!
-                    auto* childVp = freecad_cast<Gui::ViewProviderLink*>(
-                        Gui::Application::Instance->getViewProvider(child)
-                    );
+    if (!isolate) {
+        float trans = mode == IsolateMode::Transparent ? 0.8 : 1.0;
+        Base::Color transparentColor(App::Material::getDefaultAppearance().diffuseColor);
+        transparentColor.setTransparency(trans);
+        std::map<std::string, Base::Color> colorMap;
+        colorMap["Face"] = transparentColor;  // The "Face" wildcard targets all faces
 
-                    // we give the child the color the current had before we changed it
-                    childVp->OverrideMaterial.setValue(true);
-                    childVp->ShapeMaterial.setValue(state.shapeMaterial);
-                }
-            }
-        }
+        Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::Color, true);
+        action.swapColors(colorMap);
+        action.apply(vp->getRoot());
     }
 }
 
@@ -1466,6 +1449,8 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
 
     std::set<App::DocumentObject*> isolateSet = {part1, part2};
     isolateComponents(isolateSet, mode);
+
+    highlightJointElements(joint);
 }
 
 void ViewProviderAssembly::clearIsolate()
@@ -1473,6 +1458,8 @@ void ViewProviderAssembly::clearIsolate()
     if (isolatedJoint) {
         isolatedJoint->Visibility.setValue(isolatedJointVisibilityBackup);
         isolatedJoint = nullptr;
+
+        clearJointElementHighlight();
     }
 
     for (const auto& pair : stateBackup) {
@@ -1483,23 +1470,73 @@ void ViewProviderAssembly::clearIsolate()
         }
 
         component->Visibility.setValue(state.visibility);
-
-        if (auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(
-                Gui::Application::Instance->getViewProvider(component)
-            )) {
+        auto* vp = Gui::Application::Instance->getViewProvider(component);
+        if (auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(vp)) {
             vpl->Selectable.setValue(state.selectable);
-            vpl->ShapeMaterial.setValue(state.shapeMaterial);
-            vpl->OverrideMaterial.setValue(state.overrideMaterial);
         }
-        else if (auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-                     Gui::Application::Instance->getViewProvider(component)
-                 )) {
+        else if (auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp)) {
             vpg->Selectable.setValue(state.selectable);
-            vpg->ShapeAppearance.setValue(state.shapeMaterial);
         }
+        Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::Color, true);
+        action.apply(vp->getRoot());
     }
 
     stateBackup.clear();
+}
+
+void ViewProviderAssembly::highlightJointElements(App::DocumentObject* joint)
+{
+    clearJointElementHighlight();
+
+    SbColor defaultHighlightColor(0.8f, 0.1f, 0.1f);
+    uint32_t defaultPacked = defaultHighlightColor.getPackedValue();
+    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+    uint32_t packedColor = hGrp->GetUnsigned("HighlightColor", defaultPacked);
+    Base::Color highlightColor(packedColor);
+
+    std::set<std::string> processedElements;
+
+    const char* refNames[] = {"Reference1", "Reference2"};
+    for (const char* refName : refNames) {
+        auto* propRef = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
+        if (!propRef || propRef->getSubValues().empty()) {
+            continue;
+        }
+        const auto& el = propRef->getSubValues()[0];
+
+        if (el.empty() || processedElements.count(el)) {
+            continue;
+        }
+        processedElements.insert(el);  // Mark as processed.
+
+        auto* path = static_cast<SoFullPath*>(new SoPath(20));
+        SoDetail* detail = nullptr;
+
+        if (this->getDetailPath(el.c_str(), path, true, detail)) {
+            const char* elementNameCStr = Data::findElementName(el.c_str());
+            if (!elementNameCStr || !elementNameCStr[0]) {
+                continue;
+            }
+            std::string elementName(elementNameCStr);
+
+            Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::Color, true);
+
+            std::map<std::string, Base::Color> colorMap;
+            colorMap[elementName] = highlightColor;
+            action.swapColors(colorMap);
+
+            path->ref();
+            action.apply(path);
+        }
+        delete detail;
+    }
+}
+
+void ViewProviderAssembly::clearJointElementHighlight()
+{
+    Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::Color, true);
+    // An empty color map tells nodes to clear their secondary color.
+    action.apply(this->getRoot());
 }
 
 void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName)

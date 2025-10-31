@@ -62,7 +62,7 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepEdgeSet)
 
-struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContext
+struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
 {
     std::vector<int32_t> hl, sl;
 };
@@ -86,7 +86,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this, selContext, ctx2);
-    if (ctx2 && ctx2->selectionIndex.empty()) {
+    if (ctx2 && ctx2->selectionIndex.empty() && ctx2->colors.empty()) {
         return;
     }
 
@@ -126,6 +126,79 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             selContext2->hl = ctx->hl;
         }
         ctx = selContext2;
+    }
+
+    bool hasColorOverride = (ctx2 && !ctx2->colors.empty());
+    if (hasColorOverride) {
+        state->push();
+
+        const SoCoordinateElement* coords;
+        const SbVec3f* normals;
+        const int32_t* cindices;
+        const int32_t* nindices;
+        const int32_t* tindices;
+        const int32_t* mindices;
+        int numcindices;
+        SbBool normalCacheUsed;
+        this->getVertexData(
+            state,
+            coords,
+            normals,
+            cindices,
+            nindices,
+            tindices,
+            mindices,
+            numcindices,
+            false,
+            normalCacheUsed
+        );
+
+        SoMaterialBundle mb(action);
+        mb.sendFirst();
+
+        std::vector<uint32_t> packedColors;
+        std::vector<int32_t> matIdx;
+        bool hasTransparency = false;
+
+        // CORRECTED way to get default packed color
+        const SoLazyElement* lazyElem = SoLazyElement::getInstance(state);
+        packedColors.push_back(
+            lazyElem->getDiffuse(state, 0).getPackedValue(lazyElem->getTransparency(state, 0))
+        );
+
+        int linecount = 0;
+        for (int i = 0; i < numcindices; i++) {
+            if (cindices[i] < 0) {
+                auto it = ctx2->colors.find(linecount);
+                if (it != ctx2->colors.end()) {
+                    packedColors.push_back(ctx2->packColor(it->second, hasTransparency));
+                    matIdx.push_back(packedColors.size() - 1);
+                }
+                else {
+                    auto it_all = ctx2->colors.find(-1);
+                    if (it_all != ctx2->colors.end()) {
+                        packedColors.push_back(ctx2->packColor(it_all->second, hasTransparency));
+                        matIdx.push_back(packedColors.size() - 1);
+                    }
+                    else {
+                        matIdx.push_back(0);
+                    }
+                }
+                linecount++;
+            }
+        }
+
+        if (!matIdx.empty()) {
+            SoLazyElement::setPacked(state, this, packedColors.size(), packedColors.data(), hasTransparency);
+            SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_PART_INDEXED);
+            this->materialIndex.setValues(0, matIdx.size(), matIdx.data());
+        }
+
+        inherited::GLRender(action);
+
+        this->materialIndex.deleteValues(0);
+        state->pop();
+        return;
     }
 
     if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
@@ -478,6 +551,40 @@ void SoBrepEdgeSet::doAction(SoAction* action)
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
 
         switch (selaction->getType()) {
+            case Gui::SoSelectionElementAction::Color:
+                if (selaction->isSecondary()) {
+                    const auto& colors = selaction->getColors();
+
+                    // Case 1: The color map is empty. This is a "clear" command.
+                    if (colors.empty()) {
+                        // We must find and remove any existing secondary context for this node.
+                        if (Gui::SoFCSelectionRoot::removeActionContext(action, this)) {
+                            touch();
+                        }
+                        return;
+                    }
+
+                    // Case 2: The color map is NOT empty. This is a "set color" command.
+                    static std::string element("Edge");
+                    bool hasEdgeColors = false;
+                    for (const auto& [name, color] : colors) {
+                        if (name.empty() || boost::starts_with(name, element)) {
+                            hasEdgeColors = true;
+                            break;
+                        }
+                    }
+
+                    if (hasEdgeColors) {
+                        auto ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action, this);
+                        selCounter.checkAction(selaction, ctx);
+                        ctx->selectAll();
+
+                        if (ctx->setColors(colors, element)) {
+                            touch();
+                        }
+                    }
+                }
+                return;
             case Gui::SoSelectionElementAction::None: {
                 if (selaction->isSecondary()) {
                     if (Gui::SoFCSelectionRoot::removeActionContext(action, this)) {
@@ -490,6 +597,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                     if (ctx) {
                         ctx->selectionIndex.clear();
                         ctx->sl.clear();
+                        ctx->colors.clear();
                         touch();
                     }
                 }
