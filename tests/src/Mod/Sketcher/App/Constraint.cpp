@@ -33,8 +33,7 @@ public:
     }
 };
 
-::testing::Environment* const xercesEnv =
-    ::testing::AddGlobalTestEnvironment(new XercesEnvironment);
+::testing::Environment* const xercesEnv = ::testing::AddGlobalTestEnvironment(new XercesEnvironment);
 
 class ConstraintPointsAccess: public ::testing::Test
 {
@@ -66,12 +65,18 @@ TEST_F(ConstraintPointsAccess, testDefaultGeoElementIdsAreSane)  // NOLINT
 
     // New way of accessing elements
 #endif
-    EXPECT_EQ(constraint.getElement(0),
-              Sketcher::GeoElementId(Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none));
-    EXPECT_EQ(constraint.getElement(1),
-              Sketcher::GeoElementId(Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none));
-    EXPECT_EQ(constraint.getElement(2),
-              Sketcher::GeoElementId(Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none));
+    EXPECT_EQ(
+        constraint.getElement(0),
+        Sketcher::GeoElementId(Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none)
+    );
+    EXPECT_EQ(
+        constraint.getElement(1),
+        Sketcher::GeoElementId(Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none)
+    );
+    EXPECT_EQ(
+        constraint.getElement(2),
+        Sketcher::GeoElementId(Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none)
+    );
 }
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
@@ -89,12 +94,18 @@ TEST_F(ConstraintPointsAccess, testOldWriteIsReadByNew)  // NOLINT
     constraint.ThirdPos = Sketcher::PointPos::mid;
 
     // Assert
-    EXPECT_EQ(constraint.getElement(0),
-              Sketcher::GeoElementId(Sketcher::GeoElementId(23, Sketcher::PointPos::start)));
-    EXPECT_EQ(constraint.getElement(1),
-              Sketcher::GeoElementId(Sketcher::GeoElementId(34, Sketcher::PointPos::end)));
-    EXPECT_EQ(constraint.getElement(2),
-              Sketcher::GeoElementId(Sketcher::GeoElementId(45, Sketcher::PointPos::mid)));
+    EXPECT_EQ(
+        constraint.getElement(0),
+        Sketcher::GeoElementId(Sketcher::GeoElementId(23, Sketcher::PointPos::start))
+    );
+    EXPECT_EQ(
+        constraint.getElement(1),
+        Sketcher::GeoElementId(Sketcher::GeoElementId(34, Sketcher::PointPos::end))
+    );
+    EXPECT_EQ(
+        constraint.getElement(2),
+        Sketcher::GeoElementId(Sketcher::GeoElementId(45, Sketcher::PointPos::mid))
+    );
 }
 
 TEST_F(ConstraintPointsAccess, testNewWriteIsReadByOld)  // NOLINT
@@ -260,48 +271,49 @@ TEST_F(ConstraintPointsAccess, testElementsRestoredFromSerialization)  // NOLINT
     restoredConstraint.Restore(reader);
 
     // Assert
-    EXPECT_EQ(restoredConstraint.getElement(0),
-              Sketcher::GeoElementId(23, Sketcher::PointPos::start));
-    EXPECT_EQ(restoredConstraint.getElement(1),
-              Sketcher::GeoElementId(34, Sketcher::PointPos::end));
-    EXPECT_EQ(restoredConstraint.getElement(2),
-              Sketcher::GeoElementId(45, Sketcher::PointPos::mid));
+    EXPECT_EQ(restoredConstraint.getElement(0), Sketcher::GeoElementId(23, Sketcher::PointPos::start));
+    EXPECT_EQ(restoredConstraint.getElement(1), Sketcher::GeoElementId(34, Sketcher::PointPos::end));
+    EXPECT_EQ(restoredConstraint.getElement(2), Sketcher::GeoElementId(45, Sketcher::PointPos::mid));
 
     inputFile.close();
 }
 
-TEST_F(ConstraintPointsAccess,
-       testElementsRestoredFromSerializationWithoutNewElementStorage)  // NOLINT
+TEST_F(
+    ConstraintPointsAccess,
+    testElementsRestoredFromSerializationWithoutNewElementStorage
+)  // NOLINT
 {
     // Arrange
 
     // Manually craft a serialized version, only parts in "{}" are important.
     // New way of storing elements is not present, like if it is an older file.
-    std::string serializedConstraint = fmt::format("<Constrain "
-                                                   R"(Name="" )"
-                                                   R"(Type="0" )"
-                                                   R"(Value="0" )"
-                                                   R"(LabelDistance="10" )"
-                                                   R"(LabelPosition="0" )"
-                                                   R"(IsDriving="1" )"
-                                                   R"(IsInVirtualSpace="0" )"
-                                                   R"(IsActive="1" )"
+    std::string serializedConstraint = fmt::format(
+        "<Constrain "
+        R"(Name="" )"
+        R"(Type="0" )"
+        R"(Value="0" )"
+        R"(LabelDistance="10" )"
+        R"(LabelPosition="0" )"
+        R"(IsDriving="1" )"
+        R"(IsInVirtualSpace="0" )"
+        R"(IsActive="1" )"
 
-                                                   R"(First="{}" )"
-                                                   R"(Second="{}" )"
-                                                   R"(Third="{}" )"
-                                                   R"(FirstPos="{}" )"
-                                                   R"(SecondPos="{}" )"
-                                                   R"(ThirdPos="{}" )"
+        R"(First="{}" )"
+        R"(Second="{}" )"
+        R"(Third="{}" )"
+        R"(FirstPos="{}" )"
+        R"(SecondPos="{}" )"
+        R"(ThirdPos="{}" )"
 
-                                                   "/>",
+        "/>",
 
-                                                   67,
-                                                   78,
-                                                   89,
-                                                   static_cast<int>(Sketcher::PointPos::mid),
-                                                   static_cast<int>(Sketcher::PointPos::start),
-                                                   static_cast<int>(Sketcher::PointPos::end));
+        67,
+        78,
+        89,
+        static_cast<int>(Sketcher::PointPos::mid),
+        static_cast<int>(Sketcher::PointPos::start),
+        static_cast<int>(Sketcher::PointPos::end)
+    );
 
     Base::StringWriter writer;
     auto& stream {writer.Stream()};
@@ -326,45 +338,46 @@ TEST_F(ConstraintPointsAccess,
     restoredConstraint.Restore(reader);
 
     // Assert
-    EXPECT_EQ(restoredConstraint.getElement(0),
-              Sketcher::GeoElementId(67, Sketcher::PointPos::mid));
-    EXPECT_EQ(restoredConstraint.getElement(1),
-              Sketcher::GeoElementId(78, Sketcher::PointPos::start));
-    EXPECT_EQ(restoredConstraint.getElement(2),
-              Sketcher::GeoElementId(89, Sketcher::PointPos::end));
+    EXPECT_EQ(restoredConstraint.getElement(0), Sketcher::GeoElementId(67, Sketcher::PointPos::mid));
+    EXPECT_EQ(restoredConstraint.getElement(1), Sketcher::GeoElementId(78, Sketcher::PointPos::start));
+    EXPECT_EQ(restoredConstraint.getElement(2), Sketcher::GeoElementId(89, Sketcher::PointPos::end));
 
     inputFile.close();
 }
 
-TEST_F(ConstraintPointsAccess,
-       testLegacyIsPreferedDuringSerializationWithoutLegacyElementStorage)  // NOLINT
+TEST_F(
+    ConstraintPointsAccess,
+    testLegacyIsPreferedDuringSerializationWithoutLegacyElementStorage
+)  // NOLINT
 {
     // Arrange
 
     // Manually craft a serialized version, only parts in "{}" are important.
     // Only new way of storing elements is present.
-    std::string serializedConstraint = fmt::format("<Constrain "
-                                                   R"(Name="" )"
-                                                   R"(Type="0" )"
-                                                   R"(Value="0" )"
-                                                   R"(LabelDistance="10" )"
-                                                   R"(LabelPosition="0" )"
-                                                   R"(IsDriving="1" )"
-                                                   R"(IsInVirtualSpace="0" )"
-                                                   R"(IsActive="1" )"
+    std::string serializedConstraint = fmt::format(
+        "<Constrain "
+        R"(Name="" )"
+        R"(Type="0" )"
+        R"(Value="0" )"
+        R"(LabelDistance="10" )"
+        R"(LabelPosition="0" )"
+        R"(IsDriving="1" )"
+        R"(IsInVirtualSpace="0" )"
+        R"(IsActive="1" )"
 
-                                                   // New way
-                                                   R"(ElementIds="{} {} {}" )"
-                                                   R"(ElementPositions="{} {} {}" )"
+        // New way
+        R"(ElementIds="{} {} {}" )"
+        R"(ElementPositions="{} {} {}" )"
 
-                                                   "/>",
-                                                   // New way data
-                                                   23,
-                                                   34,
-                                                   45,
-                                                   static_cast<int>(Sketcher::PointPos::start),
-                                                   static_cast<int>(Sketcher::PointPos::end),
-                                                   static_cast<int>(Sketcher::PointPos::mid));
+        "/>",
+        // New way data
+        23,
+        34,
+        45,
+        static_cast<int>(Sketcher::PointPos::start),
+        static_cast<int>(Sketcher::PointPos::end),
+        static_cast<int>(Sketcher::PointPos::mid)
+    );
 
     Base::StringWriter writer;
     auto& stream {writer.Stream()};
@@ -389,12 +402,9 @@ TEST_F(ConstraintPointsAccess,
     restoredConstraint.Restore(reader);
 
     // Assert
-    EXPECT_EQ(restoredConstraint.getElement(0),
-              Sketcher::GeoElementId(23, Sketcher::PointPos::start));
-    EXPECT_EQ(restoredConstraint.getElement(1),
-              Sketcher::GeoElementId(34, Sketcher::PointPos::end));
-    EXPECT_EQ(restoredConstraint.getElement(2),
-              Sketcher::GeoElementId(45, Sketcher::PointPos::mid));
+    EXPECT_EQ(restoredConstraint.getElement(0), Sketcher::GeoElementId(23, Sketcher::PointPos::start));
+    EXPECT_EQ(restoredConstraint.getElement(1), Sketcher::GeoElementId(34, Sketcher::PointPos::end));
+    EXPECT_EQ(restoredConstraint.getElement(2), Sketcher::GeoElementId(45, Sketcher::PointPos::mid));
 
     inputFile.close();
 }
@@ -405,45 +415,46 @@ TEST_F(ConstraintPointsAccess, testLegacyIsPreferedDuringSerializationIfContradi
 
     // Manually craft a serialized version, only parts in "{}" are important.
     // It is not important if legacy is included before or after, legacy should always be preferred.
-    std::string serializedConstraint =
-        fmt::format("<Constrain "
-                    R"(Name="" )"
-                    R"(Type="0" )"
-                    R"(Value="0" )"
-                    R"(LabelDistance="10" )"
-                    R"(LabelPosition="0" )"
-                    R"(IsDriving="1" )"
-                    R"(IsInVirtualSpace="0" )"
-                    R"(IsActive="1" )"
+    std::string serializedConstraint = fmt::format(
+        "<Constrain "
+        R"(Name="" )"
+        R"(Type="0" )"
+        R"(Value="0" )"
+        R"(LabelDistance="10" )"
+        R"(LabelPosition="0" )"
+        R"(IsDriving="1" )"
+        R"(IsInVirtualSpace="0" )"
+        R"(IsActive="1" )"
 
-                    // New way
-                    R"(ElementIds="{} {} {}" )"
-                    R"(ElementPositions="{} {} {}" )"
+        // New way
+        R"(ElementIds="{} {} {}" )"
+        R"(ElementPositions="{} {} {}" )"
 
-                    // Legacy
-                    R"(First="{}" )"
-                    R"(Second="{}" )"
-                    R"(Third="{}" )"
-                    R"(FirstPos="{}" )"
-                    R"(SecondPos="{}" )"
-                    R"(ThirdPos="{}" )"
+        // Legacy
+        R"(First="{}" )"
+        R"(Second="{}" )"
+        R"(Third="{}" )"
+        R"(FirstPos="{}" )"
+        R"(SecondPos="{}" )"
+        R"(ThirdPos="{}" )"
 
-                    "/>",
-                    // New way data
-                    23,
-                    34,
-                    45,
-                    static_cast<int>(Sketcher::PointPos::start),
-                    static_cast<int>(Sketcher::PointPos::end),
-                    static_cast<int>(Sketcher::PointPos::mid),
+        "/>",
+        // New way data
+        23,
+        34,
+        45,
+        static_cast<int>(Sketcher::PointPos::start),
+        static_cast<int>(Sketcher::PointPos::end),
+        static_cast<int>(Sketcher::PointPos::mid),
 
-                    // Contradicting legacy data, this should be preferred if available
-                    67,
-                    78,
-                    89,
-                    static_cast<int>(Sketcher::PointPos::mid),
-                    static_cast<int>(Sketcher::PointPos::start),
-                    static_cast<int>(Sketcher::PointPos::end));
+        // Contradicting legacy data, this should be preferred if available
+        67,
+        78,
+        89,
+        static_cast<int>(Sketcher::PointPos::mid),
+        static_cast<int>(Sketcher::PointPos::start),
+        static_cast<int>(Sketcher::PointPos::end)
+    );
 
     Base::StringWriter writer;
     auto& stream {writer.Stream()};
@@ -468,12 +479,9 @@ TEST_F(ConstraintPointsAccess, testLegacyIsPreferedDuringSerializationIfContradi
     restoredConstraint.Restore(reader);
 
     // Assert
-    EXPECT_EQ(restoredConstraint.getElement(0),
-              Sketcher::GeoElementId(67, Sketcher::PointPos::mid));
-    EXPECT_EQ(restoredConstraint.getElement(1),
-              Sketcher::GeoElementId(78, Sketcher::PointPos::start));
-    EXPECT_EQ(restoredConstraint.getElement(2),
-              Sketcher::GeoElementId(89, Sketcher::PointPos::end));
+    EXPECT_EQ(restoredConstraint.getElement(0), Sketcher::GeoElementId(67, Sketcher::PointPos::mid));
+    EXPECT_EQ(restoredConstraint.getElement(1), Sketcher::GeoElementId(78, Sketcher::PointPos::start));
+    EXPECT_EQ(restoredConstraint.getElement(2), Sketcher::GeoElementId(89, Sketcher::PointPos::end));
 
     inputFile.close();
 }
@@ -484,8 +492,7 @@ TEST_F(ConstraintPointsAccess, testSubstituteIndex)  // NOLINT
     Sketcher::Constraint constraint;
     constraint.setElement(0, Sketcher::GeoElementId(10, Sketcher::PointPos::start));
     constraint.setElement(1, Sketcher::GeoElementId(20, Sketcher::PointPos::end));
-    constraint.setElement(2,
-                          Sketcher::GeoElementId(10, Sketcher::PointPos::mid));  // same GeoId as 0
+    constraint.setElement(2, Sketcher::GeoElementId(10, Sketcher::PointPos::mid));  // same GeoId as 0
 
     // Act
     constraint.substituteIndex(10, 99);
@@ -510,8 +517,7 @@ TEST_F(ConstraintPointsAccess, testSubstituteIndexAndPos)  // NOLINT
     // Assert
     EXPECT_EQ(constraint.getElement(0), Sketcher::GeoElementId(42, Sketcher::PointPos::end));
     EXPECT_EQ(constraint.getElement(1), Sketcher::GeoElementId(20, Sketcher::PointPos::start));
-    EXPECT_EQ(constraint.getElement(2),
-              Sketcher::GeoElementId(10, Sketcher::PointPos::mid));  // unchanged
+    EXPECT_EQ(constraint.getElement(2), Sketcher::GeoElementId(10, Sketcher::PointPos::mid));  // unchanged
 }
 
 TEST_F(ConstraintPointsAccess, testInvolvesGeoId)  // NOLINT

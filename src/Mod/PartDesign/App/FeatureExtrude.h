@@ -35,7 +35,7 @@ class TopoDS_Shape;
 namespace PartDesign
 {
 
-class PartDesignExport FeatureExtrude : public ProfileBased
+class PartDesignExport FeatureExtrude: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureExtrude);
 
@@ -45,16 +45,16 @@ public:
     App::PropertyEnumeration SideType;
     App::PropertyEnumeration Type;
     App::PropertyEnumeration Type2;
-    App::PropertyLength      Length;
-    App::PropertyLength      Length2;
-    App::PropertyAngle       TaperAngle;
-    App::PropertyAngle       TaperAngle2;
-    App::PropertyBool        UseCustomVector;
-    App::PropertyVector      Direction;
-    App::PropertyBool        AlongSketchNormal;
-    App::PropertyLength      Offset;
-    App::PropertyLength      Offset2;
-    App::PropertyLinkSub     ReferenceAxis;
+    App::PropertyLength Length;
+    App::PropertyLength Length2;
+    App::PropertyAngle TaperAngle;
+    App::PropertyAngle TaperAngle2;
+    App::PropertyBool UseCustomVector;
+    App::PropertyVector Direction;
+    App::PropertyBool AlongSketchNormal;
+    App::PropertyLength Offset;
+    App::PropertyLength Offset2;
+    App::PropertyLinkSub ReferenceAxis;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
@@ -65,7 +65,8 @@ public:
     short mustExecute() const override;
     void setupObject() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderExtrude";
     }
     //@}
@@ -99,8 +100,8 @@ protected:
     TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
 
     /**
-      * Disables settings that are not valid for the current method
-      */
+     * Disables settings that are not valid for the current method
+     */
     void updateProperties();
 
     TopoShape generateSingleExtrusionSide(
@@ -108,17 +109,17 @@ protected:
         const std::string& method,
         double length,
         double taperAngleDeg,
-        App::PropertyLinkSub& upToFacePropHandle,  // e.g., &UpToFace or &UpToFace2
+        App::PropertyLinkSub& upToFacePropHandle,       // e.g., &UpToFace or &UpToFace2
         App::PropertyLinkSubList& upToShapePropHandle,  // e.g., &UpToShape or &UpToShape2
         gp_Dir dir,
         double offsetVal,
         bool makeFace,
-        const TopoShape& base         // The base shape for context (global CS)
+        const TopoShape& base  // The base shape for context (global CS)
     );
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
 
-#endif // PARTDESIGN_FEATURE_EXTRUDE_H
+#endif  // PARTDESIGN_FEATURE_EXTRUDE_H

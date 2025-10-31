@@ -36,7 +36,8 @@ OverlayParams.declare()
 
 
 // Auto generated code (Tools/params_utils.py:90)
-namespace Gui {
+namespace Gui
+{
 /** Convenient class to obtain overlay widgets related parameters
 
  * The parameters are under group "User parameter:BaseApp/Preferences/View"
@@ -67,18 +68,19 @@ namespace Gui {
  *     void OverlayParams:on<parameter_name>Changed()
  * @endcode
  */
-class GuiExport OverlayParams {
+class GuiExport OverlayParams
+{
 public:
     static ParameterGrp::handle getHandle();
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayAutoView
-    static const bool & getDockOverlayAutoView();
-    static const bool & defaultDockOverlayAutoView();
+    static const bool& getDockOverlayAutoView();
+    static const bool& defaultDockOverlayAutoView();
     static void removeDockOverlayAutoView();
-    static void setDockOverlayAutoView(const bool &v);
-    static const char *docDockOverlayAutoView();
+    static void setDockOverlayAutoView(const bool& v);
+    static const char* docDockOverlayAutoView();
     static void onDockOverlayAutoViewChanged();
     //@}
 
@@ -87,21 +89,21 @@ public:
     /// Accessor for parameter DockOverlayDelay
     ///
     /// Overlay dock (re),layout delay.
-    static const long & getDockOverlayDelay();
-    static const long & defaultDockOverlayDelay();
+    static const long& getDockOverlayDelay();
+    static const long& defaultDockOverlayDelay();
     static void removeDockOverlayDelay();
-    static void setDockOverlayDelay(const long &v);
-    static const char *docDockOverlayDelay();
+    static void setDockOverlayDelay(const long& v);
+    static const char* docDockOverlayDelay();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayRevealDelay
-    static const long & getDockOverlayRevealDelay();
-    static const long & defaultDockOverlayRevealDelay();
+    static const long& getDockOverlayRevealDelay();
+    static const long& defaultDockOverlayRevealDelay();
     static void removeDockOverlayRevealDelay();
-    static void setDockOverlayRevealDelay(const long &v);
-    static const char *docDockOverlayRevealDelay();
+    static void setDockOverlayRevealDelay(const long& v);
+    static const char* docDockOverlayRevealDelay();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -109,11 +111,11 @@ public:
     /// Accessor for parameter DockOverlaySplitterHandleTimeout
     ///
     /// Overlay splitter handle auto hide delay. Set zero to disable auto hiding.
-    static const long & getDockOverlaySplitterHandleTimeout();
-    static const long & defaultDockOverlaySplitterHandleTimeout();
+    static const long& getDockOverlaySplitterHandleTimeout();
+    static const long& defaultDockOverlaySplitterHandleTimeout();
     static void removeDockOverlaySplitterHandleTimeout();
-    static void setDockOverlaySplitterHandleTimeout(const long &v);
-    static const char *docDockOverlaySplitterHandleTimeout();
+    static void setDockOverlaySplitterHandleTimeout(const long& v);
+    static const char* docDockOverlaySplitterHandleTimeout();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -122,11 +124,11 @@ public:
     ///
     /// Show auto hidden dock overlay on mouse over.
     /// If disabled, then show on mouse click.
-    static const bool & getDockOverlayActivateOnHover();
-    static const bool & defaultDockOverlayActivateOnHover();
+    static const bool& getDockOverlayActivateOnHover();
+    static const bool& defaultDockOverlayActivateOnHover();
     static void removeDockOverlayActivateOnHover();
-    static void setDockOverlayActivateOnHover(const bool &v);
-    static const char *docDockOverlayActivateOnHover();
+    static void setDockOverlayActivateOnHover(const bool& v);
+    static const char* docDockOverlayActivateOnHover();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -134,11 +136,11 @@ public:
     /// Accessor for parameter DockOverlayAutoMouseThrough
     ///
     /// Auto mouse click through transparent part of dock overlay.
-    static const bool & getDockOverlayAutoMouseThrough();
-    static const bool & defaultDockOverlayAutoMouseThrough();
+    static const bool& getDockOverlayAutoMouseThrough();
+    static const bool& defaultDockOverlayAutoMouseThrough();
     static void removeDockOverlayAutoMouseThrough();
-    static void setDockOverlayAutoMouseThrough(const bool &v);
-    static const char *docDockOverlayAutoMouseThrough();
+    static void setDockOverlayAutoMouseThrough(const bool& v);
+    static const char* docDockOverlayAutoMouseThrough();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -146,11 +148,11 @@ public:
     /// Accessor for parameter DockOverlayWheelPassThrough
     ///
     /// Auto pass through mouse wheel event on transparent dock overlay.
-    static const bool & getDockOverlayWheelPassThrough();
-    static const bool & defaultDockOverlayWheelPassThrough();
+    static const bool& getDockOverlayWheelPassThrough();
+    static const bool& defaultDockOverlayWheelPassThrough();
     static void removeDockOverlayWheelPassThrough();
-    static void setDockOverlayWheelPassThrough(const bool &v);
-    static const char *docDockOverlayWheelPassThrough();
+    static void setDockOverlayWheelPassThrough(const bool& v);
+    static const char* docDockOverlayWheelPassThrough();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -159,11 +161,11 @@ public:
     ///
     /// Delay capturing mouse wheel event for passing through if it is
     /// previously handled by other widget.
-    static const long & getDockOverlayWheelDelay();
-    static const long & defaultDockOverlayWheelDelay();
+    static const long& getDockOverlayWheelDelay();
+    static const long& defaultDockOverlayWheelDelay();
     static void removeDockOverlayWheelDelay();
-    static void setDockOverlayWheelDelay(const long &v);
-    static const char *docDockOverlayWheelDelay();
+    static void setDockOverlayWheelDelay(const long& v);
+    static const char* docDockOverlayWheelDelay();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -174,11 +176,11 @@ public:
     /// defines a region of alpha test under the mouse cursor.
     /// Auto click through is only activated if all pixels within
     /// the region are non-opaque.
-    static const long & getDockOverlayAlphaRadius();
-    static const long & defaultDockOverlayAlphaRadius();
+    static const long& getDockOverlayAlphaRadius();
+    static const long& defaultDockOverlayAlphaRadius();
     static void removeDockOverlayAlphaRadius();
-    static void setDockOverlayAlphaRadius(const long &v);
-    static const char *docDockOverlayAlphaRadius();
+    static void setDockOverlayAlphaRadius(const long& v);
+    static const char* docDockOverlayAlphaRadius();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -186,11 +188,11 @@ public:
     /// Accessor for parameter DockOverlayCheckNaviCube
     ///
     /// Leave space for Navigation Cube in dock overlay
-    static const bool & getDockOverlayCheckNaviCube();
-    static const bool & defaultDockOverlayCheckNaviCube();
+    static const bool& getDockOverlayCheckNaviCube();
+    static const bool& defaultDockOverlayCheckNaviCube();
     static void removeDockOverlayCheckNaviCube();
-    static void setDockOverlayCheckNaviCube(const bool &v);
-    static const char *docDockOverlayCheckNaviCube();
+    static void setDockOverlayCheckNaviCube(const bool& v);
+    static const char* docDockOverlayCheckNaviCube();
     static void onDockOverlayCheckNaviCubeChanged();
     //@}
 
@@ -199,11 +201,11 @@ public:
     /// Accessor for parameter DockOverlayHintTriggerSize
     ///
     /// Auto hide hint visual display triggering width
-    static const long & getDockOverlayHintTriggerSize();
-    static const long & defaultDockOverlayHintTriggerSize();
+    static const long& getDockOverlayHintTriggerSize();
+    static const long& defaultDockOverlayHintTriggerSize();
     static void removeDockOverlayHintTriggerSize();
-    static void setDockOverlayHintTriggerSize(const long &v);
-    static const char *docDockOverlayHintTriggerSize();
+    static void setDockOverlayHintTriggerSize(const long& v);
+    static const char* docDockOverlayHintTriggerSize();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -211,11 +213,11 @@ public:
     /// Accessor for parameter DockOverlayHintSize
     ///
     /// Auto hide hint visual display width
-    static const long & getDockOverlayHintSize();
-    static const long & defaultDockOverlayHintSize();
+    static const long& getDockOverlayHintSize();
+    static const long& defaultDockOverlayHintSize();
     static void removeDockOverlayHintSize();
-    static void setDockOverlayHintSize(const long &v);
-    static const char *docDockOverlayHintSize();
+    static void setDockOverlayHintSize(const long& v);
+    static const char* docDockOverlayHintSize();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -223,11 +225,11 @@ public:
     /// Accessor for parameter DockOverlayHintLeftLength
     ///
     /// Auto hide hint visual display length for left panel. Set to zero to fill the space.
-    static const long & getDockOverlayHintLeftLength();
-    static const long & defaultDockOverlayHintLeftLength();
+    static const long& getDockOverlayHintLeftLength();
+    static const long& defaultDockOverlayHintLeftLength();
     static void removeDockOverlayHintLeftLength();
-    static void setDockOverlayHintLeftLength(const long &v);
-    static const char *docDockOverlayHintLeftLength();
+    static void setDockOverlayHintLeftLength(const long& v);
+    static const char* docDockOverlayHintLeftLength();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -235,11 +237,11 @@ public:
     /// Accessor for parameter DockOverlayHintRightLength
     ///
     /// Auto hide hint visual display length for right panel. Set to zero to fill the space.
-    static const long & getDockOverlayHintRightLength();
-    static const long & defaultDockOverlayHintRightLength();
+    static const long& getDockOverlayHintRightLength();
+    static const long& defaultDockOverlayHintRightLength();
     static void removeDockOverlayHintRightLength();
-    static void setDockOverlayHintRightLength(const long &v);
-    static const char *docDockOverlayHintRightLength();
+    static void setDockOverlayHintRightLength(const long& v);
+    static const char* docDockOverlayHintRightLength();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -247,11 +249,11 @@ public:
     /// Accessor for parameter DockOverlayHintTopLength
     ///
     /// Auto hide hint visual display length for top panel. Set to zero to fill the space.
-    static const long & getDockOverlayHintTopLength();
-    static const long & defaultDockOverlayHintTopLength();
+    static const long& getDockOverlayHintTopLength();
+    static const long& defaultDockOverlayHintTopLength();
     static void removeDockOverlayHintTopLength();
-    static void setDockOverlayHintTopLength(const long &v);
-    static const char *docDockOverlayHintTopLength();
+    static void setDockOverlayHintTopLength(const long& v);
+    static const char* docDockOverlayHintTopLength();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -259,11 +261,11 @@ public:
     /// Accessor for parameter DockOverlayHintBottomLength
     ///
     /// Auto hide hint visual display length for bottom panel. Set to zero to fill the space.
-    static const long & getDockOverlayHintBottomLength();
-    static const long & defaultDockOverlayHintBottomLength();
+    static const long& getDockOverlayHintBottomLength();
+    static const long& defaultDockOverlayHintBottomLength();
     static void removeDockOverlayHintBottomLength();
-    static void setDockOverlayHintBottomLength(const long &v);
-    static const char *docDockOverlayHintBottomLength();
+    static void setDockOverlayHintBottomLength(const long& v);
+    static const char* docDockOverlayHintBottomLength();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -271,11 +273,11 @@ public:
     /// Accessor for parameter DockOverlayHintLeftOffset
     ///
     /// Auto hide hint visual display offset for left panel
-    static const long & getDockOverlayHintLeftOffset();
-    static const long & defaultDockOverlayHintLeftOffset();
+    static const long& getDockOverlayHintLeftOffset();
+    static const long& defaultDockOverlayHintLeftOffset();
     static void removeDockOverlayHintLeftOffset();
-    static void setDockOverlayHintLeftOffset(const long &v);
-    static const char *docDockOverlayHintLeftOffset();
+    static void setDockOverlayHintLeftOffset(const long& v);
+    static const char* docDockOverlayHintLeftOffset();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -283,11 +285,11 @@ public:
     /// Accessor for parameter DockOverlayHintRightOffset
     ///
     /// Auto hide hint visual display offset for right panel
-    static const long & getDockOverlayHintRightOffset();
-    static const long & defaultDockOverlayHintRightOffset();
+    static const long& getDockOverlayHintRightOffset();
+    static const long& defaultDockOverlayHintRightOffset();
     static void removeDockOverlayHintRightOffset();
-    static void setDockOverlayHintRightOffset(const long &v);
-    static const char *docDockOverlayHintRightOffset();
+    static void setDockOverlayHintRightOffset(const long& v);
+    static const char* docDockOverlayHintRightOffset();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -295,11 +297,11 @@ public:
     /// Accessor for parameter DockOverlayHintTopOffset
     ///
     /// Auto hide hint visual display offset for top panel
-    static const long & getDockOverlayHintTopOffset();
-    static const long & defaultDockOverlayHintTopOffset();
+    static const long& getDockOverlayHintTopOffset();
+    static const long& defaultDockOverlayHintTopOffset();
     static void removeDockOverlayHintTopOffset();
-    static void setDockOverlayHintTopOffset(const long &v);
-    static const char *docDockOverlayHintTopOffset();
+    static void setDockOverlayHintTopOffset(const long& v);
+    static const char* docDockOverlayHintTopOffset();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -307,11 +309,11 @@ public:
     /// Accessor for parameter DockOverlayHintBottomOffset
     ///
     /// Auto hide hint visual display offset for bottom panel
-    static const long & getDockOverlayHintBottomOffset();
-    static const long & defaultDockOverlayHintBottomOffset();
+    static const long& getDockOverlayHintBottomOffset();
+    static const long& defaultDockOverlayHintBottomOffset();
     static void removeDockOverlayHintBottomOffset();
-    static void setDockOverlayHintBottomOffset(const long &v);
-    static const char *docDockOverlayHintBottomOffset();
+    static void setDockOverlayHintBottomOffset(const long& v);
+    static const char* docDockOverlayHintBottomOffset();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -319,11 +321,11 @@ public:
     /// Accessor for parameter DockOverlayHintTabBar
     ///
     /// Show tab bar on mouse over when auto hide
-    static const bool & getDockOverlayHintTabBar();
-    static const bool & defaultDockOverlayHintTabBar();
+    static const bool& getDockOverlayHintTabBar();
+    static const bool& defaultDockOverlayHintTabBar();
     static void removeDockOverlayHintTabBar();
-    static void setDockOverlayHintTabBar(const bool &v);
-    static const char *docDockOverlayHintTabBar();
+    static void setDockOverlayHintTabBar(const bool& v);
+    static const char* docDockOverlayHintTabBar();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -331,11 +333,11 @@ public:
     /// Accessor for parameter DockOverlayHideTabBar
     ///
     /// Hide tab bar in dock overlay
-    static const bool & getDockOverlayHideTabBar();
-    static const bool & defaultDockOverlayHideTabBar();
+    static const bool& getDockOverlayHideTabBar();
+    static const bool& defaultDockOverlayHideTabBar();
     static void removeDockOverlayHideTabBar();
-    static void setDockOverlayHideTabBar(const bool &v);
-    static const char *docDockOverlayHideTabBar();
+    static void setDockOverlayHideTabBar(const bool& v);
+    static const char* docDockOverlayHideTabBar();
     static void onDockOverlayHideTabBarChanged();
     //@}
 
@@ -344,11 +346,11 @@ public:
     /// Accessor for parameter DockOverlayHintDelay
     ///
     /// Delay before show hint visual
-    static const long & getDockOverlayHintDelay();
-    static const long & defaultDockOverlayHintDelay();
+    static const long& getDockOverlayHintDelay();
+    static const long& defaultDockOverlayHintDelay();
     static void removeDockOverlayHintDelay();
-    static void setDockOverlayHintDelay(const long &v);
-    static const char *docDockOverlayHintDelay();
+    static void setDockOverlayHintDelay(const long& v);
+    static const char* docDockOverlayHintDelay();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -356,11 +358,11 @@ public:
     /// Accessor for parameter DockOverlayAnimationDuration
     ///
     /// Auto hide animation duration, 0 to disable
-    static const long & getDockOverlayAnimationDuration();
-    static const long & defaultDockOverlayAnimationDuration();
+    static const long& getDockOverlayAnimationDuration();
+    static const long& defaultDockOverlayAnimationDuration();
     static void removeDockOverlayAnimationDuration();
-    static void setDockOverlayAnimationDuration(const long &v);
-    static const char *docDockOverlayAnimationDuration();
+    static void setDockOverlayAnimationDuration(const long& v);
+    static const char* docDockOverlayAnimationDuration();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -368,11 +370,11 @@ public:
     /// Accessor for parameter DockOverlayAnimationCurve
     ///
     /// Auto hide animation curve type
-    static const long & getDockOverlayAnimationCurve();
-    static const long & defaultDockOverlayAnimationCurve();
+    static const long& getDockOverlayAnimationCurve();
+    static const long& defaultDockOverlayAnimationCurve();
     static void removeDockOverlayAnimationCurve();
-    static void setDockOverlayAnimationCurve(const long &v);
-    static const char *docDockOverlayAnimationCurve();
+    static void setDockOverlayAnimationCurve(const long& v);
+    static const char* docDockOverlayAnimationCurve();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -380,11 +382,11 @@ public:
     /// Accessor for parameter DockOverlayHidePropertyViewScrollBar
     ///
     /// Hide property view scroll bar in dock overlay
-    static const bool & getDockOverlayHidePropertyViewScrollBar();
-    static const bool & defaultDockOverlayHidePropertyViewScrollBar();
+    static const bool& getDockOverlayHidePropertyViewScrollBar();
+    static const bool& defaultDockOverlayHidePropertyViewScrollBar();
     static void removeDockOverlayHidePropertyViewScrollBar();
-    static void setDockOverlayHidePropertyViewScrollBar(const bool &v);
-    static const char *docDockOverlayHidePropertyViewScrollBar();
+    static void setDockOverlayHidePropertyViewScrollBar(const bool& v);
+    static const char* docDockOverlayHidePropertyViewScrollBar();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -392,20 +394,20 @@ public:
     /// Accessor for parameter DockOverlayMinimumSize
     ///
     /// Minimum overlay dock widget width/height
-    static const long & getDockOverlayMinimumSize();
-    static const long & defaultDockOverlayMinimumSize();
+    static const long& getDockOverlayMinimumSize();
+    static const long& defaultDockOverlayMinimumSize();
     static void removeDockOverlayMinimumSize();
-    static void setDockOverlayMinimumSize(const long &v);
-    static const char *docDockOverlayMinimumSize();
+    static void setDockOverlayMinimumSize(const long& v);
+    static const char* docDockOverlayMinimumSize();
     static void onDockOverlayMinimumSizeChanged();
     //@}
 
     // Auto generated code (Gui/OverlayParams.py:163)
     static const std::vector<QString> AnimationCurveTypes;
 
-// Auto generated code (Tools/params_utils.py:178)
-}; // class OverlayParams
-} // namespace Gui
+    // Auto generated code (Tools/params_utils.py:178)
+};  // class OverlayParams
+}  // namespace Gui
 //[[[end]]]
 
-#endif // GUI_OVERLAY_PARAMS_H
+#endif  // GUI_OVERLAY_PARAMS_H

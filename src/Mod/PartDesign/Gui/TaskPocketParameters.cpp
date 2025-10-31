@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Precision.hxx>
+#include <Precision.hxx>
 
 
 #include <Mod/PartDesign/App/FeaturePocket.h>
@@ -34,11 +34,15 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPocketParameters */
 
-TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent, bool newObj)
+TaskPocketParameters::TaskPocketParameters(ViewProviderPocket* PocketView, QWidget* parent, bool newObj)
     : TaskExtrudeParameters(PocketView, parent, "PartDesign_Pocket", tr("Pocket Parameters"))
 {
-    ui->offsetEdit->setToolTip(tr("Offset from the selected face at which the pocket will end on side 1"));
-    ui->offsetEdit2->setToolTip(tr("Offset from the selected face at which the pocket will end on side 2"));
+    ui->offsetEdit->setToolTip(
+        tr("Offset from the selected face at which the pocket will end on side 1")
+    );
+    ui->offsetEdit2->setToolTip(
+        tr("Offset from the selected face at which the pocket will end on side 2")
+    );
     ui->checkBoxReversed->setToolTip(tr("Reverses pocket direction"));
 
     // set the history path
@@ -140,8 +144,9 @@ void TaskPocketParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
-    : TaskDlgExtrudeParameters(PocketView), parameters(new TaskPocketParameters(PocketView))
+TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket* PocketView)
+    : TaskDlgExtrudeParameters(PocketView)
+    , parameters(new TaskPocketParameters(PocketView))
 {
     Content.push_back(parameters);
     Content.push_back(preview);

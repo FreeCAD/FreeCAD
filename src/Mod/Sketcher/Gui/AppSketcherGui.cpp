@@ -123,9 +123,11 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::Workbench::init();
 
     // Add Types to module
-    Base::Interpreter().addType(&SketcherGui::ViewProviderSketchGeometryExtensionPy ::Type,
-                                sketcherGuiModule,
-                                "ViewProviderSketchGeometryExtension");
+    Base::Interpreter().addType(
+        &SketcherGui::ViewProviderSketchGeometryExtensionPy ::Type,
+        sketcherGuiModule,
+        "ViewProviderSketchGeometryExtension"
+    );
 
     // init objects
     SketcherGui::ViewProviderSketch ::init();
@@ -138,13 +140,17 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::ViewProviderSketchGeometryExtension ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsGrid>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsAppearance>(
-        QT_TRANSLATE_NOOP("QObject", "Sketcher"));
+        QT_TRANSLATE_NOOP("QObject", "Sketcher")
+    );
 
     // add resources and reloads the translators
     loadSketcherResource();

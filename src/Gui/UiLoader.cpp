@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-# include <QAction>
-# include <QActionGroup>
-# include <QCoreApplication>
-# include <QDir>
-# include <QFile>
-# include <QLayout>
-# include <QTextStream>
+#include <QAction>
+#include <QActionGroup>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QLayout>
+#include <QTextStream>
 
 
 #include <functional>
@@ -40,19 +40,25 @@
 
 using namespace Gui;
 
-namespace {
+namespace
+{
 
-QWidget* createFromWidgetFactory(const QString & className, QWidget * parent, const QString& name)
+QWidget* createFromWidgetFactory(const QString& className, QWidget* parent, const QString& name)
 {
     QWidget* widget = nullptr;
-    if (WidgetFactory().CanProduce((const char*)className.toLatin1()))
+    if (WidgetFactory().CanProduce((const char*)className.toLatin1())) {
         widget = WidgetFactory().createWidget((const char*)className.toLatin1(), parent);
-    if (widget)
+    }
+    if (widget) {
         widget->setObjectName(name);
+    }
     return widget;
 }
 
-Py::Object wrapFromWidgetFactory(const Py::Tuple& args, const std::function<QWidget*(const QString&, QWidget *, const QString&)> & callableFunc)
+Py::Object wrapFromWidgetFactory(
+    const Py::Tuple& args,
+    const std::function<QWidget*(const QString&, QWidget*, const QString&)>& callableFunc
+)
 {
     Gui::PythonWrapper wrap;
 
@@ -64,8 +70,9 @@ Py::Object wrapFromWidgetFactory(const Py::Tuple& args, const std::function<QWid
     QWidget* parent = nullptr;
     if (wrap.loadCoreModule() && args.size() > 1) {
         QObject* object = wrap.toQObject(args[1]);
-        if (object)
+        if (object) {
             parent = qobject_cast<QWidget*>(object);
+        }
     }
 
     // 3rd argument
@@ -75,14 +82,17 @@ Py::Object wrapFromWidgetFactory(const Py::Tuple& args, const std::function<QWid
         objectName = str.as_std_string("utf-8");
     }
 
-    QWidget* widget = callableFunc(QString::fromLatin1(className.c_str()), parent,
-                                   QString::fromLatin1(objectName.c_str()));
+    QWidget* widget = callableFunc(
+        QString::fromLatin1(className.c_str()),
+        parent,
+        QString::fromLatin1(objectName.c_str())
+    );
     if (!widget) {
         return Py::None();
-    //    std::string err = "No such widget class '";
-    //    err += className;
-    //    err += "'";
-    //    throw Py::RuntimeError(err);
+        //    std::string err = "No such widget class '";
+        //    err += className;
+        //    err += "'";
+        //    throw Py::RuntimeError(err);
     }
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
@@ -91,19 +101,25 @@ Py::Object wrapFromWidgetFactory(const Py::Tuple& args, const std::function<QWid
     return wrap.fromQWidget(widget, typeName);
 }
 
-}
+}  // namespace
 
 PySideUicModule::PySideUicModule()
-  : Py::ExtensionModule<PySideUicModule>("PySideUic")
+    : Py::ExtensionModule<PySideUicModule>("PySideUic")
 {
-    add_varargs_method("loadUiType",&PySideUicModule::loadUiType,
-        "PySide lacks the \"loadUiType\" command, so we have to convert the ui file to py code in-memory first\n"
-        "and then execute it in a special frame to retrieve the form_class.");
-    add_varargs_method("loadUi",&PySideUicModule::loadUi,
-        "Addition of \"loadUi\" to PySide.");
-    add_varargs_method("createCustomWidget",&PySideUicModule::createCustomWidget,
-        "Create custom widgets.");
-    initialize("PySideUic helper module"); // register with Python
+    add_varargs_method(
+        "loadUiType",
+        &PySideUicModule::loadUiType,
+        "PySide lacks the \"loadUiType\" command, so we have to convert the ui file to py code "
+        "in-memory first\n"
+        "and then execute it in a special frame to retrieve the form_class."
+    );
+    add_varargs_method("loadUi", &PySideUicModule::loadUi, "Addition of \"loadUi\" to PySide.");
+    add_varargs_method(
+        "createCustomWidget",
+        &PySideUicModule::createCustomWidget,
+        "Create custom widgets."
+    );
+    initialize("PySideUic helper module");  // register with Python
 }
 
 Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
@@ -165,10 +181,12 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
     PyObject* dict = PyModule_GetDict(main);
     Py::Dict d(PyDict_Copy(dict), true);
     d.setItem("uiFile_", args[0]);
-    if (args.size() > 1)
+    if (args.size() > 1) {
         d.setItem("base_", args[1]);
-    else
+    }
+    else {
         d.setItem("base_", Py::None());
+    }
 
     QString cmd;
     QTextStream str(&cmd);
@@ -202,13 +220,13 @@ Py::Object PySideUicModule::createCustomWidget(const Py::Tuple& args)
 
 // ----------------------------------------------------
 
-#if !defined (HAVE_QT_UI_TOOLS)
+#if !defined(HAVE_QT_UI_TOOLS)
 QUiLoader::QUiLoader(QObject* parent)
 {
     Base::PyGILStateLocker lock;
     PythonWrapper wrap;
     wrap.loadUiToolsModule();
-  //PyObject* module = PyImport_ImportModule("PySide2.QtUiTools");
+    // PyObject* module = PyImport_ImportModule("PySide2.QtUiTools");
     PyObject* module = PyImport_ImportModule("freecad.UiTools");
     if (module) {
         Py::Tuple args(1);
@@ -407,8 +425,9 @@ QDir QUiLoader::workingDirectory() const
         PythonWrapper wrap;
         Py::Object dir((uiloader.callMemberFunction("workingDirectory")));
         QDir* d = wrap.toQDir(dir.ptr());
-        if (d)
+        if (d) {
             return *d;
+        }
         return QDir::current();
     }
     catch (Py::Exception& e) {
@@ -486,19 +505,20 @@ QString QUiLoader::errorString() const
 // ----------------------------------------------------
 
 UiLoader::UiLoader(QObject* parent)
-  : QUiLoader(parent)
+    : QUiLoader(parent)
 {
     this->cw = availableWidgets();
     setLanguageChangeEnabled(true);
 }
 
-std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
+std::unique_ptr<UiLoader> UiLoader::newInstance(QObject* parent)
 {
     QCoreApplication* app = QCoreApplication::instance();
     QStringList libPaths = app->libraryPaths();
 
-    app->setLibraryPaths(QStringList{}); //< backup library paths, so QUiLoader won't load plugins by default
-    std::unique_ptr<UiLoader> rv{new UiLoader{parent}};
+    app->setLibraryPaths(QStringList {});  //< backup library paths, so QUiLoader won't load plugins
+                                           // by default
+    std::unique_ptr<UiLoader> rv {new UiLoader {parent}};
     app->setLibraryPaths(libPaths);
 
     return rv;
@@ -506,21 +526,22 @@ std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
 
 UiLoader::~UiLoader() = default;
 
-QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
-                                const QString& name)
+QWidget* UiLoader::createWidget(const QString& className, QWidget* parent, const QString& name)
 {
-    if (this->cw.contains(className))
+    if (this->cw.contains(className)) {
         return QUiLoader::createWidget(className, parent, name);
+    }
 
     return createFromWidgetFactory(className, parent, name);
 }
 
 // ----------------------------------------------------
 
-PyObject *UiLoaderPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
+PyObject* UiLoaderPy::PyMake(struct _typeobject* /*type*/, PyObject* args, PyObject* /*kwds*/)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
     return new UiLoaderPy();
 }
 
@@ -533,28 +554,36 @@ void UiLoaderPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    add_varargs_method("load",&UiLoaderPy::load,"load(string, QWidget parent=None) -> QWidget\n"
-                                                "load(QIODevice, QWidget parent=None) -> QWidget");
-    add_varargs_method("createWidget",&UiLoaderPy::createWidget,"createWidget()");
+    add_varargs_method(
+        "load",
+        &UiLoaderPy::load,
+        "load(string, QWidget parent=None) -> QWidget\n"
+        "load(QIODevice, QWidget parent=None) -> QWidget"
+    );
+    add_varargs_method("createWidget", &UiLoaderPy::createWidget, "createWidget()");
 
-    add_varargs_method("availableWidgets",&UiLoaderPy::availableWidgets,"availableWidgets()");
-    add_varargs_method("clearPluginPaths",&UiLoaderPy::clearPluginPaths,"clearPluginPaths()");
-    add_varargs_method("pluginPaths",&UiLoaderPy::pluginPaths,"pluginPaths()");
-    add_varargs_method("addPluginPath",&UiLoaderPy::addPluginPath,"addPluginPath()");
-    add_varargs_method("errorString",&UiLoaderPy::errorString,"errorString()");
-    add_varargs_method("isLanguageChangeEnabled",&UiLoaderPy::isLanguageChangeEnabled,
-                       "isLanguageChangeEnabled()");
-    add_varargs_method("setLanguageChangeEnabled",&UiLoaderPy::setLanguageChangeEnabled,
-                       "setLanguageChangeEnabled()");
-    add_varargs_method("setWorkingDirectory",&UiLoaderPy::setWorkingDirectory,
-                       "setWorkingDirectory()");
-    add_varargs_method("workingDirectory",&UiLoaderPy::workingDirectory,"workingDirectory()");
+    add_varargs_method("availableWidgets", &UiLoaderPy::availableWidgets, "availableWidgets()");
+    add_varargs_method("clearPluginPaths", &UiLoaderPy::clearPluginPaths, "clearPluginPaths()");
+    add_varargs_method("pluginPaths", &UiLoaderPy::pluginPaths, "pluginPaths()");
+    add_varargs_method("addPluginPath", &UiLoaderPy::addPluginPath, "addPluginPath()");
+    add_varargs_method("errorString", &UiLoaderPy::errorString, "errorString()");
+    add_varargs_method(
+        "isLanguageChangeEnabled",
+        &UiLoaderPy::isLanguageChangeEnabled,
+        "isLanguageChangeEnabled()"
+    );
+    add_varargs_method(
+        "setLanguageChangeEnabled",
+        &UiLoaderPy::setLanguageChangeEnabled,
+        "setLanguageChangeEnabled()"
+    );
+    add_varargs_method("setWorkingDirectory", &UiLoaderPy::setWorkingDirectory, "setWorkingDirectory()");
+    add_varargs_method("workingDirectory", &UiLoaderPy::workingDirectory, "workingDirectory()");
 }
 
 UiLoaderPy::UiLoaderPy()
-    : loader{UiLoader::newInstance()}
-{
-}
+    : loader {UiLoader::newInstance()}
+{}
 
 UiLoaderPy::~UiLoaderPy() = default;
 
@@ -573,15 +602,17 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
         QWidget* parent = nullptr;
         if (wrap.toCString(args[0], fn)) {
             file.setFileName(QString::fromUtf8(fn.c_str()));
-            if (!file.open(QFile::ReadOnly))
+            if (!file.open(QFile::ReadOnly)) {
                 throw Py::RuntimeError("Cannot open file");
+            }
             device = &file;
         }
         else if (args[0].isString()) {
             fn = static_cast<std::string>(Py::String(args[0]));
             file.setFileName(QString::fromUtf8(fn.c_str()));
-            if (!file.open(QFile::ReadOnly))
+            if (!file.open(QFile::ReadOnly)) {
                 throw Py::RuntimeError("Cannot open file");
+            }
             device = &file;
         }
         else {
@@ -616,12 +647,18 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 {
-    //NOLINTBEGIN
-    return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, loader.get(),
-                                                 std::placeholders::_1,
-                                                 std::placeholders::_2,
-                                                 std::placeholders::_3));
-    //NOLINTEND
+    // NOLINTBEGIN
+    return wrapFromWidgetFactory(
+        args,
+        std::bind(
+            &UiLoader::createWidget,
+            loader.get(),
+            std::placeholders::_1,
+            std::placeholders::_2,
+            std::placeholders::_3
+        )
+    );
+    // NOLINTEND
 }
 
 Py::Object UiLoaderPy::addPluginPath(const Py::Tuple& args)
@@ -703,6 +740,6 @@ Py::Object UiLoaderPy::workingDirectory(const Py::Tuple& /*args*/)
     return Py::String(path.toStdString());
 }
 
-#if !defined (HAVE_QT_UI_TOOLS)
+#if !defined(HAVE_QT_UI_TOOLS)
 # include "moc_UiLoader.cpp"
 #endif

@@ -21,27 +21,26 @@
  ***************************************************************************/
 
 
+#include <QMenu>
+#include <QFont>
+#include <QFontMetrics>
+#include <QImage>
+#include <QPainter>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoAsciiText.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFont.h>
+#include <Inventor/nodes/SoImage.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoRotationXYZ.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTranslation.h>
 
-# include <QMenu>
-# include <QFont>
-# include <QFontMetrics>
-# include <QImage>
-# include <QPainter>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoAsciiText.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoRotationXYZ.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-
-# include <Inventor/draggers/SoTranslate2Dragger.h>
+#include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include <App/Annotation.h>
 #include <App/Document.h>
@@ -59,26 +58,30 @@
 
 using namespace Gui;
 
-const char* ViewProviderAnnotation::JustificationEnums[]= {"Left","Right","Center",nullptr};
-const char* ViewProviderAnnotation::RotationAxisEnums[]= {"X","Y","Z",nullptr};
+const char* ViewProviderAnnotation::JustificationEnums[] = {"Left", "Right", "Center", nullptr};
+const char* ViewProviderAnnotation::RotationAxisEnums[] = {"X", "Y", "Z", nullptr};
 
 PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
 
 ViewProviderAnnotation::ViewProviderAnnotation()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long col = hGrp->GetUnsigned("AnnotationTextColor",4294967295UL); // light grey
-    float r,g,b;
-    r = ((col >> 24) & 0xff) / 255.0; g = ((col >> 16) & 0xff) / 255.0; b = ((col >> 8) & 0xff) / 255.0;
-    ADD_PROPERTY(TextColor,(r,g,b));
-    ADD_PROPERTY(Justification,((long)0));
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    unsigned long col = hGrp->GetUnsigned("AnnotationTextColor", 4294967295UL);  // light grey
+    float r, g, b;
+    r = ((col >> 24) & 0xff) / 255.0;
+    g = ((col >> 16) & 0xff) / 255.0;
+    b = ((col >> 8) & 0xff) / 255.0;
+    ADD_PROPERTY(TextColor, (r, g, b));
+    ADD_PROPERTY(Justification, ((long)0));
     Justification.setEnums(JustificationEnums);
-    ADD_PROPERTY(FontSize,(12));
-    ADD_PROPERTY(FontName,("Arial"));
-    ADD_PROPERTY(LineSpacing,(1.0));
-    ADD_PROPERTY(Rotation,(0));
-    ADD_PROPERTY(RotationAxis,((long)2));
+    ADD_PROPERTY(FontSize, (12));
+    ADD_PROPERTY(FontName, ("Arial"));
+    ADD_PROPERTY(LineSpacing, (1.0));
+    ADD_PROPERTY(Rotation, (0));
+    ADD_PROPERTY(RotationAxis, ((long)2));
     RotationAxis.setEnums(RotationAxisEnums);
 
     pFont = new SoFont();
@@ -116,7 +119,7 @@ void ViewProviderAnnotation::onChanged(const App::Property* prop)
 {
     if (prop == &TextColor) {
         const Base::Color& c = TextColor.getValue();
-        pColor->rgb.setValue(c.r,c.g,c.b);
+        pColor->rgb.setValue(c.r, c.g, c.b);
     }
     else if (prop == &Justification) {
         if (Justification.getValue() == 0) {
@@ -154,7 +157,7 @@ void ViewProviderAnnotation::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Rotation) {
-        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*std::numbers::pi);
+        pRotationXYZ->angle = (Rotation.getValue() / 360) * (2 * std::numbers::pi);
     }
     else {
         ViewProviderDocumentObject::onChanged(prop);
@@ -172,10 +175,12 @@ std::vector<std::string> ViewProviderAnnotation::getDisplayModes() const
 
 void ViewProviderAnnotation::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Screen") == 0)
+    if (strcmp(ModeName, "Screen") == 0) {
         setDisplayMaskMode("Screen");
-    else if (strcmp(ModeName, "World")==0)
+    }
+    else if (strcmp(ModeName, "World") == 0) {
         setDisplayMaskMode("World");
+    }
 
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
@@ -210,7 +215,7 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
     textsep->addChild(pTranslation);
     textsep->addChild(pRotationXYZ);
     textsep->addChild(pColor);
-    textsep->addChild(pFont); // causes problems
+    textsep->addChild(pFont);  // causes problems
     textsep->addChild(pLabel);
 
     auto textsep3d = new SoFCSelection();
@@ -237,25 +242,25 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    if (prop->is<App::PropertyStringList>() &&
-        strcmp(prop->getName(),"LabelText") == 0) {
-        const std::vector<std::string> lines = static_cast<const App::PropertyStringList*>(prop)->getValues();
-        int index=0;
+    if (prop->is<App::PropertyStringList>() && strcmp(prop->getName(), "LabelText") == 0) {
+        const std::vector<std::string> lines
+            = static_cast<const App::PropertyStringList*>(prop)->getValues();
+        int index = 0;
         pLabel->string.setNum((int)lines.size());
         pLabel3d->string.setNum((int)lines.size());
-        for (const auto & line : lines) {
+        for (const auto& line : lines) {
             const char* cs = line.c_str();
-            if (line.empty())
-                cs = " "; // empty lines make coin crash, we use a space instead
+            if (line.empty()) {
+                cs = " ";  // empty lines make coin crash, we use a space instead
+            }
             pLabel->string.set1Value(index, SbString(cs));
             pLabel3d->string.set1Value(index, SbString(cs));
             index++;
         }
     }
-    else if (prop->is<App::PropertyVector>() &&
-        strcmp(prop->getName(),"Position") == 0) {
+    else if (prop->is<App::PropertyVector>() && strcmp(prop->getName(), "Position") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
-        pTranslation->translation.setValue(v.x,v.y,v.z);
+        pTranslation->translation.setValue(v.x, v.y, v.z);
     }
 
     ViewProviderDocumentObject::updateData(prop);
@@ -263,21 +268,21 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
 
 // ----------------------------------------------------------------------------
 
-const char* ViewProviderAnnotationLabel::JustificationEnums[]= {"Left","Right","Center",nullptr};
+const char* ViewProviderAnnotationLabel::JustificationEnums[] = {"Left", "Right", "Center", nullptr};
 
 PROPERTY_SOURCE(Gui::ViewProviderAnnotationLabel, Gui::ViewProviderDocumentObject)
 
 
 ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
 {
-    ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
-    ADD_PROPERTY(BackgroundColor,(0.0f,0.333f,1.0f));
-    ADD_PROPERTY(Justification,((long)0));
+    ADD_PROPERTY(TextColor, (1.0f, 1.0f, 1.0f));
+    ADD_PROPERTY(BackgroundColor, (0.0f, 0.333f, 1.0f));
+    ADD_PROPERTY(Justification, ((long)0));
     Justification.setEnums(JustificationEnums);
     QFont fn;
-    ADD_PROPERTY(FontSize,(fn.pointSize()));
-    ADD_PROPERTY(FontName,((const char*)fn.family().toLatin1()));
-    ADD_PROPERTY(Frame,(true));
+    ADD_PROPERTY(FontSize, (fn.pointSize()));
+    ADD_PROPERTY(FontName, ((const char*)fn.family().toLatin1()));
+    ADD_PROPERTY(Frame, (true));
 
     pColor = new SoBaseColor();
     pColor->ref();
@@ -308,15 +313,15 @@ void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
 {
     if (prop == &BackgroundColor) {
         const Base::Color& c = BackgroundColor.getValue();
-        pColor->rgb.setValue(c.r,c.g,c.b);
+        pColor->rgb.setValue(c.r, c.g, c.b);
     }
-    if (prop == &TextColor || prop == &BackgroundColor ||
-        prop == &Justification || prop == &FontSize ||
-        prop == &FontName || prop == &Frame) {
+    if (prop == &TextColor || prop == &BackgroundColor || prop == &Justification
+        || prop == &FontSize || prop == &FontName || prop == &Frame) {
         if (getObject()) {
             App::Property* label = getObject()->getPropertyByName("LabelText");
-            if (label && label->is<App::PropertyStringList>())
+            if (label && label->is<App::PropertyStringList>()) {
                 drawImage(static_cast<App::PropertyStringList*>(label)->getValues());
+            }
         }
     }
     else {
@@ -335,10 +340,12 @@ std::vector<std::string> ViewProviderAnnotationLabel::getDisplayModes() const
 
 void ViewProviderAnnotationLabel::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Line") == 0)
+    if (strcmp(ModeName, "Line") == 0) {
         setDisplayMaskMode("Line");
-    else if (strcmp(ModeName, "Object")==0)
+    }
+    else if (strcmp(ModeName, "Object") == 0) {
         setDisplayMaskMode("Object");
+    }
 
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
@@ -374,7 +381,7 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
     sa.setSearchingAll(true);
     sa.setNode(this->pImage);
     sa.apply(pcRoot);
-    SoPath * imagePath = sa.getPath();
+    SoPath* imagePath = sa.getPath();
     if (imagePath) {
         SoDragger* dragger = pTextTranslation->getDragger();
         dragger->addStartCallback(dragStartCallback, this);
@@ -392,45 +399,44 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 {
-    if (prop->is<App::PropertyStringList>() &&
-        strcmp(prop->getName(),"LabelText") == 0) {
+    if (prop->is<App::PropertyStringList>() && strcmp(prop->getName(), "LabelText") == 0) {
         drawImage(static_cast<const App::PropertyStringList*>(prop)->getValues());
     }
-    else if (prop->is<App::PropertyVector>() &&
-        strcmp(prop->getName(),"BasePosition") == 0) {
+    else if (prop->is<App::PropertyVector>() && strcmp(prop->getName(), "BasePosition") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
-        pBaseTranslation->translation.setValue(v.x,v.y,v.z);
+        pBaseTranslation->translation.setValue(v.x, v.y, v.z);
     }
-    else if (prop->is<App::PropertyVector>() &&
-        strcmp(prop->getName(),"TextPosition") == 0) {
+    else if (prop->is<App::PropertyVector>() && strcmp(prop->getName(), "TextPosition") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
-        pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
-        pTextTranslation->translation.setValue(v.x,v.y,v.z);
+        pCoords->point.set1Value(1, SbVec3f(v.x, v.y, v.z));
+        pTextTranslation->translation.setValue(v.x, v.y, v.z);
     }
 
     ViewProviderDocumentObject::updateData(prop);
 }
 
 
-void ViewProviderAnnotationLabel::dragStartCallback(void *, SoDragger *)
+void ViewProviderAnnotationLabel::dragStartCallback(void*, SoDragger*)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
+    Gui::Application::Instance->activeDocument()->openCommand(
+        QT_TRANSLATE_NOOP("Command", "Transform")
+    );
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void *, SoDragger *)
+void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
 {
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
-void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag)
+void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
 {
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
     const SbMatrix& mat = drag->getMotionMatrix();
     App::DocumentObject* obj = that->getObject();
     if (obj && obj->is<App::AnnotationLabel>()) {
-        static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0],mat[3][1],mat[3][2]);
+        static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0], mat[3][1], mat[3][2]);
     }
 }
 
@@ -448,44 +454,46 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     int h = fm.height() * s.size();
     const Base::Color& b = this->BackgroundColor.getValue();
     QColor brush;
-    brush.setRgbF(b.r,b.g,b.b);
+    brush.setRgbF(b.r, b.g, b.b);
     const Base::Color& t = this->TextColor.getValue();
     QColor front;
-    front.setRgbF(t.r,t.g,t.b);
+    front.setRgbF(t.r, t.g, t.b);
 
     QStringList lines;
-    for (const auto & it : s) {
+    for (const auto& it : s) {
         QString line = QString::fromUtf8(it.c_str());
         w = std::max<int>(w, QtTools::horizontalAdvance(fm, line));
         lines << line;
     }
 
-    QImage image(w+10,h+10,QImage::Format_ARGB32_Premultiplied);
+    QImage image(w + 10, h + 10, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing);
 
     bool drawFrame = this->Frame.getValue();
     if (drawFrame) {
-        painter.setPen(QPen(QColor(0,0,127), 2, Qt::SolidLine, Qt::RoundCap,
-                            Qt::RoundJoin));
+        painter.setPen(QPen(QColor(0, 0, 127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.setBrush(QBrush(brush, Qt::SolidPattern));
-        QRectF rectangle(0.0, 0.0, w+10, h+10);
+        QRectF rectangle(0.0, 0.0, w + 10, h + 10);
         painter.drawRoundedRect(rectangle, 5, 5);
     }
 
     painter.setPen(front);
 
     Qt::Alignment align = Qt::AlignVCenter;
-    if (Justification.getValue() == 0)
+    if (Justification.getValue() == 0) {
         align = Qt::AlignVCenter | Qt::AlignLeft;
-    else if (Justification.getValue() == 1)
+    }
+    else if (Justification.getValue() == 1) {
         align = Qt::AlignVCenter | Qt::AlignRight;
-    else
+    }
+    else {
         align = Qt::AlignVCenter | Qt::AlignHCenter;
+    }
     QString text = lines.join(QLatin1String("\n"));
     painter.setFont(font);
-    painter.drawText(5,5,w,h,align,text);
+    painter.drawText(5, 5, w, h, align, text);
     painter.end();
 
     SoSFImage sfimage;

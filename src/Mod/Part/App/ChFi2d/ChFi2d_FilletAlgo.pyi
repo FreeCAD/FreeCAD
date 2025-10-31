@@ -3,7 +3,6 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Vector import Vector
 from typing import Final
 
-
 @export(
     Name="ChFi2d_FilletAlgoPy",
     PythonName="Part.ChFi2d.FilletAlgo",

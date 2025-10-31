@@ -37,14 +37,18 @@ DlgSettingsFemElmerImp::DlgSettingsFemElmerImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_grid_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemElmerImp::onfileNameSelected);
-    connect(ui->fc_elmer_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemElmerImp::onfileNameSelected);
+    connect(
+        ui->fc_grid_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemElmerImp::onfileNameSelected
+    );
+    connect(
+        ui->fc_elmer_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemElmerImp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemElmerImp::~DlgSettingsFemElmerImp() = default;

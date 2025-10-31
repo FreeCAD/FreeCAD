@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QMessageBox>
+#include <QMessageBox>
 
 #include "Dialogs/DlgPreferencePackManagementImp.h"
 #include "ui_DlgPreferencePackManagement.h"
@@ -43,29 +43,42 @@ DlgPreferencePackManagementImp::DlgPreferencePackManagementImp(QWidget* parent)
 {
     ui->setupUi(this);
     if (Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
-        connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
+        connect(
+            ui->pushButtonOpenAddonManager,
+            &QPushButton::clicked,
+            this,
+            &DlgPreferencePackManagementImp::showAddonManager
+        );
     }
     else {
         ui->pushButtonOpenAddonManager->setDisabled(true);
     }
-    connect(this, &DlgPreferencePackManagementImp::packVisibilityChanged, this, &DlgPreferencePackManagementImp::updateTree);
+    connect(
+        this,
+        &DlgPreferencePackManagementImp::packVisibilityChanged,
+        this,
+        &DlgPreferencePackManagementImp::updateTree
+    );
     updateTree();
 }
 
 void DlgPreferencePackManagementImp::updateTree()
 {
-    // Separate out user-saved packs from installed packs: we can remove individual user-saved packs,
-    // but can only disable individual installed packs (though we can completely uninstall the pack's
-    // containing Addon by redirecting to the Addon Manager).
-    auto savedPreferencePacksDirectory = Application::Instance->prefPackManager()->getSavedPreferencePacksPath();
+    // Separate out user-saved packs from installed packs: we can remove individual user-saved
+    // packs, but can only disable individual installed packs (though we can completely uninstall
+    // the pack's containing Addon by redirecting to the Addon Manager).
+    auto savedPreferencePacksDirectory
+        = Application::Instance->prefPackManager()->getSavedPreferencePacksPath();
     auto modDirectories = Application::Instance->prefPackManager()->modPaths();
     auto resourcePath = Application::Instance->prefPackManager()->getResourcePreferencePacksPath();
 
     // The displayed tree has two levels: at the toplevel is either "User-Saved Packs" or the name
-    // of the addon containing the pack. Beneath those are the individual packs themselves. The tree view shows
-    // "Hide"/"Show" for packs installed as a Mod, and "Delete" for packs in the user-saved pack
-    // section.
-    auto userPacks = Application::Instance->prefPackManager()->getPacksFromDirectory(savedPreferencePacksDirectory);
+    // of the addon containing the pack. Beneath those are the individual packs themselves. The tree
+    // view shows "Hide"/"Show" for packs installed as a Mod, and "Delete" for packs in the
+    // user-saved pack section.
+    auto userPacks = Application::Instance->prefPackManager()->getPacksFromDirectory(
+        savedPreferencePacksDirectory
+    );
 
     auto builtinPacks = Application::Instance->prefPackManager()->getPacksFromDirectory(resourcePath);
 
@@ -82,7 +95,7 @@ void DlgPreferencePackManagementImp::updateTree()
         }
     }
 
-    ui->treeWidget->clear(); // Begin by clearing whatever is there
+    ui->treeWidget->clear();  // Begin by clearing whatever is there
     ui->treeWidget->header()->setDefaultAlignment(Qt::AlignLeft);
     ui->treeWidget->setColumnCount(2);
     ui->treeWidget->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
@@ -103,7 +116,11 @@ void DlgPreferencePackManagementImp::updateTree()
     }
 }
 
-void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const std::vector<std::string> &contents, TreeWidgetType twt)
+void DlgPreferencePackManagementImp::addTreeNode(
+    const std::string& name,
+    const std::vector<std::string>& contents,
+    TreeWidgetType twt
+)
 {
     static const auto iconIsVisible = QIcon(QLatin1String(":/icons/dagViewVisible.svg"));
     static const auto iconIsInvisible = QIcon(QLatin1String(":/icons/Invisible.svg"));
@@ -121,32 +138,47 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
         auto button = new QPushButton();
         button->setFlat(true);
         switch (twt) {
-        break; case TreeWidgetType::BUILTIN:
-            // The button is a "hide" button
-            if (Application::Instance->prefPackManager()->isVisible("##BUILT_IN##", item->text(0).toStdString()))
-                button->setIcon(iconIsVisible);
-            else
-                button->setIcon(iconIsInvisible);
-            button->setToolTip(tr("Toggle visibility of built-in preference pack '%1'").arg(item->text(0)));
-            connect(button, &QPushButton::clicked, [this, item]() {
-                this->hideBuiltInPack(item->text(0).toStdString());
+            break;
+            case TreeWidgetType::BUILTIN:
+                // The button is a "hide" button
+                if (Application::Instance->prefPackManager()
+                        ->isVisible("##BUILT_IN##", item->text(0).toStdString())) {
+                    button->setIcon(iconIsVisible);
+                }
+                else {
+                    button->setIcon(iconIsInvisible);
+                }
+                button->setToolTip(
+                    tr("Toggle visibility of built-in preference pack '%1'").arg(item->text(0))
+                );
+                connect(button, &QPushButton::clicked, [this, item]() {
+                    this->hideBuiltInPack(item->text(0).toStdString());
                 });
-        break; case TreeWidgetType::USER:
-            // The button is a "delete" button
-            button->setIcon(QIcon(QLatin1String(":/icons/delete.svg")));
-            button->setToolTip(tr("Deletes the user-saved preference pack '%1'").arg(item->text(0)));
-            connect(button, &QPushButton::clicked, [this, item]() {
-                this->deleteUserPack(item->text(0).toStdString());
+                break;
+            case TreeWidgetType::USER:
+                // The button is a "delete" button
+                button->setIcon(QIcon(QLatin1String(":/icons/delete.svg")));
+                button->setToolTip(
+                    tr("Deletes the user-saved preference pack '%1'").arg(item->text(0))
+                );
+                connect(button, &QPushButton::clicked, [this, item]() {
+                    this->deleteUserPack(item->text(0).toStdString());
                 });
-        break; case TreeWidgetType::ADDON:
-            // The button is a "hide" button
-            if (Application::Instance->prefPackManager()->isVisible(name, item->text(0).toStdString()))
-                button->setIcon(iconIsVisible);
-            else
-                button->setIcon(iconIsInvisible);
-            button->setToolTip(tr("Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)").arg(item->text(0)));
-            connect(button, &QPushButton::clicked, [this, name, item]() {
-                this->hideInstalledPack(name, item->text(0).toStdString());
+                break;
+            case TreeWidgetType::ADDON:
+                // The button is a "hide" button
+                if (Application::Instance->prefPackManager()
+                        ->isVisible(name, item->text(0).toStdString())) {
+                    button->setIcon(iconIsVisible);
+                }
+                else {
+                    button->setIcon(iconIsInvisible);
+                }
+                button->setToolTip(tr("Toggles the visibility of the addon preference pack '%1' "
+                                      "(use the Addon Manager to remove permanently)")
+                                       .arg(item->text(0)));
+                connect(button, &QPushButton::clicked, [this, name, item]() {
+                    this->hideInstalledPack(name, item->text(0).toStdString());
                 });
         }
         ui->treeWidget->setItemWidget(item, 1, button);
@@ -156,9 +188,14 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
 void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
 {
     // Do the deletion here...
-    auto result = QMessageBox::warning(this, tr("Delete saved preference pack?"),
-        tr("Delete the preference pack named '%1'? This cannot be undone.").arg(QString::fromStdString(name)),
-        QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
+    auto result = QMessageBox::warning(
+        this,
+        tr("Delete saved preference pack?"),
+        tr("Delete the preference pack named '%1'? This cannot be undone.")
+            .arg(QString::fromStdString(name)),
+        QMessageBox::Yes | QMessageBox::Cancel,
+        QMessageBox::Cancel
+    );
     if (result == QMessageBox::Yes) {
         Application::Instance->prefPackManager()->deleteUserPack(name);
         Q_EMIT packVisibilityChanged();
@@ -171,7 +208,10 @@ void DlgPreferencePackManagementImp::hideBuiltInPack(const std::string& prefPack
     Q_EMIT packVisibilityChanged();
 }
 
-void DlgPreferencePackManagementImp::hideInstalledPack(const std::string& addonName, const std::string& prefPackName)
+void DlgPreferencePackManagementImp::hideInstalledPack(
+    const std::string& addonName,
+    const std::string& prefPackName
+)
 {
     Application::Instance->prefPackManager()->toggleVisibility(addonName, prefPackName);
     Q_EMIT packVisibilityChanged();
@@ -180,7 +220,9 @@ void DlgPreferencePackManagementImp::hideInstalledPack(const std::string& addonN
 void DlgPreferencePackManagementImp::showAddonManager()
 {
     // Configure the view to show all preference packs (installed and uninstalled)
-    auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
+    auto pref = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Addons"
+    );
     pref->SetInt("PackageTypeSelection", 3);
     pref->SetInt("StatusSelection", 0);
 
@@ -190,7 +232,6 @@ void DlgPreferencePackManagementImp::showAddonManager()
 }
 
 DlgPreferencePackManagementImp::~DlgPreferencePackManagementImp() = default;
-
 
 
 #include "moc_DlgPreferencePackManagementImp.cpp"

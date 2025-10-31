@@ -39,20 +39,22 @@ class QListWidgetItem;
 class QCheckBox;
 class QLabel;
 
-namespace App {
+namespace App
+{
 class DocumentObject;
 }
 
 struct ElementInfo;
 struct SubMenuInfo;
 
-namespace Gui {
-namespace DockWnd {
+namespace Gui
+{
+namespace DockWnd
+{
 
 /** A test class. A more elaborate class description.
  */
-class SelectionView : public Gui::DockWindow,
-                      public Gui::SelectionObserver
+class SelectionView: public Gui::DockWindow, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -61,12 +63,12 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    explicit SelectionView(Gui::Document* pcDocument, QWidget *parent=nullptr);
+    explicit SelectionView(Gui::Document* pcDocument, QWidget* parent = nullptr);
 
     /**
      * A destructor.
      * A more elaborate description of the destructor.
-    */
+     */
     ~SelectionView() override;
 
     /// Observer message from the Selection
@@ -74,18 +76,21 @@ public:
 
     void leaveEvent(QEvent*) override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
 
-    const char *getName() const override {return "SelectionView";}
+    const char* getName() const override
+    {
+        return "SelectionView";
+    }
 
     /// get called when the document is changed or updated
     void onUpdate() override;
 
     QListWidget* selectionView;
-    QLabel*      countLabel;
+    QLabel* countLabel;
 
-    QCheckBox *enablePickList;
-    QListWidget *pickList;
+    QCheckBox* enablePickList;
+    QListWidget* pickList;
 
 public Q_SLOTS:
     /// get called when text is entered in the search box
@@ -95,7 +100,7 @@ public Q_SLOTS:
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
-    void select(QListWidgetItem* item=nullptr);
+    void select(QListWidgetItem* item = nullptr);
     void deselect();
     void zoom();
     void treeSelect();
@@ -103,12 +108,12 @@ public Q_SLOTS:
     void touch();
     void showPart();
     void onEnablePickList();
-    void toggleSelect(QListWidgetItem* item=nullptr);
-    void preselect(QListWidgetItem* item=nullptr);
+    void toggleSelect(QListWidgetItem* item = nullptr);
+    void preselect(QListWidgetItem* item = nullptr);
 
 protected:
-    void showEvent(QShowEvent *) override;
-    void hideEvent(QHideEvent *) override;
+    void showEvent(QShowEvent*) override;
+    void hideEvent(QHideEvent*) override;
 
 private:
     QString getModule(const char* type) const;
@@ -116,15 +121,16 @@ private:
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
 
 private:
-    float x,y,z;
+    float x, y, z;
     std::vector<App::DocumentObject*> searchList;
     bool openedAutomatically;
 };
 
-} // namespace DockWnd
+}  // namespace DockWnd
 
 // Simple selection data structure
-struct PickData {
+struct PickData
+{
     App::DocumentObject* obj;
     std::string element;
     std::string docName;
@@ -133,10 +139,11 @@ struct PickData {
 };
 
 // Add SelectionMenu class outside the DockWnd namespace
-class GuiExport SelectionMenu : public QMenu {
+class GuiExport SelectionMenu: public QMenu
+{
     Q_OBJECT
 public:
-    SelectionMenu(QWidget *parent=nullptr);
+    SelectionMenu(QWidget* parent = nullptr);
 
     /** Populate and show the menu for picking geometry elements.
      *
@@ -146,38 +153,60 @@ public:
      *
      * The menu will be divided into submenus that are grouped by element type.
      */
-    PickData doPick(const std::vector<PickData> &sels, const QPoint& pos = QCursor::pos());
+    PickData doPick(const std::vector<PickData>& sels, const QPoint& pos = QCursor::pos());
 
 public Q_SLOTS:
-    void onHover(QAction *);
+    void onHover(QAction*);
 
 protected:
-    bool eventFilter(QObject *, QEvent *) override;
-    void leaveEvent(QEvent *e) override;
-    PickData onPicked(QAction *, const std::vector<PickData> &sels);
+    bool eventFilter(QObject*, QEvent*) override;
+    void leaveEvent(QEvent* e) override;
+    PickData onPicked(QAction*, const std::vector<PickData>& sels);
 
 private:
-    void processSelections(std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus);
-    void buildMenuStructure(std::map<std::string, SubMenuInfo> &menus, const std::vector<PickData> &selections);
-    
-    App::DocumentObject* getSubObject(const PickData &sel);
-    std::string extractElementType(const PickData &sel);
-    std::string createObjectKey(const PickData &sel);
-    QIcon getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon> &icons);
-    void addGeoFeatureTypes(App::DocumentObject* sobj, std::map<std::string, SubMenuInfo> &menus, std::set<std::string> &createdTypes);
-    void addWholeObjectSelection(const PickData &sel, App::DocumentObject* sobj, std::vector<PickData> &selections, 
-                               std::map<std::string, SubMenuInfo> &menus, const QIcon &icon);
-    bool shouldGroupMenu(const SubMenuInfo &info);
-    void createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
-                       const std::string &elementType, const std::vector<PickData> &selections);
-    void createGroupedMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
-                          const std::string &elementType, const std::vector<PickData> &selections);
+    void processSelections(std::vector<PickData>& selections, std::map<std::string, SubMenuInfo>& menus);
+    void buildMenuStructure(
+        std::map<std::string, SubMenuInfo>& menus,
+        const std::vector<PickData>& selections
+    );
+
+    App::DocumentObject* getSubObject(const PickData& sel);
+    std::string extractElementType(const PickData& sel);
+    std::string createObjectKey(const PickData& sel);
+    QIcon getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon>& icons);
+    void addGeoFeatureTypes(
+        App::DocumentObject* sobj,
+        std::map<std::string, SubMenuInfo>& menus,
+        std::set<std::string>& createdTypes
+    );
+    void addWholeObjectSelection(
+        const PickData& sel,
+        App::DocumentObject* sobj,
+        std::vector<PickData>& selections,
+        std::map<std::string, SubMenuInfo>& menus,
+        const QIcon& icon
+    );
+    bool shouldGroupMenu(const SubMenuInfo& info);
+    void createFlatMenu(
+        ElementInfo& elementInfo,
+        QMenu* parentMenu,
+        const std::string& label,
+        const std::string& elementType,
+        const std::vector<PickData>& selections
+    );
+    void createGroupedMenu(
+        ElementInfo& elementInfo,
+        QMenu* parentMenu,
+        const std::string& label,
+        const std::string& elementType,
+        const std::vector<PickData>& selections
+    );
 
     QPointer<QMenu> activeMenu;
     QPointer<QAction> activeAction;
     std::vector<PickData> currentSelections;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_DOCKWND_SELECTIONVIEW_H
+#endif  // GUI_DOCKWND_SELECTIONVIEW_H

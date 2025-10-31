@@ -1,7 +1,6 @@
 from Base.Metadata import export
 from PartFeature import PartFeature
 
-
 @export(
     Twin="Part2DObject",
     TwinPointer="Part2DObject",
@@ -15,4 +14,5 @@ class Part2DObject(PartFeature):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
     ...

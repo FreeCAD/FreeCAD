@@ -21,9 +21,7 @@
  ***************************************************************************/
 
 
-
-
-# include <sstream>
+#include <sstream>
 
 
 // inclusion of the generated files (generated out of PropertyContainerPy.pyi)
@@ -39,17 +37,20 @@ std::string ViewProviderExtensionPy::representation() const
     return {"<view provider extension>"};
 }
 
-PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)
+PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject* args)
 {
     PyObject* ignore;
     const char* name = nullptr;
-    if (!PyArg_ParseTuple(args, "O!s", &PyBool_Type, &ignore, &name))
+    if (!PyArg_ParseTuple(args, "O!s", &PyBool_Type, &ignore, &name)) {
         return nullptr;
+    }
 
     ViewProviderExtension* ext = getViewProviderExtensionPtr();
     if (name) {
         Base::Type type = Base::Type::fromName(name);
-        ext = dynamic_cast<ViewProviderExtension*>(ext->getExtendedContainer()->getExtension(type, true, true));
+        ext = dynamic_cast<ViewProviderExtension*>(
+            ext->getExtendedContainer()->getExtension(type, true, true)
+        );
         if (!ext) {
             PyErr_SetString(PyExc_NameError, "no such extension");
             return nullptr;
@@ -60,16 +61,19 @@ PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)
     Py_Return;
 }
 
-PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args) const
+PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject* args) const
 {
     const char* name = nullptr;
-    if (!PyArg_ParseTuple(args, "s", &name))
+    if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
+    }
 
     ViewProviderExtension* ext = getViewProviderExtensionPtr();
     if (name) {
         Base::Type type = Base::Type::fromName(name);
-        ext = dynamic_cast<ViewProviderExtension*>(ext->getExtendedContainer()->getExtension(type, true, true));
+        ext = dynamic_cast<ViewProviderExtension*>(
+            ext->getExtendedContainer()->getExtension(type, true, true)
+        );
         if (!ext) {
             PyErr_SetString(PyExc_NameError, "no such extension");
             return nullptr;
@@ -80,12 +84,12 @@ PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args) const
     return Py_BuildValue("O", (ignore ? Py_True : Py_False));
 }
 
-PyObject *ViewProviderExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ViewProviderExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
+int ViewProviderExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

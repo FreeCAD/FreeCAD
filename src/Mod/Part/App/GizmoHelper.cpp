@@ -57,7 +57,8 @@ EdgeMidPointProps getEdgeMidPointProps(Part::TopoShape& edge)
     }
 
     Base::Console().error(
-        "Failed to calculate tangent for the draggers! Please file a bug report for this.");
+        "Failed to calculate tangent for the draggers! Please file a bug report for this."
+    );
     return {position, Base::Vector3d {0, 0, 0}, middle};
 }
 
@@ -68,8 +69,11 @@ Base::Vector3d getCentreOfMassFromFace(TopoDS_Face& face)
     return Base::convertTo<Base::Vector3d>(massProps.CentreOfMass());
 }
 
-std::optional<std::pair<Base::Vector3d, Base::Vector3d>>
-getFaceNormalFromPointNearEdge(Part::TopoShape& edge, double middle, TopoDS_Face& face)
+std::optional<std::pair<Base::Vector3d, Base::Vector3d>> getFaceNormalFromPointNearEdge(
+    Part::TopoShape& edge,
+    double middle,
+    TopoDS_Face& face
+)
 {
     auto _edge = TopoDS::Edge(edge.getShape());
 
@@ -77,17 +81,18 @@ getFaceNormalFromPointNearEdge(Part::TopoShape& edge, double middle, TopoDS_Face
     gp_Dir _normal;
     Handle(IntTools_Context) context = new IntTools_Context;
 
-    if (!BOPTools_AlgoTools3D::GetApproxNormalToFaceOnEdge(_edge,
-                                                           face,
-                                                           middle,
-                                                           _inwardPoint,
-                                                           _normal,
-                                                           context)) {
+    if (!BOPTools_AlgoTools3D::GetApproxNormalToFaceOnEdge(
+            _edge,
+            face,
+            middle,
+            _inwardPoint,
+            _normal,
+            context
+        )) {
         return std::nullopt;
     }
 
-    return {
-        {Base::convertTo<Base::Vector3d>(_inwardPoint), Base::convertTo<Base::Vector3d>(_normal)}};
+    return {{Base::convertTo<Base::Vector3d>(_inwardPoint), Base::convertTo<Base::Vector3d>(_normal)}};
 }
 
 Base::Vector3d getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face)
@@ -104,8 +109,8 @@ Base::Vector3d getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face)
 }
 
 std::pair<TopoDS_Face, TopoDS_Face> getAdjacentFacesFromEdge(
-	Part::TopoShape& edge,
-	Part::TopoShape& baseShape
+    Part::TopoShape& edge,
+    Part::TopoShape& baseShape
 )
 {
     TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
@@ -113,8 +118,7 @@ std::pair<TopoDS_Face, TopoDS_Face> getAdjacentFacesFromEdge(
     TopExp::MapShapesAndAncestors(baseShape.getShape(), TopAbs_EDGE, TopAbs_FACE, edgeToFaceMap);
     const TopTools_ListOfShape& faces = edgeToFaceMap.FindFromKey(edge.getShape());
 
-    assert(faces.Extent() >= 2
-           && "This is probably a bug so please report it to the issue tracker");
+    assert(faces.Extent() >= 2 && "This is probably a bug so please report it to the issue tracker");
 
     TopoDS_Face face1 = TopoDS::Face(faces.First());
     TopoDS_Face face2 = TopoDS::Face(*(++faces.begin()));
@@ -150,10 +154,7 @@ DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, 
     return {position, dir, tangent};
 }
 
-DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(
-	Part::TopoShape& edge,
-	Part::TopoShape& face
-)
+DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, Part::TopoShape& face)
 {
     TopoDS_Face _face = TopoDS::Face(face.getShape());
     return getDraggerPlacementFromEdgeAndFace(edge, _face);

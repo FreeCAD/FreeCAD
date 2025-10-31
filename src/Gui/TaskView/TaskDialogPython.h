@@ -29,13 +29,15 @@
 #include "TaskWatcher.h"
 
 
-namespace Gui {
-namespace TaskView {
+namespace Gui
+{
+namespace TaskView
+{
 
-class ControlPy : public Py::PythonExtension<ControlPy> 
+class ControlPy: public Py::PythonExtension<ControlPy>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
     static ControlPy* getInstance();
 
     ControlPy();
@@ -58,7 +60,7 @@ private:
     static ControlPy* instance;
 };
 
-class GuiExport TaskWatcherPython : public TaskWatcher
+class GuiExport TaskWatcherPython: public TaskWatcher
 {
 public:
     explicit TaskWatcherPython(const Py::Object&);
@@ -73,18 +75,18 @@ private:
  * @brief The TaskDialogPy class
  * This class exposes a TaskDialog written in C++ to Python.
  */
-class TaskDialogPy : public Py::PythonExtension<TaskDialogPy>
+class TaskDialogPy: public Py::PythonExtension<TaskDialogPy>
 {
 public:
     using BaseType = Py::PythonExtension<TaskDialogPy>;
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     explicit TaskDialogPy(TaskDialog*);
     ~TaskDialogPy() override;
 
     Py::Object repr() override;
-    Py::Object getattr(const char *) override;
-    int setattr(const char *, const Py::Object &) override;
+    Py::Object getattr(const char*) override;
+    int setattr(const char*, const Py::Object&) override;
 
 public:
     Py::Object getDialogContent(const Py::Tuple&);
@@ -138,7 +140,7 @@ private:
  * @brief The TaskDialogPython class
  * This wraps a task dialog that is written in Python.
  */
-class GuiExport TaskDialogPython : public TaskDialog
+class GuiExport TaskDialogPython: public TaskDialog
 {
 public:
     explicit TaskDialogPython(const Py::Object&);
@@ -176,11 +178,11 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user press the help button 
+    /// is called by the framework if the user press the help button
     void helpRequested() override;
 
     /// event handling
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     bool tryLoadUiFile();
@@ -192,8 +194,7 @@ private:
     Py::Object dlg;
 };
 
-} //namespace TaskView
-} //namespace Gui
+}  // namespace TaskView
+}  // namespace Gui
 
-#endif // GUI_TASKVIEW_TASKDIALOGPYTHON_H
-
+#endif  // GUI_TASKVIEW_TASKDIALOGPYTHON_H

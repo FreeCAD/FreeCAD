@@ -26,17 +26,18 @@
 #include <Base/Sequencer.h>
 #include <QProgressDialog>
 #ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
+# include <QWinTaskbarButton>
+# include <QWinTaskbarProgress>
 #endif
 
 
-namespace Gui {
+namespace Gui
+{
 
 struct SequencerDialogPrivate;
 
 class ProgressDialog;
-class GuiExport SequencerDialog : public Base::SequencerBase
+class GuiExport SequencerDialog: public Base::SequencerBase
 {
 public:
     static SequencerDialog* instance();
@@ -47,12 +48,12 @@ public:
 
 protected:
     /** Construction */
-    SequencerDialog ();
+    SequencerDialog();
     /** Destruction */
-    ~SequencerDialog () override;
+    ~SequencerDialog() override;
 
     /** Puts text to the progress dialog */
-    void setText (const char* pszTxt) override;
+    void setText(const char* pszTxt) override;
     /** Starts the progress dialog */
     void startStep() override;
     /** Increase the step indicator of the progress dialog. */
@@ -77,15 +78,15 @@ private:
     friend class ProgressDialog;
 };
 
-class ProgressDialog : public QProgressDialog
+class ProgressDialog: public QProgressDialog
 {
     Q_OBJECT
 
 public:
     /** Construction */
-    explicit ProgressDialog (SequencerDialog* s, QWidget * parent=nullptr);
+    explicit ProgressDialog(SequencerDialog* s, QWidget* parent = nullptr);
     /** Destruction */
-    ~ProgressDialog () override;
+    ~ProgressDialog() override;
 
 protected Q_SLOTS:
     void onCancel();
@@ -114,6 +115,6 @@ private:
     friend class SequencerDialog;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_PROGRESSDIALOG_H
+#endif  // GUI_PROGRESSDIALOG_H

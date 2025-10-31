@@ -106,7 +106,8 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     viewport()->setMouseTracking(true);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/DockWindows/PropertyView");
+        "User parameter:BaseApp/Preferences/DockWindows/PropertyView"
+    );
     int firstColumnSize = hGrp->GetInt("FirstColumnSize", 0);
     if (firstColumnSize != 0) {
         header()->resizeSection(0, firstColumnSize);
@@ -243,14 +244,12 @@ void PropertyEditor::keyPressEvent(QKeyEvent* event)
     const auto key = event->key();
     const auto mods = event->modifiers();
 
-    const bool allowedDeleteModifiers =
-        mods == Qt::NoModifier ||
-        mods == Qt::KeypadModifier;
+    const bool allowedDeleteModifiers = mods == Qt::NoModifier || mods == Qt::KeypadModifier;
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
     const bool isDeleteKey = key == Qt::Key_Backspace || key == Qt::Key_Delete;
-    const bool isEditKey = (mods == Qt::NoModifier) &&
-        (key == Qt::Key_Return || key == Qt::Key_Enter);
+    const bool isEditKey = (mods == Qt::NoModifier)
+        && (key == Qt::Key_Return || key == Qt::Key_Enter);
 #else
     const bool isDeleteKey = key == Qt::Key_Delete;
     const bool isEditKey = (mods == Qt::NoModifier) && (key == Qt::Key_F2);
@@ -298,8 +297,10 @@ void PropertyEditor::editorDestroyed(QObject* editor)
 
 void PropertyEditor::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-    FC_LOG("current changed " << current.row() << "," << current.column() << "  " << previous.row()
-                              << "," << previous.column());
+    FC_LOG(
+        "current changed " << current.row() << "," << current.column() << "  " << previous.row()
+                           << "," << previous.column()
+    );
 
     QTreeView::currentChanged(current, previous);
 
@@ -449,11 +450,13 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
         Base::Console().error(
             "Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
             "The error message is: %s\n",
-            e.what());
+            e.what()
+        );
     }
     catch (...) {
         Base::Console().error(
-            "Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n");
+            "Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n"
+        );
     }
 }
 
@@ -569,11 +572,7 @@ void PropertyEditor::reset()
     }
 }
 
-void PropertyEditor::onRowsMoved(const QModelIndex& parent,
-                                 int start,
-                                 int end,
-                                 const QModelIndex& dst,
-                                 int)
+void PropertyEditor::onRowsMoved(const QModelIndex& parent, int start, int end, const QModelIndex& dst, int)
 {
     if (parent != dst) {
         auto item = static_cast<PropertyItem*>(parent.internalPointer());
@@ -650,9 +649,7 @@ void PropertyEditor::onRowsRemoved(const QModelIndex&, int, int)
     removingRows = 0;
 }
 
-void PropertyEditor::drawBranches(QPainter* painter,
-                                  const QRect& rect,
-                                  const QModelIndex& index) const
+void PropertyEditor::drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const
 {
     QTreeView::drawBranches(painter, rect, index);
 
@@ -663,9 +660,11 @@ void PropertyEditor::drawBranches(QPainter* painter,
     }
 }
 
-void Gui::PropertyEditor::PropertyEditor::drawRow(QPainter* painter,
-                                                  const QStyleOptionViewItem& options,
-                                                  const QModelIndex& index) const
+void Gui::PropertyEditor::PropertyEditor::drawRow(
+    QPainter* painter,
+    const QStyleOptionViewItem& options,
+    const QModelIndex& index
+) const
 {
     // render background also for non alternate rows based on the `itemBackground` property.
     painter->fillRect(options.rect, itemBackground());
@@ -684,7 +683,8 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
 
     if (committing) {
         Base::Console().warning(
-            "While committing the data to the property the selection has changed.\n");
+            "While committing the data to the property the selection has changed.\n"
+        );
         delaybuild = true;
         return;
     }
@@ -722,18 +722,18 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     }
 
     switch (expansionMode) {
-    case ExpansionMode::DefaultExpand:
-        // take the current expansion state
-        break;
-    case ExpansionMode::AutoExpand:
-        expandAll();
-        break;
-    case ExpansionMode::AutoCollapse:
-        if (!blockCollapse) {
-            collapseAll();
-        }
-        blockCollapse = false;
-        break;
+        case ExpansionMode::DefaultExpand:
+            // take the current expansion state
+            break;
+        case ExpansionMode::AutoExpand:
+            expandAll();
+            break;
+        case ExpansionMode::AutoCollapse:
+            if (!blockCollapse) {
+                collapseAll();
+            }
+            blockCollapse = false;
+            break;
     }
 }
 
@@ -778,7 +778,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
 
 void PropertyEditor::renameProperty(const App::Property& prop)
 {
-    for (auto & it : propList) {
+    for (auto& it : propList) {
         // find the given property in the list and rename it if it's there
         auto pos = std::ranges::find(it.second, &prop);
         if (pos != it.second.end()) {
@@ -821,8 +821,8 @@ void PropertyEditor::setFirstLevelExpanded(bool doExpand)
         return;
     }
 
-    std::function<void(const QModelIndex&, bool)> setExpanded = [&](
-        const QModelIndex& index, bool doExpand) {
+    std::function<void(const QModelIndex&, bool)> setExpanded = [&](const QModelIndex& index,
+                                                                    bool doExpand) {
         if (!index.isValid()) {
             return;
         }
@@ -845,7 +845,7 @@ void PropertyEditor::setFirstLevelExpanded(bool doExpand)
     };
 
     const QModelIndex root = QModelIndex();
-    for (int row = 0; row <propertyModel->rowCount(root); ++row) {
+    for (int row = 0; row < propertyModel->rowCount(root); ++row) {
         setExpanded(propertyModel->index(row, 0, root), doExpand);
     }
 }
@@ -889,15 +889,15 @@ QMenu* PropertyEditor::setupExpansionSubmenu(QWidget* parent)
     }
 
     switch (expansionMode) {
-    case ExpansionMode::DefaultExpand:
-        defaultExpand->setChecked(true);
-        break;
-    case ExpansionMode::AutoExpand:
-        autoExpand->setChecked(true);
-        break;
-    case ExpansionMode::AutoCollapse:
-        autoCollapse->setChecked(true);
-        break;
+        case ExpansionMode::DefaultExpand:
+            defaultExpand->setChecked(true);
+            break;
+        case ExpansionMode::AutoExpand:
+            autoExpand->setChecked(true);
+            break;
+        case ExpansionMode::AutoCollapse:
+            autoCollapse->setChecked(true);
+            break;
     }
 
     return expandMenu;
@@ -1045,22 +1045,22 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
         QAction* action;
         QString text;
-#define _ACTION_SETUP(_name)                                                                       \
-    do {                                                                                           \
-        text = tr(#_name);                                                                         \
-        action = subMenu->addAction(text);                                                         \
-        action->setData(QVariant(MA_##_name));                                                     \
-        action->setCheckable(true);                                                                \
-        if (propStatus & (1 << App::Property::_name))                                              \
-            action->setChecked(true);                                                              \
+#define _ACTION_SETUP(_name) \
+    do { \
+        text = tr(#_name); \
+        action = subMenu->addAction(text); \
+        action->setData(QVariant(MA_##_name)); \
+        action->setCheckable(true); \
+        if (propStatus & (1 << App::Property::_name)) \
+            action->setChecked(true); \
     } while (0)
-#define ACTION_SETUP(_name)                                                                        \
-    do {                                                                                           \
-        _ACTION_SETUP(_name);                                                                      \
-        if (propType & App::Prop_##_name) {                                                        \
-            action->setText(text + QStringLiteral(" *"));                                          \
-            action->setChecked(true);                                                              \
-        }                                                                                          \
+#define ACTION_SETUP(_name) \
+    do { \
+        _ACTION_SETUP(_name); \
+        if (propType & App::Prop_##_name) { \
+            action->setText(text + QStringLiteral(" *")); \
+            action->setChecked(true); \
+        } \
     } while (0)
 
         ACTION_SETUP(Hidden);
@@ -1110,15 +1110,15 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         case MA_Copy: {
             const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
             if (valueToCopy.isValid()) {
-                auto *clipboard = QApplication::clipboard();
+                auto* clipboard = QApplication::clipboard();
                 clipboard->setText(valueToCopy.toString());
             }
             return;
         }
-#define ACTION_CHECK(_name)                                                                        \
-    case MA_##_name:                                                                               \
-        for (auto prop : props)                                                                    \
-            prop->setStatus(App::Property::_name, action->isChecked());                            \
+#define ACTION_CHECK(_name) \
+    case MA_##_name: \
+        for (auto prop : props) \
+            prop->setStatus(App::Property::_name, action->isChecked()); \
         break
             ACTION_CHECK(Transient);
             ACTION_CHECK(ReadOnly);
@@ -1166,18 +1166,19 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
             bool ok = false;
             const QString currentTooltip = QString::fromUtf8(prop->getDocumentation());
-            QString newTooltip = QInputDialog::getMultiLineText(Gui::getMainWindow(),
-                                                         tr("Edit Property Tooltip"),
-                                                         tr("Tooltip"),
-                                                         currentTooltip,
-                                                         &ok);
+            QString newTooltip = QInputDialog::getMultiLineText(
+                Gui::getMainWindow(),
+                tr("Edit Property Tooltip"),
+                tr("Tooltip"),
+                currentTooltip,
+                &ok
+            );
             if (!ok || newTooltip == currentTooltip) {
                 break;
             }
 
-            prop->getContainer()->changeDynamicProperty(prop,
-                                                        prop->getGroup(),
-                                                        newTooltip.toUtf8().constData());
+            prop->getContainer()
+                ->changeDynamicProperty(prop, prop->getGroup(), newTooltip.toUtf8().constData());
             break;
         }
         case MA_RenameProp: {
@@ -1193,11 +1194,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
             App::AutoTransaction committer("Rename property");
             const char* oldName = prop->getName();
-            QString res = QInputDialog::getText(Gui::getMainWindow(),
-                                                tr("Rename property"),
-                                                tr("Property name"),
-                                                QLineEdit::Normal,
-                                                QString::fromUtf8(oldName));
+            QString res = QInputDialog::getText(
+                Gui::getMainWindow(),
+                tr("Rename property"),
+                tr("Property name"),
+                QLineEdit::Normal,
+                QString::fromUtf8(oldName)
+            );
             if (res.isEmpty()) {
                 break;
             }
@@ -1218,11 +1221,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             if (!groupName) {
                 groupName = "Base";
             }
-            QString res = QInputDialog::getText(Gui::getMainWindow(),
-                                                tr("Rename property group"),
-                                                tr("Group name:"),
-                                                QLineEdit::Normal,
-                                                QString::fromUtf8(groupName));
+            QString res = QInputDialog::getText(
+                Gui::getMainWindow(),
+                tr("Rename property group"),
+                tr("Group name:"),
+                QLineEdit::Normal,
+                QString::fromUtf8(groupName)
+            );
             if (res.size()) {
                 std::string group = res.toUtf8().constData();
                 for (auto prop : props) {
@@ -1255,7 +1260,8 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     // using minimal size = dragSensibility * 2 to prevent collapsing
                     header_view->resizeSection(
                         dragSection,
-                        qMax(dragSensibility * 2, header_view->sectionSize(dragSection) + delta));
+                        qMax(dragSensibility * 2, header_view->sectionSize(dragSection) + delta)
+                    );
                     return true;
                 }
                 else {  // set mouse cursor shape
@@ -1285,7 +1291,8 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                 dragInProgress = false;
 
                 auto hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/DockWindows/PropertyView");
+                    "User parameter:BaseApp/Preferences/DockWindows/PropertyView"
+                );
                 hGrp->SetInt("FirstColumnSize", header()->sectionSize(0));
                 return true;
             }

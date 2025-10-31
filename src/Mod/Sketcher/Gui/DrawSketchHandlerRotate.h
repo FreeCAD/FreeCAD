@@ -45,14 +45,14 @@ namespace SketcherGui
 
 class DrawSketchHandlerRotate;
 
-using DSHRotateController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerRotate,
-                                      StateMachines::ThreeSeekEnd,
-                                      /*PAutoConstraintSize =*/0,
-                                      /*OnViewParametersT =*/OnViewParameters<4>,
-                                      /*WidgetParametersT =*/WidgetParameters<1>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+using DSHRotateController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerRotate,
+    StateMachines::ThreeSeekEnd,
+    /*PAutoConstraintSize =*/0,
+    /*OnViewParametersT =*/OnViewParameters<4>,
+    /*WidgetParametersT =*/WidgetParameters<1>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -150,11 +150,13 @@ private:
 
             commandAddShapeGeometryAndConstraints();
 
-            expressionHelper.copyExpressionsToNewConstraints(sketchgui->getSketchObject(),
-                                                             listOfGeoIds,
-                                                             ShapeGeometry.size(),
-                                                             numberOfCopies,
-                                                             1);
+            expressionHelper.copyExpressionsToNewConstraints(
+                sketchgui->getSketchObject(),
+                listOfGeoIds,
+                ShapeGeometry.size(),
+                numberOfCopies,
+                1
+            );
 
             if (deleteOriginal) {
                 deleteOriginalGeos();
@@ -164,16 +166,21 @@ private:
         }
         catch (const Base::Exception& e) {
             e.reportException();
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to rotate"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to rotate")
+            );
 
             Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
         }
     }
 
@@ -256,9 +263,7 @@ private:
         }
         stream << listOfGeoIds[listOfGeoIds.size() - 1];
         try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
-                                  stream.str().c_str());
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometries([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
             Base::Console().error("%s\n", e.what());
@@ -273,9 +278,11 @@ private:
 
         if (state() == SelectMode::SeekSecond) {
             if (length > Precision::Confusion()) {
-                addLineToShapeGeometry(toVector3d(centerPoint),
-                                       toVector3d(startPoint),
-                                       isConstructionMode());
+                addLineToShapeGeometry(
+                    toVector3d(centerPoint),
+                    toVector3d(startPoint),
+                    isConstructionMode()
+                );
             }
             return;
         }
@@ -347,15 +354,13 @@ private:
                     }
                     else if ((cstr->Type == Coincident || cstr->Type == Tangent
                               || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                              || cstr->Type == Parallel || cstr->Type == Equal
-                              || cstr->Type == Angle || cstr->Type == PointOnObject
-                              || cstr->Type == InternalAlignment)
+                              || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
+                              || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
                              && firstIndex >= 0 && secondIndex >= 0
                              && thirdIndex == GeoEnum::GeoUndef) {
                         newConstr->Second = secondIndexi;
                     }
-                    else if ((cstr->Type == Radius || cstr->Type == Diameter
-                              || cstr->Type == Weight)
+                    else if ((cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
                              && firstIndex >= 0) {
                         if (deleteOriginal || !cloneConstraints) {
                             newConstr->setValue(cstr->getValue());
@@ -462,30 +467,37 @@ void DSHRotateController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints"));
+            QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints")
+        );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
             QStringLiteral("<p>")
-                + QApplication::translate("TaskSketcherTool_c1_offset",
-                                          "If this option is selected dimensional constraints are "
-                                          "excluded from the operation.\n"
-                                          "Instead equal constraints are applied between the "
-                                          "original objects and their copies.")
-                + QStringLiteral("</p>"));
+                + QApplication::translate(
+                    "TaskSketcherTool_c1_offset",
+                    "If this option is selected dimensional constraints are "
+                    "excluded from the operation.\n"
+                    "Instead equal constraints are applied between the "
+                    "original objects and their copies."
+                )
+                + QStringLiteral("</p>")
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     onViewParameters[OnViewParameter::Third]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
     onViewParameters[OnViewParameter::Fourth]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')"));
+        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')")
+    );
     toolWidget->setParameter(OnViewParameter::First, 0.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
     toolWidget->configureParameterMin(OnViewParameter::First, 0.0);     // NOLINT

@@ -21,14 +21,13 @@
  ***************************************************************************/
 
 
-
 #include "ViewProviderExtrusion.h"
 #include <Mod/Part/App/FeatureExtrusion.h>
 
 
 using namespace PartGui;
 
-PROPERTY_SOURCE(PartGui::ViewProviderExtrusion,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderExtrusion, PartGui::ViewProviderPart)
 
 ViewProviderExtrusion::ViewProviderExtrusion()
 {
@@ -37,7 +36,7 @@ ViewProviderExtrusion::ViewProviderExtrusion()
 
 ViewProviderExtrusion::~ViewProviderExtrusion() = default;
 
-std::vector<App::DocumentObject*> ViewProviderExtrusion::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderExtrusion::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(getObject<Part::Extrusion>()->Base.getValue());

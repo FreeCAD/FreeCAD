@@ -37,8 +37,7 @@ using namespace Gui;
 using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
-TaskSolverMessages::TaskSolverMessages(const QPixmap& icon,
-                                       const QString& title)
+TaskSolverMessages::TaskSolverMessages(const QPixmap& icon, const QString& title)
     : TaskBox(icon, title, true, nullptr)
     , ui(new Ui_TaskSolverMessages)
 {
@@ -52,32 +51,47 @@ TaskSolverMessages::TaskSolverMessages(const QPixmap& icon,
     ui->labelStatus->setOpenExternalLinks(false);
 
     // Set up the possible state values for the status label
-    ui->labelStatus->setParameterGroup(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->labelStatus->registerState(QStringLiteral("empty"),
-                                            palette().windowText().color(),
-                                            std::string("EmptySketchMessageColor"));
-    ui->labelStatus->registerState(QStringLiteral("under_constrained"),
-                                            palette().windowText().color(),
-                                            std::string("UnderconstrainedMessageColor"));
-    ui->labelStatus->registerState(QStringLiteral("malformed_constraints"),
-                                            QColor("red"),
-                                            std::string("MalformedConstraintMessageColor"));
-    ui->labelStatus->registerState(QStringLiteral("conflicting_constraints"),
-                                            QColor("orangered"),
-                                            std::string("ConflictingConstraintMessageColor"));
-    ui->labelStatus->registerState(QStringLiteral("redundant_constraints"),
-                                            QColor("red"),
-                                            std::string("RedundantConstraintMessageColor"));
+    ui->labelStatus->setParameterGroup("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ui->labelStatus->registerState(
+        QStringLiteral("empty"),
+        palette().windowText().color(),
+        std::string("EmptySketchMessageColor")
+    );
+    ui->labelStatus->registerState(
+        QStringLiteral("under_constrained"),
+        palette().windowText().color(),
+        std::string("UnderconstrainedMessageColor")
+    );
+    ui->labelStatus->registerState(
+        QStringLiteral("malformed_constraints"),
+        QColor("red"),
+        std::string("MalformedConstraintMessageColor")
+    );
+    ui->labelStatus->registerState(
+        QStringLiteral("conflicting_constraints"),
+        QColor("orangered"),
+        std::string("ConflictingConstraintMessageColor")
+    );
+    ui->labelStatus->registerState(
+        QStringLiteral("redundant_constraints"),
+        QColor("red"),
+        std::string("RedundantConstraintMessageColor")
+    );
     ui->labelStatus->registerState(
         QStringLiteral("partially_redundant_constraints"),
         QColor("royalblue"),
-        std::string("PartiallyRedundantConstraintMessageColor"));
+        std::string("PartiallyRedundantConstraintMessageColor")
+    );
     ui->labelStatus->registerState(
-        QStringLiteral("solver_failed"), QColor("red"), std::string("SolverFailedMessageColor"));
-    ui->labelStatus->registerState(QStringLiteral("fully_constrained"),
-                                            QColor("green"),
-                                            std::string("FullyConstrainedMessageColor"));
+        QStringLiteral("solver_failed"),
+        QColor("red"),
+        std::string("SolverFailedMessageColor")
+    );
+    ui->labelStatus->registerState(
+        QStringLiteral("fully_constrained"),
+        QColor("green"),
+        std::string("FullyConstrainedMessageColor")
+    );
 
     ui->labelStatusLink->setLaunchExternal(false);
 
@@ -88,18 +102,21 @@ TaskSolverMessages::~TaskSolverMessages() = default;
 
 void TaskSolverMessages::setupConnections()
 {
-    connect(ui->labelStatusLink,
-            &Gui::UrlLabel::linkClicked,
-            this,
-            &TaskSolverMessages::onLabelStatusLinkClicked);
-    connect(ui->manualUpdate,
-            &QToolButton::clicked,
-            this,
-            &TaskSolverMessages::onManualUpdateClicked);
+    connect(
+        ui->labelStatusLink,
+        &Gui::UrlLabel::linkClicked,
+        this,
+        &TaskSolverMessages::onLabelStatusLinkClicked
+    );
+    connect(ui->manualUpdate, &QToolButton::clicked, this, &TaskSolverMessages::onManualUpdateClicked);
 }
 
-void TaskSolverMessages::slotSetUp(const QString& state, const QString& msg, const QString& link,
-                                     const QString& linkText)
+void TaskSolverMessages::slotSetUp(
+    const QString& state,
+    const QString& msg,
+    const QString& link,
+    const QString& linkText
+)
 {
     ui->labelStatus->setState(state);
     ui->labelStatus->setText(msg);
@@ -130,4 +147,3 @@ void TaskSolverMessages::createSettingsButtonActions()
 }
 
 #include "moc_TaskSolverMessages.cpp"
-

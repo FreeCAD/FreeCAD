@@ -34,9 +34,11 @@
 using namespace RobotGui;
 using namespace Gui;
 
-TrajectorySimulate::TrajectorySimulate(Robot::RobotObject* pcRobotObject,
-                                       Robot::TrajectoryObject* pcTrajectoryObject,
-                                       QWidget* parent)
+TrajectorySimulate::TrajectorySimulate(
+    Robot::RobotObject* pcRobotObject,
+    Robot::TrajectoryObject* pcTrajectoryObject,
+    QWidget* parent
+)
     : QDialog(parent)
     , sim(pcTrajectoryObject->Trajectory.getValue(), pcRobotObject->getRobot())
     , Run(false)
@@ -76,9 +78,7 @@ TrajectorySimulate::TrajectorySimulate(Robot::RobotObject* pcRobotObject,
                 ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QStringLiteral("UNDEF")));
                 break;
         }
-        ui->trajectoryTable->setItem(i,
-                                     1,
-                                     new QTableWidgetItem(QString::fromUtf8(pt.Name.c_str())));
+        ui->trajectoryTable->setItem(i, 1, new QTableWidgetItem(QString::fromUtf8(pt.Name.c_str())));
         if (pt.Cont) {
             ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QStringLiteral("|")));
         }
@@ -109,7 +109,8 @@ TrajectorySimulate::TrajectorySimulate(Robot::RobotObject* pcRobotObject,
 
     // get the view provider
     ViewProv = static_cast<ViewProviderRobotObject*>(
-        Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject));
+        Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject)
+    );
 
     setTo();
 }
@@ -119,13 +120,15 @@ TrajectorySimulate::~TrajectorySimulate() = default;
 void TrajectorySimulate::setTo()
 {
     sim.setToTime(timePos);
-    ViewProv->setAxisTo(sim.Axis[0],
-                        sim.Axis[1],
-                        sim.Axis[2],
-                        sim.Axis[3],
-                        sim.Axis[4],
-                        sim.Axis[5],
-                        sim.Rob.getTcp());
+    ViewProv->setAxisTo(
+        sim.Axis[0],
+        sim.Axis[1],
+        sim.Axis[2],
+        sim.Axis[3],
+        sim.Axis[4],
+        sim.Axis[5],
+        sim.Rob.getTcp()
+    );
 }
 
 void TrajectorySimulate::start()

@@ -43,10 +43,7 @@ struct MeshExport CurvatureInfo
 class MeshExport FacetCurvature
 {
 public:
-    FacetCurvature(const MeshKernel& kernel,
-                   const MeshRefPointToFacets& search,
-                   float,
-                   unsigned long);
+    FacetCurvature(const MeshKernel& kernel, const MeshRefPointToFacets& search, float, unsigned long);
     CurvatureInfo Compute(FacetIndex index) const;
 
 private:

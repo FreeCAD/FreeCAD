@@ -42,125 +42,132 @@ class QGraphicsProxyWidget;
 
 namespace Gui
 {
-  class Document;
-  class ViewProviderDocumentObject;
-  class SelectionChanges;
+class Document;
+class ViewProviderDocumentObject;
+class SelectionChanges;
 
-  namespace DAG
-  {
-    class LineEdit : public QLineEdit
-    {
+namespace DAG
+{
+class LineEdit: public QLineEdit
+{
     Q_OBJECT
-    public:
-      explicit LineEdit(QWidget *parentIn = nullptr);
-    Q_SIGNALS:
-      void acceptedSignal();
-      void rejectedSignal();
-    protected:
+public:
+    explicit LineEdit(QWidget* parentIn = nullptr);
+Q_SIGNALS:
+    void acceptedSignal();
+    void rejectedSignal();
+
+protected:
     void keyPressEvent(QKeyEvent*) override;
-    };
+};
 
-    class Model : public QGraphicsScene
-    {
-      Q_OBJECT
-    public:
-      Model(QObject *parentIn, const Gui::Document &documentIn);
-      ~Model() override;
-      void awake(); //!< hooked up to event dispatcher for update when idle.
-      void selectionChanged(const SelectionChanges& msg);
+class Model: public QGraphicsScene
+{
+    Q_OBJECT
+public:
+    Model(QObject* parentIn, const Gui::Document& documentIn);
+    ~Model() override;
+    void awake();  //!< hooked up to event dispatcher for update when idle.
+    void selectionChanged(const SelectionChanges& msg);
 
-    protected:
-      void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
-      void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-      void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
-      void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
 
-    private Q_SLOTS:
-      void updateSlot();
-      void onRenameSlot();
-      void renameAcceptedSlot();
-      void renameRejectedSlot();
-      void editingStartSlot();
-      void editingFinishedSlot();
+private Q_SLOTS:
+    void updateSlot();
+    void onRenameSlot();
+    void renameAcceptedSlot();
+    void renameRejectedSlot();
+    void editingStartSlot();
+    void editingFinishedSlot();
 
-    private:
-      Model() = default;
-      //documentObject slots.
-      using Connection = boost::signals2::connection;
-      Connection connectNewObject;
-      Connection connectDelObject;
-      Connection connectChgObject;
-      Connection connectRenObject;
-      Connection connectActObject;
-      Connection connectEdtObject;
-      Connection connectResObject;
-      Connection connectHltObject;
-      Connection connectExpObject;
-      void slotNewObject(const Gui::ViewProviderDocumentObject &VPDObjectIn);
-      void slotDeleteObject(const Gui::ViewProviderDocumentObject &VPDObjectIn);
-      void slotChangeObject(const Gui::ViewProviderDocumentObject &VPDObjectIn, const App::Property& propertyIn);
-      void slotInEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
-      void slotResetEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
-      void slotChangeIcon(const Gui::ViewProviderDocumentObject &VPDObjectIn, std::shared_ptr<QGraphicsPixmapItem> icon);
+private:
+    Model() = default;
+    // documentObject slots.
+    using Connection = boost::signals2::connection;
+    Connection connectNewObject;
+    Connection connectDelObject;
+    Connection connectChgObject;
+    Connection connectRenObject;
+    Connection connectActObject;
+    Connection connectEdtObject;
+    Connection connectResObject;
+    Connection connectHltObject;
+    Connection connectExpObject;
+    void slotNewObject(const Gui::ViewProviderDocumentObject& VPDObjectIn);
+    void slotDeleteObject(const Gui::ViewProviderDocumentObject& VPDObjectIn);
+    void slotChangeObject(
+        const Gui::ViewProviderDocumentObject& VPDObjectIn,
+        const App::Property& propertyIn
+    );
+    void slotInEdit(const Gui::ViewProviderDocumentObject& VPDObjectIn);
+    void slotResetEdit(const Gui::ViewProviderDocumentObject& VPDObjectIn);
+    void slotChangeIcon(
+        const Gui::ViewProviderDocumentObject& VPDObjectIn,
+        std::shared_ptr<QGraphicsPixmapItem> icon
+    );
 
-      std::shared_ptr<GraphLinkContainer> graphLink;
-      std::shared_ptr<Graph> theGraph;
-      bool graphDirty;
+    std::shared_ptr<GraphLinkContainer> graphLink;
+    std::shared_ptr<Graph> theGraph;
+    bool graphDirty;
 
-      void indexVerticesEdges();
-      void removeAllItems();
-      void addVertexItemsToScene(const Vertex &vertexIn);
-      void removeVertexItemsFromScene(const Vertex &vertexIn);
-      void updateStates();
-      std::size_t columnFromMask(const ColumnMask&);
+    void indexVerticesEdges();
+    void removeAllItems();
+    void addVertexItemsToScene(const Vertex& vertexIn);
+    void removeVertexItemsFromScene(const Vertex& vertexIn);
+    void updateStates();
+    std::size_t columnFromMask(const ColumnMask&);
 
-      RectItem* getRectFromPosition(const QPointF &position); //!< can be nullptr
+    RectItem* getRectFromPosition(const QPointF& position);  //!< can be nullptr
 
     //! @name View Constants for spacing
     //@{
-      qreal fontHeight;                           //!< height of the current qApp default font.
-      qreal direction;                            //!< controls top to bottom or bottom to top direction.
-      qreal verticalSpacing;                      //!< pixels between top and bottom of text to background rectangle.
-      qreal rowHeight;                            //!< height of background rectangle.
-      qreal iconSize;                             //!< size of icon to match font.
-      qreal pointSize;                            //!< size of the connection point.
-      qreal pointSpacing;                         //!< spacing between pofloat columns.
-      qreal pointToIcon;                          //!< spacing from last column points to first icon.
-      qreal iconToIcon;                           //!< spacing between icons.
-      qreal iconToText;                           //!< spacing between last icon and text.
-      qreal rowPadding;                           //!< spaces added to rectangle background width ends.
-      std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
-      std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
-      void setupViewConstants();
+    qreal fontHeight;       //!< height of the current qApp default font.
+    qreal direction;        //!< controls top to bottom or bottom to top direction.
+    qreal verticalSpacing;  //!< pixels between top and bottom of text to background rectangle.
+    qreal rowHeight;        //!< height of background rectangle.
+    qreal iconSize;         //!< size of icon to match font.
+    qreal pointSize;        //!< size of the connection point.
+    qreal pointSpacing;     //!< spacing between pofloat columns.
+    qreal pointToIcon;      //!< spacing from last column points to first icon.
+    qreal iconToIcon;       //!< spacing between icons.
+    qreal iconToText;       //!< spacing between last icon and text.
+    qreal rowPadding;       //!< spaces added to rectangle background width ends.
+    std::vector<QBrush> backgroundBrushes;  //!< brushes to paint background rectangles.
+    std::vector<QBrush> forgroundBrushes;   //!< brushes to paint points, connectors, text.
+    void setupViewConstants();
     //@}
 
-      RectItem *currentPrehighlight;
+    RectItem* currentPrehighlight;
 
-      enum class SelectionMode
-      {
+    enum class SelectionMode
+    {
         Single,
         Multiple
-      };
-      SelectionMode selectionMode;
-      std::vector<Vertex> getAllSelected();
-      void visiblyIsolate(Vertex sourceIn); //!< hide any connected feature and turn on sourceIn.
-
-      QPointF lastPick;
-      bool lastPickValid = false;
-
-      QPixmap visiblePixmapEnabled;
-      QPixmap visiblePixmapDisabled;
-      QPixmap passPixmap;
-      QPixmap failPixmap;
-      QPixmap pendingPixmap;
-      Vertex lastAddedVertex = Graph::null_vertex(); //!< needed because python objects are not ready.
-
-      QAction *renameAction;
-      QAction *editingFinishedAction;
-      QGraphicsProxyWidget *proxy = nullptr;
-      void finishRename();
     };
-  }
-}
+    SelectionMode selectionMode;
+    std::vector<Vertex> getAllSelected();
+    void visiblyIsolate(Vertex sourceIn);  //!< hide any connected feature and turn on sourceIn.
 
-#endif // DAGMODEL_H
+    QPointF lastPick;
+    bool lastPickValid = false;
+
+    QPixmap visiblePixmapEnabled;
+    QPixmap visiblePixmapDisabled;
+    QPixmap passPixmap;
+    QPixmap failPixmap;
+    QPixmap pendingPixmap;
+    Vertex lastAddedVertex = Graph::null_vertex();  //!< needed because python objects are not ready.
+
+    QAction* renameAction;
+    QAction* editingFinishedAction;
+    QGraphicsProxyWidget* proxy = nullptr;
+    void finishRename();
+};
+}  // namespace DAG
+}  // namespace Gui
+
+#endif  // DAGMODEL_H

@@ -150,7 +150,8 @@ TEST_F(WireJoinerTest, setOutline)
     // To see the correct value for this parameter refer to method WireJoinerP::canShowShape()
 
     auto hParam {App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/WireJoiner")};
+        "User parameter:BaseApp/Preferences/WireJoiner"
+    )};
     auto catchIteration {hParam->GetInt("Iteration", 0)};
     hParam->SetInt("Iteration", -1);
 
@@ -195,8 +196,8 @@ TEST_F(WireJoinerTest, setOutline)
 
     auto foundRemovedNoOutline {false};
     for (const auto& obj : objsInDoc) {
-        foundRemovedNoOutline =
-            (std::string(obj->Label.getValue()).find("removed") != std::string::npos);
+        foundRemovedNoOutline
+            = (std::string(obj->Label.getValue()).find("removed") != std::string::npos);
         if (foundRemovedNoOutline) {
             break;
         }
@@ -216,8 +217,7 @@ TEST_F(WireJoinerTest, setOutline)
 
     auto foundRemovedOutline {false};
     for (const auto& obj : objsInDoc) {
-        foundRemovedOutline =
-            (std::string(obj->Label.getValue()).find("removed") != std::string::npos);
+        foundRemovedOutline = (std::string(obj->Label.getValue()).find("removed") != std::string::npos);
         if (foundRemovedOutline) {
             break;
         }
@@ -473,10 +473,11 @@ TEST_F(WireJoinerTest, setTolerance)
     auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
     auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
     auto edge4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.9, 0.0, 0.0)).Edge()};
-    auto edge5 {
-        BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0),
-                                gp_Pnt(0.9 * std::cos(pi / 18), 0.9 * std::sin(pi / 18), 0.0))
-            .Edge()};
+    auto edge5 {BRepBuilderAPI_MakeEdge(
+                    gp_Pnt(0.0, 0.0, 0.0),
+                    gp_Pnt(0.9 * std::cos(pi / 18), 0.9 * std::sin(pi / 18), 0.0)
+    )
+                    .Edge()};
 
     // A vector of edges used as argument for wjNegtol.addShape()
     std::vector<TopoDS_Shape> edgesNegtol {edge1, edge2, edge3};
@@ -712,9 +713,7 @@ TEST_F(WireJoinerTest, getResultWires)
     std::vector<TopoDS_Shape> edgesNoResultWires {edge1, edge2, edge3};
     // A vector of TopoShape edges used as argument for wjNoOp.addShape(). A Tag is needed for every
     // TopoShape, otherwise no element map will be created and no op can be found
-    std::vector<TopoShape> edgesNoOp {TopoShape(edge1, 4),
-                                      TopoShape(edge2, 5),
-                                      TopoShape(edge4, 6)};
+    std::vector<TopoShape> edgesNoOp {TopoShape(edge1, 4), TopoShape(edge2, 5), TopoShape(edge4, 6)};
     // A vector of TopoShape edges used as argument for wjOp.addShape(). A Tag is needed for every
     // TopoShape, otherwise no element map will be created and no op can be found
     std::vector<TopoShape> edgesOp {TopoShape(edge1, 7), TopoShape(edge2, 8), TopoShape(edge4, 9)};

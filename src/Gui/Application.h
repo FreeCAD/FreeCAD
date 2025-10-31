@@ -36,7 +36,8 @@ class QCloseEvent;
 class SoNode;
 class NavlibInterface;
 
-namespace Gui{
+namespace Gui
+{
 class ApplicationPy;
 class BaseView;
 class CommandManager;
@@ -56,7 +57,8 @@ class ViewProviderDocumentObject;
 class GuiExport Application
 {
 public:
-    enum Status {
+    enum Status
+    {
         UserInitiatedOpenDocument = 0
     };
 
@@ -77,7 +79,7 @@ public:
     /// Export objects from the document DocName to a single file
     void exportTo(const char* FileName, const char* DocName, const char* Module);
     /// Reload a partial opened document
-    App::Document *reopen(App::Document *doc);
+    App::Document* reopen(App::Document* doc);
     /// Prompt about recomputing if needed
     static void checkForRecomputes();
     /// Prompt about PartialRestore
@@ -90,11 +92,11 @@ public:
     /** @name methods for View handling */
     //@{
     /// send Messages to the active view
-    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn=nullptr);
+    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn = nullptr);
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
     /// send Messages to the focused view
-    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn=nullptr);
+    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn = nullptr);
     /// send Messages test to the focused view
     bool sendHasMsgToFocusView(const char* pMsg);
     /// Attach a view (get called by the FCView constructor)
@@ -116,50 +118,50 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Gui::Document&, bool)> signalNewDocument;
+    boost::signals2::signal<void(const Gui::Document&, bool)> signalNewDocument;
     /// signal on deleted Document
-    boost::signals2::signal<void (const Gui::Document&)> signalDeleteDocument;
+    boost::signals2::signal<void(const Gui::Document&)> signalDeleteDocument;
     /// signal on relabeling Document
-    boost::signals2::signal<void (const Gui::Document&)> signalRelabelDocument;
+    boost::signals2::signal<void(const Gui::Document&)> signalRelabelDocument;
     /// signal on renaming Document
-    boost::signals2::signal<void (const Gui::Document&)> signalRenameDocument;
+    boost::signals2::signal<void(const Gui::Document&)> signalRenameDocument;
     /// signal on activating Document
-    boost::signals2::signal<void (const Gui::Document&)> signalActiveDocument;
+    boost::signals2::signal<void(const Gui::Document&)> signalActiveDocument;
     /// signal on new Object
-    boost::signals2::signal<void (const Gui::ViewProvider&)> signalNewObject;
+    boost::signals2::signal<void(const Gui::ViewProvider&)> signalNewObject;
     /// signal on deleted Object
-    boost::signals2::signal<void (const Gui::ViewProvider&)> signalDeletedObject;
+    boost::signals2::signal<void(const Gui::ViewProvider&)> signalDeletedObject;
     /// signal on changed Object
-    boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
+    boost::signals2::signal<void(const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed object property
-    boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
+    boost::signals2::signal<void(const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
-    boost::signals2::signal<void (const Gui::ViewProvider&)> signalRelabelObject;
+    boost::signals2::signal<void(const Gui::ViewProvider&)> signalRelabelObject;
     /// signal on activated Object
-    boost::signals2::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
+    boost::signals2::signal<void(const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
-    boost::signals2::signal<void (const char*)> signalActivateWorkbench;
+    boost::signals2::signal<void(const char*)> signalActivateWorkbench;
     /// signal on added/removed workbench
-    boost::signals2::signal<void ()> signalRefreshWorkbenches;
+    boost::signals2::signal<void()> signalRefreshWorkbenches;
     /// signal on show hidden items
-    boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
+    boost::signals2::signal<void(const Gui::Document&)> signalShowHidden;
     /// signal on activating view
-    boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
+    boost::signals2::signal<void(const Gui::MDIView*)> signalActivateView;
     /// signal on closing view
-    boost::signals2::signal<void (const Gui::MDIView*)> signalCloseView;
+    boost::signals2::signal<void(const Gui::MDIView*)> signalCloseView;
     /// signal on entering in edit mode
-    boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
-    boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changing user edit mode
-    boost::signals2::signal<void (int)> signalUserEditModeChanged;
+    boost::signals2::signal<void(int)> signalUserEditModeChanged;
     //@}
 
     /** @name methods for Document handling */
     //@{
 protected:
     /// Observer message from the Application
-    void slotNewDocument(const App::Document&,bool);
+    void slotNewDocument(const App::Document&, bool);
     void slotDeleteDocument(const App::Document&);
     void slotRelabelDocument(const App::Document&);
     void slotRenameDocument(const App::Document&);
@@ -182,21 +184,21 @@ public:
     void setActiveDocument(Gui::Document* pcDocument);
     /// Getter for the editing document
     Gui::Document* editDocument() const;
-    Gui::MDIView* editViewOfNode(SoNode *node) const;
+    Gui::MDIView* editViewOfNode(SoNode* node) const;
     /// Set editing document, which will reset editing of all other document
     void setEditDocument(Gui::Document* pcDocument);
     /** Retrieves a pointer to the Gui::Document whose App::Document has the name \a name.
-    * If no such document exists 0 is returned.
-    */
+     * If no such document exists 0 is returned.
+     */
     Gui::Document* getDocument(const char* name) const;
     /** Retrieves a pointer to the Gui::Document whose App::Document matches to \a pDoc.
-    * If no such document exists 0 is returned.
-    */
+     * If no such document exists 0 is returned.
+     */
     Gui::Document* getDocument(const App::Document* pDoc) const;
     /// Getter for the active view of the active document or null
     Gui::MDIView* activeView() const;
     /// Activate a view of the given type of the active document
-    void activateView(const Base::Type&, bool create=false);
+    void activateView(const Base::Type&, bool create = false);
     /// Shows the associated view provider of the given object
     void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object
@@ -204,7 +206,7 @@ public:
     /// Get the view provider of the given object
     Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
     /// Get the type safe view provider of the given object
-    template <typename T>
+    template<typename T>
     T* getViewProvider(const App::DocumentObject* obj) const
     {
         return freecad_cast<T*>(getViewProvider(obj));
@@ -239,9 +241,9 @@ public:
     /** @name User Commands */
     //@{
     /// Get macro manager
-    Gui::MacroManager *macroManager();
+    Gui::MacroManager* macroManager();
     /// Reference to the command manager
-    Gui::CommandManager &commandManager();
+    Gui::CommandManager& commandManager();
     /// helper which create the commands
     void createStandardOperations();
     //@}
@@ -258,7 +260,7 @@ public:
     static void initOpenInventor();
     static void runInitGuiScript();
     static void runApplication();
-    void tryClose( QCloseEvent * e );
+    void tryClose(QCloseEvent* e);
     //@}
 
     /// get verbose DPI and style info
@@ -281,33 +283,51 @@ protected:
         {0,
          std::make_pair(
              QT_TRANSLATE_NOOP("EditMode", "&Default"),
-             QT_TRANSLATE_NOOP("EditMode",
-                               "The object will be edited using the mode defined internally to be "
-                               "the most appropriate for the object type"))},
+             QT_TRANSLATE_NOOP(
+                 "EditMode",
+                 "The object will be edited using the mode defined internally to be "
+                 "the most appropriate for the object type"
+             )
+         )},
         {1,
-         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Trans&form"),
-                        QT_TRANSLATE_NOOP("EditMode",
-                                          "The object will have its placement editable with the "
-                                          "Std TransformManip command"))},
+         std::make_pair(
+             QT_TRANSLATE_NOOP("EditMode", "Trans&form"),
+             QT_TRANSLATE_NOOP(
+                 "EditMode",
+                 "The object will have its placement editable with the "
+                 "Std TransformManip command"
+             )
+         )},
         {2,
-         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Cu&tting"),
-                        QT_TRANSLATE_NOOP("EditMode",
-                                          "This edit mode is implemented as available but "
-                                          "currently does not seem to be used by any object"))},
+         std::make_pair(
+             QT_TRANSLATE_NOOP("EditMode", "Cu&tting"),
+             QT_TRANSLATE_NOOP(
+                 "EditMode",
+                 "This edit mode is implemented as available but "
+                 "currently does not seem to be used by any object"
+             )
+         )},
         {3,
-         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "&Color"),
-                        QT_TRANSLATE_NOOP("EditMode",
-                                          "The object will have the color of its individual faces "
-                                          "editable with the Appearance per Face command"))},
+         std::make_pair(
+             QT_TRANSLATE_NOOP("EditMode", "&Color"),
+             QT_TRANSLATE_NOOP(
+                 "EditMode",
+                 "The object will have the color of its individual faces "
+                 "editable with the Appearance per Face command"
+             )
+         )},
     };
     int userEditMode = userEditModes.begin()->first;
 
 public:
-    std::map <int, std::pair<std::string,std::string>> listUserEditModes() const { return userEditModes; }
-    int getUserEditMode(const std::string &mode = "") const;
-    std::pair<std::string,std::string> getUserEditModeUIStrings(int mode = -1) const;
+    std::map<int, std::pair<std::string, std::string>> listUserEditModes() const
+    {
+        return userEditModes;
+    }
+    int getUserEditMode(const std::string& mode = "") const;
+    std::pair<std::string, std::string> getUserEditModeUIStrings(int mode = -1) const;
     bool setUserEditMode(int mode);
-    bool setUserEditMode(const std::string &mode);
+    bool setUserEditMode(const std::string& mode);
     //@}
 
 private:
@@ -319,6 +339,6 @@ private:
     friend class ApplicationPy;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 #endif

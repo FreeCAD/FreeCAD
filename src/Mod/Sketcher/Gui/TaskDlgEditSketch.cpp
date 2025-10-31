@@ -48,7 +48,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher"
+    );
     setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
 
     Content.push_back(ToolSettings);
@@ -75,7 +76,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     }
 
     connectionToolSettings = sketchView->registerToolChanged(
-        std::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, sp::_1));
+        std::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, sp::_1)
+    );
 
     ToolSettings->setHidden(true);
 
@@ -123,7 +125,8 @@ bool TaskDlgEditSketch::accept()
 bool TaskDlgEditSketch::reject()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher"
+    );
     hGrp->SetBool("ExpandedMessagesWidget", Messages->isGroupVisible());
     hGrp->SetBool("ExpandedSolverAdvancedWidget", SolverAdvanced->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget", Constraints->isGroupVisible());
@@ -134,12 +137,8 @@ bool TaskDlgEditSketch::reject()
     }
 
     std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
-    Gui::Command::doCommand(Gui::Command::Gui,
-                            "Gui.getDocument('%s').resetEdit()",
-                            document.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.getDocument('%s').recompute()",
-                            document.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').recompute()", document.c_str());
 
     return true;
 }

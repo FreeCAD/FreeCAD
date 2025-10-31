@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from BoundedCurve import BoundedCurve
 from typing import Final, List
 
-
 @export(
     Twin="GeomBezierCurve",
     TwinPointer="GeomBezierCurve",
@@ -165,9 +164,7 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def interpolate(
-        self, constraints: List[List], parameters: List[float] = ...
-    ) -> None:
+    def interpolate(self, constraints: List[List], parameters: List[float] = ...) -> None:
         """
         Interpolates a list of constraints.
         Each constraint is a list of a point and some optional derivatives

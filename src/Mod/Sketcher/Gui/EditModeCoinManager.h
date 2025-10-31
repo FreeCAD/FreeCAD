@@ -209,8 +209,7 @@ public:
 
     /** @name Temporary edit curves and markers */
     //@{
-    void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
-                         unsigned int augmentationlevel);
+    void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers, unsigned int augmentationlevel);
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve, GeometryCreationMode mode);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, GeometryCreationMode mode);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
@@ -227,8 +226,10 @@ public:
     //@}
 
     /** @name update coin nodes*/
-    void processGeometryConstraintsInformationOverlay(const GeoListFacade& geolistfacade,
-                                                      bool rebuildinformationlayer);
+    void processGeometryConstraintsInformationOverlay(
+        const GeoListFacade& geolistfacade,
+        bool rebuildinformationlayer
+    );
 
     void updateVirtualSpace();
 
@@ -249,8 +250,7 @@ public:
     /** @name update coin colors*/
     //@{
     void updateColor();
-    void
-    updateColor(const GeoListFacade& geolistfacade);  // overload to be used with temporal geometry.
+    void updateColor(const GeoListFacade& geolistfacade);  // overload to be used with temporal geometry.
     //@}
 
     /** @name change constraints selectability*/

@@ -36,13 +36,15 @@ FemPostBranchFilter::FemPostBranchFilter()
 {
     FemPostGroupExtension::initExtension(this);
 
-    ADD_PROPERTY_TYPE(Output,
-                      (long(0)),
-                      "Pipeline",
-                      App::Prop_None,
-                      "Selects what the output of the branch itself is.\n"
-                      "In passthrough, the branch's output is equal to its input.\n"
-                      "In append, all child filter outputs get appended as the branch's output");
+    ADD_PROPERTY_TYPE(
+        Output,
+        (long(0)),
+        "Pipeline",
+        App::Prop_None,
+        "Selects what the output of the branch itself is.\n"
+        "In passthrough, the branch's output is equal to its input.\n"
+        "In append, all child filter outputs get appended as the branch's output"
+    );
 
     Output.setEnums(OutputEnums);
 
@@ -111,7 +113,8 @@ void FemPostBranchFilter::setupPipeline()
             }
             else {
                 nextFilter->getFilterInput()->SetInputConnection(
-                    filter->getFilterOutput()->GetOutputPort());
+                    filter->getFilterOutput()->GetOutputPort()
+                );
             }
         }
         else if (Mode.getValue() == Fem::PostGroupMode::Parallel) {

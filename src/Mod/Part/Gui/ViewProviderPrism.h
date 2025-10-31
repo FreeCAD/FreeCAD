@@ -29,10 +29,11 @@
 #include "ViewProviderPrimitive.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderPrism : public ViewProviderPrimitive
+class PartGuiExport ViewProviderPrism: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPrism);
 
@@ -45,10 +46,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-class PartGuiExport ViewProviderWedge : public ViewProviderPrimitive
+class PartGuiExport ViewProviderWedge: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderWedge);
 
@@ -61,11 +61,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPRISM_H
-
+#endif  // PARTGUI_VIEWPROVIDERPRISM_H

@@ -29,10 +29,11 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderHelixParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderHelixParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderHelixParametric);
 
@@ -48,7 +49,7 @@ private:
     ViewProviderSplineExtension extension;
 };
 
-class PartGuiExport ViewProviderSpiralParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderSpiralParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSpiralParametric);
 
@@ -64,8 +65,7 @@ private:
     ViewProviderSplineExtension extension;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
-
+#endif  // PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H

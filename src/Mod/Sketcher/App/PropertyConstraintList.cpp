@@ -58,8 +58,7 @@ PropertyConstraintList::PropertyConstraintList()
 
 PropertyConstraintList::~PropertyConstraintList()
 {
-    for (std::vector<Constraint*>::iterator it = _lValueList.begin(); it != _lValueList.end();
-         ++it) {
+    for (std::vector<Constraint*>::iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         if (*it) {
             delete *it;
         }
@@ -74,8 +73,8 @@ App::ObjectIdentifier PropertyConstraintList::makeArrayPath(int idx)
 App::ObjectIdentifier PropertyConstraintList::makeSimplePath(const Constraint* c)
 {
     return App::ObjectIdentifier(*this) << App::ObjectIdentifier::SimpleComponent(
-               App::ObjectIdentifier::String(c->Name,
-                                             !ExpressionParser::isTokenAnIndentifier(c->Name)));
+               App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIndentifier(c->Name))
+           );
 }
 
 App::ObjectIdentifier PropertyConstraintList::makePath(int idx, const Constraint* c)
@@ -206,8 +205,9 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
 
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
-        boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j =
-            valueMap.find(lValue[i]->tag);
+        boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(
+            lValue[i]->tag
+        );
 
         if (j != valueMap.end()) {
             if (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) {
@@ -260,8 +260,7 @@ PyObject* PropertyConstraintList::getPyObject()
     return list;
 }
 
-bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier& path,
-                                            Py::Object& res) const
+bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier& path, Py::Object& res) const
 {
     if (path.numSubComponents() != 2 || path.getPropertyComponent(0).getName() != getName()) {
         return false;
@@ -636,8 +635,7 @@ void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier>& paths) cons
     for (std::vector<Constraint*>::const_iterator it = _lValueList.begin(); it != _lValueList.end();
          ++it) {
         if (!(*it)->Name.empty()) {
-            paths.push_back(ObjectIdentifier(*this)
-                            << ObjectIdentifier::SimpleComponent((*it)->Name));
+            paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent((*it)->Name));
         }
     }
 }

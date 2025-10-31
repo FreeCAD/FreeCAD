@@ -71,8 +71,10 @@ std::string Spreadsheet::rowName(int row)
 }
 
 
-void Spreadsheet::createRectangles(std::set<std::pair<int, int>>& cells,
-                                   std::map<std::pair<int, int>, std::pair<int, int>>& rectangles)
+void Spreadsheet::createRectangles(
+    std::set<std::pair<int, int>>& cells,
+    std::map<std::pair<int, int>, std::pair<int, int>>& rectangles
+)
 {
     while (!cells.empty()) {
         int row, col;

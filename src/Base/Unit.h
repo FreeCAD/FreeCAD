@@ -36,8 +36,9 @@
 namespace Base
 {
 
-constexpr auto unitSymbols =
-    std::to_array<std::string_view>({"mm", "kg", "s", "A", "K", "mol", "cd", "deg"});
+constexpr auto unitSymbols = std::to_array<std::string_view>(
+    {"mm", "kg", "s", "A", "K", "mol", "cd", "deg"}
+);
 
 constexpr auto unitNumExponents {unitSymbols.size()};
 using UnitExponents = std::array<int8_t, unitNumExponents>;
@@ -57,14 +58,16 @@ public:
     }
 
     /// helper constructor to ease Unit construction from Python
-    explicit Unit(const int length,
-                  const int mass = 0,
-                  const int time = 0,
-                  const int electricCurrent = 0,
-                  const int thermodynamicTemperature = 0,
-                  const int amountOfSubstance = 0,
-                  const int luminousIntensity = 0,
-                  const int angle = 0);
+    explicit Unit(
+        const int length,
+        const int mass = 0,
+        const int time = 0,
+        const int electricCurrent = 0,
+        const int thermodynamicTemperature = 0,
+        const int amountOfSubstance = 0,
+        const int luminousIntensity = 0,
+        const int angle = 0
+    );
 
     bool operator==(const Unit&) const;
     bool operator!=(const Unit& that) const;

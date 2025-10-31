@@ -49,12 +49,14 @@ int BlendCurvePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* b1;
     PyObject* b2;
 
-    if (!PyArg_ParseTuple(args,
-                          "O!O!",
-                          &(Surface::BlendPointPy::Type),
-                          &b1,
-                          &(Surface::BlendPointPy::Type),
-                          &b2)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!",
+            &(Surface::BlendPointPy::Type),
+            &b1,
+            &(Surface::BlendPointPy::Type),
+            &b2
+        )) {
         return -1;
     }
 

@@ -43,18 +43,26 @@ public:
     Module()
         : Py::ExtensionModule<Module>("FemGui")
     {
-        add_varargs_method("setActiveAnalysis",
-                           &Module::setActiveAnalysis,
-                           "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work.");
-        add_varargs_method("getActiveAnalysis",
-                           &Module::getActiveAnalysis,
-                           "getActiveAnalysis() -- Returns the Analysis object in work.");
-        add_varargs_method("open",
-                           &Module::open,
-                           "open(string) -- Opens an Abaqus file in a text editor.");
-        add_varargs_method("insert",
-                           &Module::open,
-                           "insert(string,string) -- Opens an Abaqus file in a text editor.");
+        add_varargs_method(
+            "setActiveAnalysis",
+            &Module::setActiveAnalysis,
+            "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."
+        );
+        add_varargs_method(
+            "getActiveAnalysis",
+            &Module::getActiveAnalysis,
+            "getActiveAnalysis() -- Returns the Analysis object in work."
+        );
+        add_varargs_method(
+            "open",
+            &Module::open,
+            "open(string) -- Opens an Abaqus file in a text editor."
+        );
+        add_varargs_method(
+            "insert",
+            &Module::open,
+            "insert(string,string) -- Opens an Abaqus file in a text editor."
+        );
         initialize("This module is the FemGui module.");  // register with Python
     }
 
@@ -76,26 +84,30 @@ private:
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
             FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(
                 Gui::HighlightMode::Blue,
-                false);
+                false
+            );
             FemGui::ActiveAnalysisObserver::instance()->setActiveObject(nullptr);
         }
 
         PyObject* object = nullptr;
-        if (PyArg_ParseTuple(args.ptr(), "|O!", &(App::DocumentObjectPy::Type), &object)
-            && object) {
-            App::DocumentObject* obj =
-                static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+        if (PyArg_ParseTuple(args.ptr(), "|O!", &(App::DocumentObjectPy::Type), &object) && object) {
+            App::DocumentObject* obj
+                = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
             if (!obj || !obj->isDerivedFrom<Fem::FemAnalysis>()) {
-                throw Py::Exception(Base::PyExc_FC_GeneralError,
-                                    "Active Analysis object have to be of type Fem::FemAnalysis!");
+                throw Py::Exception(
+                    Base::PyExc_FC_GeneralError,
+                    "Active Analysis object have to be of type Fem::FemAnalysis!"
+                );
             }
 
             // get the gui document of the Analysis Item
             FemGui::ActiveAnalysisObserver::instance()->setActiveObject(
-                static_cast<Fem::FemAnalysis*>(obj));
+                static_cast<Fem::FemAnalysis*>(obj)
+            );
             FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(
                 Gui::HighlightMode::UserDefined,
-                true);
+                true
+            );
         }
 
         return Py::None();
@@ -107,7 +119,8 @@ private:
         }
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
             return Py::asObject(
-                FemGui::ActiveAnalysisObserver::instance()->getActiveObject()->getPyObject());
+                FemGui::ActiveAnalysisObserver::instance()->getActiveObject()->getPyObject()
+            );
         }
         return Py::None();
     }

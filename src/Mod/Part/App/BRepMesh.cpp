@@ -31,7 +31,8 @@
 
 using namespace Part;
 
-namespace {
+namespace
+{
 struct MeshVertex
 {
     Base::Vector3d p;
@@ -39,15 +40,14 @@ struct MeshVertex
 
     explicit MeshVertex(const Base::Vector3d& p)
         : p(p)
-    {
-    }
+    {}
 
     Base::Vector3d toPoint() const
     {
         return p;
     }
 
-    bool operator < (const MeshVertex &v) const
+    bool operator<(const MeshVertex& v) const
     {
         if (p.x != v.p.x) {
             return p.x < v.p.x;
@@ -69,12 +69,10 @@ class MergeVertex
 public:
     using Facet = BRepMesh::Facet;
 
-    MergeVertex(std::vector<Base::Vector3d> points,
-                std::vector<Facet> faces,
-                double tolerance)
-        : points{std::move(points)}
-        , faces{std::move(faces)}
-        , tolerance{tolerance}
+    MergeVertex(std::vector<Base::Vector3d> points, std::vector<Facet> faces, double tolerance)
+        : points {std::move(points)}
+        , faces {std::move(faces)}
+        , tolerance {tolerance}
     {
         setDefaultMap();
         check();
@@ -113,9 +111,7 @@ private:
     {
         // by default map point index to itself
         mapPointIndex.resize(points.size());
-        std::generate(mapPointIndex.begin(),
-                      mapPointIndex.end(),
-                      Base::iotaGen<std::size_t>(0));
+        std::generate(mapPointIndex.begin(), mapPointIndex.end(), Base::iotaGen<std::size_t>(0));
     }
 
     void reset()
@@ -129,9 +125,7 @@ private:
         using VertexIterator = std::vector<Base::Vector3d>::const_iterator;
 
         double tol3d = tolerance;
-        auto vertexLess = [tol3d](const VertexIterator& v1,
-                                  const VertexIterator& v2)
-        {
+        auto vertexLess = [tol3d](const VertexIterator& v1, const VertexIterator& v2) {
             if (fabs(v1->x - v2->x) >= tol3d) {
                 return v1->x < v2->x;
             }
@@ -143,9 +137,7 @@ private:
             }
             return false;  // points are considered to be equal
         };
-        auto vertexEqual = [&](const VertexIterator& v1,
-                               const VertexIterator& v2)
-        {
+        auto vertexEqual = [&](const VertexIterator& v1, const VertexIterator& v2) {
             if (vertexLess(v1, v2)) {
                 return false;
             }
@@ -244,11 +236,13 @@ private:
     std::vector<std::size_t> mapPointIndex;
 };
 
-}
+}  // namespace
 
-void BRepMesh::getFacesFromDomains(const std::vector<Domain>& domains,
-                                   std::vector<Base::Vector3d>& points,
-                                   std::vector<Facet>& faces)
+void BRepMesh::getFacesFromDomains(
+    const std::vector<Domain>& domains,
+    std::vector<Base::Vector3d>& points,
+    std::vector<Facet>& faces
+)
 {
     std::size_t numFaces = 0;
     for (const auto& it : domains) {
@@ -264,7 +258,7 @@ void BRepMesh::getFacesFromDomains(const std::vector<Domain>& domains,
         pointIndex = it.first->i;
     };
 
-    for (const auto & domain : domains) {
+    for (const auto& domain : domains) {
         std::size_t numDomainFaces = 0;
         for (const Facet& df : domain.facets) {
             Facet face;
@@ -279,9 +273,7 @@ void BRepMesh::getFacesFromDomains(const std::vector<Domain>& domains,
             addVertex(domain.points[df.I3], face.I3);
 
             // make sure that we don't insert invalid facets
-            if (face.I1 != face.I2 &&
-                face.I2 != face.I3 &&
-                face.I3 != face.I1) {
+            if (face.I1 != face.I2 && face.I2 != face.I3 && face.I3 != face.I1) {
                 faces.push_back(face);
                 numDomainFaces++;
             }
@@ -292,7 +284,7 @@ void BRepMesh::getFacesFromDomains(const std::vector<Domain>& domains,
 
     std::vector<Base::Vector3d> meshPoints;
     meshPoints.resize(vertices.size());
-    for (const auto & vertex : vertices) {
+    for (const auto& vertex : vertices) {
         meshPoints[vertex.i] = vertex.toPoint();
     }
     points.swap(meshPoints);
@@ -311,9 +303,7 @@ std::vector<BRepMesh::Segment> BRepMesh::createSegments() const
     std::vector<Segment> segm;
     for (size_t numDomainFaces : domainSizes) {
         Segment segment(numDomainFaces);
-        std::generate(segment.begin(),
-                      segment.end(),
-                      Base::iotaGen<std::size_t>(numMeshFaces));
+        std::generate(segment.begin(), segment.end(), Base::iotaGen<std::size_t>(numMeshFaces));
         numMeshFaces += numDomainFaces;
         segm.push_back(segment);
     }

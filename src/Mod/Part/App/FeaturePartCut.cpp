@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 
 
 #include "FeaturePartCut.h"
@@ -33,7 +33,7 @@ PROPERTY_SOURCE(Part::Cut, Part::Boolean)
 
 Cut::Cut() = default;
 
-const char *Cut::opCode() const
+const char* Cut::opCode() const
 {
     return Part::OpCodes::Cut;
 }

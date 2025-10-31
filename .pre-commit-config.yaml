@@ -6,9 +6,9 @@ files: |
     (?x)^(
         .github|
         src/Base|
+        src/Gui|
         src/Main|
         src/Tools|
-        tests/src|
         src/Mod/Assembly|
         src/Mod/BIM|
         src/Mod/CAM|
@@ -20,8 +20,10 @@ files: |
         src/Mod/Inspection|
         src/Mod/JtReader|
         src/Mod/Measure|
-        src/Mod/Mesh|
         src/Mod/MeshPart|
+        src/Mod/Mesh|
+        src/Mod/PartDesign|
+        src/Mod/Part|
         src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
@@ -33,7 +35,8 @@ files: |
         src/Mod/Surface|
         src/Mod/Test|
         src/Mod/Tux|
-        src/Mod/Web
+        src/Mod/Web|
+        tests/src
     )
 exclude: |
     (?x)^(

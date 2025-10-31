@@ -36,11 +36,11 @@ namespace Part
  */
 namespace FuzzyHelper
 {
-    double PartExport getBooleanFuzzy();
-    void PartExport setBooleanFuzzy(double base);
-    void PartExport withBooleanFuzzy(double base, std::function<void()> func);
-}
+double PartExport getBooleanFuzzy();
+void PartExport setBooleanFuzzy(double base);
+void PartExport withBooleanFuzzy(double base, std::function<void()> func);
+}  // namespace FuzzyHelper
 
-}
+}  // namespace Part
 
-#endif // PART_FUZZYHELPER_H
+#endif  // PART_FUZZYHELPER_H

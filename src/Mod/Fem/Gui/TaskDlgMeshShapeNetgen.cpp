@@ -98,7 +98,8 @@ bool TaskDlgMeshShapeNetgen::accept()
                 QMessageBox::critical(
                     Gui::getMainWindow(),
                     tr("Meshing failure"),
-                    QString::fromStdString(FemMeshShapeNetgenObject->getStatusString()));
+                    QString::fromStdString(FemMeshShapeNetgenObject->getStatusString())
+                );
                 return true;
             }
         }

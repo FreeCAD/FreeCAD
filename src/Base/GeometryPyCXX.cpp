@@ -117,8 +117,9 @@ Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double vx, double vy)
     Py::Tuple arg(2);
     arg.setItem(0, Py::Float(vx));
     arg.setItem(1, Py::Float(vy));
-    Py::PythonClassObject<Vector2dPy> py =
-        Py::PythonClassObject<Vector2dPy>(class_type.apply(arg, Py::Dict()));
+    Py::PythonClassObject<Vector2dPy> py = Py::PythonClassObject<Vector2dPy>(
+        class_type.apply(arg, Py::Dict())
+    );
     return py;
 }
 

@@ -52,13 +52,17 @@ class TaskTrajectory: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskTrajectory(Robot::RobotObject* pcRobotObject,
-                   Robot::TrajectoryObject* pcTrajectoryObject,
-                   QWidget* parent = nullptr);
+    TaskTrajectory(
+        Robot::RobotObject* pcRobotObject,
+        Robot::TrajectoryObject* pcTrajectoryObject,
+        QWidget* parent = nullptr
+    );
     ~TaskTrajectory() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+    void OnChange(
+        Gui::SelectionSingleton::SubjectType& rCaller,
+        Gui::SelectionSingleton::MessageType Reason
+    );
 
 private Q_SLOTS:
     void start();
@@ -73,13 +77,7 @@ private Q_SLOTS:
     void valueChanged(double d);
 
 Q_SIGNALS:
-    void axisChanged(float A1,
-                     float A2,
-                     float A3,
-                     float A4,
-                     float A5,
-                     float A6,
-                     const Base::Placement& Tcp);
+    void axisChanged(float A1, float A2, float A3, float A4, float A5, float A6, const Base::Placement& Tcp);
 
 protected:
     void setTo();

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Exception.h>
@@ -43,33 +42,41 @@ void MDIViewPy::init_type()
     behaviors().supportSetattr();
     behaviors().set_tp_new(extension_object_new);
 
-    add_varargs_method("printView",&MDIViewPy::printView,"printView()");
-    add_varargs_method("printPdf",&MDIViewPy::printPdf,"printPdf()");
-    add_varargs_method("printPreview",&MDIViewPy::printPreview,"printPreview()");
+    add_varargs_method("printView", &MDIViewPy::printView, "printView()");
+    add_varargs_method("printPdf", &MDIViewPy::printPdf, "printPdf()");
+    add_varargs_method("printPreview", &MDIViewPy::printPreview, "printPreview()");
 
-    add_varargs_method("undoActions",&MDIViewPy::undoActions,"undoActions()");
-    add_varargs_method("redoActions",&MDIViewPy::redoActions,"redoActions()");
+    add_varargs_method("undoActions", &MDIViewPy::undoActions, "undoActions()");
+    add_varargs_method("redoActions", &MDIViewPy::redoActions, "redoActions()");
 
-    add_varargs_method("message",&MDIViewPy::sendMessage,"deprecated: use sendMessage");
-    add_varargs_method("sendMessage",&MDIViewPy::sendMessage,"sendMessage(str)");
-    add_varargs_method("supportMessage",&MDIViewPy::supportMessage,"supportMessage(str)");
-    add_varargs_method("fitAll",&MDIViewPy::fitAll,"fitAll()");
-    add_varargs_method("setActiveObject", &MDIViewPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
-    add_varargs_method("getActiveObject", &MDIViewPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
+    add_varargs_method("message", &MDIViewPy::sendMessage, "deprecated: use sendMessage");
+    add_varargs_method("sendMessage", &MDIViewPy::sendMessage, "sendMessage(str)");
+    add_varargs_method("supportMessage", &MDIViewPy::supportMessage, "supportMessage(str)");
+    add_varargs_method("fitAll", &MDIViewPy::fitAll, "fitAll()");
+    add_varargs_method(
+        "setActiveObject",
+        &MDIViewPy::setActiveObject,
+        "setActiveObject(name,object,subname=None)\nadd or set a new active object"
+    );
+    add_varargs_method(
+        "getActiveObject",
+        &MDIViewPy::getActiveObject,
+        "getActiveObject(name,resolve=True)\nreturns the active object for the given type"
+    );
     add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
 }
 
-PyObject *MDIViewPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
+PyObject* MDIViewPy::extension_object_new(struct _typeobject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
 {
     return new MDIViewPy(nullptr);
 }
 
 Py::Object MDIViewPy::type()
 {
-    return Py::Object( reinterpret_cast<PyObject *>( behaviors().type_object() ) );
+    return Py::Object(reinterpret_cast<PyObject*>(behaviors().type_object()));
 }
 
-Py::ExtensionObject<MDIViewPy> MDIViewPy::create(MDIView *mdi)
+Py::ExtensionObject<MDIViewPy> MDIViewPy::create(MDIView* mdi)
 {
     Py::Callable class_type(type());
     Py::Tuple arg;
@@ -78,10 +85,9 @@ Py::ExtensionObject<MDIViewPy> MDIViewPy::create(MDIView *mdi)
     return inst;
 }
 
-MDIViewPy::MDIViewPy(MDIView *mdi)
-  : _view(mdi)
-{
-}
+MDIViewPy::MDIViewPy(MDIView* mdi)
+    : _view(mdi)
+{}
 
 MDIViewPy::~MDIViewPy()
 {
@@ -91,55 +97,64 @@ MDIViewPy::~MDIViewPy()
 
 Py::Object MDIViewPy::repr()
 {
-    if (!_view)
+    if (!_view) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
+    }
 
     return Py::String(_view->getTypeId().getName());
 }
 
 Py::Object MDIViewPy::printView(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
-    if (_view)
+    if (_view) {
         _view->print();
+    }
 
     return Py::None();
 }
 
 Py::Object MDIViewPy::printPdf(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
-    if (_view)
+    if (_view) {
         _view->printPdf();
+    }
 
     return Py::None();
 }
 
 Py::Object MDIViewPy::printPreview(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
-    if (_view)
+    if (_view) {
         _view->printPreview();
+    }
 
     return Py::None();
 }
 
 Py::Object MDIViewPy::undoActions(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     Py::List list;
     if (_view) {
         QStringList undo = _view->undoActions();
-        for (const auto& it : undo)
+        for (const auto& it : undo) {
             list.append(Py::String(it.toStdString()));
+        }
     }
 
     return list;
@@ -147,14 +162,16 @@ Py::Object MDIViewPy::undoActions(const Py::Tuple& args)
 
 Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     Py::List list;
     if (_view) {
         QStringList redo = _view->redoActions();
-        for (const auto& it : redo)
+        for (const auto& it : redo) {
             list.append(Py::String(it.toStdString()));
+        }
     }
 
     return list;
@@ -162,15 +179,17 @@ Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
 {
-    const char **ppReturn = nullptr;
-    char *psMsgStr;
-    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
+    const char** ppReturn = nullptr;
+    char* psMsgStr;
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)", &psMsgStr)) {
         throw Py::Exception();
+    }
 
     try {
         bool ok = false;
-        if (_view)
-            ok = _view->onMsg(psMsgStr,ppReturn);
+        if (_view) {
+            ok = _view->onMsg(psMsgStr, ppReturn);
+        }
         return Py::Boolean(ok);
     }
     catch (const Base::Exception& e) {
@@ -186,14 +205,16 @@ Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
 
 Py::Object MDIViewPy::supportMessage(const Py::Tuple& args)
 {
-    char *psMsgStr;
-    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
+    char* psMsgStr;
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)", &psMsgStr)) {
         throw Py::Exception();
+    }
 
     try {
         bool ok = false;
-        if (_view)
+        if (_view) {
             _view->onHasMsg(psMsgStr);
+        }
         return Py::Boolean(ok);
     }
     catch (const Base::Exception& e) {
@@ -209,12 +230,14 @@ Py::Object MDIViewPy::supportMessage(const Py::Tuple& args)
 
 Py::Object MDIViewPy::fitAll(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     try {
-        if (_view)
+        if (_view) {
             _view->viewAll();
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -232,16 +255,21 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
 {
     PyObject* docObject = Py_None;
     char* name;
-    char *subname = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
+    char* subname = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname)) {
         throw Py::Exception();
+    }
 
     try {
-        Base::PyTypeCheck(&docObject, &App::DocumentObjectPy::Type,
-            "Expect the second argument to be a document object or None");
+        Base::PyTypeCheck(
+            &docObject,
+            &App::DocumentObjectPy::Type,
+            "Expect the second argument to be a document object or None"
+        );
         if (_view) {
-            App::DocumentObject* obj = docObject ?
-                static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr() : nullptr;
+            App::DocumentObject* obj = docObject
+                ? static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr()
+                : nullptr;
             _view->setActiveObject(obj, name, subname);
         }
     }
@@ -254,17 +282,17 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
 
 Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
 {
-    const char* name{};
-    PyObject *resolve = Py_True; // NOLINT
+    const char* name {};
+    PyObject* resolve = Py_True;  // NOLINT
     if (!PyArg_ParseTuple(args.ptr(), "s|O!", &name, &PyBool_Type, &resolve)) {
         throw Py::Exception();
     }
 
-    App::DocumentObject *parent = nullptr;
+    App::DocumentObject* parent = nullptr;
     std::string subname;
     App::DocumentObject* obj = nullptr;
     if (_view) {
-        obj = _view->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
+        obj = _view->getActiveObject<App::DocumentObject*>(name, &parent, &subname);
     }
 
     if (Base::asBoolean(resolve)) {
@@ -278,9 +306,10 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
     // NOLINTBEGIN(cppcoreguidelines-slicing)
     if (obj) {
         return Py::TupleN(
-                Py::asObject(obj->getPyObject()),
-                Py::asObject(parent->getPyObject()),
-                Py::String(subname.c_str()));
+            Py::asObject(obj->getPyObject()),
+            Py::asObject(parent->getPyObject()),
+            Py::String(subname.c_str())
+        );
     }
 
     return Py::TupleN(Py::None(), Py::None(), Py::String());

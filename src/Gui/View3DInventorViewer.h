@@ -83,11 +83,13 @@ class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
-namespace Base {
-    class BoundBox2d;
+namespace Base
+{
+class BoundBox2d;
 }
 
-namespace Gui {
+namespace Gui
+{
 class NavigationAnimation;
 class ViewProvider;
 class SoFCBackgroundGradient;
@@ -101,39 +103,42 @@ class ViewerEventFilter;
 /** GUI view into a 3D scene provided by View3DInventor
  *
  */
-class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
+class GuiExport View3DInventorViewer: public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
     using inherited = Quarter::SoQTQuarterAdaptor;
     Q_OBJECT
 
 public:
     /// Pick modes for picking points in the scene
-    enum SelectionMode {
-        Lasso       = 0,  /**< Select objects using a lasso. */
-        Rectangle   = 1,  /**< Select objects using a rectangle. */
-        Rubberband  = 2,  /**< Select objects using a rubberband. */
-        BoxZoom     = 3,  /**< Perform a box zoom. */
-        Clip        = 4,  /**< Clip objects using a lasso. */
+    enum SelectionMode
+    {
+        Lasso = 0,      /**< Select objects using a lasso. */
+        Rectangle = 1,  /**< Select objects using a rectangle. */
+        Rubberband = 2, /**< Select objects using a rubberband. */
+        BoxZoom = 3,    /**< Perform a box zoom. */
+        Clip = 4,       /**< Clip objects using a lasso. */
     };
     /** @name Modus handling of the viewer
-      * Here you can switch several features on/off
-      * and modes of the Viewer
-      */
+     * Here you can switch several features on/off
+     * and modes of the Viewer
+     */
     //@{
-    enum ViewerMod {
-        ShowCoord=1,       /**< Enables the Coordinate system in the corner. */
-        ShowFPS  =2,       /**< Enables the Frames Per Second counter. */
-        SimpleBackground=4,/**< switch to a simple background. */
-        DisallowRotation=8,/**< switch off the rotation. */
-        DisallowPanning=16,/**< switch off the panning. */
-        DisallowZooming=32,/**< switch off the zooming. */
+    enum ViewerMod
+    {
+        ShowCoord = 1,        /**< Enables the Coordinate system in the corner. */
+        ShowFPS = 2,          /**< Enables the Frames Per Second counter. */
+        SimpleBackground = 4, /**< switch to a simple background. */
+        DisallowRotation = 8, /**< switch off the rotation. */
+        DisallowPanning = 16, /**< switch off the panning. */
+        DisallowZooming = 32, /**< switch off the zooming. */
     };
     //@}
 
     /** @name Render mode
-      */
+     */
     //@{
-    enum RenderType {
+    enum RenderType
+    {
         Native,
         Framebuffer,
         Image
@@ -141,23 +146,28 @@ public:
     //@}
 
     /** @name Background
-      */
+     */
     //@{
-    enum Background {
+    enum Background
+    {
         NoGradient,
         LinearGradient,
         RadialGradient
     };
     //@}
 
-    explicit View3DInventorViewer (QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
-    View3DInventorViewer (const QSurfaceFormat& format, QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
+    explicit View3DInventorViewer(QWidget* parent, const QOpenGLWidget* sharewidget = nullptr);
+    View3DInventorViewer(
+        const QSurfaceFormat& format,
+        QWidget* parent,
+        const QOpenGLWidget* sharewidget = nullptr
+    );
     ~View3DInventorViewer() override;
 
     void init();
 
     /// Observer message from the Selection
-    void onSelectionChanged(const SelectionChanges &Reason) override;
+    void onSelectionChanged(const SelectionChanges& Reason) override;
 
     SoDirectionalLight* getBacklight() const;
     void setBacklightEnabled(bool on);
@@ -169,7 +179,7 @@ public:
 
     SoEnvironment* getEnvironment() const;
 
-    void setSceneGraph (SoNode *root) override;
+    void setSceneGraph(SoNode* root) override;
     bool searchNode(SoNode*) const;
 
     void setAnimationEnabled(bool enable);
@@ -178,8 +188,13 @@ public:
     bool isSpinningAnimationEnabled() const;
     bool isAnimating() const;
     bool isSpinning() const;
-    std::shared_ptr<NavigationAnimation> startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
-                        const SbVec3f& translation, int duration = -1, bool wait = false) const;
+    std::shared_ptr<NavigationAnimation> startAnimation(
+        const SbRotation& orientation,
+        const SbVec3f& rotationCenter,
+        const SbVec3f& translation,
+        int duration = -1,
+        bool wait = false
+    ) const;
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
 
@@ -198,8 +213,7 @@ public:
     RenderType getRenderType() const;
     void renderToFramebuffer(QOpenGLFramebufferObject*);
     QImage grabFramebuffer();
-    void imageFromFramebuffer(int width, int height, int samples,
-                              const QColor& bgcolor, QImage& img);
+    void imageFromFramebuffer(int width, int height, int samples, const QColor& bgcolor, QImage& img);
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -235,9 +249,9 @@ public:
     ViewProvider* getEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
-    void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
-    void resetEditingRoot(bool updateLinks=true);
-    void setEditingTransform(const Base::Matrix4D &mat);
+    void setupEditingRoot(SoNode* node = nullptr, const Base::Matrix4D* mat = nullptr);
+    void resetEditingRoot(bool updateLinks = true);
+    void setEditingTransform(const Base::Matrix4D& mat);
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
@@ -247,9 +261,12 @@ public:
      */
     SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, const ViewProvider* vp) const;
     /// display override mode
-    void setOverrideMode(const std::string &mode);
-    void updateOverrideMode(const std::string &mode);
-    std::string getOverrideMode() const {return overrideMode;}
+    void setOverrideMode(const std::string& mode);
+    void updateOverrideMode(const std::string& mode);
+    std::string getOverrideMode() const
+    {
+        return overrideMode;
+    }
     //@}
 
     /** @name Making pictures */
@@ -272,35 +289,50 @@ public:
     void abortSelection();
     void stopSelection();
     bool isSelecting() const;
-    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=nullptr) const;
+    std::vector<SbVec2f> getGLPolygon(SelectionRole* role = nullptr) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
-    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
     void setSelectionEnabled(bool enable);
     bool isSelectionEnabled() const;
     //@}
 
     /// Returns the screen coordinates of the origin of the path's tail object
     /*! Return value is in floating-point pixels, origin at bottom-left. */
-    SbVec2f screenCoordsOfPath(SoPath *path) const;
+    SbVec2f screenCoordsOfPath(SoPath* path) const;
 
     /** @name Edit methods */
     //@{
     void setEditing(bool edit);
-    bool isEditing() const { return this->editing; }
-    void setEditingCursor (const QCursor& cursor);
+    bool isEditing() const
+    {
+        return this->editing;
+    }
+    void setEditingCursor(const QCursor& cursor);
     void setComponentCursor(const QCursor& cursor);
-    void setRedirectToSceneGraph(bool redirect) { this->redirected = redirect; }
-    bool isRedirectedToSceneGraph() const { return this->redirected; }
-    void setRedirectToSceneGraphEnabled(bool enable) { this->allowredir = enable; }
-    bool isRedirectToSceneGraphEnabled() const { return this->allowredir; }
+    void setRedirectToSceneGraph(bool redirect)
+    {
+        this->redirected = redirect;
+    }
+    bool isRedirectedToSceneGraph() const
+    {
+        return this->redirected;
+    }
+    void setRedirectToSceneGraphEnabled(bool enable)
+    {
+        this->allowredir = enable;
+    }
+    bool isRedirectToSceneGraphEnabled() const
+    {
+        return this->allowredir;
+    }
     //@}
 
     /** @name Pick actions */
     //@{
     // calls a PickAction on the scene graph
-    bool pickPoint(const SbVec2s& pos,SbVec3f &point,SbVec3f &norm) const;
+    bool pickPoint(const SbVec2s& pos, SbVec3f& point, SbVec3f& norm) const;
     SoPickedPoint* pickPoint(const SbVec2s& pos) const;
-    const SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
+    const SoPickedPoint* getPickedPoint(SoEventCallback* n) const;
     bool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
     //@}
@@ -309,11 +341,11 @@ public:
      * Set up a callback function \a cb which will be invoked for the given eventtype.
      * \a userdata will be given as the first argument to the callback function.
      */
-    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
+    void addEventCallback(SoType eventtype, SoEventCallbackCB* cb, void* userdata = nullptr);
     /**
      * Unregister the given callback function \a cb.
      */
-    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
+    void removeEventCallback(SoType eventtype, SoEventCallbackCB* cb, void* userdata = nullptr);
 
     /** @name Clipping plane, near and far plane */
     //@{
@@ -322,7 +354,7 @@ public:
      * The vector is normalized to length of 1.
      */
     SbVec3f getViewDirection() const;
-    void    setViewDirection(SbVec3f);
+    void setViewDirection(SbVec3f);
     /** Returns the up direction */
     SbVec3f getUpDirection() const;
 
@@ -361,8 +393,12 @@ public:
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
 
     /** Adds or remove a manipulator to/from the scenegraph. */
-    void toggleClippingPlane(int toggle=-1, bool beforeEditing=false,
-            bool noManip=false, const Base::Placement &pla = Base::Placement());
+    void toggleClippingPlane(
+        int toggle = -1,
+        bool beforeEditing = false,
+        bool noManip = false,
+        const Base::Placement& pla = Base::Placement()
+    );
 
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
@@ -393,8 +429,8 @@ public:
     void turnDeltaDimensionsOn();
     void turnDeltaDimensionsOff();
     void eraseAllDimensions();
-    void addDimension3d(SoNode *node);
-    void addDimensionDelta(SoNode *node);
+    void addDimension3d(SoNode* node);
+    void addDimensionDelta(SoNode* node);
     //@}
 
     /**
@@ -402,7 +438,10 @@ public:
      * \a true the reorientation is animated and the animation is returned, otherwise its directly
      * set.
      */
-    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false) const;
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(
+        const SbRotation& orientation,
+        bool moveToCenter = false
+    ) const;
     void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
@@ -438,11 +477,12 @@ public:
 
     void setGradientBackground(Background);
     Background getGradientBackground() const;
-    void setGradientBackgroundColor(const SbColor& fromColor,
-                                    const SbColor& toColor);
-    void setGradientBackgroundColor(const SbColor& fromColor,
-                                    const SbColor& toColor,
-                                    const SbColor& midColor);
+    void setGradientBackgroundColor(const SbColor& fromColor, const SbColor& toColor);
+    void setGradientBackgroundColor(
+        const SbColor& fromColor,
+        const SbColor& toColor,
+        const SbColor& midColor
+    );
     void setNavigationType(Base::Type);
 
     void setAxisLetterColor(const SbColor& color);
@@ -470,10 +510,10 @@ public:
 
     NavigationStyle* navigationStyle() const;
 
-    void setDocument(Gui::Document *pcDocument);
+    void setDocument(Gui::Document* pcDocument);
     Gui::Document* getDocument();
 
-    virtual PyObject *getPyObject();
+    virtual PyObject* getPyObject();
 
 protected:
     static GLenum getInternalTextureFormat();
@@ -484,28 +524,28 @@ protected:
     void actualRedraw() override;
     void setSeekMode(bool on) override;
     void afterRealizeHook() override;
-    bool processSoEvent(const SoEvent * ev) override;
-    void dropEvent (QDropEvent * ev) override;
-    void dragEnterEvent (QDragEnterEvent * ev) override;
+    bool processSoEvent(const SoEvent* ev) override;
+    void dropEvent(QDropEvent* ev) override;
+    void dragEnterEvent(QDragEnterEvent* ev) override;
     void dragMoveEvent(QDragMoveEvent* ev) override;
     void dragLeaveEvent(QDragLeaveEvent* ev) override;
-    bool processSoEventBase(const SoEvent * const ev);
+    bool processSoEventBase(const SoEvent* const ev);
     void printDimension() const;
     void selectAll();
 
 private:
-    static void setViewportCB(void * userdata, SoAction * action);
-    static void clearBufferCB(void * userdata, SoAction * action);
-    static void setGLWidgetCB(void * userdata, SoAction * action);
-    static void handleEventCB(void * userdata, SoEventCallback * n);
-    static void interactionStartCB(void * data, Quarter::SoQTQuarterAdaptor * viewer);
-    static void interactionFinishCB(void * data, Quarter::SoQTQuarterAdaptor * viewer);
-    static void interactionLoggerCB(void * ud, SoAction* action);
+    static void setViewportCB(void* userdata, SoAction* action);
+    static void clearBufferCB(void* userdata, SoAction* action);
+    static void setGLWidgetCB(void* userdata, SoAction* action);
+    static void handleEventCB(void* userdata, SoEventCallback* n);
+    static void interactionStartCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
+    static void interactionFinishCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
+    static void interactionLoggerCB(void* ud, SoAction* action);
 
 private:
-    static void selectCB(void * viewer, SoPath * path);
-    static void deselectCB(void * viewer, SoPath * path);
-    static SoPath * pickFilterCB(void * viewer, const SoPickedPoint * pp);
+    static void selectCB(void* viewer, SoPath* path);
+    static void deselectCB(void* viewer, SoPath* path);
+    static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
     void drawAxisCross();
     static void drawArrow();
@@ -517,12 +557,12 @@ private:
 private:
     NaviCube* naviCube;
     std::set<ViewProvider*> _ViewProviderSet;
-    std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
+    std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
     ViewProvider* editViewProvider;
-    SoFCBackgroundGradient *pcBackGround;
-    SoSeparator * backgroundroot;
-    SoSeparator * foregroundroot;
+    SoFCBackgroundGradient* pcBackGround;
+    SoSeparator* backgroundroot;
+    SoSeparator* foregroundroot;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
@@ -531,26 +571,26 @@ private:
     SoRotation* lightRotation;
 
     // Scene graph root
-    SoSeparator * pcViewProviderRoot;
+    SoSeparator* pcViewProviderRoot;
     // Child group in the scene graph that contains view providers related to the physical object
     SoGroup* objectGroup;
 
     std::unique_ptr<View3DInventorSelection> inventorSelection;
 
-    SoSeparator * pcEditingRoot;
-    SoTransform * pcEditingTransform;
+    SoSeparator* pcEditingRoot;
+    SoTransform* pcEditingTransform;
     bool restoreEditingRoot;
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
 
-    SoClipPlane *pcClipPlane;
+    SoClipPlane* pcClipPlane;
 
     RenderType renderType;
     QOpenGLFramebufferObject* framebuffer;
     QImage glImage;
     bool shading;
-    SoSwitch *dimensionRoot;
+    SoSwitch* dimensionRoot;
 
     // small axis cross in the corner
     bool axiscrossEnabled;
@@ -561,7 +601,7 @@ private:
 
     SoGroup* rotationCenterGroup;
 
-    //stuff needed to draw the fps counter
+    // stuff needed to draw the fps counter
     bool fpsEnabled;
     bool vboEnabled;
     bool naviCubeEnabled;
@@ -592,6 +632,6 @@ private:
     friend class ViewerEventFilter;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 #endif  // GUI_VIEW3DINVENTORVIEWER_H

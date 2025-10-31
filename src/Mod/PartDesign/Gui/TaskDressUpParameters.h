@@ -36,26 +36,34 @@ class QAction;
 class QListWidget;
 class QListWidgetItem;
 
-namespace Part {
-    class Feature;
+namespace Part
+{
+class Feature;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskDressUpParameters : public TaskFeatureParameters, public Gui::SelectionObserver
+class TaskDressUpParameters: public TaskFeatureParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
+    TaskDressUpParameters(
+        ViewProviderDressUp* DressUpView,
+        bool selectEdges,
+        bool selectFaces,
+        QWidget* parent = nullptr
+    );
     ~TaskDressUpParameters() override;
 
     const std::vector<std::string> getReferences() const;
-    Part::Feature *getBase() const;
+    Part::Feature* getBase() const;
 
     void setupTransaction();
 
-    int getTransactionID() const {
+    int getTransactionID() const
+    {
         return transactionID;
     }
 
@@ -80,7 +88,13 @@ protected:
     void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
 
 protected:
-    enum selectionModes { none, refSel, plane, line };
+    enum selectionModes
+    {
+        none,
+        refSel,
+        plane,
+        line
+    };
     void setSelectionMode(selectionModes mode);
     virtual void setButtons(const selectionModes mode) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
@@ -106,16 +120,16 @@ protected:
 private:
     Gui::WeakPtrT<ViewProviderDressUp> DressUpView;
 
-    Gui::ViewProvider* previouslyShownViewProvider { nullptr };
+    Gui::ViewProvider* previouslyShownViewProvider {nullptr};
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
+class TaskDlgDressUpParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
+    explicit TaskDlgDressUpParameters(ViewProviderDressUp* DressUpView);
     ~TaskDlgDressUpParameters() override;
 
 public:
@@ -124,9 +138,9 @@ public:
     bool reject() override;
 
 protected:
-    TaskDressUpParameters  *parameter;
+    TaskDressUpParameters* parameter;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskDressUpParameters_H
+#endif  // GUI_TASKVIEW_TaskDressUpParameters_H

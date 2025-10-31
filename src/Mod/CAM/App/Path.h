@@ -62,9 +62,8 @@ public:
     double getLength();                                   // return the Length (mm) of the Path
     double getCycleTime(double, double, double, double);  // return the Cycle Time (s) of the Path
     void recalculate();                                   // recalculates the points
-    void
-    setFromGCode(const std::string);  // sets the path from the contents of the given GCode string
-    std::string toGCode() const;      // gets a gcode string representation from the Path
+    void setFromGCode(const std::string);  // sets the path from the contents of the given GCode string
+    std::string toGCode() const;           // gets a gcode string representation from the Path
     Base::BoundBox3d getBoundBox() const;
 
     // shortcut functions

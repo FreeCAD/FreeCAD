@@ -32,7 +32,7 @@
 namespace Gui
 {
 
-class GuiExport NavigationAnimation : protected QVariantAnimation
+class GuiExport NavigationAnimation: protected QVariantAnimation
 {
     Q_OBJECT
 public:
@@ -56,16 +56,21 @@ private:
     friend class QObject;
 };
 
-class GuiExport FixedTimeAnimation : public NavigationAnimation
+class GuiExport FixedTimeAnimation: public NavigationAnimation
 {
 public:
-    explicit FixedTimeAnimation(NavigationStyle* navigation, const SbRotation& orientation,
-                                const SbVec3f& rotationCenter, const SbVec3f& translation,
-                                int duration, const QEasingCurve::Type easingCurve);
+    explicit FixedTimeAnimation(
+        NavigationStyle* navigation,
+        const SbRotation& orientation,
+        const SbVec3f& rotationCenter,
+        const SbVec3f& translation,
+        int duration,
+        const QEasingCurve::Type easingCurve
+    );
 
 private:
-    float angularVelocity; // [rad/ms]
-    SbVec3f linearVelocity; // [/ms]
+    float angularVelocity;   // [rad/ms]
+    SbVec3f linearVelocity;  // [/ms]
 
     SbRotation targetOrientation;
     SbVec3f targetTranslation;
@@ -81,7 +86,7 @@ private:
     void onStop(bool finished) override;
 };
 
-class GuiExport SpinningAnimation : public NavigationAnimation
+class GuiExport SpinningAnimation: public NavigationAnimation
 {
 public:
     explicit SpinningAnimation(NavigationStyle* navigation, const SbVec3f& axis, float velocity);
@@ -95,6 +100,6 @@ private:
     void onStop(bool finished) override;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_NAVIGATIONANIMATION_H
+#endif  // GUI_NAVIGATIONANIMATION_H

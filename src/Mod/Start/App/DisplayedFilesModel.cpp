@@ -52,8 +52,7 @@ FileStats fileInfoFromFreeCADFile(const std::string& path)
     auto metadata = proj.getMetadata();
     FileStats result;
     result.insert(std::make_pair(DisplayedFilesModelRoles::author, metadata.createdBy));
-    result.insert(
-        std::make_pair(DisplayedFilesModelRoles::modifiedTime, metadata.lastModifiedDate));
+    result.insert(std::make_pair(DisplayedFilesModelRoles::modifiedTime, metadata.lastModifiedDate));
     result.insert(std::make_pair(DisplayedFilesModelRoles::creationTime, metadata.creationDate));
     result.insert(std::make_pair(DisplayedFilesModelRoles::company, metadata.company));
     result.insert(std::make_pair(DisplayedFilesModelRoles::license, metadata.license));
@@ -100,7 +99,8 @@ FileStats getFileInfo(const std::string& path)
     }
     else {
         result.insert(
-            std::make_pair(DisplayedFilesModelRoles::modifiedTime, getLastModifiedAsString(file)));
+            std::make_pair(DisplayedFilesModelRoles::modifiedTime, getLastModifiedAsString(file))
+        );
     }
     result.insert(std::make_pair(DisplayedFilesModelRoles::path, path));
     result.insert(std::make_pair(DisplayedFilesModelRoles::size, humanReadableSize(file.size())));
@@ -112,10 +112,10 @@ bool freecadCanOpen(const QString& extension)
 {
     std::string ext = extension.toStdString();
     auto importTypes = App::GetApplication().getImportTypes();
-    return std::ranges::find_if(importTypes,
-                                [&ext](const auto& item) {
-                                    return boost::iequals(item, ext);
-                                })
+    return std::ranges::find_if(
+               importTypes,
+               [&ext](const auto& item) { return boost::iequals(item, ext); }
+           )
         != importTypes.end();
 }
 
@@ -160,8 +160,7 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int role) const
             }
             break;
         case DisplayedFilesModelRoles::image: {
-            if (const auto path =
-                    QString::fromStdString(mapEntry.at(DisplayedFilesModelRoles::path));
+            if (const auto path = QString::fromStdString(mapEntry.at(DisplayedFilesModelRoles::path));
                 _imageCache.contains(path)) {
                 return _imageCache[path];
             }
@@ -193,11 +192,13 @@ void DisplayedFilesModel::addFile(const QString& filePath)
 
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
     const auto lowercaseExtension = qfi.suffix().toLower();
-    const QStringList ignoredExtensions {QLatin1String("fcmacro"),
-                                         QLatin1String("py"),
-                                         QLatin1String("pyi"),
-                                         QLatin1String("csv"),
-                                         QLatin1String("txt")};
+    const QStringList ignoredExtensions {
+        QLatin1String("fcmacro"),
+        QLatin1String("py"),
+        QLatin1String("pyi"),
+        QLatin1String("csv"),
+        QLatin1String("txt")
+    };
     if (lowercaseExtension == QLatin1String("fcstd")) {
         if (const auto thumbnail = loadFCStdThumbnail(filePath); !thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);
@@ -209,10 +210,12 @@ void DisplayedFilesModel::addFile(const QString& filePath)
     }
     else {
         const auto runner = new ThumbnailSource(filePath);
-        connect(runner->signals(),
-                &ThumbnailSourceSignals::thumbnailAvailable,
-                this,
-                &DisplayedFilesModel::processNewThumbnail);
+        connect(
+            runner->signals(),
+            &ThumbnailSourceSignals::thumbnailAvailable,
+            this,
+            &DisplayedFilesModel::processNewThumbnail
+        );
         QThreadPool::globalInstance()->start(runner);
     }
 }

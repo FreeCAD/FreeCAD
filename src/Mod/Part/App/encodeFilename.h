@@ -31,6 +31,6 @@ inline std::string encodeFilename(std::string fn)
     return fn;
 }
 
-} //namespace Part
+}  // namespace Part
 
-#endif // PART_ENCODEFILENAME_H
+#endif  // PART_ENCODEFILENAME_H

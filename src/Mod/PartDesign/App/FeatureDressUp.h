@@ -29,7 +29,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport DressUp : public PartDesign::FeatureAddSub
+class PartDesignExport DressUp: public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::DressUp);
 
@@ -54,24 +54,24 @@ public:
      *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
-    Part::Feature* getBaseObject(bool silent=false) const override;
+    Part::Feature* getBaseObject(bool silent = false) const override;
     /// extracts all edges from the subshapes (including face edges) and furthermore adds
     /// all C0 continuous edges to the vector
-    void getContinuousEdges(Part::TopoShape, std::vector< std::string >&);
+    void getContinuousEdges(Part::TopoShape, std::vector<std::string>&);
     // add argument to return the selected face that edges were derived from
-    void getContinuousEdges(Part::TopoShape, std::vector< std::string >&, std::vector< std::string >&);
+    void getContinuousEdges(Part::TopoShape, std::vector<std::string>&, std::vector<std::string>&);
     // Todo: Post-TNP the above two versions should be able to be factored out.
-    std::vector<TopoShape> getContinuousEdges(const TopoShape &shape);
+    std::vector<TopoShape> getContinuousEdges(const TopoShape& shape);
 
-    std::vector<TopoShape> getFaces(const TopoShape &shape);
-    void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape) override;
+    std::vector<TopoShape> getFaces(const TopoShape& shape);
+    void getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape) override;
     void updatePreviewShape() override;
 
 protected:
     void onChanged(const App::Property* prop) override;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_DressUp_H
+#endif  // PARTDESIGN_DressUp_H

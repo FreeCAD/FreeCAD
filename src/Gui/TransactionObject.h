@@ -28,7 +28,7 @@
 
 namespace Gui
 {
-class TransactionViewProvider : public App::TransactionObject
+class TransactionViewProvider: public App::TransactionObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -40,7 +40,7 @@ public:
     void applyDel(App::Document& Doc, App::TransactionalObject* pcObj) override;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_TRANSACTIONOBJECT_H
+#endif  // GUI_TRANSACTIONOBJECT_H

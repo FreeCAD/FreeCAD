@@ -22,11 +22,10 @@
  ***************************************************************************/
 
 
-
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <QMessageBox>
-# include <QCheckBox>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <QMessageBox>
+#include <QCheckBox>
 
 
 #include <App/Document.h>
@@ -64,7 +63,8 @@ ViewProviderCoordinateSystem::ViewProviderCoordinateSystem()
     pcRoot->insertChild(lm, 0);
 }
 
-ViewProviderCoordinateSystem::~ViewProviderCoordinateSystem() {
+ViewProviderCoordinateSystem::~ViewProviderCoordinateSystem()
+{
     pcGroupChildren->unref();
     pcGroupChildren = nullptr;
 }
@@ -97,13 +97,14 @@ void ViewProviderCoordinateSystem::attach(App::DocumentObject* pcObject)
 
 std::vector<std::string> ViewProviderCoordinateSystem::getDisplayModes() const
 {
-    return { "Base" };
+    return {"Base"};
 }
 
 void ViewProviderCoordinateSystem::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Base") == 0)
+    if (strcmp(ModeName, "Base") == 0) {
         setDisplayMaskMode("Base");
+    }
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
@@ -118,7 +119,7 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements
 
     try {
         // Remember & Set axis visibility
-        for(App::DocumentObject* obj : lcs->axes()) {
+        for (App::DocumentObject* obj : lcs->axes()) {
             if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
                 if (saveState) {
                     tempVisMap[vp] = vp->isVisible();
@@ -128,7 +129,7 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements
         }
 
         // Remember & Set plane visibility
-        for(App::DocumentObject* obj : lcs->planes()) {
+        for (App::DocumentObject* obj : lcs->planes()) {
             if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
                 if (saveState) {
                     tempVisMap[vp] = vp->isVisible();
@@ -146,26 +147,28 @@ void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements
             vp->setVisible(elements.testFlag(DatumElement::Origin));
         }
     }
-    catch (const Base::Exception &ex) {
-        Base::Console().error ("%s\n", ex.what() );
+    catch (const Base::Exception& ex) {
+        Base::Console().error("%s\n", ex.what());
     }
 
     // Remember & Set self visibility
     tempVisMap[this] = isVisible();
     setVisible(true);
-
 }
 
-void ViewProviderCoordinateSystem::resetTemporaryVisibility() {
-    for(std::pair<Gui::ViewProvider*, bool> pair : tempVisMap) {
+void ViewProviderCoordinateSystem::resetTemporaryVisibility()
+{
+    for (std::pair<Gui::ViewProvider*, bool> pair : tempVisMap) {
         pair.first->setVisible(pair.second);
     }
-    tempVisMap.clear ();
+    tempVisMap.clear();
 }
 
 double ViewProviderCoordinateSystem::defaultSize()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     return hGrp->GetFloat("DatumsSize", 25);
 }
 
@@ -182,7 +185,8 @@ void ViewProviderCoordinateSystem::setPlaneLabelVisibility(bool val)
     }
     for (auto* plane : lcs->planes()) {
         auto* vp = dynamic_cast<Gui::ViewProviderPlane*>(
-            Gui::Application::Instance->getViewProvider(plane));
+            Gui::Application::Instance->getViewProvider(plane)
+        );
         if (vp) {
             vp->setLabelVisibility(val);
         }
@@ -198,7 +202,8 @@ void ViewProviderCoordinateSystem::applyDatumObjects(const DatumObjectFunc& func
     const auto& objs = lcs->OriginFeatures.getValues();
     for (auto* obj : objs) {
         auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
-            Gui::Application::Instance->getViewProvider(obj));
+            Gui::Application::Instance->getViewProvider(obj)
+        );
         if (vp) {
             func(vp);
         }
@@ -207,19 +212,15 @@ void ViewProviderCoordinateSystem::applyDatumObjects(const DatumObjectFunc& func
 
 void ViewProviderCoordinateSystem::setTemporaryScale(double factor)
 {
-    applyDatumObjects([factor](ViewProviderDatum* vp) {
-        vp->setTemporaryScale(factor);
-    });
+    applyDatumObjects([factor](ViewProviderDatum* vp) { vp->setTemporaryScale(factor); });
 }
 
 void ViewProviderCoordinateSystem::resetTemporarySize()
 {
-    applyDatumObjects([](ViewProviderDatum* vp) {
-        vp->resetTemporarySize();
-    });
+    applyDatumObjects([](ViewProviderDatum* vp) { vp->resetTemporarySize(); });
 }
 
-bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &)
+bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string>&)
 {
     auto* lcs = getObject<App::LocalCoordinateSystem>();
     if (!lcs) {
@@ -234,9 +235,13 @@ bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &)
     auto objs = lcs->OriginFeatures.getValues();
     lcs->OriginFeatures.setValues({});
 
-    for (auto obj: objs ) {
-        Gui::Command::doCommand( Gui::Command::Doc, "App.getDocument(\"%s\").removeObject(\"%s\")",
-                obj->getDocument()->getName(), obj->getNameInDocument() );
+    for (auto obj : objs) {
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.getDocument(\"%s\").removeObject(\"%s\")",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument()
+        );
     }
 
     return true;

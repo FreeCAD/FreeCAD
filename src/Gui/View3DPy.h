@@ -31,23 +31,24 @@ class SoEventCallback;
 class SoDragger;
 class QImage;
 
-namespace Gui {
+namespace Gui
+{
 
 class View3DInventor;
 
-class View3DInventorPy : public Py::PythonExtension<View3DInventorPy>
+class View3DInventorPy: public Py::PythonExtension<View3DInventorPy>
 {
 public:
     using BaseType = Py::PythonExtension<View3DInventorPy>;
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
-    explicit View3DInventorPy(View3DInventor *vi);
+    explicit View3DInventorPy(View3DInventor* vi);
     ~View3DInventorPy() override;
 
     View3DInventor* getView3DInventorPtr();
     Py::Object repr() override;
-    Py::Object getattr(const char *) override;
-    int setattr(const char *, const Py::Object &) override;
+    Py::Object getattr(const char*) override;
+    int setattr(const char*, const Py::Object&) override;
     Py::Object cast_to_base();
 
     Py::Object fitAll(const Py::Tuple&);
@@ -117,7 +118,7 @@ public:
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw();
     Py::Object setName(const Py::Tuple&);
-    Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
+    Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict&);
     Py::Object hasClippingPlane();
     Py::Object graphicsView();
     Py::Object setCornerCrossVisible(const Py::Tuple& args);
@@ -127,22 +128,22 @@ public:
 
 private:
     void setDefaultCameraHeight(float);
-    static void eventCallback(void * ud, SoEventCallback * n);
-    static void eventCallbackPivy(void * ud, SoEventCallback * n);
-    static void eventCallbackPivyEx(void * ud, SoEventCallback * n);
-    static void draggerCallback(void * ud, SoDragger* dragger);
+    static void eventCallback(void* ud, SoEventCallback* n);
+    static void eventCallbackPivy(void* ud, SoEventCallback* n);
+    static void eventCallbackPivyEx(void* ud, SoEventCallback* n);
+    static void draggerCallback(void* ud, SoDragger* dragger);
 
 private:
-    using method_varargs_handler = PyObject* (*)(PyObject *_self, PyObject *_args);
+    using method_varargs_handler = PyObject* (*)(PyObject * _self, PyObject* _args);
     static method_varargs_handler pycxx_handler;
-    static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-    Py::Object getattribute(const char *);
+    static PyObject* method_varargs_ext_handler(PyObject* _self, PyObject* _args);
+    Py::Object getattribute(const char*);
 
 private:
     Gui::MDIViewPy base;
     std::list<PyObject*> callbacks;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif //GUI_VIEW3DPY_H
+#endif  // GUI_VIEW3DPY_H

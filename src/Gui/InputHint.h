@@ -293,18 +293,23 @@ struct InputHint
     }
 };
 
-template <typename T>
+template<typename T>
 struct StateHints
 {
     T state;
     std::list<InputHint> hints;
 };
 
-template <typename T>
+template<typename T>
 using HintTable = std::vector<StateHints<T>>;
 
-template <typename T>
-static std::list<InputHint> lookupHints(T state, HintTable<T> table, const std::list<InputHint>& fallback = {}) {
+template<typename T>
+static std::list<InputHint> lookupHints(
+    T state,
+    HintTable<T> table,
+    const std::list<InputHint>& fallback = {}
+)
+{
     const auto stateMatches = [&state](const StateHints<T>& entry) {
         return entry.state == state;
     };
@@ -318,4 +323,4 @@ static std::list<InputHint> lookupHints(T state, HintTable<T> table, const std::
 
 }  // namespace Gui
 
-#endif // GUI_INPUTHINT_H
+#endif  // GUI_INPUTHINT_H

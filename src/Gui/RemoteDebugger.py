@@ -1,4 +1,4 @@
-#/******************************************************************************
+# /******************************************************************************
 # *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>        *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
@@ -26,7 +26,8 @@ import FreeCADGui as Gui
 from PySide import QtGui
 from freecad.utils import get_python_exe
 
-class RemoteDebugger():
+
+class RemoteDebugger:
     def __init__(self, parent=None):
         ui = App.getHomePath() + "Ext/freecad/gui/RemoteDebugger.ui"
         self.dialog = Gui.PySideUic.loadUi(ui)
@@ -46,13 +47,14 @@ class RemoteDebugger():
             index = self.dialog.tabWidget.currentIndex()
             self.prefs.SetInt("TabIndex", index)
 
-            if index == 0: # winpdb
+            if index == 0:  # winpdb
                 passwd = self.dialog.lineEditPassword.text()
 
                 import rpdb2
-                rpdb2.start_embedded_debugger(passwd, timeout = 30)
 
-            elif index == 1: # VS code
+                rpdb2.start_embedded_debugger(passwd, timeout=30)
+
+            elif index == 1:  # VS code
                 address = self.dialog.lineEditAddress.text()
                 port = self.dialog.spinBoxPort.value()
                 self.prefs.SetString("VSCodeAddress", address)

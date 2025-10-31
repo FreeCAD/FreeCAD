@@ -2,7 +2,6 @@ from Base.Metadata import export
 from GeometrySurface import GeometrySurface
 from typing import Any, Final, Tuple
 
-
 @export(
     Twin="GeomTrimmedSurface",
     TwinPointer="GeomTrimmedSurface",

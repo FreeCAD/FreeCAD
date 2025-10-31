@@ -23,7 +23,7 @@
 
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
+# include <BRepAdaptor_HCurve.hxx>
 #endif
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -95,12 +95,9 @@ namespace
 
 Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
 Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
-Part::Ellipse*
-createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
-Part::Vertex*
-createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name);
-Part::Feature*
-createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name);
+Part::Ellipse* createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
+Part::Vertex* createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name);
+Part::Feature* createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name);
 
 }  // namespace
 
@@ -137,9 +134,12 @@ Part::Ellipse* createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* do
         Base::Placement plc;
         plc.setPosition(Base::Vector3d(center.X(), center.Y(), center.Z()));
         plc.setRotation(
-            Base::Rotation::makeRotationByAxes(Base::Vector3d(xDir.X(), xDir.Y(), xDir.Z()),
-                                               Base::Vector3d(yDir.X(), yDir.Y(), yDir.Z()),
-                                               Base::Vector3d(zDir.X(), zDir.Y(), zDir.Z())));
+            Base::Rotation::makeRotationByAxes(
+                Base::Vector3d(xDir.X(), xDir.Y(), xDir.Z()),
+                Base::Vector3d(yDir.X(), yDir.Y(), yDir.Z()),
+                Base::Vector3d(zDir.X(), zDir.Y(), zDir.Z())
+            )
+        );
         p->Placement.setValue(plc);
 
         // Set angles for arcs, converting from radians (OCC) to degrees (PropertyAngle)
@@ -176,9 +176,12 @@ Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc,
         Base::Placement plc;
         plc.setPosition(Base::Vector3d(center.X(), center.Y(), center.Z()));
         plc.setRotation(
-            Base::Rotation::makeRotationByAxes(Base::Vector3d(xDir.X(), xDir.Y(), xDir.Z()),
-                                               Base::Vector3d(yDir.X(), yDir.Y(), yDir.Z()),
-                                               Base::Vector3d(zDir.X(), zDir.Y(), zDir.Z())));
+            Base::Rotation::makeRotationByAxes(
+                Base::Vector3d(xDir.X(), xDir.Y(), xDir.Z()),
+                Base::Vector3d(yDir.X(), yDir.Y(), yDir.Z()),
+                Base::Vector3d(zDir.X(), zDir.Y(), zDir.Z())
+            )
+        );
         p->Placement.setValue(plc);
 
         // Set angles for arcs
@@ -213,8 +216,7 @@ Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, con
 }
 
 // Helper function to create and configure a Part::Vertex primitive from a TopoDS_Vertex
-Part::Vertex*
-createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name)
+Part::Vertex* createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name)
 {
     auto* p = doc->addObject<Part::Vertex>(name);
     if (p) {
@@ -227,8 +229,7 @@ createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const cha
 }
 
 // Helper function to create a generic Part::Feature for any non-parametric shape
-Part::Feature*
-createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name)
+Part::Feature* createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name)
 {
     auto* p = doc->addObject<Part::Feature>(name);
     if (p) {
@@ -256,8 +257,10 @@ TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices
         TopoDS_Edge edge;
 
         if (start_vertex.bulge == 0.0) {
-            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
-                                           makePoint(end_vertex.location))
+            edge = BRepBuilderAPI_MakeEdge(
+                       makePoint(start_vertex.location),
+                       makePoint(end_vertex.location)
+            )
                        .Edge();
         }
         else {
@@ -296,8 +299,10 @@ TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices
         TopoDS_Edge edge;
 
         if (start_vertex.bulge == 0.0) {
-            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
-                                           makePoint(end_vertex.location))
+            edge = BRepBuilderAPI_MakeEdge(
+                       makePoint(start_vertex.location),
+                       makePoint(end_vertex.location)
+            )
                        .Edge();
         }
         else {
@@ -331,8 +336,7 @@ TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices
     return wireBuilder.Wire();
 }
 
-Part::Feature* ImpExpDxfRead::createFlattenedPolylineFeature(const TopoDS_Wire& wire,
-                                                             const char* name)
+Part::Feature* ImpExpDxfRead::createFlattenedPolylineFeature(const TopoDS_Wire& wire, const char* name)
 {
     auto* p = document->addObject<Part::Feature>(document->getUniqueObjectName(name).c_str());
     if (p) {
@@ -342,8 +346,7 @@ Part::Feature* ImpExpDxfRead::createFlattenedPolylineFeature(const TopoDS_Wire& 
     return p;
 }
 
-Part::Compound* ImpExpDxfRead::createParametricPolylineCompound(const TopoDS_Wire& wire,
-                                                                const char* name)
+Part::Compound* ImpExpDxfRead::createParametricPolylineCompound(const TopoDS_Wire& wire, const char* name)
 {
     auto* p = document->addObject<Part::Compound>(document->getUniqueObjectName(name).c_str());
     IncrementCreatedObjectCount();
@@ -444,11 +447,13 @@ void ImpExpDxfRead::StartImport()
     CDxfRead::StartImport();
     // Create a hidden group to store the base objects for block definitions
     m_blockDefinitionGroup = static_cast<App::DocumentObjectGroup*>(
-        document->addObject("App::DocumentObjectGroup", "_BlockDefinitions"));
+        document->addObject("App::DocumentObjectGroup", "_BlockDefinitions")
+    );
     m_blockDefinitionGroup->Visibility.setValue(false);
     // Create a hidden group to store unreferenced blocks
     m_unreferencedBlocksGroup = static_cast<App::DocumentObjectGroup*>(
-        document->addObject("App::DocumentObjectGroup", "_UnreferencedBlocks"));
+        document->addObject("App::DocumentObjectGroup", "_UnreferencedBlocks")
+    );
     m_unreferencedBlocksGroup->Visibility.setValue(false);
 }
 
@@ -472,10 +477,11 @@ bool ImpExpDxfRead::ReadEntitiesSection()
         // TODO: We do end-to-end joining or complete merging as selected by the options.
         for (auto& shapeSet : ShapesToCombine) {
             m_entityAttributes = shapeSet.first;
-            CombineShapes(shapeSet.second,
-                          m_entityAttributes.m_Layer == nullptr
-                              ? "Compound"
-                              : m_entityAttributes.m_Layer->Name.c_str());
+            CombineShapes(
+                shapeSet.second,
+                m_entityAttributes.m_Layer == nullptr ? "Compound"
+                                                      : m_entityAttributes.m_Layer->Name.c_str()
+            );
         }
     }
     else {
@@ -524,8 +530,9 @@ TopoDS_Shape ImpExpDxfRead::CombineShapesToCompound(const std::list<TopoDS_Shape
 
 void ImpExpDxfRead::setOptions()
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        getOptionSource().c_str()
+    );
     m_stats.importSettings.clear();
 
     m_preserveLayers = hGrp->GetBool("dxfUseDraftVisGroups", true);
@@ -571,8 +578,7 @@ void ImpExpDxfRead::setOptions()
     // hGrp->GetBool("dxfhiddenLayers", true);
 }
 
-void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
-                                          std::set<std::string>& composed)
+void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName, std::set<std::string>& composed)
 {
     // 1. Base Case: If already composed, do nothing.
     if (composed.count(blockName)) {
@@ -614,7 +620,8 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
                     // Apply the insert's transformation.
                     Base::Placement pl(
                         nestedInsert.Point,
-                        Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation));
+                        Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation)
+                    );
                     Base::Matrix4D transform = pl.toMatrix();
                     transform.scale(nestedInsert.Scale);
                     nestedShape.transformShape(transform, true, true);  // Use copy=true
@@ -632,7 +639,8 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
     if (!finalShape.IsNull()) {
         std::string featureName = "BLOCK_" + blockName;
         auto blockFeature = document->addObject<Part::Feature>(
-            document->getUniqueObjectName(featureName.c_str()).c_str());
+            document->getUniqueObjectName(featureName.c_str()).c_str()
+        );
         blockFeature->Shape.setValue(finalShape);
         blockFeature->Visibility.setValue(false);
         m_blockDefinitionGroup->addObject(blockFeature);
@@ -643,8 +651,7 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
     composed.insert(blockName);
 }
 
-void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
-                                           std::set<std::string>& composed)
+void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName, std::set<std::string>& composed)
 {
     // 1. Base Case: If this block has already been composed, we're done.
     if (composed.count(blockName)) {
@@ -662,7 +669,8 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
     // 3. Create the master Part::Compound for this block definition.
     std::string compName = "BLOCK_" + blockName;
     auto blockCompound = document->addObject<Part::Compound>(
-        document->getUniqueObjectName(compName.c_str()).c_str());
+        document->getUniqueObjectName(compName.c_str()).c_str()
+    );
     m_blockDefinitionGroup->addObject(blockCompound);
     IncrementCreatedObjectCount();
     blockCompound->Visibility.setValue(false);
@@ -684,13 +692,16 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 // The link's name should be based on the block it is inserting, not the parent.
                 std::string linkName = "Link_" + nestedInsert.Name;
                 auto link = document->addObject<App::Link>(
-                    document->getUniqueObjectName(linkName.c_str()).c_str());
+                    document->getUniqueObjectName(linkName.c_str()).c_str()
+                );
                 link->setLink(-1, baseObjIt->second);
                 link->LinkTransform.setValue(false);
 
                 // Apply placement and scale to the link itself.
-                Base::Placement pl(nestedInsert.Point,
-                                   Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation));
+                Base::Placement pl(
+                    nestedInsert.Point,
+                    Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation)
+                );
                 link->Placement.setValue(pl);
                 link->ScaleVector.setValue(nestedInsert.Scale);
                 link->Visibility.setValue(false);
@@ -713,14 +724,14 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Point: {
-                    newObject =
-                        createVertexPrimitive(TopoDS::Vertex(builder.shape), document, "Point");
+                    newObject = createVertexPrimitive(TopoDS::Vertex(builder.shape), document, "Point");
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Circle:
                 case GeometryBuilder::PrimitiveType::Arc: {
-                    const char* name =
-                        (builder.type == GeometryBuilder::PrimitiveType::Circle) ? "Circle" : "Arc";
+                    const char* name = (builder.type == GeometryBuilder::PrimitiveType::Circle)
+                        ? "Circle"
+                        : "Arc";
                     auto* p = createCirclePrimitive(TopoDS::Edge(builder.shape), document, name);
                     if (!p) {
                         break;
@@ -733,8 +744,8 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Ellipse: {
-                    newObject =
-                        createEllipsePrimitive(TopoDS::Edge(builder.shape), document, "Ellipse");
+                    newObject
+                        = createEllipsePrimitive(TopoDS::Edge(builder.shape), document, "Ellipse");
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Spline: {
@@ -747,14 +758,13 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 case GeometryBuilder::PrimitiveType::PolylineFlattened: {
                     // This creates a simple Part::Feature wrapping the wire, which is standard for
                     // block children.
-                    newObject =
-                        createFlattenedPolylineFeature(TopoDS::Wire(builder.shape), "Polyline");
+                    newObject = createFlattenedPolylineFeature(TopoDS::Wire(builder.shape), "Polyline");
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::PolylineParametric: {
                     // This creates a Part::Compound containing line/arc segments.
-                    newObject =
-                        createParametricPolylineCompound(TopoDS::Wire(builder.shape), "Polyline");
+                    newObject
+                        = createParametricPolylineCompound(TopoDS::Wire(builder.shape), "Polyline");
                     // No styling needed here, as the block's instance will control appearance.
                     break;
                 }
@@ -771,8 +781,8 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 newObject->Visibility.setValue(false);  // Children of blocks are hidden by default
                 // Layer and color are applied by the block itself (Part::Compound) or its children
                 // if overridden.
-                ApplyGuiStyles(
-                    static_cast<Part::Feature*>(newObject));  // Apply style to the child object
+                ApplyGuiStyles(static_cast<Part::Feature*>(newObject));  // Apply style to the child
+                                                                         // object
                 childObjects.push_back(newObject);  // Add to the block's main children list
             }
         }
@@ -907,17 +917,18 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 
     // Step 3: Check for duplicates to prevent errors.
     if (this->Blocks.count(name)) {
-        ImportError("Duplicate block name '%s' found. Ignoring subsequent definition.",
-                    name.c_str());
+        ImportError("Duplicate block name '%s' found. Ignoring subsequent definition.", name.c_str());
         return SkipBlockContents();
     }
 
     // Step 4: Use the temporary Block struct and Collector to parse all contents into memory.
     // The .emplace method is slightly more efficient here.
     auto& temporaryBlock = Blocks.emplace(std::make_pair(name, Block(name, flags))).first->second;
-    BlockDefinitionCollector blockCollector(*this,
-                                            temporaryBlock.GeometryBuilders,
-                                            temporaryBlock.Inserts);
+    BlockDefinitionCollector blockCollector(
+        *this,
+        temporaryBlock.GeometryBuilders,
+        temporaryBlock.Inserts
+    );
     if (!ReadBlockContents()) {
         return false;  // Abort on parsing error
     }
@@ -927,9 +938,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
     return true;
 }
 
-void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
-                               const Base::Vector3d& end,
-                               bool /*hidden*/)
+void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start, const Base::Vector3d& end, bool /*hidden*/)
 {
     if (shouldSkipEntity()) {
         return;
@@ -984,11 +993,13 @@ void ImpExpDxfRead::OnReadPoint(const Base::Vector3d& start)
 }
 
 
-void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
-                              const Base::Vector3d& end,
-                              const Base::Vector3d& center,
-                              bool dir,
-                              bool /*hidden*/)
+void ImpExpDxfRead::OnReadArc(
+    const Base::Vector3d& start,
+    const Base::Vector3d& end,
+    const Base::Vector3d& center,
+    bool dir,
+    bool /*hidden*/
+)
 {
     if (shouldSkipEntity()) {
         return;
@@ -1024,10 +1035,7 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
 }
 
 
-void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
-                                 const Base::Vector3d& center,
-                                 bool dir,
-                                 bool /*hidden*/)
+void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start, const Base::Vector3d& center, bool dir, bool /*hidden*/)
 {
     if (shouldSkipEntity()) {
         return;
@@ -1117,8 +1125,8 @@ Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
     }
 
     Standard_Boolean periodic = sd.flag == 2;
-    Handle(Geom_BSplineCurve) geom =
-        new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
+    Handle(Geom_BSplineCurve) geom
+        = new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
     return geom;
 }
 
@@ -1194,13 +1202,15 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
 }
 
 // NOLINTBEGIN(bugprone-easily-swappable-parameters)
-void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
-                                  double major_radius,
-                                  double minor_radius,
-                                  double rotation,
-                                  double /*start_angle*/,
-                                  double /*end_angle*/,
-                                  bool dir)
+void ImpExpDxfRead::OnReadEllipse(
+    const Base::Vector3d& center,
+    double major_radius,
+    double minor_radius,
+    double rotation,
+    double /*start_angle*/,
+    double /*end_angle*/,
+    bool dir
+)
 // NOLINTEND(bugprone-easily-swappable-parameters)
 {
     if (shouldSkipEntity()) {
@@ -1239,10 +1249,12 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
     Collector->AddGeometry(builder);
 }
 
-void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
-                               const double height,
-                               const std::string& text,
-                               const double rotation)
+void ImpExpDxfRead::OnReadText(
+    const Base::Vector3d& point,
+    const double height,
+    const std::string& text,
+    const double rotation
+)
 {
     if (shouldSkipEntity() || !m_importAnnotations) {
         return;
@@ -1250,10 +1262,7 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
 
     auto* p = static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Text"));
     if (p) {
-        p->addDynamicProperty("App::PropertyString",
-                              "DxfEntityType",
-                              "Internal",
-                              "DXF entity type");
+        p->addDynamicProperty("App::PropertyString", "DxfEntityType", "Internal", "DXF entity type");
         static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))->setValue("TEXT");
 
         p->addDynamicProperty("App::PropertyStringList", "Text", "Data", "Text content");
@@ -1261,10 +1270,7 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
         std::vector<std::string> text_values = {text};
         static_cast<App::PropertyStringList*>(p->getPropertyByName("Text"))->setValues(text_values);
 
-        p->addDynamicProperty("App::PropertyFloat",
-                              "DxfTextHeight",
-                              "Internal",
-                              "Original text height");
+        p->addDynamicProperty("App::PropertyFloat", "DxfTextHeight", "Internal", "Original text height");
         static_cast<App::PropertyFloat*>(p->getPropertyByName("DxfTextHeight"))->setValue(height);
 
         p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
@@ -1278,10 +1284,12 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
 }
 
 
-void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
-                                 const Base::Vector3d& scale,
-                                 const std::string& name,
-                                 double rotation)
+void ImpExpDxfRead::OnReadInsert(
+    const Base::Vector3d& point,
+    const Base::Vector3d& scale,
+    const std::string& name,
+    double rotation
+)
 {
     if (shouldSkipEntity()) {
         return;
@@ -1294,25 +1302,22 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
 }
 
 
-void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
-                                    const Base::Vector3d& end,
-                                    const Base::Vector3d& point,
-                                    int dimensionType,
-                                    double rotation)
+void ImpExpDxfRead::OnReadDimension(
+    const Base::Vector3d& start,
+    const Base::Vector3d& end,
+    const Base::Vector3d& point,
+    int dimensionType,
+    double rotation
+)
 {
     if (shouldSkipEntity() || !m_importAnnotations) {
         return;
     }
 
-    auto* p =
-        static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Dimension"));
+    auto* p = static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Dimension"));
     if (p) {
-        p->addDynamicProperty("App::PropertyString",
-                              "DxfEntityType",
-                              "Internal",
-                              "DXF entity type");
-        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))
-            ->setValue("DIMENSION");
+        p->addDynamicProperty("App::PropertyString", "DxfEntityType", "Internal", "DXF entity type");
+        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))->setValue("DIMENSION");
 
         p->addDynamicProperty("App::PropertyVector", "Start", "Data", "Start point of dimension");
         static_cast<App::PropertyVector*>(p->getPropertyByName("Start"))->setValue(start);
@@ -1323,17 +1328,21 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
         p->addDynamicProperty("App::PropertyVector", "Dimline", "Data", "Point on dimension line");
         static_cast<App::PropertyVector*>(p->getPropertyByName("Dimline"))->setValue(point);
 
-        p->addDynamicProperty("App::PropertyInteger",
-                              "DxfDimensionType",
-                              "Internal",
-                              "Original dimension type flag");
+        p->addDynamicProperty(
+            "App::PropertyInteger",
+            "DxfDimensionType",
+            "Internal",
+            "Original dimension type flag"
+        );
         static_cast<App::PropertyInteger*>(p->getPropertyByName("DxfDimensionType"))
             ->setValue(dimensionType);
 
-        p->addDynamicProperty("App::PropertyAngle",
-                              "DxfRotation",
-                              "Internal",
-                              "Original dimension rotation");
+        p->addDynamicProperty(
+            "App::PropertyAngle",
+            "DxfRotation",
+            "Internal",
+            "Original dimension rotation"
+        );
         // rotation is already in radians from the caller
         static_cast<App::PropertyAngle*>(p->getPropertyByName("DxfRotation"))->setValue(rotation);
 
@@ -1401,13 +1410,11 @@ void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& b
             break;
         }
         case GeometryBuilder::PrimitiveType::Point: {
-            newDocObj =
-                createVertexPrimitive(TopoDS::Vertex(builder.shape), Reader.document, "Point");
+            newDocObj = createVertexPrimitive(TopoDS::Vertex(builder.shape), Reader.document, "Point");
             break;
         }
         case GeometryBuilder::PrimitiveType::Ellipse: {
-            newDocObj =
-                createEllipsePrimitive(TopoDS::Edge(builder.shape), Reader.document, "Ellipse");
+            newDocObj = createEllipsePrimitive(TopoDS::Edge(builder.shape), Reader.document, "Ellipse");
             break;
         }
         case GeometryBuilder::PrimitiveType::Spline: {
@@ -1440,19 +1447,24 @@ void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& b
     }
 }
 
-ImpExpDxfRead::Layer::Layer(const std::string& name,
-                            ColorIndex_t color,
-                            std::string&& lineType,
-                            PyObject* drawingLayer)
+ImpExpDxfRead::Layer::Layer(
+    const std::string& name,
+    ColorIndex_t color,
+    std::string&& lineType,
+    PyObject* drawingLayer
+)
     : CDxfRead::Layer(name, color, std::move(lineType))
-    , DraftLayerView(drawingLayer == nullptr ? Py_None
-                                             : PyObject_GetAttrString(drawingLayer, "ViewObject"))
-    , GroupContents(drawingLayer == nullptr
-                        ? nullptr
-                        : dynamic_cast<App::PropertyLinkListHidden*>(
-                              (((App::FeaturePythonPyT<App::DocumentObjectPy>*)drawingLayer)
-                                   ->getPropertyContainerPtr())
-                                  ->getDynamicPropertyByName("Group")))
+    , DraftLayerView(
+          drawingLayer == nullptr ? Py_None : PyObject_GetAttrString(drawingLayer, "ViewObject")
+      )
+    , GroupContents(
+          drawingLayer == nullptr ? nullptr
+                                  : dynamic_cast<App::PropertyLinkListHidden*>(
+                                        (((App::FeaturePythonPyT<App::DocumentObjectPy>*)drawingLayer)
+                                             ->getPropertyContainerPtr())
+                                            ->getDynamicPropertyByName("Group")
+                                    )
+      )
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
@@ -1476,8 +1488,7 @@ void ImpExpDxfRead::Layer::FinishLayer() const
     }
 }
 
-CDxfRead::Layer*
-ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType)
+CDxfRead::Layer* ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType)
 {
     if (m_preserveLayers) {
         // Hidden layers are implemented in the wrapup code after the entire file has been read.
@@ -1495,29 +1506,31 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
             layer =
                 // NOLINTNEXTLINE(readability/nolint)
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
-                (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
-                                                         "make_layer",
-                                                         "s(fff)(fff)fs",
-                                                         name.c_str(),
-                                                         appColor.r,
-                                                         appColor.g,
-                                                         appColor.b,
-                                                         appColor.r,
-                                                         appColor.g,
-                                                         appColor.b,
-                                                         2.0,
-                                                         "Solid");
+                (Base::PyObjectBase*)PyObject_CallMethod(
+                    draftModule,
+                    "make_layer",
+                    "s(fff)(fff)fs",
+                    name.c_str(),
+                    appColor.r,
+                    appColor.g,
+                    appColor.b,
+                    appColor.r,
+                    appColor.g,
+                    appColor.b,
+                    2.0,
+                    "Solid"
+                );
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
         if (result->DraftLayerView != Py_None) {
             // Get the correct boolean value based on the user's preference.
             PyObject* overrideValue = m_preserveColors ? Py_True : Py_False;
-            PyObject_SetAttrString(result->DraftLayerView,
-                                   "OverrideLineColorChildren",
-                                   overrideValue);
-            PyObject_SetAttrString(result->DraftLayerView,
-                                   "OverrideShapeAppearanceChildren",
-                                   overrideValue);
+            PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", overrideValue);
+            PyObject_SetAttrString(
+                result->DraftLayerView,
+                "OverrideShapeAppearanceChildren",
+                overrideValue
+            );
         }
 
         // We make our own layer class even if we could not make a layer. MoveToLayer will
@@ -1577,18 +1590,19 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::_addOriginalLayerProperty(App::DocumentObject* obj)
 {
     if (obj && m_entityAttributes.m_Layer) {
-        obj->addDynamicProperty("App::PropertyString",
-                                "OriginalLayer",
-                                "Internal",
-                                "Layer name from the original DXF file.",
-                                App::Property::Hidden);
+        obj->addDynamicProperty(
+            "App::PropertyString",
+            "OriginalLayer",
+            "Internal",
+            "Layer name from the original DXF file.",
+            App::Property::Hidden
+        );
         static_cast<App::PropertyString*>(obj->getPropertyByName("OriginalLayer"))
             ->setValue(m_entityAttributes.m_Layer->Name.c_str());
     }
 }
 
-void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
-                                                      const char* nameBase)
+void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape, const char* nameBase)
 {
     auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
 
@@ -1601,8 +1615,7 @@ void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
     }
 }
 
-void ImpExpDxfRead::DrawingEntityCollector::AddObject(App::DocumentObject* obj,
-                                                      const char* /*nameBase*/)
+void ImpExpDxfRead::DrawingEntityCollector::AddObject(App::DocumentObject* obj, const char* /*nameBase*/)
 {
     Reader.MoveToLayer(obj);
     Reader._addOriginalLayerProperty(obj);
@@ -1656,8 +1669,9 @@ ImpExpDxfWrite::~ImpExpDxfWrite() = default;
 
 void ImpExpDxfWrite::setOptions()
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        getOptionSource().c_str()
+    );
     optionMaxLength = hGrp->GetFloat("maxsegmentlength", 5.0);
     optionExpPoints = hGrp->GetBool("ExportPoints", false);
     m_version = hGrp->GetInt("DxfVersionOut", 14);
@@ -1776,8 +1790,10 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             exportLine(adapt);
         }
         else {
-            Base::Console().warning("ImpExpDxf - unknown curve type: %d\n",
-                                    static_cast<int>(adapt.GetType()));
+            Base::Console().warning(
+                "ImpExpDxf - unknown curve type: %d\n",
+                static_cast<int>(adapt.GetType())
+            );
         }
     }
 
@@ -1791,8 +1807,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         }
 
         std::sort(duplicates.begin(), duplicates.end(), ImpExpDxfWrite::gp_PntCompare);
-        auto newEnd =
-            std::unique(duplicates.begin(), duplicates.end(), ImpExpDxfWrite::gp_PntEqual);
+        auto newEnd = std::unique(duplicates.begin(), duplicates.end(), ImpExpDxfWrite::gp_PntEqual);
         std::vector<gp_Pnt> uniquePts(duplicates.begin(), newEnd);
         for (auto& p : uniquePts) {
             double point[3] = {0, 0, 0};
@@ -1956,7 +1971,8 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
                 s.X(),
                 s.Y(),
                 ePt.X(),
-                ePt.Y());
+                ePt.Y()
+            );
             TColgp_Array1OfPnt controlPoints(0, 1);
             controlPoints.SetValue(0, s);
             controlPoints.SetValue(1, ePt);
@@ -2078,11 +2094,13 @@ void ImpExpDxfWrite::exportPolyline(BRepAdaptor_Curve& c)
     }
 }
 
-void ImpExpDxfWrite::exportText(const char* text,
-                                Base::Vector3d position1,
-                                Base::Vector3d position2,
-                                double size,
-                                int just)
+void ImpExpDxfWrite::exportText(
+    const char* text,
+    Base::Vector3d position1,
+    Base::Vector3d position2,
+    double size,
+    int just
+)
 {
     double location1[3] = {0, 0, 0};
     location1[0] = position1.x;
@@ -2096,12 +2114,14 @@ void ImpExpDxfWrite::exportText(const char* text,
     writeText(text, location1, location2, size, just);
 }
 
-void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn,
-                                     Base::Vector3d lineLocn,
-                                     Base::Vector3d extLine1Start,
-                                     Base::Vector3d extLine2Start,
-                                     char* dimText,
-                                     int type)
+void ImpExpDxfWrite::exportLinearDim(
+    Base::Vector3d textLocn,
+    Base::Vector3d lineLocn,
+    Base::Vector3d extLine1Start,
+    Base::Vector3d extLine2Start,
+    char* dimText,
+    int type
+)
 {
     double text[3] = {0, 0, 0};
     text[0] = textLocn.x;
@@ -2122,12 +2142,14 @@ void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn,
     writeLinearDim(text, line, ext1, ext2, dimText, type);
 }
 
-void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn,
-                                      Base::Vector3d lineLocn,
-                                      Base::Vector3d extLine1End,
-                                      Base::Vector3d extLine2End,
-                                      Base::Vector3d apexPoint,
-                                      char* dimText)
+void ImpExpDxfWrite::exportAngularDim(
+    Base::Vector3d textLocn,
+    Base::Vector3d lineLocn,
+    Base::Vector3d extLine1End,
+    Base::Vector3d extLine2End,
+    Base::Vector3d apexPoint,
+    char* dimText
+)
 {
     double text[3] = {0, 0, 0};
     text[0] = textLocn.x;
@@ -2152,10 +2174,12 @@ void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn,
     writeAngularDim(text, line, apex, ext1, apex, ext2, dimText);
 }
 
-void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint,
-                                     Base::Vector3d textLocn,
-                                     Base::Vector3d arcPoint,
-                                     char* dimText)
+void ImpExpDxfWrite::exportRadialDim(
+    Base::Vector3d centerPoint,
+    Base::Vector3d textLocn,
+    Base::Vector3d arcPoint,
+    char* dimText
+)
 {
     double center[3] = {0, 0, 0};
     center[0] = centerPoint.x;
@@ -2172,10 +2196,12 @@ void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint,
     writeRadialDim(center, text, arc, dimText);
 }
 
-void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn,
-                                        Base::Vector3d arcPoint1,
-                                        Base::Vector3d arcPoint2,
-                                        char* dimText)
+void ImpExpDxfWrite::exportDiametricDim(
+    Base::Vector3d textLocn,
+    Base::Vector3d arcPoint1,
+    Base::Vector3d arcPoint2,
+    char* dimText
+)
 {
     double text[3] = {0, 0, 0};
     text[0] = textLocn.x;

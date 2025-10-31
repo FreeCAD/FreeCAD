@@ -60,8 +60,9 @@ PyObject* SolverGeometryExtension::getPyObject()
     THROWM(Base::NotImplementedError, "SolverGeometryExtension does not have a Python counterpart");
 }
 
-SolverGeometryExtension::PointParameterStatus
-SolverGeometryExtension::getPoint(Sketcher::PointPos pos) const
+SolverGeometryExtension::PointParameterStatus SolverGeometryExtension::getPoint(
+    Sketcher::PointPos pos
+) const
 {
     if (pos == Sketcher::PointPos::start) {
         return getStartPoint();
@@ -96,8 +97,7 @@ void SolverGeometryExtension::notifyAttachment(Part::Geometry* geo)
     auto result = edgeParamMap.find(GeometryType);
 
     if (result == edgeParamMap.end()) {
-        THROWM(Base::TypeError,
-               "SolverGeometryExtension - notifyAttachment - Geometry not supported!!");
+        THROWM(Base::TypeError, "SolverGeometryExtension - notifyAttachment - Geometry not supported!!");
     }
 
     auto nedgeparams = (*result).second;
@@ -110,8 +110,10 @@ void SolverGeometryExtension::notifyAttachment(Part::Geometry* geo)
 void SolverGeometryExtension::ensureType(const Base::Type& type)
 {
     if (GeometryType != type) {
-        THROWM(Base::TypeError,
-               "SolverGeometryExtension - requested edge parameters do not match underlying type!");
+        THROWM(
+            Base::TypeError,
+            "SolverGeometryExtension - requested edge parameters do not match underlying type!"
+        );
     }
 }
 

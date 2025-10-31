@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-
-
 #include "BitmapFactory.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
@@ -53,8 +51,8 @@
 #include "Dialogs/DlgKeyboardImp.h"
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#include "Dialogs/DlgCustomizeSpaceball.h"
-#include "Dialogs/DlgCustomizeSpNavSettings.h"
+# include "Dialogs/DlgCustomizeSpaceball.h"
+# include "Dialogs/DlgCustomizeSpNavSettings.h"
 #endif
 
 #include "InputField.h"

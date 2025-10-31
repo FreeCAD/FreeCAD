@@ -27,7 +27,8 @@
 
 #include <Gui/WorkbenchManipulator.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
 class WorkbenchManipulator: public Gui::WorkbenchManipulator
 {
@@ -56,7 +57,7 @@ private:
     static void addDatums(Gui::ToolBarItem* toolBar);
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_WORKBENCHMANIPULATOR_H
+#endif  // PARTGUI_WORKBENCHMANIPULATOR_H

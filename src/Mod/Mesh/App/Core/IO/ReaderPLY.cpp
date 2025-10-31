@@ -306,23 +306,23 @@ bool ReaderPLY::VerifyVertexProperty()
 {
     // check if valid 3d points
     PropertyComp property;
-    std::size_t num_x = std::count_if(vertex_props.begin(),
-                                      vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& prop) {
-                                          return property(prop, coord_x);
-                                      });
+    std::size_t num_x = std::count_if(
+        vertex_props.begin(),
+        vertex_props.end(),
+        [&property](const std::pair<Property, int>& prop) { return property(prop, coord_x); }
+    );
 
-    std::size_t num_y = std::count_if(vertex_props.begin(),
-                                      vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& prop) {
-                                          return property(prop, coord_y);
-                                      });
+    std::size_t num_y = std::count_if(
+        vertex_props.begin(),
+        vertex_props.end(),
+        [&property](const std::pair<Property, int>& prop) { return property(prop, coord_y); }
+    );
 
-    std::size_t num_z = std::count_if(vertex_props.begin(),
-                                      vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& prop) {
-                                          return property(prop, coord_z);
-                                      });
+    std::size_t num_z = std::count_if(
+        vertex_props.begin(),
+        vertex_props.end(),
+        [&property](const std::pair<Property, int>& prop) { return property(prop, coord_z); }
+    );
 
     return ((num_x == 1) && (num_y == 1) && (num_z == 1));
 }
@@ -331,23 +331,23 @@ bool ReaderPLY::VerifyColorProperty()
 {
     // check if valid colors are set
     PropertyComp property;
-    std::size_t num_r = std::count_if(vertex_props.begin(),
-                                      vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& prop) {
-                                          return property(prop, color_r);
-                                      });
+    std::size_t num_r = std::count_if(
+        vertex_props.begin(),
+        vertex_props.end(),
+        [&property](const std::pair<Property, int>& prop) { return property(prop, color_r); }
+    );
 
-    std::size_t num_g = std::count_if(vertex_props.begin(),
-                                      vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& prop) {
-                                          return property(prop, color_g);
-                                      });
+    std::size_t num_g = std::count_if(
+        vertex_props.begin(),
+        vertex_props.end(),
+        [&property](const std::pair<Property, int>& prop) { return property(prop, color_g); }
+    );
 
-    std::size_t num_b = std::count_if(vertex_props.begin(),
-                                      vertex_props.end(),
-                                      [&property](const std::pair<Property, int>& prop) {
-                                          return property(prop, color_b);
-                                      });
+    std::size_t num_b = std::count_if(
+        vertex_props.begin(),
+        vertex_props.end(),
+        [&property](const std::pair<Property, int>& prop) { return property(prop, color_b); }
+    );
 
     std::size_t rgb_colors = num_r + num_g + num_b;
     if (rgb_colors != 0 && rgb_colors != 3) {

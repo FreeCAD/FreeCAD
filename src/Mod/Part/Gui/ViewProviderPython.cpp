@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <Gui/ViewProviderBuilder.h>
 
@@ -61,7 +61,9 @@ void ViewProviderCustom::updateData(const App::Property* prop)
             if (view) {
                 if (view->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->attach(this->getObject());
-                    static_cast<Gui::ViewProviderDocumentObject*>(view)->setDisplayMode(this->getActiveDisplayMode().c_str());
+                    static_cast<Gui::ViewProviderDocumentObject*>(view)->setDisplayMode(
+                        this->getActiveDisplayMode().c_str()
+                    );
                 }
                 propView[prop] = view;
                 view->updateData(prop);
@@ -76,7 +78,8 @@ void ViewProviderCustom::updateData(const App::Property* prop)
 
 // -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderPython, PartGui::ViewProviderPart)
 /// @endcond
@@ -90,5 +93,4 @@ PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderCustomPython, PartGui::ViewProvide
 
 // explicit template instantiation
 template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProviderCustom>;
-}
-
+}  // namespace Gui

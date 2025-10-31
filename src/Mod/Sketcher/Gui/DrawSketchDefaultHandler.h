@@ -283,7 +283,8 @@ class ConstructionMethodMachine
 {
 public:
     ConstructionMethodMachine(
-        ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0))
+        ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)
+    )
         : ConstructionMode(constructionmethod)
     {}
     virtual ~ConstructionMethodMachine()
@@ -399,17 +400,19 @@ private:
  * DrawSketchDefaultWidgetHandler. Then you will have to implement the code that is exclusively
  * necessary for the default widget to work.
  */
-template<typename HandlerT,     // A type for which the handler template is instantiated
-         typename SelectModeT,  // The state machine defining the states that the handle iterates
-         int PInitAutoConstraintSize,  // The initial size of the AutoConstraint>
-         typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod>
+template<
+    typename HandlerT,            // A type for which the handler template is instantiated
+    typename SelectModeT,         // The state machine defining the states that the handle iterates
+    int PInitAutoConstraintSize,  // The initial size of the AutoConstraint>
+    typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod>
 class DrawSketchDefaultHandler: public DrawSketchHandler,
                                 public StateMachine<SelectModeT>,
                                 public ConstructionMethodMachine<ConstructionMethodT>
 {
 public:
     DrawSketchDefaultHandler(
-        ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0))
+        ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)
+    )
         : ConstructionMethodMachine<ConstructionMethodT>(constructionmethod)
         , sugConstraints(PInitAutoConstraintSize)
         , avoidRedundants(true)
@@ -634,11 +637,12 @@ protected:
     /** @brief Minimal handle activation respecting avoid redundants and continuous mode.*/
     void activated() override
     {
-        avoidRedundants =
-            sketchgui->AvoidRedundant.getValue() && sketchgui->Autoconstraints.getValue();
+        avoidRedundants = sketchgui->AvoidRedundant.getValue()
+            && sketchgui->Autoconstraints.getValue();
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+            "User parameter:BaseApp/Preferences/Mod/Sketcher"
+        );
 
         continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
     }
@@ -675,9 +679,11 @@ protected:
     //@{
 
     // TODO: Figure out and explain what it actually returns
-    bool generateOneAutoConstraintFromSuggestion(const AutoConstraint& ac,
-                                                 int geoId1,
-                                                 Sketcher::PointPos posId1)
+    bool generateOneAutoConstraintFromSuggestion(
+        const AutoConstraint& ac,
+        int geoId1,
+        Sketcher::PointPos posId1
+    )
     {
         int geoId2 = ac.GeoId;
         Sketcher::PointPos posId2 = ac.PosId;
@@ -701,7 +707,8 @@ protected:
                         std::tuple {Sketcher::Tangent, geoId1, geoId2},
                         [](const auto& ace) {
                             return std::tuple {ace->Type, ace->First, ace->Second};
-                        });
+                        }
+                    );
                 }
 
                 if (itOfTangentConstraint != AutoConstraints.end()) {
@@ -728,18 +735,16 @@ protected:
 
                 auto itOfTangentConstraint = AutoConstraints.end();
                 if (isStartOrEnd(posId1)) {
-                    itOfTangentConstraint =
-                        std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                            return ace->Type == Sketcher::Tangent && ace->involvesGeoId(geoId1)
-                                && ace->involvesGeoId(geoId2);
-                        });
+                    itOfTangentConstraint = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
+                        return ace->Type == Sketcher::Tangent && ace->involvesGeoId(geoId1)
+                            && ace->involvesGeoId(geoId2);
+                    });
                 }
 
                 // if tangency, convert to point-to-edge tangency
                 if (itOfTangentConstraint != AutoConstraints.end()) {
                     if ((*itOfTangentConstraint)->First != geoId1) {
-                        std::swap((*itOfTangentConstraint)->Second,
-                                  (*itOfTangentConstraint)->First);
+                        std::swap((*itOfTangentConstraint)->Second, (*itOfTangentConstraint)->First);
                     }
 
                     (*itOfTangentConstraint)->FirstPos = posId1;
@@ -809,8 +814,7 @@ protected:
 
                 // arc of ellipse tangency support using external elements
                 if (geom1 && geom2
-                    && (geom1->is<Part::GeomArcOfEllipse>()
-                        || geom2->is<Part::GeomArcOfEllipse>())) {
+                    && (geom1->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomArcOfEllipse>())) {
                     if (!geom1->is<Part::GeomArcOfEllipse>()) {
                         std::swap(geoId1, geoId2);
                     }
@@ -838,11 +842,10 @@ protected:
                         && ace->Second == geoId2;
                 });
 
-                auto resultPointOnObject =
-                    std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                        return ace->Type == Sketcher::PointOnObject && ace->involvesGeoId(geoId1)
-                            && ace->involvesGeoId(geoId2);
-                    });
+                auto resultPointOnObject = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
+                    return ace->Type == Sketcher::PointOnObject && ace->involvesGeoId(geoId1)
+                        && ace->involvesGeoId(geoId2);
+                });
 
                 if (resultCoincident != AutoConstraints.end()
                     && isStartOrEnd((*resultCoincident)->FirstPos)
@@ -857,8 +860,7 @@ protected:
                 }
                 else if (resultCoincident != AutoConstraints.end()
                          && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
-                         && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1
-                         && geom2
+                         && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
                          && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
                          && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
                     // equality
@@ -888,9 +890,11 @@ protected:
      *
      * This generates actual Sketcher::Constraint which can be used for diagnostic before addition.
      */
-    void generateAutoConstraintsOnElement(const std::vector<AutoConstraint>& autoConstrs,
-                                          int geoId1,
-                                          Sketcher::PointPos posId1)
+    void generateAutoConstraintsOnElement(
+        const std::vector<AutoConstraint>& autoConstrs,
+        int geoId1,
+        Sketcher::PointPos posId1
+    )
     {
         if (!sketchgui->Autoconstraints.getValue()) {
             return;
@@ -934,9 +938,12 @@ protected:
 
         Gui::Command::doCommand(
             Gui::Command::Doc,
-            Sketcher::PythonConverter::convert(Gui::Command::getObjectCmd(sketchgui->getObject()),
-                                               autoConstraints)
-                .c_str());
+            Sketcher::PythonConverter::convert(
+                Gui::Command::getObjectCmd(sketchgui->getObject()),
+                autoConstraints
+            )
+                .c_str()
+        );
     }
 
     /** @brief Convenience function to remove redundant autoconstraints from the AutoConstraints
@@ -968,8 +975,8 @@ protected:
 
         if (sketchobject->getLastHasRedundancies()) {
             Base::Console().warning(
-                QT_TRANSLATE_NOOP("Notifications",
-                                  "Autoconstraints cause redundancy. Removing them") "\n");
+                QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
+            );
 
             auto lastsketchconstraintindex = sketchobject->Constraints.getSize() - 1;
 
@@ -986,11 +993,14 @@ protected:
                     // 1) Geometry (and constraints of the geometry in case of a multicurve shape)
                     // are created 2) No autoconstrains are actually added 3) No widget mandated
                     // constraints are added
-                    THROWM(Base::RuntimeError,
-                           QT_TRANSLATE_NOOP(
-                               "Notifications",
-                               "Redundant constraint is not an autoconstraint. No autoconstraints "
-                               "or additional constraints were added. Please report!") "\n");
+                    THROWM(
+                        Base::RuntimeError,
+                        QT_TRANSLATE_NOOP(
+                            "Notifications",
+                            "Redundant constraint is not an autoconstraint. No autoconstraints "
+                            "or additional constraints were added. Please report!"
+                        ) "\n"
+                    );
                 }
             }
 
@@ -1034,16 +1044,21 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies() || sketchobject->getLastHasConflicts()) {
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP("Notifications",
-                                     "Unexpected Redundancy/Conflicting constraint. Check the "
-                                     "constraints and autoconstraints of this operation.") "\n");
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Unexpected Redundancy/Conflicting constraint. Check the "
+                    "constraints and autoconstraints of this operation."
+                ) "\n"
+            );
         }
     }
 
     /** @brief Function to obtain detailed solver information on one point type geometric element.*/
-    Sketcher::SolverGeometryExtension::PointParameterStatus
-    getPointInfo(const Sketcher::GeoElementId& element)
+    Sketcher::SolverGeometryExtension::PointParameterStatus getPointInfo(
+        const Sketcher::GeoElementId& element
+    )
     {
         if (element.isCurve()) {
             THROWM(Base::TypeError, "getPointInfo: Provided geometry element is not a point!")
@@ -1062,16 +1077,17 @@ protected:
             return pointinfo;
         }
 
-        THROWM(Base::ValueError,
-               "Geometry element does not have solver information (possibly when trying to apply "
-               "widget constraints)!")
+        THROWM(
+            Base::ValueError,
+            "Geometry element does not have solver information (possibly when trying to apply "
+            "widget constraints)!"
+        )
     }
 
     /** @brief Function to obtain detailed DoFs of one line type geometric element.*/
     int getLineDoFs(int geoid)
     {
-        auto startpointinfo =
-            getPointInfo(Sketcher::GeoElementId(geoid, Sketcher::PointPos::start));
+        auto startpointinfo = getPointInfo(Sketcher::GeoElementId(geoid, Sketcher::PointPos::start));
 
         auto endpointinfo = getPointInfo(Sketcher::GeoElementId(geoid, Sketcher::PointPos::end));
 
@@ -1093,14 +1109,16 @@ protected:
         auto solvext = solvedsketch.getSolverExtension(geoid);
 
         if (solvext) {
-            Sketcher::SolverGeometryExtension::EdgeParameterStatus edgeinfo =
-                solvext->getEdgeParameters();
+            Sketcher::SolverGeometryExtension::EdgeParameterStatus edgeinfo
+                = solvext->getEdgeParameters();
 
             return edgeinfo;
         }
 
-        THROWM(Base::ValueError,
-               "Geometry does not have solver extension when trying to apply widget constraints!")
+        THROWM(
+            Base::ValueError,
+            "Geometry does not have solver extension when trying to apply widget constraints!"
+        )
     }
 
     /** @brief Function to add shape inherent constraints (the ones that define the shape) to the
@@ -1110,13 +1128,15 @@ protected:
      * inherent part of it and the shape would not go without them. Lower priority constraints are
      * AutoConstraints and constraints mandated by the widget/on-screen parameters.
      * .*/
-    auto addToShapeConstraints(Sketcher::ConstraintType type,
-                               int first,
-                               Sketcher::PointPos firstPos = Sketcher::PointPos::none,
-                               int second = Sketcher::GeoEnum::GeoUndef,
-                               Sketcher::PointPos secondPos = Sketcher::PointPos::none,
-                               int third = Sketcher::GeoEnum::GeoUndef,
-                               Sketcher::PointPos thirdPos = Sketcher::PointPos::none)
+    auto addToShapeConstraints(
+        Sketcher::ConstraintType type,
+        int first,
+        Sketcher::PointPos firstPos = Sketcher::PointPos::none,
+        int second = Sketcher::GeoEnum::GeoUndef,
+        Sketcher::PointPos secondPos = Sketcher::PointPos::none,
+        int third = Sketcher::GeoEnum::GeoUndef,
+        Sketcher::PointPos thirdPos = Sketcher::PointPos::none
+    )
     {
         auto constr = std::make_unique<Sketcher::Constraint>();
         constr->Type = type;
@@ -1135,24 +1155,18 @@ protected:
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(p1, p2);
         Sketcher::GeometryFacade::setConstruction(line.get(), constructionMode);
-        return static_cast<Part::GeomLineSegment*>(
-            ShapeGeometry.emplace_back(std::move(line)).get());
+        return static_cast<Part::GeomLineSegment*>(ShapeGeometry.emplace_back(std::move(line)).get());
     }
 
     /** @brief Function to add an arc to the ShapeGeometry vector.*/
-    auto addArcToShapeGeometry(Base::Vector3d p1,
-                               double start,
-                               double end,
-                               double radius,
-                               bool constructionMode)
+    auto addArcToShapeGeometry(Base::Vector3d p1, double start, double end, double radius, bool constructionMode)
     {
         auto arc = std::make_unique<Part::GeomArcOfCircle>();
         arc->setCenter(p1);
         arc->setRange(start, end, true);
         arc->setRadius(radius);
         Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
-        return static_cast<Part::GeomArcOfCircle*>(
-            ShapeGeometry.emplace_back(std::move(arc)).get());
+        return static_cast<Part::GeomArcOfCircle*>(ShapeGeometry.emplace_back(std::move(arc)).get());
     }
 
     /** @brief Function to add a point to the ShapeGeometry vector.*/
@@ -1165,11 +1179,13 @@ protected:
     }
 
     /** @brief Function to add an ellipse to the ShapeGeometry vector.*/
-    auto addEllipseToShapeGeometry(Base::Vector3d centerPoint,
-                                   Base::Vector3d majorAxisDirection,
-                                   double majorRadius,
-                                   double minorRadius,
-                                   bool constructionMode)
+    auto addEllipseToShapeGeometry(
+        Base::Vector3d centerPoint,
+        Base::Vector3d majorAxisDirection,
+        double majorRadius,
+        double minorRadius,
+        bool constructionMode
+    )
     {
         auto ellipse = std::make_unique<Part::GeomEllipse>();
         ellipse->setMajorRadius(majorRadius);
@@ -1177,8 +1193,7 @@ protected:
         ellipse->setMajorAxisDir(majorAxisDirection);
         ellipse->setCenter(centerPoint);
         Sketcher::GeometryFacade::setConstruction(ellipse.get(), constructionMode);
-        return static_cast<Part::GeomEllipse*>(
-            ShapeGeometry.emplace_back(std::move(ellipse)).get());
+        return static_cast<Part::GeomEllipse*>(ShapeGeometry.emplace_back(std::move(ellipse)).get());
     }
 
     /** @brief Function to add a circle to the ShapeGeometry vector.*/
@@ -1198,18 +1213,22 @@ protected:
         auto shapeGeometry = toPointerVector(ShapeGeometry);
         std::string sketchObj = Gui::Command::getObjectCmd(sketchgui->getObject());
         Gui::Command::doCommand(Gui::Command::Doc, "ActiveSketch = %s\n", sketchObj.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                Sketcher::PythonConverter::convert(
-                                    sketchObj,
-                                    shapeGeometry,
-                                    Sketcher::PythonConverter::Mode::OmitInternalGeometry)
-                                    .c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            Sketcher::PythonConverter::convert(
+                sketchObj,
+                shapeGeometry,
+                Sketcher::PythonConverter::Mode::OmitInternalGeometry
+            )
+                .c_str()
+        );
 
         size_t initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
         auto shapeConstraints = toPointerVector(ShapeConstraints);
         Gui::Command::doCommand(
             Gui::Command::Doc,
-            Sketcher::PythonConverter::convert(sketchObj, shapeConstraints).c_str());
+            Sketcher::PythonConverter::convert(sketchObj, shapeConstraints).c_str()
+        );
 
         reassignVirtualSpace(initialConstraintCount);
     }
@@ -1253,9 +1272,11 @@ private:
         }
 
         try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "setVirtualSpace([%s], True)",
-                                  stream.str().c_str());
+            Gui::cmdAppObjectArgs(
+                sketchgui->getObject(),
+                "setVirtualSpace([%s], True)",
+                stream.str().c_str()
+            );
         }
         catch (const Base::Exception& e) {
             Base::Console().error("%s\n", e.what());

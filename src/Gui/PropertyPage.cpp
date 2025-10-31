@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 
-# include <QVBoxLayout>
+#include <QVBoxLayout>
 
 
 #include <Base/Console.h>
@@ -39,24 +39,20 @@ using namespace Gui::Dialog;
 /** Construction */
 PropertyPage::PropertyPage(QWidget* parent)
     : QWidget(parent)
-    , bChanged{false}
-{
-}
+    , bChanged {false}
+{}
 
 /** Applies all changes. Reimplement this in your subclasses. */
 void PropertyPage::apply()
-{
-}
+{}
 
 /** Discards all changes. Reimplement this in your subclasses. */
 void PropertyPage::cancel()
-{
-}
+{}
 
 /** Resets to the default values. Reimplement this in your subclasses. */
 void PropertyPage::reset()
-{
-}
+{}
 
 /** Returns whether the page was modified or not. */
 bool PropertyPage::isModified() const
@@ -98,9 +94,10 @@ void PropertyPage::onReset()
 // ----------------------------------------------------------------
 
 /** Construction */
-PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent), restartRequired(false)
-{
-}
+PreferencePage::PreferencePage(QWidget* parent)
+    : QWidget(parent)
+    , restartRequired(false)
+{}
 
 void PreferencePage::changeEvent(QEvent* event)
 {
@@ -118,12 +115,11 @@ void PreferencePage::requireRestart()
 }
 
 
-
 // ----------------------------------------------------------------
 
 PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
-  : PreferencePage(parent)
-  , _form(nullptr)
+    : PreferencePage(parent)
+    , _form(nullptr)
 {
     auto loader = UiLoader::newInstance();
     loader->setWorkingDirectory(QFileInfo(fn).absolutePath());
@@ -139,74 +135,77 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
         setLayout(layout);
     }
     else {
-        Base::Console().error("Failed to load UI file from '%s'\n",
-            (const char*)fn.toUtf8());
+        Base::Console().error("Failed to load UI file from '%s'\n", (const char*)fn.toUtf8());
     }
 }
 
 PreferenceUiForm::~PreferenceUiForm() = default;
 
-void PreferenceUiForm::changeEvent(QEvent *e)
+void PreferenceUiForm::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
 }
 
-template <typename PW>
+template<typename PW>
 void PreferenceUiForm::loadPrefWidgets()
 {
     QList<PW> pw = _form->findChildren<PW>();
-    for (typename QList<PW>::iterator it = pw.begin(); it != pw.end(); ++it)
+    for (typename QList<PW>::iterator it = pw.begin(); it != pw.end(); ++it) {
         (*it)->onRestore();
+    }
 }
 
-template <typename PW>
+template<typename PW>
 void PreferenceUiForm::savePrefWidgets()
 {
     QList<PW> pw = _form->findChildren<PW>();
-    for (typename QList<PW>::iterator it = pw.begin(); it != pw.end(); ++it)
+    for (typename QList<PW>::iterator it = pw.begin(); it != pw.end(); ++it) {
         (*it)->onSave();
+    }
 }
 
 void PreferenceUiForm::loadSettings()
 {
-    if (!_form)
+    if (!_form) {
         return;
+    }
 
     // search for all pref widgets to restore their settings
-    loadPrefWidgets<Gui::PrefSpinBox        *>();
-    loadPrefWidgets<Gui::PrefDoubleSpinBox  *>();
-    loadPrefWidgets<Gui::PrefLineEdit       *>();
-    loadPrefWidgets<Gui::PrefTextEdit       *>();
-    loadPrefWidgets<Gui::PrefFileChooser    *>();
-    loadPrefWidgets<Gui::PrefComboBox       *>();
-    loadPrefWidgets<Gui::PrefFontBox        *>();
-    loadPrefWidgets<Gui::PrefCheckBox       *>();
-    loadPrefWidgets<Gui::PrefRadioButton    *>();
-    loadPrefWidgets<Gui::PrefSlider         *>();
-    loadPrefWidgets<Gui::PrefColorButton    *>();
-    loadPrefWidgets<Gui::PrefUnitSpinBox    *>();
+    loadPrefWidgets<Gui::PrefSpinBox*>();
+    loadPrefWidgets<Gui::PrefDoubleSpinBox*>();
+    loadPrefWidgets<Gui::PrefLineEdit*>();
+    loadPrefWidgets<Gui::PrefTextEdit*>();
+    loadPrefWidgets<Gui::PrefFileChooser*>();
+    loadPrefWidgets<Gui::PrefComboBox*>();
+    loadPrefWidgets<Gui::PrefFontBox*>();
+    loadPrefWidgets<Gui::PrefCheckBox*>();
+    loadPrefWidgets<Gui::PrefRadioButton*>();
+    loadPrefWidgets<Gui::PrefSlider*>();
+    loadPrefWidgets<Gui::PrefColorButton*>();
+    loadPrefWidgets<Gui::PrefUnitSpinBox*>();
     loadPrefWidgets<Gui::PrefQuantitySpinBox*>();
     loadPrefWidgets<Gui::PrefCheckableGroupBox*>();
 }
 
 void PreferenceUiForm::saveSettings()
 {
-    if (!_form)
+    if (!_form) {
         return;
+    }
 
     // search for all pref widgets to save their settings
-    savePrefWidgets<Gui::PrefSpinBox        *>();
-    savePrefWidgets<Gui::PrefDoubleSpinBox  *>();
-    savePrefWidgets<Gui::PrefLineEdit       *>();
-    savePrefWidgets<Gui::PrefTextEdit       *>();
-    savePrefWidgets<Gui::PrefFileChooser    *>();
-    savePrefWidgets<Gui::PrefComboBox       *>();
-    savePrefWidgets<Gui::PrefFontBox        *>();
-    savePrefWidgets<Gui::PrefCheckBox       *>();
-    savePrefWidgets<Gui::PrefRadioButton    *>();
-    savePrefWidgets<Gui::PrefSlider         *>();
-    savePrefWidgets<Gui::PrefColorButton    *>();
-    savePrefWidgets<Gui::PrefUnitSpinBox    *>();
+    savePrefWidgets<Gui::PrefSpinBox*>();
+    savePrefWidgets<Gui::PrefDoubleSpinBox*>();
+    savePrefWidgets<Gui::PrefLineEdit*>();
+    savePrefWidgets<Gui::PrefTextEdit*>();
+    savePrefWidgets<Gui::PrefFileChooser*>();
+    savePrefWidgets<Gui::PrefComboBox*>();
+    savePrefWidgets<Gui::PrefFontBox*>();
+    savePrefWidgets<Gui::PrefCheckBox*>();
+    savePrefWidgets<Gui::PrefRadioButton*>();
+    savePrefWidgets<Gui::PrefSlider*>();
+    savePrefWidgets<Gui::PrefColorButton*>();
+    savePrefWidgets<Gui::PrefUnitSpinBox*>();
     savePrefWidgets<Gui::PrefQuantitySpinBox*>();
     savePrefWidgets<Gui::PrefCheckableGroupBox*>();
 }
@@ -226,7 +225,8 @@ void PreferencePage::resetSettingsToDefaults()
             std::string entry = pref->property("prefEntry").toString().toStdString();
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                std::string("User parameter:BaseApp/Preferences/" + path).c_str());
+                std::string("User parameter:BaseApp/Preferences/" + path).c_str()
+            );
 
             for (const auto& pn : hGrp->GetParameterNames(entry.c_str())) {
                 hGrp->RemoveAttribute(pn.first, pn.second.c_str());
@@ -237,9 +237,9 @@ void PreferencePage::resetSettingsToDefaults()
 // ----------------------------------------------------------------
 
 /** Construction */
-CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent)
-{
-}
+CustomizeActionPage::CustomizeActionPage(QWidget* parent)
+    : QWidget(parent)
+{}
 
 /** Destruction */
 CustomizeActionPage::~CustomizeActionPage() = default;
@@ -250,26 +250,53 @@ bool CustomizeActionPage::event(QEvent* e)
 
     if (e->type() == QEvent::ParentChange || e->type() == QEvent::ParentAboutToChange) {
         QWidget* topLevel = this->parentWidget();
-        while (topLevel && !topLevel->inherits("QDialog"))
+        while (topLevel && !topLevel->inherits("QDialog")) {
             topLevel = topLevel->parentWidget();
+        }
         if (topLevel) {
-            int index = topLevel->metaObject()->indexOfSignal( QMetaObject::normalizedSignature("addMacroAction(const QByteArray&)") );
+            int index = topLevel->metaObject()->indexOfSignal(
+                QMetaObject::normalizedSignature("addMacroAction(const QByteArray&)")
+            );
             if (index >= 0) {
                 if (e->type() == QEvent::ParentChange) {
-                    connect(topLevel, SIGNAL(addMacroAction( const QByteArray& )),
-                            this, SLOT(onAddMacroAction( const QByteArray& )));
-                    connect(topLevel, SIGNAL(removeMacroAction( const QByteArray& )),
-                            this, SLOT(onRemoveMacroAction( const QByteArray& )));
-                    connect(topLevel, SIGNAL(modifyMacroAction( const QByteArray& )),
-                            this, SLOT(onModifyMacroAction( const QByteArray& )));
+                    connect(
+                        topLevel,
+                        SIGNAL(addMacroAction(const QByteArray&)),
+                        this,
+                        SLOT(onAddMacroAction(const QByteArray&))
+                    );
+                    connect(
+                        topLevel,
+                        SIGNAL(removeMacroAction(const QByteArray&)),
+                        this,
+                        SLOT(onRemoveMacroAction(const QByteArray&))
+                    );
+                    connect(
+                        topLevel,
+                        SIGNAL(modifyMacroAction(const QByteArray&)),
+                        this,
+                        SLOT(onModifyMacroAction(const QByteArray&))
+                    );
                 }
                 else {
-                    disconnect(topLevel, SIGNAL(addMacroAction( const QByteArray& )),
-                               this, SLOT(onAddMacroAction( const QByteArray& )));
-                    disconnect(topLevel, SIGNAL(removeMacroAction( const QByteArray& )),
-                               this, SLOT(onRemoveMacroAction( const QByteArray& )));
-                    disconnect(topLevel, SIGNAL(modifyMacroAction( const QByteArray& )),
-                               this, SLOT(onModifyMacroAction( const QByteArray& )));
+                    disconnect(
+                        topLevel,
+                        SIGNAL(addMacroAction(const QByteArray&)),
+                        this,
+                        SLOT(onAddMacroAction(const QByteArray&))
+                    );
+                    disconnect(
+                        topLevel,
+                        SIGNAL(removeMacroAction(const QByteArray&)),
+                        this,
+                        SLOT(onRemoveMacroAction(const QByteArray&))
+                    );
+                    disconnect(
+                        topLevel,
+                        SIGNAL(modifyMacroAction(const QByteArray&)),
+                        this,
+                        SLOT(onModifyMacroAction(const QByteArray&))
+                    );
                 }
             }
         }
@@ -278,7 +305,7 @@ bool CustomizeActionPage::event(QEvent* e)
     return ok;
 }
 
-void CustomizeActionPage::changeEvent(QEvent *e)
+void CustomizeActionPage::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
 }

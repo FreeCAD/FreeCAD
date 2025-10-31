@@ -59,23 +59,31 @@ TaskPreviewParameters::TaskPreviewParameters(ViewProvider* vp, QWidget* parent)
     ui->showTransparentPreviewCheckBox->setChecked(vp->isPreviewEnabled());
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-    connect(ui->showTransparentPreviewCheckBox,
-            &QCheckBox::checkStateChanged,
-            this,
-            &TaskPreviewParameters::onShowPreviewChanged);
-    connect(ui->showFinalCheckBox,
-            &QCheckBox::checkStateChanged,
-            this,
-            &TaskPreviewParameters::onShowFinalChanged);
+    connect(
+        ui->showTransparentPreviewCheckBox,
+        &QCheckBox::checkStateChanged,
+        this,
+        &TaskPreviewParameters::onShowPreviewChanged
+    );
+    connect(
+        ui->showFinalCheckBox,
+        &QCheckBox::checkStateChanged,
+        this,
+        &TaskPreviewParameters::onShowFinalChanged
+    );
 #else
-    connect(ui->showTransparentPreviewCheckBox,
-            &QCheckBox::stateChanged,
-            this,
-            &TaskPreviewParameters::onShowPreviewChanged);
-    connect(ui->showFinalCheckBox,
-            &QCheckBox::stateChanged,
-            this,
-            &TaskPreviewParameters::onShowFinalChanged);
+    connect(
+        ui->showTransparentPreviewCheckBox,
+        &QCheckBox::stateChanged,
+        this,
+        &TaskPreviewParameters::onShowPreviewChanged
+    );
+    connect(
+        ui->showFinalCheckBox,
+        &QCheckBox::stateChanged,
+        this,
+        &TaskPreviewParameters::onShowFinalChanged
+    );
 #endif
 
     groupLayout()->addWidget(proxy);
@@ -93,8 +101,12 @@ void TaskPreviewParameters::onShowPreviewChanged(bool show)
     vp->showPreview(show);
 }
 
-TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
-                                             const std::string& pixmapname, const QString& parname)
+TaskFeatureParameters::TaskFeatureParameters(
+    PartDesignGui::ViewProvider* vp,
+    QWidget* parent,
+    const std::string& pixmapname,
+    const QString& parname
+)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()), parname, true, parent)
     , vp(vp)
     , blockUpdate(false)
@@ -120,7 +132,7 @@ void TaskFeatureParameters::recomputeFeature()
 {
     if (!blockUpdate) {
         App::DocumentObject* obj = getObject();
-        assert (obj);
+        assert(obj);
         obj->recomputeFeature();
     }
 }
@@ -128,7 +140,7 @@ void TaskFeatureParameters::recomputeFeature()
 /*********************************************************************
  *                            Task Dialog                            *
  *********************************************************************/
-TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp)
+TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider* vp)
     : preview(new TaskPreviewParameters(vp))
     , vp(vp)
 {
@@ -143,33 +155,35 @@ bool TaskDlgFeatureParameters::accept()
     bool isUpdateBlocked = false;
     try {
         // Iterate over parameter dialogs and apply all parameters from them
-        for ( QWidget *wgt : Content ) {
-            TaskFeatureParameters *param = qobject_cast<TaskFeatureParameters *> (wgt);
-            if(!param)
+        for (QWidget* wgt : Content) {
+            TaskFeatureParameters* param = qobject_cast<TaskFeatureParameters*>(wgt);
+            if (!param) {
                 continue;
+            }
 
-            param->saveHistory ();
-            param->apply ();
+            param->saveHistory();
+            param->apply();
             isUpdateBlocked |= param->isUpdateBlocked();
         }
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
-        if ( !feature->isDerivedFrom<PartDesign::Feature>() ) {
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        if(isUpdateBlocked){
+        if (isUpdateBlocked) {
             Gui::cmdAppDocument(feature, "recompute()");
-        } else {
+        }
+        else {
             // object was already computed, nothing more to do with it...
             Gui::cmdAppDocument(feature, "purgeTouched()");
 
             if (!feature->isValid()) {
-              throw Base::RuntimeError(getObject()->getStatusString());
+                throw Base::RuntimeError(getObject()->getStatusString());
             }
 
             // ...but touch parents to signal the change...
-            for (auto obj : feature->getInList()){
+            for (auto obj : feature->getInList()) {
                 obj->touch();
             }
             // ...and recompute them
@@ -180,7 +194,9 @@ bool TaskDlgFeatureParameters::accept()
             throw Base::RuntimeError(getObject()->getStatusString());
         }
 
-        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
+        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(
+            /* silent = */ true
+        );
         Gui::cmdAppObjectHide(previous);
 
         // detach the task panel from the selection to avoid to invoke
@@ -188,29 +204,34 @@ bool TaskDlgFeatureParameters::accept()
         std::vector<QWidget*> subwidgets = getDialogContent();
         for (auto it : subwidgets) {
             TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-            if (param)
+            if (param) {
                 param->detachSelection();
+            }
         }
 
         Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
-    } catch (const Base::Exception& e) {
+    }
+    catch (const Base::Exception& e) {
 
-      QString errorText = QString::fromUtf8(e.what());
-      QString statusText = QString::fromUtf8(getObject()->getStatusString());
+        QString errorText = QString::fromUtf8(e.what());
+        QString statusText = QString::fromUtf8(getObject()->getStatusString());
 
-      // generic, fallback error message
-      if (errorText == QStringLiteral("Error") || errorText.isEmpty()) {
-        if (!statusText.isEmpty() && statusText != QStringLiteral("Error")) {
-          errorText = statusText;
-        } else {
-          errorText = tr("The feature could not be created with the given parameters.\n"
-              "The geometry may be invalid or the parameters may be incompatible.\n"
-              "Please adjust the parameters and try again.");
+        // generic, fallback error message
+        if (errorText == QStringLiteral("Error") || errorText.isEmpty()) {
+            if (!statusText.isEmpty() && statusText != QStringLiteral("Error")) {
+                errorText = statusText;
+            }
+            else {
+                errorText = tr(
+                    "The feature could not be created with the given parameters.\n"
+                    "The geometry may be invalid or the parameters may be incompatible.\n"
+                    "Please adjust the parameters and try again."
+                );
+            }
         }
-      }
-      QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
-      return false;
+        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
+        return false;
     }
     return true;
 }
@@ -225,15 +246,16 @@ bool TaskDlgFeatureParameters::reject()
 
     // Find out previous feature we won't be able to do it after abort
     // (at least in the body case)
-    App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true );
+    App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true);
 
     // detach the task panel from the selection to avoid to invoke
     // eventually onAddSelection when the selection changes
     std::vector<QWidget*> subwidgets = getDialogContent();
     for (auto it : subwidgets) {
         TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-        if (param)
+        if (param) {
             param->detachSelection();
+        }
     }
 
     // roll back the done things which may delete the feature

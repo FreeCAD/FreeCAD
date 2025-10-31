@@ -59,8 +59,13 @@ class NotificationLabel: public QLabel
 {
     Q_OBJECT
 public:
-    NotificationLabel(const QString& text, const QPoint& pos, int displayTime, int minShowTime = 0,
-                      int width = 0);
+    NotificationLabel(
+        const QString& text,
+        const QPoint& pos,
+        int displayTime,
+        int minShowTime = 0,
+        int width = 0
+    );
     /// Reuse existing notification to show a new notification (with a new text)
     void reuseNotification(const QString& text, int displayTime, const QPoint& pos, int width);
     /// Hide notification after a hiding timer.
@@ -102,14 +107,19 @@ private:
 
 qobject_delete_later_unique_ptr<NotificationLabel> NotificationLabel::instance = nullptr;
 
-NotificationLabel::NotificationLabel(const QString& text, const QPoint& pos, int displayTime,
-                                     int minShowTime, int width)
-    : QLabel(nullptr, Qt::ToolTip | Qt::BypassGraphicsProxyWidget),
-      minShowTime(minShowTime)
+NotificationLabel::NotificationLabel(
+    const QString& text,
+    const QPoint& pos,
+    int displayTime,
+    int minShowTime,
+    int width
+)
+    : QLabel(nullptr, Qt::ToolTip | Qt::BypassGraphicsProxyWidget)
+    , minShowTime(minShowTime)
 {
     instance.reset(this);
-    setForegroundRole(QPalette::ToolTipText);// defaults to ToolTip QPalette
-    setBackgroundRole(QPalette::ToolTipBase);// defaults to ToolTip QPalette
+    setForegroundRole(QPalette::ToolTipText);  // defaults to ToolTip QPalette
+    setBackgroundRole(QPalette::ToolTipBase);  // defaults to ToolTip QPalette
     setPalette(NotificationBox::palette());
     ensurePolished();
     setMargin(1 + style()->pixelMetric(QStyle::PM_ToolTipLabelFrameWidth, nullptr, this));
@@ -150,11 +160,11 @@ void NotificationLabel::restartExpireTimer(int displayTime)
     hideTimer.stop();
 }
 
-void NotificationLabel::reuseNotification(const QString& text, int displayTime, const QPoint& pos,
-                                          int width)
+void NotificationLabel::reuseNotification(const QString& text, int displayTime, const QPoint& pos, int width)
 {
-    if (width > 0)
+    if (width > 0) {
         setFixedWidth(width);
+    }
 
     setText(text);
     updateSize(pos);
@@ -226,7 +236,7 @@ void NotificationLabel::hideNotification()
 
 void NotificationLabel::hideNotificationImmediately()
 {
-    close();// to trigger QEvent::Close which stops the animation
+    close();  // to trigger QEvent::Close which stops the animation
     instance = nullptr;
 }
 
@@ -251,8 +261,9 @@ bool NotificationLabel::eventFilter(QObject* o, QEvent* e)
             }
         } break;
         case QEvent::WindowDeactivate:
-            if (hideIfReferenceWidgetDeactivated)
+            if (hideIfReferenceWidgetDeactivated) {
                 hideNotificationImmediately();
+            }
             break;
 
         default:
@@ -271,31 +282,39 @@ void NotificationLabel::placeNotificationLabel(const QPoint& pos)
 
         QPoint offset(2, cursorSize.height());
         // assuming an arrow shape, we can just move to the side for very large cursors
-        if (cursorSize.height() > 2 * this->height())
+        if (cursorSize.height() > 2 * this->height()) {
             offset = QPoint(cursorSize.width() / 2, 0);
+        }
 
         p += offset;
 
         QRect actinglimit = screen->geometry();
 
-        if (!restrictionArea.isNull())
+        if (!restrictionArea.isNull()) {
             actinglimit = restrictionArea;
+        }
 
         const int standard_x_padding = 4;
         const int standard_y_padding = 24;
 
-        if (p.x() + this->width() > actinglimit.x() + actinglimit.width())
+        if (p.x() + this->width() > actinglimit.x() + actinglimit.width()) {
             p.rx() -= standard_x_padding + this->width();
-        if (p.y() + standard_y_padding + this->height() > actinglimit.y() + actinglimit.height())
+        }
+        if (p.y() + standard_y_padding + this->height() > actinglimit.y() + actinglimit.height()) {
             p.ry() -= standard_y_padding + this->height();
-        if (p.y() < actinglimit.y())
+        }
+        if (p.y() < actinglimit.y()) {
             p.setY(actinglimit.y());
-        if (p.x() + this->width() > actinglimit.x() + actinglimit.width())
+        }
+        if (p.x() + this->width() > actinglimit.x() + actinglimit.width()) {
             p.setX(actinglimit.x() + actinglimit.width() - this->width());
-        if (p.x() < actinglimit.x())
+        }
+        if (p.x() < actinglimit.x()) {
             p.setX(actinglimit.x());
-        if (p.y() + this->height() > actinglimit.y() + actinglimit.height())
+        }
+        if (p.y() + this->height() > actinglimit.y() + actinglimit.height()) {
             p.setY(actinglimit.y() + actinglimit.height() - this->height());
+        }
     }
 
     this->move(p);
@@ -318,9 +337,15 @@ bool NotificationLabel::notificationLabelChanged(const QString& text)
 
 /***************************** NotificationBox **********************************/
 
-bool NotificationBox::showText(const QPoint& pos, const QString& text, QWidget* referenceWidget,
-                               int displayTime, unsigned int minShowTime, Options options,
-                               int width)
+bool NotificationBox::showText(
+    const QPoint& pos,
+    const QString& text,
+    QWidget* referenceWidget,
+    int displayTime,
+    unsigned int minShowTime,
+    Options options,
+    int width
+)
 {
     QRect restrictionarea = {};
 
@@ -335,14 +360,16 @@ bool NotificationBox::showText(const QPoint& pos, const QString& text, QWidget* 
             // Calculate the main window QRect in global screen coordinates.
             auto mainwindowrect = referenceWidget->rect();
 
-            restrictionarea = QRect(referenceWidget->mapToGlobal(mainwindowrect.topLeft()),
-                                    mainwindowrect.size());
+            restrictionarea = QRect(
+                referenceWidget->mapToGlobal(mainwindowrect.topLeft()),
+                mainwindowrect.size()
+            );
         }
     }
 
     // a label does already exist
     if (NotificationLabel::instance && NotificationLabel::instance->isVisible()) {
-        if (text.isEmpty()) {// empty text means hide current label
+        if (text.isEmpty()) {  // empty text means hide current label
             NotificationLabel::instance->hideNotification();
             return false;
         }
@@ -351,7 +378,8 @@ bool NotificationBox::showText(const QPoint& pos, const QString& text, QWidget* 
             if (NotificationLabel::instance->notificationLabelChanged(text)) {
                 NotificationLabel::instance->setTipRect(restrictionarea);
                 NotificationLabel::instance->setHideIfReferenceWidgetDeactivated(
-                    options & Options::HideIfReferenceWidgetDeactivated);
+                    options & Options::HideIfReferenceWidgetDeactivated
+                );
                 NotificationLabel::instance->reuseNotification(text, displayTime, pos, width);
                 NotificationLabel::instance->placeNotificationLabel(pos);
             }
@@ -364,15 +392,18 @@ bool NotificationBox::showText(const QPoint& pos, const QString& text, QWidget* 
         // Note: The Label takes no parent, as on windows, we can't use the widget as parent
         // otherwise the window will be raised when the tooltip will be shown. We do not use
         // it on Linux either for consistency.
-        new NotificationLabel(text,
-                              pos,
-                              displayTime,
-                              minShowTime,
-                              width);// sets NotificationLabel::instance to itself
+        new NotificationLabel(
+            text,
+            pos,
+            displayTime,
+            minShowTime,
+            width
+        );  // sets NotificationLabel::instance to itself
 
         NotificationLabel::instance->setTipRect(restrictionarea);
         NotificationLabel::instance->setHideIfReferenceWidgetDeactivated(
-            options & Options::HideIfReferenceWidgetDeactivated);
+            options & Options::HideIfReferenceWidgetDeactivated
+        );
         NotificationLabel::instance->placeNotificationLabel(pos);
         NotificationLabel::instance->setObjectName(QLatin1String("NotificationBox_label"));
 
@@ -389,8 +420,9 @@ bool NotificationBox::isVisible()
 
 QString NotificationBox::text()
 {
-    if (NotificationLabel::instance)
+    if (NotificationLabel::instance) {
         return NotificationLabel::instance->text();
+    }
     return {};
 }
 
@@ -409,8 +441,9 @@ QFont NotificationBox::font()
 void NotificationBox::setPalette(const QPalette& palette)
 {
     *notificationbox_palette() = palette;
-    if (NotificationLabel::instance)
+    if (NotificationLabel::instance) {
         NotificationLabel::instance->setPalette(palette);
+    }
 }
 
 void NotificationBox::setFont(const QFont& font)
@@ -418,6 +451,6 @@ void NotificationBox::setFont(const QFont& font)
     QApplication::setFont(font, "NotificationLabel");
 }
 
-}// namespace Gui
+}  // namespace Gui
 
 #include "NotificationBox.moc"

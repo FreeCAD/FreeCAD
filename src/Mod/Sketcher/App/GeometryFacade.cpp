@@ -53,8 +53,7 @@ GeometryFacade::~GeometryFacade()
     }
 }
 
-std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry,
-                                                          bool owner)
+std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry, bool owner)
 {
     if (geometry) {
         return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
@@ -89,20 +88,24 @@ void GeometryFacade::initExtension()
     }
 
     SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(
-        (Geo->getExtension(SketchGeometryExtension::getClassTypeId())).lock());
+        (Geo->getExtension(SketchGeometryExtension::getClassTypeId())).lock()
+    );
 }
 
 void GeometryFacade::initExtension() const
 {
     // const Geometry without SketchGeometryExtension cannot initialise a GeometryFacade
     if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
-        THROWM(Base::ValueError,
-               "Cannot create a GeometryFacade out of a const Geometry pointer not having a "
-               "SketchGeometryExtension!");
+        THROWM(
+            Base::ValueError,
+            "Cannot create a GeometryFacade out of a const Geometry pointer not having a "
+            "SketchGeometryExtension!"
+        );
     }
 
     auto ext = std::static_pointer_cast<const SketchGeometryExtension>(
-        Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
+        Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock()
+    );
 
     const_cast<GeometryFacade*>(this)->SketchGeoExtension = ext;
 }

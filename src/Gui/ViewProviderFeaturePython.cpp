@@ -21,15 +21,14 @@
  ***************************************************************************/
 
 
-
-# include <sstream>
-# include <QApplication>
-# include <QEvent>
-# include <QFileInfo>
-# include <QMenu>
-# include <QPixmap>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoDetail.h>
+#include <sstream>
+#include <QApplication>
+#include <QEvent>
+#include <QFileInfo>
+#include <QMenu>
+#include <QPixmap>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoDetail.h>
 
 
 #include <App/DocumentObjectPy.h>
@@ -57,11 +56,12 @@ namespace sp = std::placeholders;
 // ----------------------------------------------------------------------------
 
 ViewProviderFeaturePythonImp::ViewProviderFeaturePythonImp(
-        ViewProviderDocumentObject* vp, App::PropertyPythonObject &proxy)
-  : object(vp)
-  , Proxy(proxy)
-{
-}
+    ViewProviderDocumentObject* vp,
+    App::PropertyPythonObject& proxy
+)
+    : object(vp)
+    , Proxy(proxy)
+{}
 
 ViewProviderFeaturePythonImp::~ViewProviderFeaturePythonImp()
 {
@@ -79,7 +79,8 @@ ViewProviderFeaturePythonImp::~ViewProviderFeaturePythonImp()
     this->selectionObserver.~SelectionObserverPythonHandler();
 }
 
-void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
+void ViewProviderFeaturePythonImp::init(PyObject* pyobj)
+{
     Base::PyGILStateLocker lock;
     has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
 
@@ -91,40 +92,44 @@ void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
     this->selectionObserver.init(pyobj);
 }
 
-#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
+#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name, return (NotImplemented))
 
 QIcon ViewProviderFeaturePythonImp::getIcon() const
 {
-    _FC_PY_CALL_CHECK(getIcon,return(QIcon()));
+    _FC_PY_CALL_CHECK(getIcon, return (QIcon()));
 
     // Run the getIcon method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         Py::Object ret(Base::pyCall(py_getIcon.ptr()));
-        if(ret.isNone())
+        if (ret.isNone()) {
             return {};
+        }
 
-        if(ret.isString()) {
+        if (ret.isString()) {
             std::string content = Py::String(ret).as_std_string("utf-8");
             QPixmap icon;
-            if (BitmapFactory().findPixmapInCache(content.c_str(), icon))
+            if (BitmapFactory().findPixmapInCache(content.c_str(), icon)) {
                 return icon;
+            }
 
             // Check if the passed string is a filename, otherwise treat as xpm data
             QFileInfo fi(QString::fromUtf8(content.c_str()));
             if (fi.isFile() && fi.exists()) {
                 icon.load(fi.absoluteFilePath());
-            } else {
+            }
+            else {
                 QByteArray ary;
                 int strlen = (int)content.size();
                 ary.resize(strlen);
-                for (int j=0; j<strlen; j++)
-                    ary[j]=content[j];
+                for (int j = 0; j < strlen; j++) {
+                    ary[j] = content[j];
+                }
                 // Make sure to remove crap around the XPM data
                 QList<QByteArray> lines = ary.split('\n');
                 QByteArray buffer;
-                buffer.reserve(ary.size()+lines.size());
-                for (const auto & line : lines) {
+                buffer.reserve(ary.size() + lines.size());
+                for (const auto& line : lines) {
                     QByteArray trim = line.trimmed();
                     if (!trim.isEmpty()) {
                         buffer.append(trim);
@@ -136,20 +141,23 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
             if (!icon.isNull()) {
                 return icon;
             }
-        } else {
+        }
+        else {
             PythonWrapper wrap;
             wrap.loadGuiModule();
             wrap.loadWidgetsModule();
-            QIcon *picon = wrap.toQIcon(ret.ptr());
-            if(picon)
+            QIcon* picon = wrap.toQIcon(ret.ptr());
+            if (picon) {
                 return *picon;
+            }
         }
     }
     catch (Py::Exception&) {
-        if (PyErr_ExceptionMatches(PyExc_NotImplementedError))
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
+        }
         else {
-            Base::PyException e; // extract the Python error text
+            Base::PyException e;  // extract the Python error text
             e.reportException();
         }
     }
@@ -157,8 +165,7 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
     return {};
 }
 
-std::map<BitmapFactoryInst::Position, std::string>
-ViewProviderFeaturePythonImp::getOverlayIcons() const
+std::map<BitmapFactoryInst::Position, std::string> ViewProviderFeaturePythonImp::getOverlayIcons() const
 {
     std::map<BitmapFactoryInst::Position, std::string> overlays;
     _FC_PY_CALL_CHECK(getOverlayIcons, return overlays);
@@ -215,9 +222,9 @@ ViewProviderFeaturePythonImp::getOverlayIcons() const
     return overlays;
 }
 
-bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject*> &children) const
+bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject*>& children) const
 {
-    _FC_PY_CALL_CHECK(claimChildren,return(false));
+    _FC_PY_CALL_CHECK(claimChildren, return (false));
 
     Base::PyGILStateLocker lock;
     try {
@@ -225,7 +232,8 @@ bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                App::DocumentObject* obj
+                    = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 children.push_back(obj);
             }
         }
@@ -235,15 +243,14 @@ bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return true;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::useNewSelectionModel() const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::useNewSelectionModel() const
 {
     FC_PY_CALL_CHECK(useNewSelectionModel);
 
@@ -251,27 +258,28 @@ ViewProviderFeaturePythonImp::useNewSelectionModel() const
     Base::PyGILStateLocker lock;
     try {
         Py::Boolean ok(Py::Callable(py_useNewSelectionModel).apply(Py::Tuple()));
-        return ok?Accepted:Rejected;
+        return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Accepted;
 }
 
-void ViewProviderFeaturePythonImp::onSelectionChanged(const SelectionChanges& changes) {
+void ViewProviderFeaturePythonImp::onSelectionChanged(const SelectionChanges& changes)
+{
     this->selectionObserver.handleSelectionChanged(changes);
 }
 
-bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &res) const
+bool ViewProviderFeaturePythonImp::getElement(const SoDetail* det, std::string& res) const
 {
-    _FC_PY_CALL_CHECK(getElement,return(false));
+    _FC_PY_CALL_CHECK(getElement, return (false));
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -280,10 +288,15 @@ bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &
         // Note: As there is no ref'counting mechanism for the SoDetail class we must
         // pass '0' as the last parameter so that the Python object does not 'own'
         // the detail object.
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", const_cast<void*>(static_cast<const void*>(det)), 0);
+        pivy = Base::Interpreter().createSWIGPointerObj(
+            "pivy.coin",
+            "SoDetail *",
+            const_cast<void*>(static_cast<const void*>(det)),
+            0
+        );
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
-        Py::String name(Base::pyCall(py_getElement.ptr(),args.ptr()));
+        Py::String name(Base::pyCall(py_getElement.ptr(), args.ptr()));
         res = name;
         return true;
     }
@@ -295,27 +308,35 @@ bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return true;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname
+) const
 {
     FC_PY_CALL_CHECK(getElementPicked);
 
     Base::PyGILStateLocker lock;
     try {
         PyObject* pivy = nullptr;
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", const_cast<void*>(static_cast<const void*>(pp)), 0);
+        pivy = Base::Interpreter().createSWIGPointerObj(
+            "pivy.coin",
+            "SoPickedPoint *",
+            const_cast<void*>(static_cast<const void*>(pp)),
+            0
+        );
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
-        Py::Object ret(Base::pyCall(py_getElementPicked.ptr(),args.ptr()));
-        if(!ret.isString())
+        Py::Object ret(Base::pyCall(py_getElementPicked.ptr(), args.ptr()));
+        if (!ret.isString()) {
             return Rejected;
+        }
         subname = ret.as_string();
         return Accepted;
     }
@@ -327,23 +348,23 @@ ViewProviderFeaturePythonImp::getElementPicked(const SoPickedPoint *pp, std::str
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-bool ViewProviderFeaturePythonImp::getDetail(const char* name, SoDetail *&det) const
+bool ViewProviderFeaturePythonImp::getDetail(const char* name, SoDetail*& det) const
 {
-    _FC_PY_CALL_CHECK(getDetail,return(false));
+    _FC_PY_CALL_CHECK(getDetail, return (false));
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::String(name));
-        Py::Object pydet(Base::pyCall(py_getDetail.ptr(),args.ptr()));
+        Py::Object pydet(Base::pyCall(py_getDetail.ptr(), args.ptr()));
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pydet.ptr(), &ptr, 0);
         auto detail = static_cast<SoDetail*>(ptr);
@@ -358,7 +379,7 @@ bool ViewProviderFeaturePythonImp::getDetail(const char* name, SoDetail *&det) c
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
@@ -366,7 +387,11 @@ bool ViewProviderFeaturePythonImp::getDetail(const char* name, SoDetail *&det) c
 }
 
 ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::getDetailPath(
-        const char* name, SoFullPath *path, bool append, SoDetail *&det) const
+    const char* name,
+    SoFullPath* path,
+    bool append,
+    SoDetail*& det
+) const
 {
     FC_PY_CALL_CHECK(getDetailPath);
 
@@ -374,23 +399,27 @@ ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::getDetailPath
     auto length = path->getLength();
     try {
         PyObject* pivy = nullptr;
-        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", static_cast<void*>(path), 1);
+        pivy = Base::Interpreter()
+                   .createSWIGPointerObj("pivy.coin", "SoFullPath *", static_cast<void*>(path), 1);
         path->ref();
         Py::Tuple args(3);
         args.setItem(0, Py::String(name));
         args.setItem(1, Py::Object(pivy, true));
         args.setItem(2, Py::Boolean(append));
-        Py::Object pyDet(Base::pyCall(py_getDetailPath.ptr(),args.ptr()));
-        if(!pyDet.isTrue())
+        Py::Object pyDet(Base::pyCall(py_getDetailPath.ptr(), args.ptr()));
+        if (!pyDet.isTrue()) {
             return Rejected;
-        if(pyDet.isBoolean())
+        }
+        if (pyDet.isBoolean()) {
             return Accepted;
+        }
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
         auto detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
-        if(det)
+        if (det) {
             return Accepted;
+        }
         delete det;
     }
     catch (const Base::Exception& e) {
@@ -401,7 +430,7 @@ ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::getDetailPath
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     path->truncate(length);
@@ -414,8 +443,7 @@ std::vector<Base::Vector3d> ViewProviderFeaturePythonImp::getSelectionShape(cons
     return {};
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::setEdit(int ModNum)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::setEdit(int ModNum)
 {
     FC_PY_CALL_CHECK(setEdit)
 
@@ -424,9 +452,10 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, Py::Long(ModNum));
-            Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
-            if (ret.isNone())
+            Py::Object ret(Base::pyCall(py_setEdit.ptr(), args.ptr()));
+            if (ret.isNone()) {
                 return NotImplemented;
+            }
             Py::Boolean ok(ret);
             bool value = static_cast<bool>(ok);
             return value ? Accepted : Rejected;
@@ -435,9 +464,10 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, Py::Long(ModNum));
-            Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
-            if (ret.isNone())
+            Py::Object ret(Base::pyCall(py_setEdit.ptr(), args.ptr()));
+            if (ret.isNone()) {
                 return NotImplemented;
+            }
             Py::Boolean ok(ret);
             bool value = static_cast<bool>(ok);
             return value ? Accepted : Rejected;
@@ -448,15 +478,14 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
 {
     FC_PY_CALL_CHECK(unsetEdit)
 
@@ -465,9 +494,10 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, Py::Long(ModNum));
-            Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
-            if (ret.isNone())
+            Py::Object ret(Base::pyCall(py_unsetEdit.ptr(), args.ptr()));
+            if (ret.isNone()) {
                 return NotImplemented;
+            }
             Py::Boolean ok(ret);
             bool value = static_cast<bool>(ok);
             return value ? Accepted : Rejected;
@@ -476,9 +506,10 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, Py::Long(ModNum));
-            Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
-            if (ret.isNone())
+            Py::Object ret(Base::pyCall(py_unsetEdit.ptr(), args.ptr()));
+            if (ret.isNone()) {
                 return NotImplemented;
+            }
             Py::Boolean ok(ret);
             bool value = static_cast<bool>(ok);
             return value ? Accepted : Rejected;
@@ -489,40 +520,43 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::setEditViewer(View3DInventorViewer *viewer, int ModNum)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::setEditViewer(
+    View3DInventorViewer* viewer,
+    int ModNum
+)
 {
     FC_PY_CALL_CHECK(setEditViewer)
 
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
-        args.setItem(0, Py::Object(object->getPyObject(),true));
-        args.setItem(1, Py::Object(viewer->getPyObject(),true));
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        args.setItem(1, Py::Object(viewer->getPyObject(), true));
         args.setItem(2, Py::Long(ModNum));
-        Py::Object ret(Base::pyCall(py_setEditViewer.ptr(),args.ptr()));
-        return ret.isTrue()?Accepted:Rejected;
+        Py::Object ret(Base::pyCall(py_setEditViewer.ptr(), args.ptr()));
+        return ret.isTrue() ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::unsetEditViewer(View3DInventorViewer *viewer)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::unsetEditViewer(
+    View3DInventorViewer* viewer
+)
 {
     FC_PY_CALL_CHECK(unsetEditViewer)
 
@@ -530,24 +564,23 @@ ViewProviderFeaturePythonImp::unsetEditViewer(View3DInventorViewer *viewer)
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
-        args.setItem(0, Py::Object(object->getPyObject(),true));
-        args.setItem(1, Py::Object(viewer->getPyObject(),true));
-        Py::Object ret(Base::pyCall(py_unsetEditViewer.ptr(),args.ptr()));
-        return ret.isTrue()?Accepted:Rejected;
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        args.setItem(1, Py::Object(viewer->getPyObject(), true));
+        Py::Object ret(Base::pyCall(py_unsetEditViewer.ptr(), args.ptr()));
+        return ret.isTrue() ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::doubleClicked()
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::doubleClicked()
 {
     FC_PY_CALL_CHECK(doubleClicked)
 
@@ -562,7 +595,7 @@ ViewProviderFeaturePythonImp::doubleClicked()
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Boolean ok(Base::pyCall(py_doubleClicked.ptr(),args.ptr()));
+            Py::Boolean ok(Base::pyCall(py_doubleClicked.ptr(), args.ptr()));
             bool value = (bool)ok;
             return value ? Accepted : Rejected;
         }
@@ -572,7 +605,7 @@ ViewProviderFeaturePythonImp::doubleClicked()
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
@@ -581,7 +614,7 @@ ViewProviderFeaturePythonImp::doubleClicked()
 
 bool ViewProviderFeaturePythonImp::setupContextMenu(QMenu* menu)
 {
-    _FC_PY_CALL_CHECK(setupContextMenu,return(false));
+    _FC_PY_CALL_CHECK(setupContextMenu, return (false));
 
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -592,7 +625,7 @@ bool ViewProviderFeaturePythonImp::setupContextMenu(QMenu* menu)
             wrap.loadWidgetsModule();
             Py::Tuple args(1);
             args.setItem(0, wrap.fromQWidget(menu, "QMenu"));
-            return Base::pyCall(py_setupContextMenu.ptr(),args.ptr()).isTrue();
+            return Base::pyCall(py_setupContextMenu.ptr(), args.ptr()).isTrue();
         }
         else {
             PythonWrapper wrap;
@@ -601,7 +634,7 @@ bool ViewProviderFeaturePythonImp::setupContextMenu(QMenu* menu)
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, wrap.fromQWidget(menu, "QMenu"));
-            return Base::pyCall(py_setupContextMenu.ptr(),args.ptr()).isTrue();
+            return Base::pyCall(py_setupContextMenu.ptr(), args.ptr()).isTrue();
         }
     }
     catch (Py::Exception&) {
@@ -609,15 +642,15 @@ bool ViewProviderFeaturePythonImp::setupContextMenu(QMenu* menu)
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return true;
 }
 
-void ViewProviderFeaturePythonImp::attach(App::DocumentObject *pcObject)
+void ViewProviderFeaturePythonImp::attach(App::DocumentObject* pcObject)
 {
-    _FC_PY_CALL_CHECK(attach,return);
+    _FC_PY_CALL_CHECK(attach, return);
 
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -628,7 +661,7 @@ void ViewProviderFeaturePythonImp::attach(App::DocumentObject *pcObject)
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Base::pyCall(py_attach.ptr(),args.ptr());
+            Base::pyCall(py_attach.ptr(), args.ptr());
         }
 
         // #0000415: Now simulate a property change event to call
@@ -636,15 +669,16 @@ void ViewProviderFeaturePythonImp::attach(App::DocumentObject *pcObject)
         pcObject->Label.touch();
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
 {
-    if(py_updateData.isNone())
+    if (py_updateData.isNone()) {
         return;
+    }
 
     // Run the updateData method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -654,7 +688,7 @@ void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
             const char* prop_name = object->getObject()->getPropertyName(prop);
             if (prop_name) {
                 args.setItem(0, Py::String(prop_name));
-                Base::pyCall(py_updateData.ptr(),args.ptr());
+                Base::pyCall(py_updateData.ptr(), args.ptr());
             }
         }
         else {
@@ -663,20 +697,21 @@ void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
             const char* prop_name = object->getObject()->getPropertyName(prop);
             if (prop_name) {
                 args.setItem(1, Py::String(prop_name));
-                Base::pyCall(py_updateData.ptr(),args.ptr());
+                Base::pyCall(py_updateData.ptr(), args.ptr());
             }
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
 {
-    if(py_onChanged.isNone())
+    if (py_onChanged.isNone()) {
         return;
+    }
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -686,7 +721,7 @@ void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
             const char* prop_name = object->getPropertyName(prop);
             if (prop_name) {
                 args.setItem(0, Py::String(prop_name));
-                Base::pyCall(py_onChanged.ptr(),args.ptr());
+                Base::pyCall(py_onChanged.ptr(), args.ptr());
             }
         }
         else {
@@ -695,20 +730,21 @@ void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
             const char* prop_name = object->getPropertyName(prop);
             if (prop_name) {
                 args.setItem(1, Py::String(prop_name));
-                Base::pyCall(py_onChanged.ptr(),args.ptr());
+                Base::pyCall(py_onChanged.ptr(), args.ptr());
             }
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void ViewProviderFeaturePythonImp::onBeforeChange(const App::Property* prop)
 {
-    if(py_onBeforeChange.isNone())
+    if (py_onBeforeChange.isNone()) {
         return;
+    }
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -718,7 +754,7 @@ void ViewProviderFeaturePythonImp::onBeforeChange(const App::Property* prop)
             const char* prop_name = object->getPropertyName(prop);
             if (prop_name) {
                 args.setItem(0, Py::String(prop_name));
-                Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
+                Base::pyCall(py_onBeforeChange.ptr(), args.ptr());
             }
         }
         else {
@@ -727,19 +763,18 @@ void ViewProviderFeaturePythonImp::onBeforeChange(const App::Property* prop)
             const char* prop_name = object->getPropertyName(prop);
             if (prop_name) {
                 args.setItem(1, Py::String(prop_name));
-                Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
+                Base::pyCall(py_onBeforeChange.ptr(), args.ptr());
             }
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
 
 void ViewProviderFeaturePythonImp::startRestoring()
-{
-}
+{}
 
 void ViewProviderFeaturePythonImp::finishRestoring()
 {
@@ -749,12 +784,14 @@ void ViewProviderFeaturePythonImp::finishRestoring()
         if (vp.isNone()) {
             object->show();
             Proxy.setValue(Py::Long(1));
-        } else {
-            _FC_PY_CALL_CHECK(finishRestoring,return);
+        }
+        else {
+            _FC_PY_CALL_CHECK(finishRestoring, return);
             Base::pyCall(py_finishRestoring.ptr());
         }
-    }catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
@@ -785,31 +822,32 @@ void ViewProviderFeaturePythonImp::beforeDelete()
     }
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::onDelete(const std::vector<std::string> & sub)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::onDelete(
+    const std::vector<std::string>& sub
+)
 {
     FC_PY_CALL_CHECK(onDelete);
 
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple seq(sub.size());
-        int index=0;
-        for (const auto & it : sub) {
+        int index = 0;
+        for (const auto& it : sub) {
             seq.setItem(index++, Py::String(it));
         }
 
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, seq);
-            Py::Boolean ok(Base::pyCall(py_onDelete.ptr(),args.ptr()));
-            return ok?Accepted:Rejected;
+            Py::Boolean ok(Base::pyCall(py_onDelete.ptr(), args.ptr()));
+            return ok ? Accepted : Rejected;
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, seq);
-            Py::Boolean ok(Base::pyCall(py_onDelete.ptr(),args.ptr()));
-            return ok?Accepted:Rejected;
+            Py::Boolean ok(Base::pyCall(py_onDelete.ptr(), args.ptr()));
+            return ok ? Accepted : Rejected;
         }
     }
     catch (Py::Exception&) {
@@ -817,57 +855,58 @@ ViewProviderFeaturePythonImp::onDelete(const std::vector<std::string> & sub)
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
         return Rejected;
     }
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDelete(App::DocumentObject *obj) const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDelete(
+    App::DocumentObject* obj
+) const
 {
     FC_PY_CALL_CHECK(canDelete);
 
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
-        args.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::Object());
-        return Py::Boolean(Base::pyCall(py_canDelete.ptr(),args.ptr()))?Accepted:Rejected;
+        args.setItem(0, obj ? Py::Object(obj->getPyObject(), true) : Py::Object());
+        return Py::Boolean(Base::pyCall(py_canDelete.ptr(), args.ptr())) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
         return Rejected;
     }
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canAddToSceneGraph() const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canAddToSceneGraph() const
 {
     FC_PY_CALL_CHECK(canAddToSceneGraph);
 
     Base::PyGILStateLocker lock;
     try {
-        return Py::Boolean(Py::Callable(py_canAddToSceneGraph).apply(Py::Tuple()))?Accepted:Rejected;
+        return Py::Boolean(Py::Callable(py_canAddToSceneGraph).apply(Py::Tuple())) ? Accepted
+                                                                                   : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return Accepted;
 }
 
-bool ViewProviderFeaturePythonImp::getDefaultDisplayMode(std::string &mode) const
+bool ViewProviderFeaturePythonImp::getDefaultDisplayMode(std::string& mode) const
 {
-    _FC_PY_CALL_CHECK(getDefaultDisplayMode,return(0));
+    _FC_PY_CALL_CHECK(getDefaultDisplayMode, return (0));
 
     // Run the getDefaultDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -881,7 +920,7 @@ bool ViewProviderFeaturePythonImp::getDefaultDisplayMode(std::string &mode) cons
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
@@ -891,7 +930,7 @@ bool ViewProviderFeaturePythonImp::getDefaultDisplayMode(std::string &mode) cons
 std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes() const
 {
     std::vector<std::string> modes;
-    _FC_PY_CALL_CHECK(getDisplayModes,return(modes));
+    _FC_PY_CALL_CHECK(getDisplayModes, return (modes));
 
     // Run the getDisplayModes method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -906,7 +945,7 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes() const
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Sequence list(Base::pyCall(py_getDisplayModes.ptr(),args.ptr()));
+            Py::Sequence list(Base::pyCall(py_getDisplayModes.ptr(), args.ptr()));
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::String str(*it);
                 modes.push_back(str.as_std_string("ascii"));
@@ -914,10 +953,11 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes() const
         }
     }
     catch (Py::Exception&) {
-        if (PyErr_ExceptionMatches(PyExc_NotImplementedError))
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
+        }
         else {
-            Base::PyException e; // extract the Python error text
+            Base::PyException e;  // extract the Python error text
             e.reportException();
         }
     }
@@ -927,26 +967,25 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes() const
 
 std::string ViewProviderFeaturePythonImp::setDisplayMode(const char* ModeName)
 {
-    _FC_PY_CALL_CHECK(setDisplayMode,return(ModeName));
+    _FC_PY_CALL_CHECK(setDisplayMode, return (ModeName));
 
     // Run the setDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::String(ModeName));
-        Py::String str(Base::pyCall(py_setDisplayMode.ptr(),args.ptr()));
+        Py::String str(Base::pyCall(py_setDisplayMode.ptr(), args.ptr()));
         return str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return ModeName;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDragObjects() const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDragObjects() const
 {
     FC_PY_CALL_CHECK(canDragObjects);
 
@@ -960,15 +999,16 @@ ViewProviderFeaturePythonImp::canDragObjects() const
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDragObject(App::DocumentObject* obj) const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDragObject(
+    App::DocumentObject* obj
+) const
 {
     FC_PY_CALL_CHECK(canDragObject);
 
@@ -976,7 +1016,7 @@ ViewProviderFeaturePythonImp::canDragObject(App::DocumentObject* obj) const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(obj->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_canDragObject.ptr(),args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_canDragObject.ptr(), args.ptr()));
         return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -984,15 +1024,14 @@ ViewProviderFeaturePythonImp::canDragObject(App::DocumentObject* obj) const
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::dragObject(App::DocumentObject* obj)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::dragObject(App::DocumentObject* obj)
 {
     FC_PY_CALL_CHECK(dragObject);
 
@@ -1002,14 +1041,14 @@ ViewProviderFeaturePythonImp::dragObject(App::DocumentObject* obj)
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(obj->getPyObject(), true));
-            Base::pyCall(py_dragObject.ptr(),args.ptr());
+            Base::pyCall(py_dragObject.ptr(), args.ptr());
             return Accepted;
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, Py::Object(obj->getPyObject(), true));
-            Base::pyCall(py_dragObject.ptr(),args.ptr());
+            Base::pyCall(py_dragObject.ptr(), args.ptr());
             return Accepted;
         }
     }
@@ -1018,15 +1057,14 @@ ViewProviderFeaturePythonImp::dragObject(App::DocumentObject* obj)
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDropObjects() const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDropObjects() const
 {
     FC_PY_CALL_CHECK(canDropObjects);
 
@@ -1040,15 +1078,16 @@ ViewProviderFeaturePythonImp::canDropObjects() const
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDropObject(App::DocumentObject* obj) const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDropObject(
+    App::DocumentObject* obj
+) const
 {
     FC_PY_CALL_CHECK(canDropObject);
 
@@ -1056,7 +1095,7 @@ ViewProviderFeaturePythonImp::canDropObject(App::DocumentObject* obj) const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(obj->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_canDropObject.ptr(),args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_canDropObject.ptr(), args.ptr()));
         return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -1064,15 +1103,14 @@ ViewProviderFeaturePythonImp::canDropObject(App::DocumentObject* obj) const
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::dropObject(App::DocumentObject* obj)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::dropObject(App::DocumentObject* obj)
 {
     FC_PY_CALL_CHECK(dropObject);
 
@@ -1081,14 +1119,14 @@ ViewProviderFeaturePythonImp::dropObject(App::DocumentObject* obj)
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(obj->getPyObject(), true));
-            Base::pyCall(py_dropObject.ptr(),args.ptr());
+            Base::pyCall(py_dropObject.ptr(), args.ptr());
             return Accepted;
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, Py::Object(obj->getPyObject(), true));
-            Base::pyCall(py_dropObject.ptr(),args.ptr());
+            Base::pyCall(py_dropObject.ptr(), args.ptr());
             return Accepted;
         }
     }
@@ -1103,15 +1141,16 @@ ViewProviderFeaturePythonImp::dropObject(App::DocumentObject* obj)
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDragAndDropObject(App::DocumentObject *obj) const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDragAndDropObject(
+    App::DocumentObject* obj
+) const
 {
     FC_PY_CALL_CHECK(canDragAndDropObject);
 
     Base::PyGILStateLocker lock;
     try {
-        Py::TupleN args(Py::Object(obj->getPyObject(),true));
-        Py::Boolean ok(Base::pyCall(py_canDragAndDropObject.ptr(),args.ptr()));
+        Py::TupleN args(Py::Object(obj->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_canDragAndDropObject.ptr(), args.ptr()));
         return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -1119,16 +1158,19 @@ ViewProviderFeaturePythonImp::canDragAndDropObject(App::DocumentObject *obj) con
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canDropObjectEx(App::DocumentObject* obj,
-        App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canDropObjectEx(
+    App::DocumentObject* obj,
+    App::DocumentObject* owner,
+    const char* subname,
+    const std::vector<std::string>& elements
+) const
 {
     FC_PY_CALL_CHECK(canDropObjectEx);
 
@@ -1136,14 +1178,15 @@ ViewProviderFeaturePythonImp::canDropObjectEx(App::DocumentObject* obj,
     try {
         Py::Tuple args(4);
         args.setItem(0, Py::Object(obj->getPyObject(), true));
-        args.setItem(1, owner?Py::Object(owner->getPyObject(), true):Py::None());
-        args.setItem(2, Py::String(subname?subname:""));
+        args.setItem(1, owner ? Py::Object(owner->getPyObject(), true) : Py::None());
+        args.setItem(2, Py::String(subname ? subname : ""));
         Py::Tuple tuple(elements.size());
-        int i=0;
-        for(auto &element : elements)
-            tuple.setItem(i++,Py::String(element));
+        int i = 0;
+        for (auto& element : elements) {
+            tuple.setItem(i++, Py::String(element));
+        }
         args.setItem(3, tuple);
-        Py::Boolean ok(Base::pyCall(py_canDropObjectEx.ptr(),args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_canDropObjectEx.ptr(), args.ptr()));
         return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -1151,33 +1194,42 @@ ViewProviderFeaturePythonImp::canDropObjectEx(App::DocumentObject* obj,
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
     return Rejected;
 }
 
-bool ViewProviderFeaturePythonImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
-        const char *subname, const std::vector<std::string> &elements,std::string &ret)
+bool ViewProviderFeaturePythonImp::dropObjectEx(
+    App::DocumentObject* obj,
+    App::DocumentObject* owner,
+    const char* subname,
+    const std::vector<std::string>& elements,
+    std::string& ret
+)
 {
-    _FC_PY_CALL_CHECK(dropObjectEx, return(false));
+    _FC_PY_CALL_CHECK(dropObjectEx, return (false));
 
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple tuple(elements.size());
-        int i=0;
-        for(auto &element : elements)
-            tuple.setItem(i++,Py::String(element));
+        int i = 0;
+        for (auto& element : elements) {
+            tuple.setItem(i++, Py::String(element));
+        }
         Py::Object res;
         Py::TupleN args(
-                Py::Object(object->getPyObject(),true),
-                Py::Object(obj->getPyObject(),true),
-                owner?Py::Object(owner->getPyObject(),true):Py::Object(),
-                Py::String(subname?subname:""),tuple);
-        res = Base::pyCall(py_dropObjectEx.ptr(),args.ptr());
-        if(!res.isNone())
+            Py::Object(object->getPyObject(), true),
+            Py::Object(obj->getPyObject(), true),
+            owner ? Py::Object(owner->getPyObject(), true) : Py::Object(),
+            Py::String(subname ? subname : ""),
+            tuple
+        );
+        res = Base::pyCall(py_dropObjectEx.ptr(), args.ptr());
+        if (!res.isNone()) {
             ret = res.as_string();
+        }
         return true;
     }
     catch (Py::Exception&) {
@@ -1190,8 +1242,7 @@ bool ViewProviderFeaturePythonImp::dropObjectEx(App::DocumentObject* obj, App::D
     return true;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::isShow() const
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::isShow() const
 {
     FC_PY_CALL_CHECK(isShow);
 
@@ -1205,7 +1256,7 @@ ViewProviderFeaturePythonImp::isShow() const
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
@@ -1213,8 +1264,8 @@ ViewProviderFeaturePythonImp::isShow() const
 }
 
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::canRemoveChildrenFromRoot() const {
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::canRemoveChildrenFromRoot() const
+{
 
     FC_PY_CALL_CHECK(canRemoveChildrenFromRoot);
 
@@ -1228,21 +1279,23 @@ ViewProviderFeaturePythonImp::canRemoveChildrenFromRoot() const {
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return Rejected;
 }
 
-bool ViewProviderFeaturePythonImp::getDropPrefix(std::string &prefix) const {
+bool ViewProviderFeaturePythonImp::getDropPrefix(std::string& prefix) const
+{
 
-    _FC_PY_CALL_CHECK(getDropPrefix,return(false));
+    _FC_PY_CALL_CHECK(getDropPrefix, return (false));
 
     Base::PyGILStateLocker lock;
     try {
         Py::Object ret(Base::pyCall(py_getDropPrefix.ptr()));
-        if(ret.isNone())
+        if (ret.isNone()) {
             return false;
+        }
         prefix = ret.as_string();
         return true;
     }
@@ -1251,27 +1304,27 @@ bool ViewProviderFeaturePythonImp::getDropPrefix(std::string &prefix) const {
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return true;
 }
 
-ViewProviderFeaturePythonImp::ValueT
-ViewProviderFeaturePythonImp::replaceObject(
-        App::DocumentObject *oldObj, App::DocumentObject *newObj)
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::replaceObject(
+    App::DocumentObject* oldObj,
+    App::DocumentObject* newObj
+)
 {
-    if(!oldObj || !oldObj->isAttachedToDocument()
-            || !newObj || !newObj->isAttachedToDocument())
+    if (!oldObj || !oldObj->isAttachedToDocument() || !newObj || !newObj->isAttachedToDocument()) {
         return NotImplemented;
+    }
 
     FC_PY_CALL_CHECK(replaceObject);
 
     Base::PyGILStateLocker lock;
     try {
-        Py::TupleN args(Py::asObject(oldObj->getPyObject()),
-                Py::asObject(newObj->getPyObject()));
-        Py::Boolean ok(Base::pyCall(py_replaceObject.ptr(),args.ptr()));
+        Py::TupleN args(Py::asObject(oldObj->getPyObject()), Py::asObject(newObj->getPyObject()));
+        Py::Boolean ok(Base::pyCall(py_replaceObject.ptr(), args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -1279,37 +1332,44 @@ ViewProviderFeaturePythonImp::replaceObject(
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return Rejected;
 }
 
 bool ViewProviderFeaturePythonImp::getLinkedViewProvider(
-        ViewProviderDocumentObject *&vp, std::string *subname, bool recursive) const
+    ViewProviderDocumentObject*& vp,
+    std::string* subname,
+    bool recursive
+) const
 {
-    _FC_PY_CALL_CHECK(getLinkedViewProvider,return(false));
+    _FC_PY_CALL_CHECK(getLinkedViewProvider, return (false));
 
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
-        args.setItem(0,Py::Boolean(recursive));
-        Py::Object res(Base::pyCall(py_getLinkedViewProvider.ptr(),args.ptr()));
-        if(res.isNone())
+        args.setItem(0, Py::Boolean(recursive));
+        Py::Object res(Base::pyCall(py_getLinkedViewProvider.ptr(), args.ptr()));
+        if (res.isNone()) {
             return true;
-        if(PyObject_TypeCheck(res.ptr(),&ViewProviderDocumentObjectPy::Type)) {
-            vp = static_cast<ViewProviderDocumentObjectPy*>(
-                    res.ptr())->getViewProviderDocumentObjectPtr();
+        }
+        if (PyObject_TypeCheck(res.ptr(), &ViewProviderDocumentObjectPy::Type)) {
+            vp = static_cast<ViewProviderDocumentObjectPy*>(res.ptr())
+                     ->getViewProviderDocumentObjectPtr();
             return true;
-        } else if (PySequence_Check(res.ptr()) && PySequence_Length(res.ptr())==2) {
+        }
+        else if (PySequence_Check(res.ptr()) && PySequence_Length(res.ptr()) == 2) {
             Py::Sequence seq(res);
             Py::Object item0(seq[0].ptr());
             Py::Object item1(seq[1].ptr());
-            if(PyObject_TypeCheck(item0.ptr(), &ViewProviderDocumentObjectPy::Type) && item1.isString()) {
-                if(subname)
+            if (PyObject_TypeCheck(item0.ptr(), &ViewProviderDocumentObjectPy::Type)
+                && item1.isString()) {
+                if (subname) {
                     *subname = Py::String(item1).as_std_string("utf-8");
-                vp = static_cast<ViewProviderDocumentObjectPy*>(
-                        item0.ptr())->getViewProviderDocumentObjectPtr();
+                }
+                vp = static_cast<ViewProviderDocumentObjectPy*>(item0.ptr())
+                         ->getViewProviderDocumentObjectPtr();
                 return true;
             }
         }
@@ -1321,20 +1381,20 @@ bool ViewProviderFeaturePythonImp::getLinkedViewProvider(
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return true;
 }
 
-bool ViewProviderFeaturePythonImp::editProperty(const char *name)
+bool ViewProviderFeaturePythonImp::editProperty(const char* name)
 {
-    _FC_PY_CALL_CHECK(editProperty,return false);
+    _FC_PY_CALL_CHECK(editProperty, return false);
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::String(name));
-        Py::Object ret(Base::pyCall(py_editProperty.ptr(),args.ptr()));
+        Py::Object ret(Base::pyCall(py_editProperty.ptr(), args.ptr()));
         return ret.isTrue();
     }
     catch (Py::Exception&) {
@@ -1343,7 +1403,7 @@ bool ViewProviderFeaturePythonImp::editProperty(const char *name)
             return false;
         }
 
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
     return false;
@@ -1351,18 +1411,18 @@ bool ViewProviderFeaturePythonImp::editProperty(const char *name)
 
 // ---------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderFeaturePython, Gui::ViewProviderDocumentObject)
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderDocumentObject>;
-}
+}  // namespace Gui
 
 // ---------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeometryPython, Gui::ViewProviderGeometryObject)
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderGeometryObject>;
-}
-
-
+}  // namespace Gui

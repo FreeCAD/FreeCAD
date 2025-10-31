@@ -177,10 +177,12 @@ PyObject* PointsPy::addPoints(PyObject* args)
         }
     }
     catch (const Py::Exception&) {
-        PyErr_SetString(PyExc_TypeError,
-                        "either expect\n"
-                        "-- [Vector,...] \n"
-                        "-- [(x,y,z),...]");
+        PyErr_SetString(
+            PyExc_TypeError,
+            "either expect\n"
+            "-- [Vector,...] \n"
+            "-- [(x,y,z),...]"
+        );
         return nullptr;
     }
 

@@ -67,9 +67,11 @@ public:
     /// handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
     /// warning on deletion when there are children
-    static bool checkSelectedChildren(const std::vector<App::DocumentObject*> objs,
-                                      Gui::Document* docGui,
-                                      std::string objectName);
+    static bool checkSelectedChildren(
+        const std::vector<App::DocumentObject*> objs,
+        Gui::Document* docGui,
+        std::string objectName
+    );
     /// asks the view provider if the given object can be deleted
     bool canDelete(App::DocumentObject* obj) const override;
 

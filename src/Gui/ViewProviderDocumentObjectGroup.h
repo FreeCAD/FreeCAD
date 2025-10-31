@@ -28,10 +28,11 @@
 #include "ViewProviderFeaturePython.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject,
-                                                  public ViewProviderGroupExtension
+class GuiExport ViewProviderDocumentObjectGroup: public ViewProviderDocumentObject,
+                                                 public ViewProviderGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup);
 
@@ -52,7 +53,10 @@ public:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
     /* Check whether the object accept reordering of its children during drop.*/
-    bool acceptReorderingObjects() const override { return true; };
+    bool acceptReorderingObjects() const override
+    {
+        return true;
+    };
 
 protected:
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
@@ -61,9 +65,9 @@ private:
     std::vector<ViewProvider*> nodes;
 };
 
-using ViewProviderDocumentObjectGroupPython = ViewProviderFeaturePythonT<ViewProviderDocumentObjectGroup>;
+using ViewProviderDocumentObjectGroupPython
+    = ViewProviderFeaturePythonT<ViewProviderDocumentObjectGroup>;
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
-
+#endif  // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H

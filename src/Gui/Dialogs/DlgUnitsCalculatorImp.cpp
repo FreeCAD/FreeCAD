@@ -87,12 +87,11 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
     ui->UnitInput->setText(QStringLiteral("in"));
 
     units << Unit::Acceleration << Unit::AmountOfSubstance << Unit::Angle << Unit::Area
-          << Unit::Density << Unit::CurrentDensity << Unit::DissipationRate
-          << Unit::DynamicViscosity << Unit::ElectricalCapacitance << Unit::ElectricalInductance
-          << Unit::ElectricalConductance << Unit::ElectricalResistance
-          << Unit::ElectricalConductivity << Unit::ElectricCharge << Unit::ElectricCurrent
-          << Unit::ElectricPotential << Unit::Force << Unit::Frequency << Unit::HeatFlux
-          << Unit::InverseArea << Unit::InverseLength << Unit::InverseVolume
+          << Unit::Density << Unit::CurrentDensity << Unit::DissipationRate << Unit::DynamicViscosity
+          << Unit::ElectricalCapacitance << Unit::ElectricalInductance << Unit::ElectricalConductance
+          << Unit::ElectricalResistance << Unit::ElectricalConductivity << Unit::ElectricCharge
+          << Unit::ElectricCurrent << Unit::ElectricPotential << Unit::Force << Unit::Frequency
+          << Unit::HeatFlux << Unit::InverseArea << Unit::InverseLength << Unit::InverseVolume
           << Unit::KinematicViscosity << Unit::Length << Unit::LuminousIntensity << Unit::Mass
           << Unit::MagneticFieldStrength << Unit::MagneticFlux << Unit::MagneticFluxDensity
           << Unit::Magnetization << Unit::Power << Unit::Pressure << Unit::SpecificEnergy
@@ -132,8 +131,7 @@ void DlgUnitsCalculator::valueChanged(const Quantity& quant)
 {
     std::string unitTypeStr;
     try {
-        unitTypeStr =
-            Quantity::parse(ui->UnitInput->text().toStdString()).getUnit().getTypeString();
+        unitTypeStr = Quantity::parse(ui->UnitInput->text().toStdString()).getUnit().getTypeString();
     }
     catch (const Base::ParserError&) {
     }
@@ -142,7 +140,8 @@ void DlgUnitsCalculator::valueChanged(const Quantity& quant)
     // since it expects then a scientific notation number like "1e3"
     if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee")) || unitTypeStr.empty()) {
         ui->ValueOutput->setText(
-            QStringLiteral("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
+            QStringLiteral("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text())
+        );
         ui->pushButton_Copy->setEnabled(false);
     }
     else {  // the unit is valid
@@ -152,8 +151,7 @@ void DlgUnitsCalculator::valueChanged(const Quantity& quant)
             ui->pushButton_Copy->setEnabled(false);
         }
         else {  // the unit is valid and has the same type
-            double convertValue =
-                Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
+            double convertValue = Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
             // we got now e.g. for "1 in" the value '25.4' because 1 in = 25.4 mm
             // the result is now just quant / convertValue because the input is always in a base
             // unit (an input of "1 cm" will immediately be converted to "10 mm" by Gui::InputField
@@ -192,8 +190,7 @@ void DlgUnitsCalculator::copy()
 void DlgUnitsCalculator::returnPressed()
 {
     if (ui->pushButton_Copy->isEnabled()) {
-        ui->textEdit->append(ui->ValueInput->text() + QStringLiteral(" = ")
-                             + ui->ValueOutput->text());
+        ui->textEdit->append(ui->ValueInput->text() + QStringLiteral(" = ") + ui->ValueOutput->text());
         ui->ValueInput->pushToHistory();
     }
 }

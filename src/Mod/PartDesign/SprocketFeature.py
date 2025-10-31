@@ -1,23 +1,23 @@
-#***************************************************************************
-#*   Copyright (c) 2020 Adam Spontarelli <adam@vector-space.org>           *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2020 Adam Spontarelli <adam@vector-space.org>           *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 import FreeCAD, Part
 from fcsprocket import fcsprocket
@@ -28,7 +28,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from FreeCADGui import PySideUic as uic
 
-__title__="PartDesign SprocketObject management"
+__title__ = "PartDesign SprocketObject management"
 __author__ = "Adam Spontarelli"
 __url__ = "https://www.freecad.org"
 
@@ -37,31 +37,35 @@ def makeSprocket(name):
     """
     makeSprocket(name): makes a Sprocket
     """
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython", name)
     Sprocket(obj)
     if FreeCAD.GuiUp:
         ViewProviderSprocket(obj.ViewObject)
-    #FreeCAD.ActiveDocument.recompute()
+    # FreeCAD.ActiveDocument.recompute()
     if FreeCAD.GuiUp:
-        body=FreeCADGui.ActiveDocument.ActiveView.getActiveObject("pdbody")
-        part=FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part")
+        body = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("pdbody")
+        part = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part")
         if body:
-            body.Group=body.Group+[obj]
+            body.Group = body.Group + [obj]
         elif part:
-            part.Group=part.Group+[obj]
+            part.Group = part.Group + [obj]
     return obj
 
-class CommandSprocket:
 
+class CommandSprocket:
     """
     the Fem Sprocket command definition
     """
 
     def GetResources(self):
-        return {'Pixmap'  : 'PartDesign_Sprocket',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Sprocket"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Creates or edits the sprocket definition.")}
+        return {
+            "Pixmap": "PartDesign_Sprocket",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket", "Sprocket"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "PartDesign_Sprocket", "Creates or edits the sprocket definition."
+            ),
+        }
 
     def Activated(self):
 
@@ -136,7 +140,8 @@ class Sprocket:
             "App::PropertyEnumeration",
             "SprocketReference",
             "Sprocket",
-            "Sprocket Reference", locked=True,
+            "Sprocket Reference",
+            locked=True,
         )
         obj.SprocketReference = list(self.sprockRef)
         obj.Proxy = self
@@ -154,13 +159,9 @@ class Sprocket:
                 else:
                     setattr(obj, name, default)
 
-        ensure_property(
-            "App::PropertyInteger", "NumberOfTeeth", "Number of gear teeth", 50
-        )
+        ensure_property("App::PropertyInteger", "NumberOfTeeth", "Number of gear teeth", 50)
         ensure_property("App::PropertyLength", "Pitch", "Chain Pitch", "0.375 in")
-        ensure_property(
-            "App::PropertyLength", "RollerDiameter", "Roller Diameter", "0.20 in"
-        )
+        ensure_property("App::PropertyLength", "RollerDiameter", "Roller Diameter", "0.20 in")
         ensure_property(
             "App::PropertyLength",
             "Thickness",
@@ -170,9 +171,7 @@ class Sprocket:
 
     def execute(self, obj):
         w = fcsprocket.FCWireBuilder()
-        sprocket.CreateSprocket(
-            w, obj.Pitch.Value, obj.NumberOfTeeth, obj.RollerDiameter.Value
-        )
+        sprocket.CreateSprocket(w, obj.Pitch.Value, obj.NumberOfTeeth, obj.RollerDiameter.Value)
 
         sprocketw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = sprocketw
@@ -285,13 +284,9 @@ class SprocketTaskPanel:
 
     def sprocketReferenceChanged(self, size):
         self.obj.Pitch = str(Sprocket.SprocketReferenceRollerTable[size][0]) + " in"
-        self.obj.RollerDiameter = (
-            str(Sprocket.SprocketReferenceRollerTable[size][1]) + " in"
-        )
+        self.obj.RollerDiameter = str(Sprocket.SprocketReferenceRollerTable[size][1]) + " in"
         self.obj.Thickness = str(Sprocket.SprocketReferenceRollerTable[size][2]) + " in"
-        self.obj.SprocketReference = self.obj.getEnumerationsOfProperty(
-            "SprocketReference"
-        )[size]
+        self.obj.SprocketReference = self.obj.getEnumerationsOfProperty("SprocketReference")[size]
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
@@ -312,7 +307,9 @@ class SprocketTaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Apply
+        return (
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Apply
+        )
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:

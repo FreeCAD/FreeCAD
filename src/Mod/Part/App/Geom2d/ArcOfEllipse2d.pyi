@@ -27,5 +27,4 @@ class ArcOfEllipse2d(ArcOfConic2d):
     """The internal ellipse representation"""
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...

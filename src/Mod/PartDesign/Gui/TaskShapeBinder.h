@@ -33,42 +33,54 @@
 class Ui_TaskShapeBinder;
 class QListWidget;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ButtonGroup;
 class ViewProvider;
-}
+}  // namespace Gui
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-
-class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
+class TaskShapeBinder: public Gui::TaskView::TaskBox, Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
+    explicit TaskShapeBinder(
+        ViewProviderShapeBinder* view,
+        bool newObj = false,
+        QWidget* parent = nullptr
+    );
     ~TaskShapeBinder() override;
 
     void accept();
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, refObjAdd };
-    void changeEvent(QEvent *e) override;
+    enum selectionModes
+    {
+        none,
+        refAdd,
+        refRemove,
+        refObjAdd
+    };
+    void changeEvent(QEvent* e) override;
     selectionModes selectionMode = none;
 
-    void removeFromListWidget(QListWidget *w, QString name);
+    void removeFromListWidget(QListWidget* w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void setupButtonGroup();
     void setupContextMenu();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void onButtonToggled(QAbstractButton *button, bool checked);
+    void onButtonToggled(QAbstractButton* button, bool checked);
     void updateUI();
     void supportChanged(const QString&);
     void clearButtons();
@@ -80,18 +92,18 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskShapeBinder> ui;
-    Gui::ButtonGroup *buttonGroup;
+    Gui::ButtonGroup* buttonGroup;
     Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgShapeBinder : public Gui::TaskView::TaskDialog
+class TaskDlgShapeBinder: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
+    explicit TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newObj = false);
     ~TaskDlgShapeBinder() override;
 
 public:
@@ -101,10 +113,10 @@ public:
     bool reject() override;
 
 protected:
-    TaskShapeBinder  *parameter;
+    TaskShapeBinder* parameter;
     Gui::WeakPtrT<ViewProviderShapeBinder> vp;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

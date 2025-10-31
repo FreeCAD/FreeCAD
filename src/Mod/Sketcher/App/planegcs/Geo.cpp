@@ -266,11 +266,13 @@ Arc* Arc::Copy()
 //--------------ellipse
 
 // this function is exposed to allow reusing pre-filled derivectors in constraints code
-double Ellipse::getRadMaj(const DeriVector2& center,
-                          const DeriVector2& f1,
-                          double b,
-                          double db,
-                          double& ret_dRadMaj) const
+double Ellipse::getRadMaj(
+    const DeriVector2& center,
+    const DeriVector2& f1,
+    double b,
+    double db,
+    double& ret_dRadMaj
+) const
 {
     double cf, dcf;
     cf = f1.subtr(center).length(dcf);
@@ -278,8 +280,9 @@ double Ellipse::getRadMaj(const DeriVector2& center,
         b,
         cf,
         db,
-        dcf);  // hack = a nonsense vector to calculate major radius with derivatives, useful just
-               // because the calculation formula is the same as vector length formula
+        dcf
+    );  // hack = a nonsense vector to calculate major radius with derivatives, useful just
+        // because the calculation formula is the same as vector length formula
     return hack.length(ret_dRadMaj);
 }
 
@@ -428,11 +431,13 @@ ArcOfEllipse* ArcOfEllipse::Copy()
 //---------------hyperbola
 
 // this function is exposed to allow reusing pre-filled derivectors in constraints code
-double Hyperbola::getRadMaj(const DeriVector2& center,
-                            const DeriVector2& f1,
-                            double b,
-                            double db,
-                            double& ret_dRadMaj) const
+double Hyperbola::getRadMaj(
+    const DeriVector2& center,
+    const DeriVector2& f1,
+    double b,
+    double db,
+    double& ret_dRadMaj
+) const
 {
     double cf, dcf;
     cf = f1.subtr(center).length(dcf);
@@ -470,8 +475,8 @@ DeriVector2 Hyperbola::CalculateNormal(const Point& p, const double* derivparam)
     DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0);  // 2*cv - f1v
 
     // pf1, pf2 = vectors from p to focus1,focus2
-    DeriVector2 pf1 = f1v.subtr(pv).mult(
-        -1.0);  // <--- differs from ellipse normal calculation code by inverting this vector
+    DeriVector2 pf1 = f1v.subtr(pv).mult(-1.0);  // <--- differs from ellipse normal calculation
+                                                 // code by inverting this vector
     DeriVector2 pf2 = f2v.subtr(pv);
 
     // return sum of normalized pf2, pf2
@@ -786,15 +791,14 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
         double factor = splineValue(*param, startpole + degree, degree, d, flattenedknots);
         VEC_D sd(numpoints - 1);
         if (i > 0) {
-            sd[i - 1] =
-                1.0 / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
+            sd[i - 1] = 1.0
+                / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
         }
         if (i < numpoints - 1) {
             sd[i] = -1.0
                 / (flattenedknots[startpole + i + 1 + degree] - flattenedknots[startpole + i + 1]);
         }
-        double slopefactor =
-            splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
+        double slopefactor = splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
 
         if (derivparam == polexat(i)) {
             result.dx = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
@@ -921,19 +925,23 @@ DeriVector2 BSpline::Value(double u, double /*du*/, const double* /*derivparam*/
     }
     double wslopesum = degree * splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
 
-    return {xsum / wsum,
-            ysum / wsum,
-            (wsum * xslopesum - wslopesum * xsum) / wsum / wsum,
-            (wsum * yslopesum - wslopesum * ysum) / wsum / wsum};
+    return {
+        xsum / wsum,
+        ysum / wsum,
+        (wsum * xslopesum - wslopesum * xsum) / wsum / wsum,
+        (wsum * yslopesum - wslopesum * ysum) / wsum / wsum
+    };
 }
 
-void BSpline::valueHomogenous(const double u,
-                              double* xw,
-                              double* yw,
-                              double* w,
-                              double* dxwdu,
-                              double* dywdu,
-                              double* dwdu) const
+void BSpline::valueHomogenous(
+    const double u,
+    double* xw,
+    double* yw,
+    double* w,
+    double* dxwdu,
+    double* dywdu,
+    double* dwdu
+) const
 {
     // TODO: is there any advantage in making this a `static`?
     size_t startpole = 0;
@@ -1089,8 +1097,8 @@ double BSpline::splineValue(double x, size_t k, unsigned int p, VEC_D& d, const 
 {
     for (size_t r = 1; r < p + 1; ++r) {
         for (size_t j = p; j > r - 1; --j) {
-            double alpha =
-                (x - flatknots[j + k - p]) / (flatknots[j + 1 + k - r] - flatknots[j + k - p]);
+            double alpha = (x - flatknots[j + k - p])
+                / (flatknots[j + 1 + k - r] - flatknots[j + k - p]);
             d[j] = (1.0 - alpha) * d[j - 1] + alpha * d[j];
         }
     }

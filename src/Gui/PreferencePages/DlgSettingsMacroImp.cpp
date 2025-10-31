@@ -36,9 +36,9 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  */
-DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsMacro)
+DlgSettingsMacroImp::DlgSettingsMacroImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsMacro)
 {
     ui->setupUi(this);
 
@@ -63,7 +63,7 @@ DlgSettingsMacroImp::~DlgSettingsMacroImp() = default;
  */
 void DlgSettingsMacroImp::setRecentMacroSize()
 {
-    auto recent = getMainWindow()->findChild<RecentMacrosAction *>(QLatin1String("recentMacros"));
+    auto recent = getMainWindow()->findChild<RecentMacrosAction*>(QLatin1String("recentMacros"));
     if (recent) {
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
         recent->resizeList(hGrp->GetInt("RecentMacros", 4));
@@ -97,7 +97,9 @@ void DlgSettingsMacroImp::loadSettings()
     ui->MacroPath_2->onRestore();
     ui->RecentMacros->onRestore();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
-    ui->ShortcutModifiers->setText(QString::fromStdString(hGrp->GetASCII("ShortcutModifiers", "Ctrl+Shift+")));
+    ui->ShortcutModifiers->setText(
+        QString::fromStdString(hGrp->GetASCII("ShortcutModifiers", "Ctrl+Shift+"))
+    );
     ui->ShortcutCount->onRestore();
 }
 
@@ -105,17 +107,17 @@ void DlgSettingsMacroImp::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
-    //reset "ShortcutModifiers" parameter
+    // reset "ShortcutModifiers" parameter
     hGrp->RemoveASCII("ShortcutModifiers");
 
-    //finally reset all the parameters associated to Gui::Pref* widgets
+    // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsMacroImp::changeEvent(QEvent *e)
+void DlgSettingsMacroImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

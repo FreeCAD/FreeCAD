@@ -52,8 +52,7 @@ short Scaled::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf>
-Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
+const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
 {
     double const factor = Factor.getValue();
     if (factor < Precision::Confusion()) {

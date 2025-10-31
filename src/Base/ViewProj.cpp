@@ -121,8 +121,9 @@ void perspectiveTransform(const Base::Matrix4D& mat, Vec& pnt)
     double m31 = mat[3][1];
     double m32 = mat[3][2];
     double m33 = mat[3][3];
-    double ww = (static_cast<double>(pnt.x) * m30 + static_cast<double>(pnt.y) * m31
-                 + static_cast<double>(pnt.z) * m32 + m33);
+    double ww
+        = (static_cast<double>(pnt.x) * m30 + static_cast<double>(pnt.y) * m31
+           + static_cast<double>(pnt.z) * m32 + m33);
 
     mat.multVec(pnt, pnt);
     pnt /= static_cast<typename Vec::num_type>(ww);

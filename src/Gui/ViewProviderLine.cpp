@@ -22,13 +22,12 @@
  ***************************************************************************/
 
 
-
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 
 #include <Base/Tools.h>
@@ -63,19 +62,19 @@ ViewProviderLine::ViewProviderLine()
 
 ViewProviderLine::~ViewProviderLine() = default;
 
-void ViewProviderLine::attach(App::DocumentObject *obj)
+void ViewProviderLine::attach(App::DocumentObject* obj)
 {
     ViewProviderDatum::attach(obj);
 
     // indexes used to create the edges
-    static const int32_t lines[4] = { 0, 1, -1 };
+    static const int32_t lines[4] = {0, 1, -1};
 
-    SoSeparator *sep = getDatumRoot();
+    SoSeparator* sep = getDatumRoot();
 
     pCoords = new SoCoordinate3();
     sep->addChild(pCoords);
 
-    auto pLines  = new SoIndexedLineSet();
+    auto pLines = new SoIndexedLineSet();
     pLines->coordIndex.setNum(3);
     pLines->coordIndex.setValues(0, 3, lines);
     sep->addChild(pLines);

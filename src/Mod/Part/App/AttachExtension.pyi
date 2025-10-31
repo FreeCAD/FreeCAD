@@ -2,7 +2,6 @@ from Base.Metadata import export
 from App.DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final
 
-
 @export(
     Twin="AttachExtension",
     TwinPointer="AttachExtension",

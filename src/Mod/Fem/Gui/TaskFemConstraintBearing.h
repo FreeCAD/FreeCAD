@@ -51,9 +51,11 @@ class TaskFemConstraintBearing: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintBearing(ViewProviderFemConstraint* ConstraintView,
-                                      QWidget* parent = nullptr,
-                                      const char* pixmapname = "FEM_ConstraintBearing");
+    explicit TaskFemConstraintBearing(
+        ViewProviderFemConstraint* ConstraintView,
+        QWidget* parent = nullptr,
+        const char* pixmapname = "FEM_ConstraintBearing"
+    );
     ~TaskFemConstraintBearing() override;
 
     double getDistance() const;

@@ -92,8 +92,7 @@ int BlendPointPy::PyInit(PyObject* args, PyObject*)
     if (PyArg_ParseTuple(args, "O!di", &(Part::TopoShapePy::Type), &pcObj, &param, &cont)) {
         try {
             gp_Pnt Pt;
-            TopoDS_Shape shape =
-                static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+            TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
             const TopoDS_Edge& e = TopoDS::Edge(shape);
             BRepAdaptor_Curve adapt(e);
             if (param < adapt.FirstParameter() || param > adapt.LastParameter()) {
@@ -120,11 +119,13 @@ int BlendPointPy::PyInit(PyObject* args, PyObject*)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError,
-                    "supported signatures:\n"
-                    "BlendPoint()\n"
-                    "BlendPoint(list of Vector)\n"
-                    "BlendPoint(edge, parameter and continiuity)\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "supported signatures:\n"
+        "BlendPoint()\n"
+        "BlendPoint(list of Vector)\n"
+        "BlendPoint(edge, parameter and continiuity)\n"
+    );
     return -1;
 }
 

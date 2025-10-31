@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
+#include <QMenu>
 
 
 #include <Gui/Application.h>
@@ -41,19 +40,21 @@ ViewProviderLoft::ViewProviderLoft() = default;
 
 ViewProviderLoft::~ViewProviderLoft() = default;
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
 
     App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
-    if (sketch)
+    if (sketch) {
         temp.push_back(sketch);
+    }
 
-    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        if (obj && obj->isDerivedFrom<Part::Part2DObject>())
+    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+        if (obj && obj->isDerivedFrom<Part::Part2DObject>()) {
             temp.push_back(obj);
+        }
     }
 
     return temp;
@@ -65,15 +66,19 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
+TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog()
+{
     return new TaskDlgLoftParameters(this);
 }
 
 void ViewProviderLoft::highlightProfile(bool on)
 {
     PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
-    highlightReferences(dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
-                        pcLoft->Profile.getSubValues(), on);
+    highlightReferences(
+        dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
+        pcLoft->Profile.getSubValues(),
+        on
+    );
 }
 
 void ViewProviderLoft::highlightSection(bool on)
@@ -94,30 +99,37 @@ void ViewProviderLoft::highlightSection(bool on)
 void ViewProviderLoft::highlightReferences(ViewProviderLoft::Reference mode, bool on)
 {
     switch (mode) {
-    case Profile:
-        highlightProfile(on);
-        break;
-    case Section:
-        highlightSection(on);
-        break;
-    case Both:
-        highlightProfile(on);
-        highlightSection(on);
-        break;
-    default:
-        break;
+        case Profile:
+            highlightProfile(on);
+            break;
+        case Section:
+            highlightSection(on);
+            break;
+        case Both:
+            highlightProfile(on);
+            highlightSection(on);
+            break;
+        default:
+            break;
     }
 }
 
-void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vector<std::string>& elements, bool on)
+void ViewProviderLoft::highlightReferences(
+    Part::Feature* base,
+    const std::vector<std::string>& elements,
+    bool on
+)
 {
-    if (!base)
+    if (!base) {
         return;
+    }
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (!svp)
+        Gui::Application::Instance->getViewProvider(base)
+    );
+    if (!svp) {
         return;
+    }
 
     std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
@@ -135,15 +147,19 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderLoft::getIcon() const {
+QIcon ViewProviderLoft::getIcon() const
+{
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Loft>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
         str += QStringLiteral("Additive");
-    else
+    }
+    else {
         str += QStringLiteral("Subtractive");
+    }
 
     str += QStringLiteral("Loft.svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+    );
 }
-

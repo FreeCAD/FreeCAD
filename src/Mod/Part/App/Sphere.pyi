@@ -5,7 +5,6 @@ from Base.Axis import Axis as AxisPy
 from GeometrySurface import GeometrySurface
 from typing import Final
 
-
 @export(
     Twin="GeomSphere",
     TwinPointer="GeomSphere",

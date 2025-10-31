@@ -56,9 +56,11 @@ void CmdRobotExportKukaCompact::activated(int)
     unsigned int n2 = getSelection().countObjectsOfType<Robot::TrajectoryObject>();
 
     if (n1 != 1 || n2 != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot and one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot and one Trajectory object.")
+        );
         return;
     }
 
@@ -86,20 +88,24 @@ void CmdRobotExportKukaCompact::activated(int)
     QStringList filter;
     filter << QStringLiteral("%1 (*.src)").arg(QObject::tr("KRL file"));
     filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                  QObject::tr("Export program"),
-                                                  QString(),
-                                                  filter.join(QLatin1String(";;")));
+    QString fn = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Export program"),
+        QString(),
+        filter.join(QLatin1String(";;"))
+    );
     if (fn.isEmpty()) {
         return;
     }
 
     doCommand(Doc, "from KukaExporter import ExportCompactSub");
-    doCommand(Doc,
-              "ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
-              pcRobotObject->getNameInDocument(),
-              pcTrajectoryObject->getNameInDocument(),
-              (const char*)fn.toLatin1());
+    doCommand(
+        Doc,
+        "ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
+        pcRobotObject->getNameInDocument(),
+        pcTrajectoryObject->getNameInDocument(),
+        (const char*)fn.toLatin1()
+    );
 }
 
 bool CmdRobotExportKukaCompact::isActive()
@@ -131,9 +137,11 @@ void CmdRobotExportKukaFull::activated(int)
     unsigned int n2 = getSelection().countObjectsOfType<Robot::TrajectoryObject>();
 
     if (n1 != 1 || n2 != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot and one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot and one Trajectory object.")
+        );
         return;
     }
 
@@ -161,20 +169,24 @@ void CmdRobotExportKukaFull::activated(int)
     QStringList filter;
     filter << QStringLiteral("%1 (*.src)").arg(QObject::tr("KRL file"));
     filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                  QObject::tr("Export program"),
-                                                  QString(),
-                                                  filter.join(QLatin1String(";;")));
+    QString fn = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Export program"),
+        QString(),
+        filter.join(QLatin1String(";;"))
+    );
     if (fn.isEmpty()) {
         return;
     }
 
     doCommand(Doc, "from KukaExporter import ExportFullSub");
-    doCommand(Doc,
-              "ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
-              pcRobotObject->getNameInDocument(),
-              pcTrajectoryObject->getNameInDocument(),
-              (const char*)fn.toLatin1());
+    doCommand(
+        Doc,
+        "ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
+        pcRobotObject->getNameInDocument(),
+        pcTrajectoryObject->getNameInDocument(),
+        (const char*)fn.toLatin1()
+    );
 }
 
 bool CmdRobotExportKukaFull::isActive()

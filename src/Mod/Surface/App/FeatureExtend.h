@@ -62,9 +62,11 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 
 private:
     bool lockOnChangeMutex {false};

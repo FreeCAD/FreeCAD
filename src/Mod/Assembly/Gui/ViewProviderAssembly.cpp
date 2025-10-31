@@ -99,7 +99,8 @@ void printPlacement(Base::Placement plc, const char* name)
         axis.x,
         axis.y,
         axis.z,
-        angle);
+        angle
+    );
 }
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderAssembly, Gui::ViewProviderPart)
@@ -118,7 +119,8 @@ ViewProviderAssembly::ViewProviderAssembly()
     , docsToMove({})
 {
     m_preTransactionConn = App::GetApplication().signalBeforeOpenTransaction.connect(
-        std::bind(&ViewProviderAssembly::slotAboutToOpenTransaction, this, std::placeholders::_1));
+        std::bind(&ViewProviderAssembly::slotAboutToOpenTransaction, this, std::placeholders::_1)
+    );
 }
 
 ViewProviderAssembly::~ViewProviderAssembly()
@@ -138,9 +140,7 @@ void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, cons
     QAction* act = menu->addAction(QObject::tr("Active object"));
     act->setCheckable(true);
     act->setChecked(isActivePart());
-    func->trigger(act, [this]() {
-        this->doubleClicked();
-    });
+    func->trigger(act, [this]() { this->doubleClicked(); });
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);  // NOLINT
 }
@@ -175,8 +175,7 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
     return obj && !obj->is<Assembly::JointGroup>();
 }
 
-bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
-                                                 App::DocumentObject* target) const
+bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const
 {
     // If a solid is removed from the assembly, its joints need to be removed.
     bool prompted = false;
@@ -206,7 +205,8 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
                 QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(tr("The object is associated to one or more joints."));
                 msgBox.setInformativeText(
-                    tr("Do you want to move the object and delete associated joints?"));
+                    tr("Do you want to move the object and delete associated joints?")
+                );
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::No);
                 int ret = msgBox.exec();
@@ -215,9 +215,11 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
                     return false;
                 }
             }
-            Gui::Command::doCommand(Gui::Command::Gui,
-                                    "App.activeDocument().removeObject('%s')",
-                                    joint->getNameInDocument());
+            Gui::Command::doCommand(
+                Gui::Command::Gui,
+                "App.activeDocument().removeObject('%s')",
+                joint->getNameInDocument()
+            );
         }
     }
     return true;
@@ -276,13 +278,15 @@ bool ViewProviderAssembly::setEdit(int mode)
         getDocument()->setEditRestore(true);
 
         // Set the part as 'Activated' ie bold in the tree.
-        Gui::Command::doCommand(Gui::Command::Gui,
-                                "appDoc = App.getDocument('%s')\n"
-                                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
-                                "appDoc.getObject('%s'))",
-                                this->getObject()->getDocument()->getName(),
-                                PARTKEY,
-                                this->getObject()->getNameInDocument());
+        Gui::Command::doCommand(
+            Gui::Command::Gui,
+            "appDoc = App.getDocument('%s')\n"
+            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
+            "appDoc.getObject('%s'))",
+            this->getObject()->getDocument()->getName(),
+            PARTKEY,
+            this->getObject()->getNameInDocument()
+        );
 
         setDragger();
 
@@ -297,7 +301,8 @@ bool ViewProviderAssembly::setEdit(int mode)
 
         auto* assembly = getObject<AssemblyObject>();
         connectSolverUpdate = assembly->signalSolverUpdate.connect(
-            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this));
+            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this)
+        );
 
         return true;
     }
@@ -321,11 +326,13 @@ void ViewProviderAssembly::unsetEdit(int mode)
         }
 
         // Set the part as not 'Activated' ie not bold in the tree.
-        Gui::Command::doCommand(Gui::Command::Gui,
-                                "appDoc = App.getDocument('%s')\n"
-                                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
-                                this->getObject()->getDocument()->getName(),
-                                PARTKEY);
+        Gui::Command::doCommand(
+            Gui::Command::Gui,
+            "appDoc = App.getDocument('%s')\n"
+            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
+            this->getObject()->getDocument()->getName(),
+            PARTKEY
+        );
 
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
@@ -345,9 +352,11 @@ void ViewProviderAssembly::setDragger()
     // Create the dragger coin object
     assert(!asmDragger);
     asmDragger = new Gui::SoTransformDragger();
-    asmDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
-                              Gui::ViewParams::instance()->getAxisYColor(),
-                              Gui::ViewParams::instance()->getAxisZColor());
+    asmDragger->setAxisColors(
+        Gui::ViewParams::instance()->getAxisXColor(),
+        Gui::ViewParams::instance()->getAxisYColor(),
+        Gui::ViewParams::instance()->getAxisZColor()
+    );
     asmDragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
 
     asmDraggerSwitch = new SoSwitch(SO_SWITCH_NONE);
@@ -399,7 +408,8 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
             }
 
             ParameterGrp::handle hPgr = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Assembly");
+                "User parameter:BaseApp/Preferences/Mod/Assembly"
+            );
 
             return !hPgr->GetBool("LeaveEditWithEscape", true);
         }
@@ -474,20 +484,22 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
 
         for (auto& objToMove : docsToMove) {
             App::DocumentObject* obj = objToMove.obj;
-            auto* propPlacement =
-                dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
+                obj->getPropertyByName("Placement")
+            );
             if (propPlacement) {
                 Base::Placement plc = objToMove.plc;
 
                 if (dragMode == DragMode::RotationOnPlane) {
                     Base::Vector3d center = jcsGlobalPlc.getPosition();
-                    Base::Vector3d norm =
-                        jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., -1.));
-                    double angle =
-                        (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
+                    Base::Vector3d norm = jcsGlobalPlc.getRotation().multVec(
+                        Base::Vector3d(0., 0., -1.)
+                    );
+                    double angle
+                        = (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
                     Base::Rotation zRotation = Base::Rotation(Base::Vector3d(0., 0., 1.), angle);
-                    Base::Placement rotatedGlovalJcsPlc =
-                        jcsGlobalPlc * Base::Placement(Base::Vector3d(), zRotation);
+                    Base::Placement rotatedGlovalJcsPlc = jcsGlobalPlc
+                        * Base::Placement(Base::Vector3d(), zRotation);
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * jcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
                 }
@@ -500,21 +512,23 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     plc.setPosition(pos);
 
                     Base::Placement newJcsGlobalPlc = jcsGlobalPlc;
-                    newJcsGlobalPlc.setPosition(jcsGlobalPlc.getPosition()
-                                                + (newPos - initialPosition));
+                    newJcsGlobalPlc.setPosition(
+                        jcsGlobalPlc.getPosition() + (newPos - initialPosition)
+                    );
 
                     Base::Vector3d center = newJcsGlobalPlc.getPosition();
-                    Base::Vector3d norm =
-                        newJcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., -1.));
+                    Base::Vector3d norm = newJcsGlobalPlc.getRotation().multVec(
+                        Base::Vector3d(0., 0., -1.)
+                    );
 
-                    Base::Vector3d projInitialPositionRot =
-                        initialPositionRot.ProjectToPlane(newJcsGlobalPlc.getPosition(), norm);
+                    Base::Vector3d projInitialPositionRot
+                        = initialPositionRot.ProjectToPlane(newJcsGlobalPlc.getPosition(), norm);
                     boost::ignore_unused(projInitialPositionRot);
-                    double angle =
-                        (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
+                    double angle
+                        = (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
                     Base::Rotation zRotation = Base::Rotation(Base::Vector3d(0., 0., 1.), angle);
-                    Base::Placement rotatedGlovalJcsPlc =
-                        newJcsGlobalPlc * Base::Placement(Base::Vector3d(), zRotation);
+                    Base::Placement rotatedGlovalJcsPlc = newJcsGlobalPlc
+                        * Base::Placement(Base::Vector3d(), zRotation);
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * newJcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
                 }
@@ -536,7 +550,8 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
 
         auto* assemblyPart = getObject<AssemblyObject>();
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Assembly");
+            "User parameter:BaseApp/Preferences/Mod/Assembly"
+        );
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
         if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
             assemblyPart->doDragStep();
@@ -548,10 +563,12 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
     return false;
 }
 
-bool ViewProviderAssembly::mouseButtonPressed(int Button,
-                                              bool pressed,
-                                              const SbVec2s& cursorPos,
-                                              const Gui::View3DInventorViewer* viewer)
+bool ViewProviderAssembly::mouseButtonPressed(
+    int Button,
+    bool pressed,
+    const SbVec2s& cursorPos,
+    const Gui::View3DInventorViewer* viewer
+)
 {
     Q_UNUSED(cursorPos);
     Q_UNUSED(viewer);
@@ -565,9 +582,8 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
         if (pressed && !getDraggerVisibility()) {
             // Check for double-click
             auto now = std::chrono::steady_clock::now();
-            long nowMillis =
-                std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch())
-                    .count();
+            long nowMillis
+                = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
             if (nowMillis - lastClickTime < 500) {
                 auto* joint = getSelectedJoint();
                 if (joint) {
@@ -578,9 +594,7 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
                     // singleShot timer to make sure this happens after the release of the click.
                     // Else the release will trigger a removeSelection of what
                     // doubleClickedIn3dView adds to the selection.
-                    QTimer::singleShot(50, [this]() {
-                        doubleClickedIn3dView();
-                    });
+                    QTimer::singleShot(50, [this]() { doubleClickedIn3dView(); });
                     return true;
                 }
             }
@@ -651,8 +665,7 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
 
-    auto* propPlacement =
-        dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
     if (!propPlacement) {
         return false;
     }
@@ -677,8 +690,7 @@ App::DocumentObject* ViewProviderAssembly::getSelectedJoint()
     if (sel.size() == 1) {  // Handle double click only if only one obj selected.
         App::DocumentObject* obj = sel[0].getObject();
         if (obj) {
-            auto* prop =
-                dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("EnableLengthMin"));
+            auto* prop = dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("EnableLengthMin"));
             if (prop) {
                 return obj;
             }
@@ -703,9 +715,11 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     }
 
     if (!moveOnlyPreselected) {
-        for (auto& selObj : Gui::Selection().getSelectionEx("",
-                                                            App::DocumentObject::getClassTypeId(),
-                                                            Gui::ResolveMode::NoResolve)) {
+        for (auto& selObj : Gui::Selection().getSelectionEx(
+                 "",
+                 App::DocumentObject::getClassTypeId(),
+                 Gui::ResolveMode::NoResolve
+             )) {
             // getSubNames() returns ["Body001.Pad.Face14", "Body002.Pad.Face7"]
             //  if you have several objects within the same assembly selected.
 
@@ -751,8 +765,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
             }
 
             if (!alreadyIn) {
-                auto* pPlc =
-                    dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
                 if (!ctrlPressed && !moveOnlyPreselected) {
                     Gui::Selection().clearSelection();
                     docsToMove.clear();
@@ -766,10 +779,12 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     return !docsToMove.empty();
 }
 
-void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
-                                                 const std::string& subNamePrefix,
-                                                 App::DocumentObject* currentObject,
-                                                 bool onlySolids)
+void ViewProviderAssembly::collectMovableObjects(
+    App::DocumentObject* selRoot,
+    const std::string& subNamePrefix,
+    App::DocumentObject* currentObject,
+    bool onlySolids
+)
 {
     // Get the AssemblyObject for context
     auto* assemblyPart = getObject<AssemblyObject>();
@@ -785,8 +800,7 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
                 auto* link = static_cast<App::Link*>(child);
                 std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
                 for (auto* elt : elts) {
-                    std::string eltSubNamePrefix =
-                        newSubNamePrefix + elt->getNameInDocument() + ".";
+                    std::string eltSubNamePrefix = newSubNamePrefix + elt->getNameInDocument() + ".";
                     collectMovableObjects(selRoot, eltSubNamePrefix, elt, onlySolids);
                 }
             }
@@ -799,10 +813,11 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
 
     // Base case: This is not a flexible link, process it as a potential movable part.
     if (onlySolids
-        && !(currentObject->isDerivedFrom<App::Part>()
-             || currentObject->isDerivedFrom<Part::Feature>()
-             || currentObject->isDerivedFrom<App::Link>()
-             || currentObject->isDerivedFrom<App::LinkElement>())) {
+        && !(
+            currentObject->isDerivedFrom<App::Part>() || currentObject->isDerivedFrom<Part::Feature>()
+            || currentObject->isDerivedFrom<App::Link>()
+            || currentObject->isDerivedFrom<App::LinkElement>()
+        )) {
         return;
     }
 
@@ -823,8 +838,9 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             if (!partRef.obj) {
                 continue;
             }
-            auto* pPlc =
-                dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
+            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(
+                partRef.obj->getPropertyByName("Placement")
+            );
             if (pPlc) {
                 App::DocumentObject* selRoot = partRef.ref->getValue();
                 if (!selRoot) {
@@ -849,8 +865,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             // In this case the user is moving an object that is not grounded
             // Then we want to also move other parts that may be connected to it.
             // In particular for case of flexible subassemblies or it looks really weird
-            std::vector<Assembly::ObjRef> connectedParts =
-                assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
+            std::vector<Assembly::ObjRef> connectedParts
+                = assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
 
             addPartsToMove(connectedParts);
             return DragMode::TranslationNoSolve;
@@ -863,8 +879,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             // actually move A
             movingJoint = nullptr;  // reinitialize because getUpstreamMovingPart will call
             // getJointOfPartConnectingToGround again which will find the same joint.
-            auto* upPart =
-                assemblyPart->getUpstreamMovingPart(docsToMove[0].obj, movingJoint, pName);
+            auto* upPart = assemblyPart->getUpstreamMovingPart(docsToMove[0].obj, movingJoint, pName);
             if (!movingJoint) {
                 return DragMode::Translation;
             }
@@ -873,11 +888,11 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
                 return DragMode::None;
             }
 
-            auto* pPlc =
-                dynamic_cast<App::PropertyPlacement*>(upPart->getPropertyByName("Placement"));
+            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(upPart->getPropertyByName("Placement"));
             if (pPlc) {
                 auto* ref = dynamic_cast<App::PropertyXLinkSub*>(
-                    movingJoint->getPropertyByName(pName.c_str()));
+                    movingJoint->getPropertyByName(pName.c_str())
+                );
 
                 App::DocumentObject* selRoot = ref->getValue();
                 if (!selRoot) {
@@ -900,8 +915,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         jcsPlc = App::GeoFeature::getPlacementFromProp(movingJoint, plcPropName);
 
         // Make jcsGlobalPlc relative to the origin of the doc
-        auto* ref =
-            dynamic_cast<App::PropertyXLinkSub*>(movingJoint->getPropertyByName(pName.c_str()));
+        auto* ref = dynamic_cast<App::PropertyXLinkSub*>(movingJoint->getPropertyByName(pName.c_str()));
         if (!ref) {
             return DragMode::Translation;
         }
@@ -910,8 +924,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
-        std::vector<Assembly::ObjRef> downstreamParts =
-            assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
+        std::vector<Assembly::ObjRef> downstreamParts
+            = assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
         addPartsToMove(downstreamParts);
 
         if (jointType == JointType::Revolute) {
@@ -1017,7 +1031,8 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     viewer->setSelectionEnabled(false);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Assembly");
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
     if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
         objectMasses.clear();
@@ -1061,7 +1076,8 @@ void ViewProviderAssembly::endMove()
     }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Assembly");
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
     if (solveOnMove) {
         assemblyPart->postDrag();
@@ -1080,8 +1096,8 @@ void ViewProviderAssembly::initMoveDragger()
     // find the placement for the dragger.
     App::DocumentObject* part = docsToMove[0].obj;
 
-    draggerInitPlc =
-        App::GeoFeature::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
+    draggerInitPlc
+        = App::GeoFeature::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
     std::vector<App::DocumentObject*> listOfObjs;
     std::vector<App::PropertyXLinkSub*> listOfRefs;
     for (auto& movingObj : docsToMove) {
@@ -1112,8 +1128,7 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     Base::Placement movePlc = draggerPlc * sudoThis->draggerInitPlc.inverse();
 
     // Transform the global delta `movePlc` in case the assembly is transformed.
-    Base::Placement asmPlc =
-        App::GeoFeature::getGlobalPlacement(sudoThis->getObject<AssemblyObject>());
+    Base::Placement asmPlc = App::GeoFeature::getGlobalPlacement(sudoThis->getObject<AssemblyObject>());
     if (!asmPlc.isIdentity()) {
         movePlc = asmPlc.inverse() * movePlc * asmPlc;
     }
@@ -1180,13 +1195,15 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
             || obj->is<Assembly::BomGroup>()) {
 
             // Delete the group content first.
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "doc = App.getDocument(\"%s\")\n"
-                                    "objName = \"%s\"\n"
-                                    "doc.getObject(objName).removeObjectsFromDocument()\n"
-                                    "doc.removeObject(objName)\n",
-                                    obj->getDocument()->getName(),
-                                    obj->getNameInDocument());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "doc = App.getDocument(\"%s\")\n"
+                "objName = \"%s\"\n"
+                "doc.getObject(objName).removeObjectsFromDocument()\n"
+                "doc.removeObject(objName)\n",
+                obj->getDocument()->getName(),
+                obj->getNameInDocument()
+            );
         }
     }
 
@@ -1204,8 +1221,8 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
         std::vector<App::DocumentObject*> objsBeingDeleted;
         objsBeingDeleted.push_back(objBeingDeleted);
 
-        auto addSubComponents =
-            std::function<void(AssemblyLink*, std::vector<App::DocumentObject*>&)> {};
+        auto addSubComponents
+            = std::function<void(AssemblyLink*, std::vector<App::DocumentObject*>&)> {};
         addSubComponents = [&](AssemblyLink* asmLink, std::vector<App::DocumentObject*>& objs) {
             std::vector<App::DocumentObject*> assemblyLinkGroup = asmLink->Group.getValues();
             for (auto* obj : assemblyLinkGroup) {
@@ -1257,10 +1274,12 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
 
         // Deletes them.
         for (auto* joint : objToDel) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.getDocument(\"%s\").removeObject(\"%s\")",
-                                    joint->getDocument()->getName(),
-                                    joint->getNameInDocument());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.getDocument(\"%s\").removeObject(\"%s\")",
+                joint->getDocument()->getName(),
+                joint->getNameInDocument()
+            );
         }
     }
     return res;
@@ -1287,8 +1306,10 @@ void ViewProviderAssembly::setDraggerPlacement(Base::Placement plc)
 
 Base::Placement ViewProviderAssembly::getDraggerPlacement()
 {
-    return {Base::convertTo<Base::Vector3d>(asmDragger->translation.getValue()),
-            Base::convertTo<Base::Rotation>(asmDragger->rotation.getValue())};
+    return {
+        Base::convertTo<Base::Vector3d>(asmDragger->translation.getValue()),
+        Base::convertTo<Base::Rotation>(asmDragger->rotation.getValue())
+    };
 }
 
 Gui::SoTransformDragger* ViewProviderAssembly::getDragger()
@@ -1305,10 +1326,12 @@ PyObject* ViewProviderAssembly::getPyObject()
     return pyViewObject;
 }
 
-void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* current,
-                                                     std::set<App::DocumentObject*>& isolateSet,
-                                                     IsolateMode mode,
-                                                     std::set<App::DocumentObject*>& visited)
+void ViewProviderAssembly::applyIsolationRecursively(
+    App::DocumentObject* current,
+    std::set<App::DocumentObject*>& isolateSet,
+    IsolateMode mode,
+    std::set<App::DocumentObject*>& visited
+)
 {
     if (!current || !visited.insert(current).second) {
         return;  // Object is null or already processed
@@ -1392,7 +1415,8 @@ void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* curren
                 if (child->isDerivedFrom<App::Link>() && child->getLinkedObject() == current) {
                     // In this case we need to reverse isolate this!
                     auto* childVp = freecad_cast<Gui::ViewProviderLink*>(
-                        Gui::Application::Instance->getViewProvider(child));
+                        Gui::Application::Instance->getViewProvider(child)
+                    );
 
                     // we give the child the color the current had before we changed it
                     childVp->OverrideMaterial.setValue(true);
@@ -1403,8 +1427,7 @@ void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* curren
     }
 }
 
-void ViewProviderAssembly::isolateComponents(std::set<App::DocumentObject*>& isolateSet,
-                                             IsolateMode mode)
+void ViewProviderAssembly::isolateComponents(std::set<App::DocumentObject*>& isolateSet, IsolateMode mode)
 {
     if (!stateBackup.empty()) {
         clearIsolate();
@@ -1462,13 +1485,15 @@ void ViewProviderAssembly::clearIsolate()
         component->Visibility.setValue(state.visibility);
 
         if (auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(
-                Gui::Application::Instance->getViewProvider(component))) {
+                Gui::Application::Instance->getViewProvider(component)
+            )) {
             vpl->Selectable.setValue(state.selectable);
             vpl->ShapeMaterial.setValue(state.shapeMaterial);
             vpl->OverrideMaterial.setValue(state.overrideMaterial);
         }
         else if (auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-                     Gui::Application::Instance->getViewProvider(component))) {
+                     Gui::Application::Instance->getViewProvider(component)
+                 )) {
             vpg->Selectable.setValue(state.selectable);
             vpg->ShapeAppearance.setValue(state.shapeMaterial);
         }
@@ -1484,15 +1509,13 @@ void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName
 }
 
 // UTILS
-Base::Vector3d
-ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& movingObjs)
+Base::Vector3d ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& movingObjs)
 {
     int count = 0;
     Base::Vector3d center;  // feujhzef
 
     for (auto& movingObj : movingObjs) {
-        Gui::ViewProvider* viewProvider =
-            Gui::Application::Instance->getViewProvider(movingObj.obj);
+        Gui::ViewProvider* viewProvider = Gui::Application::Instance->getViewProvider(movingObj.obj);
         if (!viewProvider) {
             continue;
         }
@@ -1510,8 +1533,8 @@ ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& mo
         Base::Placement objPlc = App::GeoFeature::getPlacementFromProp(movingObj.obj, "Placement");
         plc = objPlc.inverse() * plc;
         // Change plc to be relative to the origin of the document.
-        Base::Placement global_plc =
-            App::GeoFeature::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
+        Base::Placement global_plc
+            = App::GeoFeature::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
         plc = global_plc * plc;
         bboxCenter = plc.getPosition();
 
@@ -1565,47 +1588,54 @@ void ViewProviderAssembly::UpdateSolverInformation()
         signalSetUp(QStringLiteral("empty"), tr("Empty Assembly"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {  // over-constrained
-        signalSetUp(QStringLiteral("conflicting_constraints"),
-                    tr("Over-constrained:") + QLatin1String(" "),
-                    QStringLiteral("#conflicting"),
-                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting())));
+        signalSetUp(
+            QStringLiteral("conflicting_constraints"),
+            tr("Over-constrained:") + QLatin1String(" "),
+            QStringLiteral("#conflicting"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting()))
+        );
     }
     else if (hasMalformed) {  // malformed joints
         signalSetUp(
             QStringLiteral("malformed_constraints"),
             tr("Malformed joints:") + QLatin1String(" "),
             QStringLiteral("#malformed"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastMalformedConstraints())));
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastMalformedConstraints()))
+        );
     }
     else if (hasRedundancies) {
-        signalSetUp(QStringLiteral("redundant_constraints"),
-                    tr("Redundant joints:") + QLatin1String(" "),
-                    QStringLiteral("#redundant"),
-                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant())));
+        signalSetUp(
+            QStringLiteral("redundant_constraints"),
+            tr("Redundant joints:") + QLatin1String(" "),
+            QStringLiteral("#redundant"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant()))
+        );
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(
             QStringLiteral("partially_redundant_constraints"),
             tr("Partially redundant:") + QLatin1String(" "),
             QStringLiteral("#partiallyredundant"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastPartiallyRedundant())));
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastPartiallyRedundant()))
+        );
     }
     else if (assembly->getLastSolverStatus() != 0) {
-        signalSetUp(QStringLiteral("solver_failed"),
-                    tr("Solver failed to converge"),
-                    QStringLiteral(""),
-                    QStringLiteral(""));
+        signalSetUp(
+            QStringLiteral("solver_failed"),
+            tr("Solver failed to converge"),
+            QStringLiteral(""),
+            QStringLiteral("")
+        );
     }
     else if (dofs > 0) {
-        signalSetUp(QStringLiteral("under_constrained"),
-                    tr("Under-constrained:") + QLatin1String(" "),
-                    QStringLiteral("#dofs"),
-                    tr("%n Degrees of Freedom", "", dofs));
+        signalSetUp(
+            QStringLiteral("under_constrained"),
+            tr("Under-constrained:") + QLatin1String(" "),
+            QStringLiteral("#dofs"),
+            tr("%n Degrees of Freedom", "", dofs)
+        );
     }
     else {
-        signalSetUp(QStringLiteral("fully_constrained"),
-                    tr("Fully constrained"),
-                    QString(),
-                    QString());
+        signalSetUp(QStringLiteral("fully_constrained"), tr("Fully constrained"), QString(), QString());
     }
 }

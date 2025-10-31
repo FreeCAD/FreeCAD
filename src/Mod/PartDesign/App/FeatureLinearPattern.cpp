@@ -20,15 +20,15 @@
  *                                                                            *
  ******************************************************************************/
 
-# include <limits>
+#include <limits>
 
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <Precision.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
 
 #include <App/Datums.h>
 #include <Base/Axis.h>
@@ -43,57 +43,69 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = {
-    1, std::numeric_limits<int>::max(), 1 };
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences
+    = {1, std::numeric_limits<int>::max(), 1};
 
-const char* LinearPattern::ModeEnums[] = { "Extent", "Spacing", nullptr };
+const char* LinearPattern::ModeEnums[] = {"Extent", "Spacing", nullptr};
 
 LinearPattern::LinearPattern()
 {
     auto initialMode = LinearPatternMode::Extent;
 
-    ADD_PROPERTY_TYPE(Direction,
-                      (nullptr),
-                      "Direction 1",
-                      App::Prop_None,
-                      "The first direction of the pattern. This can be a straight edge, a datum "
-                      "line, a sketch axis, or the normal of a planar face.");
-    ADD_PROPERTY_TYPE(Reversed,
-                      (0),
-                      "Direction 1",
-                      App::Prop_None,
-                      "Reverse the first direction of the pattern");
+    ADD_PROPERTY_TYPE(
+        Direction,
+        (nullptr),
+        "Direction 1",
+        App::Prop_None,
+        "The first direction of the pattern. This can be a straight edge, a datum "
+        "line, a sketch axis, or the normal of a planar face."
+    );
+    ADD_PROPERTY_TYPE(
+        Reversed,
+        (0),
+        "Direction 1",
+        App::Prop_None,
+        "Reverse the first direction of the pattern"
+    );
     ADD_PROPERTY_TYPE(
         Mode,
         (long(initialMode)),
         "Direction 1",
         App::Prop_None,
         "Selects how the pattern is dimensioned.\n'Extent': Uses the total length from the first "
-        "to the last instance.\n'Spacing': Uses the distance between consecutive instances.");
-    ADD_PROPERTY_TYPE(Length,
-                      (100.0),
-                      "Direction 1",
-                      App::Prop_None,
-                      "The total length of the pattern, measured from the first to the last "
-                      "instance. This is only used when the Mode is set to 'Extent'.");
-    ADD_PROPERTY_TYPE(Offset,
-                      (10.0),
-                      "Direction 1",
-                      App::Prop_None,
-                      "The distance between each instance of the pattern. This is only used when "
-                      "the Mode is set to 'Spacing'.");
-    ADD_PROPERTY_TYPE(Spacings,
-                      ({-1.0}),
-                      "Direction 1",
-                      App::Prop_None,
-                      "A list of custom spacings between instances. If a value is -1, the global "
-                      "'Offset' is used for that spacing. The list should have one less item than "
-                      "the number of occurrences.");
+        "to the last instance.\n'Spacing': Uses the distance between consecutive instances."
+    );
+    ADD_PROPERTY_TYPE(
+        Length,
+        (100.0),
+        "Direction 1",
+        App::Prop_None,
+        "The total length of the pattern, measured from the first to the last "
+        "instance. This is only used when the Mode is set to 'Extent'."
+    );
+    ADD_PROPERTY_TYPE(
+        Offset,
+        (10.0),
+        "Direction 1",
+        App::Prop_None,
+        "The distance between each instance of the pattern. This is only used when "
+        "the Mode is set to 'Spacing'."
+    );
+    ADD_PROPERTY_TYPE(
+        Spacings,
+        ({-1.0}),
+        "Direction 1",
+        App::Prop_None,
+        "A list of custom spacings between instances. If a value is -1, the global "
+        "'Offset' is used for that spacing. The list should have one less item than "
+        "the number of occurrences."
+    );
     ADD_PROPERTY_TYPE(
         SpacingPattern,
         ({}),
@@ -102,54 +114,66 @@ LinearPattern::LinearPattern()
         "(Experimental and subject to change. To enable "
         "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
-        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
+    );
     ADD_PROPERTY_TYPE(
         Occurrences,
         (2),
         "Direction 1",
         App::Prop_None,
-        "The total number of instances in the first direction, including the original feature.");
+        "The total number of instances in the first direction, including the original feature."
+    );
     Occurrences.setConstraints(&intOccurrences);
     Mode.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::First);
 
-    ADD_PROPERTY_TYPE(Direction2,
-                      (nullptr),
-                      "Direction 2",
-                      App::Prop_None,
-                      "The second direction of the pattern. This can be a straight edge, a datum "
-                      "line, a sketch axis, or the normal of a planar face.");
-    ADD_PROPERTY_TYPE(Reversed2,
-                      (0),
-                      "Direction 2",
-                      App::Prop_None,
-                      "Reverse the second direction of the pattern");
-    ADD_PROPERTY_TYPE(Mode2,
-                      (long(initialMode)),
-                      "Direction 2",
-                      App::Prop_None,
-                      "Selects how the pattern is dimensioned in the second direction.\n'Extent': "
-                      "Uses the total length.\n'Spacing': Uses the distance between instances.");
+    ADD_PROPERTY_TYPE(
+        Direction2,
+        (nullptr),
+        "Direction 2",
+        App::Prop_None,
+        "The second direction of the pattern. This can be a straight edge, a datum "
+        "line, a sketch axis, or the normal of a planar face."
+    );
+    ADD_PROPERTY_TYPE(
+        Reversed2,
+        (0),
+        "Direction 2",
+        App::Prop_None,
+        "Reverse the second direction of the pattern"
+    );
+    ADD_PROPERTY_TYPE(
+        Mode2,
+        (long(initialMode)),
+        "Direction 2",
+        App::Prop_None,
+        "Selects how the pattern is dimensioned in the second direction.\n'Extent': "
+        "Uses the total length.\n'Spacing': Uses the distance between instances."
+    );
     ADD_PROPERTY_TYPE(
         Length2,
         (100.0),
         "Direction 2",
         App::Prop_None,
         "The total length of the pattern in the second direction, measured from the first to the "
-        "last instance. This is only used when the Mode is set to 'Extent'.");
-    ADD_PROPERTY_TYPE(Offset2,
-                      (10.0),
-                      "Direction 2",
-                      App::Prop_None,
-                      "The distance between each instance of the pattern in the second direction. "
-                      "This is only used when the Mode is set to 'Spacing'.");
+        "last instance. This is only used when the Mode is set to 'Extent'."
+    );
+    ADD_PROPERTY_TYPE(
+        Offset2,
+        (10.0),
+        "Direction 2",
+        App::Prop_None,
+        "The distance between each instance of the pattern in the second direction. "
+        "This is only used when the Mode is set to 'Spacing'."
+    );
     ADD_PROPERTY_TYPE(
         Spacings2,
         ({}),
         "Direction 2",
         App::Prop_None,
         "A list of custom spacings for the second direction. If a value is -1, the global 'Offset' "
-        "is used. The list should have one less item than the number of occurrences.");
+        "is used. The list should have one less item than the number of occurrences."
+    );
     ADD_PROPERTY_TYPE(
         SpacingPattern2,
         ({}),
@@ -158,13 +182,15 @@ LinearPattern::LinearPattern()
         "(Experimental and subject to change. To enable "
         "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
-        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
+    );
     ADD_PROPERTY_TYPE(
         Occurrences2,
         (1),
         "Direction 2",
         App::Prop_None,
-        "The total number of instances in the second direction, including the original feature.");
+        "The total number of instances in the second direction, including the original feature."
+    );
     Occurrences2.setConstraints(&intOccurrences);
     Mode2.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::Second);
@@ -172,24 +198,14 @@ LinearPattern::LinearPattern()
 
 short LinearPattern::mustExecute() const
 {
-    if (Direction.isTouched() ||
-        Reversed.isTouched() ||
-        Mode.isTouched() ||
+    if (Direction.isTouched() || Reversed.isTouched() || Mode.isTouched() ||
         // Length and Offset are mutually exclusive, only one could be updated at once
-        Length.isTouched() || 
-        Offset.isTouched() || 
-        Spacings.isTouched() ||
-        SpacingPattern.isTouched() ||
-        Occurrences.isTouched() ||
-        Direction2.isTouched() ||
-        Reversed2.isTouched() ||
-        Mode2.isTouched() ||
-        Length2.isTouched() ||
-        Offset2.isTouched() ||
-        Spacings2.isTouched() ||
-        SpacingPattern2.isTouched() ||
-        Occurrences2.isTouched())
+        Length.isTouched() || Offset.isTouched() || Spacings.isTouched()
+        || SpacingPattern.isTouched() || Occurrences.isTouched() || Direction2.isTouched()
+        || Reversed2.isTouched() || Mode2.isTouched() || Length2.isTouched() || Offset2.isTouched()
+        || Spacings2.isTouched() || SpacingPattern2.isTouched() || Occurrences2.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
@@ -279,16 +295,17 @@ gp_Vec LinearPattern::calculateOffsetVector(LinearPatternDirection dir) const
     return offset;
 }
 
-std::vector<gp_Vec> LinearPattern::calculateSteps(LinearPatternDirection dir,
-                                                  const gp_Vec& offsetVector) const
+std::vector<gp_Vec> LinearPattern::calculateSteps(
+    LinearPatternDirection dir,
+    const gp_Vec& offsetVector
+) const
 {
-    const auto& occurrencesProp =
-        (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
+    const auto& occurrencesProp = (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
     const auto& modeProp = (dir == LinearPatternDirection::First) ? Mode : Mode2;
     const auto& offsetValueProp = (dir == LinearPatternDirection::First) ? Offset : Offset2;
     const auto& spacingsProp = (dir == LinearPatternDirection::First) ? Spacings : Spacings2;
-    const auto& spacingPatternProp =
-        (dir == LinearPatternDirection::First) ? SpacingPattern : SpacingPattern2;
+    const auto& spacingPatternProp = (dir == LinearPatternDirection::First) ? SpacingPattern
+                                                                            : SpacingPattern2;
 
     int occurrences = occurrencesProp.getValue();
     std::vector<gp_Vec> steps {gp_Vec()};  // First step is always zero
@@ -369,11 +386,13 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
             Part::TopoShape refShape = refSketch->Shape.getShape();
             TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
+            if (refEdge.IsNull()) {
                 throw Base::ValueError("Failed to extract direction edge");
+            }
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
+            if (adapt.GetType() != GeomAbs_Line) {
                 throw Base::TypeError("Direction edge must be a straight line");
+            }
 
             gp_Pnt p = adapt.Line().Location();
             gp_Dir d = adapt.Line().Direction();
@@ -410,21 +429,25 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
 
         if (ref.ShapeType() == TopAbs_FACE) {
             TopoDS_Face refFace = TopoDS::Face(ref);
-            if (refFace.IsNull())
+            if (refFace.IsNull()) {
                 throw Base::ValueError("Failed to extract direction plane");
+            }
             BRepAdaptor_Surface adapt(refFace);
-            if (adapt.GetType() != GeomAbs_Plane)
+            if (adapt.GetType() != GeomAbs_Plane) {
                 throw Base::TypeError("Direction face must be planar");
+            }
 
             dir = adapt.Plane().Axis().Direction();
         }
         else if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
+            if (refEdge.IsNull()) {
                 throw Base::ValueError("Failed to extract direction edge");
+            }
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
+            if (adapt.GetType() != GeomAbs_Line) {
                 throw Base::ValueError("Direction edge must be a straight line");
+            }
 
             dir = adapt.Line().Direction();
         }
@@ -433,7 +456,9 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
         }
     }
     else {
-        throw Base::ValueError("Direction reference must be edge/face of a feature or a datum line/plane");
+        throw Base::ValueError(
+            "Direction reference must be edge/face of a feature or a datum line/plane"
+        );
     }
 
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
@@ -457,7 +482,8 @@ void LinearPattern::updateSpacings(LinearPatternDirection dir)
     const App::PropertyIntegerConstraint& occurrencesProp = isSecondDir ? Occurrences2 : Occurrences;
 
     std::vector<double> spacings = spacingsProp.getValues();
-    size_t targetCount = occurrencesProp.getValue() - 1; // 1 less spacing than there are occurrences.
+    size_t targetCount = occurrencesProp.getValue()
+        - 1;  // 1 less spacing than there are occurrences.
 
     for (auto& spacing : spacings) {
         if (spacing == offsetProp.getValue()) {
@@ -481,10 +507,15 @@ void LinearPattern::updateSpacings(LinearPatternDirection dir)
     spacingsProp.setValues(spacings);
 }
 
-void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+void LinearPattern::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 // transforms properties that had been changed
 {
-    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    // property Occurrences had the App::PropertyInteger and was changed to
+    // App::PropertyIntegerConstraint
     if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger OccurrencesProperty;
         // restore the PropertyInteger to be able to set its value
@@ -554,6 +585,4 @@ void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
     }
 }
 
-}
-
-
+}  // namespace PartDesign

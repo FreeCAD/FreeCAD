@@ -40,10 +40,12 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_gmsh_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemGmshImp::onfileNameSelected);
+    connect(
+        ui->fc_gmsh_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemGmshImp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
@@ -60,7 +62,8 @@ void DlgSettingsFemGmshImp::loadSettings()
     ui->fc_gmsh_binary_path->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+    );
     // determine number of CPU threads
     ui->sb_threads->setValue(hGrp->GetInt("NumOfThreads", QThread::idealThreadCount()));
 
@@ -90,21 +93,23 @@ void DlgSettingsFemGmshImp::onfileNameSelected(const QString& fileName)
 
 void DlgSettingsFemGmshImp::populateLogVerbosity()
 {
-    std::list<std::pair<std::string, int>> mapValues = {{"Silent", 0},
-                                                        {"Errors", 1},
-                                                        {"Warnings", 2},
-                                                        {"Direct", 3},
-                                                        {"Information", 4},
-                                                        {"Status", 5},
-                                                        {"Debug", 99}};
+    std::list<std::pair<std::string, int>> mapValues = {
+        {"Silent", 0},
+        {"Errors", 1},
+        {"Warnings", 2},
+        {"Direct", 3},
+        {"Information", 4},
+        {"Status", 5},
+        {"Debug", 99}
+    };
 
     for (const auto& val : mapValues) {
-        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first),
-                                      QString::number(val.second));
+        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first), QString::number(val.second));
     }
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+    );
     std::string current = hGrp->GetASCII("LogVerbosity", "3");
     int index = ui->cb_log_verbosity->findData(QString::fromStdString(current));
     ui->cb_log_verbosity->setCurrentIndex(index);

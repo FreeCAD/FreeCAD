@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 /**
-  * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
-  * them attachable.
-  */
+ * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
+ * them attachable.
+ */
 
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
@@ -138,9 +138,11 @@ public:
 
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
-    virtual bool extensionHandleChangedPropertyName(Base::XMLReader& reader,
-                                                    const char* TypeName,
-                                                    const char* PropName) override;
+    virtual bool extensionHandleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 
     App::PropertyPlacement& getPlacement() const;
     void initBase(bool force);
@@ -166,6 +168,6 @@ private:
 
 using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
-} // namespace Part
+}  // namespace Part
 
-#endif // PARTATTACHABLEOBJECT_H
+#endif  // PARTATTACHABLEOBJECT_H

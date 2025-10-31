@@ -72,21 +72,18 @@ public:
     StartLauncher()
     {
         // QTimers don't fire until the event loop starts, which is our signal that the GUI is up
-        QTimer::singleShot(100, [this] {
-            Launch();
-        });
+        QTimer::singleShot(100, [this] { Launch(); });
     }
 
     void Launch()
     {
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
+            "User parameter:BaseApp/Preferences/Mod/Start"
+        );
         bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
         if (showOnStartup) {
             Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
-            QTimer::singleShot(100, [this] {
-                EnsureLaunched();
-            });
+            QTimer::singleShot(100, [this] { EnsureLaunched(); });
         }
     }
 
@@ -125,8 +122,7 @@ PyMOD_INIT_FUNC(StartGui)
     Base::Console().log("done\n");
 
     // register preferences pages
-    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp>(
-        QT_TRANSLATE_NOOP("QObject", "Start"));
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp>(QT_TRANSLATE_NOOP("QObject", "Start"));
 
     PyMOD_Return(mod);
 }

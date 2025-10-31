@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <App/DocumentObjectGroup.h>
 #include <App/Document.h>
 #include <Gui/Selection/Selection.h>
@@ -67,7 +66,7 @@ bool ViewProviderDocumentObjectGroup::isShow() const
 
 QIcon ViewProviderDocumentObjectGroup::getIcon() const
 {
-    return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
+    return mergeGreyableOverlayIcons(Gui::BitmapFactory().iconFromTheme(sPixmap));
 }
 
 /**
@@ -80,10 +79,11 @@ void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderD
         Gui::Document* gd = Application::Instance->getDocument(doc->getDocument());
         auto grp = static_cast<App::DocumentObjectGroup*>(doc);
         std::vector<App::DocumentObject*> obj = grp->getObjects();
-        for (const auto & it : obj) {
+        for (const auto& it : obj) {
             ViewProvider* v = gd->getViewProvider(it);
-            if (v && v->isDerivedFrom<ViewProviderDocumentObject>())
+            if (v && v->isDerivedFrom<ViewProviderDocumentObject>()) {
                 vp.push_back(static_cast<ViewProviderDocumentObject*>(v));
+            }
         }
     }
 }
@@ -105,11 +105,15 @@ void ViewProviderDocumentObjectGroup::setupContextMenu(QMenu* menu, QObject* rec
             // Add the custom action.
             QIcon icon = BitmapFactory().iconFromTheme("Std_SelectGroupContents");
             QAction* selectAction = new QAction(icon, QObject::tr("Select Group Contents"), menu);
-            selectAction->setToolTip(QObject::tr("Selects all objects that are children of this group"));
+            selectAction->setToolTip(
+                QObject::tr("Selects all objects that are children of this group")
+            );
 
             // Connect the action's triggered signal to a lambda function that performs the selection.
             QObject::connect(selectAction, &QAction::triggered, [group]() {
-                if (!group) return;
+                if (!group) {
+                    return;
+                }
 
                 // Use getAllChildren() to recursively select contents of subgroups.
                 const auto& children = group->getAllChildren();
@@ -129,18 +133,22 @@ void ViewProviderDocumentObjectGroup::setupContextMenu(QMenu* menu, QObject* rec
             });
 
             // Insert the action at the top of the menu for better visibility.
-            menu->insertAction(menu->actions().isEmpty() ? nullptr : menu->actions().first(), selectAction);
+            menu->insertAction(
+                menu->actions().isEmpty() ? nullptr : menu->actions().first(),
+                selectAction
+            );
         }
     }
 }
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderDocumentObjectGroupPython, Gui::ViewProviderDocumentObjectGroup)
 /// @endcond
 
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderDocumentObjectGroup>;
-}
+}  // namespace Gui

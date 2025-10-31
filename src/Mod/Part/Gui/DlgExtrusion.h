@@ -33,10 +33,11 @@
 
 class TopoDS_Shape;
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_DlgExtrusion;
-class DlgExtrusion : public QDialog, public Gui::SelectionObserver
+class DlgExtrusion: public QDialog, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -53,8 +54,8 @@ public:
     Part::Extrusion::eDirMode getDirMode() const;
     void setDirMode(Part::Extrusion::eDirMode newMode);
 
-    void getAxisLink(App::PropertyLinkSub &lnk) const;
-    void setAxisLink(const App::PropertyLinkSub &lnk);
+    void getAxisLink(App::PropertyLinkSub& lnk) const;
+    void setAxisLink(const App::PropertyLinkSub& lnk);
     void setAxisLink(const char* objname, const char* subname);
 
     std::vector<App::DocumentObject*> getShapesToExtrude() const;
@@ -66,7 +67,7 @@ public:
 protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void keyPressEvent(QKeyEvent*) override;
 
 private:
@@ -82,15 +83,16 @@ private:
     void onTextLinkTextChanged(QString);
 
 private:
-    ///updates enabling of controls
+    /// updates enabling of controls
     void onDirModeChanged();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
+    /// returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToExtrude() const;
-    ///if dirMode is not custom, it tries to compute the actual extrusion direction. Also, it does some auto-magic manipulation of length value.
+    /// if dirMode is not custom, it tries to compute the actual extrusion direction. Also, it does
+    /// some auto-magic manipulation of length value.
     void fetchDir();
 
-    ///automatically checks Solid checkbox depending on input shape
+    /// automatically checks Solid checkbox depending on input shape
     void autoSolid();
 
 private:
@@ -100,7 +102,7 @@ private:
     EdgeSelection* filter;
 };
 
-class TaskExtrusion : public Gui::TaskView::TaskDialog
+class TaskExtrusion: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -113,12 +115,14 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close;
+    }
 
 private:
     DlgExtrusion* widget;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGEXTRUSION_H
+#endif  // PARTGUI_DLGEXTRUSION_H

@@ -33,57 +33,63 @@
 #include <Base/Vector3D.h>
 
 
-namespace Gui {
+namespace Gui
+{
 
-class VectorTableModel : public QAbstractTableModel
+class VectorTableModel: public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit VectorTableModel(int decimals, QObject *parent = nullptr);
+    explicit VectorTableModel(int decimals, QObject* parent = nullptr);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    Qt::ItemFlags flags (const QModelIndex & index) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QModelIndex parent(const QModelIndex &index) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
     void setValues(const QList<Base::Vector3d>& d);
     void copyToClipboard() const;
     void pasteFromClipboard();
     const QList<Base::Vector3d>& values() const;
-    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
     QList<Base::Vector3d> vectors;
     int decimals;
 };
 
-class VectorTableDelegate : public QItemDelegate
+class VectorTableDelegate: public QItemDelegate
 {
     Q_OBJECT
 
 public:
-    explicit VectorTableDelegate(int decimals, QObject *parent = nullptr);
+    explicit VectorTableDelegate(int decimals, QObject* parent = nullptr);
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const override;
+    QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-    void setModelData(QWidget *editor, QAbstractItemModel *model,
-                      const QModelIndex &index) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    void updateEditorGeometry(QWidget *editor,
-        const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void updateEditorGeometry(
+        QWidget* editor,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override;
 
 private:
     int decimals;
 };
 
 class Ui_VectorListEditor;
-class VectorListEditor : public QDialog
+class VectorListEditor: public QDialog
 {
     Q_OBJECT
 
@@ -111,6 +117,6 @@ private:
     QList<Base::Vector3d> data;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_VECTORLISTEDITOR_H
+#endif  // GUI_VECTORLISTEDITOR_H

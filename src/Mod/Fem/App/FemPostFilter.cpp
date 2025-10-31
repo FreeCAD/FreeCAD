@@ -47,11 +47,7 @@ PROPERTY_SOURCE(Fem::FemPostFilter, Fem::FemPostObject)
 
 FemPostFilter::FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(Frame,
-                      ((long)0),
-                      "Data",
-                      App::Prop_ReadOnly,
-                      "The step used to calculate the data");
+    ADD_PROPERTY_TYPE(Frame, ((long)0), "Data", App::Prop_ReadOnly, "The step used to calculate the data");
 
     // the default pipeline: just a passthrough
     // this is used to simplify the python filter handling,
@@ -165,11 +161,13 @@ void FemPostFilter::onChanged(const App::Property* prop)
             // add transform to pipeline
             if (m_transform_location == TransformLocation::output) {
                 m_transform_filter->SetInputConnection(
-                    m_pipelines[m_activePipeline].target->GetOutputPort(0));
+                    m_pipelines[m_activePipeline].target->GetOutputPort(0)
+                );
             }
             else {
                 m_pipelines[m_activePipeline].source->SetInputConnection(
-                    m_transform_filter->GetOutputPort(0));
+                    m_transform_filter->GetOutputPort(0)
+                );
             }
             m_use_transform = true;
             pipelineChanged();
@@ -353,37 +351,49 @@ PROPERTY_SOURCE(Fem::FemPostDataAlongLineFilter, Fem::FemPostFilter)
 FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(Point1,
-                      (Base::Vector3d(0.0, 0.0, 0.0)),
-                      "DataAlongLine",
-                      App::Prop_None,
-                      "The point 1 used to define end point of line");
-    ADD_PROPERTY_TYPE(Point2,
-                      (Base::Vector3d(0.0, 0.0, 1.0)),
-                      "DataAlongLine",
-                      App::Prop_None,
-                      "The point 2 used to define end point of line");
-    ADD_PROPERTY_TYPE(Resolution,
-                      (100),
-                      "DataAlongLine",
-                      App::Prop_None,
-                      "The number of intervals between the 2 end points of line");
-    ADD_PROPERTY_TYPE(XAxisData,
-                      (0),
-                      "DataAlongLine",
-                      App::Prop_None,
-                      "X axis data values used for plotting");
-    ADD_PROPERTY_TYPE(YAxisData,
-                      (0),
-                      "DataAlongLine",
-                      App::Prop_None,
-                      "Y axis data values used for plotting");
+    ADD_PROPERTY_TYPE(
+        Point1,
+        (Base::Vector3d(0.0, 0.0, 0.0)),
+        "DataAlongLine",
+        App::Prop_None,
+        "The point 1 used to define end point of line"
+    );
+    ADD_PROPERTY_TYPE(
+        Point2,
+        (Base::Vector3d(0.0, 0.0, 1.0)),
+        "DataAlongLine",
+        App::Prop_None,
+        "The point 2 used to define end point of line"
+    );
+    ADD_PROPERTY_TYPE(
+        Resolution,
+        (100),
+        "DataAlongLine",
+        App::Prop_None,
+        "The number of intervals between the 2 end points of line"
+    );
+    ADD_PROPERTY_TYPE(
+        XAxisData,
+        (0),
+        "DataAlongLine",
+        App::Prop_None,
+        "X axis data values used for plotting"
+    );
+    ADD_PROPERTY_TYPE(
+        YAxisData,
+        (0),
+        "DataAlongLine",
+        App::Prop_None,
+        "Y axis data values used for plotting"
+    );
     ADD_PROPERTY_TYPE(PlotData, (""), "DataAlongLine", App::Prop_None, "Field used for plotting");
-    ADD_PROPERTY_TYPE(PlotDataComponent,
-                      ((long)0),
-                      "DataAlongLine",
-                      App::Prop_None,
-                      "Field component used for plotting");
+    ADD_PROPERTY_TYPE(
+        PlotDataComponent,
+        ((long)0),
+        "DataAlongLine",
+        App::Prop_None,
+        "Field component used for plotting"
+    );
 
     PlotData.setStatus(App::Property::ReadOnly, true);
     PlotDataComponent.setStatus(App::Property::ReadOnly, true);
@@ -428,9 +438,11 @@ DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute()
     return Fem::FemPostFilter::execute();
 }
 
-void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& reader,
-                                                           const char* TypeName,
-                                                           App::Property* prop)
+void FemPostDataAlongLineFilter::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 // transforms properties that had been changed
 {
     // property Point1 had the App::PropertyVector and was changed to App::PropertyVectorDistance
@@ -551,11 +563,13 @@ PROPERTY_SOURCE(Fem::FemPostDataAtPointFilter, Fem::FemPostFilter)
 FemPostDataAtPointFilter::FemPostDataAtPointFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(Center,
-                      (Base::Vector3d(0.0, 0.0, 0.0)),
-                      "DataAtPoint",
-                      App::Prop_None,
-                      "Center of the point");
+    ADD_PROPERTY_TYPE(
+        Center,
+        (Base::Vector3d(0.0, 0.0, 0.0)),
+        "DataAtPoint",
+        App::Prop_None,
+        "Center of the point"
+    );
     ADD_PROPERTY_TYPE(PointData, (0), "DataAtPoint", App::Prop_None, "Point data values");
     ADD_PROPERTY_TYPE(FieldName, (""), "DataAtPoint", App::Prop_None, "Field used for plotting");
     ADD_PROPERTY_TYPE(Unit, (""), "DataAtPoint", App::Prop_None, "Unit used for the field");
@@ -664,18 +678,21 @@ PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
 FemPostClipFilter::FemPostClipFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(Function,
-                      (nullptr),
-                      "Clip",
-                      App::Prop_None,
-                      "The function object which defines the clip regions");
+    ADD_PROPERTY_TYPE(
+        Function,
+        (nullptr),
+        "Clip",
+        App::Prop_None,
+        "The function object which defines the clip regions"
+    );
     ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
     ADD_PROPERTY_TYPE(
         CutCells,
         (false),
         "Clip",
         App::Prop_None,
-        "Decides if cells are cut and interpolated or if the cells are kept as a whole");
+        "Decides if cells are cut and interpolated or if the cells are kept as a whole"
+    );
 
     auto sphere = vtkSmartPointer<vtkSphere>::New();
     sphere->SetRadius(1e12);
@@ -754,58 +771,66 @@ DocumentObjectExecReturn* FemPostClipFilter::execute()
 
 // ***************************************************************************
 // smoothing filter extension
-const App::PropertyQuantityConstraint::Constraints FemPostSmoothFilterExtension::angleRange = {
-    0.0,
-    180.0,
-    1.0};
-const App::PropertyIntegerConstraint::Constraints FemPostSmoothFilterExtension::iterationRange = {
-    0,
-    VTK_INT_MAX,
-    1};
-const App::PropertyFloatConstraint::Constraints FemPostSmoothFilterExtension::relaxationRange = {
-    0,
-    1.0,
-    0.01};
+const App::PropertyQuantityConstraint::Constraints FemPostSmoothFilterExtension::angleRange
+    = {0.0, 180.0, 1.0};
+const App::PropertyIntegerConstraint::Constraints FemPostSmoothFilterExtension::iterationRange
+    = {0, VTK_INT_MAX, 1};
+const App::PropertyFloatConstraint::Constraints FemPostSmoothFilterExtension::relaxationRange
+    = {0, 1.0, 0.01};
 
 EXTENSION_PROPERTY_SOURCE(Fem::FemPostSmoothFilterExtension, App::DocumentObjectExtension)
 
 FemPostSmoothFilterExtension::FemPostSmoothFilterExtension()
 {
-    EXTENSION_ADD_PROPERTY_TYPE(BoundarySmoothing,
-                                (true),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Smooth vertices on the boundary");
-    EXTENSION_ADD_PROPERTY_TYPE(EdgeAngle,
-                                (15),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Angle to control smoothing along edges");
-    EXTENSION_ADD_PROPERTY_TYPE(EnableSmoothing,
-                                (false),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Enable Laplacian smoothing");
-    EXTENSION_ADD_PROPERTY_TYPE(FeatureAngle,
-                                (45),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Angle for sharp edge identification");
-    EXTENSION_ADD_PROPERTY_TYPE(EdgeSmoothing,
-                                (false),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Smooth align sharp interior edges");
-    EXTENSION_ADD_PROPERTY_TYPE(RelaxationFactor,
-                                (0.05),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Factor to control vertex displacement");
-    EXTENSION_ADD_PROPERTY_TYPE(Iterations,
-                                (20),
-                                "Smoothing",
-                                App::Prop_None,
-                                "Number of smoothing iterations");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        BoundarySmoothing,
+        (true),
+        "Smoothing",
+        App::Prop_None,
+        "Smooth vertices on the boundary"
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        EdgeAngle,
+        (15),
+        "Smoothing",
+        App::Prop_None,
+        "Angle to control smoothing along edges"
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        EnableSmoothing,
+        (false),
+        "Smoothing",
+        App::Prop_None,
+        "Enable Laplacian smoothing"
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        FeatureAngle,
+        (45),
+        "Smoothing",
+        App::Prop_None,
+        "Angle for sharp edge identification"
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        EdgeSmoothing,
+        (false),
+        "Smoothing",
+        App::Prop_None,
+        "Smooth align sharp interior edges"
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        RelaxationFactor,
+        (0.05),
+        "Smoothing",
+        App::Prop_None,
+        "Factor to control vertex displacement"
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        Iterations,
+        (20),
+        "Smoothing",
+        App::Prop_None,
+        "Number of smoothing iterations"
+    );
 
     EdgeAngle.setConstraints(&angleRange);
     FeatureAngle.setConstraints(&angleRange);
@@ -859,16 +884,8 @@ FemPostContoursFilter::FemPostContoursFilter()
 {
     ADD_PROPERTY_TYPE(NumberOfContours, (10), "Contours", App::Prop_None, "The number of contours");
     ADD_PROPERTY_TYPE(Field, (long(0)), "Clip", App::Prop_None, "The field used to clip");
-    ADD_PROPERTY_TYPE(VectorMode,
-                      ((long)0),
-                      "Contours",
-                      App::Prop_None,
-                      "Select what vector field");
-    ADD_PROPERTY_TYPE(NoColor,
-                      (false),
-                      "Contours",
-                      PropertyType(Prop_Hidden),
-                      "Don't color the contours");
+    ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Contours", App::Prop_None, "Select what vector field");
+    ADD_PROPERTY_TYPE(NoColor, (false), "Contours", PropertyType(Prop_Hidden), "Don't color the contours");
 
     m_contourConstraints.LowerBound = 1;
     m_contourConstraints.UpperBound = 1000;
@@ -930,11 +947,13 @@ void FemPostContoursFilter::onChanged(const Property* prop)
         }
         if (pdata->GetNumberOfComponents() == 1) {
             // if we have a scalar, we can directly use the array
-            m_contours->SetInputArrayToProcess(0,
-                                               0,
-                                               0,
-                                               vtkDataObject::FIELD_ASSOCIATION_POINTS,
-                                               Field.getValueAsString());
+            m_contours->SetInputArrayToProcess(
+                0,
+                0,
+                0,
+                vtkDataObject::FIELD_ASSOCIATION_POINTS,
+                Field.getValueAsString()
+            );
             pdata->GetRange(p);
             recalculateContours(p[0], p[1]);
         }
@@ -961,9 +980,7 @@ void FemPostContoursFilter::onChanged(const Property* prop)
 
             if (component >= 0) {
                 for (vtkIdType tupleIdx = 0; tupleIdx < numTuples; ++tupleIdx) {
-                    componentArray->SetComponent(tupleIdx,
-                                                 0,
-                                                 pdata->GetComponent(tupleIdx, component));
+                    componentArray->SetComponent(tupleIdx, 0, pdata->GetComponent(tupleIdx, component));
                 }
             }
             else {
@@ -974,7 +991,9 @@ void FemPostContoursFilter::onChanged(const Property* prop)
                         std::sqrt(
                             pdata->GetComponent(tupleIdx, 0) * pdata->GetComponent(tupleIdx, 0)
                             + pdata->GetComponent(tupleIdx, 1) * pdata->GetComponent(tupleIdx, 1)
-                            + pdata->GetComponent(tupleIdx, 2) * pdata->GetComponent(tupleIdx, 2)));
+                            + pdata->GetComponent(tupleIdx, 2) * pdata->GetComponent(tupleIdx, 2)
+                        )
+                    );
                 }
             }
             // name the array
@@ -983,11 +1002,13 @@ void FemPostContoursFilter::onChanged(const Property* prop)
 
             // add the array as new field and use it for the contour filter
             dset->GetPointData()->AddArray(componentArray);
-            m_contours->SetInputArrayToProcess(0,
-                                               0,
-                                               0,
-                                               vtkDataObject::FIELD_ASSOCIATION_POINTS,
-                                               contourFieldName.c_str());
+            m_contours->SetInputArrayToProcess(
+                0,
+                0,
+                0,
+                vtkDataObject::FIELD_ASSOCIATION_POINTS,
+                contourFieldName.c_str()
+            );
             componentArray->GetRange(p);
             recalculateContours(p[0], p[1]);
             if (prop == &Data) {
@@ -1142,11 +1163,13 @@ PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
 FemPostCutFilter::FemPostCutFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(Function,
-                      (nullptr),
-                      "Cut",
-                      App::Prop_None,
-                      "The function object which defines the cut function");
+    ADD_PROPERTY_TYPE(
+        Function,
+        (nullptr),
+        "Cut",
+        App::Prop_None,
+        "The function object which defines the cut function"
+    );
 
     auto sphere = vtkSmartPointer<vtkSphere>::New();
     sphere->SetRadius(1e12);
@@ -1206,11 +1229,7 @@ FemPostScalarClipFilter::FemPostScalarClipFilter()
     : FemPostFilter()
 {
 
-    ADD_PROPERTY_TYPE(Value,
-                      (0),
-                      "Clip",
-                      App::Prop_None,
-                      "The scalar value used to clip the selected field");
+    ADD_PROPERTY_TYPE(Value, (0), "Clip", App::Prop_None, "The scalar value used to clip the selected field");
     ADD_PROPERTY_TYPE(Scalars, (long(0)), "Clip", App::Prop_None, "The field used to clip");
     ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
 
@@ -1259,11 +1278,13 @@ void FemPostScalarClipFilter::onChanged(const Property* prop)
         m_clipper->SetInsideOut(InsideOut.getValue());
     }
     else if (prop == &Scalars && (Scalars.isValid())) {
-        m_clipper->SetInputArrayToProcess(0,
-                                          0,
-                                          0,
-                                          vtkDataObject::FIELD_ASSOCIATION_POINTS,
-                                          Scalars.getValueAsString());
+        m_clipper->SetInputArrayToProcess(
+            0,
+            0,
+            0,
+            vtkDataObject::FIELD_ASSOCIATION_POINTS,
+            Scalars.getValueAsString()
+        );
         setConstraintForField();
     }
 
@@ -1314,16 +1335,14 @@ PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
 FemPostWarpVectorFilter::FemPostWarpVectorFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(Factor,
-                      (0),
-                      "Warp",
-                      App::Prop_None,
-                      "The factor by which the vector is added to the node positions");
-    ADD_PROPERTY_TYPE(Vector,
-                      (long(0)),
-                      "Warp",
-                      App::Prop_None,
-                      "The field added to the node position");
+    ADD_PROPERTY_TYPE(
+        Factor,
+        (0),
+        "Warp",
+        App::Prop_None,
+        "The factor by which the vector is added to the node positions"
+    );
+    ADD_PROPERTY_TYPE(Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
 
     FilterPipeline warp;
     m_warp = vtkSmartPointer<vtkWarpVector>::New();
@@ -1367,11 +1386,13 @@ void FemPostWarpVectorFilter::onChanged(const Property* prop)
         m_warp->SetScaleFactor(1000 * Factor.getValue());
     }
     else if (prop == &Vector && Vector.isValid()) {
-        m_warp->SetInputArrayToProcess(0,
-                                       0,
-                                       0,
-                                       vtkDataObject::FIELD_ASSOCIATION_POINTS,
-                                       Vector.getValueAsString());
+        m_warp->SetInputArrayToProcess(
+            0,
+            0,
+            0,
+            vtkDataObject::FIELD_ASSOCIATION_POINTS,
+            Vector.getValueAsString()
+        );
     }
 
     Fem::FemPostFilter::onChanged(prop);
@@ -1395,26 +1416,22 @@ PROPERTY_SOURCE(Fem::FemPostCalculatorFilter, Fem::FemPostFilter)
 FemPostCalculatorFilter::FemPostCalculatorFilter()
     : FemPostFilter()
 {
-    ADD_PROPERTY_TYPE(FieldName,
-                      ("Calculator"),
-                      "Calculator",
-                      App::Prop_None,
-                      "Name of the calculated field");
-    ADD_PROPERTY_TYPE(Function,
-                      (""),
-                      "Calculator",
-                      App::Prop_None,
-                      "Expression of the unction to evaluate");
-    ADD_PROPERTY_TYPE(ReplacementValue,
-                      (0.0f),
-                      "Calculator",
-                      App::Prop_None,
-                      "Value used to replace invalid operations");
-    ADD_PROPERTY_TYPE(ReplaceInvalid,
-                      (false),
-                      "Calculator",
-                      App::Prop_None,
-                      "Replace invalid values");
+    ADD_PROPERTY_TYPE(
+        FieldName,
+        ("Calculator"),
+        "Calculator",
+        App::Prop_None,
+        "Name of the calculated field"
+    );
+    ADD_PROPERTY_TYPE(Function, (""), "Calculator", App::Prop_None, "Expression of the unction to evaluate");
+    ADD_PROPERTY_TYPE(
+        ReplacementValue,
+        (0.0f),
+        "Calculator",
+        App::Prop_None,
+        "Value used to replace invalid operations"
+    );
+    ADD_PROPERTY_TYPE(ReplaceInvalid, (false), "Calculator", App::Prop_None, "Replace invalid values");
 
     FilterPipeline calculator;
     m_calculator = vtkSmartPointer<vtkArrayCalculator>::New();
@@ -1515,9 +1532,10 @@ const std::vector<std::string> FemPostCalculatorFilter::getScalarVariables()
 #if (VTK_MAJOR_VERSION >= 9) && (VTK_MINOR_VERSION > 0)
     std::vector<std::string> scalars = m_calculator->GetScalarVariableNames();
 #else
-    std::vector<std::string> scalars(m_calculator->GetScalarVariableNames(),
-                                     m_calculator->GetScalarVariableNames()
-                                         + m_calculator->GetNumberOfScalarArrays());
+    std::vector<std::string> scalars(
+        m_calculator->GetScalarVariableNames(),
+        m_calculator->GetScalarVariableNames() + m_calculator->GetNumberOfScalarArrays()
+    );
 #endif
 
     scalars.insert(scalars.begin(), {"coordsX", "coordsY", "coordsZ"});
@@ -1529,9 +1547,10 @@ const std::vector<std::string> FemPostCalculatorFilter::getVectorVariables()
 #if (VTK_MAJOR_VERSION >= 9) && (VTK_MINOR_VERSION > 0)
     std::vector<std::string> vectors = m_calculator->GetVectorVariableNames();
 #else
-    std::vector<std::string> vectors(m_calculator->GetVectorVariableNames(),
-                                     m_calculator->GetVectorVariableNames()
-                                         + m_calculator->GetNumberOfVectorArrays());
+    std::vector<std::string> vectors(
+        m_calculator->GetVectorVariableNames(),
+        m_calculator->GetVectorVariableNames() + m_calculator->GetNumberOfVectorArrays()
+    );
 #endif
 
     vectors.insert(vectors.begin(), "coords");

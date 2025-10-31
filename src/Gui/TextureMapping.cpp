@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoTexture2.h>
-# include <QImage>
-# include <QImageReader>
-# include <QKeyEvent>
-# include <QMessageBox>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <QImage>
+#include <QImageReader>
+#include <QKeyEvent>
+#include <QMessageBox>
 
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
@@ -46,14 +45,20 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::TextureMapping */
 
 TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), grp(nullptr), tex(nullptr), env(nullptr)
+    : QDialog(parent, fl)
+    , grp(nullptr)
+    , tex(nullptr)
+    , env(nullptr)
 {
     ui = new Ui_TextureMapping();
     ui->setupUi(this);
-    connect(ui->fileChooser, &FileChooser::fileNameSelected,
-            this, &TextureMapping::onFileChooserFileNameSelected);
-    connect(ui->checkEnv, &QCheckBox::toggled,
-            this, &TextureMapping::onCheckEnvToggled);
+    connect(
+        ui->fileChooser,
+        &FileChooser::fileNameSelected,
+        this,
+        &TextureMapping::onFileChooserFileNameSelected
+    );
+    connect(ui->checkEnv, &QCheckBox::toggled, this, &TextureMapping::onCheckEnvToggled);
 
     ui->checkGlobal->hide();
 
@@ -63,7 +68,7 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     // add all supported QImage formats
     QStringList formats;
     QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
-    for (const auto & it : qtformats) {
+    for (const auto& it : qtformats) {
         formats << QStringLiteral("*.%1").arg(QLatin1String(it));
     }
 
@@ -98,15 +103,16 @@ void TextureMapping::reject()
 {
     if (this->grp) {
         this->grp->removeChild(this->tex);
-        if (this->grp->findChild(this->env) > -1)
+        if (this->grp->findChild(this->env) > -1) {
             this->grp->removeChild(this->env);
+        }
         this->grp->unref();
     }
 
     QDialog::reject();
 }
 
-void TextureMapping::changeEvent(QEvent *e)
+void TextureMapping::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -116,7 +122,7 @@ void TextureMapping::changeEvent(QEvent *e)
     }
 }
 
-void TextureMapping::keyPressEvent(QKeyEvent *e)
+void TextureMapping::keyPressEvent(QKeyEvent* e)
 {
     // The texture mapping dialog is embedded into a task panel
     // which is a parent widget and will handle the event
@@ -132,7 +138,11 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
         // there is a check to report the last selected file name (which might
         // be an empty string) only once.
         if (fileName != s) {
-            QMessageBox::warning(this, tr("No image"), tr("The specified file is not a valid image file."));
+            QMessageBox::warning(
+                this,
+                tr("No image"),
+                tr("The specified file is not a valid image file.")
+            );
             fileName = s;
         }
         return;
@@ -146,8 +156,9 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
                 this->grp = static_cast<SoGroup*>(view->getViewer()->getSceneGraph());
                 this->grp->ref();
                 this->grp->insertChild(this->tex, 1);
-                if (ui->checkEnv->isChecked())
+                if (ui->checkEnv->isChecked()) {
                     this->grp->insertChild(this->env, 2);
+                }
             }
         }
     }
@@ -160,16 +171,17 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
     SoSFImage texture;
     Gui::BitmapFactory().convert(image, texture);
     this->tex->image = texture;
-    //this->tex->filename = (const char*)s.toUtf8();
+    // this->tex->filename = (const char*)s.toUtf8();
     App::GetApplication().Config()["TextureImage"] = (const char*)s.toUtf8();
 }
 
 void TextureMapping::onCheckEnvToggled(bool b)
 {
-    if (!this->grp)
+    if (!this->grp) {
         return;
+    }
     if (b) {
-        this->grp->insertChild(this->env,2);
+        this->grp->insertChild(this->env, 2);
     }
     else {
         this->grp->removeChild(this->env);

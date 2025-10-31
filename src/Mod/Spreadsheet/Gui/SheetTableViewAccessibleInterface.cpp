@@ -37,7 +37,8 @@ namespace SpreadsheetGui
 {
 
 SheetTableViewAccessibleInterface::SheetTableViewAccessibleInterface(
-    SpreadsheetGui::SheetTableView* view)
+    SpreadsheetGui::SheetTableView* view
+)
     : QAccessibleWidget(view)
 {}
 
@@ -80,8 +81,7 @@ QAccessibleInterface* SheetTableViewAccessibleInterface::child(int index) const
 QAccessibleInterface* SheetTableViewAccessibleInterface::ifactory(const QString& key, QObject* obj)
 {
     if (key == QStringLiteral("SpreadsheetGui::SheetTableView")) {
-        return new SheetTableViewAccessibleInterface(
-            static_cast<SpreadsheetGui::SheetTableView*>(obj));
+        return new SheetTableViewAccessibleInterface(static_cast<SpreadsheetGui::SheetTableView*>(obj));
     }
     return nullptr;
 }

@@ -61,7 +61,8 @@ void ThumbnailSource::run()
             return;
         }
         const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
+            "User parameter:BaseApp/Preferences/Mod/Start"
+        );
         const auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
         QStringList args(_f3d.baseArgs);
         args << QLatin1String("--output=") + _thumbnailPath << _file;
@@ -82,9 +83,11 @@ void ThumbnailSource::run()
             Base::Console().log("Creating thumbnail for %s failed\n", _file.toStdString());
             return;
         }
-        Base::Console().log("Creating thumbnail for %s succeeded, wrote to %s\n",
-                            _file.toStdString(),
-                            _thumbnailPath.toStdString());
+        Base::Console().log(
+            "Creating thumbnail for %s succeeded, wrote to %s\n",
+            _file.toStdString(),
+            _thumbnailPath.toStdString()
+        );
     }
     if (QFile thumbnailFile(_thumbnailPath); thumbnailFile.exists()) {
         thumbnailFile.open(QIODevice::OpenModeFlag::ReadOnly);
@@ -108,7 +111,8 @@ std::tuple<int, int, int> extractF3DVersion(const QString& stdoutString)
                 }
                 catch (...) {
                     Base::Console().log(
-                        "Could not determine F3D version, disabling thumbnail generation\n");
+                        "Could not determine F3D version, disabling thumbnail generation\n"
+                    );
                 }
             }
             break;
@@ -166,7 +170,8 @@ void ThumbnailSource::setupF3D()
 
     _f3d.initialized = true;  // Set immediately so we can use early-return below
     const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
     const auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
     const QStringList args {QLatin1String("--version")};
     QProcess process;

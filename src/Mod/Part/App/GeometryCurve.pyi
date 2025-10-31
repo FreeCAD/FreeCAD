@@ -4,7 +4,6 @@ from Base.Rotation import Rotation as RotationPy
 from Geometry import Geometry
 from typing import Final, overload, List, Union, Optional, Tuple
 
-
 @export(
     Twin="GeomCurve",
     TwinPointer="GeomCurve",
@@ -43,11 +42,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self,
-        Number: int,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None
+        self, Number: int, *, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points.
@@ -57,11 +52,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self,
-        QuasiNumber: int,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None
+        self, QuasiNumber: int, *, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of quasi equidistant points.
@@ -71,11 +62,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self,
-        Distance: float,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None
+        self, Distance: float, *, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of equidistant points with distance 'd'.
@@ -85,11 +72,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self,
-        Deflection: float,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None
+        self, Deflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve.
@@ -99,11 +82,7 @@ class GeometryCurve(Geometry):
     @overload
     @constmethod
     def discretize(
-        self,
-        QuasiDeflection: float,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None
+        self, QuasiDeflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve (faster).
@@ -293,9 +272,7 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def projectPoint(
-        self, Point: Vector, Method: str = "LowerDistanceParameter"
-    ) -> float:
+    def projectPoint(self, Point: Vector, Method: str = "LowerDistanceParameter") -> float:
         """
         projectPoint(Vector, "LowerDistanceParameter") -> float.
         """

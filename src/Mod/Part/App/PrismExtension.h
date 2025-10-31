@@ -33,9 +33,10 @@
 namespace Part
 {
 
-class PartExport PrismExtension : public App::DocumentObjectExtension
+class PartExport PrismExtension: public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::PrismExtension);
+
 public:
     PrismExtension();
     ~PrismExtension() override;
@@ -47,12 +48,12 @@ public:
     TopoDS_Shape makePrism(double height, const TopoDS_Face& face) const;
 
     short int extensionMustExecute() override;
-    App::DocumentObjectExecReturn *extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute() override;
 
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
 };
 
-} // namespace Part
+}  // namespace Part
 
-#endif // PART_PRISM_EXTENSION_H
+#endif  // PART_PRISM_EXTENSION_H

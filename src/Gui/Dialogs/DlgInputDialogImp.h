@@ -33,10 +33,12 @@ class QDoubleSpinBox;
 class QLineEdit;
 class QComboBox;
 
-namespace Gui {
+namespace Gui
+{
 class UIntSpinBox;
 
-namespace Dialog {
+namespace Dialog
+{
 class Ui_DlgInputDialog;
 
 /**
@@ -46,37 +48,44 @@ class Ui_DlgInputDialog;
  * the flexibility.
  * \author Werner Mayer
  */
-class GuiExport DlgInputDialogImp : public QDialog
+class GuiExport DlgInputDialogImp: public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  enum Type { LineEdit, SpinBox, UIntBox, FloatSpinBox, ComboBox };
+    enum Type
+    {
+        LineEdit,
+        SpinBox,
+        UIntBox,
+        FloatSpinBox,
+        ComboBox
+    };
 
-  DlgInputDialogImp( const QString& label, QWidget* parent = nullptr, bool modal = true, Type = LineEdit );
-  ~DlgInputDialogImp() override;
+    DlgInputDialogImp(const QString& label, QWidget* parent = nullptr, bool modal = true, Type = LineEdit);
+    ~DlgInputDialogImp() override;
 
-  void setType( Type t );
-  Type type() const;
+    void setType(Type t);
+    Type type() const;
 
-  QSpinBox *getSpinBox() const;
-  Gui::UIntSpinBox *getUIntBox() const;
-  QDoubleSpinBox *getFloatSpinBox() const;
-  QLineEdit *getLineEdit() const;
-  QComboBox *getComboBox() const;
+    QSpinBox* getSpinBox() const;
+    Gui::UIntSpinBox* getUIntBox() const;
+    QDoubleSpinBox* getFloatSpinBox() const;
+    QLineEdit* getLineEdit() const;
+    QComboBox* getComboBox() const;
 
 protected Q_SLOTS:
-  void textChanged( const QString &s );
-  void tryAccept();
+    void textChanged(const QString& s);
+    void tryAccept();
 
 protected:
-  Type inputtype;
+    Type inputtype;
 
 private:
-  std::unique_ptr<Ui_DlgInputDialog> ui;
+    std::unique_ptr<Ui_DlgInputDialog> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGINPUTDIALOGIMP_H
+#endif  // GUI_DIALOG_DLGINPUTDIALOGIMP_H
