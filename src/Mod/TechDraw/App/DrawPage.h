@@ -23,7 +23,7 @@
 #ifndef DrawPage_h_
 #define DrawPage_h_
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
@@ -63,7 +63,7 @@ public:
     int addView(App::DocumentObject* docObj, bool setPosition = true);
     int removeView(App::DocumentObject* docObj);
     short mustExecute() const override;
-    boost::signals2::signal<void(const DrawPage*)> signalGuiPaint;
+    fastsignals::signal<void(const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderPage"; }
