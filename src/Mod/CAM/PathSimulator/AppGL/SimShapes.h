@@ -24,8 +24,11 @@
 
 #ifndef __sim_shapes_h__
 #define __sim_shapes_h__
-#include "OpenGlWrapper.h"
+
+#include <vector>
+
 #include "linmath.h"
+#include "OpenGlWrapper.h"
 
 #define SET_DUAL(var, idx, y, z)                                                                   \
     {                                                                                              \
@@ -46,7 +49,7 @@
         var[idx++] = z + offs;                                                                     \
     }
 
-namespace MillSim
+namespace CAMSimulator
 {
 typedef unsigned int uint;
 
@@ -82,24 +85,24 @@ public:
     int numIndices = 0;
 
 public:
-    void Render();
-    void Render(mat4x4 modelMat, mat4x4 normallMat);
+    void Render() const;
+    void Render(const mat4x4& modelMat, const mat4x4& normallMat) const;
     void FreeResources();
-    void SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer);
-    void RotateProfile(float* profPoints,
+    void SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer);
+    void RotateProfile(const float* profPoints,
                        int nPoints,
                        float distance,
                        float deltaHeight,
                        int nSlices,
                        bool isHalfTurn);
-    void ExtrudeProfileRadial(float* profPoints,
+    void ExtrudeProfileRadial(const float* profPoints,
                               int nPoints,
                               float radius,
                               float angleRad,
                               float deltaHeight,
                               bool capStart,
                               bool capEnd);
-    void ExtrudeProfileLinear(float* profPoints,
+    void ExtrudeProfileLinear(const float* profPoints,
                               int nPoints,
                               float fromX,
                               float toX,
@@ -114,7 +117,7 @@ public:
     static int lastNumSlices;
 
 protected:
-    void GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int numIndices);
+    void GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int numIndices);
     void CalculateExtrudeBufferSizes(int nProfilePoints,
                                      bool capStart,
                                      bool capEnd,
@@ -126,5 +129,6 @@ protected:
                                      int* ic2idx);
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
+
 #endif
