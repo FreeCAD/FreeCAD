@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // written by g.j.hawkesford 2006 for Camtek Gmbh
 //
 // This program is released under the BSD license. See the file COPYING for details.

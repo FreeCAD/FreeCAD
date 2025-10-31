@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: BSD-3-Clause
 // Curve.cpp
 // Copyright 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
