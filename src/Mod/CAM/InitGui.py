@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -123,13 +125,14 @@ class CAMWorkbench(Workbench):
 
         # build commands list
         projcmdlist = ["CAM_Job", "CAM_Post", "CAM_Sanity"]
-        toolcmdlist = [
-            "CAM_Inspect",
-            "CAM_Simulator",
-            "CAM_SimulatorGL",
-            "CAM_SelectLoop",
-            "CAM_OpActiveToggle",
-        ]
+        toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
+
+        simcmdlist = ["CAM_SimulatorGL", "CAM_Simulator"]
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        simLegacy = prefs.GetBool("DefaultSimulatorLegacy", False)
+        if simLegacy:
+            simcmdlist.reverse()
+
         prepcmdlist = [
             "CAM_Comment",
             "CAM_Stop",
@@ -165,6 +168,14 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
+        simcmdgroup = ["CAM_SimTools"]
+        FreeCADGui.addCommand(
+            "CAM_SimTools",
+            PathCommandGroup(
+                simcmdlist,
+                QT_TRANSLATE_NOOP("CAM_SimTools", "Simulators"),
+            ),
+        )
         engravecmdgroup = ["CAM_EngraveTools"]
         FreeCADGui.addCommand(
             "CAM_EngraveTools",
@@ -243,7 +254,10 @@ class CAMWorkbench(Workbench):
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Tool Commands"),
+            simcmdgroup + toolcmdlist,
+        )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
@@ -258,6 +272,7 @@ class CAMWorkbench(Workbench):
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
             + ["CAM_ExportTemplate", "Separator"]
+            + simcmdlist
             + toolcmdlist
             + toolbitcmdlist
             + ["Separator"]

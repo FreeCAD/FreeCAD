@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import unittest
 from typing import Any, List, Mapping
 from Path.Tool.assets import Asset, AssetUri

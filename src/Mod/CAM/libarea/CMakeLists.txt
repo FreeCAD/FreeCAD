@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Turn compiler warnings on for gcc
 if (CMAKE_BUILD_TOOL MATCHES "make")
     MESSAGE(STATUS "setting gcc options: -Wall -Werror -Wno-deprecated -pedantic-errors")

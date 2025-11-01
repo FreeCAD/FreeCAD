@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // Area.cpp
 
 // Copyright 2011, Dan Heeks

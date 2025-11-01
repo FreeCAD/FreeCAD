@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: BSD-3-Clause
+
 // pyarea.cpp
 // Copyright 2017, Lorenz Lechner
 // This program is released under the BSD license. See the file COPYING for details.
