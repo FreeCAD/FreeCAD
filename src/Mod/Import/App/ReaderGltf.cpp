@@ -50,22 +50,54 @@ ReaderGltf::ReaderGltf(const Base::FileInfo& file)
 {}
 
 // NOLINTNEXTLINE
-void ReaderGltf::read(Handle(TDocStd_Document) hDoc)
+void ReaderGltf::read(Handle(TDocStd_Document) hDoc, const Message_ProgressRange& theProgress)
 {
     const double unit = 0.001;  // mm
     RWGltf_CafReader aReader;
     aReader.SetSystemLengthUnit(unit);
     aReader.SetSystemCoordinateSystem(RWMesh_CoordinateSystem_Zup);
     aReader.SetDocument(hDoc);
-    aReader.SetParallel(true);
+    aReader.SetParallel(multiThreaded());
+    aReader.SetSkipEmptyNodes(skipEmptyNodes());
+#if OCC_VERSION_HEX >= 0x070600
+    aReader.SetLoadAllScenes(loadAllScenes());
+    aReader.SetDoublePrecision(doublePrecision());
+    aReader.SetToPrintDebugMessages(printDebugMessages());
+#endif
 
     TCollection_AsciiString filename(file.filePath().c_str());
-    Standard_Boolean ret = aReader.Perform(filename, Message_ProgressRange());
+    Standard_Boolean ret = aReader.Perform(filename, theProgress);
     if (!ret) {
         throw Base::FileException("Cannot read from file: ", file);
     }
 
-    processDocument(hDoc);
+    if (!loadTessellationOnly()) {
+        processDocument(hDoc);
+    }
+}
+
+
+TopoDS_Shape ReaderGltf::singleShape(Handle(TDocStd_Document) hDoc,
+                                     const Message_ProgressRange& theProgress) const
+{
+    const double unit = 0.001;  // mm
+    RWGltf_CafReader aReader;
+    aReader.SetSystemLengthUnit(unit);
+    aReader.SetSystemCoordinateSystem(RWMesh_CoordinateSystem_Zup);
+    aReader.SetDocument(hDoc);
+    aReader.SetParallel(multiThreaded());
+    aReader.SetSkipEmptyNodes(skipEmptyNodes());
+    aReader.SetLoadAllScenes(loadAllScenes());
+    aReader.SetDoublePrecision(doublePrecision());
+    aReader.SetToPrintDebugMessages(printDebugMessages());
+
+    TCollection_AsciiString filename(file.filePath().c_str());
+    Standard_Boolean ret = aReader.Perform(filename, theProgress);
+    if (!ret) {
+        throw Base::FileException("Cannot read from file: ", file);
+    }
+
+    return aReader.SingleShape();
 }
 
 // NOLINTNEXTLINE
@@ -129,14 +161,74 @@ TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
     return {std::move(compound)};
 }
 
-bool ReaderGltf::cleanup() const
+bool ReaderGltf::loadTessellationOnly() const
+{
+    return meshOnly;
+}
+
+void ReaderGltf::setLoadTessellationOnly(bool value)
+{
+    meshOnly = value;
+}
+
+bool ReaderGltf::refinement() const
 {
     return clean;
 }
 
-void ReaderGltf::setCleanup(bool value)
+void ReaderGltf::setRefinement(bool value)
 {
     clean = value;
+}
+
+bool ReaderGltf::skipEmptyNodes() const
+{
+    return skipEmpty;
+}
+
+void ReaderGltf::setSkipEmptyNodes(bool value)
+{
+    skipEmpty = value;
+}
+
+bool ReaderGltf::doublePrecision() const
+{
+    return doublePrec;
+}
+
+void ReaderGltf::setDoublePrecision(bool value)
+{
+    doublePrec = value;
+}
+
+bool ReaderGltf::loadAllScenes() const
+{
+    return loadAll;
+}
+
+void ReaderGltf::setLoadAllScenes(bool value)
+{
+    loadAll = value;
+}
+
+bool ReaderGltf::multiThreaded() const
+{
+    return multiThread;
+}
+
+void ReaderGltf::setMultiThreaded(bool value)
+{
+    multiThread = value;
+}
+
+bool ReaderGltf::printDebugMessages() const
+{
+    return printDbgMsg;
+}
+
+void ReaderGltf::setPrintDebugMessages(bool value)
+{
+    printDbgMsg = value;
 }
 
 TopoDS_Shape ReaderGltf::fixShape(TopoDS_Shape shape)  // NOLINT
@@ -151,14 +243,9 @@ TopoDS_Shape ReaderGltf::fixShape(TopoDS_Shape shape)  // NOLINT
     sh.getFaces(points, facets, tolerance);
     sh.setFaces(points, facets, tolerance);
 
-    if (cleanup()) {
+    if (refinement()) {
         sh.sewShape();
-        try {
-            return sh.removeSplitter();
-        }
-        catch (const Standard_Failure& e) {
-            return sh.getShape();
-        }
+        return sh.removeSplitter();
     }
 
     return sh.getShape();

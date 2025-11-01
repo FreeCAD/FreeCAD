@@ -91,6 +91,12 @@ SET(PartGui_SRCS
     DlgExportStep.h
     DlgExportStep.ui
     DlgExportHeaderStep.ui
+    DlgExportGltf.cpp
+    DlgExportGltf.h
+    DlgExportGltf.ui
+    DlgImportGltf.cpp
+    DlgImportGltf.h
+    DlgImportGltf.ui
     DlgExtrusion.cpp
     DlgExtrusion.h
     DlgExtrusion.ui

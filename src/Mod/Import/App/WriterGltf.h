@@ -38,8 +38,20 @@ public:
 
     void write(Handle(TDocStd_Document) hDoc) const;
 
+    bool exportUVCoords() const;
+    void setExportUVCoords(bool);
+
+    bool mergeFaces() const;
+    void setMergeFaces(bool);
+
+    bool multiThreaded() const;
+    void setMultiThreaded(bool);
+
 private:
     Base::FileInfo file;
+    bool exportUV = false;
+    bool merge = false;
+    bool multiThread = false;
 };
 }  // namespace Import
 

@@ -79,6 +79,7 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) hDoc, App::Document* doc, cons
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
+    aVisTool = XCAFDoc_DocumentTool::VisMaterialTool(pDoc->Main());
 
     if (pDocument->isSaved()) {
         Base::FileInfo fi(pDocument->FileName.getValue());
@@ -225,6 +226,16 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
             ret = true;
         }
     }
+    Handle(XCAFDoc_VisMaterial) aVisMat = aVisTool->GetShapeMaterial(shape);
+    if (!aVisMat.IsNull()) {
+        aColor = aVisMat->BaseColor();
+        Base::Color c = Tools::convertColor(aColor);
+        if (!check || info.faceColor != c) {
+            info.faceColor = c;
+            info.hasFaceColor = true;
+            ret = true;
+        }
+    }
     if (!check) {
         if (!info.hasFaceColor) {
             info.faceColor = options.defaultFaceColor;
@@ -274,13 +285,27 @@ ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape
     return info.obj;
 }
 
+bool ImportOCAF2::checkShape(const TopoDS_Shape& shape) const
+{
+    if (shape.IsNull()) {
+        return false;
+    }
+
+    if (allowEmptyShape()) {
+        return true;
+    }
+
+    // check if the shape has a geometry
+    return TopExp_Explorer(shape, TopAbs_VERTEX).More();
+}
+
 bool ImportOCAF2::createObject(App::Document* doc,
                                TDF_Label label,
                                const TopoDS_Shape& shape,
                                Info& info,
                                bool newDoc)
 {
-    if (shape.IsNull() || !TopExp_Explorer(shape, TopAbs_VERTEX).More()) {
+    if (!checkShape(shape)) {
         FC_WARN(Tools::labelName(label) << " has empty shape");
         return false;
     }
@@ -336,6 +361,12 @@ bool ImportOCAF2::createObject(App::Document* doc,
                         // Do not set edge the same color as face
                         foundEdgeColor = false;
                     }
+                }
+                Handle(XCAFDoc_VisMaterial) aVisMat = aVisTool->GetShapeMaterial(l);
+                if (!aVisMat.IsNull()) {
+                    aColor = aVisMat->BaseColor();
+                    faceColor = Tools::convertColor(aColor);
+                    foundFaceColor = true;
                 }
 
                 if (foundFaceColor) {

@@ -6,7 +6,7 @@ set(ImportGui_LIBS
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )
 
-SET(ImportGui_SRCS
+set(ImportGui_SRCS
     AppImportGui.cpp
     AppImportGuiPy.cpp
     Command.cpp
