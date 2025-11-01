@@ -42,16 +42,15 @@ using namespace RobotGui;
 
 #include <QFileDialog>
 
-namespace {
+namespace
+{
 
 std::string getWrl(const QString& hint_directory)
 {
-    QString fileName = QFileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QObject::tr("Select VRML file for Robot"),
-        hint_directory,
-        QObject::tr("VRML Files (*.wrl *.vrml)")
-    );
+    QString fileName = QFileDialog::getOpenFileName(Gui::getMainWindow(),
+                                                    QObject::tr("Select VRML file for Robot"),
+                                                    hint_directory,
+                                                    QObject::tr("VRML Files (*.wrl *.vrml)"));
 
     return fileName.toStdString();
 }
@@ -60,16 +59,15 @@ std::string getCsv(const std::string& wrl_path)
 {
     QFileInfo wrlInfo(QString::fromStdString(wrl_path));
     QString hintDir = wrlInfo.absolutePath();
-    QString fileName = QFileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QObject::tr("Select Kinematic CSV file for Robot"),
-        hintDir,
-        QObject::tr("CSV Files (*.csv)")
-    );
+    QString fileName =
+        QFileDialog::getOpenFileName(Gui::getMainWindow(),
+                                     QObject::tr("Select Kinematic CSV file for Robot"),
+                                     hintDir,
+                                     QObject::tr("CSV Files (*.csv)"));
     return fileName.toStdString();
 }
 
-}
+}  // namespace
 
 DEF_STD_CMD_A(CmdRobotSetHomePos)
 
