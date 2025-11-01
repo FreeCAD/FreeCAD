@@ -263,10 +263,23 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
         // #0002559: Body becomes visible upon changing DisplayModeBody
         Visibility.touch();
     }
-    else
+    else {
         unifyVisualProperty(prop);
+    }
+
+    // When changing transparency then adjust the ShapeAppearance inside onChanged()
+    // of the base class but don't notify its container again. This breaks the chain of
+    // notification and avoids the call of onChanged() with the ShapeAppearance as argument
+    // This fixes issue https://github.com/FreeCAD/FreeCAD/issues/18075
+    if (prop == &Transparency) {
+        ShapeAppearance.enableNotify(false);
+    }
 
     PartGui::ViewProviderPartExt::onChanged(prop);
+
+    if (prop == &Transparency) {
+        ShapeAppearance.enableNotify(true);
+    }
 }
 
 
