@@ -37,6 +37,8 @@ class SoNodeSensor;
 class SoTransform;
 class SoAnnotation;
 class SoSwitch;
+class SoEventCallback;
+class SoPickStyle;
 
 namespace Gui {
 
@@ -55,7 +57,7 @@ public:
         Forced
     };
 
-    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);
+    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, bool autoDistance = false, bool avoidMouseCursor = false);
 
     ~EditableDatumLabel() override;
 
@@ -63,13 +65,15 @@ public:
     void deactivate();
 
     void startEdit(double val, QObject* eventFilteringObj = nullptr, bool visibleToMouse = false);
-    void stopEdit();
+    void stopEdit(bool writeChanges = true);
     bool isActive() const;
     bool isInEdit() const;
     double getValue() const;
     void setSpinboxValue(double val, const Base::Unit& unit = Base::Unit::Length);
     void setPlacement(const Base::Placement& plc);
     void setColor(SbColor color);
+    void setActivatedColor();
+    void setDeactivatedColor();
     void setFocus();
     void setPoints(SbVec3f p1, SbVec3f p2);
     void setPoints(Base::Vector3d p1, Base::Vector3d p2);
@@ -82,6 +86,7 @@ public:
     void setLabelRecommendedDistance();
     void setLabelAutoDistanceReverse(bool val);
     void setSpinboxVisibleToMouse(bool val);
+    void setPickable(bool val);
     void setLockedAppearance(bool locked); ///< Sets visual appearance to indicate locked state (finished editing)
     void resetLockedState(); ///< Resets both hasFinishedEditing flag and locked appearance
 
@@ -101,6 +106,9 @@ Q_SIGNALS:
     void valueChanged(double val);
     void parameterUnset();
     void finishEditingOnAllOVPs(); ///< Emitted when Ctrl+Enter is pressed to finish editing on all visible OVPs
+    void clicked(EditableDatumLabel* label);  ///< Emitted when the label is clicked in the 3D view.
+    void editFinished(double value);  ///< Emitted when editing is confirmed (e.g., Enter pressed).
+    void focusLost();  ///< Emitted when the spinbox looses focus.
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
@@ -108,6 +116,10 @@ protected:
 private:
     void positionSpinbox();
     SbVec3f getTextCenterPoint() const;
+    void initColors();
+
+    void handleEvent(SoEventCallback* cb);
+    static void eventCallbackF(void* userData, SoEventCallback* cb);
 
 private:
     SoSwitch* root;
@@ -119,7 +131,12 @@ private:
     SoNodeSensor* cameraSensor;
     SbVec3f midpos;
 
+    SbColor dimConstrColor, dimConstrDeactivatedColor;
+    SoEventCallback* eventCallback;
+    SoPickStyle* pickStyle;
+
     Function function;
+    double originalValue;
 };
 
 }
