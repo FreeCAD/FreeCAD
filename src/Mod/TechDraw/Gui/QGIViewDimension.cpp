@@ -38,6 +38,7 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -2041,6 +2042,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     double labelAngle = 0.0;
 
     anglePoints anglePoints = dimension->getAnglePoints();
+    if (auto* detail = dynamic_cast<const TechDraw::DrawViewDetail*>(dimension->getViewPart())) {
+        anglePoints.vertex(detail->AnchorPoint.getValue());
+    }
 
     Base::Vector2d angleVertex = fromQtApp(anglePoints.vertex());
     Base::Vector2d startPoint = fromQtApp(anglePoints.first());
