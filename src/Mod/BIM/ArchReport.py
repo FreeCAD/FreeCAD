@@ -2247,39 +2247,48 @@ if FreeCAD.GuiUp:
             # --- Build Rules List ---
             self.highlighting_rules = []
 
+            if hasattr(QtCore.QRegularExpression, "PatternOption"):
+                # This is the PySide6/Qt6 structure
+                CaseInsensitiveOption = (
+                    QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
+                )
+            else:
+                # This is the PySide2/Qt5 structure
+                CaseInsensitiveOption = QtCore.QRegularExpression.CaseInsensitiveOption
+
             # Keywords (case-insensitive regex)
             # Get the list of keywords from the SQL engine.
             for word in ArchSql.getSqlKeywords():
-                pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
+                pattern = QtCore.QRegularExpression(r"\b" + word + r"\b", CaseInsensitiveOption)
                 rule = {"pattern": pattern, "format": keyword_format}
                 self.highlighting_rules.append(rule)
 
             # Aggregate Functions (case-insensitive regex)
             functions = ["COUNT", "SUM", "MIN", "MAX"]
             for word in functions:
-                pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
+                pattern = QtCore.QRegularExpression(r"\b" + word + r"\b", CaseInsensitiveOption)
                 rule = {"pattern": pattern, "format": function_format}
                 self.highlighting_rules.append(rule)
 
             # String Literals (single quotes)
             # This regex captures everything between single quotes, allowing for escaped quotes
-            string_pattern = QtCore.QRegExp(r"'[^'\\]*(\\.[^'\\]*)*'")
+            string_pattern = QtCore.QRegularExpression(r"'[^'\\]*(\\.[^'\\]*)*'")
             self.highlighting_rules.append({"pattern": string_pattern, "format": string_format})
             # Also support double-quoted string literals (some SQL dialects use double quotes)
-            double_string_pattern = QtCore.QRegExp(r'"[^"\\]*(\\.[^"\\]*)*"')
+            double_string_pattern = QtCore.QRegularExpression(r'"[^"\\]*(\\.[^"\\]*)*"')
             self.highlighting_rules.append(
                 {"pattern": double_string_pattern, "format": string_format}
             )
 
             # Single-line comments (starting with -- or #)
-            comment_single_line_pattern = QtCore.QRegExp(r"--[^\n]*|\#[^\n]*")
+            comment_single_line_pattern = QtCore.QRegularExpression(r"--[^\n]*|\#[^\n]*")
             self.highlighting_rules.append(
                 {"pattern": comment_single_line_pattern, "format": comment_format}
             )
 
             # Multi-line comments (/* ... */) - requires special handling in highlightBlock
-            self.multi_line_comment_start_pattern = QtCore.QRegExp(r"/\*")
-            self.multi_line_comment_end_pattern = QtCore.QRegExp(r"\*/")
+            self.multi_line_comment_start_pattern = QtCore.QRegularExpression(r"/\*")
+            self.multi_line_comment_end_pattern = QtCore.QRegularExpression(r"\*/")
             self.multi_line_comment_format = comment_format
 
         def highlightBlock(self, text):
@@ -2287,45 +2296,51 @@ if FreeCAD.GuiUp:
             Applies highlighting rules to the given text block.
             This method is called automatically by Qt for each visible text block.
             """
-            # Reset format for the current block
+            # --- Part 1: Handle single-line rules ---
+            # Iterate over all the rules defined in the constructor
             for rule in self.highlighting_rules:
                 pattern = rule["pattern"]
                 format = rule["format"]
-                index = pattern.indexIn(text)
-                while index >= 0:
-                    length = pattern.matchedLength()
-                    self.setFormat(index, length, format)
-                    index = pattern.indexIn(text, index + length)
 
-            # Handle multi-line comments
-            self.setCurrentBlockState(0)  # Default state (no comment)
+                # Get an iterator for all matches
+                iterator = pattern.globalMatch(text)
+                while iterator.hasNext():
+                    match = iterator.next()
+                    # Apply the format to the matched text
+                    self.setFormat(match.capturedStart(), match.capturedLength(), format)
 
-            # Start from the correct index depending on whether the previous block
-            # ended inside a multi-line comment. If the previous block was inside
-            # a comment we continue scanning from the start of this block (0).
-            # Otherwise, search for the opening comment marker in this block.
-            if self.previousBlockState() == 1:  # State 1 means "inside multi-line comment"
-                start_index = 0
+            # --- Part 2: Handle multi-line comments (which span blocks) ---
+            self.setCurrentBlockState(0)
+
+            startIndex = 0
+            # Check if the previous block was an unclosed multi-line comment
+            if self.previousBlockState() != 1:
+                # It wasn't, so find the start of a new comment in the current line
+                match = self.multi_line_comment_start_pattern.match(text)
+                startIndex = match.capturedStart() if match.hasMatch() else -1
             else:
-                start_index = self.multi_line_comment_start_pattern.indexIn(text)
+                # The previous block was an unclosed comment, so this block starts inside a comment
+                startIndex = 0
 
-            while start_index >= 0:
-                end_index = self.multi_line_comment_end_pattern.indexIn(text, start_index)
-                comment_length = 0
-                if end_index == -1:  # No end tag found, so comment continues to end of block
+            while startIndex >= 0:
+                # Find the end of the comment
+                end_match = self.multi_line_comment_end_pattern.match(text, startIndex)
+                commentLength = 0
+
+                if not end_match.hasMatch():
+                    # The comment doesn't end in this line, so it spans the rest of the block
                     self.setCurrentBlockState(1)
-                    comment_length = len(text) - start_index
-                else:  # End tag found
-                    comment_length = (
-                        end_index
-                        - start_index
-                        + self.multi_line_comment_end_pattern.matchedLength()
-                    )
+                    commentLength = len(text) - startIndex
+                else:
+                    # The comment ends in this line
+                    commentLength = end_match.capturedEnd() - startIndex
 
-                self.setFormat(start_index, comment_length, self.multi_line_comment_format)
-                start_index = self.multi_line_comment_start_pattern.indexIn(
-                    text, start_index + comment_length
-                )
+                self.setFormat(startIndex, commentLength, self.multi_line_comment_format)
+
+                # Look for the next multi-line comment in the same line
+                next_start_index = startIndex + commentLength
+                next_match = self.multi_line_comment_start_pattern.match(text, next_start_index)
+                startIndex = next_match.capturedStart() if next_match.hasMatch() else -1
 
     class CheatsheetDialog(QtWidgets.QDialog):
         """A simple dialog to display the HTML cheatsheet."""
