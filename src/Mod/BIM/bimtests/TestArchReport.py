@@ -1945,7 +1945,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Sub-Test 2: max_depth = 2 (should find grandchildren)
         with self.subTest(depth=2):
-            results_depth_2 = _traverse_architectural_hierarchy([floor], max_depth=2)
+            results_depth_2 = ArchSql._traverse_architectural_hierarchy([floor], max_depth=2)
             labels_depth_2 = sorted([o.Label for o in results_depth_2])
             expected_labels_2 = sorted(["DepthTestFloor", "DepthTestWall", "DepthTestWindow"])
             self.assertListEqual(
@@ -1954,7 +1954,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Sub-Test 3: max_depth = 0 (unlimited, should find all)
         with self.subTest(depth=0):
-            results_depth_0 = _traverse_architectural_hierarchy([floor], max_depth=0)
+            results_depth_0 = ArchSql._traverse_architectural_hierarchy([floor], max_depth=0)
             labels_depth_0 = sorted([o.Label for o in results_depth_0])
             expected_labels_0 = sorted(["DepthTestFloor", "DepthTestWall", "DepthTestWindow"])
             self.assertListEqual(
