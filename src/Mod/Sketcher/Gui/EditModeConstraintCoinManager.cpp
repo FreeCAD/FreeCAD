@@ -905,9 +905,7 @@ Restart:
                             asciiText->datumtype = SoDatumLabel::ARCLENGTH;
                             asciiText->param1 = Constr->LabelDistance;
                             asciiText->string =
-                                SbString(std::string("◠ ")
-                                             .append(getPresentationString(Constr).toUtf8())
-                                             .c_str());
+                                SbString(getPresentationString(Constr, "◠ ").toUtf8().constData());
 
                             asciiText->pnts.setNum(3);
                             SbVec3f* verts = asciiText->pnts.startEditing();
@@ -1517,7 +1515,7 @@ Restart:
 
                     // Get display string with units hidden if so requested
                     asciiText->string =
-                        SbString(getPresentationString(Constr).toUtf8().constData());
+                        SbString(getPresentationString(Constr, "⌀").toUtf8().constData());
 
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
@@ -1600,7 +1598,7 @@ Restart:
                     }
                     else {
                         asciiText->string =
-                            SbString(getPresentationString(Constr).toUtf8().constData());
+                            SbString(getPresentationString(Constr, "R").toUtf8().constData());
                     }
 
                     asciiText->datumtype = SoDatumLabel::RADIUS;
@@ -1877,10 +1875,8 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
 
                 l->textColor = constraint->isActive
-                    ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
-                        ? drawingParameters.ExprBasedConstrDimColor
-                        : (constraint->isDriving ? drawingParameters.ConstrDimColor
-                                                 : drawingParameters.NonDrivingConstrDimColor)
+                    ? (constraint->isDriving ? drawingParameters.ConstrDimColor
+                                             : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
@@ -2102,12 +2098,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
     }
 }
 
-QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
+QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint,
+                                                             std::string prefix)
 {
-    if (!constraint->isActive) {
-        return QStringLiteral(" ");
-    }
-
     /**
      * Hide units if
      *  - user has requested it,
@@ -2143,38 +2136,55 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     auto valueStr = QString::fromStdString(constrPresValue);
 
     auto fixedValueStr = fixValueStr(valueStr, unitStr).value_or(valueStr);
-    switch (constraint->Type) {
-        case Sketcher::Diameter:
-            fixedValueStr.prepend(QChar(0x2300));
-            break;
-        case Sketcher::Radius:
-            fixedValueStr.prepend(QLatin1Char('R'));
-            break;
-        default:
-            break;
+    if (!prefix.empty()) {
+        fixedValueStr.prepend(QString::fromStdString(prefix));
     }
 
-    if (!constraintParameters.bShowDimensionalName || constraint->Name.empty()) {
-        return fixedValueStr;
+    if (constraintParameters.bShowDimensionalName && !constraint->Name.empty()) {
+        /**
+         * Create the representation string from the user defined format string
+         * Format options are:
+         * %N - the constraint name parameter
+         * %V - the value of the dimensional constraint, including any unit characters
+         */
+        auto sDimFmt {constraintParameters.sDimensionalStringFormat};
+        if (!sDimFmt.contains(QLatin1String("%V"))
+            && !sDimFmt.contains(QLatin1String("%N"))) {  // using default format "%N = %V"
+
+            fixedValueStr = QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ")
+                + fixedValueStr;
+        }
+        else {
+            sDimFmt.replace(QLatin1String("%N"), QString::fromStdString(constraint->Name));
+            sDimFmt.replace(QLatin1String("%V"), fixedValueStr);
+            fixedValueStr = sDimFmt;
+        }
     }
 
-    /**
-     * Create the representation string from the user defined format string
-     * Format options are:
-     * %N - the constraint name parameter
-     * %V - the value of the dimensional constraint, including any unit characters
-     */
-    auto sDimFmt {constraintParameters.sDimensionalStringFormat};
-    if (!sDimFmt.contains(QLatin1String("%V"))
-        && !sDimFmt.contains(QLatin1String("%N"))) {  // using default format "%N = %V"
-
-        return QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ") + valueStr;
+    int constraintIndex = -1;
+    const auto& constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
+    auto it = std::find(constrlist.begin(), constrlist.end(), constraint);
+    if (it != constrlist.end()) {
+        constraintIndex = std::distance(constrlist.begin(), it);
+        if (ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider,
+                                                                    constraintIndex)) {
+            fixedValueStr += QStringLiteral(" (ƒ𝑥)");
+        }
     }
 
-    sDimFmt.replace(QLatin1String("%N"), QString::fromStdString(constraint->Name));
-    sDimFmt.replace(QLatin1String("%V"), fixedValueStr);
+    if (!constraint->isDriving) {
+        fixedValueStr = QStringLiteral("(") + fixedValueStr + QStringLiteral(")");
+    }
 
-    return sDimFmt;
+    if (!constraint->isActive) {
+        QString result = QStringLiteral("\u0336");
+        for (auto c : std::as_const(fixedValueStr)) {
+            result += c + QStringLiteral("\u0336");
+        }
+        return result;
+    }
+
+    return fixedValueStr;
 }
 
 std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
