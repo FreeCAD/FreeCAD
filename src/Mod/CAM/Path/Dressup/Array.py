@@ -166,6 +166,8 @@ class DressupArray:
     def onChanged(self, obj, prop):
         if prop == "Type":
             self.setEditorModes(obj)
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""

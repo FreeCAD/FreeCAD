@@ -29,6 +29,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 
 from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -95,9 +96,11 @@ class ObjectDressup:
     def loads(self, state):
         return None
 
-    def onChanged(self, fp, prop):
+    def onChanged(self, obj, prop):
         if str(prop) == "probefile":
-            self._loadFile(fp, fp.probefile)
+            self._loadFile(obj, obj.probefile)
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def _bilinearInterpolate(self, surface, x, y):
         p1 = FreeCAD.Vector(x, y, 100.0)
@@ -108,7 +111,7 @@ class ObjectDressup:
         return points[0].Z
 
     def _loadFile(self, obj, filename):
-        if filename == "":
+        if not filename:
             return
 
         f1 = open(filename, "r")
@@ -328,6 +331,12 @@ class ViewProviderDressup:
         job.Proxy.addOperation(arg1.Object.Base)
         arg1.Object.Base = None
         return True
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathDressup:

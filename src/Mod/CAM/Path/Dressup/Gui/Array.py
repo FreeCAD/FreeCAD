@@ -5,6 +5,7 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Array as DressupArray
+import Path.Dressup.Utils as PathDressup
 import Path.Main.Stock as PathStock
 import PathScripts.PathUtils as PathUtils
 
@@ -50,6 +51,12 @@ class DressupArrayViewProvider(object):
 
     def clearTaskPanel(self):
         pass
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathDressupArray:
