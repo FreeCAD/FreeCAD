@@ -2246,14 +2246,16 @@ if FreeCAD.GuiUp:
 
             # --- Build Rules List ---
             self.highlighting_rules = []
-            
+
             if hasattr(QtCore.QRegularExpression, "PatternOption"):
                 # This is the PySide6/Qt6 structure
-                CaseInsensitiveOption = QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
+                CaseInsensitiveOption = (
+                    QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
+                )
             else:
                 # This is the PySide2/Qt5 structure
                 CaseInsensitiveOption = QtCore.QRegularExpression.CaseInsensitiveOption
-    
+
             # Keywords (case-insensitive regex)
             # Get the list of keywords from the SQL engine.
             for word in ArchSql.getSqlKeywords():
