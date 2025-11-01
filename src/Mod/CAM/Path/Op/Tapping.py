@@ -174,7 +174,9 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             endoffset = PathUtils.drillTipLength(self.tool) * 2
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
-        self.commandlist.append(Path.Command(obj.ReturnLevel))
+        self.commandlist.append(
+            Path.Command(obj.ReturnLevel).addAnnotations({"operation": "tapping"})
+        )
 
         # This section is technical debt. The computation of the
         # target shapes should be factored out for reuse.
@@ -265,7 +267,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
                 machine.addCommand(command)
 
         # Cancel canned tapping cycle
-        self.commandlist.append(Path.Command("G80"))
+        self.commandlist.append(Path.Command("G80").addAnnotations({"operation": "tapping"}))
         # command = Path.Command("G0", {"Z": obj.SafeHeight.Value})  DLH- Not needed, adds unnecessary move to Z SafeHeight.
         # self.commandlist.append(command)
         # machine.addCommand(command)       DLH - Not needed.
