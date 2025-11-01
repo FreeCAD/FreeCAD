@@ -409,6 +409,29 @@ class _Wall(ArchComponent.Component):
             self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self, "ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
+        if "EndingStart" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingStart",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement, describing "
+                    "a plane that cuts the end of the wall, at start position.",
+                ),
+            )
+        if "EndingEnd" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingEnd",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement, describing "
+                    "a plane that cuts the end of the wall, at end position.",
+                ),
+            )
+
         self.connectEdges = []
 
     def dumps(self):
@@ -728,6 +751,7 @@ class _Wall(ArchComponent.Component):
             base = Part.Shape()
 
         base = self.processSubShapes(obj, base, pl)
+        base = self.process_endings(obj, base, pl)
 
         self.applyShape(obj, base, pl)
 
@@ -1486,32 +1510,10 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-        # Build Wall if there is no obj.Base or even obj.Base is not valid
+        # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
-            if layers:
-                totalwidth = sum([abs(l) for l in layers])
-                offset = 0
-                base = []
-                for l in layers:
-                    if l > 0:
-                        l2 = length / 2 or 0.5
-                        w1 = -totalwidth / 2 + offset
-                        w2 = w1 + l
-                        v1 = Vector(-l2, w1, 0)
-                        v2 = Vector(l2, w1, 0)
-                        v3 = Vector(l2, w2, 0)
-                        v4 = Vector(-l2, w2, 0)
-                        base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
-                    offset += abs(l)
-            else:
-                l2 = length / 2 or 0.5
-                w2 = width / 2 or 0.5
-                v1 = Vector(-l2, -w2, 0)
-                v2 = Vector(l2, -w2, 0)
-                v3 = Vector(l2, w2, 0)
-                v4 = Vector(-l2, w2, 0)
-                base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
-            placement = FreeCAD.Placement()
+            base, placement = self.build_base_from_scratch(obj)
+
         if base and placement:
             normal.normalize()
             extrusion = normal.multiply(height)
@@ -1519,6 +1521,284 @@ class _Wall(ArchComponent.Component):
                 extrusion = placement.inverse().Rotation.multVec(extrusion)
             return (base, extrusion, placement)
         return None
+
+    def calc_endpoints(self, obj):
+        """Returns the global start and end points of a baseless wall's centerline."""
+        # The wall's shape is centered, so its endpoints in local coordinates
+        # are at (-Length/2, 0, 0) and (+Length/2, 0, 0).
+        p1_local = FreeCAD.Vector(-obj.Length.Value / 2, 0, 0)
+        p2_local = FreeCAD.Vector(obj.Length.Value / 2, 0, 0)
+
+        # Transform these local points into global coordinates using the wall's placement.
+        p1_global = obj.Placement.multVec(p1_local)
+        p2_global = obj.Placement.multVec(p2_local)
+
+        return [p1_global, p2_global]
+
+    def set_from_endpoints(self, obj, pts):
+        """Sets the Length and Placement of a baseless wall from two global points."""
+        if len(pts) < 2:
+            return
+
+        p1 = pts[0]
+        p2 = pts[1]
+
+        # Recalculate the wall's properties based on the new endpoints
+        new_length = p1.distanceToPoint(p2)
+        new_midpoint = (p1 + p2) * 0.5
+        new_direction = (p2 - p1).normalize()
+
+        # Calculate the rotation required to align the local X-axis with the new direction
+        new_rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), new_direction)
+
+        # Apply the new properties to the wall object
+        obj.Length = new_length
+        obj.Placement.Base = new_midpoint
+        obj.Placement.Rotation = new_rotation
+
+    def handleComponentRemoval(self, obj, subobject):
+        """
+        Overrides the default component removal to implement smart debasing
+        when the Base object is being removed.
+        """
+        import Arch
+        from PySide import QtGui
+
+        # Check if the component being removed is this wall's Base
+        if hasattr(obj, "Base") and obj.Base == subobject:
+            if Arch.is_debasable(obj):
+                # This is a valid, single-line wall. Perform a clean debase.
+                Arch.debaseWall(obj)
+            else:
+                # This is a complex wall. Behavior depends on GUI availability.
+                if FreeCAD.GuiUp:
+                    # --- GUI Path: Warn the user and ask for confirmation. ---
+                    from PySide import QtGui
+
+                    msg_box = QtGui.QMessageBox()
+                    msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
+                    msg_box.setText(
+                        translate(
+                            "ArchComponent", "The base of this wall is not a single straight line."
+                        )
+                    )
+                    msg_box.setInformativeText(
+                        translate(
+                            "ArchComponent",
+                            "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
+                            "This operation cannot be undone. Do you want to proceed?",
+                        )
+                    )
+                    msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
+                    msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
+                    if msg_box.exec_() == QtGui.QMessageBox.Yes:
+                        # User confirmed, perform the standard removal
+                        super(_Wall, self).handleComponentRemoval(obj, subobject)
+                else:
+                    # --- Headless Path: Do not perform the destructive action. Print a warning. ---
+                    FreeCAD.Console.PrintWarning(
+                        f"Skipping removal of complex base for wall '{obj.Label}'. "
+                        "This interactive action is not supported in headless mode.\n"
+                    )
+        else:
+            # If it's not the base (e.g., an Addition), use the default behavior
+            # from the parent Component class.
+            super(_Wall, self).handleComponentRemoval(obj, subobject)
+
+    def get_width(self, obj, widths=True):
+        """Returns a width and a list of widths for this wall.
+        If widths is False, only the main width is returned"""
+        import ArchSketchObject
+
+        # Set 'default' width - for filling in any item in the list == 0 or None
+        if obj.Width.Value:
+            width = obj.Width.Value
+        else:
+            width = 200  # 'Default' width value
+        if not widths:
+            return width
+
+        lwidths = []
+        if (
+            hasattr(obj, "ArchSketchData")
+            and obj.ArchSketchData
+            and Draft.getType(obj.Base) == "ArchSketch"
+        ):
+            if hasattr(obj.Base, "Proxy"):
+                if hasattr(obj.Base.Proxy, "getWidths"):
+                    lwidths = obj.Base.Proxy.getWidths(
+                        obj.Base, propSetUuid=self.ArchSkPropSetPickedUuid
+                    )
+        if not lwidths:
+            if obj.OverrideWidth:
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    lwidths = ArchSketchObject.sortSketchWidth(
+                        obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
+                    )
+                else:
+                    lwidths = obj.OverrideWidth
+            elif obj.Width:
+                lwidths = [obj.Width.Value]
+            else:
+                return None
+        return width, lwidths
+
+    def get_layers(self, obj):
+        """Returns a list of layers"""
+        layers = []
+        width = self.get_width(obj, widths=False)
+        if hasattr(obj, "Material"):
+            if obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    restwidth = width - sum(thicknesses)
+                    varwidth = 0
+                    if restwidth > 0:
+                        varwidth = [t for t in thicknesses if t == 0]
+                        if varwidth:
+                            varwidth = restwidth / len(varwidth)
+                    for t in obj.Material.Thicknesses:
+                        if t:
+                            layers.append(t)
+                        elif varwidth:
+                            layers.append(varwidth)
+        return layers
+
+    def build_base_from_scratch(self, obj):
+        """Builds a simple, origin-centered base face for a baseless wall."""
+        import Part
+
+        layers = self.get_layers(obj)
+        width = self.get_width(obj, widths=False)
+        length = obj.Length.Value
+
+        base = []
+        if layers:
+            totalwidth = sum([abs(layer) for layer in layers])
+            offset = 0
+            for layer in layers:
+                if layer > 0:
+                    l2 = length / 2 or 0.5
+                    w1 = -totalwidth / 2 + offset
+                    w2 = w1 + layer
+                    v1 = Vector(-l2, w1, 0)
+                    v2 = Vector(l2, w1, 0)
+                    v3 = Vector(l2, w2, 0)
+                    v4 = Vector(-l2, w2, 0)
+                    base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
+                offset += abs(layer)
+        else:
+            l2 = length / 2 or 0.5
+            w2 = width / 2 or 0.5
+            v1 = Vector(-l2, -w2, 0)
+            v2 = Vector(l2, -w2, 0)
+            v3 = Vector(l2, w2, 0)
+            v4 = Vector(-l2, w2, 0)
+            base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
+
+        placement = FreeCAD.Placement()
+        return base, placement
+
+    def get_baseline(self, obj):
+        """
+        Returns the baseline of the wall as a Part.LineSegment in global coordinates.
+        Handles both based and baseless walls.
+        """
+        import Part
+
+        if hasattr(obj, "Base") and obj.Base:
+            # For based walls, return the shape of the base object.
+            # We assume it's a single line or wire for joining purposes.
+            return obj.Base.Shape
+        elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "calc_endpoints"):
+            # For baseless walls, calculate the endpoints.
+            endpoints = obj.Proxy.calc_endpoints(obj)
+            return Part.makeLine(endpoints[0], endpoints[1])
+        return None
+
+    def process_endings(self, obj, base_solid, wall_placement):
+        """
+        Trims the given wall solid using the EndingStart and EndingEnd planes.
+        """
+        import Part
+
+        if base_solid.isNull():
+            return base_solid
+
+        solid_to_trim = base_solid
+        tool_size = base_solid.BoundBox.DiagonalLength * 2
+
+        # --- Process the start ending ---
+        is_start_null = obj.EndingStart.Base.Length < 1e-9 and obj.EndingStart.Rotation.Angle < 1e-9
+        if not is_start_null:
+            print("\n--- Processing Start Ending ---")
+            global_plane_placement = wall_placement.multiply(obj.EndingStart)
+
+            # The reference point is the wall's OTHER end, in GLOBAL coordinates.
+            ref_point = obj.Proxy.calc_endpoints(obj)[1]
+            print(f"  Ref Point (Global 'Keep' Side): {ref_point}")  # INSTRUMENTATION
+
+            cutting_tool_global = self._create_cutting_tool_from_plane(
+                global_plane_placement, ref_point, tool_size
+            )
+
+            cutting_tool_local = cutting_tool_global.copy()
+            cutting_tool_local.transformShape(wall_placement.inverse().toMatrix())
+
+            solid_to_trim = solid_to_trim.common(cutting_tool_local)
+            print(f"  'common' operation performed. Resulting volume: {solid_to_trim.Volume}")
+
+        # --- Process the end ending ---
+        is_end_null = obj.EndingEnd.Base.Length < 1e-9 and obj.EndingEnd.Rotation.Angle < 1e-9
+        if not is_end_null:
+            print("\n--- Processing End Ending ---")
+            global_plane_placement = wall_placement.multiply(obj.EndingEnd)
+
+            # CORRECTED: calc_endpoints already returns global coordinates.
+            ref_point = obj.Proxy.calc_endpoints(obj)[0]  # Use the wall's start as the 'keep' point
+
+            cutting_tool_global = self._create_cutting_tool_from_plane(
+                global_plane_placement, ref_point, tool_size
+            )
+
+            cutting_tool_local = cutting_tool_global.copy()
+            cutting_tool_local.transformShape(wall_placement.inverse().toMatrix())
+
+            solid_to_trim = solid_to_trim.common(cutting_tool_local)
+            print(f"  'common' operation performed. Resulting volume: {solid_to_trim.Volume}")
+
+        print("--- Finished process_endings ---\n")
+        return solid_to_trim
+
+    def _create_cutting_tool_from_plane(self, cutting_placement, ref_point, tool_size):
+        """
+        Creates a finite, solid cutting tool from a placement.
+        It uses a bounded face to ensure compatibility with boolean operations.
+        """
+        import Part
+
+        print(f"--- Inside _create_cutting_tool_from_plane ---")  # INSTRUMENTATION
+
+        # Create a bounded face and move it to the final cutting position.
+        p1 = FreeCAD.Vector(-tool_size / 2, -tool_size / 2, 0)
+        p2 = FreeCAD.Vector(tool_size / 2, -tool_size / 2, 0)
+        p3 = FreeCAD.Vector(tool_size / 2, tool_size / 2, 0)
+        p4 = FreeCAD.Vector(-tool_size / 2, tool_size / 2, 0)
+        bounded_face = Part.Face(Part.makePolygon([p1, p2, p3, p4, p1]))
+        bounded_face.Placement = cutting_placement
+
+        print(f"  Tool Face Placement (Global): {bounded_face.Placement}")  # INSTRUMENTATION
+
+        # Logic to determine extrusion direction
+        print(f"  Reference Point (Global 'Keep' Side): {ref_point}")  # INSTRUMENTATION
+
+        # Call makeHalfSpace on the bounded face. This will create a finite solid
+        # representing the "keep" volume, which is the correct tool for a .common() operation.
+        cutting_tool = bounded_face.makeHalfSpace(ref_point)
+        print("  Called makeHalfSpace() on bounded face.")  # INSTRUMENTATION
+        print("---------------------------------------------")  # INSTRUMENTATION
+
+        return cutting_tool
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
