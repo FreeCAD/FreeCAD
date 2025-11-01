@@ -513,7 +513,7 @@ TaskPostFunction::TaskPostFunction(ViewProviderFemPostFunction* view, QWidget* p
                      parent)
 {
     // we load the views widget
-    FunctionWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
+    ShapeWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
     w->setParent(this);
     w->setViewProvider(getTypedView<ViewProviderFemPostFunction>());
 
