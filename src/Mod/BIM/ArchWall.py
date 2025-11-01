@@ -1510,7 +1510,7 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-        # Build Wall from scratchif there is no obj.Base or even obj.Base is not valid
+        # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
             base, placement = self.build_base_from_scratch(obj)
 
