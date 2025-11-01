@@ -170,8 +170,10 @@ private:
                      std::vector<App::DocumentObject*>& children,
                      const boost::dynamic_bitset<>& visibilities,
                      bool canReduce = false);
-    bool getColor(const TopoDS_Shape& shape, Info& info, bool check = false, bool noDefault = false);
-    void getSHUOColors(TDF_Label label, std::map<std::string, Base::Color>& colors, bool appendFirst);
+    bool
+    getColor(const TopoDS_Shape& shape, Info& info, bool check = false, bool noDefault = false);
+    void
+    getSHUOColors(TDF_Label label, std::map<std::string, Base::Color>& colors, bool appendFirst);
     void setObjectName(Info& info, TDF_Label label);
     std::string getLabelName(TDF_Label label);
     App::DocumentObject*

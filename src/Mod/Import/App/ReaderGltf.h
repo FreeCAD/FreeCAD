@@ -41,8 +41,9 @@ public:
     void read(Handle(TDocStd_Document) hDoc,
               const Message_ProgressRange& theProgress = Message_ProgressRange());
 
-    TopoDS_Shape singleShape(Handle(TDocStd_Document) hDoc,
-                             const Message_ProgressRange& theProgress = Message_ProgressRange()) const;
+    TopoDS_Shape
+    singleShape(Handle(TDocStd_Document) hDoc,
+                const Message_ProgressRange& theProgress = Message_ProgressRange()) const;
 
     bool loadTessellationOnly() const;
     void setLoadTessellationOnly(bool);
