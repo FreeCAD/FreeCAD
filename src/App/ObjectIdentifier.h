@@ -33,6 +33,7 @@
 #include <boost/any.hpp>
 #include <FCConfig.h>
 
+#include "DocumentObserver.h"
 #include "ElementNamingUtils.h"
 
 namespace Py
@@ -819,7 +820,7 @@ public:
      */
     App::DocumentObject* getOwner() const
     {
-        return owner;
+        return owner.getObject();
     }
 
     /**
@@ -1552,9 +1553,7 @@ protected:
      */
     void getDepLabels(const ResolveResults& result, std::vector<std::string>& labels) const;
 
-    /// The owner of the object identifier.
-    App::DocumentObject* owner;
-    /// The document name that this object identifier refers to.
+    App::DocumentObjectT owner;
     String documentName;
     /// The document object name that this object identifier refers to.
     String documentObjectName;
