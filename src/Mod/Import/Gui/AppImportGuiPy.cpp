@@ -357,13 +357,13 @@ private:
                             static_cast<bool>(Py::Boolean(options.getItem("printDebugMessages"))));
                     }
                     if (options.hasKey("tessellationOnly")) {
-                        bool meshOnly = static_cast<bool>(Py::Boolean(options.getItem("tessellationOnly")));
+                        bool meshOnly =
+                            static_cast<bool>(Py::Boolean(options.getItem("tessellationOnly")));
                         reader.setLoadTessellationOnly(meshOnly);
                     }
                 }
 
                 ocaf.setAllowEmptyShape(reader.loadTessellationOnly());
-                reader.read(hDoc, Message_ProgressIndicator::Start(pi));
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
