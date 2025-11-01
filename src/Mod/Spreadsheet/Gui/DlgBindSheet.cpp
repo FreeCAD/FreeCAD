@@ -261,7 +261,6 @@ void DlgBindSheet::accept()
                                   toStart,
                                   toEnd);
         }
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
         QDialog::accept();
     }
@@ -290,7 +289,6 @@ void DlgBindSheet::onDiscard()
                               "setExpression('.cells.BindHiddenRef.%s.%s', None)",
                               fromStart,
                               fromEnd);
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
         reject();
     }

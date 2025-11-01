@@ -322,7 +322,6 @@ void PropertiesDialog::apply()
         }
         if (changes) {
             Gui::Command::commitCommand();
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         else {
             Gui::Command::abortCommand();
