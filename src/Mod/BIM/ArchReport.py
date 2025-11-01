@@ -2246,40 +2246,47 @@ if FreeCAD.GuiUp:
 
             # --- Build Rules List ---
             self.highlighting_rules = []
-
+            
+            if hasattr(QtCore.QRegularExpression, "PatternOption"):
+                # This is the PySide6/Qt6 structure
+                CaseInsensitiveOption = QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
+            else:
+                # This is the PySide2/Qt5 structure
+                CaseInsensitiveOption = QtCore.QRegularExpression.CaseInsensitiveOption
+    
             # Keywords (case-insensitive regex)
             # Get the list of keywords from the SQL engine.
             for word in ArchSql.getSqlKeywords():
-                pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
+                pattern = QtCore.QRegularExpression(r"\b" + word + r"\b", CaseInsensitiveOption)
                 rule = {"pattern": pattern, "format": keyword_format}
                 self.highlighting_rules.append(rule)
 
             # Aggregate Functions (case-insensitive regex)
             functions = ["COUNT", "SUM", "MIN", "MAX"]
             for word in functions:
-                pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
+                pattern = QtCore.QRegularExpression(r"\b" + word + r"\b", CaseInsensitiveOption)
                 rule = {"pattern": pattern, "format": function_format}
                 self.highlighting_rules.append(rule)
 
             # String Literals (single quotes)
             # This regex captures everything between single quotes, allowing for escaped quotes
-            string_pattern = QtCore.QRegExp(r"'[^'\\]*(\\.[^'\\]*)*'")
+            string_pattern = QtCore.QRegularExpression(r"'[^'\\]*(\\.[^'\\]*)*'")
             self.highlighting_rules.append({"pattern": string_pattern, "format": string_format})
             # Also support double-quoted string literals (some SQL dialects use double quotes)
-            double_string_pattern = QtCore.QRegExp(r'"[^"\\]*(\\.[^"\\]*)*"')
+            double_string_pattern = QtCore.QRegularExpression(r'"[^"\\]*(\\.[^"\\]*)*"')
             self.highlighting_rules.append(
                 {"pattern": double_string_pattern, "format": string_format}
             )
 
             # Single-line comments (starting with -- or #)
-            comment_single_line_pattern = QtCore.QRegExp(r"--[^\n]*|\#[^\n]*")
+            comment_single_line_pattern = QtCore.QRegularExpression(r"--[^\n]*|\#[^\n]*")
             self.highlighting_rules.append(
                 {"pattern": comment_single_line_pattern, "format": comment_format}
             )
 
             # Multi-line comments (/* ... */) - requires special handling in highlightBlock
-            self.multi_line_comment_start_pattern = QtCore.QRegExp(r"/\*")
-            self.multi_line_comment_end_pattern = QtCore.QRegExp(r"\*/")
+            self.multi_line_comment_start_pattern = QtCore.QRegularExpression(r"/\*")
+            self.multi_line_comment_end_pattern = QtCore.QRegularExpression(r"\*/")
             self.multi_line_comment_format = comment_format
 
         def highlightBlock(self, text):
