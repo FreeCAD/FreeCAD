@@ -173,12 +173,22 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     }
     else if (strcmp("Save", pMsg) == 0) {
         getGuiDocument()->save();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "none"));
+        if (trigger.compare(QLatin1String("onSave"), Qt::CaseInsensitive) == 0) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
-        getGuiDocument()->saveAs();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        getGuiDocument()->save();
+        ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "none"));
+        if (trigger.compare(QLatin1String("onSave"), Qt::CaseInsensitive) == 0) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
         return true;
     }
     else if (strcmp("Std_Delete", pMsg) == 0) {
