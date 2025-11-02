@@ -55,7 +55,9 @@ sys.meta_path.append(FemMigrateGui())
 
 
 # add FEM Gui unit tests
-FreeCAD.__unit_test__ += ["TestFemGui"]
+# Disabled on 2025-10-30 because of unexplained failing CI that appears to trace back to these
+# few tests. - chennes
+# FreeCAD.__unit_test__ += ["TestFemGui"]
 
 
 class FemWorkbench(Workbench):

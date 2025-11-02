@@ -166,7 +166,7 @@ struct SplineDataOut
 
 struct LWPolyDataOut
 {
-    double nVert;
+    int nVert;
     int Flag;
     double Width;
     double Elev;
