@@ -20,45 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <array>
-#include <boost/math/constants/constants.hpp>
-#include <cmath>
-#include <numbers>
-
-#include <FCConfig.h>
-
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
-
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
+#include <span>
+#include <QTimer>
+#include <QPainter>
+#include <QOpenGLTexture>
+#include <QFutureWatcher>
+#include <QRandomGenerator>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsBlurEffect>
+#include <QtConcurrent/QtConcurrentRun>
+#include <Gui/View3DInventorViewer.h>
 
 #include "SoFCBackgroundGradient.h"
 
-static const std::array <GLfloat[2], 32> big_circle = []{
-    constexpr float pi = std::numbers::pi_v<float>;
-    constexpr float sqrt2 = std::numbers::sqrt2_v<float>;
-    std::array <GLfloat[2], 32> result; int c = 0;
-    for (GLfloat i = 0; i < 2 * pi; i += 2 * pi / 32, c++) {
-        result[c][0] = sqrt2 * cosf(i);
-        result[c][1] = sqrt2 * sinf(i);
-    }
-    return result; }();
-static const std::array <GLfloat[2], 32> small_oval = []{
-    constexpr float pi = std::numbers::pi_v<float>;
-    constexpr float sqrt2 = std::numbers::sqrt2_v<float>;
-    static const float sqrt1_2 = std::sqrt(1 / 2.F);
-
-    std::array <GLfloat[2], 32> result; int c = 0;
-    for (GLfloat i = 0; i < 2 * pi; i += 2 * pi / 32, c++) {
-        result[c][0] = 0.3 * sqrt2 * cosf(i);
-        result[c][1] = sqrt1_2 * sinf(i);
-    }
-    return result; }();
 
 using namespace Gui;
 
@@ -75,10 +49,23 @@ void SoFCBackgroundGradient::finish()
 SoFCBackgroundGradient::SoFCBackgroundGradient()
 {
     SO_NODE_CONSTRUCTOR(SoFCBackgroundGradient);
-    fCol.setValue(0.5f, 0.5f, 0.8f);
-    tCol.setValue(0.7f, 0.7f, 0.9f);
-    mCol.setValue(1.0f, 1.0f, 1.0f);
+    fCol.setRgbF(0.5, 0.5, 0.8);
+    tCol.setRgbF(0.7, 0.7, 0.9);
+    mCol.setRgbF(1.0, 1.0, 1.0);
     gradient = Gradient::LINEAR;
+
+    setupUpdater();
+
+    if (bgImage.isNull()){
+        QPixmap pix{1, 1};
+        pix.fill(Qt::GlobalColor::white);
+        bgImage = pix.toImage();
+    }
+
+    if (noiseImage.isNull()){
+        noiseImage = whiteNoise(noise_size);
+        checkerboardPattern(noiseImage);
+    }
 }
 
 /*!
@@ -104,57 +91,46 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
 
-    if (gradient == Gradient::LINEAR) {
-        glBegin(GL_TRIANGLE_STRIP);
-        if (mCol[0] < 0) {
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f(-1,-1);
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f( 1, 1);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f( 1,-1);
-        }
-        else {
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f(-1, 0);
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f( 1, 1);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f( 1, 0);
-            glEnd();
-            glBegin(GL_TRIANGLE_STRIP);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f(-1, 0);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f(-1,-1);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f( 1, 0);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f( 1,-1);
-        }
+
+    glEnable(GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    if(noiseTex == nullptr){
+        noiseTex.reset(new QOpenGLTexture(noiseImage));
+        noiseTex->setMinMagFilters(QOpenGLTexture::Filter::Nearest, QOpenGLTexture::Filter::Nearest);
+        noiseTex->setWrapMode(QOpenGLTexture::WrapMode::Repeat);
+        noiseTex->generateMipMaps();
     }
-    else { // radial gradient
-        glBegin(GL_TRIANGLE_FAN);
-        glColor3f(fCol[0], fCol[1], fCol[2]); glVertex2f(0.0f, 0.0f);
+    noiseTex->bind();
 
-        if (mCol[0] < 0) { // simple radial gradient
-            glColor3f(tCol[0], tCol[1], tCol[2]);
-            for (const GLfloat *vertex : big_circle)
-                glVertex2fv( vertex );
-            glVertex2fv( big_circle.front() );
-        } else {
-            glColor3f(mCol[0], mCol[1], mCol[2]);
-            for (const GLfloat *vertex : small_oval)
-                glVertex2fv( vertex );
-            glVertex2fv( small_oval.front() );
-            glEnd();
-
-            glBegin(GL_TRIANGLE_STRIP);
-            for (std::size_t i = 0; i < small_oval.size(); i++) {
-                glColor3f(mCol[0], mCol[1], mCol[2]); glVertex2fv( small_oval[i] );
-                glColor3f(tCol[0], tCol[1], tCol[2]); glVertex2fv( big_circle[i] );
-            }
-
-            glColor3f(mCol[0], mCol[1], mCol[2]); glVertex2fv( small_oval.front() );
-            glColor3f(tCol[0], tCol[1], tCol[2]); glVertex2fv( big_circle.front() );
-        }
-    } // end of radial gradient
+    glBegin(GL_QUADS);
+    glColor4d(1.0, 1.0, 1.0, 1.0);
+    glTexCoord2d(0.0, 0.0); glVertex2d(-1.0, -1.0);
+    glTexCoord2d(0.0, 1.0); glVertex2d(-1.0, +1.0);
+    glTexCoord2d(1.0, 1.0); glVertex2d(+1.0, +1.0);
+    glTexCoord2d(1.0, 0.0); glVertex2d(+1.0, -1.0);
     glEnd();
 
+
+    if(bgTex == nullptr){
+        bgTex.reset(new QOpenGLTexture(bgImage));
+        bgTex->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+        bgTex->setWrapMode(QOpenGLTexture::ClampToEdge);
+        bgTex->generateMipMaps();
+    }
+    bgTex->bind();
+
+    glBegin(GL_QUADS);
+    glColor4d(1.0, 1.0, 1.0, bgTex_opacity);
+    glTexCoord2d(0.0, 0.0); glVertex2d(-1.0, -1.0);
+    glTexCoord2d(0.0, 1.0); glVertex2d(-1.0, +1.0);
+    glTexCoord2d(1.0, 1.0); glVertex2d(+1.0, +1.0);
+    glTexCoord2d(1.0, 0.0); glVertex2d(+1.0, -1.0);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
     glPopAttrib();
     glPopMatrix(); // restore modelview
     glMatrixMode(GL_PROJECTION);
@@ -165,6 +141,8 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
 void SoFCBackgroundGradient::setGradient(SoFCBackgroundGradient::Gradient grad)
 {
     gradient = grad;
+
+    updater->start();
 }
 
 SoFCBackgroundGradient::Gradient SoFCBackgroundGradient::getGradient() const
@@ -175,16 +153,188 @@ SoFCBackgroundGradient::Gradient SoFCBackgroundGradient::getGradient() const
 void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor,
                                               const SbColor& toColor)
 {
-    fCol = fromColor;
-    tCol = toColor;
-    mCol[0] = -1.0f;
+    fCol = QColor::fromRgbF(fromColor[0], fromColor[1], fromColor[2]);
+    tCol = QColor::fromRgbF(toColor[0], toColor[1], toColor[2]);
+    mCol = QColor{};
+
+    updater->start();
 }
 
 void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor,
                                               const SbColor& toColor,
                                               const SbColor& midColor)
 {
-    fCol = fromColor;
-    tCol = toColor;
-    mCol = midColor;
+    fCol = QColor::fromRgbF(fromColor[0], fromColor[1], fromColor[2]);
+    tCol = QColor::fromRgbF(toColor[0], toColor[1], toColor[2]);
+    mCol = QColor::fromRgbF(midColor[0], midColor[1], midColor[2]);
+
+    updater->start();
 }
+
+static
+QImage createLinearGradient(const QSize &&size, const QList <QColor> &colors)
+{
+    const int w = size.width(), h = size.height();
+    const QColor &fromColor = colors.first(),
+                 &toColor = colors.at(1),
+                 &midColor = colors.last();
+    const QPointF start(0, h/2), finalStop(w, h/2);
+
+    QLinearGradient linearGrad(start, finalStop);
+    if (midColor.isValid()){
+        linearGrad.setStops({{0.0, fromColor}, {0.5, midColor}, {1.0, toColor}});
+    }else {
+        linearGrad.setStops({{0.0, fromColor}, {1.0, toColor}});
+    }
+
+   QPixmap pix{w, h};
+   QPainter painter{&pix};
+   painter.fillRect(0, 0, w, h, linearGrad);
+
+   return pix.toImage();
+}
+
+static
+QImage createRadialGradient(const QSize &&size, const QList <QColor> &colors)
+{
+    const int w = size.width(), h = size.height();
+    const QColor &fromColor = colors.first(),
+                 &toColor = colors.at(1),
+                 &midColor = colors.last();
+    const qreal cx = static_cast <qreal> (w) / 2.0,
+                cy = static_cast <qreal> (h) / 2.0,
+                r  = static_cast <qreal> (w) / 2.0;
+
+    QRadialGradient radialGrad(cx, cy, r);
+    if (midColor.isValid()){
+        radialGrad.setStops({{0.0, fromColor}, {0.5, midColor}, {1.0, toColor}});
+    }else {
+        radialGrad.setStops({{0.0, fromColor}, {1.0, toColor}});
+    }
+
+    QPixmap pix{w, h};
+    QPainter painter{&pix};
+    painter.fillRect(0, 0, w, h, radialGrad);
+
+    return pix.toImage();
+}
+
+static
+void horizontalShuffle(QImage &img, const qreal percent)
+{
+    const int w = img.width(), h = img.height();
+    const int shuffle_distance = static_cast <int> (static_cast <qreal> (w) * percent / 100.0);
+    QRandomGenerator rng{QRandomGenerator::system()->generate()};
+
+    for (int y = 1; y + 2 < h; y += 3){
+        std::span <QRgb> f_span(reinterpret_cast <QRgb *> (img.scanLine(y)), w);
+        std::span <QRgb> b_span(reinterpret_cast <QRgb *> (img.scanLine(y + 1)), w);
+        for(int f = 1, b = w - shuffle_distance - 1; f + shuffle_distance < w - 1; f++, b--){
+            auto f_subspan = f_span.subspan(f, shuffle_distance);
+            std::shuffle(f_subspan.begin(), f_subspan.end(), rng);
+            auto b_subspan = b_span.subspan(b, shuffle_distance);
+            std::shuffle(b_subspan.begin(), b_subspan.end(), rng);
+        }
+    }
+}
+
+static
+QImage createBgImage(const QSize &size,
+                     SoFCBackgroundGradient::Gradient type,
+                     const QList <QColor> &colors)
+{
+    Q_ASSERT_X(colors.count() == 3, "bgImage generation", "Three colors must be provided to create an image."
+                                                          "If you are unsure, the third color can be invalid.");
+
+    const int w = size.width(), h = size.height();
+    constexpr qreal shuffle_percent = 1;
+    QImage bgImage;
+
+    switch(type){
+        case SoFCBackgroundGradient::Gradient::LINEAR:{
+            QImage hor_grad = createLinearGradient({h, w}, colors);
+            horizontalShuffle(hor_grad, shuffle_percent);
+            QImage rotated = hor_grad.transformed(QTransform().rotate(270.0));
+            bgImage.swap(rotated);
+        }break;
+        case SoFCBackgroundGradient::Gradient::RADIAL:{
+            QImage rad_grad = createRadialGradient({h, w}, colors);
+            horizontalShuffle(rad_grad, shuffle_percent);
+            QImage rotated = rad_grad.transformed(QTransform().rotate(90.0));
+            horizontalShuffle(rotated, shuffle_percent*9.0/16.0);
+            bgImage.swap(rotated);
+        }break;
+    }
+
+    return bgImage;
+}
+
+QImage Gui::whiteNoise(const int width, const int height)
+{
+    QImage image(width, height, QImage::Format_RGB32);
+    QRandomGenerator::global()->fillRange(reinterpret_cast <quint32 *> (image.scanLine(0)), width * height);
+    return image;
+}
+
+QImage Gui::whiteNoise(const QSize &size)
+{
+    return whiteNoise(size.width(), size.height());
+}
+
+void Gui::checkerboardPattern(QImage &img)
+{
+    const int w = img.width(), h = img.height();
+    auto pixelData = reinterpret_cast <quint32 *> (img.scanLine(0));
+
+    for (int y = 0, i = 0; y < h; y++)
+        for (int x = 0; x < w; x++, i++)
+            if ( (x + y) % 2 == 0 )
+                pixelData[i] = qRgb(128, 128, 128);
+}
+
+/* FreeCAD sets gradient and colors many times per several milliseconds.
+ * QTimer updater "waits" till FreeCAD stops setting them and only then
+ * generates the background image if the values have changed. After the generation
+ * it sets the background image and updates the viewer. */
+void SoFCBackgroundGradient::setupUpdater(void)
+{
+    updater = new QTimer();
+    updater->setSingleShot(true);
+    updater->setInterval(pre_update_delay);
+
+    /* If there are N 3D viewers, when user changes colors or gradient,
+     * there will be N + 2 regenerations of the background image.
+     * Background image generation is supposed to prevent the UI from freezing. */
+    auto *watcher = new QFutureWatcher <QImage> (updater);
+    auto createFun = [this, watcher](){
+        if (old_fCol == fCol && old_tCol == tCol && old_mCol == mCol &&
+            old_gradient == gradient){
+            return;
+        }
+
+        old_fCol = fCol; old_tCol = tCol; old_mCol = mCol;
+        old_gradient = gradient;
+
+        const QList <QColor> colors_lst{fCol, tCol, mCol};
+        QFuture <QImage> future = QtConcurrent::run(createBgImage, bgTex_size, gradient, colors_lst);
+        watcher->setFuture(future);
+    };
+
+    auto resetFun = [this, watcher](){
+        bgImage = watcher->result();
+        bgTex.reset();
+        if(viewer){
+            QMetaObject::invokeMethod(viewer, "redraw", Qt::QueuedConnection);
+        }
+    };
+    QObject::connect(watcher, &QFutureWatcher<QImage>::finished, resetFun);
+    updater->callOnTimeout(createFun);
+}
+
+void SoFCBackgroundGradient::setViewer(View3DInventorViewer *new_viewer)
+{
+    this->viewer = new_viewer;
+    updater->setParent(new_viewer);
+}
+
+
