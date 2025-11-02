@@ -1,4 +1,6 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Werner Mayer LGPL
 #
 # FreeCAD RevInfo script to get the revision information from Subversion, Bazaar, and Git.

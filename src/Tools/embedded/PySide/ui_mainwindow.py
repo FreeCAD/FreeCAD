@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
 # Created: Fri Nov 20 18:03:04 2015

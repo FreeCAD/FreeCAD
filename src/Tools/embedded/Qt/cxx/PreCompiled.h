@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #ifndef QT_CXX_PRECOMPILED_H
 #define QT_CXX_PRECOMPILED_H
 

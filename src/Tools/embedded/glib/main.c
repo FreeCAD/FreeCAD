@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <Python.h>
 #include <gtk/gtk.h>
 #include <stdlib.h>
