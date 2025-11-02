@@ -454,10 +454,25 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
             // selection changes inside the 3d view are handled in handleEvent()
             App::Document* doc = App::GetApplication().getDocument(selectionAction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(selectionAction->SelChange.pObjectName);
-            ViewProvider* vp = Application::Instance->getViewProvider(obj);
-            if (vp && (useNewSelection.getValue() || vp->useNewSelectionModel())
-                && vp->isSelectable()) {
-                SoDetail* detail = nullptr;
+            ViewProvider*vp = Application::Instance->getViewProvider(obj);
+            
+            // check if the actual subobject being selected is selectable
+            bool isSelectable = false;
+            if (vp) {
+                if (selectionAction->SelChange.pSubName && selectionAction->SelChange.pSubName[0]) {
+                    if (auto subObj = obj->getSubObject(selectionAction->SelChange.pSubName)) {
+                        auto subVp = Application::Instance->getViewProvider(subObj);
+                        isSelectable = subVp ? subVp->isSelectable() : false;
+                    } else {
+                        isSelectable = vp->isSelectable();
+                    }
+                } else {
+                    isSelectable = vp->isSelectable();
+                }
+            }
+            
+            if (vp && (useNewSelection.getValue() || vp->useNewSelectionModel()) && isSelectable) {
+                SoDetail *detail = nullptr;
                 detailPath->truncate(0);
                 auto subName = selectionAction->SelChange.pSubName;
                 App::ElementNamePair elementName;
