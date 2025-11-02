@@ -109,6 +109,11 @@ public:
 
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
+    enum class PageProjectionConvention {
+        FirstAngle = 0,
+        ThirdAngle
+    };
+
 
 protected:
     void onBeforeChange(const App::Property* prop) override;

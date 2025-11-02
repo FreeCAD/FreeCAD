@@ -23,7 +23,6 @@
 #ifndef TECHDRAW_FEATUREVIEWGROUP_H_
 #define TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <string>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
@@ -73,6 +72,14 @@ public:
     App::PropertyLength spacingY;
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
+
+    // this needs to be kept in the same sequence as the literals in the cpp file and with the QComboBox
+    // in TaskProjGroup.ui.
+    enum class ViewProjectionConvention {
+        FirstAngle = 0,
+        ThirdAngle,
+        Page
+    };
 
     double autoScale() const override;
     double autoScale(double w, double h) const override;

@@ -27,6 +27,7 @@
 # include <QLabel>
 # include <QMenu>
 # include <QMessageBox>
+# include <QMdiSubWindow>
 # include <QPainter>
 # include <QSplitter>
 # include <QSurfaceFormat>
@@ -791,6 +792,18 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     if (myAlignModel.isEmpty())
         return;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+    // save the current window state before opening the alignment viewer
+    previousWindowState = Qt::WindowNoState;
+    if (auto* activeDoc = Gui::Application::Instance->activeDocument()) {
+        if (auto* activeView = activeDoc->getActiveView()) {
+            if (auto* subWindow = qobject_cast<QMdiSubWindow*>(activeView->parentWidget())) {
+                previousWindowState = subWindow->windowState();
+            }
+        }
+    }
+#endif
+
     // create a split window for picking the points
     myViewer = new AlignmentView(myDocument,Gui::getMainWindow());
     myViewer->setWindowTitle(tr("Alignment[*]"));
@@ -874,6 +887,34 @@ void ManualAlignment::closeViewer()
     if (myViewer->parentWidget())
         myViewer->parentWidget()->deleteLater();
     myViewer = nullptr;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+    QTimer::singleShot(0, [this]() {
+        auto* activeDoc = Gui::Application::Instance->activeDocument();
+        if (!activeDoc) {
+            return;
+        }
+
+        auto* activeView = activeDoc->getActiveView();
+        if (!activeView) {
+            return;
+        }
+
+        Gui::getMainWindow()->setActiveWindow(activeView);
+        if (auto* subWindow = qobject_cast<QMdiSubWindow*>(activeView->parentWidget())) {
+            // restore the previous window state
+            if (previousWindowState & Qt::WindowMaximized) {
+                subWindow->showMaximized();
+            }
+            else if (previousWindowState & Qt::WindowMinimized) {
+                subWindow->showMinimized();
+            }
+            else {
+                subWindow->showNormal();
+            }
+        }
+    });
+#endif
 }
 
 /**
