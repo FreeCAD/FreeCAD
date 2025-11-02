@@ -129,7 +129,9 @@ private:
         reader->Update();
         return reader->GetOutput();
     }
-    vtkSmartPointer<vtkDataObject> dataObjectFromFile(Base::FileInfo File);
+    vtkSmartPointer<vtkDataObject> dataObjectFromFile(const Base::FileInfo& File);
+    // read .pvd file into multiblock dataset
+    vtkSmartPointer<vtkDataObject> readPVD(const Base::FileInfo& file);
 };
 
 }  // namespace Fem

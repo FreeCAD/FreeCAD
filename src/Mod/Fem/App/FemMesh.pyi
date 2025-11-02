@@ -240,6 +240,14 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
+    def renameGroup(self) -> Any:
+        """Rename a group with a given group ID
+        renameGroup(id, name)
+        groupid: int
+        name: string"""
+        ...
+
+    @constmethod
     def getElementType(self) -> Any:
         """Return the element type of a given ID"""
         ...

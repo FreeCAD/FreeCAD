@@ -180,6 +180,8 @@ public:
     void addGroupElements(int, const std::set<int>&);
     /// Remove group (Name due to similarity to SMESH basis functions)
     bool removeGroup(int);
+    /// Rename group
+    void renameGroup(int id, const std::string& name);
     //@}
 
 

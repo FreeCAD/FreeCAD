@@ -449,6 +449,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculiX.ui
     Resources/ui/SolverCcxTools.ui
+    Resources/ui/SolverElmer.ui
     Resources/ui/TaskPostGlyph.ui
     Resources/ui/TaskPostExtraction.ui
     Resources/ui/TaskPostHistogram.ui

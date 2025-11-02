@@ -41,6 +41,7 @@ class FemMigrateApp:
         if fullname in {
             "femsolver.elmer.equations",
             "femsolver.elmer.equations.fluxsolver",
+            "femsolver.elmer.solver",
             "femobjects",
             "femobjects._FemConstraintBodyHeatSource",
             "femobjects._FemConstraintElectrostaticPotential",
@@ -114,7 +115,6 @@ class FemMigrateApp:
         return self.load_module(module)
 
     def load_module(self, module):
-
         if module.__name__ == "femsolver.elmer.equations":
             return self
         if module.__name__ == "femsolver.elmer.equations.fluxsolver":
@@ -123,6 +123,15 @@ class FemMigrateApp:
             module.Proxy = femsolver.elmer.equations.flux.Proxy
             if FreeCAD.GuiUp:
                 module.ViewProxy = femsolver.elmer.equations.flux.ViewProxy
+
+        if module.__name__ == "femsolver.elmer.solver":
+            from femobjects.solver_elmer import SolverElmer
+
+            module.Proxy = SolverElmer
+            if FreeCAD.GuiUp:
+                from femviewprovider.view_solver_elmer import VPSolverElmer
+
+                module.ViewProxy = VPSolverElmer
 
         if module.__name__ == "femobjects":
             module.__path__ = "femobjects"

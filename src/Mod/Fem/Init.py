@@ -91,7 +91,7 @@ FreeCAD.addImportType("FEM result Z88 displacements (*.txt *.TXT)", "feminout.im
 
 if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType(
-        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.vtm .VTM)",
+        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.vtm *.VTM, *.pvd)",
         "feminout.importVTKResults",
     )
     FreeCAD.addExportType(

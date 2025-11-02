@@ -21,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD task panel for CalculiX solver"
+__title__ = "FreeCAD task panel for Elmer solver"
 __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
-## @package task_solver_calculix
+## @package task_solver_elmer
 #  \ingroup FEM
-#  \brief task panel for CalculiX solver
+#  \brief task panel for Elmer solver
 
 from PySide import QtCore
 from PySide import QtGui
@@ -37,21 +37,21 @@ import FreeCADGui
 
 import FemGui
 
-from femsolver.calculix import calculixtools
+from femsolver.elmer import elmertools
 
 from . import base_femlogtaskpanel
 
 
 class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
     """
-    The TaskPanel for run CalculiX solver
+    The TaskPanel for run Elmer solver
     """
 
     def __init__(self, obj):
-        super().__init__(obj, calculixtools.CalculiXTools(obj))
+        super().__init__(obj, elmertools.ElmerTools(obj))
 
         self.form = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculiX.ui"
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverElmer.ui"
         )
 
         self.text_log = self.form.te_output
@@ -70,9 +70,9 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
             self.working_directory_toggled,
         )
         QtCore.QObject.connect(
-            self.form.cb_analysis_type,
+            self.form.cb_simulation_type,
             QtCore.SIGNAL("currentIndexChanged(int)"),
-            self.analysis_type_changed,
+            self.simulation_type_changed,
         )
         QtCore.QObject.connect(
             self.form.pb_write_input, QtCore.SIGNAL("clicked()"), self.write_input_clicked
@@ -114,25 +114,25 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
             super().apply()
 
     def get_object_params(self):
-        self.analysis_type = self.obj.AnalysisType
+        self.simulation_type = self.obj.SimulationType
 
     def set_object_params(self):
-        self.obj.AnalysisType = self.analysis_type
+        self.obj.SimulationType = self.simulation_type
 
     def set_widgets(self):
-        "fills the widgets"
-        self.analysis_type_enum = self.obj.getEnumerationsOfProperty("AnalysisType")
-        index = self.analysis_type_enum.index(self.analysis_type)
-        self.form.cb_analysis_type.addItems(self.analysis_type_enum)
-        self.form.cb_analysis_type.setCurrentIndex(index)
+        "fill the widgets"
+        self.simulation_type_enum = self.obj.getEnumerationsOfProperty("SimulationType")
+        index = self.simulation_type_enum.index(self.simulation_type)
+        self.form.cb_simulation_type.addItems(self.simulation_type_enum)
+        self.form.cb_simulation_type.setCurrentIndex(index)
 
         self.form.fc_working_directory.setProperty("fileName", self.obj.WorkingDirectory)
-        self.form.ckb_working_directory.setChecked(False)
-        self.form.gpb_working_directory.setVisible(False)
+        self.form.ckb_working_directory.setChecked(True)
+        self.form.gpb_working_directory.setVisible(True)
 
-    def analysis_type_changed(self, index):
-        self.analysis_type = self.analysis_type_enum[index]
-        self.obj.AnalysisType = self.analysis_type
+    def simulation_type_changed(self, index):
+        self.simulation_type = self.simulation_type_enum[index]
+        self.obj.SimulationType = self.simulation_type
 
     def working_directory_selected(self):
         self.obj.WorkingDirectory = self.form.fc_working_directory.property("fileName")
@@ -143,9 +143,9 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
         self.run_process()
 
     def edit_input_clicked(self):
-        ccx_param = self.tool.fem_param.GetGroup("Ccx")
-        internal = ccx_param.GetBool("UseInternalEditor", True)
-        ext_editor_path = ccx_param.GetString("ExternalEditorPath", "")
+        gen_param = self.tool.fem_param.GetGroup("General")
+        internal = gen_param.GetBool("UseInternalEditor", True)
+        ext_editor_path = gen_param.GetString("ExternalEditorPath", "")
         if internal or not ext_editor_path:
             FemGui.open(self.tool.model_file)
         else:

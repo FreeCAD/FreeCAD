@@ -1718,6 +1718,18 @@ PyObject* FemMeshPy::removeGroup(PyObject* args) const
     return PyBool_FromLong((long)(getFemMeshPtr()->removeGroup(theId)));
 }
 
+PyObject* FemMeshPy::renameGroup(PyObject* args) const
+{
+    int id;
+    const char* name;
+    if (!PyArg_ParseTuple(args, "is", &id, &name)) {
+        return nullptr;
+    }
+
+    getFemMeshPtr()->renameGroup(id, name);
+
+    Py_Return;
+}
 
 PyObject* FemMeshPy::getElementType(PyObject* args) const
 {
