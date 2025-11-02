@@ -201,6 +201,7 @@ class BIMWorkbench(Workbench):
             "BIM_Layers",
             "BIM_Material",
             "Arch_Schedule",
+            "BIM_Report",
             "BIM_Preflight",
             "Draft_AnnotationStyleEditor",
         ]
