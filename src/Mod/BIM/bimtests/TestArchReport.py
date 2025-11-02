@@ -813,7 +813,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # and thus filters out the row. The purpose of this test is to ensure
         # that the query parses and executes without crashing, proving that our
         # NULL terminal transformer is working correctly.
-        query = "SELECT * FROM document WHERE IfcRole = NULL"
+        query = "SELECT * FROM document WHERE IfcType = NULL"
         _, results_data = Arch.select(query)
         self.assertEqual(len(results_data), 0, "Comparing a column to NULL with '=' should return no rows.")
 
