@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 LTS <SammelLothar@gmx.de> under LGPL               *
 # *   Copyright (c) 2020-2021 Schildkroet                                   *

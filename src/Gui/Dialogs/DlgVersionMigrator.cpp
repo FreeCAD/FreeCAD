@@ -37,6 +37,7 @@
 #include <set>
 #include <string>
 #include <ranges>
+#include <cstdlib>
 
 #include "DlgVersionMigrator.h"
 #include "ui_DlgVersionMigrator.h"
@@ -363,7 +364,7 @@ void DlgVersionMigrator::restart(const QString &message)
         }
     });
     QCoreApplication::exit(0);
-    _exit(0); // No really. Die.
+    _Exit(0); // No really. Die.
 }
 
 

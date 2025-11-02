@@ -607,6 +607,7 @@ void QuantitySpinBox::openFormulaDialog()
         else if (box->discardedFormula())
             setExpression(std::shared_ptr<Expression>());
 
+        updateExpression();
         box->deleteLater();
         Q_EMIT showFormulaDialog(false);
     });

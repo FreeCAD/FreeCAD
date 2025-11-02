@@ -29,6 +29,7 @@ import platform
 import tempfile
 import unittest
 from os.path import join
+from os import remove
 
 import FreeCAD
 
@@ -109,6 +110,7 @@ class TestObjectOpen(unittest.TestCase):
         # standard name changed
         from femsolver.elmer.equations.flux import Proxy
 
+        remove(file_path)
         self.assertEqual(Proxy, self.document.Flux.Proxy.__class__)
 
     # ********************************************************************************************

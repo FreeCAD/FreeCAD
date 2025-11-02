@@ -37,6 +37,7 @@ import math
 
 import FreeCAD
 import ArchCommands
+import Draft
 import DraftVecUtils
 import DraftGeomUtils
 import Part
@@ -663,7 +664,7 @@ class Renderer:
         "Returns a SVG path data string from a 2D wire"
 
         def tostr(val):
-            return str(round(val, DraftVecUtils.precision()))
+            return str(round(val, Draft.precision()))
 
         edges = Part.__sortEdges__(w.Edges)
         v = edges[0].Vertexes[0].Point
