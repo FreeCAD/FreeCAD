@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import FreeCAD
 vec2 = FreeCAD.Base.Vector2d
 import Part

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later AND FTL
+
 /***************************************************************************
  *   Copyright (c) 2013 WandererFan <wandererfan (at) gmail.com>           *
  *                                                                         *
