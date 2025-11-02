@@ -2386,6 +2386,7 @@ def _initializeArchObject(
 
     return obj
 
+
 def makeReport(name=None):
     """
     Creates a BIM Report object in the active document.
@@ -2409,7 +2410,7 @@ def makeReport(name=None):
         internalName="ArchReport",
         defaultLabel=name if name else translate("Arch", "Report"),
         moduleName="ArchReport",
-        viewProviderName="ViewProviderReport"
+        viewProviderName="ViewProviderReport",
     )
 
     # The helper returns None if there's no document, so we can exit early.
@@ -2426,7 +2427,7 @@ def makeReport(name=None):
     # Initialize a spreadsheet if the report requests one. The report is responsible for how the
     # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
     # report's ``Target`` link when the report creates the sheet).
-    if hasattr(report_obj, 'Proxy') and hasattr(report_obj.Proxy, 'getSpreadSheet'):
+    if hasattr(report_obj, "Proxy") and hasattr(report_obj.Proxy, "getSpreadSheet"):
         _ = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
 
     if FreeCAD.GuiUp:
