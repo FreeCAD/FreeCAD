@@ -439,7 +439,7 @@ private:
         std::string filePath;
         std::string layerName;
         const char* optionSource = nullptr;
-        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         int versionParm = -1;
         bool versionOverride = false;
         bool polyOverride = false;
@@ -551,7 +551,7 @@ private:
         std::string filePath;
         std::string layerName;
         const char* optionSource = nullptr;
-        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Import";
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         int versionParm = -1;
         bool versionOverride = false;
         bool polyOverride = false;

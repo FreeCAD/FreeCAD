@@ -542,6 +542,9 @@ protected:
     void exportLWPoly(BRepAdaptor_Curve& c);  // LWPolyline not supported in R12?
     void exportPolyline(BRepAdaptor_Curve& c);
 
+    // helper function to discretize a curve into polyline vertices
+    bool discretizeCurveToPolyline(BRepAdaptor_Curve& c, LWPolyDataOut& pd) const;
+
     //        std::string m_optionSource;
     double optionMaxLength;
     bool optionPolyLine;
