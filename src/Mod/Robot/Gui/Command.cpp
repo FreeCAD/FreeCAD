@@ -203,7 +203,7 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
 }
 
 
-void CmdRobotConstraintAxle::activated(int iMsg __attribute((unused)))
+void CmdRobotConstraintAxle::activated([[maybe_unused]] int iMsg)
 {
     const std::string FeatName = getUniqueObjectName("Robot");
     const std::string WrlPath = getWrl(QString());
