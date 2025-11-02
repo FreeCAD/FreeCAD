@@ -186,45 +186,6 @@ bool CmdPointsExport::isActive()
     return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsTransform)
-
-CmdPointsTransform::CmdPointsTransform()
-    : Command("Points_Transform")
-{
-    sAppModule = "Points";
-    sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Transform Points");
-    sToolTipText = QT_TR_NOOP("Performs tests to transform a point cloud");
-    sWhatsThis = "Points_Transform";
-    sStatusTip = sToolTipText;
-    sPixmap = "Test1";
-}
-
-void CmdPointsTransform::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    // This is a test command to transform a point cloud directly written in C++ (not Python)
-    Base::Placement trans;
-    trans.setRotation(Base::Rotation(Base::Vector3d(0.0, 0.0, 1.0), 1.570796));
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Transform points"));
-    // std::vector<App::DocumentObject*> points =
-    // getSelection().getObjectsOfType(Points::Feature::getClassTypeId()); for
-    // (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end();
-    // ++it) {
-    //     Base::Placement p = static_cast<Points::Feature*>(*it)->Placement.getValue();
-    //     p._rot *= Base::Rotation(Base::Vector3d(0.0, 0.0, 1.0), 1.570796);
-    //     static_cast<Points::Feature*>(*it)->Placement.setValue(p);
-    // }
-    commitCommand();
-}
-
-bool CmdPointsTransform::isActive()
-{
-    return getSelection().countObjectsOfType<Points::Feature>() > 0;
-}
-
 DEF_STD_CMD_A(CmdPointsConvert)
 
 CmdPointsConvert::CmdPointsConvert()
@@ -538,7 +499,6 @@ void CreatePointsCommands()
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPointsImport());
     rcCmdMgr.addCommand(new CmdPointsExport());
-    rcCmdMgr.addCommand(new CmdPointsTransform());
     rcCmdMgr.addCommand(new CmdPointsConvert());
     rcCmdMgr.addCommand(new CmdPointsPolyCut());
     rcCmdMgr.addCommand(new CmdPointsMerge());
