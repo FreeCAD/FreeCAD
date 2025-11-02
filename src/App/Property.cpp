@@ -247,10 +247,16 @@ void Property::destroy(Property* p)
     }
 }
 
-bool Property::enableNotify(bool on)
+bool Property::enableNotify(bool enable)
 {
     bool isNotify = isNotifyEnabled();
-    on ? StatusBits.reset(DisableNotify) : StatusBits.set(DisableNotify);
+
+    if (enable) {
+        StatusBits.reset(DisableNotify);
+    }
+    else {
+        StatusBits.set(DisableNotify);
+    }
     return isNotify;
 }
 
