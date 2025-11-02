@@ -290,7 +290,9 @@ class Arch_Window:
                     # For Window with SketchArch add-on, attachToHost() is to be run below to set the 'initial' Window's placement prior to triggering onChanged() below,
                     # so window_sill parameter is not used here at the moment, see 'if self.Include' below.
                     # FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", window_sill=" + str(self.Sill.Value) + ")")
-                    FreeCADGui.doCommand("pl90 = FreeCAD.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1,0,0),90))")
+                    FreeCADGui.doCommand(
+                        "pl90 = FreeCAD.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1,0,0),90))"
+                    )
                     FreeCADGui.doCommand(
                         "win = Arch.makeWindowPreset('"
                         + WindowPresets[self.Preset]
