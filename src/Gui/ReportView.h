@@ -25,6 +25,7 @@
 
 #include <QPointer>
 #include <QTextEdit>
+#include <QLineEdit>
 #include <QSyntaxHighlighter>
 
 #include "Window.h"
@@ -170,6 +171,10 @@ protected:
     void contextMenuEvent ( QContextMenuEvent* e ) override;
     /** Handle shortcut override events */
     bool event(QEvent* event) override;
+    /** Handle key press events */
+    void keyPressEvent(QKeyEvent* event) override;
+    /** Handle resize events */
+    void resizeEvent(QResizeEvent* event) override;
 
 public Q_SLOTS:
     /** Save the report messages into a file. */
@@ -200,8 +205,18 @@ public Q_SLOTS:
     void onToggleRedirectPythonStderr();
     /** Toggles the report to go to the end if new messages appear. */
     void onToggleGoToEnd();
+    /** Shows the search bar. */
+    void showSearchBar();
+    /** Hides the search bar. */
+    void hideSearchBar();
 
 private:
+    enum class SearchDirection {
+        Forward,
+        Backward
+    };
+    /** Perform text search with given direction. */
+    void performSearch(SearchDirection direction);
     class Data;
     Data* d;
     bool gotoEnd;
@@ -209,6 +224,11 @@ private:
     ReportHighlighter* reportHl; /**< Syntax highlighter */
     int messageSize;
     ParameterGrp::handle _prefs;
+    QWidget* searchBar;
+    QLineEdit* searchLineEdit;
+    QPushButton* findNextButton;
+    QPushButton* findPreviousButton;
+    QPushButton* closeSearchButton;
 };
 
 /**
