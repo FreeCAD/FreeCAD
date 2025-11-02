@@ -53,23 +53,28 @@ using namespace Gui;
 
 bool DialogOptions::dontUseNativeFileDialog()
 {
-#if defined(USE_QT_FILEDIALOG)
-    bool notNativeDialog = true;
+#if defined(USE_QT_DIALOGS)
+    constexpr bool notNativeDialog = true;
 #else
-    bool notNativeDialog = false;
+    constexpr bool notNativeDialog = false;
 #endif
 
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
-    notNativeDialog = group->GetBool("DontUseNativeDialog", notNativeDialog);
-    return notNativeDialog;
+    return group->GetBool("DontUseNativeDialog", notNativeDialog);
 }
 
 bool DialogOptions::dontUseNativeColorDialog()
 {
+#if defined(USE_QT_DIALOGS)
+    constexpr bool notNativeDialog = true;
+#else
+    constexpr bool notNativeDialog = false;
+#endif
+
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
-    return group->GetBool("DontUseNativeColorDialog", true);
+    return group->GetBool("DontUseNativeColorDialog", notNativeDialog);
 }
 
 /* TRANSLATOR Gui::FileDialog */
