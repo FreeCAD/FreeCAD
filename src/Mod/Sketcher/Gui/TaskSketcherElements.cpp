@@ -34,6 +34,8 @@
 #include <boost/core/ignore_unused.hpp>
 #include <limits>
 
+#include <fmt/format.h>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -646,14 +648,17 @@ void ElementView::changeLayer(ElementItem* item, int layer)
         return;
     }
 
+    const int geoid = item->ElementNbr;
+    const int startingVertex = item->StartingVertex;
+    const int midVertex = item->MidVertex;
+    const int endVertex = item->EndVertex;
+
     doc->openTransaction("Geometry Layer Change");
 
     auto sketchObject = item->getSketchObject();
 
     auto geometry = sketchObject->Geometry.getValues();
     auto newGeometry(geometry);
-
-    auto geoid = item->ElementNbr;
 
     // currently only internal geometry can be changed from one layer to another
     if (geoid >= 0) {
@@ -677,6 +682,28 @@ void ElementView::changeLayer(ElementItem* item, int layer)
     }
 
     doc->commitTransaction();
+
+    if (layer == static_cast<int>(ElementItem::Layer::Hidden) && geoid >= 0) {
+        const std::string docName = sketchObject->getDocument()->getName();
+        const std::string objName = sketchObject->getNameInDocument();
+
+        auto deselect = [&](const std::string& name) {
+            const std::string convertedName = sketchObject->convertSubName(name);
+            Gui::Selection().rmvSelection(docName.c_str(), objName.c_str(), convertedName.c_str());
+        };
+
+        deselect(fmt::format("Edge{}", geoid + 1));
+
+        if (startingVertex >= 0) {
+            deselect(fmt::format("Vertex{}", startingVertex + 1));
+        }
+        if (midVertex >= 0) {
+            deselect(fmt::format("Vertex{}", midVertex + 1));
+        }
+        if (endVertex >= 0) {
+            deselect(fmt::format("Vertex{}", endVertex + 1));
+        }
+    }
 }
 
 void ElementView::contextMenuEvent(QContextMenuEvent* event)
