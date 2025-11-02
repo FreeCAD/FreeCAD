@@ -1158,6 +1158,12 @@ void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix)
     Base::FlagToggler<bool> flag(block, false);
     cursor.insertText(completionPrefix);
     completer->updatePrefixEnd(cursor.positionInBlock());
+
+    std::string textToComplete = completionPrefix.toUtf8().constData();
+    if (textToComplete.size()
+        && (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#')) {
+        completer->slotUpdate(cursor.block().text(), cursor.positionInBlock());
+    }
 }
 
 void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
