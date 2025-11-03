@@ -21,6 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
+#include <filesystem>
+#include <vector>
+
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoEventCallback.h>
@@ -35,6 +38,7 @@
 
 #include <Utilities.h>
 #include <Base/Builder3D.h>
+#include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/View3DSettings.h>
@@ -316,13 +320,97 @@ void DlgSettingsLightSources::loadSettings()
     loadAngles(ui->fillLightHorizontalAngle, ui->fillLightVerticalAngle, "FillLightDirection");
 }
 
+void DlgSettingsLightSources::loadThemeDefaults()
+{
+    // get current theme name
+    ParameterGrp::handle hMainWindow = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    std::string themeName = hMainWindow->GetASCII("Theme", "");
+
+    if (themeName.empty()) {
+#ifdef FC_DEBUG
+        Base::Console().message("No theme set, skipping theme color defaults\n");
+#endif
+        return;  // no theme active, use current colors
+    }
+
+#ifdef FC_DEBUG
+    Base::Console().message("Loading Light Sources color defaults for theme: %s\n",
+                            themeName.c_str());
+#endif
+
+    // construct path to the theme's config file
+    std::string appPath = App::Application::getResourceDir();
+    std::filesystem::path configFile = std::filesystem::path(appPath) / "Gui" / "PreferencePacks"
+        / themeName / (themeName + ".cfg");
+
+    if (!std::filesystem::exists(configFile)) {
+#ifdef FC_DEBUG
+        Base::Console().warning("Config file not found for theme '%s'\n", themeName.c_str());
+#endif
+        return;
+    }
+
+    // load theme config into temporary parameters
+    auto themeParams = ParameterManager::Create();
+    themeParams->LoadDocument(Base::FileInfo::pathToString(configFile).c_str());
+
+    // try to get the View/LightSources group from the theme config
+    // Note: Not all themes may have light source colors defined
+    try {
+        auto themeLightSourcesGroup = themeParams->GetGroup("BaseApp")
+                                          ->GetGroup("Preferences")
+                                          ->GetGroup("View")
+                                          ->GetGroup("LightSources");
+
+        // get the current user's View/LightSources group
+        auto userLightSourcesGroup = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View/LightSources");
+
+        // list of light source color parameters to copy from theme
+        std::vector<std::string> lightColors = {"HeadlightColor",
+                                                "BacklightColor",
+                                                "FillLightColor",
+                                                "AmbientLightColor"};
+
+        // copy only the light source colors from theme to user config
+        for (const auto& colorName : lightColors) {
+            unsigned long colorValue = themeLightSourcesGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
+            if (colorValue != UINT_MAX) {
+                userLightSourcesGroup->SetUnsigned(colorName.c_str(), colorValue);
+            }
+        }
+    }
+    catch (...) {
+#ifdef FC_DEBUG
+        Base::Console().message("Theme '%s' does not define light source colors, using defaults\n",
+                                themeName.c_str());
+#endif
+    }
+}
+
 void DlgSettingsLightSources::resetSettingsToDefaults()
 {
-    PreferencePage::resetSettingsToDefaults();
+    // remove all light source color parameters so theme defaults can be loaded
+    std::vector<std::string> lightColors = {"HeadlightColor",
+                                            "BacklightColor",
+                                            "FillLightColor",
+                                            "AmbientLightColor"};
 
+    for (const auto& colorName : lightColors) {
+        hGrp->RemoveUnsigned(colorName.c_str());
+    }
+
+    // remove direction parameters
     hGrp->RemoveASCII("HeadlightDirection");
     hGrp->RemoveASCII("BacklightDirection");
     hGrp->RemoveASCII("FillLightDirection");
+
+    // apply theme default colors
+    loadThemeDefaults();
+
+    // reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 
     loadSettings();
     configureViewer();

@@ -40,6 +40,7 @@ class DlgPrefsMeasureAppearanceImp: public Gui::Dialog::PreferencePage
 public:
     explicit DlgPrefsMeasureAppearanceImp(QWidget* parent = nullptr);
     ~DlgPrefsMeasureAppearanceImp() override;
+    static void loadThemeDefaults();
 
 protected:
     void saveSettings() override;
@@ -47,6 +48,7 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
+    void resetSettingsToDefaults() override;
     std::unique_ptr<Ui_DlgPrefsMeasureAppearanceImp> ui;
 };
 

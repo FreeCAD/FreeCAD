@@ -46,10 +46,13 @@ public:
   void saveSettings() override;
   void loadSettings() override;
 
+  static void loadThemeDefaults();
+
 protected:
   void changeEvent(QEvent *e) override;
 
 private:
+  void resetSettingsToDefaults() override;
   std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
 };
 

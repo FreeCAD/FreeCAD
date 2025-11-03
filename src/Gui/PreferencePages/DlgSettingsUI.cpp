@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QPushButton>
+#include <filesystem>
+#include <vector>
 
+# include <QPushButton>
 
 #include <Gui/Application.h>
 #include <Gui/ParamHandler.h>
@@ -31,6 +33,7 @@
 
 #include "Dialogs/DlgThemeEditor.h"
 
+#include <Base/Console.h>
 #include <Base/ServiceProvider.h>
 
 
@@ -124,6 +127,122 @@ void DlgSettingsUI::loadStyleSheet()
 {
     populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
+}
+
+void DlgSettingsUI::loadThemeDefaults()
+{
+    // get current theme name
+    ParameterGrp::handle hMainWindow = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    std::string themeName = hMainWindow->GetASCII("Theme", "");
+
+    if (themeName.empty()) {
+#ifdef FC_DEBUG
+        Base::Console().message("No theme set, skipping theme color defaults\n");
+#endif
+        return;  // no theme active, use current colors
+    }
+
+#ifdef FC_DEBUG
+    Base::Console().message("Loading UI theme color defaults for theme: %s\n", themeName.c_str());
+#endif
+
+    // construct path to the theme's config file
+    std::string appPath = App::Application::getResourceDir();
+    std::filesystem::path configFile = std::filesystem::path(appPath) / "Gui" / "PreferencePacks"
+        / themeName / (themeName + ".cfg");
+
+    if (!std::filesystem::exists(configFile)) {
+#ifdef FC_DEBUG
+        Base::Console().warning("Config file not found for theme '%s'\n", themeName.c_str());
+#endif
+        return;
+    }
+
+    // load theme config into temporary parameters
+    auto themeParams = ParameterManager::Create();
+    themeParams->LoadDocument(Base::FileInfo::pathToString(configFile).c_str());
+
+    // try to get the Themes group from the theme config
+    // NOTE: not all themes may have accent colors
+    try {
+        auto themeThemesGroup =
+            themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Themes");
+
+        // get the current user's Themes group
+        auto userThemesGroup =
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
+
+        // list of theme accent color parameters to copy from theme
+        std::vector<std::string> accentColors = {"ThemeAccentColor1",
+                                                  "ThemeAccentColor2",
+                                                  "ThemeAccentColor3"};
+
+        // copy only the accent colors from theme to user config
+        for (const auto& colorName : accentColors) {
+            unsigned long colorValue = themeThemesGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
+            if (colorValue != UINT_MAX) {
+                userThemesGroup->SetUnsigned(colorName.c_str(), colorValue);
+            }
+        }
+    }
+    catch (...) {
+#ifdef FC_DEBUG
+        Base::Console().message("Theme '%s' does not define accent colors, using defaults\n",
+                                themeName.c_str());
+#endif
+    }
+    try {
+        auto themeMainWindowGroup =
+            themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
+
+        // get the current user's MainWindow group
+        auto userMainWindowGroup =
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+
+        // Load StyleSheet parameter
+        std::string styleSheet = themeMainWindowGroup->GetASCII("StyleSheet", "");
+        if (!styleSheet.empty()) {
+            userMainWindowGroup->SetASCII("StyleSheet", styleSheet.c_str());
+        }
+
+        // Load OverlayActiveStyleSheet parameter
+        std::string overlayStyleSheet = themeMainWindowGroup->GetASCII("OverlayActiveStyleSheet", "");
+        if (!overlayStyleSheet.empty()) {
+            userMainWindowGroup->SetASCII("OverlayActiveStyleSheet", overlayStyleSheet.c_str());
+        }
+    }
+    catch (...) {
+#ifdef FC_DEBUG
+        Base::Console().message("Theme '%s' does not define stylesheet settings, using defaults\n",
+                themeName.c_str());
+#endif
+    }
+}
+
+void DlgSettingsUI::resetSettingsToDefaults()
+{
+    // get parameter group
+    ParameterGrp::handle hThemes =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
+
+    // remove all theme accent color parameters so theme defaults can be applied fresh
+    std::vector<std::string> accentColors = {"ThemeAccentColor1",
+                                              "ThemeAccentColor2",
+                                              "ThemeAccentColor3"};
+
+    for (const auto& colorName : accentColors) {
+        hThemes->RemoveUnsigned(colorName.c_str());
+    }
+
+    // reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+
+    // apply theme specific color defaults
+    loadThemeDefaults();
+
+    // reload the settings to update the GUI
+    loadSettings();
 }
 
 void DlgSettingsUI::populateStylesheets(const char* key,

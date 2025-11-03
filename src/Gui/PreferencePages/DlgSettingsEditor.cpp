@@ -20,11 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <filesystem>
+#include <vector>
 
 #include <QFontDatabase>
 
-
+#include <App/Application.h>
 #include <Base/Color.h>
+#include <Base/Console.h>
 #include <Gui/PythonEditor.h>
 #include <Gui/Tools.h>
 
@@ -306,21 +309,95 @@ void DlgSettingsEditor::loadSettings()
     ui->displayItems->setCurrentItem(ui->displayItems->topLevelItem(0));
 }
 
+void DlgSettingsEditor::loadThemeDefaults()
+{
+    // get current theme name
+    ParameterGrp::handle hMainWindow = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    std::string themeName = hMainWindow->GetASCII("Theme", "");
+
+    if (themeName.empty()) {
+#ifdef FC_DEBUG
+        Base::Console().message("No theme set, skipping theme color defaults\n");
+#endif
+        return;  // no theme active, use current colors
+    }
+
+#ifdef FC_DEBUG
+    Base::Console().message("Loading Editor color defaults for theme: %s\n", themeName.c_str());
+#endif
+
+    // construct path to the theme's config file
+    std::string appPath = App::Application::getResourceDir();
+    std::filesystem::path configFile = std::filesystem::path(appPath) / "Gui" / "PreferencePacks"
+        / themeName / (themeName + ".cfg");
+
+    if (!std::filesystem::exists(configFile)) {
+#ifdef FC_DEBUG
+        Base::Console().warning("Config file not found for theme '%s'\n", themeName.c_str());
+#endif
+        return;
+    }
+
+    // load theme config into temporary parameters
+    auto themeParams = ParameterManager::Create();
+    themeParams->LoadDocument(Base::FileInfo::pathToString(configFile).c_str());
+
+    // get the editor group from the theme config
+    auto themeEditorGroup =
+        themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Editor");
+
+    // get the current user's editor group
+    auto userEditorGroup = WindowParameter::getDefaultParameter()->GetGroup("Editor");
+
+    // list of editor color parameters to copy from theme
+    std::vector<std::string> editorColors = {"Text",
+                                             "Bookmark",
+                                             "Breakpoint",
+                                             "Keyword",
+                                             "Comment",
+                                             "Block comment",
+                                             "Number",
+                                             "String",
+                                             "Character",
+                                             "Class name",
+                                             "Define name",
+                                             "Operator",
+                                             "Python output",
+                                             "Python error",
+                                             "Current line highlight"};
+
+    // copy only the editor colors from theme to user config
+    for (const auto& colorName : editorColors) {
+        unsigned long colorValue = themeEditorGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
+        if (colorValue != UINT_MAX) {
+            userEditorGroup->SetUnsigned(colorName.c_str(), colorValue);
+        }
+    }
+}
+
 void DlgSettingsEditor::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
+
     // reset the parameters in the "Editor" group
     for (const auto& [textType, textColor] : d->colormap) {
         hGrp->RemoveUnsigned(textType.toLatin1());
     }
     // reset "FontSize" parameter
     hGrp->RemoveInt("FontSize");
+
     // reset "Font" parameter
     hGrp->RemoveASCII("Font");
 
+    // apply theme sepcific default colors
+    loadThemeDefaults();
+
     // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
+
+    loadSettings();
 }
 
 /**

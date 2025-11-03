@@ -46,6 +46,8 @@ public:
     explicit DlgSettings3DViewImp(QWidget* parent = nullptr);
     ~DlgSettings3DViewImp() override;
 
+    static void loadThemeDefaults();
+
     void saveSettings() override;
     void loadSettings() override;
     void resetSettingsToDefaults() override;
