@@ -248,7 +248,7 @@ def export(objectslist, filename, argstring):
 
         # get coolant mode
         coolantMode = PathUtil.coolantModeForOp(obj)
-        
+
         # turn coolant on if required
         if OUTPUT_COMMENTS:
             if not coolantMode == "None":
