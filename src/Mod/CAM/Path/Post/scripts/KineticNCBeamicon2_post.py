@@ -341,6 +341,15 @@ def parse(pathobj):
 
             outstring = []
             command = c.Name
+
+            if pathobj.Label == "Drilling" and command in ["G98", "G99"]:
+                out += linenumber() + "(" + command + " removed as KineticNC do not support it)\n"
+                continue
+
+            if command in ["G85"]:
+                out += linenumber() + "(" + command + " removed as KineticNC do not support it)\n"
+                continue
+
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
@@ -392,6 +401,16 @@ def parse(pathobj):
                             outstring.append(
                                 param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
+
+            if command in ["G0"] and "Z" not in c.Parameters \
+               and pathobj.Label == "Drilling" and "R" in currLocation.keys():
+                if not OUTPUT_DOUBLES:
+                    continue
+                else:
+                    pos = Units.Quantity(currLocation["R"], FreeCAD.Units.Length)
+                    outstring.append(
+                        "Z" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                    )
 
             # store the latest command
             lastcommand = command
