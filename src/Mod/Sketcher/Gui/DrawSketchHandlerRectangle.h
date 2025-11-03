@@ -104,6 +104,8 @@ public:
         , constructionPointThreeId(Sketcher::GeoEnum::GeoUndef)
         , centerPointId(Sketcher::GeoEnum::GeoUndef)
         , side(0)
+        , lengthSign(0)
+        , widthSign(0)
     {}
 
     ~DrawSketchHandlerRectangle() override = default;
@@ -815,6 +817,8 @@ private:
     void onReset() override
     {
         thickness = 0.;
+        lengthSign = 0;
+        widthSign = 0;
         toolWidgetManager.resetControls();
     }
 
@@ -826,6 +830,10 @@ private:
     double radius, length, width, thickness, radiusFrame, angle, angle123, angle412;
     int firstCurve, constructionPointOneId, constructionPointTwoId, constructionPointThreeId,
         centerPointId, side;
+
+    // Sign tracking for OVP lock fix (issue #23459)
+    // These store the direction sign when OVP is first set to prevent sign flipping
+    int lengthSign, widthSign;
 
     void createShape(bool onlyeditoutline) override
     {
@@ -1987,12 +1995,16 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     if (fabs(length) < Precision::Confusion()
                         && onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        handler->lengthSign = 0;
                         return;
                     }
 
                     if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
-                        int sign = (onSketchPos.x - handler->corner1.x) >= 0 ? 1 : -1;
-                        onSketchPos.x = handler->corner1.x + sign * length;
+                        if (handler->lengthSign == 0) {
+                            handler->lengthSign =
+                                (onSketchPos.x - handler->corner1.x) >= 0 ? 1 : -1;
+                        }
+                        onSketchPos.x = handler->corner1.x + handler->lengthSign * length;
                     }
                     else {
                         onSketchPos.x = handler->center.x + length / 2;
@@ -2003,12 +2015,15 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     if (fabs(width) < Precision::Confusion()
                         && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                        handler->widthSign = 0;
                         return;
                     }
 
                     if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
-                        int sign = (onSketchPos.y - handler->corner1.y) >= 0 ? 1 : -1;
-                        onSketchPos.y = handler->corner1.y + sign * width;
+                        if (handler->widthSign == 0) {
+                            handler->widthSign = (onSketchPos.y - handler->corner1.y) >= 0 ? 1 : -1;
+                        }
+                        onSketchPos.y = handler->corner1.y + handler->widthSign * width;
                     }
                     else {
                         onSketchPos.y = handler->center.y + width / 2;

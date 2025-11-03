@@ -74,6 +74,7 @@ public:
         , length(0.0)
         , angle(0.0)
         , firstCurve(0)
+        , capturedDirection(0.0, 0.0)
     {}
 
     ~DrawSketchHandlerSlot() override = default;
@@ -339,6 +340,9 @@ private:
     Base::Vector2d startPoint, secondPoint;
     double radius, length, angle;
     int firstCurve;
+
+    // Direction tracking to prevent OVP from flipping (issue #23459)
+    Base::Vector2d capturedDirection;
 };
 
 template<>
@@ -403,20 +407,28 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             }
             double length = dir.Length();
 
+            if (fourthParam->isSet) {
+                const double angle = Base::toRadians(fourthParam->getValue());
+                const Base::Vector2d ovpDir(cos(angle), sin(angle));
+                handler->capturedDirection = ovpDir;
+            }
+            else {
+                handler->capturedDirection = dir.Normalize();
+            }
+
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
                 if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
+                    handler->capturedDirection = Base::Vector2d(0.0, 0.0);
                     return;
                 }
 
-                onSketchPos = handler->startPoint + length * dir.Normalize();
+                onSketchPos = handler->startPoint + length * handler->capturedDirection;
             }
-
-            if (fourthParam->isSet) {
-                double angle = Base::toRadians(fourthParam->getValue());
-                Base::Vector2d ovpDir(cos(angle), sin(angle));
-                onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, ovpDir);
+            else if (fourthParam->isSet) {
+                onSketchPos.ProjectToLine(onSketchPos - handler->startPoint,
+                                          handler->capturedDirection);
                 onSketchPos += handler->startPoint;
             }
         } break;
