@@ -44,6 +44,7 @@
 #include <vtkInformationVector.h>
 
 #include <Base/Console.h>
+#include <Base/Reader.h>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -130,10 +131,10 @@ bool FemPostPipeline::canRead(Base::FileInfo File)
 {
 
     // from FemResult only unstructural mesh is supported in femvtktoools.cpp
-    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu", "vtm"});
+    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu", "vtm", "pvd"});
 }
 
-vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(Base::FileInfo File)
+vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(const Base::FileInfo& File)
 {
     // checking on the file
     if (!File.isReadable()) {
@@ -164,8 +165,53 @@ vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(Base::FileInf
     else if (File.hasExtension("vtm")) {
         return readXMLFile<vtkXMLMultiBlockDataReader>(File.filePath());
     }
+    else if (File.hasExtension("pvd")) {
+        return readPVD(File);
+    }
 
     throw Base::FileException("Unknown extension");
+}
+
+vtkSmartPointer<vtkDataObject> FemPostPipeline::readPVD(const Base::FileInfo& file)
+{
+    std::string path = file.filePath();
+
+    std::ifstream ifstr(path, std::ios::in | std::ios::binary);
+    Base::XMLReader reader(path.c_str(), ifstr);
+    reader.readElement("DataSet");
+    std::map<double, std::string> values;
+    std::vector<std::string> files;
+    while (strcmp(reader.localName(), "DataSet") == 0) {
+        values.emplace(std::make_pair(reader.getAttribute<double>("timestep"),
+                                      reader.getAttribute<std::string>("file")));
+        reader.readNextElement();
+    }
+
+    auto timeInfo = vtkSmartPointer<vtkStringArray>::New();
+    timeInfo->SetName("TimeInfo");
+    timeInfo->InsertNextValue("TimeStep");
+    // set unit to empty string
+    timeInfo->InsertNextValue("");
+
+    auto multiBlock = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+    multiBlock->GetFieldData()->AddArray(timeInfo);
+
+    int i = 0;
+    std::string dir = file.dirPath();
+    for (auto v : values) {
+        Base::FileInfo fi(dir + "/" + v.second);
+        auto data = dataObjectFromFile(fi);
+        auto time = vtkSmartPointer<vtkFloatArray>::New();
+        time->SetName("TimeValue");
+        time->InsertNextValue(v.first);
+        data->GetFieldData()->AddArray(time);
+        data->GetFieldData()->AddArray(timeInfo);
+
+        multiBlock->SetBlock(i, data);
+        ++i;
+    }
+
+    return multiBlock;
 }
 
 void FemPostPipeline::read(Base::FileInfo File)

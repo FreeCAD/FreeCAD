@@ -229,18 +229,13 @@ class GmshTools:
 
     def update_properties(self):
         self.mesh_obj.FemMesh = Fem.read(self.temp_file_mesh)
+        self.rename_groups()
 
     def create_mesh(self):
-        try:
-            self.update_mesh_data()
-            self.get_tmp_file_paths()
-            self.get_gmsh_command()
-            self.write_gmsh_input_files()
-            error = self.run_gmsh_with_geo()
-            self.read_and_set_new_mesh()
-        except GmshError as e:
-            error = str(e)
-        return error
+        self.prepare()
+        p = self.compute()
+        p.waitForFinished()
+        self.update_properties()
 
     def start_logs(self):
         Console.PrintLog("\nGmsh FEM mesh run is being started.\n")
@@ -369,6 +364,19 @@ class GmshTools:
 
     def get_group_data(self):
         # mesh group objects. Only one shape type is expected
+        geom = self.mesh_obj.Shape.getPropertyOfGeometry()
+        r_solids = range(1, len(geom.Solids) + 1)
+        r_faces = range(1, len(geom.Faces) + 1)
+        r_edges = range(1, len(geom.Edges) + 1)
+        solids = [(f"Solid{i}", [f"Solid{i}"]) for i in r_solids]
+        faces = [(f"Face{i}", [f"Face{i}"]) for i in r_faces]
+        edges = [(f"Edge{i}", [f"Edge{i}"]) for i in r_edges]
+        shapes = []
+        shapes.extend(solids)
+        shapes.extend(faces)
+        shapes.extend(edges)
+
+        self.group_elements = dict(shapes)
         if not self.mesh_obj.MeshGroupList:
             # print("  No mesh group objects.")
             pass
@@ -405,6 +413,17 @@ class GmshTools:
 
         # if self.group_elements:
         #    Console.PrintMessage("  {}\n".format(self.group_elements))
+
+    def rename_groups(self):
+        # salomemesh adds a suffix to the names of element groups if there are also nodes
+        #  in the groups in the .unv file. This method removes the suffix
+        reg_exp = re.compile(r"(?P<item>(Edge|Face|Solid)\d+)_(?!Nodes)\w+$")
+        fem_mesh = self.mesh_obj.FemMesh
+        for i in fem_mesh.Groups:
+            grp = fem_mesh.getGroupName(i)
+            m = reg_exp.match(grp)
+            if m:
+                fem_mesh.renameGroup(i, m.group("item"))
 
     def version(self):
         self.get_gmsh_command()

@@ -54,7 +54,8 @@ void DlgSettingsFemElmerImp::saveSettings()
     ui->fc_elmer_binary_path->onSave();
     ui->fc_grid_binary_path->onSave();
 
-    ui->sb_num_processes->onSave();
+    ui->sb_num_tasks->onSave();
+    ui->sb_threads_per_task->onSave();
 
     ui->ckb_binary_format->onSave();
     ui->ckb_geom_id->onSave();
@@ -65,7 +66,8 @@ void DlgSettingsFemElmerImp::loadSettings()
     ui->fc_elmer_binary_path->onRestore();
     ui->fc_grid_binary_path->onRestore();
 
-    ui->sb_num_processes->onRestore();
+    ui->sb_num_tasks->onRestore();
+    ui->sb_threads_per_task->onRestore();
 
     ui->ckb_binary_format->onRestore();
     ui->ckb_geom_id->onRestore();

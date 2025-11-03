@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SolverCalculiX</class>
- <widget class="QWidget" name="SolverCalculiX">
+ <class>SolverElmer</class>
+ <widget class="QWidget" name="SolverElmer">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Solver CalculiX Control</string>
+   <string>Solver Elmer Control</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -77,14 +77,14 @@
       <item>
        <layout class="QFormLayout" name="formLayout_1">
         <item row="0" column="0">
-         <widget class="QLabel" name="lbl_analysis_type">
+         <widget class="QLabel" name="lbl_simulation_type">
           <property name="text">
-           <string>Analysis type</string>
+           <string>Simulation type</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QComboBox" name="cb_analysis_type">
+         <widget class="QComboBox" name="cb_simulation_type">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -135,6 +135,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
