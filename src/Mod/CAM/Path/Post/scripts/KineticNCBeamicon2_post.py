@@ -402,8 +402,12 @@ def parse(pathobj):
                                 param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
 
-            if command in ["G0"] and "Z" not in c.Parameters \
-               and pathobj.Label == "Drilling" and "R" in currLocation.keys():
+            if (
+                command in ["G0"]
+                and "Z" not in c.Parameters
+                and pathobj.Label == "Drilling"
+                and "R" in currLocation.keys()
+            ):
                 if not OUTPUT_DOUBLES:
                     continue
                 else:
