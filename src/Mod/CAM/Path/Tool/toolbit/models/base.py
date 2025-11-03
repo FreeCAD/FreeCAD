@@ -44,6 +44,24 @@ from ..util import to_json, format_value
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
 
 
+class ToolBitRecomputeObserver:
+    """Document observer that triggers queued visual updates after recompute completes."""
+
+    def __init__(self, toolbit_proxy):
+        self.toolbit_proxy = toolbit_proxy
+
+    def slotRecomputedDocument(self, doc):
+        """Called when document recompute is finished."""
+        # Only process updates for the correct document
+        if doc != self.toolbit_proxy.obj.Document:
+            return
+
+        # Process any queued visual updates
+        if self.toolbit_proxy and hasattr(self.toolbit_proxy, "_process_queued_visual_update"):
+            Path.Log.debug("Document recompute finished, processing queued visual update")
+            self.toolbit_proxy._process_queued_visual_update()
+
+
 PropertyGroupShape = "Shape"
 
 if False:
@@ -559,15 +577,19 @@ class ToolBit(Asset, ABC):
             new_value = obj.getPropertyByName(prop)
             Path.Log.debug(
                 f"Shape parameter '{prop}' changed to {new_value}. "
-                f"Updating visual representation."
+                f"Queuing visual representation update."
             )
             self._tool_bit_shape.set_parameter(prop, new_value)
-            self._update_visual_representation()
+            self._queue_visual_update()
         finally:
             self._in_update = False
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
+        # Clean up any pending observer
+        if hasattr(self, "_recompute_observer"):
+            FreeCAD.removeDocumentObserver(self._recompute_observer)
+            del self._recompute_observer
         self._removeBitBody()
         obj.Document.removeObject(obj.Name)
 
@@ -760,6 +782,37 @@ class ToolBit(Asset, ABC):
         material_value = self._tool_bit_shape.get_parameters().get("Material")
         if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
             PathUtil.setProperty(self.obj, "Material", material_value)
+
+    def _queue_visual_update(self):
+        """Queue a visual update to be processed after document recompute is complete."""
+        if not hasattr(self, "_visual_update_queued"):
+            self._visual_update_queued = False
+
+        if not self._visual_update_queued:
+            self._visual_update_queued = True
+            Path.Log.debug(f"Queuing visual update for {self.obj.Label}")
+
+            # Set up a document observer to process the update after recompute
+            self._setup_recompute_observer()
+
+    def _setup_recompute_observer(self):
+        """Set up a document observer to process queued visual updates after recompute."""
+        if not hasattr(self, "_recompute_observer"):
+            Path.Log.debug(f"Setting up recompute observer for {self.obj.Label}")
+            self._recompute_observer = ToolBitRecomputeObserver(self)
+            FreeCAD.addDocumentObserver(self._recompute_observer)
+
+    def _process_queued_visual_update(self):
+        """Process the queued visual update."""
+        if hasattr(self, "_visual_update_queued") and self._visual_update_queued:
+            self._visual_update_queued = False
+            Path.Log.debug(f"Processing queued visual update for {self.obj.Label}")
+            self._update_visual_representation()
+
+            # Clean up the observer
+            if hasattr(self, "_recompute_observer"):
+                FreeCAD.removeDocumentObserver(self._recompute_observer)
+                del self._recompute_observer
 
     def _update_visual_representation(self):
         """
