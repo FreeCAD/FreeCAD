@@ -36,6 +36,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import argparse
 import datetime
@@ -114,7 +115,6 @@ PRECISION = 3
 # Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = """%
 G17 G21 G40 G49 G80 G90
-M08
 """
 
 # Postamble text will appear following the last operation.
@@ -214,6 +214,9 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
+        # Skip inactive operations
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)
@@ -243,6 +246,19 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # get coolant mode
+        coolantMode = PathUtil.coolantModeForOp(obj)
+        
+        # turn coolant on if required
+        if OUTPUT_COMMENTS:
+            if not coolantMode == "None":
+                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+        if coolantMode == "Flood":
+            gcode += linenumber() + "M8" + "\n"
+        if coolantMode == "Mist":
+            gcode += linenumber() + "M7" + "\n"
+
+        # process the operation gcode
         gcode += parse(obj)
 
         # do the post_op
@@ -250,6 +266,12 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
+
+        # turn coolant off if required
+        if not coolantMode == "None":
+            if OUTPUT_COMMENTS:
+                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+            gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
