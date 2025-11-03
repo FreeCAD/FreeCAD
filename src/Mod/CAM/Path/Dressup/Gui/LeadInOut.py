@@ -170,6 +170,10 @@ class ObjectDressup:
     def loads(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def setup(self, obj):
         obj.LeadIn = True
         obj.LeadOut = True
@@ -1343,6 +1347,12 @@ class ViewProviderDressup:
 
     def clearTaskPanel(self):
         self.panel = None
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathDressupLeadInOut:

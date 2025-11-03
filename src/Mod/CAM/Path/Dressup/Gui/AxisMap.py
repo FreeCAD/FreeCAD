@@ -26,6 +26,7 @@ import Path
 import math
 import Path.Base.Gui.Util as PathGuiUtil
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if False:
@@ -150,6 +151,8 @@ class ObjectDressup:
             job = PathUtils.findParentJob(obj)
             if job:
                 job.Proxy.setCenterOfRotation(self.center(obj))
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def center(self, obj):
         return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
@@ -245,6 +248,12 @@ class ViewProviderDressup:
                 job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
             arg1.Object.Base = None
         return True
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathDressup:
