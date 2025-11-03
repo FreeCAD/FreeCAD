@@ -168,6 +168,9 @@ public:
 
     static bool fixColorAlphaOnLoad();
 
+    static bool showCenterMarks();
+    static bool printCenterMarks();
+
 };
 
 
