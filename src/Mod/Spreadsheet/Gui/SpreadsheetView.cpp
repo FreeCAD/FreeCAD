@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015-2016        *
  *                                                                         *
