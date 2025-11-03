@@ -23,7 +23,6 @@ requirements:
     - python>=3.11,<3.12
     - qt6-main>=6.8,<6.9
     - swig
-    - lark
 
     - if: linux and x86_64
       then:
@@ -103,6 +102,7 @@ requirements:
     - fmt
     - freetype
     - hdf5
+    - lark
     - libboost-devel
     - matplotlib-base
     - noqt5
