@@ -75,6 +75,7 @@ protected:
   void focusInEvent(QFocusEvent *event) override;
   void keyPressEvent(QKeyEvent *event) override;
   bool hasMultipleSizes();
+  void updateFontSizeDisplay();
 
   void addFontSize(QString fontSize);
 

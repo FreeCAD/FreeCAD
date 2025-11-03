@@ -68,10 +68,17 @@ public:
     void saveButtons(QPushButton* btnOK, QPushButton* btnCancel);
     void enableTaskButtons(bool enable);
 
+    ViewProviderRichAnno* getAnnoVP() const
+    {
+        return m_annoVP;
+    }
+
 protected:
     void changeEvent(QEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
-    void createAnnoFeature();
+    void createAnnoFeature(const QPointF* scenePos = nullptr);
     void commonFeatureUpdate();
 
     QPointF calcTextStartPos(double scale);
@@ -90,11 +97,16 @@ protected Q_SLOTS:
     void onFrameWidthChanged(double value);
     void onFrameStyleChanged(int index);
     void onViewTransformed();
+    void refocusAnnotation();
 
     void onViewSelectionChanged();
     void onViewPositionChanged(const QPointF& scenePos);
 
 private:
+    void enterPlacementMode();
+    void createAndSetupAnnotation(const QPointF* scenePos = nullptr);
+    void createAnnoIfNotAlready();
+
     std::unique_ptr<Ui_TaskRichAnno> ui;
 
     ViewProviderPage* m_vpp;
@@ -105,9 +117,8 @@ private:
     QGIView* m_qgParent;
     std::string m_qgParentName;
 
-    Base::Vector3d m_attachPoint;
-
     bool m_createMode;
+    bool m_placementMode;
 
     bool m_inProgressLock;
 
@@ -136,6 +147,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+    void autoClosedOnTransactionChange() override;
     /// is called by the framework if the user presses the help button
     bool isAllowedAlterDocument() const override
     {
@@ -143,6 +155,11 @@ public:
     }
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
+
+    bool isFor(ViewProviderRichAnno* vp) const
+    {
+        return (widget->getAnnoVP() == vp);
+    }
 
 private:
     TaskRichAnno * widget;

@@ -78,7 +78,6 @@ public:
                QWidget* widget = nullptr) override;
     QRectF boundingRect() const override;
 
-    void drawBorder() override;
     void updateView(bool update = false) override;
 
     void setTextItem();
@@ -109,6 +108,8 @@ public:
     void setTextCursor(const QTextCursor& cursor);
     void updateLayout();
 
+    void refocusAnnotation();
+
     Q_SIGNALS:
     void widthChanged();
     void textChanged();
@@ -128,8 +129,6 @@ protected:
     QFont prefFont(void);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
-
-    QString convertTextSizes(const QString& inHtml) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
@@ -152,6 +151,8 @@ protected:
     static const double MinTextWidthDocument;     // Minimum resizable width (document units)
 
     bool m_isEditing;
+    double m_textScaleFactor;
+    double m_lastGoodWidthScene;
 
 private Q_SLOTS:
     void onContentsChanged();
