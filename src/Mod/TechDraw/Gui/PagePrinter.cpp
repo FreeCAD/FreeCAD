@@ -240,7 +240,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         renderPage(vpp, painter, sourceRect, targetRect);
         dPage->redrawCommand();
 
-        ourScene->setExportingPdf(true);
+        ourScene->setExportingPdf(false);
     }
 
     ourDoc->setModified(docModifiedState);
