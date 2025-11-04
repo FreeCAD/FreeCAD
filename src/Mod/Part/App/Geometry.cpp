@@ -2498,6 +2498,44 @@ void GeomTrimmedCurve::setRange(double u, double v)
 }
 
 // -------------------------------------------------
+TYPESYSTEM_SOURCE(Part::GeomRestrictedCurve, Part::GeomTrimmedCurve)
+
+GeomRestrictedCurve::GeomRestrictedCurve() = default;
+
+GeomRestrictedCurve::GeomRestrictedCurve(const GeomCurve& basis, double firstParam, double lastParam)
+{
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(basis.handle());
+
+    if (curve->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        Handle(Geom_TrimmedCurve) tc = Handle(Geom_TrimmedCurve)::DownCast(basis.handle());
+        Handle(Geom_Curve) bc = tc->BasisCurve();
+        this->myCurve = new Geom_TrimmedCurve(bc, firstParam, lastParam);
+        return;
+    }
+
+    this->myCurve = new Geom_TrimmedCurve(curve, firstParam, lastParam);
+}
+
+GeomRestrictedCurve::GeomRestrictedCurve(const Handle(Geom_TrimmedCurve) & c)
+{
+    setHandle(c);
+}
+
+GeomRestrictedCurve::~GeomRestrictedCurve() = default;
+
+Geometry* GeomRestrictedCurve::copy() const
+{
+    auto* newCurve = new GeomRestrictedCurve(myCurve);
+    newCurve->copyNonTag(this);
+    return newCurve;
+}
+
+GeomCurve* GeomRestrictedCurve::createArc(double first, double last) const
+{
+    THROWM(Base::NotImplementedError, "createArc: not implemented for this type of curve");
+}
+
+// -------------------------------------------------
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic, Part::GeomTrimmedCurve)
 
 GeomArcOfConic::GeomArcOfConic() = default;
