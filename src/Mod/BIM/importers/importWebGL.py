@@ -182,6 +182,48 @@ def getHTMLTemplate():
     return None
 
 
+def expand_part_containers(objectslist):
+    """Recursively expand App::Part containers to include their Group contents.
+
+    This function handles Part containers that are not recognized by
+    Draft.get_group_contents, by checking for hasattr(obj, 'Group') and
+    recursively extracting child objects.
+
+    Parameters
+    ----------
+    objectslist : list
+        List of objects to expand
+
+    Returns
+    -------
+    list
+        Expanded list with Part container contents included
+    """
+    expanded = []
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+
+    for obj in objectslist:
+        if obj:
+            # check if this is a Part container (has Group but might not be in Draft's group list)
+            if hasattr(obj, "Group") and obj.Group:
+                # recursively expand the Group contents
+                expanded.extend(expand_part_containers(obj.Group))
+            else:
+                # add the object itself if it's not a container
+                expanded.append(obj)
+
+    # remove duplicates while preserving order
+    seen = set()
+    result = []
+    for obj in expanded:
+        if obj not in seen:
+            seen.add(obj)
+            result.append(obj)
+
+    return result
+
+
 def export(
     exportList, filename: str, colors: dict[str, str] | None = None, camera: str | None = None
 ) -> bool:
@@ -206,6 +248,8 @@ def export(
 
     # Take the objects out of groups
     objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=False)
+    # Also expand Part containers that Draft.get_group_contents might miss
+    objectslist = expand_part_containers(objectslist)
     # objectslist = Arch.pruneIncluded(objectslist)
 
     for obj in objectslist:
