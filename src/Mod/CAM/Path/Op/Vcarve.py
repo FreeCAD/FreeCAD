@@ -145,6 +145,7 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
 
     return result
 
+
 def getReversedEdge(edge):
     # returns a reversed edge (copy of original edge)
     curve = edge.Curve
@@ -152,9 +153,7 @@ def getReversedEdge(edge):
     last = edge.LastParameter
     curve_c = curve.copy()
     curve_c.reverse()
-    return Part.Edge(
-        curve_c, curve_c.reversedParameter(last), curve_c.reversedParameter(first)
-    )
+    return Part.Edge(curve_c, curve_c.reversedParameter(last), curve_c.reversedParameter(first))
 
 
 def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
@@ -167,7 +166,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
 
     if not positionHistory:
         return []
-    
+
     backTrackEdges = []
 
     currentPosition = positionHistory[-1]
@@ -177,7 +176,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
     nextEdgeEnd = nextEdge.valueAt(nextEdge.LastParameter)
 
     # Scenario 1
-    # 
+    #
     # in some cases travelling between wires looks like that:
     # A ========= B ------- D
     #             |
@@ -212,9 +211,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
         # instead of G0 - just carve the edge in reverse direction
         backTrackEdges.append(getReversedEdge(nextEdge))
 
-    
     return backTrackEdges
-
 
 
 def canSkipRepositioning(positionHistory, newPosition, tolerance):
@@ -591,8 +588,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             # we start vcarving another wire which may not be connected to previous one
             # but using some routing logic we may avoid raising CNC toolbit and using G0
             # and instead traverse back already carved edges at full speed
-
-          
 
             edge_list = backtrack_edges + wire
 
