@@ -3552,9 +3552,9 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
 Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit → Preferences → Import/Export → DWG
-For more information see:
+      <translation>Es wurde kein geeigneter externer DWG-Konverter gefunden.
+Bitte einen manuell festlegen unter dem Menü Bearbeiten → Einstellungen → Import/Export → DWG.
+Weitere Informationen findet man unter:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>

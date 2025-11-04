@@ -2834,21 +2834,20 @@ can be rendered directly by the GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by the GPU.
+      <translation>Wenn diese Option ausgewählt ist, werden Vertex Buffer Objects (VBO) verwendet.
+Ein VBO ist eine OpenGL-Funktion, die Methoden zum Hochladen von
+Vertexdaten (Position, Normalenvektor, Farbe usw.) auf die Grafikkarte bereitstellt.
+VBOs bieten erhebliche Leistungssteigerungen, da die Daten
+im Grafikspeicher statt im Systemspeicher gespeichert sind und somit
+direkt von der GPU gerendert werden können.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support.</translation>
+Hinweis: Manchmal kann diese Funktion zu einer Reihe verschiedener
+Probleme führen, die von grafischen Anomalien bis hin zu GPU-Absturzfehlern reichen. Daran denken, diese Einstellung als aktiviert zu melden, wenn Unterstützung anfordert wird.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="387"/>
       <source>Method of multisample anti-aliasing</source>
-      <translation type="unfinished">Method of multisample anti-aliasing</translation>
+      <translation>Verfahren zum Anti-Aliasing mit mehreren Abtastungen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="479"/>
@@ -4116,9 +4115,9 @@ Der Wert ist der Durchmesser der Kugel, der auf den Bildschirm passt.</translati
       <source>Prevents view tilting when pinch-zooming.
 Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Verhindert das Neigen der Ansicht beim Zoomen mit zwei Fingern.
+Betrifft nur den Navigationsstil Gesten.
+Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
@@ -4559,7 +4558,7 @@ Ein größerer Wert erleichtert die Auswahl von Elementen, verhindert aber die A
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
       <source>Color bar label text color (e.g. in Mesh and FEM)</source>
-      <translation type="unfinished">Color bar label text color (e.g. in Mesh and FEM)</translation>
+      <translation>Farbe des Farbbalken-Beschriftungstextes (z. B. in Mesh und FEM)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
@@ -5234,7 +5233,7 @@ Die Spalte "Status" zeigt an, ob das Dokument wiederhergestellt werden konnte.</
     <message>
       <location filename="../Placement.ui" line="118"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="194"/>
@@ -9106,7 +9105,7 @@ aktuellen Kopie gehen verloren.
     <message>
       <location filename="../CommandWindow.cpp" line="81"/>
       <source>Tiles pragmatic</source>
-      <translation type="unfinished">Tiles pragmatic</translation>
+      <translation>pragmatisch Kacheln</translation>
     </message>
   </context>
   <context>
@@ -10473,8 +10472,8 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Die Arbeitsbereiche können per Ziehen &amp; Ablegen neu angeordnet oder sortieren werden, indem man mit der rechten Maustaste auf einen beliebigen Arbeitsbereich klickt und&lt;span style="  font-weight:600; font-style:italic;"&gt;Alphabetisch sortieren&lt;/span&gt; wählt. Zusätzliche Arbeitsbereiche können über den Addon-Manager installiert werden.&lt;/p&gt;&lt;p&gt;
+Aktuell installierte Arbeitsbereiche:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="55"/>
@@ -10484,7 +10483,7 @@ Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translatio
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="78"/>
       <source>Workbench selector items style</source>
-      <translation type="unfinished">Workbench selector items style</translation>
+      <translation>Stil der Arbeitsbereichs-Auswahlelemente</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="85"/>
@@ -13413,7 +13412,7 @@ Fortfahren?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="749"/>
       <source>Te&amp;xt Document</source>
-      <translation>Te&amp;xt-Dokument</translation>
+      <translation>Te&amp;xtdokument</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="750"/>
@@ -13522,7 +13521,7 @@ Fortfahren?</translation>
     <message>
       <location filename="../CommandView.cpp" line="604"/>
       <source>Toggles clipping of the active view</source>
-      <translation type="unfinished">Toggles clipping of the active view</translation>
+      <translation>Aktiviert/deaktiviert das Zuschneiden der aktiven Ansicht</translation>
     </message>
   </context>
   <context>

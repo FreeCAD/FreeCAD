@@ -442,7 +442,8 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="200"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Каб ужыць каманду, навядзіце курсор мышы на геаметрыю (папярэдне абраную). Падрабязнасці глядзіце ў дакументацыі.</translation>
+      <translation>Каб ужыць каманду, навядзіце паказальнік мышы на геаметрыю (папярэдне абраную).
+Падрабязнасці глядзіце ў дакументацыі.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="292"/>
@@ -492,7 +493,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
-      <translation type="unfinished">Visit %1 and copy the robot VRML and CSV files to %2</translation>
+      <translation>Перайдзіце на старонку %1 і скапіруйце файлы робата VRML і CSV на старонку %2</translation>
     </message>
   </context>
   <context>

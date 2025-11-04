@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2021 Yorik van Havre <yorik@uncreated.net>              *
@@ -123,6 +125,11 @@ class Draft_Hatch_TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def onFileChanged(self, filename):
+
+        if filename[0] == "." and self.baseobj:
+            # File path relative to the FreeCAD file directory.
+            filename = os.path.join(os.path.dirname(self.baseobj.Document.FileName), filename)
+            filename = os.path.abspath(filename)
 
         pat = self.form.Pattern.currentText()
         self.form.Pattern.clear()

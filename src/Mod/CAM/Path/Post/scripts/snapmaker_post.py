@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: EUPL-1.2
 # A FreeCAD postprocessor targeting Snapmaker machines with CNC capabilities
 # ***************************************************************************
 # *  Copyright (c) 2025 Clair-Loup Sergent <clsergent@free.fr>              *

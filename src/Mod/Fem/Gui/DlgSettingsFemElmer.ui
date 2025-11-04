@@ -144,14 +144,14 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <widget class="QLabel" name="l_num_processes">
+         <widget class="QLabel" name="l_num_tasks">
           <property name="text">
-           <string>Number of processes</string>
+           <string>Number of tasks</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::PrefSpinBox" name="sb_num_processes">
+         <widget class="Gui::PrefSpinBox" name="sb_num_tasks">
           <property name="alignment">
            <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -162,7 +162,33 @@
            <number>1</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UseNumberOfCores</cstring>
+           <cstring>NumberOfTasks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Elmer</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_threads_per_task">
+          <property name="text">
+           <string>Threads per task</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefSpinBox" name="sb_threads_per_task">
+          <property name="alignment">
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="toolTip">
+           <string>Number of threads per task. Take effect if Elmer uses OpenMP.</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThreadsPerTask</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Elmer</cstring>

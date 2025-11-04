@@ -2705,3 +2705,11 @@ bool FemMesh::removeGroup(int GroupId)
 {
     return this->getSMesh()->RemoveGroup(GroupId);
 }
+
+void FemMesh::renameGroup(int id, const std::string& name)
+{
+    SMESH_Group* grp = this->getSMesh()->GetGroup(id);
+    if (grp) {
+        grp->SetName(name.c_str());
+    }
+}

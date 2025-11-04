@@ -130,13 +130,18 @@ class BIM_ProjectManager:
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
-                from nativeifc import ifc_tools
-
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
+            levels = []
+            if self.building and self.project:
+                from nativeifc import ifc_tools
+
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
-                if levels:
-                    self.form.countLevels.setValue(len(levels))
+                levels = list(filter(None, [ifc_tools.get_object(l) for l in levels]))
+            if not levels:
+                levels = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building Storey"]
+            if levels:
+                self.form.countLevels.setValue(len(levels))
 
         # show dialog
         self.form.show()

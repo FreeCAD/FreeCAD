@@ -86,7 +86,10 @@ public:
     explicit DrawSketchHandlerLine(
         ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
         : DrawSketchHandlerLineBase(constrMethod)
-        , length(0.0) {};
+        , length(0.0)
+        , lengthSign(0)
+        , widthSign(0)
+        , capturedDirection(0.0, 0.0) {};
     ~DrawSketchHandlerLine() override = default;
 
 private:
@@ -237,9 +240,22 @@ private:
         }
     }
 
+    void onReset() override
+    {
+        lengthSign = 0;
+        widthSign = 0;
+        capturedDirection = Base::Vector2d(0.0, 0.0);
+        toolWidgetManager.resetControls();
+    }
+
 private:
     Base::Vector2d startPoint, endPoint;
     double length;
+
+    // These store the direction sign when OVP is first set to prevent sign flipping
+    int lengthSign, widthSign;
+    // Direction tracking to check once OVP is locked
+    Base::Vector2d capturedDirection;
 
     void createShape(bool onlyeditoutline) override
     {
@@ -427,12 +443,17 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                             if (fabs(width) < Precision::Confusion()
                                 && fourthParam->hasFinishedEditing) {
                                 unsetOnViewParameter(thirdParam.get());
+                                handler->lengthSign = 0;
                                 return;
                             }
                         }
                     }
-                    int sign = (onSketchPos.x - handler->startPoint.x) >= 0 ? 1 : -1;
-                    onSketchPos.x = handler->startPoint.x + sign * length;
+                    // get sign on the first time we set the OVP label, so it won't get flipped
+                    // with mouse next time
+                    if (handler->lengthSign == 0) {
+                        handler->lengthSign = (onSketchPos.x - handler->startPoint.x) >= 0 ? 1 : -1;
+                    }
+                    onSketchPos.x = handler->startPoint.x + handler->lengthSign * length;
                 }
 
                 if (fourthParam->isSet) {
@@ -444,12 +465,15 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                             if (fabs(length) < Precision::Confusion()
                                 && thirdParam->hasFinishedEditing) {
                                 unsetOnViewParameter(fourthParam.get());
+                                handler->widthSign = 0;
                                 return;
                             }
                         }
                     }
-                    int sign = (onSketchPos.y - handler->startPoint.y) >= 0 ? 1 : -1;
-                    onSketchPos.y = handler->startPoint.y + sign * width;
+                    if (handler->widthSign == 0) {
+                        handler->widthSign = (onSketchPos.y - handler->startPoint.y) >= 0 ? 1 : -1;
+                    }
+                    onSketchPos.y = handler->startPoint.y + handler->widthSign * width;
                 }
             }
             else if (handler->constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
@@ -460,20 +484,29 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 }
                 double length = dir.Length();
 
+                if (fourthParam->isSet) {
+                    const double angle = Base::toRadians(fourthParam->getValue());
+                    const Base::Vector2d ovpDir(cos(angle), sin(angle));
+                    handler->capturedDirection = ovpDir;
+                }
+                else {
+                    handler->capturedDirection = dir.Normalize();
+                }
+
                 if (thirdParam->isSet) {
                     length = thirdParam->getValue();
                     if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
+                        handler->capturedDirection = Base::Vector2d(0.0, 0.0);
                         return;
                     }
 
-                    onSketchPos = handler->startPoint + length * dir.Normalize();
+                    onSketchPos = handler->startPoint + length * handler->capturedDirection;
                 }
-
-                if (fourthParam->isSet) {
-                    double angle = Base::toRadians(fourthParam->getValue());
-                    Base::Vector2d ovpDir(cos(angle), sin(angle));
-                    onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, ovpDir);
+                else if (fourthParam->isSet) {
+                    // only angle is set, project current position onto that angle
+                    onSketchPos.ProjectToLine(onSketchPos - handler->startPoint,
+                                              handler->capturedDirection);
                     onSketchPos += handler->startPoint;
                 }
             }
@@ -490,6 +523,8 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 && (onSketchPos - handler->startPoint).Length() < Precision::Confusion()) {
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
+                handler->lengthSign = 0;
+                handler->widthSign = 0;
             }
         } break;
         default:

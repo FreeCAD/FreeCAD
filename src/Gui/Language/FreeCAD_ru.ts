@@ -1143,7 +1143,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>Выберите иконку</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>
@@ -4221,7 +4221,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="204"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
       <source>Isometric</source>
-      <translation>Изометрическая</translation>
+      <translation>Изометрия</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="205"/>
@@ -10016,7 +10016,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="735"/>
       <source>&amp;1 As is</source>
-      <translation>&amp;1 Как есть</translation>
+      <translation>&amp;1 По умолчанию</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="737"/>
@@ -10026,7 +10026,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="740"/>
       <source>&amp;2 Points</source>
-      <translation>&amp;2 Точки</translation>
+      <translation>&amp;2 Вершины</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="745"/>
@@ -10036,7 +10036,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="750"/>
       <source>&amp;4 Hidden line</source>
-      <translation>&amp;4 Скрытые линии</translation>
+      <translation>&amp;4 Скрытая сетка</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="755"/>

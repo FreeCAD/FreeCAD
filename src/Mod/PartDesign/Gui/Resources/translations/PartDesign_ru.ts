@@ -1578,9 +1578,10 @@ If zero, it is equal to Radius2</source>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
+      <translation>Операция не может быть выполнена с заданными параметрами.
+Геометрия может быть некорректной, или параметры могут 
+быть несовместимыми.
+Пожалуйста настройте параметры и повторите попытку.</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="212"/>
@@ -4494,7 +4495,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
       <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation>Результат содержит несколько твёрдых тел: включите параметр "Разрешить составные тела" в активном теле.</translation>
+      <translation>Результат содержит несколько твёрдых тел: включите параметр "Разрешить составные объекты" в активном теле.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="110"/>

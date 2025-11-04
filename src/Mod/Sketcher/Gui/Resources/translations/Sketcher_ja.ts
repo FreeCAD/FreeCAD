@@ -2772,7 +2772,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
       <source>Esc key can leave sketch edit mode</source>
-      <translation>Escキーでスケッチ編集モードを終了できます。</translation>
+      <translation>Escキーでスケッチ編集モードを終了</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>

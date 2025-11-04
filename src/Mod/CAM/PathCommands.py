@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -189,15 +191,6 @@ class _ToggleOperation:
         for sel in selection:
             baseOp = Path.Dressup.Utils.baseOp(sel)
             baseOp.Active = not baseOp.Active
-            if sel == baseOp:
-                # selected not a Dressup
-                baseOp.ViewObject.Visibility = baseOp.Active
-            elif not baseOp.Active:
-                # only hide operation under Dressup
-                baseOp.ViewObject.Visibility = False
-            elif baseOp.Active:
-                # only unhide Dressup
-                sel.ViewObject.Visibility = True
 
         FreeCAD.ActiveDocument.recompute()
 

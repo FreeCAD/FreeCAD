@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x 
+set -x
 
 conda_env="fc_env"
 
@@ -46,6 +46,8 @@ cp -a ${conda_env}/Library/data ${copy_dir}/data
 cp -a ${conda_env}/Library/Ext ${copy_dir}/Ext
 cp -a ${conda_env}/Library/lib ${copy_dir}/lib
 cp -a ${conda_env}/Library/Mod ${copy_dir}/Mod
+mkdir -p ${copy_dir}/doc
+cp -a ${conda_env}/Library/doc/{ThirdPartyLibraries.html,LICENSE.html} ${copy_dir}/doc
 rm -rf ${conda_env}/bin_tmp
 
 # Apply Patches

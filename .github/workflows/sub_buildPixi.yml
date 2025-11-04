@@ -118,7 +118,7 @@ jobs:
 
     - uses: prefix-dev/setup-pixi@28eb668aafebd9dede9d97c4ba1cd9989a4d0004 # v0.9.2
       with:
-        pixi-version: v0.48.1
+        pixi-version: v0.59.0
         cache: false
 
     - name: Restore Compiler Cache
@@ -216,7 +216,7 @@ jobs:
 
     - name: Upload logs
       if: always()
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-Logs
         path: |
@@ -225,7 +225,7 @@ jobs:
 
     - name: Upload report
       if: always()
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
       with:
         name: ${{ env.reportfilename }}
         path: |

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # This package aggregates tool bit classes.
 
 # Import the base class and all concrete shape classes

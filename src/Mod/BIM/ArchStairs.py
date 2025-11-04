@@ -1696,18 +1696,35 @@ class _Stairs(ArchComponent.Component):
         stringerWidth=None,
         stringerOverlap=None,
     ):
+
+        # TODO : To support custom input of tread, riser, structure, stringer etc.
+        #        and output of these parts individually)
+        # TODO : Review order of precedence - vHeight, hgt, edge height if present in code (2025.10.26)
+
         "builds a simple, straight staircase from a straight edge"
 
         """
         edge                  : Edge defining the flight/landing like stairs' direction, run, rise/height etc. (mandatory)
+                                (makeStraightStairsWithLanding() should have provided edge with z information)
 
         Below parameters, if provided, would overrides information derived from the edge and/or Stairs' built-in properties -
-        s1                    : (to be clarified)
-        s2                    : (to be clarified)
+
+                                                   =======
+                                                    ǁ
+                                              ======ǁ
+                                               ǁ^^^^^ - vLength
+                                   vNose ======ǁ
+                                          ǁ    ^ - vRiserThickness
+                    vTreadThickness ======ǁ<
+                                     ǁ     < - s1, vHeight
+                                     ǁ     <
+
+        s1                    : Height of riser (vHeight is vector, redundant?)
+        s2                    : upSlabThickness (upSlabThickness below redundant?)
         numOfSteps            : Numbers of Steps
         downstartstairs       : (to be clarified)
         endstairsup           : "toFlightThickness", "toSlabThickness"
-        hgt                   : Height of flight
+        hgt                   : Height of flight  (order of precedence: vHeight, hgt, edge height if present)
         vWidth                : Vector - Width of flight/tread
         align                 : Align of flight/tread
         vLength               : Vector - Depth/Length of tread
@@ -1723,8 +1740,6 @@ class _Stairs(ArchComponent.Component):
         stringerWidth         : Value - (to be clarified)
         stringerOverlap       : (to be clarified)
 
-        (TODO : To support custom input of tread, riser, structure, stringer etc.
-                and output of these parts individually)
         """
 
         # Upgrade obj if it is from an older version of FreeCAD
@@ -1760,6 +1775,7 @@ class _Stairs(ArchComponent.Component):
             endstairsup = obj.ConnectionEndStairsUp
 
         # setup hgt (flight height)
+        # TODO Review - vHeight should precedence (order of precedence: vHeight, hgt, edge height if present)
         if not hgt:
             if round(v.z, Draft.precision()) != 0:
                 hgt = v.z
@@ -1872,7 +1888,6 @@ class _Stairs(ArchComponent.Component):
                 # TODO Why 'reuse' vBase?
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
-
                 for i in range(numOfSteps - 1):
                     if not lProfile:
                         lProfile.append(vBase)
@@ -1884,31 +1899,45 @@ class _Stairs(ArchComponent.Component):
                     lProfile.append(lProfile[-1].add(vLength))
 
                 lProfile[-1] = lProfile[-1].add(-vRiserThickness)
-                resHeight1 = structureThickness / math.cos(ang)
-                dh = s2 - float(hgt) / numOfSteps
 
+                # resHeight1: vertical distance down from last step when it
+                #             touches stairs structure bottom
+                resHeight1 = structureThickness / math.cos(ang)
+                # dh: if has upSlabThickness, (-ve) distance from bottom of
+                #     upSlab (s2: upSlabThickness) to last step
+                dh = s2 - float(hgt) / numOfSteps
+                # resHeight2: if has upSlabThickness, overall distance (height)
+                #             at bottom of structure from lower start to upper end
                 resHeight2 = ((numOfSteps - 1) * vHeight.Length) - dh
 
                 if endstairsup == "toFlightThickness":
                     lProfile.append(lProfile[-1].add(Vector(0, 0, -resHeight1)))
+
+                    # TODO Review: purpose of resHeight2, resLength, h?  Ever used?
                     resHeight2 = ((numOfSteps - 1) * vHeight.Length) - (
                         resHeight1 + vTreadThickness.z
                     )
+                    resLength = (vLength.Length / vHeight.Length) * resHeight2
+                    h = DraftVecUtils.scaleTo(vLength, -resLength)
 
-                    resLength = (vLength.Length / vHeight.Length) * resHeight2
-                    h = DraftVecUtils.scaleTo(vLength, -resLength)
                 elif endstairsup == "toSlabThickness":
+
+                    # TODO Review: purpose of resLength, h?  Ever used?
                     resLength = (vLength.Length / vHeight.Length) * resHeight2
                     h = DraftVecUtils.scaleTo(vLength, -resLength)
+
                     th = (resHeight1 + vTreadThickness.z) - dh
                     resLength2 = th / math.tan(ang)
-
                     lProfile.append(lProfile[-1].add(Vector(0, 0, vTreadThickness.z - dh)))
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength, resLength2)))
 
+                # TODO Review below if checking
                 if s1 > resHeight1:
                     downstartstairs = "VerticalCut"
                 if downstartstairs == "VerticalCut":
+
+                    # TODO Add setup upSlabThickness below but at 'main' section above
+                    # setup upSlabThickness
                     if not downSlabThickness:
                         downSlabThickness = obj.DownSlabThickness.Value
                     dh = downSlabThickness - resHeight1 - vTreadThickness.z
@@ -1922,6 +1951,7 @@ class _Stairs(ArchComponent.Component):
                 elif downstartstairs == "HorizontalVerticalCut":
                     temp_s1 = s1
 
+                    # TODO Move setup upSlabThickness to 'main' section
                     # setup upSlabThickness
                     if not upSlabThickness:
                         upSlabThickness = obj.UpSlabThickness.Value
@@ -1940,6 +1970,11 @@ class _Stairs(ArchComponent.Component):
                 else:
                     lProfile.append(lProfile[-1].add(Vector(h.x, h.y, -resHeight2)))
 
+                # Add back vertex before start vertex offsetted riser thickness
+                if vRiserThickness.Length and downstartstairs != "HorizontalCut":
+                    lProfile.append(vBasedAligned)
+
+                # Add start vertex as last vertex to complete a closed polygon
                 lProfile.append(vBase)
 
                 pol = Part.makePolygon(lProfile)
@@ -2099,6 +2134,8 @@ class _Stairs(ArchComponent.Component):
             if wantLanding:  # but not numOfSteps > 3, so no hasLanding
                 print("Fewer than 4 steps, unable to create landing")
 
+        # TODO height shoulld follow edge's z info if any?
+        #      Order of precedence in makeStraightStairs() - vHeight, hgt, edge height if present
         # setup height
         if height is None:  # if not height:
             height = obj.Height.Value
@@ -2220,7 +2257,7 @@ class _Stairs(ArchComponent.Component):
                     numOfSteps - landingStep,
                     "HorizontalVerticalCut",
                     None,
-                    hgt=h,
+                    # hgt=h,
                     vWidth=-vWidth,
                     align=align,
                     vLength=-vLength,
@@ -2243,7 +2280,7 @@ class _Stairs(ArchComponent.Component):
                     numOfSteps - landingStep,
                     "HorizontalVerticalCut",
                     None,
-                    hgt=h,
+                    # hgt=h,
                     vWidth=vWidth,
                     align=align,
                     vLength=vLength,

@@ -1143,7 +1143,7 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>Välj en ikon</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>

@@ -1,4 +1,6 @@
-﻿// dxf.cpp
+﻿// SPDX-License-Identifier: BSD-3-Clause
+
+// dxf.cpp
 // Copyright (c) 2009, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
@@ -2172,8 +2174,7 @@ bool CDxfRead::ReadText()
     ResolveEntityAttributes();
 
     if ((this->*stringToUTF8)(textPrefix)) {
-        OnReadText(insertionPoint, height * 25.4 / 72.0, textPrefix, rotation);
-        // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+        OnReadText(insertionPoint, height, textPrefix, rotation);
     }
     else {
         ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);

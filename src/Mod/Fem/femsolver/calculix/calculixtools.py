@@ -26,7 +26,7 @@ __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 
-from PySide.QtCore import QProcess, QThread
+from PySide.QtCore import QProcess, QThread, QProcessEnvironment
 import tempfile
 import os
 import shutil
@@ -111,7 +111,7 @@ class CalculiXTools:
     def compute(self):
         self._clear_results()
         ccx_bin = settings.get_binary("Calculix")
-        env = self.process.processEnvironment()
+        env = QProcessEnvironment.systemEnvironment()
         num_cpu = self.fem_param.GetGroup("Ccx").GetInt(
             "AnalysisNumCPUs", QThread.idealThreadCount()
         )
