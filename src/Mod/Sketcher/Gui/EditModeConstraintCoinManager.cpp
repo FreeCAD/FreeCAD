@@ -1875,8 +1875,10 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
 
                 l->textColor = constraint->isActive
-                    ? (constraint->isDriving ? drawingParameters.ConstrDimColor
-                                             : drawingParameters.NonDrivingConstrDimColor)
+                    ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
+                        ? drawingParameters.ExprBasedConstrDimColor
+                        : (constraint->isDriving ? drawingParameters.ConstrDimColor
+                                                 : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
