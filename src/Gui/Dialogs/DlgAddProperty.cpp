@@ -27,6 +27,7 @@
 # include <QCompleter>
 # include <algorithm>
 #include <memory>
+#include <array>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -417,6 +418,10 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
         App::PropertyLinkSub::getClassTypeId(),
         App::PropertyLinkList::getClassTypeId(),
         App::PropertyLinkSubList::getClassTypeId(),
+        App::PropertyXLink::getClassTypeId(),
+        App::PropertyXLinkSub::getClassTypeId(),
+        App::PropertyXLinkList::getClassTypeId(),
+        App::PropertyXLinkSubList::getClassTypeId(),
         App::PropertyMaterialList::getClassTypeId(),
         App::PropertyPath::getClassTypeId(),
         App::PropertyString::getClassTypeId(),
@@ -634,9 +639,16 @@ bool DlgAddProperty::isEnumPropertyItem() const
 
 bool DlgAddProperty::isSubLinkPropertyItem() const
 {
-    const QString& type = ui->comboBoxType->currentText();
-    return type == QString::fromLatin1(App::PropertyLinkSub::getClassTypeId().getName()) ||
-        type == QString::fromLatin1(App::PropertyLinkSubList::getClassTypeId().getName());
+    const QString type = ui->comboBoxType->currentText();
+    static const std::array<const char*, 4> sublinkTypes = {
+        App::PropertyLinkSub::getClassTypeId().getName(),
+        App::PropertyLinkSubList::getClassTypeId().getName(),
+        App::PropertyXLinkSub::getClassTypeId().getName(),
+        App::PropertyXLinkSubList::getClassTypeId().getName()
+    };
+    return std::ranges::any_of(sublinkTypes, [&type](const char* subLinkType) {
+        return type == QString::fromLatin1(subLinkType);
+    });
 }
 
 QVariant DlgAddProperty::getEditorData() const
