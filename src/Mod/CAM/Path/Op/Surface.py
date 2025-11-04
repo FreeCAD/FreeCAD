@@ -68,6 +68,8 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+FLOAT_EPSILON = 1e-6  # Small value for floating point comparisons
+
 
 class ObjectSurface(PathOp.ObjectOp):
     """Proxy object for Surfacing operation."""
@@ -2162,7 +2164,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if (
                 obj.RotationAxis == obj.DropCutterDir
             ):  # Same == indexed (cutter runs parallel to axis)
-
                 # Translate scan to gcode
                 sumAdv = begIdx
                 for sl in range(0, len(scanLines)):
@@ -2424,7 +2425,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Adjust feed rate based on radius/circumference of cutter.
         # Original feed rate based on travel at circumference.
         if rN > 0:
-            if pnt.z >= self.layerEndzMax:
+            if pnt.z >= self.layerEndzMax - FLOAT_EPSILON:
                 clrZ = pnt.z + 5.0
                 output.append(Path.Command("G1", {"Z": clrZ, "F": self.vertRapid}))
         else:
