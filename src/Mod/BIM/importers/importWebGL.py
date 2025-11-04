@@ -449,6 +449,9 @@ def compress_wires(wires: list[list[str]], floats: list[str]) -> tuple[list[list
         lengths.append(len(w))
         floats.extend(w)
 
+    if len(floats) == 0:
+        return [], []
+
     float_arr, all_wires = np.unique(floats, return_inverse=True)
     wire_arrays = np.array_split(all_wires, np.cumsum(lengths[:-1]))
     return [baseEncode(w.tolist()) for w in wire_arrays], float_arr.tolist()
@@ -458,6 +461,9 @@ def compress_verts(verts: list[str], floats: list[str]) -> tuple[list[int], list
     """
     Create floats list to compress verts and wires being written into the JS
     """
+    if len(verts) == 0:
+        return [], floats
+
     floats_v, ind, verts_v = np.unique(verts, return_index=True, return_inverse=True)
 
     # Reorder as np.unique orders the resulting array (needed for facet matching)
