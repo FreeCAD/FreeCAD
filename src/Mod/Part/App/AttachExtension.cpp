@@ -549,18 +549,16 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         rotation.getYawPitchRoll(yaw, pitch, roll);
 
         // extract existing expressions
-        App::ObjectIdentifier oidX(owner, true);
-        oidX.addComponent(App::ObjectIdentifier::SimpleComponent("AttachmentOffset"));
-        oidX.addComponent(App::ObjectIdentifier::SimpleComponent("Base"));
-        oidX.addComponent(App::ObjectIdentifier::SimpleComponent("x"));
-        App::ObjectIdentifier oidY(owner, true);
-        oidY.addComponent(App::ObjectIdentifier::SimpleComponent("AttachmentOffset"));
-        oidY.addComponent(App::ObjectIdentifier::SimpleComponent("Base"));
-        oidY.addComponent(App::ObjectIdentifier::SimpleComponent("y"));
-        App::ObjectIdentifier oidYaw(owner, true);
-        oidYaw.addComponent(App::ObjectIdentifier::SimpleComponent("AttachmentOffset"));
-        oidYaw.addComponent(App::ObjectIdentifier::SimpleComponent("Rotation"));
-        oidYaw.addComponent(App::ObjectIdentifier::SimpleComponent("Yaw"));
+        auto buildOID  = [owner](const std::vector<std::string>& path) {
+            App::ObjectIdentifier oid(owner, true);
+            for (const auto& name : path) {
+                oid.addComponent(App::ObjectIdentifier::SimpleComponent(name));
+            }
+            return oid;
+        };
+        App::ObjectIdentifier oidX   = buildOID ({"AttachmentOffset", "Base", "x"});
+        App::ObjectIdentifier oidY   = buildOID ({"AttachmentOffset", "Base", "y"});
+        App::ObjectIdentifier oidYaw = buildOID ({"AttachmentOffset", "Rotation", "Yaw"});
         const App::Expression* exprX = nullptr;
         const App::Expression* exprY = nullptr;
         const App::Expression* exprYaw = nullptr;
