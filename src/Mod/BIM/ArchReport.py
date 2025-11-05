@@ -1031,7 +1031,7 @@ class ReportTaskPanel:
         )
         self.btn_toggle_preview.setCheckable(True)  # Make it a toggle button
 
-        self.btn_show_cheatsheet = QtWidgets.QPushButton(translate("Arch", "Help"))
+        self.btn_show_cheatsheet = QtWidgets.QPushButton(translate("Arch", "SQL Cheatsheet"))
         self.btn_show_cheatsheet.setIcon(FreeCADGui.getIcon(":/icons/help-browser.svg"))
         self.btn_show_cheatsheet.setToolTip(
             translate("Arch", "Show a cheatsheet of the supported SQL syntax.")
@@ -1090,7 +1090,7 @@ class ReportTaskPanel:
             )
         )
         self.chk_include_column_names = QtWidgets.QCheckBox(
-            translate("Arch", "Include Column Names")
+            translate("Arch", "Include Column Names as Headers")
         )
         self.chk_include_column_names.setToolTip(
             translate(
