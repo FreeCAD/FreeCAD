@@ -2488,18 +2488,27 @@ def selectObjects(query_string: str) -> List["FreeCAD.DocumentObject"]:
         return []
 
 
-def getSqlKeywords() -> List[str]:
+def getSqlKeywords(kind="all") -> List[str]:
     """
     Returns a list of all keywords and function names for syntax highlighters.
 
     This function provides the single source of truth for SQL syntax in the
     BIM workbench. It dynamically introspects the initialized Lark parser and
-    the function registries.
+    the function registries. It can return different subsets of keywords
+    based on the `kind` parameter.
+
+    Parameters
+    ----------
+    kind : str, optional
+        Specifies the type of keyword list to return.
+        - 'all': (Default) Returns all single keywords from the grammar.
+        - 'no_space': Returns a list of keywords that should not have a
+          trailing space in autocompletion (e.g., functions, modifiers).
 
     Returns
     -------
     List[str]
-        A sorted, unique list of all keywords and function names (e.g.,
+        A sorted, unique list of keywords and function names (e.g.,
         ['SELECT', 'FROM', 'COUNT', 'CHILDREN', ...]). Returns an empty list
         if the engine failed to initialize.
     """
@@ -2508,9 +2517,15 @@ def getSqlKeywords() -> List[str]:
     if not _parser or not _transformer:
         return []
 
+    if kind == "no_space":
+        no_space_keywords = _get_sql_function_names()
+        no_space_keywords.update({"ASC", "DESC"})
+        return sorted(list(no_space_keywords))
+
+    # Default behavior for kind='all'
     keywords = []
     # This blocklist contains all uppercase terminals from the grammar that are NOT
-    # actual keywords a user would type. This provides a robust filter.
+    # actual keywords a user would type.
     NON_KEYWORD_TERMINALS = {"WS", "CNAME", "STRING", "NUMBER", "LPAR", "RPAR", "COMMA", "ASTERISK"}
 
     # 1. Get all keywords from the parser's terminals.
@@ -2521,12 +2536,19 @@ def getSqlKeywords() -> List[str]:
         if term.name.isupper() and term.name not in NON_KEYWORD_TERMINALS and not is_internal:
             keywords.append(term.name)
 
-    # 2. Get all registered function names (e.g., COUNT, CONCAT, CHILDREN) by accessing them through
-    #    the initialized transformer.
-    keywords.extend(list(_transformer.select_function_registry._functions.keys()))
-    keywords.extend(list(_transformer.from_function_registry._functions.keys()))
+    # 2. Get all registered function names.
+    keywords.extend(list(_get_sql_function_names()))
 
     return sorted(list(set(keywords)))  # Return a sorted, unique list.
+
+
+def _get_sql_function_names() -> set:
+    """(Internal) Returns a set of all registered SQL function names."""
+    if not _transformer:
+        return set()
+    select_funcs = set(_transformer.select_function_registry._functions.keys())
+    from_funcs = set(_transformer.from_function_registry._functions.keys())
+    return select_funcs.union(from_funcs)
 
 
 def getSqlApiDocumentation() -> dict:

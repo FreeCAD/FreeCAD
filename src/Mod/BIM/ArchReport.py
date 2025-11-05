@@ -1799,13 +1799,38 @@ class ReportTaskPanel:
         """
         Builds the master list of words for the autocompleter.
 
-        This method scans for all SQL keywords and all unique, queryable
-        property names across all objects in the active document.
+        This method gets raw data from the SQL engine and then applies all
+        UI-specific formatting, such as combining keywords into phrases and
+        adding trailing spaces for a better user experience.
         """
-        # 1. Start with the static SQL keywords and functions.
-        all_words = set(ArchSql.getSqlKeywords())
+        # 1. Get the set of keywords that should NOT get a trailing space.
+        no_space_keywords = ArchSql.getSqlKeywords(kind="no_space")
 
-        # 2. Add all unique property names from all objects in the document.
+        # 2. Get the raw list of all individual keywords.
+        raw_keywords = set(ArchSql.getSqlKeywords())
+
+        # 3. Define UI-specific phrases and their components.
+        smart_clauses = {"GROUP BY ": ("GROUP", "BY"), "ORDER BY ": ("ORDER", "BY")}
+
+        # 4. Build the final set of completion words.
+        all_words = set()
+
+        # Add the smart phrases directly.
+        all_words.update(smart_clauses.keys())
+
+        # Get the individual components of the smart phrases to avoid adding them twice.
+        words_to_skip = {word for components in smart_clauses.values() for word in components}
+
+        for word in raw_keywords:
+            if word in words_to_skip:
+                continue
+
+            if word in no_space_keywords:
+                all_words.add(word)  # Add without a space
+            else:
+                all_words.add(word + " ")  # Add with a space by default
+
+        # 5. Add all unique property names from the document (without spaces).
         if FreeCAD.ActiveDocument:
             property_names = set()
             for obj in FreeCAD.ActiveDocument.Objects:
@@ -1814,7 +1839,7 @@ class ReportTaskPanel:
                         property_names.add(prop_name)
             all_words.update(property_names)
 
-        # 3. Return a sorted model for the completer.
+        # 6. Return a sorted model for the completer.
         return QtCore.QStringListModel(sorted(list(all_words)))
 
     def _update_ui_for_mode(self, mode):
