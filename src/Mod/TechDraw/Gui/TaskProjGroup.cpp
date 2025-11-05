@@ -325,6 +325,7 @@ void TaskProjGroup::turnViewToProjGroup()
     multiView->addView(viewPart);
     multiView->Anchor.setValue(viewPart);
     multiView->Anchor.purgeTouched();
+    multiView->AutoDistribute.setValue(ui->cbAutoDistribute->isChecked());
 
     viewPart->X.setValue(0.0);
     viewPart->Y.setValue(0.0);

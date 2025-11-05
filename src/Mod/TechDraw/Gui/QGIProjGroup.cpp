@@ -216,4 +216,3 @@ void QGIProjGroup::drawBorder()
 //QGIProjGroup does not have a border!
 //    Base::Console().message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
-
