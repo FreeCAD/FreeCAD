@@ -960,11 +960,6 @@ private:
 
         for (auto& CC : vCC) {
             BRepBuilderAPI_MakeWire mkWire;
-            if (CC.size() > 1) {
-                // The element to become the new first element is the last one.
-                // The iterator to this element is one before the end.
-                std::rotate(CC.begin(), CC.end() - 1, CC.end());
-            }
             for (auto& curveId : CC) {
                 const Part::Geometry* pGeo = Obj->getGeometry(curveId);
                 auto geoCopy = std::unique_ptr<Part::Geometry>(pGeo->copy());
