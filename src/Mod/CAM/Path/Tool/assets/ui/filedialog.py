@@ -23,6 +23,7 @@
 import pathlib
 from typing import Optional, Tuple, Type, Iterable
 from PySide.QtWidgets import QFileDialog, QMessageBox
+from ...camassets import cam_assets
 from ..manager import AssetManager
 from ..serializer import AssetSerializer, Asset
 from .util import (
@@ -214,6 +215,7 @@ class AssetOpenDialog(QFileDialog):
                     toolbit.id = dependency_uri.asset_id
 
                 # Import the toolbit into local store
+                cam_assets.add(toolbit)
                 imported_count += 1
 
             except Exception as e:
