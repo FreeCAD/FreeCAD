@@ -26,9 +26,12 @@
 #define PARTGUI_PATTERNPARAMETERSWIDGET_H
 
 #include <QWidget>
+#include <memory>
+#include <vector>
 #include <App/PropertyStandard.h> // For Property types
 #include <App/PropertyLinks.h>    // For PropertyLinkSub
 #include <Gui/ComboLinks.h>
+#include <Gui/EditableDatumLabel.h>
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -45,6 +48,7 @@ namespace App {
 }
 namespace Gui {
     class QuantitySpinBox;
+    class View3DInventorViewer;
 }
 class QToolButton;
 
@@ -72,7 +76,7 @@ namespace PartGui {
         Q_OBJECT
 
     public:
-        explicit PatternParametersWidget(PatternType type, QWidget* parent = nullptr);
+        explicit PatternParametersWidget(PatternType type, Gui::View3DInventorViewer* v, QWidget* parent = nullptr);
         ~PatternParametersWidget() override;
 
         /**
@@ -95,6 +99,7 @@ namespace PartGui {
             App::PropertyEnumeration* modeProp,
             App::PropertyQuantity* lengthProp,
             App::PropertyQuantity* offsetProp,
+            App::PropertyFloatList* spacingsOverridesProp,
             App::PropertyFloatList* spacingPatternProp,
             App::PropertyIntegerConstraint* occurrencesProp,
             App::DocumentObject* feature); // Pass feature for context
@@ -141,6 +146,14 @@ namespace PartGui {
 
         void applyQuantitySpinboxes() const;
 
+        // Methods for managing on-view labels
+        void updateSpacingLabels(const Base::Vector3d& center,
+                                 const Base::Vector3d& axis,
+                                 double radius,
+                                 double startAngle);
+        void updateSpacingLabels(const Base::Vector3d& startPoint, const Base::Vector3d& direction);
+        void clearAllSpacingLabels();
+
         Gui::ComboLinks dirLinks;
 
     Q_SIGNALS:
@@ -176,6 +189,9 @@ namespace PartGui {
         void onDynamicSpacingChanged(); // Simplified slot
         void onRemoveSpacingButtonClicked(QWidget* rowWidget);
 
+        // Slots for on-view label interaction
+        void onSpacingLabelClicked(Gui::EditableDatumLabel* label);
+
     private:
         // Initialization and setup
         void setupUiElements();
@@ -198,6 +214,7 @@ namespace PartGui {
         App::PropertyEnumeration* m_modeProp = nullptr;
         App::PropertyQuantity* m_extentProp = nullptr;
         App::PropertyQuantity* m_spacingProp = nullptr;
+        App::PropertyFloatList* m_spacingsOverrideProp = nullptr;
         App::PropertyFloatList* m_spacingPatternProp = nullptr;
         App::PropertyIntegerConstraint* m_occurrencesProp = nullptr;
         App::DocumentObject* m_feature = nullptr; // Store feature for context
@@ -207,6 +224,10 @@ namespace PartGui {
         // Store pointers to dynamically created widgets for removal and access
         QList<QWidget*> dynamicSpacingRows;
         QList<Gui::QuantitySpinBox*> dynamicSpacingSpinBoxes;
+
+        // Members for on-view labels
+        Gui::View3DInventorViewer* viewer = nullptr;
+        std::vector<std::unique_ptr<Gui::EditableDatumLabel>> spacingLabels;
 
         PatternType type;
     };

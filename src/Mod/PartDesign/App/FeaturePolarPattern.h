@@ -28,6 +28,7 @@
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 
+class gp_Ax2;
 
 namespace PartDesign
 {
@@ -83,6 +84,8 @@ public:
       * If Reversed is true, the direction of rotation will be opposite.
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
+
+    gp_Ax2 getRotation() const;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
