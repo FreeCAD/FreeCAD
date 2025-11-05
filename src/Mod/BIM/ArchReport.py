@@ -1760,6 +1760,11 @@ class ReportTaskPanel:
             self.sql_query_status_label.setText(f"✅ {statement._validation_message}")
             self.sql_query_status_label.setStyleSheet("color: green;")
 
+        # The preview button should only be enabled if the query is valid and
+        # can be executed (even if it returns 0 results).
+        is_executable = statement._validation_status in ("OK", "0_RESULTS")
+        self.btn_toggle_preview.setEnabled(is_executable)
+
     def _update_table_row_status(self, row_idx, statement: ReportStatement):
         """Updates the status icon/tooltip and other data in the QTableWidget for a given row."""
         if row_idx < 0 or row_idx >= self.table_statements.rowCount():
@@ -1924,6 +1929,10 @@ class ReportTaskPanel:
         self.editor_widget.setVisible(True)
         self.sql_query_edit.setFocus()
         self._update_ui_for_mode("editing")
+
+        # Initially disable the preview button until the first validation confirms
+        # that the query is executable.
+        self.btn_toggle_preview.setEnabled(False)
 
     def _end_edit_session(self):
         """Hides the editor and restores the overview state."""
