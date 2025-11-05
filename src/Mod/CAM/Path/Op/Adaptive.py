@@ -540,7 +540,13 @@ def Execute(op, obj):
         FreeCADGui.updateGui()
 
     try:
-        helixDiameter = obj.HelixDiameterLimit.Value
+        obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
+        obj.HelixIdealDiameterPercent = max(
+            obj.HelixIdealDiameterPercent, obj.HelixMinDiameterPercent
+        )
+
+        helixDiameter = obj.HelixIdealDiameterPercent / 100 * op.tool.Diameter.Value
+        helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
         topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
         obj.StopProcessing = False
@@ -635,7 +641,8 @@ def Execute(op, obj):
             a2d = area.Adaptive2d()
             a2d.stepOverFactor = 0.01 * obj.StepOver
             a2d.toolDiameter = float(op.tool.Diameter)
-            a2d.helixRampDiameter = helixDiameter
+            a2d.helixRampTargetDiameter = helixDiameter
+            a2d.helixRampMinDiameter = helixMinDiameter
             a2d.keepToolDownDistRatio = keepToolDownRatio
             a2d.stockToLeave = float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
@@ -659,7 +666,7 @@ def Execute(op, obj):
                 )
 
         # GENERATE
-        GenerateGCode(op, obj, adaptiveResults, helixDiameter)
+        GenerateGCode(op, obj, adaptiveResults)
 
         if not obj.StopProcessing:
             Path.Log.info("*** Done. Elapsed time: %f sec\n\n" % (time.time() - start))
