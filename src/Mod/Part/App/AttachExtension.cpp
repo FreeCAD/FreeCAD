@@ -25,6 +25,7 @@
 #include <Base/Tools.h>
 
 #include <App/Document.h>
+#include <App/Datums.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Expression.h>
 #include <App/ExpressionParser.h>
@@ -501,8 +502,8 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     // check for an App::Plane support object exists
     App::GeoFeature* geof = nullptr;
     for (auto obj : this->AttachmentSupport.linkedObjects()) {
-        if (obj->isDerivedFrom(Base::Type::fromName("App::Plane"))) {
-            geof = dynamic_cast<App::GeoFeature*>(obj);
+        if (obj->isDerivedFrom<App::Plane>()) {
+            geof = freecad_cast<App::GeoFeature*>(obj);
             break;
         }
     }
@@ -622,9 +623,9 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         // store updated placement and expressions back to the document object
 
         // expressions
-        owner->ExpressionEngine.setValue(oidX, std::move(App::ExpressionPtr(newExprX)));
-        owner->ExpressionEngine.setValue(oidY, std::move(App::ExpressionPtr(newExprY)));
-        owner->ExpressionEngine.setValue(oidYaw, std::move(App::ExpressionPtr(newExprYaw)));
+        owner->ExpressionEngine.setValue(oidX, App::ExpressionPtr(newExprX));
+        owner->ExpressionEngine.setValue(oidY, App::ExpressionPtr(newExprY));
+        owner->ExpressionEngine.setValue(oidYaw, App::ExpressionPtr(newExprYaw));
 
         // values
         placement.setPosition(position);
@@ -632,7 +633,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         this->AttachmentOffset.setValue(placement);
 
     } catch (const Base::Exception& e) {
-        Base::Console().error("Error converting attachment offset of %s: %s\n",
+        Base::Console().error("Error converting legacy attachment offset of %s: %s\n",
                               owner->getNameInDocument(),
                               e.what());
     }
