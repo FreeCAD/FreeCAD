@@ -1526,9 +1526,11 @@ class ReportTaskPanel:
     def _on_editor_sql_changed(self):
         """Handles text changes in the SQL editor, triggering validation."""
         self._on_editor_field_changed()  # Mark as dirty
-        # Start the validation timer
+        # Immediately switch to a neutral "Typing..." state to provide
+        # instant feedback and hide any previous validation messages.
         self.sql_query_status_label.setText(translate("Arch", "<i>Typing...</i>"))
         self.sql_query_status_label.setStyleSheet("color: gray;")
+        # Start (or restart) the timer for the full validation.
         self.validation_timer.start(500)
 
     def _on_editor_field_changed(self, *args):
@@ -1706,12 +1708,13 @@ class ReportTaskPanel:
             temp_statement._validation_message = f"{translate('Arch', 'Found')} {count} {translate('Arch', 'objects')}{input_count_str}."
         elif not error and count == 0:
             temp_statement._validation_status = "0_RESULTS"
+            # The message for 0 results is more of a warning than a success.
             temp_statement._validation_message = (
-                f"{translate('Arch', 'Found 0 objects')}{input_count_str}."
+                f"{translate('Arch', 'Query is valid but found 0 objects')}{input_count_str}."
             )
         elif error == "INCOMPLETE":
             temp_statement._validation_status = "INCOMPLETE"
-            temp_statement._validation_message = translate("Arch", "Typing...")
+            temp_statement._validation_message = translate("Arch", "Query is incomplete")
         else:  # An actual error occurred
             temp_statement._validation_status = "ERROR"
             temp_statement._validation_message = f"{error}{input_count_str}"
@@ -1720,9 +1723,11 @@ class ReportTaskPanel:
 
     def _update_editor_status_display(self, statement: ReportStatement):
         # Update the status label (below SQL editor) in Box 2
+        # The "Typing..." state is now handled instantly by _on_editor_sql_changed.
+        # This method only handles the final states (Incomplete, Error, 0, OK).
         if statement._validation_status == "INCOMPLETE":
-            self.sql_query_status_label.setText(translate("Arch", "<i>Typing...</i>"))
-            self.sql_query_status_label.setStyleSheet("color: gray;")
+            self.sql_query_status_label.setText(f"⚠️ {statement._validation_message}")
+            self.sql_query_status_label.setStyleSheet("color: orange;")
         elif statement._validation_status == "ERROR":
             self.sql_query_status_label.setText(f"❌ {statement._validation_message}")
             self.sql_query_status_label.setStyleSheet("color: red;")

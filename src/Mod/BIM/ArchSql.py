@@ -2093,6 +2093,22 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
             message = f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
             raise BimSqlSyntaxError(message) from e
         except UnexpectedToken as e:
+            # Heuristic for a better typing experience: If the unexpected token's
+            # text is a prefix of any of the keywords the parser was expecting,
+            # we can assume the user is still typing that keyword. In this case,
+            # we treat the error as "Incomplete" instead of a harsh "Syntax Error".
+            token_text = e.token.value.upper()
+            # The `e.expected` list from Lark contains the names of the expected terminals.
+            is_prefix_of_expected = any(
+                expected_keyword.startswith(token_text)
+                for expected_keyword in e.expected
+                if expected_keyword.isupper()
+            )
+
+            if is_prefix_of_expected:
+                raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
+
+            # If it's not an incomplete keyword, proceed with a full syntax error.
             is_incomplete = e.token.type == "$END"
             # Filter out internal Lark tokens before creating the message
             friendly_expected = [
