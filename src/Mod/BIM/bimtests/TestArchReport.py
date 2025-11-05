@@ -2059,3 +2059,56 @@ class TestArchReport(TestArchBase.TestArchBase):
         finally:
             # CLEANUP: Always restore the user's original schema.
             FreeCAD.Units.setSchema(original_schema_index)
+
+    def test_numeric_comparisons_on_quantities(self):
+        """
+        Tests that all numeric comparison operators (>, <, >=, <=, =, !=)
+        work correctly on Quantity properties, independent of the current
+        unit schema. This ensures numeric comparisons are not affected by
+        string formatting or locales.
+        """
+        # ARRANGE: Get the user's current schema to restore it later.
+        original_schema_index = FreeCAD.Units.getSchema()
+
+        try:
+            # Set a "smart" schema (MKS) that uses different display units
+            # based on thresholds. This creates the most challenging scenario
+            # for string-based comparisons.
+            schema_names = FreeCAD.Units.listSchemas()
+            mks_schema_index = schema_names.index("MKS")
+            FreeCAD.Units.setSchema(mks_schema_index)
+
+            # ARRANGE: Create a set of objects above, below, and at the threshold.
+            threshold = 8000.0
+            test_prefix = "NumericTestWall_"
+            Arch.makeWall(name=test_prefix + "TallWall", height=threshold + 2000)
+            Arch.makeWall(name=test_prefix + "ShortWall", height=threshold - 1000)
+            Arch.makeWall(name=test_prefix + "ExactWall", height=threshold)
+            self.doc.recompute()
+
+            test_cases = {
+                ">": [test_prefix + "TallWall"],
+                "<": [test_prefix + "ShortWall"],
+                ">=": [test_prefix + "TallWall", test_prefix + "ExactWall"],
+                "<=": [test_prefix + "ShortWall", test_prefix + "ExactWall"],
+                "=": [test_prefix + "ExactWall"],
+                "!=": [test_prefix + "TallWall", test_prefix + "ShortWall"],
+            }
+
+            for op, expected_names in test_cases.items():
+                with self.subTest(operator=op):
+                    # ACT: The query is isolated to only the walls from this test.
+                    query = f"SELECT Label FROM document WHERE Label LIKE '{test_prefix}%' AND Height {op} {threshold}"
+                    _, results_data = Arch.select(query)
+
+                    # ASSERT: Check that the correct objects were returned.
+                    result_labels = [row[0] for row in results_data]
+                    self.assertCountEqual(
+                        result_labels,
+                        expected_names,
+                        f"Query with operator '{op}' returned incorrect objects.",
+                    )
+
+        finally:
+            # CLEANUP: Always restore the user's original schema.
+            FreeCAD.Units.setSchema(original_schema_index)

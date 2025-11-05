@@ -1480,10 +1480,35 @@ class BooleanComparison:
         # explicit NULL checks.
         if left_val is None or right_val is None:
             return False
+
+        # Normalize Quantities to their raw numerical values first.
+        # After this step, we are dealing with basic Python types.
         if isinstance(left_val, FreeCAD.Units.Quantity):
             left_val = left_val.Value
         if isinstance(right_val, FreeCAD.Units.Quantity):
             right_val = right_val.Value
+
+        # Prioritize numeric comparison if both operands are numbers.
+        if isinstance(left_val, (int, float)) and isinstance(right_val, (int, float)):
+            ops = {
+                "=": lambda a, b: a == b,
+                "!=": lambda a, b: a != b,
+                ">": lambda a, b: a > b,
+                "<": lambda a, b: a < b,
+                ">=": lambda a, b: a >= b,
+                "<=": lambda a, b: a <= b,
+            }
+            if self.op in ops:
+                return ops[self.op](left_val, right_val)
+
+        # Fallback to string-based comparison for all other cases (including 'like').
+        try:
+            str_left = str(left_val)
+            str_right = str(right_val)
+        except Exception:
+            # This is a defensive catch. If an object's __str__ method is buggy and raises
+            # an error, we treat the comparison as False rather than crashing the whole query.
+            return False
 
         def like_to_regex(pattern):
             s = str(pattern).replace("%", ".*").replace("_", ".")
@@ -1492,30 +1517,13 @@ class BooleanComparison:
         ops = {
             "=": lambda a, b: a == b,
             "!=": lambda a, b: a != b,
-            ">": lambda a, b: a > b,
-            "<": lambda a, b: a < b,
-            ">=": lambda a, b: a >= b,
-            "<=": lambda a, b: a <= b,
-            "like": lambda a, b: re.search(like_to_regex(b), str(a), re.IGNORECASE) is not None,
+            "like": lambda a, b: re.search(like_to_regex(b), a, re.IGNORECASE) is not None,
         }
 
-        try:
-            if self.op in [
-                "=",
-                "!=",
-                "like",
-                ">",
-                "<",
-                ">=",
-                "<=",
-            ]:  # Explicitly list ops that need str conversion
-                left_val, right_val = str(left_val), str(right_val)
-        except Exception:
-            # This is a defensive catch. If an object's __str__ method is buggy and raises
-            # an error, we treat the comparison as False rather than crashing the whole query.
-            return False
-
-        return ops[self.op](left_val, right_val) if self.op in ops else False
+        # Note: Operators like '>' are intentionally not in this dictionary.
+        # If the code reaches here with a '>' operator and non-numeric types,
+        # it will correctly return False, as a string-based '>' is not supported.
+        return ops[self.op](str_left, str_right) if self.op in ops else False
 
 
 class InComparison:
