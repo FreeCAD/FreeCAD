@@ -153,9 +153,7 @@ def getReversedEdge(edge):
     last = edge.LastParameter
     curve_c = curve.copy()
     curve_c.reverse()
-    return Part.Edge(
-        curve_c, curve_c.reversedParameter(last), curve_c.reversedParameter(first)
-    )
+    return Part.Edge(curve_c, curve_c.reversedParameter(last), curve_c.reversedParameter(first))
 
 
 def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
