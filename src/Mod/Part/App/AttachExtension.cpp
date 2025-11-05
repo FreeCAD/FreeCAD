@@ -525,7 +525,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         fabs(normal.Dot(gp_Dir(0, 1, 0))),  // normal dot global Y axis
         fabs(normal.Dot(gp_Dir(0, 0, 1)))   // normal dot global Z axis
     };
-    int axis = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
+    std::size_t axis = std::distance(cosXYZ.begin(), std::ranges::max_element(cosXYZ));
 
     // if Z is dominant, no changes needed
     if (axis == 2) {
