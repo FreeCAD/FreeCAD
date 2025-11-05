@@ -1255,7 +1255,7 @@ class ReportTaskPanel:
         # Refresh the dropdowns to reflect any changes made
         self._load_and_populate_presets()
 
-    @Slot(QtWidgets.QTableWidgetItem)
+    @Slot("QTableWidgetItem")
     def _on_item_double_clicked(self, item):
         """Handles a double-click on an item in the statements table."""
         if item:
