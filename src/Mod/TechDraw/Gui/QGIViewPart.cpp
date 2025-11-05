@@ -116,7 +116,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
             }
             return QGIView::itemChange(change, value);
         }
-        // we are selected
+        // we are selected, don't change anything?
     }
     else if (change == ItemSceneChange && scene()) {
         // This means we are finished?
@@ -140,7 +140,6 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
                             child->hide();
                         }
                     }
-                    update();
                 }
             });
         }
