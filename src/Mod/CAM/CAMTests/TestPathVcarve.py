@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+"""
+Testing functions for VCarve operation module
+"""
+
 # ***************************************************************************
 # *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -29,8 +33,10 @@ import Path.Op.Vcarve as PathVcarve
 import math
 from CAMTests.PathTestUtils import PathTestWithAssets
 
+# pylint: disable=too-few-public-methods, protected-access
 
-class VbitTool(object):
+
+class VbitTool:
     """Faked out vcarve tool"""
 
     def __init__(self, dia, angle, tipDia):
@@ -52,6 +58,7 @@ class TestPathVcarve(PathTestWithAssets):
             FreeCAD.closeDocument(self.doc.Name)
 
     def testFinishingPass(self):
+        """Check if enabling finishing pass adds another path with required z-depth"""
         self.doc = FreeCAD.newDocument()
         part1 = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
         part2 = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
@@ -198,7 +205,6 @@ class TestPathVcarve(PathTestWithAssets):
         newPosition = FreeCAD.Base.Vector(0, 1.7, 3)
         assert not PathVcarve.canSkipRepositioning(positionHistory, newPosition, 0.01)
 
-
     def test18(self):
         """Verify if canSkipRepositioning allows to skip if new edge ends in current position"""
 
@@ -212,20 +218,22 @@ class TestPathVcarve(PathTestWithAssets):
         # new position is same as previous position so we can G1 from (0,1,5) to (0,0,0) because
         # we already travelled this path before and it's carved - no need to raise toolbit
         newPosition = FreeCAD.Base.Vector(0, 0, 0)
-        assert PathVcarve.canSkipRepositioning(positionHistory, newPosition, defaultTolerance)
-
+        assert PathVcarve.canSkipRepositioning(
+            positionHistory, newPosition, defaultTolerance
+        )
 
         # same but should fail because we are out of tolerance
         newPosition = FreeCAD.Base.Vector(0, 0.1, 0)
-        assert not PathVcarve.canSkipRepositioning(positionHistory, newPosition, defaultTolerance)
+        assert not PathVcarve.canSkipRepositioning(
+            positionHistory, newPosition, defaultTolerance
+        )
 
         # same but is OK because we are within tolerance
         newPosition = FreeCAD.Base.Vector(0, 0.1, 0)
         assert PathVcarve.canSkipRepositioning(positionHistory, newPosition, 0.1)
 
     def test19(self):
-        """Verify virtualBackTrackEdges() various scenarios
-        """
+        """Verify virtualBackTrackEdges() various scenarios"""
 
         defaultTolerance = Path.Preferences.defaultGeometryTolerance()
 
@@ -237,17 +245,24 @@ class TestPathVcarve(PathTestWithAssets):
         ]
 
         # new edge ends at current position
-        newEdge = Part.Edge(Part.LineSegment(FreeCAD.Base.Vector(1,2,3), FreeCAD.Base.Vector(0,1,5)))
+        newEdge = Part.Edge(
+            Part.LineSegment(FreeCAD.Base.Vector(1, 2, 3), FreeCAD.Base.Vector(0, 1, 5))
+        )
 
-        virtualEdges = PathVcarve.generateVirtualBackTrackEdges(positionHistory, newEdge, defaultTolerance)
+        virtualEdges = PathVcarve.generateVirtualBackTrackEdges(
+            positionHistory, newEdge, defaultTolerance
+        )
 
         assert len(virtualEdges) == 1
-        
+
         virtualEdge = virtualEdges[0]
         # virtualEdge is essentially a reversed newEdge
-        assert virtualEdge.valueAt(virtualEdge.FirstParameter) == newEdge.valueAt(newEdge.LastParameter)
-        assert virtualEdge.valueAt(virtualEdge.LastParameter) == newEdge.valueAt(newEdge.FirstParameter)
-
+        assert virtualEdge.valueAt(virtualEdge.FirstParameter) == newEdge.valueAt(
+            newEdge.LastParameter
+        )
+        assert virtualEdge.valueAt(virtualEdge.LastParameter) == newEdge.valueAt(
+            newEdge.FirstParameter
+        )
 
         # test scenario 2 - refer to function comments for explanation
 
@@ -257,22 +272,26 @@ class TestPathVcarve(PathTestWithAssets):
         ]
 
         # new edge ends at previous position
-        newEdge = Part.Edge(Part.LineSegment(FreeCAD.Base.Vector(1,2,3), FreeCAD.Base.Vector(0,0,0)))
+        newEdge = Part.Edge(
+            Part.LineSegment(FreeCAD.Base.Vector(1, 2, 3), FreeCAD.Base.Vector(0, 0, 0))
+        )
 
-        virtualEdges = PathVcarve.generateVirtualBackTrackEdges(positionHistory, newEdge, defaultTolerance)
+        virtualEdges = PathVcarve.generateVirtualBackTrackEdges(
+            positionHistory, newEdge, defaultTolerance
+        )
 
         assert len(virtualEdges) == 2
-        
+
         virtualEdge1 = virtualEdges[0]
         virtualEdge2 = virtualEdges[1]
 
-        # 2 virtual edges (current position, previous position) and (previous position, new edge start)
+        # 2 virtual edges (current position, previous position) and
+        # (previous position, new edge start)
 
         assert virtualEdge1.valueAt(virtualEdge1.FirstParameter) == positionHistory[-1]
         assert virtualEdge1.valueAt(virtualEdge1.LastParameter) == positionHistory[-2]
 
-
         assert virtualEdge2.valueAt(virtualEdge2.FirstParameter) == positionHistory[-2]
-        assert virtualEdge2.valueAt(virtualEdge2.LastParameter) == newEdge.valueAt(newEdge.FirstParameter)
-
-    
+        assert virtualEdge2.valueAt(virtualEdge2.LastParameter) == newEdge.valueAt(
+            newEdge.FirstParameter
+        )

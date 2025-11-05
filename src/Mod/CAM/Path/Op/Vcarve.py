@@ -145,6 +145,7 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
 
     return result
 
+
 def getReversedEdge(edge):
     # returns a reversed edge (copy of original edge)
     curve = edge.Curve
@@ -167,7 +168,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
 
     if not positionHistory:
         return []
-    
+
     backTrackEdges = []
 
     currentPosition = positionHistory[-1]
@@ -177,7 +178,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
     nextEdgeEnd = nextEdge.valueAt(nextEdge.LastParameter)
 
     # Scenario 1
-    # 
+    #
     # in some cases travelling between wires looks like that:
     # A ========= B ------- D
     #             |
@@ -186,7 +187,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
     # we follow first wire from A to B - new wire starts at C and goes through B -> D
     # Repositioning to position C using G0 command does not make sense and it's slow
     # We can insert "virtual" edge B->C at the beginning of a second wire to make
-    # continous CNC head movement
+    # continuous CNC head movement
     #
 
     if nextEdgeEnd.isEqual(currentPosition, tolerance):
@@ -212,9 +213,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
         # instead of G0 - just carve the edge in reverse direction
         backTrackEdges.append(getReversedEdge(nextEdge))
 
-    
     return backTrackEdges
-
 
 
 def canSkipRepositioning(positionHistory, newPosition, tolerance):
@@ -398,7 +397,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
+                ),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
@@ -437,7 +438,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "App::PropertyFloat",
             "Discretize",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The deflection value for discretizing arcs"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The deflection value for discretizing arcs"
+            ),
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -501,7 +504,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     dist = ptv[-1].distanceToPoint(ptv[0])
                     if dist < FreeCAD.Base.Precision.confusion():
                         Path.Log.debug(
-                            "Removing bad carve point: {} from polygon origin".format(dist)
+                            "Removing bad carve point: {} from polygon origin".format(
+                                dist
+                            )
                         )
                         del ptv[-1]
                 ptv.append(ptv[0])
@@ -592,8 +597,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             # but using some routing logic we may avoid raising CNC toolbit and using G0
             # and instead traverse back already carved edges at full speed
 
-          
-
             edge_list = backtrack_edges + wire
 
             e = edge_list[0]
@@ -607,14 +610,24 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 path.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
                 path.append(
                     Path.Command(
-                        "G0", {"X": newPosition.x, "Y": newPosition.y, "Z": obj.SafeHeight.Value}
+                        "G0",
+                        {
+                            "X": newPosition.x,
+                            "Y": newPosition.y,
+                            "Z": obj.SafeHeight.Value,
+                        },
                     )
                 )
 
                 path.append(
                     Path.Command(
                         "G1",
-                        {"X": newPosition.x, "Y": newPosition.y, "Z": newPosition.z, "F": vSpeed},
+                        {
+                            "X": newPosition.x,
+                            "Y": newPosition.y,
+                            "Z": newPosition.z,
+                            "F": vSpeed,
+                        },
                     )
                 )
             else:  # skip repositioning
@@ -652,7 +665,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 _maximumUsableDepth = _get_maximumUsableDepth(wires, geom)
                 if _maximumUsableDepth is not None:
                     maximumUsableDepth = _maximumUsableDepth
-                    Path.Log.debug(f"Maximum usable depth for current face: {maximumUsableDepth}")
+                    Path.Log.debug(
+                        f"Maximum usable depth for current face: {maximumUsableDepth}"
+                    )
 
             # first pass
             cutWires(wires, pathlist, obj.OptimizeMovements)
@@ -691,7 +706,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             Path.Log.info(
-                translate("CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees.")
+                translate(
+                    "CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees."
+                )
             )
             return
 
@@ -709,9 +726,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             if not faces:
                 for model in self.model:
-                    if model.isDerivedFrom("Sketcher::SketchObject") or model.isDerivedFrom(
-                        "Part::Part2DObject"
-                    ):
+                    if model.isDerivedFrom(
+                        "Sketcher::SketchObject"
+                    ) or model.isDerivedFrom("Part::Part2DObject"):
                         faces.extend(model.Shape.Faces)
 
             if faces:
@@ -759,10 +776,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         """Debug function to display calculated voronoi medial wires"""
 
         if not getattr(self, "voronoiDebugMedialCache", None):
-            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
+            Path.Log.error(
+                "debugVoronoi: empty debug cache. Recompute VCarve operation first"
+            )
             return
 
-        vPart = FreeCAD.activeDocument().addObject("App::Part", f"{obj.Name}-VoronoiDebugMedial")
+        vPart = FreeCAD.activeDocument().addObject(
+            "App::Part", f"{obj.Name}-VoronoiDebugMedial"
+        )
 
         wiresToShow = []
 
@@ -786,10 +807,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         """Debug function to display calculated voronoi edges"""
 
         if not getattr(self, "voronoiDebugEdgeCache", None):
-            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
+            Path.Log.error(
+                "debugVoronoi: empty debug cache. Recompute VCarve operation first"
+            )
             return
 
-        vPart = FreeCAD.activeDocument().addObject("App::Part", f"{obj.Name}-VoronoiDebugEdge")
+        vPart = FreeCAD.activeDocument().addObject(
+            "App::Part", f"{obj.Name}-VoronoiDebugEdge"
+        )
 
         edgesToShow = []
 
