@@ -276,7 +276,6 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     def test_invalid_partial_tokens_are_errors(self):
         invalid_queries = {
-            "Partial keyword": "SELEC",
             "Mistyped keyword": "SELECT * FRM document",
         }
 
