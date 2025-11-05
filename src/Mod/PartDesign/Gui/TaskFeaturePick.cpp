@@ -581,8 +581,9 @@ void TaskFeaturePick::slotUndoDocument(const Gui::Document& doc)
 void TaskFeaturePick::slotDeleteDocument(const Gui::Document& doc)
 {
     origins.clear();
-    QTimer::singleShot(100, [&doc]() {
-        Gui::Control().closeDialog(doc.getDocument());
+    App::Document* docPtr = doc.getDocument();
+    QTimer::singleShot(100, [docPtr]() {
+        Gui::Control().closeDialog(docPtr);
     });
 }
 
