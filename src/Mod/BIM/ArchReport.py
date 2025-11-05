@@ -1338,11 +1338,22 @@ class ReportTaskPanel:
             status_item = QtWidgets.QTableWidgetItem()
             status_item.setIcon(status_icon)
             status_item.setToolTip(status_tooltip)
+            # Display the object count next to the icon for valid queries.
+            if statement._validation_status in ("OK", "0_RESULTS"):
+                status_item.setText(str(statement._validation_count))
+                # Align the text to the right for better visual separation.
+                status_item.setTextAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
             status_item.setFlags(status_item.flags() & ~QtCore.Qt.ItemIsEditable)  # Make read-only
             self.table_statements.setItem(row_idx, 4, status_item)
 
-            # Recalculate status for each statement (important on load)
+        # After populating all rows, trigger a validation for all statements.
+        # This ensures the counts and statuses are up-to-date when the panel opens.
+        for statement in self.obj.Proxy.live_statements:
             statement.validate_and_update_status()
+            self._update_table_row_status(
+                self.obj.Proxy.live_statements.index(statement), statement
+            )
+
         # Re-enable signals after population so user edits are handled
         self.table_statements.blockSignals(False)
 
@@ -1779,6 +1790,11 @@ class ReportTaskPanel:
             status_icon, status_tooltip = self._get_status_icon_and_tooltip(statement)
             status_item.setIcon(status_icon)
             status_item.setToolTip(status_tooltip)
+            # Update the text as well
+            if statement._validation_status in ("OK", "0_RESULTS"):
+                status_item.setText(str(statement._validation_count))
+            else:
+                status_item.setText("")  # Clear the text for error/incomplete states
 
     def _get_status_icon_and_tooltip(self, statement: ReportStatement):
         # Helper to get appropriate icon and tooltip for table status column
