@@ -57,7 +57,7 @@ class AssetOpenDialog(QFileDialog):
         if filters:
             self.selectNameFilter(filters[0])  # Default to "All supported files"
 
-    def _deserialize_selected_file(self, file_path: pathlib.Path) -> Optional[Asset]:
+    def deserialize_file(self, file_path: pathlib.Path) -> Optional[Asset]:
         """Deserialize the selected file using the appropriate serializer."""
         # Find the correct serializer for the file.
         file_extension = file_path.suffix.lower()
@@ -161,7 +161,7 @@ class AssetOpenDialog(QFileDialog):
             filenames = self.selectedFiles()
             if filenames:
                 file_path = pathlib.Path(filenames[0])
-                asset = self._deserialize_selected_file(file_path)
+                asset = self.deserialize_file(file_path)
                 if asset:
                     return file_path, asset
         return None
