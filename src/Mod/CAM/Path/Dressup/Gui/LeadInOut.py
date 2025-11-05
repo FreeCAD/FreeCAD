@@ -799,9 +799,7 @@ class ObjectDressup:
                 )
                 arcEnd = end + tangent + normal
                 lead.append(
-                    self.createArcMove(
-                        obj, end, arcEnd, normalMax, obj.InvertOut, self.exitFeed
-                    )
+                    self.createArcMove(obj, end, arcEnd, normalMax, obj.InvertOut, self.exitFeed)
                 )
 
             # append "Line" style lead-out
@@ -850,9 +848,7 @@ class ObjectDressup:
                 tangent = self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 arcEnd = end + tangent + normal
-                lead.extend(
-                    self.createArcZMoveUp(obj, end, arcEnd, arcRadius, self.exitFeed)
-                )
+                lead.extend(self.createArcZMoveUp(obj, end, arcEnd, arcRadius, self.exitFeed))
 
         if obj.StyleOut in ("Arc3d", "Line3d"):
             # Up Z end point for Arc3d and Line3d
