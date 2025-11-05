@@ -893,6 +893,9 @@ class ReportTaskPanel:
         self.table_statements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.table_statements.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         self.table_statements.setDragDropOverwriteMode(False)
+        # Allow in-place editing of the description with F2, but disable the
+        # default double-click editing so we can repurpose it.
+        self.table_statements.setEditTriggers(QtWidgets.QAbstractItemView.EditKeyPressed)
         self.table_statements.verticalHeader().sectionMoved.connect(self._on_row_moved)
         self.statements_overview_layout.addWidget(self.table_statements)
 
@@ -1149,6 +1152,7 @@ class ReportTaskPanel:
         self.btn_duplicate_statement.clicked.connect(self._on_duplicate_selected_statement_clicked)  # type: ignore
         self.btn_edit_selected.clicked.connect(self._on_edit_selected_clicked)
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
+        self.table_statements.itemDoubleClicked.connect(self._on_item_double_clicked)
         self.template_dropdown.activated.connect(self._on_load_report_template)
 
         # Keep table edits in sync with the runtime statements
@@ -1250,6 +1254,13 @@ class ReportTaskPanel:
 
         # Refresh the dropdowns to reflect any changes made
         self._load_and_populate_presets()
+
+    @Slot(QtWidgets.QTableWidgetItem)
+    def _on_item_double_clicked(self, item):
+        """Handles a double-click on an item in the statements table."""
+        if item:
+            # A double-click is a shortcut for editing the full statement.
+            self._start_edit_session(row_index=item.row())
 
     # --- Statement Management (Buttons and Table Interaction) ---
     def _populate_table_from_statements(self):
