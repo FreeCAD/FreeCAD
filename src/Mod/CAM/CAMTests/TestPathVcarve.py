@@ -218,15 +218,11 @@ class TestPathVcarve(PathTestWithAssets):
         # new position is same as previous position so we can G1 from (0,1,5) to (0,0,0) because
         # we already travelled this path before and it's carved - no need to raise toolbit
         newPosition = FreeCAD.Base.Vector(0, 0, 0)
-        assert PathVcarve.canSkipRepositioning(
-            positionHistory, newPosition, defaultTolerance
-        )
+        assert PathVcarve.canSkipRepositioning(positionHistory, newPosition, defaultTolerance)
 
         # same but should fail because we are out of tolerance
         newPosition = FreeCAD.Base.Vector(0, 0.1, 0)
-        assert not PathVcarve.canSkipRepositioning(
-            positionHistory, newPosition, defaultTolerance
-        )
+        assert not PathVcarve.canSkipRepositioning(positionHistory, newPosition, defaultTolerance)
 
         # same but is OK because we are within tolerance
         newPosition = FreeCAD.Base.Vector(0, 0.1, 0)

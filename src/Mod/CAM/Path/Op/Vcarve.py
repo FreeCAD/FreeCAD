@@ -395,9 +395,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Additional base objects to be engraved"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
@@ -436,9 +434,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "App::PropertyFloat",
             "Discretize",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The deflection value for discretizing arcs"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The deflection value for discretizing arcs"),
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -502,9 +498,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     dist = ptv[-1].distanceToPoint(ptv[0])
                     if dist < FreeCAD.Base.Precision.confusion():
                         Path.Log.debug(
-                            "Removing bad carve point: {} from polygon origin".format(
-                                dist
-                            )
+                            "Removing bad carve point: {} from polygon origin".format(dist)
                         )
                         del ptv[-1]
                 ptv.append(ptv[0])
@@ -663,9 +657,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 _maximumUsableDepth = _get_maximumUsableDepth(wires, geom)
                 if _maximumUsableDepth is not None:
                     maximumUsableDepth = _maximumUsableDepth
-                    Path.Log.debug(
-                        f"Maximum usable depth for current face: {maximumUsableDepth}"
-                    )
+                    Path.Log.debug(f"Maximum usable depth for current face: {maximumUsableDepth}")
 
             # first pass
             cutWires(wires, pathlist, obj.OptimizeMovements)
@@ -704,9 +696,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             Path.Log.info(
-                translate(
-                    "CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees."
-                )
+                translate("CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees.")
             )
             return
 
@@ -724,9 +714,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             if not faces:
                 for model in self.model:
-                    if model.isDerivedFrom(
-                        "Sketcher::SketchObject"
-                    ) or model.isDerivedFrom("Part::Part2DObject"):
+                    if model.isDerivedFrom("Sketcher::SketchObject") or model.isDerivedFrom(
+                        "Part::Part2DObject"
+                    ):
                         faces.extend(model.Shape.Faces)
 
             if faces:
@@ -774,14 +764,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         """Debug function to display calculated voronoi medial wires"""
 
         if not getattr(self, "voronoiDebugMedialCache", None):
-            Path.Log.error(
-                "debugVoronoi: empty debug cache. Recompute VCarve operation first"
-            )
+            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
             return
 
-        vPart = FreeCAD.activeDocument().addObject(
-            "App::Part", f"{obj.Name}-VoronoiDebugMedial"
-        )
+        vPart = FreeCAD.activeDocument().addObject("App::Part", f"{obj.Name}-VoronoiDebugMedial")
 
         wiresToShow = []
 
@@ -805,14 +791,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         """Debug function to display calculated voronoi edges"""
 
         if not getattr(self, "voronoiDebugEdgeCache", None):
-            Path.Log.error(
-                "debugVoronoi: empty debug cache. Recompute VCarve operation first"
-            )
+            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
             return
 
-        vPart = FreeCAD.activeDocument().addObject(
-            "App::Part", f"{obj.Name}-VoronoiDebugEdge"
-        )
+        vPart = FreeCAD.activeDocument().addObject("App::Part", f"{obj.Name}-VoronoiDebugEdge")
 
         edgesToShow = []
 
