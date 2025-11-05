@@ -112,7 +112,6 @@ class BIMWorkbench(Workbench):
         ]
 
         self.bimtools = [
-            "BIM_Project",
             "Arch_Site",
             "Arch_Building",
             "Arch_Level",
@@ -233,6 +232,7 @@ class BIMWorkbench(Workbench):
             "BIM_Reextrude",
             "Arch_PanelTools",
             "Arch_StructureTools",
+            "BIM_Project",
         ]
 
         nudge = [
