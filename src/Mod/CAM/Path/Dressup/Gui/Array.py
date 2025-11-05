@@ -1,20 +1,14 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-import FreeCAD
-import Path
-import Path.Base.Util as PathUtil
-import Path.Dressup.Array as DressupArray
-import Path.Dressup.Utils as PathDressup
-import Path.Main.Stock as PathStock
-import PathScripts.PathUtils as PathUtils
-
-from PySide import QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
-import PathGui
+import Path.Dressup.Array as DressupArray
+import Path.Dressup.Utils as PathDressup
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+translate = FreeCAD.Qt.translate
 
 
 class DressupArrayViewProvider(object):
