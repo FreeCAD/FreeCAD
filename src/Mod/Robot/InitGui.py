@@ -1,4 +1,6 @@
 # Robot gui init module
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2009 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD

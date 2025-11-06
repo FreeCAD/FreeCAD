@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  * \file  
  *      provides I/O operations on Rall1d

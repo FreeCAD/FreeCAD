@@ -1,4 +1,5 @@
- 
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  * \file  
  *      class for automatic differentiation on scalar values and 1st 

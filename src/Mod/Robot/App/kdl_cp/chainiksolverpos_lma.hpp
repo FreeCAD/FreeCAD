@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #ifndef KDL_CHAINIKSOLVERPOS_GN_HPP
 #define KDL_CHAINIKSOLVERPOS_GN_HPP
 /**
