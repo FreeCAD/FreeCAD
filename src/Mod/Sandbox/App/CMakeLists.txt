@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(WIN32)
     add_definitions(-DFCAppSandbox)
 endif(WIN32)
