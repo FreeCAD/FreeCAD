@@ -122,12 +122,12 @@ def setup(doc=None, solvertype="calculix"):
         solver_obj = ObjectsFem.makeSolverCalculiX(doc, "SolverCalculiX")
         solver_obj.AnalysisType = "electromagnetic"
         solver_obj.ElectromagneticMode = "electrostatic"
+        analysis.addObject(solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    analysis.addObject(solver_obj)
 
     # material
     material_obj = ObjectsFem.makeMaterialFluid(doc, "Air")
@@ -208,3 +208,4 @@ def setup(doc=None, solvertype="calculix"):
 
     doc.recompute()
     return doc
+
