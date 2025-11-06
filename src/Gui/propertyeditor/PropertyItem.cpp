@@ -1384,8 +1384,6 @@ QWidget* PropertyBoolItem::createEditor(QWidget* parent,
                                         const std::function<void()>& method,
                                         FrameOption /*frameOption*/) const
 {
-    // The checkbox is basically artificial (it is not rendered). Other code handles the callback,
-    // etc.
     auto checkbox = new QCheckBox(parent);
 #if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
     QObject::connect(checkbox, &QCheckBox::stateChanged, method);
