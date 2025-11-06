@@ -32,10 +32,13 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "QGIProjGroup.h"
+#include "QGIViewDimension.h"
+#include "QGIViewPart.h"
 #include "Rez.h"
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIProjGroup::QGIProjGroup()
 {
@@ -45,7 +48,6 @@ QGIProjGroup::QGIProjGroup()
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
-//    setFrameState(false);
 }
 
 TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
@@ -53,6 +55,7 @@ TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
     App::DocumentObject *obj = getViewObject();
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
 }
+
 bool QGIProjGroup::autoDistributeEnabled() const
 {
     return getDrawView() && getDrawView()->AutoDistribute.getValue();
@@ -60,15 +63,28 @@ bool QGIProjGroup::autoDistributeEnabled() const
 
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
+    auto qvpart = dynamic_cast<QGIViewPart*>(watched);
+    std::vector<App::DocumentObject*> outlist = getViewObject()->getOutList();
+    if (!qvpart ||
+        !isMember(qvpart->getViewObject())) {
+        // if qwatched is not in this projgroup, we ignore the event as none of our business
+        return false;
+    }
+
 // i want to handle events before the child item that would ordinarily receive them
     if(event->type() == QEvent::GraphicsSceneMousePress ||
        event->type() == QEvent::GraphicsSceneMouseMove  ||
        event->type() == QEvent::GraphicsSceneMouseRelease) {
-
         QGIView *qAnchor = getAnchorQItem();
-        QGIView* qWatched = dynamic_cast<QGIView*>(watched);
+        auto* qWatched = dynamic_cast<QGIView*>(watched);
+        if (!qWatched) {
+            return false;
+        }
+
         // If AutoDistribute is enabled, catch events and move the anchor directly
-        if(qAnchor && (watched == qAnchor || (autoDistributeEnabled() && qWatched != nullptr))) {
+        //? the anchor doesn't move??
+        if(qAnchor && (watched == qAnchor ||
+                      (autoDistributeEnabled() && qWatched != nullptr))) {
             auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
             // Disable moves on the view to prevent double drag
@@ -143,6 +159,9 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
 
 void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    // TODO: this bit is obsolete?  you can click on any secondary view to drag now.
+    // test event location against each secondary or just use the PG's bounding rect (ie if we got the
+    // event, the click must have been within the BR).
     QGIView *qAnchor = getAnchorQItem();
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
@@ -150,31 +169,32 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
             mousePos = event->screenPos();
         }
     }
-    event->accept();
 }
 
 void QGIProjGroup::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIView *qAnchor = getAnchorQItem();
+    // this is obsolete too?
     if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem() || autoDistributeEnabled())) {
         if((mousePos - event->screenPos()).manhattanLength() > 5) {    //if the mouse has moved more than 5, process the mouse event
             QGIViewCollection::mouseMoveEvent(event);
         }
     }
-    event->accept();
 }
 
 void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     mouseReleaseEvent(getAnchorQItem(), event);
 }
+
+
 void QGIProjGroup::mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event)
 {
     if(scene()) {
+        // this assumes we are dragging?
         if((mousePos - event->screenPos()).manhattanLength() < 5) {
             if(originator && originator->shape().contains(event->pos())) {
-                event->ignore();
-                originator->mouseReleaseEvent(event);
+                return;
             }
         }
         else if(scene() && originator) {
@@ -216,4 +236,17 @@ void QGIProjGroup::drawBorder()
 //QGIProjGroup does not have a border!
 //    Base::Console().message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
+
+
+//! true if dvpObj is a member of our projection group
+bool QGIProjGroup::isMember(App::DocumentObject* dvpObj) const
+{
+    std::vector<App::DocumentObject*> groupOutlist = getViewObject()->getOutList();
+    auto itMatch = std::find_if(groupOutlist.begin(), groupOutlist.end(),
+             [dvpObj](App::DocumentObject* child) {
+                return child == dvpObj;
+             });
+    return itMatch != groupOutlist.end();
+}
+
 
