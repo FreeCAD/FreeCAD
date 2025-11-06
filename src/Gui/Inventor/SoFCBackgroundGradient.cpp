@@ -25,6 +25,8 @@
 #include <cmath>
 #include <numbers>
 
+#include <Gui/ViewVolumeUtils.h>
+
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
@@ -97,7 +99,7 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(-1,1,-1,1,-1,1);
+    Gui::GL::loadOrthoMatrix(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
