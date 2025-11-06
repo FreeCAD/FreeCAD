@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2024 Werner Mayer <wmayer[at]users.sourceforge.net>
 # SPDX-FileCopyrightText: 2025 Furgo
 # SPDX-FileNotice: Part of the FreeCAD project.
 
@@ -20,9 +19,10 @@
 #                                                                              #
 ################################################################################
 
-"""Import module GUI tests.
+"""Import module CLI tests.
 
-Imports the GUI test classes from the `importtests` package, so the test runner finds them.
+Imports the CLI test classes from the `importtests` package, so the test runner finds them.
 """
 
-from importtests.TestImportStepGui import TestImportStepGui
+# Examples of CLI tests for importers; add more as they are implemented.
+# from importtests.TestImportDXF import TestImportDXF
