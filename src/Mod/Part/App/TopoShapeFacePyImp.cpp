@@ -139,8 +139,20 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return -1;
             }
 
-            getTopoShapePtr()->makeElementFace(sh);
-            return 0;
+            if (sh.shapeType() == TopAbs_WIRE) {
+                BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(sh.getShape()));
+                if (!mkFace.IsDone()) {
+                    PyErr_SetString(PartExceptionOCCError, "Failed to create face from wire");
+                    return -1;
+                }
+                getTopoShapePtr()->setShape(mkFace.Face());
+                getTopoShapePtr()->mapSubElement(sh);
+                return 0;
+            }
+            else if (sh.shapeType() == TopAbs_FACE) {
+                getTopoShapePtr()->setShape(sh);
+                return 0;
+            }
         }
         catch (Standard_Failure& e) {
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -164,11 +176,16 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return -1;
             }
             
-            std::vector<TopoShape> shapes;
-            shapes.push_back(f);
-            shapes.push_back(w);
-
-            getTopoShapePtr()->makeElementFace(shapes);
+            const TopoDS_Face& supportFace = TopoDS::Face(f.getShape());
+            const TopoDS_Wire& boundaryWire = TopoDS::Wire(w.getShape());
+            BRepBuilderAPI_MakeFace mkFace(supportFace, boundaryWire);
+            if (!mkFace.IsDone()) {
+                PyErr_SetString(PartExceptionOCCError, "Failed to create face from wire");
+                return -1;
+            }
+            getTopoShapePtr()->setShape(mkFace.Face());
+            getTopoShapePtr()->mapSubElement(f);
+            getTopoShapePtr()->mapSubElement(w);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -194,7 +211,14 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return -1;
             }
 
-            getTopoShapePtr()->makeElementFace(w);
+            const TopoDS_Wire& boundaryWire = TopoDS::Wire(w.getShape());
+            BRepBuilderAPI_MakeFace mkFace(S, boundaryWire);
+            if (!mkFace.IsDone()) {
+                PyErr_SetString(PartExceptionOCCError, "Failed to create face from wire");
+                return -1;
+            }
+            getTopoShapePtr()->setShape(mkFace.Face());
+            getTopoShapePtr()->mapSubElement(w);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -215,14 +239,17 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             std::vector<TopoShape> wires;
+            BRepBuilderAPI_MakeFace mkFace(S, Precision::Confusion());
             if (bound) {
                 Py::List list(bound);
                 for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
                     PyObject* item = (*it).ptr();
                     if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
                         const TopoShape& sh = *(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr());
-                        if (sh.shapeType() == TopAbs_WIRE)
+                        if (sh.shapeType() == TopAbs_WIRE) {
                             wires.push_back(sh);
+                            mkFace.Add(TopoDS::Wire(sh.getShape()));
+                        }
                         else {
                             PyErr_SetString(PyExc_TypeError, "shape is not a wire");
                             return -1;
@@ -235,7 +262,8 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
             }
 
-            getTopoShapePtr()->makeElementFace(wires);
+            getTopoShapePtr()->setShape(mkFace.Face());
+            getTopoShapePtr()->mapSubElement(wires);
             return 0;
         }
         catch (Standard_Failure& e) {
@@ -263,7 +291,30 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             if (!wires.empty()) {
-                getTopoShapePtr()->makeElementFace(wires);
+                BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(wires.front().getShape()));
+                if (!mkFace.IsDone()) {
+                    switch (mkFace.Error()) {
+                    case BRepBuilderAPI_NoFace:
+                        Standard_Failure::Raise("No face");
+                        break;
+                    case BRepBuilderAPI_NotPlanar:
+                        Standard_Failure::Raise("Not planar");
+                        break;
+                    case BRepBuilderAPI_CurveProjectionFailed:
+                        Standard_Failure::Raise("Curve projection failed");
+                        break;
+                    case BRepBuilderAPI_ParametersOutOfRange:
+                        Standard_Failure::Raise("Parameters out of range");
+                        break;
+                    default:
+                        Standard_Failure::Raise("Unknown failure");
+                        break;
+                    }
+                }
+                for (int i = 0; i < wires.size(); i++)
+                    mkFace.Add(TopoDS::Wire(wires[i].getShape()));
+                getTopoShapePtr()->setShape(mkFace.Face());
+                getTopoShapePtr()->mapSubElement(wires);
                 return 0;
             }
             else {
