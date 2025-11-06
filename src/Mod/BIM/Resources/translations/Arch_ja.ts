@@ -9528,7 +9528,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="52"/>
       <source>Leader</source>
-      <translation>引出線</translation>
+      <translation>引き出し線</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="77"/>
@@ -10103,7 +10103,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="93"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>表示/非表示を切り替え</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="95"/>
@@ -10717,7 +10717,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Leader</source>
-      <translation>引出線</translation>
+      <translation>引き出し線</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="48"/>
@@ -10945,7 +10945,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>新しいページ</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>

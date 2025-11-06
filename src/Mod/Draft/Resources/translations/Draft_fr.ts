@@ -6520,7 +6520,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="68"/>
       <source>Scale</source>
-      <translation>Échelle</translation>
+      <translation>Mettre à l'échelle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>

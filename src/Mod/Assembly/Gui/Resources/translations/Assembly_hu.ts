@@ -567,7 +567,7 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>Ez a csatlakozás szöge. Csak a szüg csatlakozás használja.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="422"/>

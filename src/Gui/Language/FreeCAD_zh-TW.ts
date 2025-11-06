@@ -960,7 +960,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="589"/>
       <source>Invalid group name</source>
-      <translation type="unfinished">Invalid group name</translation>
+      <translation>無效群組名稱</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="592"/>
@@ -975,7 +975,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="601"/>
       <source>Property '%1' already exists</source>
-      <translation type="unfinished">Property '%1' already exists</translation>
+      <translation>屬性 '%1' 已經存在</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="604"/>
@@ -1142,7 +1142,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>選擇一個圖示</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>
@@ -1400,7 +1400,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="148"/>
       <source>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;移動選定的項目上一級。&lt;/b&gt; &lt;p&gt;這也將改變父項的級別。 &lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
@@ -1420,7 +1420,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
       <source>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;向下移動所選的項目。&lt;/b&gt;&lt;p&gt;該項目將被移動至層級中。&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="300"/>
@@ -1670,12 +1670,12 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="281"/>
       <source>Launches a guide on how to set up a macro in a custom global toolbar</source>
-      <translation type="unfinished">Launches a guide on how to set up a macro in a custom global toolbar</translation>
+      <translation>啟動一個指引介紹如何在自訂全局工具欄中設定巨集。</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="307"/>
       <source>Opens the Addon Manager to download macros created by the community</source>
-      <translation type="unfinished">Opens the Addon Manager to download macros created by the community</translation>
+      <translation>開啟附加元件管理員以下載由社群建立的巨集</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="321"/>
@@ -1685,7 +1685,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="355"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>在系統檔案管理員中開啟巨集資料夾</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="358"/>
@@ -2102,12 +2102,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="32"/>
       <source>Find What</source>
-      <translation type="unfinished">Find What</translation>
+      <translation>尋找甚麼</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="55"/>
       <source>Look At</source>
-      <translation type="unfinished">Look At</translation>
+      <translation>檢視</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="61"/>
@@ -2127,7 +2127,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="94"/>
       <source>Match exact string</source>
-      <translation type="unfinished">Match exact string</translation>
+      <translation>精確匹配字串</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="45"/>
@@ -2142,7 +2142,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="308"/>
       <source>Cannot find the text: %1</source>
-      <translation type="unfinished">Cannot find the text: %1</translation>
+      <translation>找不到文字: %1</translation>
     </message>
   </context>
   <context>
@@ -2184,7 +2184,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="125"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>搜索群組</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="473"/>
@@ -2445,12 +2445,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="14"/>
       <source>Document Utility</source>
-      <translation type="unfinished">Document Utility</translation>
+      <translation>文件實用程式</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="22"/>
       <source>Extract Document</source>
-      <translation type="unfinished">Extract Document</translation>
+      <translation>提取文件</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="28"/>
@@ -2472,7 +2472,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="72"/>
       <source>Create Document</source>
-      <translation type="unfinished">Create Document</translation>
+      <translation>建立文件</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="137"/>
@@ -2539,7 +2539,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.ui" line="53"/>
       <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation type="unfinished">Synchronizes the 3D view selection with the full object hierarchy</translation>
+      <translation>將 3D 視圖選擇與完整物件階層同步</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.ui" line="56"/>
@@ -2584,12 +2584,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</translation>
+      <translation>警告：此過程將取消自指定日期以來所做的任何偏好設定更改，並將最近的檔案和巨集重置為該日期的狀態。</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="52"/>
       <source>Available backup files</source>
-      <translation type="unfinished">Available backup files</translation>
+      <translation>可用的備份檔案</translation>
     </message>
   </context>
   <context>
@@ -2605,7 +2605,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="20"/>
       <source>Running External Program</source>
-      <translation type="unfinished">Running External Program</translation>
+      <translation>執行外部程式</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="38"/>
@@ -2752,7 +2752,7 @@ will be shown at the lower left corner in opened files</source>
     <message>
       <location filename="../Multisample.cpp" line="42"/>
       <source>Line smoothing</source>
-      <translation type="unfinished">Line smoothing</translation>
+      <translation>線條平滑化</translation>
     </message>
     <message>
       <location filename="../Multisample.cpp" line="43"/>
@@ -2808,20 +2808,19 @@ will be shown at the lower left corner in opened files</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="74"/>
       <source>Size of main coordinate system representation
 in the corner in % of height/width of the viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner in % of height/width of the viewport</translation>
+      <translation>在角落顯示的主座標系統大小 -- 以可視區域高度/寬度的百分比 % 表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="100"/>
       <source>Letter color</source>
-      <translation type="unfinished">Letter color</translation>
+      <translation>字體顏色</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="286"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
-Changing this option requires a restart of the application.</translation>
+      <translation>這個選項在解決顯示卡和驅動程式的問題時是很有用的。
+更改此選項需要重新啟動應用程式。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
@@ -2835,21 +2834,21 @@ can be rendered directly by the GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by the GPU.
+      <translation>如果選中，將使用頂點緩衝區物件 (Vertax Buffer Objects - VBO)。
+VBO 是一項 OpenGL 功能，它提供將
+頂點資料（位置、法線向量、顏色等）上傳到顯示卡的方法。
+VBO 可顯著提升效能，因為資料駐留在
+顯存中，而非系統記憶體中，因此
+可以直接由 GPU 算繪。
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support.</translation>
+注意：此功能有時可能會導致一系列不同的問題，
+從圖形異常到 GPU 崩潰錯誤。請記得
+在尋求支援時將此設定報告為已啟用。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="387"/>
       <source>Method of multisample anti-aliasing</source>
-      <translation type="unfinished">Method of multisample anti-aliasing</translation>
+      <translation>多重取樣抗鋸齒方法</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="479"/>
@@ -2875,13 +2874,13 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render caching' is another way to say 'Rendering acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>
+"算繪快取" 是表示 "算繪加速" 的另一種方式。
+有3種選項可實現這一目標：
+
+1) '自動'（預設值），讓Coin3D決定何處進行快取。
+2) '分佈式'，手動為所有視圖提供者根節點打開快取。
+3) '集中式'，手動在所有視圖提供者的所有節點中關閉快取，並且僅在場景圖的根節點進行快取。這提供了最快的算繪速度，但對場景的任何更改反應較慢。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="407"/>
@@ -2895,12 +2894,12 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="502"/>
       <source>Datum size</source>
-      <translation type="unfinished">Datum size</translation>
+      <translation>基準尺寸</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="515"/>
       <source>Size of core datum objects</source>
-      <translation type="unfinished">Size of core datum objects</translation>
+      <translation>核心基準物件的大小</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="518"/>
@@ -2915,7 +2914,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="588"/>
       <source>Objects will be in orthographic projection</source>
-      <translation type="unfinished">Objects will be in orthographic projection</translation>
+      <translation>物件將以正投影法顯示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="572"/>
@@ -3694,12 +3693,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="379"/>
       <source>Creation method</source>
-      <translation type="unfinished">Creation method</translation>
+      <translation>建立方式</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="395"/>
       <source>Image Comment</source>
-      <translation type="unfinished">Image Comment</translation>
+      <translation>影像註釋</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="356"/>
@@ -3742,12 +3741,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="54"/>
       <source>Offscreen (new)</source>
-      <translation type="unfinished">Offscreen (new)</translation>
+      <translation>螢幕外 (新)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="55"/>
       <source>Offscreen (old)</source>
-      <translation type="unfinished">Offscreen (old)</translation>
+      <translation>螢幕外 (舊)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="56"/>
@@ -3785,7 +3784,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
       <source>General Macro Settings</source>
-      <translation type="unfinished">General Macro Settings</translation>
+      <translation>一般巨集設定</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="48"/>
@@ -3840,12 +3839,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
       <source>Log all commands issued by menus to file</source>
-      <translation type="unfinished">Log all commands issued by menus to file</translation>
+      <translation>將選單發出的所有命令記錄到檔案中</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="243"/>
       <source>Recent Macros Menu</source>
-      <translation type="unfinished">Recent Macros Menu</translation>
+      <translation>最近使用的巨集選單</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="224"/>
@@ -4010,13 +4009,12 @@ Trackball Classic: moving the mouse will rotate the part allowing precession.
 Turntable: the part will be rotated around the Z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the Z-axis.
          </source>
-      <translation type="unfinished">Rotation orbit style.
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the Z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the Z-axis.
-         </translation>
+      <translation>旋轉軌道樣式。
+圓角弧球：在螢幕角落移動滑鼠只會滾動零件。
+軌跡球：水平移動滑鼠會使零件繞 y 軸旋轉。
+經典軌跡球：移動滑鼠會使零件旋轉，允許進動。
+轉盤：部件將繞 z 軸旋轉（軸受約束）。
+自由轉盤：零件將繞 z 軸旋轉。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
@@ -4115,19 +4113,19 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <source>Prevents view tilting when pinch-zooming.
 Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>防止在捏合縮放時視圖傾斜。
+僅影響手勢導航風格。
+此設置不會停用滑鼠傾斜。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
       <source>Space Mouse</source>
-      <translation type="unfinished">Space Mouse</translation>
+      <translation>空間滑鼠</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
       <source>Enable support of legacy SpaceMouse devices</source>
-      <translation type="unfinished">Enable support of legacy SpaceMouse devices</translation>
+      <translation>啟用對舊式空間滑鼠裝置的支援</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="777"/>
@@ -4147,17 +4145,17 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation Cube</source>
-      <translation type="unfinished">Navigation Cube</translation>
+      <translation>導覽立方體</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="84"/>
       <source>Corner where the navigation cube is displayed</source>
-      <translation type="unfinished">Corner where the navigation cube is displayed</translation>
+      <translation>導覽立方體顯示的角落</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="120"/>
       <source>Rotates to nearest possible state when clicking a face of the cube</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a face of the cube</translation>
+      <translation>當點擊立方體的一個面時，會旋轉到最接近的可能狀態</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="139"/>
@@ -4167,7 +4165,7 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="282"/>
       <source>Rotation Center Indicator</source>
-      <translation type="unfinished">Rotation Center Indicator</translation>
+      <translation>旋轉中心指示器</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="384"/>
@@ -13300,7 +13298,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="314"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>在系統檔案管理員中開啟巨集資料夾</translation>
     </message>
   </context>
   <context>

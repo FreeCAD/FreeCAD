@@ -196,6 +196,7 @@ void ExpressionSpinBox::openFormulaDialog()
         else if (box->discardedFormula())
             setExpression(std::shared_ptr<Expression>());
 
+        updateExpression();
         box->deleteLater();
     });
     box->show();

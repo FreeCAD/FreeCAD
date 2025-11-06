@@ -6139,17 +6139,17 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="407"/>
       <source>If be the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If be the bars should show the cumulative sum left to right</translation>
+      <translation>Ha a sávok a balról jobbra haladó halmozott összeget szeretnék megjeleníteni</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="414"/>
       <source>The scale the axis are drawn in</source>
-      <translation type="unfinished">The scale the axis are drawn in</translation>
+      <translation>Méretarány, amelyen a tengelyeket rajzolják</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="188"/>
       <source>The name used in the table header. Default name is used if empty</source>
-      <translation type="unfinished">The name used in the table header. Default name is used if empty</translation>
+      <translation>A táblázat fejlécében használt név. Ha üres, az alapértelmezett nevet használja</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
@@ -6223,7 +6223,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../Command.cpp" line="1541"/>
       <source>Electromagnetic Equations</source>
-      <translation type="unfinished">Electromagnetic Equations</translation>
+      <translation>Elektromagnetikus egyenlet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1542"/>
@@ -6241,7 +6241,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../Command.cpp" line="2325"/>
       <source>Contours Filter</source>
-      <translation type="unfinished">Contours Filter</translation>
+      <translation>Kontúr szűrő</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2326"/>
@@ -6333,7 +6333,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
       <source>Mechanical Equations</source>
-      <translation type="unfinished">Mechanical Equations</translation>
+      <translation>Mechanikai egyenletek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1710"/>
@@ -6346,7 +6346,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="201"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>Test hőforrás</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="204"/>
@@ -6359,7 +6359,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="214"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>Centrifugális terhelés</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="215"/>
@@ -6372,7 +6372,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="228"/>
       <source>Current Density Boundary Condition</source>
-      <translation type="unfinished">Current Density Boundary Condition</translation>
+      <translation>Aktuális áramsűrűség peremfeltétel</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="232"/>
@@ -6385,7 +6385,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Electrostatic Potential Boundary Condition</source>
-      <translation type="unfinished">Electrostatic Potential Boundary Condition</translation>
+      <translation>Elektrosztatikus potenciál határfeltétele</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="265"/>
@@ -6398,7 +6398,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="277"/>
       <source>Flow Velocity Boundary Condition</source>
-      <translation type="unfinished">Flow Velocity Boundary Condition</translation>
+      <translation>Határfeltétel az áramlás sebességre</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
@@ -6411,7 +6411,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Initial Pressure Condition</source>
-      <translation type="unfinished">Initial Pressure Condition</translation>
+      <translation>Kezdeti nyomásállapot</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="311"/>
@@ -6424,7 +6424,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="323"/>
       <source>Magnetization Boundary Condition</source>
-      <translation type="unfinished">Magnetization Boundary Condition</translation>
+      <translation>Mágnesezettségi peremfeltétel</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="326"/>
@@ -6437,7 +6437,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="336"/>
       <source>Section Print Feature</source>
-      <translation type="unfinished">Section Print Feature</translation>
+      <translation>Szakasznyomtatási tulajdonság</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="339"/>
@@ -6450,7 +6450,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>Gravitációs terhelés</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="350"/>
@@ -6463,7 +6463,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="360"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>Kötési kényszer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="361"/>
@@ -6590,7 +6590,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../Command.cpp" line="455"/>
       <source>Rigid Body Constraint</source>
-      <translation type="unfinished">Rigid Body Constraint</translation>
+      <translation>Merev test kényszer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="456"/>
@@ -6666,17 +6666,17 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase elements by polygon</source>
-      <translation type="unfinished">Erase elements by polygon</translation>
+      <translation>Elemek törlése sokszög által</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete new meshes</source>
-      <translation type="unfinished">Delete new meshes</translation>
+      <translation>Új hálók törlése</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy result mesh</source>
-      <translation type="unfinished">Copy result mesh</translation>
+      <translation>Eredmény háló másolása</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6694,7 +6694,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>Elemek törlése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
@@ -6708,12 +6708,12 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="229"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
+      <translation>Nem lehet az eredményhálót az eredményhálóra másolni</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="239"/>
       <source>Mesh must be a ResultMesh</source>
-      <translation type="unfinished">Mesh must be a ResultMesh</translation>
+      <translation>A hálónak az eredmények hálójának kell lennie</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="561"/>
@@ -6761,12 +6761,12 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
       <source>Element Set From Polygon</source>
-      <translation type="unfinished">Element Set From Polygon</translation>
+      <translation>A sokszög által kiválasztott elemek készlete</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>Creates a collection of elements selected by a polygon</source>
-      <translation type="unfinished">Creates a collection of elements selected by a polygon</translation>
+      <translation>Létrehoz egy elemkészletet, amelyet a sokszög választ ki</translation>
     </message>
   </context>
   <context>
@@ -6809,7 +6809,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="147"/>
       <source>Curvature safety</source>
-      <translation type="unfinished">Curvature safety</translation>
+      <translation>Görbület biztonsága</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="164"/>
@@ -6824,7 +6824,7 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Netgen verzió</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="192"/>
@@ -6853,14 +6853,14 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Python útvonala</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>Python futtatható fájl, melyhez a Netgen Python-kötéseket telepített. 
+Hagyja üresen az alapértelmezett Python futtatható fájl használatához</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -6893,12 +6893,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1071"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>CalculiX megoldó</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1076"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Létrehoz egy VEM CalculiX megoldót</translation>
     </message>
   </context>
   <context>
@@ -6906,22 +6906,22 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="28"/>
       <source>Field name</source>
-      <translation type="unfinished">Field name</translation>
+      <translation>Mezőnév</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="41"/>
       <source>Mathematical expression</source>
-      <translation type="unfinished">Mathematical expression</translation>
+      <translation>Matematikai kifejezés</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="54"/>
       <source>Available fields</source>
-      <translation type="unfinished">Available fields</translation>
+      <translation>Elérhető mezők</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation type="unfinished">Scalars</translation>
+      <translation>Skálárok</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -6931,17 +6931,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
       <source>Operators</source>
-      <translation type="unfinished">Operators</translation>
+      <translation>Operátorok</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
       <source>Replace invalid data</source>
-      <translation type="unfinished">Replace invalid data</translation>
+      <translation>Érvénytelen adatok cseréje</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
       <source>Replacement value for invalid operations</source>
-      <translation type="unfinished">Replacement value for invalid operations</translation>
+      <translation>Csereérték érvénytelen műveletekhez</translation>
     </message>
   </context>
   <context>
@@ -6949,7 +6949,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki a forrást, a alpont szűrő ezt fogja kapni:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Sorosan:&lt;/span&gt; A változat első szűrője a változatok forrását kapja saját forrásaként. A következő szűrő pedig az első szűrő kimenetét kapja forrásként, és így tovább.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Párhuzamosan: &lt;/span&gt;A változat összes szűrője az változatok forrását kapja saját forrásaként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -6959,12 +6959,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki a forrást, a alpont szűrők ezt fogják kapni:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Sorosan:&lt;/span&gt; A változat első szűrője a változatok forrását kapja saját forrásaként. A következő szűrő pedig az első szűrő kimenetét kapja forrásként, és így tovább.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Párhuzamosan: &lt;/span&gt;A változat összes szűrője az változatok forrását kapja saját forrásaként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
       <source>Serial</source>
-      <translation type="unfinished">Serial</translation>
+      <translation>Sorozatszám</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="59"/>
@@ -6975,17 +6975,17 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki, hogyan kerül meghatározásra a változat eredménye:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;- Átadás: &lt;/span&gt;A változatok eredménye megegyezik a forrásával, függetlenül attól, mit csinálnak a változat alont szűrők.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Összeadás: &lt;/span&gt;A változat eredménye az összes alponti szűrő gyűjteménye: összeadja az alpont eredményeit, és azt kínálja a változat eredményeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
       <source>Passthrough</source>
-      <translation type="unfinished">Passthrough</translation>
+      <translation>Átjáró</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="82"/>
       <source>Append</source>
-      <translation type="unfinished">Append</translation>
+      <translation>Hozzáadás</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="93"/>
@@ -7003,12 +7003,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
       <source>Type of frames</source>
-      <translation type="unfinished">Type of frames</translation>
+      <translation>Kerettípus</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="41"/>
       <source>Resonant frequencies</source>
-      <translation type="unfinished">Resonant frequencies</translation>
+      <translation>Rezgésfrekvenciák</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="84"/>
@@ -7026,7 +7026,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="14"/>
       <source>Solver CalculiX Control</source>
-      <translation type="unfinished">Solver CalculiX Control</translation>
+      <translation>CalculiX megoldó vezérlése</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="20"/>
@@ -7046,7 +7046,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory</source>
-      <translation type="unfinished">Path to working directory</translation>
+      <translation>Munkakönyvtár elérési útja</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="66"/>
@@ -7529,12 +7529,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="433"/>
       <source>Elasticity Equation</source>
-      <translation type="unfinished">Elasticity Equation</translation>
+      <translation>Rugalmassági egyenlet</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="436"/>
       <source>Creates an equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates an equation for elasticity (stress)</translation>
+      <translation>Rugalmasságra (feszültségre) képez egy egyenletet</translation>
     </message>
   </context>
   <context>

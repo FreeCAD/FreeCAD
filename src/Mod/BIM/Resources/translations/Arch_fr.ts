@@ -220,7 +220,8 @@ Examples of valid filters (everything is case-insensitive): Name:Wall - Will onl
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
       <translation>Liste de filtres property:value séparés par des points-virgules (;).
-Ajoutez le signe ! devant le nom d'une propriété permet d'inverser l'effet du filtre (cela exclut les objets qui correspondent au filtre). Les objets dont la propriété contient la valeur seront pris en compte.
+Ajoutez le signe ! devant le nom d'une propriété permet d'inverser l'effet du filtre (cela exclut les objets qui correspondent au filtre). Les
+objets dont la propriété contient la valeur seront pris en compte.
 
 Exemples de filtres valides (tout est insensible à la casse) : 
 Name:Wall - Ne prendra en compte que les objets dont le nom (nom interne) contient « wall » ; 
@@ -231,7 +232,9 @@ IfcType:Wall - Ne prendra en compte que les objets dont le type Ifc est « Wall 
 !Tag:Wall - Ne prendra en compte que les objets dont la balise n'est PAS « Wall ».
 Si vous laissez ce champ vide, aucun filtrage ne sera appliqué.
 
-Lorsque vous travaillez avec des objets IFC natifs, vous pouvez utiliser le nom des propriétés FreeCAD, par exemple : « Class:IfcWall » ou tout autre attribut IFC (exemple « IsTypedBy:#455 »). Si la colonne « Objets » a été définie sur un projet ou un document IFC, toutes les entités IFC de ce projet seront prises en compte.</translation>
+Lorsque vous travaillez avec des objets IFC natifs, vous pouvez utiliser le nom des propriétés FreeCAD, par exemple : « Class:IfcWall »
+ou tout autre attribut IFC (exemple « IsTypedBy:#455 »). Si la colonne « Objets » a été définie sur un projet ou un document IFC, toutes
+les entités IFC de ce projet seront prises en compte.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="149"/>
@@ -303,17 +306,16 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation>Une liste facultative de noms d'objets séparés par des points-virgules (;)
-(noms internes, pas les étiquettes), à prendre en compte par cette opération.
-Si la liste contient des groupes, les enfants seront ajoutés.
+      <translation>Une liste facultative de noms d'objets séparés par des points-virgules (;) (noms internes, pas les étiquettes), à prendre en compte par
+cette opération. Si la liste contient des groupes, les enfants seront ajoutés.
 
 Laisser vide pour utiliser tous les objets du document.
 
-Si le document est un projet IFC, toutes les entités IFC du document seront
-utilisées, peu importe si le document est un projet IFC ou non.
+Si le document est un projet IFC, toutes les entités IFC du document seront utilisées, peu importe si le document est un projet IFC ou
+non.
 
-Utiliser le nom du projet IFC pour obtenir toutes les entités IFC de ce projet,
-peu importe si elles sont développées dans FreeCAD ou non.</translation>
+Utiliser le nom du projet IFC pour obtenir toutes les entités IFC de ce projet, peu importe si elles sont développées dans FreeCAD ou
+non.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -424,7 +426,7 @@ Dans LibreOffice v6.x et versions ultérieures : utilisez Feuille → Insérer u
       <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Fenêtre de dialogue</translation>
+      <translation>Boîte de dialogue</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="29"/>
@@ -486,7 +488,7 @@ Glissez et déposez pour réorganiser.</translation>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <source>Delete Selected Property/Property Set</source>
-      <translation type="unfinished">Delete Selected Property/Property Set</translation>
+      <translation>Supprimer une propriété/un jeu de propriétés sélectionné</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="14"/>
@@ -508,7 +510,7 @@ Glissez et déposez pour réorganiser.</translation>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="76"/>
       <source>Force exporting geometry as BREP</source>
-      <translation>Forcer l’exportation de la géométrie en BREP</translation>
+      <translation>Forcer l’exportation de la géométrie en tant que B-Rep</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="83"/>
@@ -562,12 +564,14 @@ Glissez et déposez pour réorganiser.</translation>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</source>
-      <translation>Convertir ce document en document IFC ? Sélectionner « Oui » permettra la création automatique d'objets IFC. Sélectionner « Non » permettra de mélanger des éléments IFC et non IFC dans le fichier.</translation>
+      <translation>Convertir ce document en document IFC ? Sélectionner « Oui » permettra la création automatique d'objets IFC. Sélectionner « Non »
+permettra de mélanger des éléments IFC et non IFC dans le fichier.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</source>
-      <translation>Ajoute une structure de bâtiment par défaut composée de IfcSite, IfcBuilding et IfcBuildingStorey. La structure peut également être ajoutée manuellement plus tard.</translation>
+      <translation>Ajoute une structure de bâtiment par défaut composée de IfcSite, IfcBuilding et IfcBuildingStorey. La structure peut également être
+ajoutée manuellement plus tard.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
@@ -577,13 +581,14 @@ Glissez et déposez pour réorganiser.</translation>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
       <source>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</source>
-      <translation type="unfinished">Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</translation>
+      <translation>Empêche l'affichage d'autres invites lors de la création de nouveaux documents FreeCAD. Les nouveaux documents ne seront pas
+convertis automatiquement au format IFC, mais la conversion reste possible ultérieurement via Utilitaires → Créer un projet IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
-      <translation>Ne plus me demander</translation>
+      <translation>Ne plus demander</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
@@ -593,7 +598,8 @@ Glissez et déposez pour réorganiser.</translation>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Cette fenêtre de dialogue vous permet de modifier le type IFC et le matériau associés à n'importe quel objet BIM de ce document. Double-cliquez sur le type IFC à modifier ou utilisez le menu déroulant situé sous la liste.</translation>
+      <translation>Cette fenêtre de dialogue vous permet de modifier le type IFC et le matériau associés à n'importe quel objet BIM de ce document.
+Double-cliquer sur le type IFC à modifier ou utiliser le menu déroulant situé sous la liste.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
@@ -622,8 +628,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation>La manière dont le fichier IFC sera initialement importé : un seul objet,
-une seule structure de projet ou tous les objets séparément.</translation>
+      <translation>La manière dont le fichier IFC sera initialement importé : un seul objet, une seule structure de projet ou tous les objets séparément.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
@@ -673,17 +678,18 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation>Le type d'objet créé lors de l'importation. Le maillage est plus rapide, mais les formes sont plus précises. Vous pouvez passer de l'un à l'autre à tout moment en cliquant avec le bouton droit de la souris sur l'arborescence des objets.</translation>
+      <translation>Le type d'objet créé lors de l'importation. Le maillage est plus rapide, mais les formes sont plus précises. Vous pouvez passer de l'un à
+l'autre à tout moment en cliquant avec le bouton droit de la souris sur l'arborescence des objets.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation>Charger la forme (plus lent)</translation>
+      <translation>Charge la forme (plus lent).</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation>Charger uniquement la représentation 3D, pas de forme (par défaut)</translation>
+      <translation>Charge uniquement la représentation 3D, pas de forme (par défaut).</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
@@ -693,17 +699,20 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</source>
-      <translation type="unfinished">Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</translation>
+      <translation>Précharge les types IFC qui sont connectés aux objets. Il est également possible de laisser ce paramètre désactivé et de double-cliquer
+ultérieurement sur l'objet pour charger les types.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation>Précharger tous les matériaux du fichier. Il est conseillé de laisser ceci non coché et de charger les matériaux plus tard, uniquement lorsque cela est nécessaire</translation>
+      <translation>Précharge tous les matériaux du fichier. Il est conseillé de laisser ceci non coché et de charger les matériaux plus tard, uniquement
+lorsque cela est nécessaire.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="159"/>
       <source>If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation>Si cette option n'est pas cochée, ces paramètres seront appliqués automatiquement la prochaine fois. Cela peut être modifié plus tard dans le menu Édition → Préférences → BIM → IFC natifs</translation>
+      <translation>Si cette option n'est pas cochée, ces paramètres seront appliqués automatiquement la prochaine fois. Cela peut être modifié plus tard
+dans le menu Édition → Préférences → BIM → IFC natifs.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
@@ -713,7 +722,10 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</source>
-      <translation type="unfinished">Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</translation>
+      <translation>Définit comment les données IFC sont stockées dans le document FreeCAD.
+- « Document IFC unique » traite le document FreeCAD lui-même comme le document IFC, avec tout le contenu
+créé qui lui appartient.
+- « Utiliser l'objet document IFC » crée un objet séparé représentant le document IFC, permettant ainsi la coexistence de contenu IFC et non IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
@@ -728,7 +740,8 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation>Précharger le jeu des propriétés de tous les objets. Il est conseillé de ne pas cocher cette case et de charger le jeu des propriétés plus tard uniquement en cas de besoin.</translation>
+      <translation>Précharger le jeu des propriétés de tous les objets. Il est conseillé de ne pas cocher cette case et de charger le jeu des propriétés plus
+tard uniquement en cas de besoin.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
@@ -743,7 +756,8 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</source>
-      <translation>Précharger tous les calques du fichier. Il est conseillé de laisser cette option non cochée et de charger les calques plus tard uniquement en cas de besoin.</translation>
+      <translation>Précharger tous les calques du fichier. Il est conseillé de laisser cette option non cochée et de charger les calques plus tard uniquement
+en cas de besoin.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
@@ -820,7 +834,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
       <source>BIM Project Setup</source>
-      <translation>Configuration du projet BIM</translation>
+      <translation>Configuration d'un projet BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
@@ -883,7 +897,8 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</source>
-      <translation type="unfinished">The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</translation>
+      <translation>Les paramètres ci-dessous peuvent être enregistrés comme préréglage. Les préréglages sont stockés sous forme de fichiers .txt dans le
+dossier local de FreeCAD de l'utilisateur.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
@@ -893,7 +908,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="87"/>
       <source>Creates a new BIM project</source>
-      <translation type="unfinished">Creates a new BIM project</translation>
+      <translation>Crée un nouveau projet BIM.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="90"/>
@@ -903,42 +918,46 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="102"/>
       <source>A new BIM project will be created, either as a new FreeCAD document or as a Native IFC project</source>
-      <translation type="unfinished">A new BIM project will be created, either as a new FreeCAD document or as a Native IFC project</translation>
+      <translation>Un nouveau projet BIM sera créé, soit sous forme de nouveau document FreeCAD, soit sous forme de projet IFC natif.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="114"/>
       <source>This will create a new FreeCAD document for the construction of a BIM model, but initially with no specific IFC structure. This is the most flexible option when starting working on a BIM project. This project can be converted to IFC anytime later.</source>
-      <translation type="unfinished">This will create a new FreeCAD document for the construction of a BIM model, but initially with no specific IFC structure. This is the most flexible option when starting working on a BIM project. This project can be converted to IFC anytime later.</translation>
+      <translation>Cela créera un nouveau document FreeCAD pour la construction d'un modèle BIM, mais initialement sans structure IFC spécifique.
+C'est l'option la plus flexible lors du lancement d'un projet BIM. Ce projet peut être converti en IFC à tout moment par la suite.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>Create a new document without IFC support</source>
-      <translation type="unfinished">Create a new document without IFC support</translation>
+      <translation>Créer un nouveau document sans prise en charge du format IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="127"/>
       <source>This will create an IFC project. All the BIM objects added to the IFC project will immediately become IFC objects. This is less flexible, but helps to strictly adhere to the IFC standard.</source>
-      <translation type="unfinished">This will create an IFC project. All the BIM objects added to the IFC project will immediately become IFC objects. This is less flexible, but helps to strictly adhere to the IFC standard.</translation>
+      <translation>Cela créera un projet IFC. Tous les objets BIM ajoutés au projet IFC deviendront immédiatement des objets IFC. Cette méthode est
+moins flexible, mais permet de respecter strictement la norme IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="130"/>
       <source>Create a native IFC project in the current document</source>
-      <translation type="unfinished">Create a native IFC project in the current document</translation>
+      <translation>Créer un projet IFC natif dans le document actuel</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="140"/>
       <source>The new IFC project will be created as a new FreeCAD document. In that mode, the IFC project is the FreeCAD document, anything created in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</source>
-      <translation type="unfinished">The new IFC project will be created as a new FreeCAD document. In that mode, the IFC project is the FreeCAD document, anything created in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</translation>
+      <translation>Le nouveau projet IFC sera créé sous forme de nouveau document FreeCAD. Dans ce mode, le projet IFC est le document FreeCAD, tout
+ce qui est créé dans ce document devient partie intégrante du projet IFC. Cela est extrêmement restrictif, car aucun objet non IFC ne
+peut être ajouté au document.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="143"/>
       <source>Create a locked native IFC project as a new document</source>
-      <translation type="unfinished">Create a locked native IFC project as a new document</translation>
+      <translation>Créer un projet IFC natif verrouillé en tant que nouveau document</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="161"/>
       <source>A name for this BIM or IFC project</source>
-      <translation type="unfinished">A name for this BIM or IFC project</translation>
+      <translation>Un nom pour ce projet BIM ou IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="176"/>
@@ -948,12 +967,13 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="191"/>
       <source>The site object contains all the data relative to the project location. Later on, is it possible to attach a physical object representing the terrain.</source>
-      <translation type="unfinished">The site object contains all the data relative to the project location. Later on, is it possible to attach a physical object representing the terrain.</translation>
+      <translation>L'objet site contient toutes les données relatives à l'emplacement du projet. Plus tard, il sera possible d'y associer un objet physique
+représentant le terrain.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="203"/>
       <source>The east longitude of this site</source>
-      <translation type="unfinished">The east longitude of this site</translation>
+      <translation>La longitude est de ce site</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="236"/>
@@ -963,7 +983,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="253"/>
       <source>The difference between the up direction of this site and the true north direction</source>
-      <translation type="unfinished">The difference between the up direction of this site and the true north direction</translation>
+      <translation>La différence entre la direction vers le haut de ce site et la direction nord réelle</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="256"/>
@@ -978,12 +998,12 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="273"/>
       <source>The elevation of this site</source>
-      <translation type="unfinished">The elevation of this site</translation>
+      <translation>L'élévation de ce site</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="283"/>
       <source>The physical (postal) address of this site</source>
-      <translation type="unfinished">The physical (postal) address of this site</translation>
+      <translation>L'adresse physique (postale) de ce site</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="290"/>
@@ -998,7 +1018,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="304"/>
       <source>The north latitude of this site</source>
-      <translation type="unfinished">The north latitude of this site</translation>
+      <translation>La latitude nord de ce site</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="307"/>
@@ -1008,7 +1028,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="328"/>
       <source>Creates a new building</source>
-      <translation type="unfinished">Creates a new building</translation>
+      <translation>Crée un nouveau bâtiment.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="331"/>
@@ -1018,12 +1038,13 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="340"/>
       <source>This will configure a single building for this project. If the project is made of several buildings, it can be duplicated after creation and its properties updated.</source>
-      <translation type="unfinished">This will configure a single building for this project. If the project is made of several buildings, it can be duplicated after creation and its properties updated.</translation>
+      <translation>Cela permettra de configurer un seul bâtiment pour ce projet. Si le projet comprend plusieurs bâtiments, il peut être dupliqué après sa
+création et ses propriétés mises à jour.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="373"/>
       <source>Default building</source>
-      <translation type="unfinished">Default building</translation>
+      <translation>Bâtiment par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="427"/>
@@ -1033,7 +1054,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="437"/>
       <source>Primary function</source>
-      <translation type="unfinished">Primary function</translation>
+      <translation>Fonction principale</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="444"/>
@@ -1043,37 +1064,38 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>An estimate building width. Keep the value as 0 to not specify this now.</source>
-      <translation type="unfinished">An estimate building width. Keep the value as 0 to not specify this now.</translation>
+      <translation>Largeur approximative du bâtiment. Laisser la valeur à 0 pour ne pas la spécifier pour le moment.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="467"/>
       <source>The line width of axes</source>
-      <translation type="unfinished">The line width of axes</translation>
+      <translation>La largeur des lignes des axes</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="477"/>
       <source>Distance between vertical axes</source>
-      <translation type="unfinished">Distance between vertical axes</translation>
+      <translation>Distance entre les axes verticaux</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="490"/>
       <source>An estimate building length. Keep the value as 0 to not specify this now.</source>
-      <translation type="unfinished">An estimate building length. Keep the value as 0 to not specify this now.</translation>
+      <translation>Longueur approximative du bâtiment. Laisser la valeur à 0 pour ne pas la spécifier pour le moment.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="503"/>
       <source>Distance between horizontal axes</source>
-      <translation type="unfinished">Distance between horizontal axes</translation>
+      <translation>Distance entre les axes horizontaux</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="634"/>
       <source>Default groups to be added to each level. Default groups such as walls and windows are useful to organize the different building elements inside a level.</source>
-      <translation type="unfinished">Default groups to be added to each level. Default groups such as walls and windows are useful to organize the different building elements inside a level.</translation>
+      <translation>Groupes par défaut à ajouter à chaque niveau. Les groupes par défaut tels que les murs et les fenêtres sont utiles pour organiser les
+différents éléments du bâtiment à l'intérieur d'un niveau.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="644"/>
       <source>A list of groups to add under each level</source>
-      <translation type="unfinished">A list of groups to add under each level</translation>
+      <translation>Une liste de groupes à ajouter à chaque niveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="662"/>
@@ -1088,7 +1110,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="714"/>
       <source>Accept the values of this form</source>
-      <translation type="unfinished">Accept the values of this form</translation>
+      <translation>Accepter les valeurs de ce formulaire</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="352"/>
@@ -1098,7 +1120,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
       <source>This dialog assists in creating and configuring a new BIM project in FreeCAD</source>
-      <translation type="unfinished">This dialog assists in creating and configuring a new BIM project in FreeCAD</translation>
+      <translation>Cette boîte de dialogue aide à créer et configurer un nouveau projet BIM dans FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="359"/>
@@ -1123,7 +1145,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="407"/>
       <source>The primary function of this building</source>
-      <translation type="unfinished">The primary function of this building</translation>
+      <translation>La fonction principale de ce bâtiment</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="417"/>
@@ -1144,7 +1166,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="523"/>
       <source>The color of axes</source>
-      <translation type="unfinished">The color of axes</translation>
+      <translation>La couleur des axes</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="537"/>
@@ -1154,17 +1176,17 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="549"/>
       <source>Add a human figure to the document</source>
-      <translation type="unfinished">Add a human figure to the document</translation>
+      <translation>Ajouter un personnage humain au document</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="552"/>
       <source>Add Human Figure</source>
-      <translation type="unfinished">Add Human Figure</translation>
+      <translation>Ajouter une figure humaine</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="561"/>
       <source>A human figure will be added to the document, which helps give a sense of scale</source>
-      <translation type="unfinished">A human figure will be added to the document, which helps give a sense of scale</translation>
+      <translation>Un personnage humain sera ajouté au document, ce qui aide à donner une idée de l'échelle.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="574"/>
@@ -1174,12 +1196,13 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="580"/>
       <source>BIM projects are typically organized into levels that represent the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, the default levels can be set here.</source>
-      <translation type="unfinished">BIM projects are typically organized into levels that represent the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, the default levels can be set here.</translation>
+      <translation>Les projets BIM sont généralement organisés en niveaux qui représentent les différents étages d'un bâtiment. Bien qu'il ne soit pas
+obligatoire de travailler avec des niveaux dans FreeCAD, les niveaux par défaut peuvent être définis ici.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="592"/>
       <source>The number of levels to create</source>
-      <translation type="unfinished">The number of levels to create</translation>
+      <translation>Le nombre de niveaux à créer</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="605"/>
@@ -1189,7 +1212,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="612"/>
       <source>The vertical distance between each level</source>
-      <translation type="unfinished">The vertical distance between each level</translation>
+      <translation>La distance verticale entre chaque niveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="625"/>
@@ -1199,7 +1222,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogPhases.ui" line="20"/>
       <source>Below are the phases currently configured for this model</source>
-      <translation type="unfinished">Below are the phases currently configured for this model</translation>
+      <translation>Ci-dessous sont les phases actuellement configurées pour ce modèle.</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="48"/>
@@ -1210,17 +1233,20 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="62"/>
       <source>This display lists all the components of the current document. Select them to create a FreeCAD spreadsheet containing information from them.</source>
-      <translation type="unfinished">This display lists all the components of the current document. Select them to create a FreeCAD spreadsheet containing information from them.</translation>
+      <translation>Cet affichage répertorie tous les composants du document présent. Sélectionner les pour créer une feuille de calcul FreeCAD contenant
+les informations qu'ils contiennent.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="78"/>
       <source>This dialog window will help generate a list of components, dimensions, and materials from an opened BIM file for quantity surveyor purposes.</source>
-      <translation type="unfinished">This dialog window will help generate a list of components, dimensions, and materials from an opened BIM file for quantity surveyor purposes.</translation>
+      <translation>Cette fenêtre de dialogue permet de générer une liste des composants, des dimensions et des matériaux à partir d'un fichier BIM ouvert
+à des fins d'estimation quantitative.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="94"/>
       <source>Select from these options the values desired from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</source>
-      <translation type="unfinished">Select from these options the values desired from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</translation>
+      <translation>Sélectionner parmi ces options les valeurs souhaitées pour chaque composant. FreeCAD générera une ligne dans la feuille de calcul
+avec ces valeurs (si elles sont présentes).</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="110"/>
@@ -1245,22 +1271,22 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="175"/>
       <source>Select these components from the list to hide the rest of them and move to survey mode.</source>
-      <translation type="unfinished">Select these components from the list to hide the rest of them and move to survey mode.</translation>
+      <translation>Sélectionner ces composants dans la liste pour masquer les autres et passer en mode Prise de cotes.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="217"/>
       <source>Select these components from the list to hide the rest of them and move to schedule definition mode.</source>
-      <translation type="unfinished">Select these components from the list to hide the rest of them and move to schedule definition mode.</translation>
+      <translation>Sélectionner ces composants dans la liste pour masquer les autres et passer en mode Nomenclature.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="14"/>
       <source>Spaces Manager</source>
-      <translation type="unfinished">Spaces Manager</translation>
+      <translation>Gestionnaire d'espaces</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="20"/>
       <source>This screen enables checking the spaces configuration and editing of attributes in the project.</source>
-      <translation type="unfinished">This screen enables checking the spaces configuration and editing of attributes in the project.</translation>
+      <translation>Cet écran permet de vérifier la configuration des espaces et l'édition des attributs du projet.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="37"/>
@@ -1306,7 +1332,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
       <source>Space Information</source>
-      <translation type="unfinished">Space Information</translation>
+      <translation>Informations des espaces</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
@@ -1349,7 +1375,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogTree.ui" line="14"/>
       <source>IFC Representation</source>
-      <translation type="unfinished">IFC Representation</translation>
+      <translation>Représentation IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogTree.ui" line="40"/>
@@ -1374,32 +1400,37 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time BIM workbench is used. Selecting OK will open a setup screen with a few recommended FreeCAD options tailored for BIM workflows. These settings can be modified later under &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup…&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il semble que vous utilisez l'atelier BIM pour la première fois. En sélectionnant OK, vous ouvrirez un écran de configuration avec quelques options FreeCAD recommandées adaptées aux flux de travail BIM. Ces paramètres peuvent être modifiés ultérieurement sous &lt;span style=" font-weight:600;"&gt;Gérer -&amp;gt; Configuration BIM…&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il semble que ce soit la première fois que l'atelier BIM est utilisé. En sélectionnant OK, un écran de configuration s'ouvre proposant quelques options recommandées et adaptées aux flux de travail BIM. Ces paramètres peuvent être modifiés ultérieurement par le menu &lt;span style=" font-weight:600;"&gt;Gestion → Configurer les BIM&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="100"/>
       <source>FreeCAD is a complex application. For those new to FreeCAD, or without prior experience in 3D modelling or BIM, it is recommended to begin with the &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt;. This can also be accessed under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;.</source>
-      <translation type="unfinished">FreeCAD is a complex application. For those new to FreeCAD, or without prior experience in 3D modelling or BIM, it is recommended to begin with the &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt;. This can also be accessed under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;.</translation>
+      <translation>FreeCAD est une application complexe. Pour ceux qui découvrent FreeCAD ou qui n'ont aucune expérience préalable en modélisation
+3D ou BIM, il est recommandé de commencer par le &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial/fr"&gt;tutoriel BIM&lt;/a&gt;. Celui-ci
+est également accessible par le menu &lt;span style=" font-weight:600;"&gt;Aide → Tutoriel de BIM&lt;/span&gt;.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="110"/>
       <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt; available under the Help menu. The "What's This?" button will open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt; available under the Help menu. The "What's This?" button will open the help page of any tool from the toolbars.</translation>
+      <translation>L'atelier BIM dispose également d'une &lt;a href="https://wiki.freecad.org/BIM_Workbench/fr"&gt;documentation complète&lt;/a&gt; accessible depuis le menu Aide.
+Le bouton « Qu'est-ce que c'est ? » permet d'ouvrir la page d'aide de n'importe quel outil de la barre d'outils.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="120"/>
       <source>A good way to start building a BIM model is by setting up basic characteristics of the project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. Different floor plans for the project can be configured via &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</source>
-      <translation type="unfinished">A good way to start building a BIM model is by setting up basic characteristics of the project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. Different floor plans for the project can be configured via &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</translation>
+      <translation>Une bonne façon de commencer à créer un modèle BIM consiste à définir les caractéristiques de base du projet, par le menu
+&lt;span style=" font-weight:600;"&gt;Gestion → Configurer un projet&lt;/span&gt;.
+Différents plans d'étage pour le projet peuvent être configurés via &lt;span style=" font-weight:600;"&gt;Gestion → Gérer les calques.&lt;/span&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="130"/>
       <source>There is no required workflow; walls and columns can be created directly, with levels organised later if preferred.</source>
-      <translation type="unfinished">There is no required workflow; walls and columns can be created directly, with levels organised later if preferred.</translation>
+      <translation>Il n'y a pas de flux de travail requis. Les murs et les colonnes peuvent être créés directement, avec des niveaux organisés plus tard si nécessaire.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="140"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An existing floor plan or 3D model created in another application can also be used as a starting point. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, a wide range of file formats that can be imported into FreeCAD is available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Un plan d'étage existant ou un modèle 3D créé dans une autre application peut aussi être utilisé comme point de départ. Dans le menu &lt;span style=" font-weight:600;"&gt;Fichier -&amp;gt; Importer&lt;/span&gt;, un large éventail de formats de fichiers pouvant être importés dans FreeCAD est disponible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Un plan d'étage existant ou un modèle 3D créé dans une autre application peut aussi être utilisé comme point de départ. Sous le menu &lt;span style=" font-weight:600;"&gt;Fichier → Importer&lt;/span&gt;, un large éventail de formats de fichiers pouvant être importés dans FreeCAD est disponible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="93"/>
@@ -1409,13 +1440,13 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC Type</source>
-      <translation type="unfinished">Convert to IFC Type</translation>
+      <translation>Convertir en type IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation>Cet objet sera converti en type %1. Les types peuvent être utilisés pour donner des attributs
-et des propriétés communs à plusieurs objets à la fois.</translation>
+      <translation>Cet objet sera converti en type %1. Les types peuvent être utilisés pour donner des attributs et des propriétés communs à plusieurs
+objets à la fois.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
@@ -1425,12 +1456,12 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="43"/>
       <source>Do not ask again and use this setting</source>
-      <translation type="unfinished">Do not ask again and use this setting</translation>
+      <translation>Ne plus demander et utiliser ce réglage</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC Property</source>
-      <translation type="unfinished">Add IFC Property</translation>
+      <translation>Ajouter une propriété IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
@@ -1475,43 +1506,45 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
       <source>Default Structure</source>
-      <translation type="unfinished">Default Structure</translation>
+      <translation>Structure par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="20"/>
       <source>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. The structure can be added manually later.</source>
-      <translation type="unfinished">Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. The structure can be added manually later.</translation>
+      <translation>Faut-il créer une structure par défaut (IfcProject, IfcSite, IfcBuilding et IfcBuildingStorey) ? Si la réponse est « Non », seul un projet
+IfcProject sera créé. La structure pourra être ajoutée manuellement plus tard.</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="20"/>
       <source>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved. They will automatically be saved now.</source>
-      <translation type="unfinished">One or more IFC documents contained in this FreeCAD document have been modified, but were not saved. They will automatically be saved now.</translation>
+      <translation>Un ou plusieurs documents IFC contenus dans ce document FreeCAD ont été modifiés, mais n'ont pas été enregistrés. Ils seront
+automatiquement enregistrés maintenant.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="162"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
       <source>Ask again next time</source>
-      <translation type="unfinished">Ask again next time</translation>
+      <translation>Demander à nouveau la prochaine fois</translation>
     </message>
     <message>
       <location filename="../ui/dialogMaterialChooser.ui" line="14"/>
       <source>Choose a Material</source>
-      <translation type="unfinished">Choose a Material</translation>
+      <translation>Choisir un matériau</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="14"/>
       <source>Test Results</source>
-      <translation type="unfinished">Test Results</translation>
+      <translation>Tester les résultats</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="43"/>
       <source>Results of test</source>
-      <translation type="unfinished">Results of test</translation>
+      <translation>Résultats du test</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="91"/>
       <source>To Report Panel</source>
-      <translation type="unfinished">To Report Panel</translation>
+      <translation>Vers le panneau rapport</translation>
     </message>
   </context>
   <context>
@@ -1544,7 +1577,7 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
       <source>List of files to be committed</source>
-      <translation type="unfinished">List of files to be committed</translation>
+      <translation>Liste des fichiers à valider</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
@@ -1585,7 +1618,7 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
       <source>Multi-Material Definition</source>
-      <translation type="unfinished">Multi-Material Definition</translation>
+      <translation>Définition d'un multi-matériaux</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
@@ -1671,17 +1704,18 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="36"/>
       <source>Pick Selected</source>
-      <translation type="unfinished">Pick Selected</translation>
+      <translation>Choisir la sélection</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
       <source>Add Selected</source>
-      <translation type="unfinished">Add Selected</translation>
+      <translation>Ajouter les éléments sélectionnés</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="109"/>
       <source>The number of segments to divide non-linear edges into for calculations. If curved shapes overlap, try raising this value</source>
-      <translation type="unfinished">The number of segments to divide non-linear edges into for calculations. If curved shapes overlap, try raising this value</translation>
+      <translation>Nombre de segments pour diviser les arêtes non linéaires pour les calculs. Si des formes courbes se chevauchent, augmenter cette
+valeur.</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="125"/>
@@ -1722,7 +1756,7 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogClasses.ui" line="14"/>
       <source>Class Manager</source>
-      <translation type="unfinished">Class Manager</translation>
+      <translation>Gestionnaire des classes</translation>
     </message>
     <message>
       <location filename="../ui/dialogClasses.ui" line="25"/>
@@ -1745,7 +1779,8 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="30"/>
       <source>Can only contain alphanumerical characters and no spaces. Use CamelCase typing to define spaces automatically</source>
-      <translation>Ne peut comporter que des caractères alphanumériques et aucun espace. Utilisez la saisie de type "CamelCase" pour définir automatiquement les espaces.</translation>
+      <translation>Ne peut contenir que des caractères alphanumériques, sans espaces. Utiliser la saisie de type « CamelCase » pour définir
+automatiquement les espaces.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="189"/>
@@ -1756,17 +1791,17 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="14"/>
       <source>Custom Properties</source>
-      <translation type="unfinished">Custom Properties</translation>
+      <translation>Propriétés personnalisées</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="44"/>
       <source>A description of this property. Supports any language.</source>
-      <translation type="unfinished">A description of this property. Supports any language.</translation>
+      <translation>Description de cette propriété. Toutes les langues sont prises en charge.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python scripting</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python scripting</translation>
+      <translation>La propriété sera masquée dans l'interface et ne pourra être modifiée que via un script Python.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1776,12 +1811,12 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="61"/>
       <source>The property is visible but cannot be modified by the user</source>
-      <translation>La propriété est visible mais ne peut pas être modifiée par l'utilisateur</translation>
+      <translation>La propriété est visible mais ne peut pas être modifiée par l'utilisateur.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="64"/>
       <source>Read-only</source>
-      <translation>Lecture seule</translation>
+      <translation>En lecture seule</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="83"/>
@@ -1791,7 +1826,7 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="29"/>
       <source>Inserts the selected object in the current document</source>
-      <translation>Insérer l'objet sélectionné dans le document courant</translation>
+      <translation>Insère un objet sélectionné dans le document courant.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="32"/>
@@ -1836,12 +1871,12 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
       <source>Library Browser</source>
-      <translation type="unfinished">Library Browser</translation>
+      <translation>Explorateur des bibliothèques</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
       <source>Links the selected object in the current document. Only works in offline mode.</source>
-      <translation type="unfinished">Links the selected object in the current document. Only works in offline mode.</translation>
+      <translation>Lie l'objet sélectionné dans le document actif. Cette option est uniquement disponible en mode hors ligne.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
@@ -1856,17 +1891,17 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
       <source>Allows the library to be fetched online instead of requiring local installation.</source>
-      <translation type="unfinished">Allows the library to be fetched online instead of requiring local installation.</translation>
+      <translation>Permet à la bibliothèque d'être récupérée en ligne au lieu de nécessiter une installation locale.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="209"/>
       <source>Search using FreeCAD's web view</source>
-      <translation type="unfinished">Search using FreeCAD's web view</translation>
+      <translation>Rechercher par une vue web de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="216"/>
       <source>Opens a 3D preview of the selected file</source>
-      <translation>Ouvrir un aperçu 3D du fichier sélectionné</translation>
+      <translation>Ouvre un aperçu 3D du fichier sélectionné.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
@@ -1886,7 +1921,8 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="239"/>
       <source>Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</source>
-      <translation>Remarque : les fichiers STEP et BREP peuvent être placés dans un endroit personnalisé. Les fichiers FCStd et IFC seront placés à l'endroit où les objets sont définis dans le fichier.</translation>
+      <translation>Remarque : les fichiers STEP et B-Rep peuvent être placés dans un endroit personnalisé. Les fichiers FCStd et IFC seront placés à
+l'endroit où les objets sont définis dans le fichier.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="252"/>
@@ -2006,82 +2042,82 @@ et des propriétés communs à plusieurs objets à la fois.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Le test suivant vérifiera la conformité du modèle ou des objets sélectionnés et de leurs enfants aux normes IFC. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt; : aucun des tests échoués ci-dessous n'empêchera l'exportation des fichiers IFC, et ces tests ne garantissent pas non plus que les fichiers IFC répondent à certaines exigences spécifiques en matière de qualité ou de normes. Ils servent à évaluer quels éléments sont inclus ou exclus du fichier exporté. Choisir manuellement les éléments qui sont importants. Passer la souris sur chaque description pour afficher plus d'informations.&lt;/p&gt;&lt;p&gt;Une fois le test effectué, cliquer sur le bouton correspondant pour afficher plus d'informations qui vous aideront à résoudre les problèmes.&lt;/p&gt;&lt;p&gt;Le &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;site web officiel de l'IFC&lt;/span&gt;&lt;/a&gt; contient de nombreuses informations utiles sur les normes IFC. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
       <source>Warning, this may take a large amount of time!</source>
-      <translation type="unfinished">Warning, this may take a large amount of time!</translation>
+      <translation>Attention, cela peut prendre beaucoup de temps !</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="33"/>
       <source>Run All Tests</source>
-      <translation type="unfinished">Run All Tests</translation>
+      <translation>Exécuter tous les tests</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
       <source>IFC Export</source>
-      <translation type="unfinished">IFC Export</translation>
+      <translation>Exporter des IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled. This test will check if IFC4 support is available in the installed version of IfcOpenShell. If not, FreeCAD will only export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled. This test will check if IFC4 support is available in the installed version of IfcOpenShell. If not, FreeCAD will only export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;L'exportation IFC dans FreeCAD est effectuée par une bibliothèque tierce open source appelée IfcOpenShell. Pour pouvoir exporter vers la nouvelle norme IFC4, IfcOpenShell doit avoir été compilé avec la prise en charge IFC4 activée. Ce test vérifie si la prise en charge d'IFC4 est disponible dans la version installée d'IfcOpenShell. Si ce n'est pas le cas, FreeCAD n'exportera que des fichiers IFC dans l'ancienne norme IFC2x3. Notez que certaines applications ont encore une prise en charge incomplète ou inexistante d'IFC4, donc dans certains cas, IFC2x3 peut encore mieux fonctionner.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="102"/>
       <source>Project Structure</source>
-      <translation type="unfinished">Project Structure</translation>
+      <translation>Structure du projet</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey) found that are not inside a Building. However, it is best to manually create that building, to have more control over its name and properties. This test is here to help find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey) found that are not inside a Building. However, it is best to manually create that building, to have more control over its name and properties. This test is here to help find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tous les éléments IfcBuildingStorey (niveaux) doivent se trouver à l'intérieur d'un élément IfcBuilding. Il s'agit d'une exigence obligatoire de la norme IFC. Lors de l'exportation du modèle FreeCAD en IFC, un IfcBuilding par défaut sera créé pour tous les objets de niveau (objets BuildingPart dont le rôle IFC est défini comme Building Storey) qui ne se trouvent pas à l'intérieur d'un bâtiment. Cependant, il est préférable de créer manuellement ce bâtiment afin d'avoir plus de contrôle sur son nom et ses propriétés. Ce test permet de trouver ces niveaux sans les bâtiments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose the model) are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best to check that all elements are correctly located inside a level to have more control over it. This test is here to help find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose the model) are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best to check that all elements are correctly located inside a level to have more control over it. This test is here to help find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tous les éléments dérivés de IfcProduct (c'est-à-dire tous les éléments BIM qui composent le modèle) doivent se trouver à l'intérieur d'un élément IfcBuildingStorey (niveau). Il s'agit d'une exigence obligatoire de la norme IFC. Lors de l'exportation du modèle FreeCAD en IFC, un IfcBuildingStorey par défaut sera créé pour tous les objets BIM trouvés qui ne se trouvent pas déjà à l'intérieur d'un tel élément. Cependant, il est préférable de vérifier que tous les éléments sont correctement placés dans un niveau afin d'avoir plus de contrôle sur celui-ci. Ce test permet de trouver les objets BIM qui n'ont pas de niveau.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="148"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best to manually create that site to have more control over its name and properties. This test is here to help find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best to manually create that site to have more control over its name and properties. This test is here to help find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tous les éléments IfcBuilding doivent se trouver à l'intérieur d'un élément IfcSite. Il s'agit d'une exigence obligatoire de la norme IFC. Lors de l'exportation du modèle FreeCAD en IFC, un IfcSite par défaut sera créé pour tous les objets Building trouvés qui ne se trouvent pas à l'intérieur d'un Site. Cependant, il est préférable de créer manuellement ce site afin d'avoir plus de contrôle sur son nom et ses propriétés. Ce test est là pour aider à trouver ces bâtiments sans les sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La norme IFC exige au moins un site, un bâtiment et un niveau ou un étage par projet. Ce test permet de s'assurer qu'au moins un objet de chacun de ces trois types existe dans le modèle. &lt;/p&gt;&lt;p&gt;Notez que, comme il s'agit d'une exigence obligatoire, FreeCAD ajoutera automatiquement un site par défaut, un bâtiment par défaut et/ou un étage de bâtiment par défaut si l'un d'entre eux est manquant. Ainsi, même si ce test n'est pas réussi, le fichier IFC exporté répondra aux exigences. &lt;/p&gt;&lt;p&gt;Cependant, il est toujours préférable de créer manuellement ces projets afin d'avoir plus de contrôle sur les noms et les propriétés.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bien qu'il ne soit pas obligatoire que les objets IFC aient une géométrie parfaitement propre et solide, il est préférable qu'ils le soient. Cela réduira les risques de problèmes avec d'autres applications. Dans la réalité, tous les objets ont des formes solides.&lt;/p&gt;&lt;p&gt;FreeCAD dispose de nombreux outils pour vérifier la qualité de la géométrie, et la plupart des objets paramétriques, y compris les objets BIM, avertissent généralement l'utilisateur si leur géométrie devient imprécise ou non solide à un moment donné. Ce test permet de valider la solidité de la géométrie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as it may be desirable for some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as it may be desirable for some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Le format IFC fournit un type défini pour la plupart des objets qui composent un bâtiment, par exemple les murs, les colonnes, les portes ou les éviers. Mais il prend également en charge les objets non définis, auxquels est attribué le type générique BuildingElementProxy. Ce test vérifie que tous les objets ont un type défini.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Notez que l'échec de ce test n'est pas nécessairement mauvais, car il peut être souhaitable que certains objets n'aient pas de type défini. Dans certains cas, cela peut même donner de meilleurs résultats, car certaines applications comme Revit peuvent ajouter des contraintes ou des transformations supplémentaires indésirables à certains types connus tels que les éléments structurels (poutres ou colonnes). Les exporter en tant que BuildingElementProxies permettra d'éviter cela.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even a custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even a custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les systèmes de classification, tels que UniClass ou MasterFormat, voire un système personnalisé, constituent dans certains cas un élément important d'un projet de construction. Ce test permettra de s'assurer que tous les objets et matériaux BIM présents dans le modèle ont bien leur propriété de code standard correctement renseignée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="273"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. For example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of the IFC file consequently. It is recommended to add standard property sets only if they are in use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. For example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of the IFC file consequently. It is recommended to add standard property sets only if they are in use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La norme IFC propose des ensembles de propriétés standard prédéfinis pour de nombreux types d'objets. Par exemple, l'ensemble de propriétés Pset_WallCommon contient les propriétés que la norme IFC estime que tous les murs devraient posséder. Ce test vérifie que tous les objets BIM possèdent le bon ensemble de propriétés, s'il est disponible.&lt;/p&gt;&lt;p&gt;Notez qu'il ne s'agit en aucun cas d'une exigence formelle et que cela augmentera la taille du fichier IFC. Il est recommandé d'ajouter des ensembles de propriétés standard uniquement s'ils sont utilisés.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="286"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that do not process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that do not process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les objets IFC ont une représentation géométrique qui définit la forme de l'objet, mais peuvent également avoir certaines de leurs dimensions, telles que la hauteur, la largeur ou la surface, explicitement indiquées. Cela est très utile pour les applications BIM qui ne traitent pas la géométrie, telles que les tableurs. Ces applications sont toujours en mesure d'obtenir et d'estimer des quantités à partir d'objets IFC sans avoir besoin d'analyser la géométrie.&lt;/p&gt;&lt;p&gt;Cela peut également être source d'erreurs (voire de fraudes), car rien ne garantit que ces dimensions explicitement indiquées correspondent à ce qui se trouve à l'intérieur de la géométrie.&lt;/p&gt;&lt;p&gt;Ce test permet de trouver tout objet BIM dont les propriétés dimensionnelles sont disponibles, telles que la largeur ou la hauteur, par exemple les murs et les structures, mais ces propriétés ne sont pas marquées pour être explicitement exportées vers IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="299"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to the model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too), but its surface style will take the same name and properties as the material, thus giving more consistency to the file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to the model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too), but its surface style will take the same name and properties as the material, thus giving more consistency to the file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bien qu'il ne soit pas obligatoire de définir un matériau pour les objets IFC, dans la réalité, il s'agit d'une couche d'informations importante à ajouter au modèle. Ce test permet de détecter les objets BIM pour lesquels aucun matériau n'a été défini.&lt;/p&gt;&lt;p&gt;Si un objet BIM est exporté sans matériau, un IfcSurfaceStyle lui sera néanmoins attribué, qui sera créé à partir de la couleur de l'objet. Certaines applications BIM ne tiennent pas compte des matériaux et ne considèrent que le style de surface d'un objet. Aucun IfcMaterial ne sera attribué à cet objet.&lt;/p&gt;&lt;p&gt;Si un objet BIM a un matériau défini, un style de surface sera tout de même créé (un IfcMaterial également), mais son style de surface prendra le même nom et les mêmes propriétés que le matériau, ce qui rendra le fichier plus cohérent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="302"/>
@@ -2122,12 +2158,12 @@ Ce test permet de trouver tout objet qui ne peut pas être exporté en IFC en ta
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les murs, colonnes et poutres dans FreeCAD peuvent être construits de nombreuses façons différentes, mais certaines applications BIM plus simples peuvent rencontrer des difficultés avec les murs qui ne sont pas du type le plus simple. C'est-à-dire un mur simple et droit (qui correspond au type IfcWallStandardCase) ou des poutres et des colonnes qui ne sont pas basées sur une extrusion droite d'un profil plat (BeamStandardCase, ColumnStandardCase).&lt;/p&gt;&lt;p&gt;Ce test permettra de trouver tout mur qui ne correspond pas à un cas standard. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remarque&lt;/span&gt; : pour l'instant, les objets BIM qui répondent aux exigences d'un cas standard sont toujours exportés sous forme d'IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lors de l'exportation d'un modèle au format IFC, tous les objets BIM qui sont une extrusion d'un profil rectangulaire utiliseront une entité IfcRectangleProfileDef comme profil d'extrusion. Cependant, Revit ne les importera pas correctement. Si vous utilisez le fichier IFC dans Revit, il est recommandé de désactiver ce comportement en cochant l'option dans le menu &lt;span style=" font-weight:600;"&gt;Édition → Préférences → BIM → IFC natifs → Désactiver IfcRectangularProfileDef&lt;/span&gt;. &lt;/p&gt;&lt;p&gt;Lorsque cette option est cochée, tous les profils d'extrusion seront exportés en tant qu'entités génériques IfcArbitraryProfileDef, qu'ils soient rectangulaires ou non, qui contiendront un peu moins d'informations, mais s'ouvriront correctement dans Revit.</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="378"/>
@@ -2158,12 +2194,12 @@ Ce test permet de trouver tout objet qui ne peut pas être exporté en IFC en ta
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
       <source>Drag items to reorder them</source>
-      <translation type="unfinished">Drag items to reorder them</translation>
+      <translation>Faites glisser les éléments pour les réorganiser</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="37"/>
       <source>Order Alphabetically</source>
-      <translation type="unfinished">Order Alphabetically</translation>
+      <translation>Trier par ordre alphabétique</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="14"/>
@@ -2180,24 +2216,24 @@ p, li { white-space: pre-wrap; }
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this is the first time viewing the tutorial, this can take a while. Subsequent runs will complete more quickly.&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Fira Sans'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Loading tutorial contents from the FreeCAD wiki. Please wait…&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Chargement du contenu du tutoriel depuis le wiki FreeCAD. Veuillez patienter…&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this is the first time viewing the tutorial, this can take a while. Subsequent runs will complete more quickly.&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Si c'est la première fois que vous visionnez le tutoriel, cela peut prendre un certain temps. Les utilisations suivantes seront plus rapides.&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="40"/>
       <source>Tasks to complete</source>
-      <translation type="unfinished">Tasks to complete</translation>
+      <translation>Tâches à terminer </translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="49"/>
       <source>Goal1</source>
-      <translation>Objectif1</translation>
+      <translation>Objectif 1</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="59"/>
@@ -2208,7 +2244,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="69"/>
       <source>Goal2</source>
-      <translation>Objectif2</translation>
+      <translation>Objectif 2</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="90"/>
@@ -2265,22 +2301,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="20"/>
       <source>This screen lists all the windows of the current document. They can modified individually or together</source>
-      <translation type="unfinished">This screen lists all the windows of the current document. They can modified individually or together</translation>
+      <translation>Cet affichage répertorie toutes les fenêtres du document en cours. Elles peuvent être modifiées individuellement ou ensemble.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="32"/>
       <source>Group by</source>
-      <translation type="unfinished">Group by</translation>
+      <translation>Grouper par</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
       <source>Total number of doors</source>
-      <translation type="unfinished">Total number of doors</translation>
+      <translation>Nombre total de portes</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="104"/>
       <source>Total number of windows</source>
-      <translation type="unfinished">Total number of windows</translation>
+      <translation>Nombre total de fenêtres</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="111"/>
@@ -2327,8 +2363,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation>La manière dont le fichier IFC sera initialement importé : un seul objet,
-une seule structure de projet ou tous les objets séparément.</translation>
+      <translation>La manière dont le fichier IFC sera initialement importé : un seul objet, une seule structure de projet ou tous les objets séparément.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
@@ -2358,7 +2393,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation>Charger uniquement la représentation 3D, pas de forme (par défaut)</translation>
+      <translation>Charge uniquement la représentation 3D, pas de forme (par défaut).</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
@@ -2368,7 +2403,8 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
       <source>The type of object created at import. Coin only is much faster, but does not provide the full shape information. Convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Coin only is much faster, but does not provide the full shape information. Convert between the two anytime by right-clicking the object tree</translation>
+      <translation>Type d'objet créé lors de l'importation. Coin3D est beaucoup plus rapide, mais ne fournit pas toutes les informations relatives à la
+forme. Il est possible de convertir à tout moment d'un type à l'autre en cliquant avec le bouton droit sur l'arborescence des objets.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
@@ -2398,7 +2434,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
       <source>Load all types automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all types automatically when opening an IFC file</translation>
+      <translation>Charge tous les types automatiquement lors de l'ouverture d'un fichier IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
@@ -2428,47 +2464,47 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted</source>
-      <translation type="unfinished">When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted</translation>
+      <translation>Lorsque cette option est activée, la version d'origine des objets déposés dans l'arborescence d'un projet IFC n'est pas supprimée.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="246"/>
       <source>New Document</source>
-      <translation type="unfinished">New Document</translation>
+      <translation>Nouveau document</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="284"/>
       <source>New Project</source>
-      <translation type="unfinished">New Project</translation>
+      <translation>Nouveau projet</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="306"/>
       <source>Enables asking the above question every time a project is created</source>
-      <translation type="unfinished">Enables asking the above question every time a project is created</translation>
+      <translation>Permet de poser la question ci-dessus chaque fois qu'un projet est créé.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="328"/>
       <source>New Type</source>
-      <translation type="unfinished">New Type</translation>
+      <translation>Nouveau type</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="334"/>
       <source>When enabled, converting objects to IFC types will always keep the original object</source>
-      <translation type="unfinished">When enabled, converting objects to IFC types will always keep the original object</translation>
+      <translation>Lorsque cette option est activée, la conversion d'objets en types IFC conservera toujours l'objet d'origine.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="337"/>
       <source>Always keep original object when converting to type</source>
-      <translation type="unfinished">Always keep original object when converting to type</translation>
+      <translation>Toujours garder l'objet d'origine lors de la conversion au type</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="350"/>
       <source>When enabled, a dialog will be shown each time when converting objects to IFC types</source>
-      <translation type="unfinished">When enabled, a dialog will be shown each time when converting objects to IFC types</translation>
+      <translation>Lorsque cette option est activée, une boîte de dialogue s'affiche à chaque conversion d'objets en types IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="353"/>
       <source>Show dialog when converting to type</source>
-      <translation type="unfinished">Show dialog when converting to type</translation>
+      <translation>Afficher la boîte de dialogue lors de la conversion au type</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="186"/>
@@ -2534,7 +2570,7 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation>Appliquer le style de construction de Draft aux sous-composants</translation>
+      <translation>Appliquer le style de construction de l'atelier Draft aux sous-composants</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
@@ -2554,33 +2590,33 @@ une seule structure de projet ou tous les objets séparément.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="112"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>Définir la propriété "Move with host" à Vrai par défaut</translation>
+      <translation>Définir la propriété « Move with host » à True par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="128"/>
       <source>Set "Move base" property to True by default</source>
-      <translation>Définir la propriété "Move base" à True par défaut</translation>
+      <translation>Définir la propriété « Move base » à True par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation>Si cette option est cochée, lorsqu'un objet Arch a un matériau, l'objet prendra la couleur de ce matériau.
-Cette option peut être modifiée pour chaque objet.</translation>
+      <translation>Si cette option est cochée, lorsqu'un objet Arch a un matériau, l'objet prendra la couleur de ce matériau. Cette option peut être modifiée
+pour chaque objet.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="14"/>
       <source>General Settings</source>
-      <translation type="unfinished">General Settings</translation>
+      <translation>Général</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="20"/>
       <source>Object Creation</source>
-      <translation type="unfinished">Object Creation</translation>
+      <translation>Création d'objets</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</source>
-      <translation type="unfinished">When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</translation>
+      <translation>Lorsque deux murs similaires sont connectés, leurs esquisses sous-jacentes sont fusionnées et les murs sont combinés en un seul objet.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
@@ -2590,12 +2626,14 @@ Cette option peut être modifiée pour chaque objet.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes subtraction or addition of an Arch object, it will receive the Draft construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes subtraction or addition of an Arch object, it will receive the Draft construction color.</translation>
+      <translation>Si cette option est cochée, lorsqu'un objet devient une soustraction ou une addition d'un objet Arch, il recevra la couleur de construction
+de l'atelier Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they will not move when their host object is moved</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they will not move when their host object is moved</translation>
+      <translation>Par défaut, la propriété « Move with host » des nouveaux objets est définie sur False, ce qui signifie qu'ils ne se déplaceront pas lorsque
+leur objet hôte sera déplacé.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="215"/>
@@ -2641,8 +2679,8 @@ le résultat pourrait encore contenir des faces triangulées.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="276"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation>Si cette option est cochée, les groupes de faces planes seront aplatis de force.
-Cela peut entraîner des erreurs de continuité et des résultats non solides.</translation>
+      <translation>Si cette option est cochée, les groupes de faces planes seront aplatis de force. Cela peut entraîner des erreurs de continuité et des
+résultats non solides.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
@@ -2667,8 +2705,7 @@ Cela peut entraîner des erreurs de continuité et des résultats non solides.</
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Si cette option est cochée, les trous dans les faces seront effectués
-par soustraction plutôt qu'en utilisant l'orientation les arêtes.</translation>
+      <translation>Si cette option est cochée, les trous dans les faces seront effectués par soustraction plutôt qu'en utilisant l'orientation les arêtes.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="298"/>
@@ -2698,7 +2735,7 @@ par soustraction plutôt qu'en utilisant l'orientation les arêtes.</translation
     <message>
       <location filename="../ui/preferences-arch.ui" line="400"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
-      <translation>Spécifie combien de fois l'épaisseur des lignes de la vue doit être appliquée aux lignes de coupe</translation>
+      <translation>Spécifie combien de fois l'épaisseur des lignes de la vue doit être appliquée aux lignes de coupe.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="429"/>
@@ -2731,7 +2768,8 @@ to projections of hidden objects.</source>
       <source>If this is selected, the "Open BIM Server in browser"
 button will open the BIM Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation>Si cette option est sélectionnée, le bouton "Ouvrir dans un navigateur" ouvrira l'interface du serveur BIM dans un navigateur externe au lieu de l'atelier web de FreeCAD.</translation>
+      <translation>Si cette option est sélectionnée, le bouton « Ouvrir dans un navigateur » ouvrira l'interface du serveur BIM dans un navigateur externe au
+lieu de l'atelier web de FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="521"/>
@@ -2741,14 +2779,13 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>2D Rendering</source>
-      <translation type="unfinished">2D Rendering</translation>
+      <translation>Rendu 2D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by objects that have
-a footprint display mode</translation>
+      <translation>Facteur d'échelle pour les motifs utilisés par les objets qui ont un mode d'affichage pour la surface de base</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
@@ -2768,8 +2805,8 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="571"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>Si cette option est cochée, le texte qui est placé dans le presse-papiers inclura l’unité.
-Dans le cas contraire, ce sera un simple nombre exprimé en unité interne (millimètres).</translation>
+      <translation>Si cette option est cochée, le texte qui est placé dans le presse-papiers inclura l’unité. Dans le cas contraire, ce sera un simple nombre 
+exprimé en unité interne (millimètres).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="574"/>
@@ -2895,8 +2932,8 @@ Dans le cas contraire, ce sera un simple nombre exprimé en unité interne (mill
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="525"/>
       <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation>Lorsque l'on clique sur une vue ou un niveau dans le gestionnaire de vues BIM, l'arrière-plan prend
-une couleur unie si l'on active une vue 2D, et une couleur dégradée si l'on active un niveau.</translation>
+      <translation>En cliquant sur une vue ou un niveau dans le gestionnaire de vues BIM, l'arrière-plan passe à une couleur unie lors de l'activation d'une
+vue 2D, et à une couleur dégradée lors de l'activation d'un niveau.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
@@ -2937,22 +2974,22 @@ une couleur unie si l'on active une vue 2D, et une couleur dégradée si l'on ac
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D Import</source>
-      <translation type="unfinished">SH3D Import</translation>
+      <translation>Importer des SH3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="48"/>
       <source>DEBUG: keep the construction geometries in the active document. Useful when debugging a failed import</source>
-      <translation type="unfinished">DEBUG: keep the construction geometries in the active document. Useful when debugging a failed import</translation>
+      <translation>DÉBOGAGE : garder les géométries de construction dans le document actif. Utile lors du débogage d'une importation ayant échoué.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="51"/>
       <source>Debug geometry</source>
-      <translation type="unfinished">Debug geometry</translation>
+      <translation>Déboguer la géométrie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="73"/>
       <source>Merge imported element with existing FreeCAD object</source>
-      <translation type="unfinished">Merge imported element with existing FreeCAD object</translation>
+      <translation>Fusionne les éléments importés avec un objet FreeCAD existant.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
@@ -3018,88 +3055,88 @@ une couleur unie si l'on active une vue 2D, et une couleur dégradée si l'on ac
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="193"/>
       <source>Create a default Render project with the newly created site (requires the Render workbench to be installed)</source>
-      <translation type="unfinished">Create a default Render project with the newly created site (requires the Render workbench to be installed)</translation>
+      <translation>Crée un projet Render par défaut avec le site nouvellement créé (nécessite l'installation de l'atelier Render).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="196"/>
       <source>Create render project</source>
-      <translation type="unfinished">Create render project</translation>
+      <translation>Créer un projet Render </translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="212"/>
       <source>Default floor color</source>
-      <translation type="unfinished">Default floor color</translation>
+      <translation>Couleur des planchers par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="228"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="268"/>
       <source>This color might be used when a room does not define its own color</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color</translation>
+      <translation>Cette couleur peut être utilisée lorsqu'une pièce ne définit pas sa propre couleur.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="252"/>
       <source>Default ceiling color</source>
-      <translation type="unfinished">Default ceiling color</translation>
+      <translation>Couleur des plafonds par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="290"/>
       <source>Create a default IFC project with the newly created site</source>
-      <translation type="unfinished">Create a default IFC project with the newly created site</translation>
+      <translation>Crée un projet IFC par défaut pour les sites créés.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="293"/>
       <source>Create IFC project</source>
-      <translation type="unfinished">Create IFC project</translation>
+      <translation>Créer un projet IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="306"/>
       <source>Create a mesh to represent the default ground level</source>
-      <translation type="unfinished">Create a mesh to represent the default ground level</translation>
+      <translation>Crée un maillage pour représenter le niveau du sol par défaut.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="309"/>
       <source>Create ground level mesh</source>
-      <translation type="unfinished">Create ground level mesh</translation>
+      <translation>Créer un maillage pour les niveaux de sol</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="327"/>
       <source>Default ground color</source>
-      <translation type="unfinished">Default ground color</translation>
+      <translation>Couleur du sol par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="343"/>
       <source>This color might be used when the environment does not define a color for the ground</source>
-      <translation type="unfinished">This color might be used when the environment does not define a color for the ground</translation>
+      <translation>Cette couleur peut être utilisée lorsque l'environnement ne définit pas de couleur pour le sol.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="367"/>
       <source>Default sky color</source>
-      <translation type="unfinished">Default sky color</translation>
+      <translation>Couleur du ciel par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="383"/>
       <source>This color might be used when the environment does not define a color for the sky</source>
-      <translation type="unfinished">This color might be used when the environment does not define a color for the sky</translation>
+      <translation>Cette couleur peut être utilisée lorsque l'environnement ne définit pas de couleur pour le ciel.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="405"/>
       <source>Create face binders and baseboards for walls, and floors and ceilings for rooms</source>
-      <translation type="unfinished">Create face binders and baseboards for walls, and floors and ceilings for rooms</translation>
+      <translation>Crée des corniches et des plinthes pour les murs, ainsi que des sols et des plafonds pour les pièces.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="408"/>
       <source>Decorate surfaces</source>
-      <translation type="unfinished">Decorate surfaces</translation>
+      <translation>Décorer les surfaces</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="426"/>
       <source>Default furniture color</source>
-      <translation type="unfinished">Default furniture color</translation>
+      <translation>Couleur des meubles par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="442"/>
       <source>This color is used when a furniture does not define its own color</source>
-      <translation type="unfinished">This color is used when a furniture does not define its own color</translation>
+      <translation>Cette couleur est utilisée lorsqu'un meuble ne définit pas sa propre couleur.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="76"/>
@@ -3110,7 +3147,7 @@ une couleur unie si l'on active une vue 2D, et une couleur dégradée si l'on ac
       <location filename="../ui/preferences-ifc.ui" line="45"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation>Afficher les messages de débogage lors l'importation/exportation des fichiers IFC dans la vue rapport</translation>
+      <translation>Affiche les messages de débogage lors l'importation/exportation des fichiers IFC dans la vue rapport.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="49"/>
@@ -3121,8 +3158,7 @@ of IFC files in the Report view panel</source>
       <location filename="../ui/preferences-ifc.ui" line="62"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation>Les clones sont utilisés lorsque des objets partagent la même géométrie.
-Un objet est l'objet de référence, les autres sont des clones.</translation>
+      <translation>Les clones sont utilisés lorsque des objets partagent la même géométrie. Un objet est l'objet de référence, les autres sont des clones.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="66"/>
@@ -3143,7 +3179,7 @@ Un objet est l'objet de référence, les autres sont des clones.</translation>
       <location filename="../ui/preferences-ifc.ui" line="163"/>
       <location filename="../ui/preferences-ifc.ui" line="212"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation>Spécifier quel type d'objets seront créés dans FreeCAD</translation>
+      <translation>Spécifie quel type d'objets seront créés dans FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="173"/>
@@ -3170,7 +3206,7 @@ Un objet est l'objet de référence, les autres sont des clones.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
       <source>IFC Import</source>
-      <translation type="unfinished">IFC Import</translation>
+      <translation>Importer des IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="90"/>
@@ -3183,14 +3219,11 @@ for example, 3 cores for a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
 if crashes occur when multiple cores are set.</source>
-      <translation type="unfinished">EXPERIMENTAL
-The number of cores to use in multicore mode.
-Keep 0 to disable multicore mode.
-The maximum value should be the number of cores in the CPU minus 1,
-for example, 3 cores for a 4-core CPU.
-
-Set it to 1 to use multicore mode in single-core mode; this is safer
-if crashes occur when multiple cores are set.</translation>
+      <translation>EXPÉRIMENTAL : nombre de cœurs à utiliser en mode multicœur :
+- Garder 0 pour désactiver le mode multicœur.
+- La valeur maximale doit être le nombre de cœurs du processeur moins 1. Par exemple, 3 cœurs pour un processeur à 4 cœurs.
+- Définir cette valeur à 1 pour utiliser le mode multicœur en mode monocœur. Cela est plus sûr si des plantages se produisent lorsque
+plusieurs cœurs sont définis.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
@@ -3201,12 +3234,12 @@ if crashes occur when multiple cores are set.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="193"/>
       <source>Do not import BIM objects</source>
-      <translation type="unfinished">Do not import BIM objects</translation>
+      <translation>Ne pas importer d'objets BIM</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="205"/>
       <source>Import structure IFC objects as</source>
-      <translation type="unfinished">Import structure IFC objects as</translation>
+      <translation>Importer des objets IFC de structure en tant que</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="232"/>
@@ -3227,8 +3260,7 @@ if crashes occur when multiple cores are set.</translation>
       <location filename="../ui/preferences-ifc.ui" line="256"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
-      <translation>Seuls les sous-types de l'élément spécifié seront importés.
-Garder l'élément IfcProduct pour importer tous les éléments de construction.</translation>
+      <translation>Seuls les sous-types de l'élément spécifié seront importés. Garde l'élément IfcProduct pour importer tous les éléments de construction.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="275"/>
@@ -3245,8 +3277,7 @@ will already have their openings subtracted</source>
       <location filename="../ui/preferences-ifc.ui" line="292"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation>L'outil d'importation essayera de détecter les extrusions.
-Remarquez que cela pourra ralentir le processus.</translation>
+      <translation>L'outil d'importation essayera de détecter les extrusions. Remarquer que cela pourra ralentir le processus.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="296"/>
@@ -3287,7 +3318,7 @@ they will be treated as one.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="358"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
-      <translation>Chaque objet aura ses propriétés IFC stockées dans une feuille de calcul</translation>
+      <translation>Chaque objet aura ses propriétés IFC stockées dans une feuille de calcul.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="361"/>
@@ -3308,7 +3339,7 @@ Si cette option est cochée, toutes les géométries seront importées, quelle q
     <message>
       <location filename="../ui/preferences-ifc.ui" line="392"/>
       <source>Exclude list</source>
-      <translation type="unfinished">Exclude list</translation>
+      <translation>Liste d'exclusion</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="399"/>
@@ -3319,8 +3350,7 @@ Si cette option est cochée, toutes les géométries seront importées, quelle q
       <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation>Ajuster la vue lors de l'importation sur les objets importés
-Cela ralentira l'importation mais il sera possible d'observer l'importation.</translation>
+      <translation>Ajuster la vue lors de l'importation sur les objets importés. Cela ralentira l'importation mais il sera possible d'observer l'importation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
@@ -3543,7 +3573,8 @@ Si cette option est cochée, un calcul supplémentaire sera effectué pour joind
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation>Lors de l'exportation d'objets sans identifiant unique, l'identifiant unique généré sera enregistré à l'intérieur de l'objet FreeCAD pour être réutilisé lors de la prochaine exportation de cet objet. Cela permet de réduire les différences entre les versions des fichiers.</translation>
+      <translation>Lors de l'exportation d'objets sans identifiant unique, l'identifiant unique généré sera enregistré à l'intérieur de l'objet FreeCAD pour être
+réutilisé lors de la prochaine exportation de cet objet. Cela permet de réduire les différences entre les versions des fichiers.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
@@ -3569,8 +3600,8 @@ is exported. This leads to smaller differences between file versions.</source>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation>Toutes les propriétés des objets de FreeCAD seront enregistrées dans les objets exportés,
-permettant de recréer un modèle paramétrique complet lors de la réimportation.</translation>
+      <translation>Toutes les propriétés des objets de FreeCAD seront enregistrées dans les objets exportés, permettant de recréer un modèle
+paramétrique complet lors de la réimportation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
@@ -3591,7 +3622,9 @@ permettant de recréer un modèle paramétrique complet lors de la réimportatio
       <location filename="../ui/preferences-ifc-export.ui" line="277"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation>Certains types d'IFC comme IfcWall ou IfcBeam ont des versions standard spéciales comme IfcWallStandardCase ou IfcBeamStandardCase. Si cette option est activée, FreeCAD exportera automatiquement ces objets en tant que des cas standards lorsque les conditions nécessaires sont remplies.</translation>
+      <translation>Certains types d'IFC comme IfcWall ou IfcBeam ont des versions standard spéciales comme IfcWallStandardCase ou IfcBeamStandardCase.
+Si cette option est activée, FreeCAD exportera automatiquement ces objets en tant que des cas standards lorsque les conditions
+nécessaires sont remplies.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="330"/>
@@ -3602,25 +3635,25 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation type="unfinished">Desired units in the exported IFC file.
+      <translation>Unités souhaitées dans le fichier IFC exporté.
 
-Note that IFC files are ALWAYS written in metric units; imperial units
-are only a conversion factor applied on top of them.
-However, some BIM applications will use this factor to choose which
-unit to work with when opening the file.</translation>
+Remarque : les fichiers IFC sont TOUJOURS écrits en unités métriques. Les unités impériales ne sont qu'un facteur de conversion
+appliqué par-dessus. Cependant, certaines applications BIM utiliseront ce facteur pour choisir l'unité à utiliser lors de l'ouverture du
+fichier.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="375"/>
       <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</source>
-      <translation type="unfinished">Check also native-IFC-specific preferences under BIM -&gt; Native IFC</translation>
+      <translation>Vérifier également les préférences propres au format IFC natif par le menu : BIM → IFC natifs</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="391"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, a non-standard IFC file will be produced.</source>
-      <translation type="unfinished">If no building is found in the FreeCAD document, a default one will be added.
-Warning: The IFC standard asks for at least one building in each file. By turning this option off, a non-standard IFC file will be produced.</translation>
+      <translation>Si aucun bâtiment n'est trouvé dans le document FreeCAD, un bâtiment par défaut sera ajouté.
+Attention : la norme IFC exige qu'il y ait au moins un bâtiment dans chaque fichier. En désactivant cette option, un fichier IFC non
+conforme à la norme sera généré.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="395"/>
@@ -3640,14 +3673,14 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC Export</source>
-      <translation type="unfinished">IFC Export</translation>
+      <translation>Exporter des IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General Options</source>
-      <translation type="unfinished">General Options</translation>
+      <translation>Options générales</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -3656,22 +3689,22 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
 - Standard model: solid objects
 - Structural analysis: wireframe model for structural calculations
 - Standard + structural: both types of models</source>
-      <translation type="unfinished">The type of objects to export:
-- Standard model: solid objects
-- Structural analysis: wireframe model for structural calculations
-- Standard + structural: both types of models</translation>
+      <translation>Type d'objets à exporter :
+- Modèle standard : objets solides
+- Analyse structurelle : modèle filaire pour les calculs structurels
+- Standard + structurel : les deux types de modèles</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
       <source>Some IFC viewers do not like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
-      <translation type="unfinished">Some IFC viewers do not like objects exported as extrusions.
-Use this to force all objects to be exported as BREP geometry.</translation>
+      <translation>Certains afficheurs d'IFC n'apprécient pas les objets exportés sous forme d'extrusions. Utiliser cette option pour forcer l'exportation de
+tous les objets sous forme de géométrie B-Rep.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="115"/>
       <source>Force export as BREP</source>
-      <translation type="unfinished">Force export as BREP</translation>
+      <translation>Forcer l'exportation en tant que B-Rep</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="183"/>
@@ -3679,17 +3712,16 @@ Use this to force all objects to be exported as BREP geometry.</translation>
 Its serializer functionality allows giving it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</source>
-      <translation type="unfinished">IFCOpenShell is a library that enables importing IFC files.
-Its serializer functionality allows giving it an OCC shape and it will
-produce adequate IFC geometry: NURBS, faceted, or anything else.
-Note: The serializer is still an experimental feature!</translation>
+      <translation>IFCOpenShell est une bibliothèque qui permet d'importer des fichiers IFC. Sa fonction de sérialisation permet de lui donner une forme
+OCC et elle produira une géométrie IFC adéquate : NURBS, facettée ou autre.
+Remarque : la sérialisation est encore une fonction expérimentale !</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size considerably, but will make it less easily readable.</source>
-      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size considerably, but will make it less easily readable.</translation>
+      <translation>Dans la mesure du possible, les entités similaires ne seront utilisées qu'une seule fois dans le fichier. Cela peut réduire
+considérablement la taille du fichier, mais le rendra moins facile à lire.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="258"/>
@@ -3697,17 +3729,16 @@ This can reduce the file size considerably, but will make it less easily readabl
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
 If this is the case, it can disabled and then all profiles will be exported as IfcArbitraryClosedProfileDef.</source>
-      <translation type="unfinished">When possible, IFC objects that are extruded rectangles will be
-exported as IfcRectangleProfileDef.
-However, some other applications might have problems importing that entity.
-If this is the case, it can disabled and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
+      <translation>Dans la mesure du possible, les objets IFC qui sont des rectangles extrudés seront exportés sous la forme IfcRectangleProfileDef.
+Cependant, certaines autres applications peuvent rencontrer des problèmes pour importer cette entité. Si tel est le cas, cette option
+peut être désactivée et tous les profils seront alors exportés sous la forme IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="294"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation>Si aucun site n'est trouvé dans le document FreeCAD, un site par défaut sera ajouté. Un site
-n'est pas obligatoire, mais la pratique courante est d'en avoir au moins un dans le fichier.</translation>
+      <translation>Si aucun site n'est trouvé dans le document FreeCAD, un site par défaut sera ajouté. Un site n'est pas obligatoire, mais la pratique
+courante est d'en avoir au moins un dans le fichier.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="298"/>
@@ -3717,17 +3748,21 @@ n'est pas obligatoire, mais la pratique courante est d'en avoir au moins un dans
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="411"/>
       <source>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</source>
-      <translation type="unfinished">If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</translation>
+      <translation>Si cette option n'est pas cochée, les groupes standards de FreeCAD (App::DocumentObjectGroup) ne seront pas exportés en tant que
+IfcGroup ou IfcElementAssembly. Leurs enfants seront rattachés au conteneur du groupe ignoré dans la structure IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="414"/>
       <source>Export FreeCAD Groups</source>
-      <translation type="unfinished">Export FreeCAD Groups</translation>
+      <translation>Exporter les groupes FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="432"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</source>
-      <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</translation>
+      <translation>Dans FreeCAD, il est possible d'imbriquer des groupes à l'intérieur de bâtiments ou d'étages. Si cette option est désactivée, les groupes
+FreeCAD seront enregistrés en tant que IfcGroups et agrégés à la structure du bâtiment. L'agrégation d'éléments non liés au bâtiment
+tels que les IfcGroups n'est toutefois pas recommandée par les normes IFC. Il est donc également possible d'exporter ces groupes en
+tant que IfcElementAssemblies, ce qui produit un fichier conforme à la norme IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="385"/>
@@ -3738,8 +3773,8 @@ n'est pas obligatoire, mais la pratique courante est d'en avoir au moins un dans
       <location filename="../ui/preferences-ifc-export.ui" line="311"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
-      <translation>Si aucun étage de bâtiment n'est trouvé dans le document FreeCAD, un étage par défaut sera ajouté.
-Un étage n'est pas obligatoire, mais il est courant d'en avoir au moins un dans le fichier.</translation>
+      <translation>Si aucun étage de bâtiment n'est trouvé dans le document FreeCAD, un étage par défaut sera ajouté. Un étage n'est pas obligatoire,
+mais il est courant d'en avoir au moins un dans le fichier.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="315"/>
@@ -3764,7 +3799,7 @@ Un étage n'est pas obligatoire, mais il est courant d'en avoir au moins un dans
     <message>
       <location filename="../ui/preferences-webgl.ui" line="14"/>
       <source>WebGL</source>
-      <translation type="unfinished">WebGL</translation>
+      <translation>WebGL</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="32"/>
@@ -3772,25 +3807,25 @@ Un étage n'est pas obligatoire, mais il est courant d'en avoir au moins un dans
 
 The default template is located at:
 &lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </source>
-      <translation type="unfinished">A custom WebGL HTML template is used for export. Otherwise, the default template will be used.
+      <translation>Un modèle HTML WebGL personnalisé est utilisé pour l'exportation, sinon le modèle par défaut sera utilisé.
 
-The default template is located at:
-&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
+Le modèle par défaut se trouve à l'emplacement suivant :
+&lt;Répertoire d'installation de FreeCAD&gt;/Resources/Mod/BIM/templates/webgl_export_template.html</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="38"/>
       <source>Use custom export template</source>
-      <translation type="unfinished">Use custom export template</translation>
+      <translation>Utiliser un modèle d'exportation personnalisé</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="59"/>
       <source>Path to template</source>
-      <translation type="unfinished">Path to template</translation>
+      <translation>Chemin d'accès vers un modèle</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="70"/>
       <source>The path to the custom WebGL HTML template</source>
-      <translation type="unfinished">The path to the custom WebGL HTML template</translation>
+      <translation>Le chemin d'accès vers le modèle HTML WebGL personnalisé</translation>
     </message>
   </context>
   <context>
@@ -3944,42 +3979,42 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="261"/>
       <source>Select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Sélectionner d'abord l'objet de référence, puis les arêtes à utiliser comme chemins d'extrusion</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="314"/>
       <source>Select at least an axis object</source>
-      <translation type="unfinished">Select at least an axis object</translation>
+      <translation>Sélectionner au moins un axe</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1142"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape could not be extruded along this tool object</translation>
+      <translation>Erreur : la forme de base n'a pas pu être extrudée.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1695"/>
       <source>Reset Nodes</source>
-      <translation type="unfinished">Reset Nodes</translation>
+      <translation>Réinitialiser les nœuds</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1702"/>
       <source>Edit Nodes</source>
-      <translation type="unfinished">Edit Nodes</translation>
+      <translation>Éditer les nœuds</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1708"/>
       <source>Extend Nodes</source>
-      <translation type="unfinished">Extend Nodes</translation>
+      <translation>Étendre les nœuds</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1721"/>
       <source>Connect Nodes</source>
-      <translation type="unfinished">Connect Nodes</translation>
+      <translation>Connecter les nœuds</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1732"/>
       <source>Toggle All Nodes</source>
-      <translation type="unfinished">Toggle All Nodes</translation>
+      <translation>Activer/désactiver tous les nœuds</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1749"/>
@@ -3990,7 +4025,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="1754"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
-      <translation type="unfinished">Selects object or edges to be used as a tool (extrusion path)</translation>
+      <translation>Sélectionne un objet ou des arêtes à utiliser comme un outil (chemin d'extrusion).</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1779"/>
@@ -4046,7 +4081,7 @@ The default template is located at:
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="61"/>
       <source>Select a base shape object and optionally a mesh object</source>
-      <translation type="unfinished">Select a base shape object and optionally a mesh object</translation>
+      <translation>Sélectionner un objet de forme de base et éventuellement un objet de maillage</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="81"/>
@@ -4144,7 +4179,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../bimcommands/BimRoof.py" line="93"/>
       <location filename="../../bimcommands/BimSpace.py" line="70"/>
       <source>Please select a base object</source>
-      <translation>Sélectionner un objet de base</translation>
+      <translation>Sélectionner un objet de référence</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1068"/>
@@ -4479,7 +4514,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="1725"/>
       <source>Pick Selected</source>
-      <translation type="unfinished">Pick Selected</translation>
+      <translation>Choisir la sélection</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1731"/>
@@ -5044,7 +5079,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <location filename="../../ArchPanel.py" line="563"/>
       <location filename="../../ArchStructure.py" line="2065"/>
       <source>Could not compute a shape</source>
-      <translation type="unfinished">Could not compute a shape</translation>
+      <translation>Le calcul de la forme n'a pas pu être effectué.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1398"/>
@@ -5070,7 +5105,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
       <source>Select only one base object or none</source>
-      <translation type="unfinished">Select only one base object or none</translation>
+      <translation>Sélectionner un seul objet de référence ou aucun objet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="67"/>
@@ -5132,7 +5167,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="301"/>
       <source>The base object is not a Part</source>
-      <translation>L’objet de base n’est pas une pièce</translation>
+      <translation>L’objet de référence n’est pas une pièce.</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="306"/>
@@ -5413,7 +5448,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="2035"/>
       <source>Select a base object</source>
-      <translation type="unfinished">Select a base object</translation>
+      <translation>Sélectionner un objet de référence</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2346"/>
@@ -5497,7 +5532,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="116"/>
       <source>Select a base face on a structural object</source>
-      <translation type="unfinished">Select a base face on a structural object</translation>
+      <translation>Sélectionner une face de base sur un objet de structure</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="1228"/>
@@ -5537,7 +5572,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1742"/>
       <source>Add Selected</source>
-      <translation type="unfinished">Add Selected</translation>
+      <translation>Ajouter les éléments sélectionnés</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1747"/>
@@ -5740,7 +5775,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchWall.py" line="838"/>
       <source>Error: Unable to modify the base object of this wall</source>
-      <translation>Erreur : impossible de modifier l’objet base de ce mur</translation>
+      <translation>Erreur : impossible de modifier l’objet de référence de ce mur</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1715"/>
@@ -5972,7 +6007,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="211"/>
       <source>Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Crée plusieurs structures BIM à partir d'une base sélectionnée, en utilisant chaque arête sélectionnée comme chemin d'extrusion.</translation>
     </message>
   </context>
   <context>
@@ -6254,12 +6289,12 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>If true, show the level</source>
-      <translation>Si mis à vrai, affiche le niveau</translation>
+      <translation>Si mis à vrai, affiche le niveau.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="556"/>
       <source>If true, show the unit on the level tag</source>
-      <translation>Si mis à vrai, affiche les unités dans la balise du niveau</translation>
+      <translation>Si mis à vrai, affiche les unités dans la balise du niveau.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="566"/>
@@ -6289,7 +6324,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="616"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation>Si mis à vrai et quand il sera activé, le plan de travail s'adaptera à ce niveau</translation>
+      <translation>Si mis à vrai, quand il sera activé, le plan de travail s'adaptera à ce niveau.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="627"/>
@@ -6732,7 +6767,7 @@ documentation du site pour savoir comment en obtenir un.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="231"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation>Le numéro de la face de l'objet de base utilisé pour construire le toit</translation>
+      <translation>Le numéro de la face de l'objet de référence utilisé pour construire le toit</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="241"/>
@@ -7099,7 +7134,7 @@ documentation du site pour savoir comment en obtenir un.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="265"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation>Le niveau supérieur "absolu" de la volée des marches de l'escalier conduit à</translation>
+      <translation>Le niveau « absolu » supérieur de la volée des marches de l'escalier conduit à</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="274"/>
@@ -7206,7 +7241,17 @@ documentation du site pour savoir comment en obtenir un.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="532"/>
       <source>Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Arêtes sélectionnées de l'esquisse/ArchSketch de référence, à utiliser pour créer la forme (volée) de cet escalier (au lieu d'utiliser
+toutes les arêtes de ArchSketch de référence par défaut). Les données saisies sont des numéros d'index des arêtes.
+
+Désactivé et ignoré si l'objet de référence (ArchSketch) fournit des informations sur les arêtes sélectionnées (comme l'axe des volées),
+avec la méthode getStairsBaseShapeEdgesInfo().
+
+[AMÉLIORATION par ArchSketch] L'outil graphique « Edit Stairs » est fourni dans le module complémentaire externe SketchArch pour
+permettre aux utilisateurs de (dé)sélectionner les arêtes de manière interactive.  « Tolérant au toponymage » si ArchSketch est utilisé
+dans la base (et que l'extension SketchArch est installé).
+
+Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
@@ -7695,9 +7740,15 @@ documentation du site pour savoir comment en obtenir un.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="350"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
-      <translation>Les données d'entrée sont des numéros d'index des arêtes de Base des géométries ArchSketch/Sketch. Les arêtes sélectionnées sont utilisées pour créer la forme de ce mur-rideau (au lieu d'utiliser toutes les arêtes par défaut).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Curtain Wall" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs de sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
-Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+      <translation>Les données d'entrée sont des numéros d'index des arêtes des géométries de Base de ArchSketch/Sketch. Les arêtes sélectionnées
+sont utilisées pour créer la forme de ce mur-rideau (au lieu d'utiliser toutes les arêtes par défaut).
+
+[Améliorations par l'extension ArchSketch] L'outil « Edit Curtain Wall » est fourni dans l'extension ("SketchArch") pour permettre aux
+utilisateurs de sélectionner les arêtes de manière interactive. « Tolérant au toponymage » si ArchSketch est utilisé dans Base (et si
+l'extension SketchArch est installée).
+
+Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les
+arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="85"/>
@@ -7898,7 +7949,7 @@ Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propr
     <message>
       <location filename="../../ArchComponent.py" line="222"/>
       <source>The base object this component is built upon</source>
-      <translation>L’objet de base à partir duquel ce composant est construit</translation>
+      <translation>L’objet de référence à partir duquel ce composant est construit.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="230"/>
@@ -8226,14 +8277,14 @@ Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propr
     <message>
       <location filename="../../ArchWall.py" line="282"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation>Le numéro de la surface de l’objet de base utilisé pour construire ce mur</translation>
+      <translation>Le numéro de la surface de l’objet de référence utilisé pour construire ce mur</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
       <translation>La largeur de ce mur.
 Non utilisé si ce mur est basé sur une face.
-Désactivé et ignoré si l'objet de base (ArchSketch) fournit l'information.</translation>
+Désactivé et ignoré si l'objet de référence (ArchSketch) fournit l'information.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="181"/>
@@ -8243,33 +8294,57 @@ Désactivé et ignoré si l'objet de base (ArchSketch) fournit l'information.</t
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Cet attribut remplace l'attribut Width pour définir la largeur de chaque segment de mur.  Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les largeurs, avec la méthode getWidths() (Si une valeur est nulle, la valeur de "Width" sera suivie).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs  de définir les valeurs de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
-Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+      <translation>Cet attribut remplace l'attribut Width pour définir la largeur de chaque segment de mur.
+
+Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les largeurs, avec la méthode getWidths() (Si une valeur
+est nulle, la valeur de « Width » sera suivie).
+
+[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension (« SketchArch ») pour permettre
+aux utilisateurs  de définir les valeurs de manière interactive. « Tolérant au toponymage » si ArchSketch est utilisé dans Base (et si
+l'extension SketchArch est installée).
+
+Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les
+arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Cet attribut remplace l'attribut Align pour définir l'alignement de chaque segment de mur. Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur l'alignement avec la méthode getAligns() (si une valeur n'est pas "Left, Right, Center", la valeur de "Align" sera suivie).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs  de définir les valeurs de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
-Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+      <translation>Cet attribut remplace l'attribut Align pour définir l'alignement de chaque segment de mur.
+
+Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur l'alignement avec la méthode getAligns() (si une valeur
+n'est pas « Left, Right, Center », la valeur de « Align » sera suivie).
+
+[Améliorations par l'extension ArchSketch] L'outil « Edit Wall Segment Width » est fourni dans l'extension (« SketchArch ») pour
+permettre aux utilisateurs  de définir les valeurs de manière interactive. « Tolérant au toponymage » si ArchSketch est utilisé dans Base
+(et si l'extension SketchArch est installée).
+
+Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="227"/>
       <source>This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </source>
-      <translation>Cet attribut remplace l'attribut Offset pour définir le décalage de chaque segment de mur. Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les décalages, avec la méthode getOffsets() (Si une valeur est nulle, la valeur de "Offset" sera suivie).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Offset" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs de sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
-Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées. </translation>
+      <translation>Cet attribut remplace l'attribut Offset pour définir le décalage de chaque segment de mur.
+
+Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les décalages, avec la méthode getOffsets() (Si une
+valeur est nulle, la valeur « Offset » sera suivie).
+
+[Améliorations par l'extension ArchSketch] L'outil « Edit Wall Segment Offset » est fourni dans l'extension (« Offset ») pour permettre
+aux utilisateurs de sélectionner les arêtes de manière interactive. « Tolérant au toponymage » si ArchSketch est utilisé dans Base (et si
+l'extension SketchArch est installée).
+
+Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.La propriété est ignorée si Base de ArchSketch a fourni les
+arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>L'alignement de ce mur sur son objet de base, si applicable. Désactivé et ignoré si l'objet de base (ArchSketch) fournit l'information.</translation>
+      <translation>L'alignement de ce mur sur son objet de référence, si applicable. Désactivé et ignoré si l'objet Base (ArchSketch) fournit l'information.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
       <source>The offset between this wall and its baseline (only for left and right alignments). Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>Le décalage entre ce mur et sa ligne de base (uniquement pour les alignements à gauche et à droite). Désactivé et ignoré si l'objet de base (ArchSketch) fournit l'information.</translation>
+      <translation>Le décalage entre ce mur et sa ligne de base (uniquement pour les alignements à gauche et à droite). Désactivé et ignoré si l'objet Base
+(ArchSketch) fournit l'information.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="308"/>
@@ -8314,9 +8389,18 @@ Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propr
     <message>
       <location filename="../../ArchWall.py" line="393"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Arêtes sélectionnées (ou groupe d'arêtes) de l'objet de base (Sketch/ArchSketch) à utiliser pour créer la forme de ce Arch mur (au lieu d'utiliser toutes les arêtes de l'objet de base (Sketch/ArchSketch) par défaut). Les données saisies sont des numéros d'index des arêtes ou des groupes. Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les arêtes sélectionnées (en tant qu'axe du mur), avec la méthode getWallBaseShapeEdgesInfo().
-[Amélioration par l'extension ArchSketch] L'outil "Edit Wall Segment" est fourni dans l'extension SketchArch pour permettre aux utilisateurs de (dé)sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée). 
-Attention : non 'Toponaming-Tolerant' si Sketch est seulement utilisé.</translation>
+      <translation>Arêtes sélectionnées (ou groupe d'arêtes) de l'objet de référence (Sketch/ArchSketch) à utiliser pour créer la forme de ce Arch mur (au
+lieu d'utiliser toutes les arêtes de l'objet de référence (Sketch/ArchSketch) par défaut). Les données saisies sont des numéros d'index
+des arêtes ou des groupes.
+
+Désactivé et ignoré si l'objet de référence (ArchSketch) fournit des informations sur les arêtes sélectionnées (en tant qu'axe du mur),
+avec la méthode getWallBaseShapeEdgesInfo().
+
+[Amélioration par l'extension ArchSketch] L'outil « Edit Wall Segment » est fourni dans l'extension SketchArch pour permettre aux
+utilisateurs de (dé)sélectionner les arêtes de manière interactive. « Tolérant au toponymage » si ArchSketch est utilisé dans Base (et si
+l'extension SketchArch est installée). 
+
+Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="404"/>
@@ -8335,7 +8419,7 @@ Attention : non 'Toponaming-Tolerant' si Sketch est seulement utilisé.</transla
     <message>
       <location filename="../../ArchStructure.py" line="2128"/>
       <source>Structure Tools</source>
-      <translation type="unfinished">Structure Tools</translation>
+      <translation>Outils de structures</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="2129"/>
@@ -8875,7 +8959,7 @@ Attention : non 'Toponaming-Tolerant' si Sketch est seulement utilisé.</transla
     <message>
       <location filename="../../ArchFloor.py" line="128"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation>Créer une partie de bâtiment qui représente un niveau, comprenant les objets sélectionnés</translation>
+      <translation>Crée une partie de bâtiment qui représente un niveau, comprenant les objets sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -9851,17 +9935,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="693"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
-      <translation type="unfinished">To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</translation>
+      <translation>Pour permettre l'exportation de ces quantités, utiliser l'outil de gestion des quantités IFC par le menu : Gestion → Gérer les quantités IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="765"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
-      <translation type="unfinished">To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</translation>
+      <translation>Pour ajouter des jeux de propriétés communs à ces objets, utiliser l'outil de gestion des propriétés IFC par le menu : Gestion → Gérer les propriétés IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="858"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
-      <translation type="unfinished">To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</translation>
+      <translation>Pour corriger les propriétés de ces objets, utiliser l'outil de gestion des propriétés IFC par le menu : Gestion → Gérer les propriétés IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
@@ -10017,7 +10101,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="52"/>
       <source>You must choose a group object before using this command</source>
-      <translation>Vous devez choisir un objet Groupe avant d'utiliser cette commande</translation>
+      <translation>Vous devez choisir un objet Groupe avant d'utiliser cette commande.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="138"/>
@@ -11205,7 +11289,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="17"/>
       <source>BIM Setup</source>
-      <translation>Configurer l'atelier BIM</translation>
+      <translation>Configurer les BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="230"/>
@@ -11315,7 +11399,9 @@ Voir les préférences : TechDraw → TechDraw 2 → Taille des flèches ou Draf
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
       <source>This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</source>
-      <translation type="unfinished">This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</translation>
+      <translation>Cette boîte de dialogue vous aidera à configurer FreeCAD pour un flux de travail des BIM efficace en définissant quelques options. Cette
+boîte de dialogue est accessible à tout moment par le menu : Gestion → Configuration. D'autres options sont disponibles par le menu :
+Édition → Préférences.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="33"/>
@@ -11674,12 +11760,12 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="372"/>
       <source>Toggle IFC B-Rep Flag</source>
-      <translation type="unfinished">Toggle IFC B-Rep Flag</translation>
+      <translation>Activer/désactiver le drapeau B-Rep IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Forces an object to be exported as B-rep or not</source>
-      <translation type="unfinished">Forces an object to be exported as B-rep or not</translation>
+      <translation>Force un objet à être exporté en tant que B-Rep ou non.</translation>
     </message>
   </context>
   <context>
@@ -11830,7 +11916,7 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="43"/>
       <source>Setup Project</source>
-      <translation type="unfinished">Setup Project</translation>
+      <translation>Configurer un projet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="44"/>
@@ -11869,7 +11955,7 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>BIM Setup</source>
-      <translation>Configurer l'atelier BIM</translation>
+      <translation>Configurer les BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="45"/>

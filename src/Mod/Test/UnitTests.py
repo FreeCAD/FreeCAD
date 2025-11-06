@@ -72,15 +72,15 @@ class UnitBasicCases(unittest.TestCase):
 
         psi = FreeCAD.Units.parseQuantity("1psi")
         mpa = psi.getValueAs("MPa").Value
-        self.assertAlmostEqual(0.006894744825, mpa, delta=self.delta)
+        self.assertAlmostEqual(0.068947572932, mpa, delta=self.delta)
         kpa = psi.getValueAs("kPa").Value
-        self.assertAlmostEqual(6.894744825494, kpa, delta=self.delta)
+        self.assertAlmostEqual(6.8947572932, kpa, delta=self.delta)
 
         ksi = FreeCAD.Units.parseQuantity("1ksi")
         mpa = ksi.getValueAs("MPa").Value
-        self.assertAlmostEqual(6.894744825494, mpa, delta=self.delta)
+        self.assertAlmostEqual(6.8947572931783, mpa, delta=self.delta)
         kpa = ksi.getValueAs("kPa").Value
-        self.assertAlmostEqual(6894.744825494, kpa, delta=self.delta)
+        self.assertAlmostEqual(6894.7572931783, kpa, delta=self.delta)
 
     def testSelfConsistency(self):
         qu = FreeCAD.Units.Quantity("0.23 W/m/K")

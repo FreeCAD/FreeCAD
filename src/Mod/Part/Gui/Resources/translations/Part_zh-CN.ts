@@ -4054,22 +4054,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Features Settings</source>
-      <translation type="unfinished">Features Settings</translation>
+      <translation>特征设置</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="135"/>
       <source>Default profile type for holes</source>
-      <translation type="unfinished">Default profile type for holes</translation>
+      <translation>孔的默认轮廓类型</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="152"/>
       <source>Circles and arcs</source>
-      <translation type="unfinished">Circles and arcs</translation>
+      <translation>圆和圆弧</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="157"/>
       <source>Points, circles and arcs</source>
-      <translation type="unfinished">Points, circles and arcs</translation>
+      <translation>点、圆和圆弧</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="162"/>
@@ -4079,22 +4079,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="175"/>
       <source>Switch to task panel when entering Part Design workbench</source>
-      <translation type="unfinished">Switch to task panel when entering Part Design workbench</translation>
+      <translation>进入零件设计工作台时切换到任务面板</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="206"/>
       <source>Show final result by default when editing features</source>
-      <translation type="unfinished">Show final result by default when editing features</translation>
+      <translation>编辑特征时默认显示最终结果</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="219"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation type="unfinished">Show transparent preview overlay by default when editing features</translation>
+      <translation>编辑特征时默认显示透明预览叠加层</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="235"/>
       <source>Highlight the profile used to create features</source>
-      <translation type="unfinished">Highlight the profile used to create features</translation>
+      <translation>高亮显示用于创建特征的轮廓</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="257"/>
@@ -4104,22 +4104,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="266"/>
       <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, problems and undefined behaviors</translation>
+      <translation>这些设置是实验性的，可能导致稳定性下降、问题和未定义行为</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="276"/>
       <source>Show interactive draggers when editing features</source>
-      <translation type="unfinished">Show interactive draggers when editing features</translation>
+      <translation>编辑特征时显示交互式拖拽器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Disable recompute while dragging</source>
-      <translation type="unfinished">Disable recompute while dragging</translation>
+      <translation>拖拽时禁用重新计算</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
+      <translation>激活零件设计工作台时自动切换到任务面板</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="197"/>
@@ -4129,7 +4129,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
-      <translation type="unfinished">Allow multiple solids in Part Design bodies by default</translation>
+      <translation>默认允许零件设计体中存在多个实体</translation>
     </message>
   </context>
   <context>
@@ -4142,7 +4142,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape Appearance Properties</source>
-      <translation type="unfinished">Default Shape Appearance Properties</translation>
+      <translation>默认形状外观属性</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4157,42 +4157,42 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="61"/>
       <source>Use random color instead</source>
-      <translation type="unfinished">Use random color instead</translation>
+      <translation>改用随机颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>随机</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>形状环境光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>新形状的默认环境光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>形状自发光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>新形状的默认自发光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>形状高光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>新形状的默认高光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4202,7 +4202,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="189"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>新形状的默认透明度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
@@ -4212,7 +4212,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>新形状的默认光泽度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4237,22 +4237,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>顶点颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="330"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>新顶点的默认颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="356"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>顶点大小</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="363"/>
       <source>The default size for new vertices</source>
-      <translation type="unfinished">The default size for new vertices</translation>
+      <translation>新顶点的默认大小</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="391"/>
@@ -4267,12 +4267,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>边界框字体大小</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="431"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>3D视图中边界框的字体大小</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
@@ -4280,10 +4280,9 @@ Check one or more edge entities first.</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>表面的底部将以与顶部相同的方式渲染。
+如果未勾选，则取决于"背光颜色"选项
+(首选项部分 显示 -&gt; 3D视图)；将使用背光颜色或黑色。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4293,7 +4292,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
       <source>Default Annotation Color</source>
-      <translation type="unfinished">Default Annotation Color</translation>
+      <translation>默认注释颜色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
@@ -4303,7 +4302,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="526"/>
       <source>Text color for document annotations</source>
-      <translation type="unfinished">Text color for document annotations</translation>
+      <translation>文档注释的文本颜色</translation>
     </message>
   </context>
   <context>
@@ -4344,7 +4343,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation Axis</source>
-      <translation type="unfinished">Rotation Axis</translation>
+      <translation>旋转轴</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="125"/>
@@ -4365,8 +4364,8 @@ will be used or black.</translation>
       <location filename="../../Location.ui" line="106"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>使用自定义矢量作为拉伸方向，否则
+将使用草图平面的法线矢量</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
@@ -4394,7 +4393,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="178"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
-      <translation type="unfinished">At least 2 vertices, edges, wires, or faces are required.</translation>
+      <translation>至少需要2个顶点、边、线或面。</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="212"/>
@@ -4422,7 +4421,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
       <source>Base Point</source>
-      <translation type="unfinished">Base Point</translation>
+      <translation>基点</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="26"/>
@@ -4442,7 +4441,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="98"/>
       <source>Mirror plane</source>
-      <translation type="unfinished">Mirror plane</translation>
+      <translation>镜像平面</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="106"/>
@@ -4462,7 +4461,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
       <source>Use selected reference</source>
-      <translation type="unfinished">Use selected reference</translation>
+      <translation>使用选定的参考</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
@@ -4478,7 +4477,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>镜像平面参考</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="212"/>
@@ -4488,7 +4487,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.cpp" line="281"/>
       <source>Select a shape for mirroring.</source>
-      <translation type="unfinished">Select a shape for mirroring.</translation>
+      <translation>选择要镜像的形状。</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="288"/>
@@ -4527,7 +4526,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cut</source>
-      <translation type="unfinished">Persistent Section Cut</translation>
+      <translation>持久剖面切割</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4561,13 +4560,13 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut Face</source>
-      <translation type="unfinished">Cut Face</translation>
+      <translation>切割面</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
       <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of the cut face</source>
-      <translation type="unfinished">Color of the cut face</translation>
+      <translation>切割面的颜色</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
@@ -4576,26 +4575,24 @@ the sketch plane's normal vector will be used</translation>
 from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation type="unfinished">Takes the color and transparency
-from the cut objects.
-Works only properly if all objects
-have the same values.</translation>
+      <translation>从切割对象获取颜色和透明度。
+仅当所有对象具有相同值时才能正常工作。</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="330"/>
       <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of the cut face</source>
-      <translation type="unfinished">Transparency of the cut face</translation>
+      <translation>切割面的透明度</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="376"/>
       <source>Cut Intersecting Objects</source>
-      <translation type="unfinished">Cut Intersecting Objects</translation>
+      <translation>切割相交对象</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh View</source>
-      <translation type="unfinished">Refresh View</translation>
+      <translation>刷新视图</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4620,14 +4617,13 @@ have the same values.</translation>
       <source>Allows cutting objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
-      <translation type="unfinished">Allows cutting objects intersecting each other
-for the price that all cut objects
-will get the same color</translation>
+      <translation>允许切割相互相交的对象，
+代价是所有切割对象将获得相同的颜色</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
       <source>Color for all objects</source>
-      <translation type="unfinished">Color for all objects</translation>
+      <translation>所有对象的颜色</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="511"/>
@@ -4649,7 +4645,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../SectionCutting.cpp" line="1087"/>
       <source>Sliders are disabled for assemblies</source>
-      <translation type="unfinished">Sliders are disabled for assemblies</translation>
+      <translation>装配体的滑块已禁用</translation>
     </message>
   </context>
   <context>
@@ -4657,12 +4653,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="216"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>不支持</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="216"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>不支持壳体的框选</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="225"/>
@@ -4685,27 +4681,27 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="272"/>
       <location filename="../../TaskShapeBuilder.cpp" line="365"/>
       <source>Select at least 1 edge</source>
-      <translation type="unfinished">Select at least 1 edge</translation>
+      <translation>选择至少1条边</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="417"/>
       <source>Select at least 2 faces</source>
-      <translation type="unfinished">Select at least 2 faces</translation>
+      <translation>选择至少2个面</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="478"/>
       <source>Select only 1 shape object</source>
-      <translation type="unfinished">Select only 1 shape object</translation>
+      <translation>仅选择1个形状对象</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="544"/>
       <source>Select vertices</source>
-      <translation type="unfinished">Select vertices</translation>
+      <translation>选择顶点</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="551"/>
       <source>Select a closed loop of edges</source>
-      <translation type="unfinished">Select a closed loop of edges</translation>
+      <translation>选择边的闭合环</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="313"/>
@@ -4720,7 +4716,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="537"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>选择相邻边</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="558"/>
@@ -4763,7 +4759,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="338"/>
       <source>Select at least 1 edge from a single object.</source>
-      <translation type="unfinished">Select at least 1 edge from a single object.</translation>
+      <translation>从单个对象中选择至少1条边。</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="345"/>
@@ -4788,7 +4784,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>在3D视图中选择一个或多个连接的边，然后按"完成"</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="440"/>
@@ -4856,8 +4852,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskAttacher.ui" line="227"/>
       <source>The offset is expressed in the local coordinate system
 of the object being attached</source>
-      <translation type="unfinished">The offset is expressed in the local coordinate system
-of the object being attached</translation>
+      <translation>偏移量在被附着对象的局部坐标系中表示</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4883,8 +4878,7 @@ of the object being attached</translation>
       <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the local X-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local X-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>绕局部X轴旋转。偏移量在被附着对象的局部坐标系中表示。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
@@ -4895,8 +4889,7 @@ of the object being attached.</translation>
       <location filename="../../TaskAttacher.ui" line="296"/>
       <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Y-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>绕局部Y轴旋转。偏移量在被附着对象的局部坐标系中表示。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
@@ -4907,8 +4900,7 @@ of the object being attached.</translation>
       <location filename="../../TaskAttacher.ui" line="335"/>
       <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Z-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>绕局部Z轴旋转。偏移量在被附着对象的局部坐标系中表示。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="358"/>
@@ -4948,12 +4940,12 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="379"/>
       <source>Attachment offset (in its local coordinate system):</source>
-      <translation type="unfinished">Attachment offset (in its local coordinate system):</translation>
+      <translation>附着偏移（在其局部坐标系中）：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="379"/>
       <source>Attachment offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment offset (inactive - not attached):</translation>
+      <translation>附着偏移（未激活 - 未附着）：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="914"/>
@@ -4983,7 +4975,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="967"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>不可编辑，因为AttachmentOffset的旋转受表达式约束。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1034"/>
@@ -5017,94 +5009,93 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1093"/>
       <source>Default: false</source>
-      <translation type="unfinished">Default: false</translation>
+      <translation>默认：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
       <source>Run boolean operation check</source>
-      <translation type="unfinished">Run boolean operation check</translation>
+      <translation>运行布尔操作检查</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always
-mean the checked object is unusable.  Default: false</translation>
+      <translation>额外的布尔操作检查，有时可以发现标准BRep几何检查遗漏的错误。
+这些错误并不总是意味着被检查对象不可用。默认：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>单线程</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>在单线程中运行几何检查。这较慢，
+但更稳定。默认：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>记录错误</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1122"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>将错误记录到报告视图。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>展开形状内容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>展开形状内容。更改将在下次使用
+几何检查工具时生效。默认：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
       <source>Advanced shape content</source>
-      <translation type="unfinished">Advanced shape content</translation>
+      <translation>高级形状内容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>显示高级形状内容。更改将在下次使用
+几何检查工具时生效。默认：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1148"/>
       <source>
 Individual boolean operation checks:</source>
-      <translation type="unfinished">
-Individual boolean operation checks:</translation>
+      <translation>
+单独的布尔操作检查：</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Bad type</source>
-      <translation type="unfinished">Bad type</translation>
+      <translation>错误类型</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Self-intersect</source>
-      <translation type="unfinished">Self-intersect</translation>
+      <translation>自相交</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Too small edge</source>
-      <translation type="unfinished">Too small edge</translation>
+      <translation>边过小</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1175"/>
       <source>Nonrecoverable face</source>
-      <translation type="unfinished">Nonrecoverable face</translation>
+      <translation>不可恢复的面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1183"/>
@@ -5114,87 +5105,87 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1191"/>
       <source>Incompatibility of face</source>
-      <translation type="unfinished">Incompatibility of face</translation>
+      <translation>面不兼容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
       <source>Incompatibility of vertex</source>
-      <translation type="unfinished">Incompatibility of vertex</translation>
+      <translation>顶点不兼容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
       <source>Incompatibility of edge</source>
-      <translation type="unfinished">Incompatibility of edge</translation>
+      <translation>边不兼容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1215"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>曲面上的无效曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1152"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>检查错误的参数类型。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>跳过此设置页面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Skip this settings page and run the geometry check automatically</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically</translation>
+      <translation>跳过此设置页面并自动运行几何检查</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1160"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation type="unfinished">Check for self-intersections.  Default: true</translation>
+      <translation>检查自相交。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1168"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
+      <translation>检查过小的边。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1176"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
+      <translation>检查不可恢复的面。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1184"/>
       <source>Check for continuity.  Default: true</source>
-      <translation type="unfinished">Check for continuity.  Default: true</translation>
+      <translation>检查连续性。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1192"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation type="unfinished">Check for incompatible faces.  Default: true</translation>
+      <translation>检查不兼容的面。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation type="unfinished">Check for incompatible vertices.  Default: true</translation>
+      <translation>检查不兼容的顶点。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Check for incompatible edges.  Default: true</source>
-      <translation type="unfinished">Check for incompatible edges.  Default: true</translation>
+      <translation>检查不兼容的边。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1216"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
-      <translation type="unfinished">Check for invalid curves on surfaces.  Default: true</translation>
+      <translation>检查曲面上的无效曲线。默认：true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1279"/>
       <source>Run check</source>
-      <translation type="unfinished">Run check</translation>
+      <translation>运行检查</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>结果</translation>
     </message>
   </context>
   <context>
@@ -5202,17 +5193,17 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="373"/>
       <source>Check Geometry Results</source>
-      <translation type="unfinished">Check Geometry Results</translation>
+      <translation>几何检查结果</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="396"/>
       <source>Check is running…</source>
-      <translation type="unfinished">Check is running…</translation>
+      <translation>检查正在运行…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Boolean operation check…</source>
-      <translation type="unfinished">Boolean operation check…</translation>
+      <translation>布尔操作检查…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="423"/>
@@ -5222,18 +5213,18 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="454"/>
       <source>Null shape</source>
-      <translation type="unfinished">Null shape</translation>
+      <translation>空形状</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <location filename="../../TaskCheckGeometry.cpp" line="466"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>已跳过</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="465"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>无限形状</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="492"/>
@@ -5243,54 +5234,54 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="513"/>
       <source>Checking</source>
-      <translation type="unfinished">Checking</translation>
+      <translation>检查中</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="532"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>无错误</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="543"/>
       <source>%1 processed out of %2 selected</source>
-      <translation type="unfinished">%1 processed out of %2 selected</translation>
+      <translation>已处理 %1，共 %2 个选定项</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskCheckGeometry.cpp" line="544"/>
       <source>%n invalid shapes.</source>
-      <translation type="unfinished">
-        <numerusform>%n invalid shapes.</numerusform>
+      <translation>
+        <numerusform>%n 个无效形状。</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="545"/>
       <source>to report view.</source>
-      <translation type="unfinished">to report view.</translation>
+      <translation>到报告视图。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="666"/>
       <source>Global minimum</source>
-      <translation type="unfinished">Global minimum</translation>
+      <translation>全局最小值</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="671"/>
       <source>Global average</source>
-      <translation type="unfinished">Global average</translation>
+      <translation>全局平均值</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="676"/>
       <source>Global maximum</source>
-      <translation type="unfinished">Global maximum</translation>
+      <translation>全局最大值</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="644"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>已检查对象</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="661"/>
       <source>Tolerance information</source>
-      <translation type="unfinished">Tolerance information</translation>
+      <translation>公差信息</translation>
     </message>
   </context>
   <context>
@@ -5303,7 +5294,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1342"/>
       <source>Datum dialog: input error</source>
-      <translation type="unfinished">Datum dialog: input error</translation>
+      <translation>基准对话框：输入错误</translation>
     </message>
   </context>
   <context>
@@ -5405,7 +5396,7 @@ Individual boolean operation checks:</translation>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create Shape</source>
-      <translation type="unfinished">Create Shape</translation>
+      <translation>创建形状</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
@@ -5415,7 +5406,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>从边创建线</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -5489,8 +5480,7 @@ Individual boolean operation checks:</translation>
       <location filename="../../TaskSweep.cpp" line="486"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation type="unfinished">Select at least 1 profile and an edge or wire
-in the 3D view for the sweep path.</translation>
+      <translation>在3D视图中选择至少1个轮廓和1条边或线作为扫描路径。</translation>
     </message>
   </context>
   <context>
@@ -5498,7 +5488,7 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>管状体</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
@@ -5508,12 +5498,12 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
       <source>Outer radius</source>
-      <translation type="unfinished">Outer radius</translation>
+      <translation>外半径</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="69"/>
       <source>Inner radius</source>
-      <translation type="unfinished">Inner radius</translation>
+      <translation>内半径</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
@@ -5559,14 +5549,14 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../AppPartGui.cpp" line="243"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>零件和零件设计工作台</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="244"/>
       <location filename="../../AppPartGui.cpp" line="245"/>
       <location filename="../../AppPartGui.cpp" line="246"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>零件/零件设计</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="247"/>
@@ -5595,7 +5585,7 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../Command.cpp" line="315"/>
       <location filename="../../Command.cpp" line="899"/>
       <source>Select 2 shapes</source>
-      <translation type="unfinished">Select 2 shapes</translation>
+      <translation>选择2个形状</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
@@ -5603,23 +5593,23 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../Command.cpp" line="463"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation type="unfinished">The use of non-solids for boolean operations may lead to unexpected results.
-Continue?</translation>
+      <translation>对非实体使用布尔操作可能导致意外结果。
+继续？</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</translation>
+      <translation>选择至少2个形状。或者，选择1个包含2个或更多形状的复合体以计算交集。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
-      <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</translation>
+      <translation>选择至少2个形状。或者，选择1个包含2个或更多形状的复合体进行融合。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Select at least one shape</source>
-      <translation type="unfinished">Select at least one shape</translation>
+      <translation>选择至少一个形状</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1059"/>
@@ -5634,7 +5624,7 @@ Continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="2037"/>
       <source>Select either 2 edges or 2 wires.</source>
-      <translation type="unfinished">Select either 2 edges or 2 wires.</translation>
+      <translation>选择2条边或2条线。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="71"/>
@@ -5665,7 +5655,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="76"/>
       <source>Compound solid</source>
-      <translation type="unfinished">Compound solid</translation>
+      <translation>复合实体</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -5690,242 +5680,242 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="98"/>
       <source>No error</source>
-      <translation type="unfinished">No error</translation>
+      <translation>无错误</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="99"/>
       <source>Invalid point on curve</source>
-      <translation type="unfinished">Invalid point on curve</translation>
+      <translation>曲线上的无效点</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
       <source>Invalid point on curve on surface</source>
-      <translation type="unfinished">Invalid point on curve on surface</translation>
+      <translation>曲面上曲线上的无效点</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>Invalid point on surface</source>
-      <translation type="unfinished">Invalid point on surface</translation>
+      <translation>曲面上的无效点</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No 3D curve</source>
-      <translation type="unfinished">No 3D curve</translation>
+      <translation>无3D曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Multiple 3D curves</source>
-      <translation type="unfinished">Multiple 3D curves</translation>
+      <translation>多个3D曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>Invalid 3D curve</source>
-      <translation type="unfinished">Invalid 3D curve</translation>
+      <translation>无效的3D曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>No curve on surface</source>
-      <translation type="unfinished">No curve on surface</translation>
+      <translation>曲面上无曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>曲面上的无效曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid curve on closed surface</source>
-      <translation type="unfinished">Invalid curve on closed surface</translation>
+      <translation>封闭曲面上的无效曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>Invalid same range flag</source>
-      <translation type="unfinished">Invalid same range flag</translation>
+      <translation>无效的相同范围标志</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid same parameter flag</source>
-      <translation type="unfinished">Invalid same parameter flag</translation>
+      <translation>无效的相同参数标志</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid degenerated flag</source>
-      <translation type="unfinished">Invalid degenerated flag</translation>
+      <translation>无效的退化标志</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Free edge</source>
-      <translation type="unfinished">Free edge</translation>
+      <translation>自由边</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid multi-connexity</source>
-      <translation type="unfinished">Invalid multi-connexity</translation>
+      <translation>无效的多连通性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Invalid range</source>
-      <translation type="unfinished">Invalid range</translation>
+      <translation>无效范围</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Empty wire</source>
-      <translation type="unfinished">Empty wire</translation>
+      <translation>空线框</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Redundant edge</source>
-      <translation type="unfinished">Redundant edge</translation>
+      <translation>冗余边</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Self-intersecting wire</source>
-      <translation type="unfinished">Self-intersecting wire</translation>
+      <translation>自相交线框</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>No surface</source>
-      <translation type="unfinished">No surface</translation>
+      <translation>无曲面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid wire</source>
-      <translation type="unfinished">Invalid wire</translation>
+      <translation>无效线框</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Redundant wire</source>
-      <translation type="unfinished">Redundant wire</translation>
+      <translation>冗余线框</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Intersecting wires</source>
-      <translation type="unfinished">Intersecting wires</translation>
+      <translation>相交线框</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid imbrication of wires</source>
-      <translation type="unfinished">Invalid imbrication of wires</translation>
+      <translation>无效的线框叠覆</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty shell</source>
-      <translation type="unfinished">Empty shell</translation>
+      <translation>空壳体</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant face</source>
-      <translation type="unfinished">Redundant face</translation>
+      <translation>冗余面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Unorientable shape</source>
-      <translation type="unfinished">Unorientable shape</translation>
+      <translation>不可定向形状</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Not closed</source>
-      <translation type="unfinished">Not closed</translation>
+      <translation>未封闭</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Not connected</source>
-      <translation type="unfinished">Not connected</translation>
+      <translation>未连接</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Sub-shape not in shape</source>
-      <translation type="unfinished">Sub-shape not in shape</translation>
+      <translation>子形状不在形状内</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Bad orientation</source>
-      <translation type="unfinished">Bad orientation</translation>
+      <translation>方向错误</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Bad orientation of sub-shape</source>
-      <translation type="unfinished">Bad orientation of sub-shape</translation>
+      <translation>子形状方向错误</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Invalid tolerance value</source>
-      <translation type="unfinished">Invalid tolerance value</translation>
+      <translation>无效的容差值</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Check failed</source>
-      <translation type="unfinished">Check failed</translation>
+      <translation>检查失败</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="141"/>
       <source>No result</source>
-      <translation type="unfinished">No result</translation>
+      <translation>无结果</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="145"/>
       <source>Out of enum range:</source>
-      <translation type="unfinished">Out of enum range:</translation>
+      <translation>超出枚举范围：</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="157"/>
       <source>Boolean operation: unknown check</source>
-      <translation type="unfinished">Boolean operation: unknown check</translation>
+      <translation>布尔操作：未知检查</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="158"/>
       <source>Boolean operation: bad type</source>
-      <translation type="unfinished">Boolean operation: bad type</translation>
+      <translation>布尔操作：类型错误</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: self-intersection found</source>
-      <translation type="unfinished">Boolean operation: self-intersection found</translation>
+      <translation>布尔操作：发现自相交</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: edge too small</source>
-      <translation type="unfinished">Boolean operation: edge too small</translation>
+      <translation>布尔操作：边过小</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>Boolean operation: non-recoverable face</source>
-      <translation type="unfinished">Boolean operation: non-recoverable face</translation>
+      <translation>布尔操作：不可恢复的面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: incompatibility of vertex</source>
-      <translation type="unfinished">Boolean operation: incompatibility of vertex</translation>
+      <translation>布尔操作：顶点不兼容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: incompatibility of edge</source>
-      <translation type="unfinished">Boolean operation: incompatibility of edge</translation>
+      <translation>布尔操作：边不兼容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: incompatibility of face</source>
-      <translation type="unfinished">Boolean operation: incompatibility of face</translation>
+      <translation>布尔操作：面不兼容</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: aborted</source>
-      <translation type="unfinished">Boolean operation: aborted</translation>
+      <translation>布尔操作：已中止</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: invalid curve on surface</source>
-      <translation type="unfinished">Boolean operation: invalid curve on surface</translation>
+      <translation>布尔操作：曲面上的无效曲线</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: not valid</source>
-      <translation type="unfinished">Boolean operation: not valid</translation>
+      <translation>布尔操作：无效</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: GeomAbs_C0</source>
-      <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
+      <translation>布尔操作：GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="768"/>
@@ -5935,7 +5925,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="80"/>
       <source>Edit Mirror Plane</source>
-      <translation type="unfinished">Edit Mirror Plane</translation>
+      <translation>编辑镜像平面</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="290"/>
@@ -5960,52 +5950,52 @@ Continue?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>创建管体</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="170"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>参数空间中的距离</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="171"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>输入距离：</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="97"/>
       <source>Attachment Editor</source>
-      <translation type="unfinished">Attachment Editor</translation>
+      <translation>附着编辑器</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="892"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>每面外观</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="52"/>
       <source>Edit Projection</source>
-      <translation type="unfinished">Edit Projection</translation>
+      <translation>编辑投影</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="91"/>
       <source>Show Control Points</source>
-      <translation type="unfinished">Show Control Points</translation>
+      <translation>显示控制点</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="66"/>
       <source>Delete %1 content?</source>
-      <translation type="unfinished">Delete %1 content?</translation>
+      <translation>删除%1内容？</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="67"/>
       <source>The %1 '%2' has %3. Do you want to delete them as well?</source>
-      <translation type="unfinished">The %1 '%2' has %3. Do you want to delete them as well?</translation>
+      <translation>%1“%2”包含%3。您是否也要删除它们？</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="220"/>
       <source>base and tool objects</source>
-      <translation type="unfinished">base and tool objects</translation>
+      <translation>基体和工具体</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="222"/>
@@ -6015,18 +6005,18 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="224"/>
       <source>tool object</source>
-      <translation type="unfinished">tool object</translation>
+      <translation>工具体</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="228"/>
       <source>Boolean operation</source>
-      <translation type="unfinished">Boolean operation</translation>
+      <translation>布尔操作</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="316"/>
       <location filename="../../ViewProviderBoolean.cpp" line="452"/>
       <source>%1 input objects</source>
-      <translation type="unfinished">%1 input objects</translation>
+      <translation>%1个输入对象</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="319"/>
@@ -6041,12 +6031,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="73"/>
       <source>Delete compound content?</source>
-      <translation type="unfinished">Delete compound content?</translation>
+      <translation>删除复合体内容？</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="74"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
-      <translation type="unfinished">The compound '%1' has %2 child objects. Do you want to delete them as well?</translation>
+      <translation>复合体“%1”包含%2个子对象。您是否也要删除它们？</translation>
     </message>
   </context>
   <context>
@@ -6074,7 +6064,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Part Tools</source>
-      <translation type="unfinished">Part Tools</translation>
+      <translation>零件工具</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -6112,12 +6102,12 @@ Continue?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>管状体</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>创建一个管体</translation>
     </message>
   </context>
   <context>
@@ -6125,12 +6115,12 @@ Continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>计算结果失败，错误：</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>点击“继续”以仍然创建该特征，或点击“中止”取消。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
@@ -6138,7 +6128,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>选择错误</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
@@ -6148,17 +6138,17 @@ Continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>请选择至少两个对象，或一个及以上的复合体</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>请先选择基体对象，然后选择要嵌入的对象，再调用此工具。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>请先选择要制作切口的对象，然后选择应嵌入切口的对象，再调用此工具。</translation>
     </message>
   </context>
   <context>
@@ -6168,14 +6158,14 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="294"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="485"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>计算结果失败，错误：</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="486"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>点击“继续”以仍然创建该特征，或点击“中止”取消。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6186,7 +6176,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="527"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>选择错误</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
@@ -6200,13 +6190,13 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="194"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="526"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>请选择至少两个对象，或一个及以上的复合体。如果只选择了一个复合体，则复合形状将相互相交（否则，包含自相交的复合体是无效的）。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>请选择至少两个对象。第一个是要被切片的对象；其余的是用作切片的对象。</translation>
     </message>
   </context>
   <context>
@@ -6219,7 +6209,7 @@ Continue?</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>请先选择一个复合体形状。如果选择了第二个对象（可选），它将被视为模板。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
@@ -6227,26 +6217,24 @@ Continue?</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filters out objects from the selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>通过体积、面积、长度等特性或选择特定项，从选定的复合体中过滤出对象。
+如果选择了第二个对象，它将用作参考，例如用于碰撞或距离过滤。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>选择错误</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>计算结果失败，错误：</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>点击“继续”以仍然创建该特征，或点击“中止”取消。</translation>
     </message>
   </context>
   <context>
@@ -6254,22 +6242,22 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode Compound</source>
-      <translation type="unfinished">Explode Compound</translation>
+      <translation>分解复合体</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="55"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
-      <translation type="unfinished">Splits up a compound of shapes into separate objects, creating a compound filter for each shape</translation>
+      <translation>将形状复合体拆分为单独的对象，并为每个形状创建一个复合过滤器</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="61"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>请先选择一个复合体形状。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>选择错误</translation>
     </message>
   </context>
   <context>
@@ -6277,22 +6265,22 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
       <source>No object named {}</source>
-      <translation type="unfinished">No object named {}</translation>
+      <translation>没有名为 {} 的对象</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>解析链接失败（遇到多个冒号）</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>对象 {} 既不可移动也不可附着，无法编辑附着</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
       <source>{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</source>
-      <translation type="unfinished">{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</translation>
+      <translation>{} 不可附着。附着编辑器仍可用于对齐对象，但附着将不是参数化的。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
@@ -6309,27 +6297,27 @@ for collision or distance filtering.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
       <source>Edit attachment of {}</source>
-      <translation type="unfinished">Edit attachment of {}</translation>
+      <translation>编辑 {} 的附着</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>已忽略。无法将对象附着到自身！</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+      <translation>{} 依赖于正在被附着的对象，无法将其用于附着</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="504"/>
       <source>{} (add {})</source>
-      <translation type="unfinished">{} (add {})</translation>
+      <translation>{}（添加 {}）</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="506"/>
       <source>{} (add more references)</source>
-      <translation type="unfinished">{} (add more references)</translation>
+      <translation>{}（添加更多参考）</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="536"/>
@@ -6339,7 +6327,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="552"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>参考{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="557"/>
@@ -6349,7 +6337,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>解析链接失败。{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="589"/>
@@ -6359,12 +6347,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Attached with mode {}</source>
-      <translation type="unfinished">Attached with mode {}</translation>
+      <translation>已使用模式 {} 附着</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>错误：{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="601"/>
@@ -6382,7 +6370,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="30"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>形状类型</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="34"/>
@@ -6417,7 +6405,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="70"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>复合实体</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="76"/>
@@ -6457,7 +6445,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="148"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>曲线中心</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="155"/>
@@ -6472,7 +6460,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="185"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>是否闭合</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="192"/>
@@ -6482,12 +6470,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="210"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>全局质心</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="228"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>全局放置</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="230"/>
@@ -6500,16 +6488,15 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="510"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>布尔异或</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
-      <translation type="unfinished">Performs an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-Overlapping volumes of the shapes will be removed.</translation>
+      <translation>对两个或更多选定的对象，或复合体内部的形状执行“异或”布尔操作。
+形状的重叠体积将被移除。</translation>
     </message>
   </context>
   <context>
@@ -6527,42 +6514,42 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>X 系数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Z 系数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>在所有方向上使用单一系数缩放对象。</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>均匀缩放</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Y 系数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction</translation>
+      <translation>为每个基本方向指定不同的缩放系数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-uniform scaling</source>
-      <translation type="unfinished">Non-uniform scaling</translation>
+      <translation>非均匀缩放</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shapes to be scaled</source>
-      <translation type="unfinished">Select shapes to be scaled</translation>
+      <translation>选择要缩放的形状</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6572,7 +6559,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.cpp" line="196"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>未选择可缩放的形状</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="204"/>
@@ -6584,7 +6571,7 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../DlgScale.cpp" line="258"/>
       <source>Creating scale failed.
 %1</source>
-      <translation type="unfinished">Creating scale failed.
+      <translation>创建缩放失败。
 %1</translation>
     </message>
   </context>
@@ -6603,7 +6590,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="1295"/>
       <source>Scales the selected shape</source>
-      <translation type="unfinished">Scales the selected shape</translation>
+      <translation>缩放选定的形状</translation>
     </message>
   </context>
   <context>
@@ -6611,7 +6598,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="77"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+      <translation>形状必须是线、边或复合体。提供了其他类型。</translation>
     </message>
   </context>
   <context>
@@ -6637,7 +6624,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="64"/>
       <source>Supports making planar faces with holes with islands in them</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
+      <translation>支持制作包含带岛屿的孔的平面</translation>
     </message>
   </context>
   <context>
@@ -6650,7 +6637,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="250"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
+      <translation>支持制作带孔的平面，但孔内不能有岛屿</translation>
     </message>
   </context>
   <context>
@@ -6671,12 +6658,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>每面外观</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
       <source>Select the faces in the 3D view</source>
-      <translation type="unfinished">Select the faces in the 3D view</translation>
+      <translation>在 3D 视图中选择面</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
@@ -6696,17 +6683,17 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>重置零件所有面的颜色</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="91"/>
       <source>Set to Default</source>
-      <translation type="unfinished">Set to Default</translation>
+      <translation>设为默认值</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="98"/>
       <source>Allows the selection of multiple faces by dragging a rectangle in the 3D view</source>
-      <translation type="unfinished">Allows the selection of multiple faces by dragging a rectangle in the 3D view</translation>
+      <translation>允许通过在 3D 视图中拖动矩形来选择多个面</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
@@ -6719,17 +6706,17 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>计算结果失败，错误：</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>点击“继续”以仍然创建该特征，或点击“中止”取消。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>选择错误</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
@@ -6742,22 +6729,22 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
       <source>Set Tolerance</source>
-      <translation type="unfinished">Set Tolerance</translation>
+      <translation>设置容差</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
-      <translation type="unfinished">Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
+      <translation>创建选定对象的参数化副本，并将其所有包含的容差设置为至少某个最小值</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>选择错误</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
       <source>Select at least one object or compounds</source>
-      <translation type="unfinished">Select at least one object or compounds</translation>
+      <translation>请选择至少一个对象或复合体</translation>
     </message>
   </context>
   <context>
@@ -6775,7 +6762,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2259"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
-      <translation type="unfinished">Creates a coordinate system that can be attached to other objects</translation>
+      <translation>创建一个可以附着到其他对象的坐标系</translation>
     </message>
   </context>
   <context>
@@ -6793,7 +6780,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2394"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</translation>
+      <translation>创建一个基准对象（坐标系、平面、线或点），可以附着到其他对象</translation>
     </message>
   </context>
   <context>
@@ -6801,7 +6788,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/Geometry.cpp" line="6432"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>无法猜测曲线的交点。请尝试在要倒角的曲线的顶点之间添加重合约束。</translation>
     </message>
   </context>
   <context>
@@ -6819,7 +6806,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2293"/>
       <source>Creates a datum plane that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum plane that can be attached to other objects</translation>
+      <translation>创建一个可以附着到其他对象的基准平面</translation>
     </message>
   </context>
   <context>
@@ -6837,7 +6824,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2326"/>
       <source>Creates a datum line that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum line that can be attached to other objects</translation>
+      <translation>创建一个可以附着到其他对象的基准线</translation>
     </message>
   </context>
   <context>
@@ -6855,7 +6842,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2359"/>
       <source>Creates a datum point that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum point that can be attached to other objects</translation>
+      <translation>创建一个可以附着到其他对象的基准点</translation>
     </message>
   </context>
   <context>
@@ -6868,7 +6855,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
-      <translation type="unfinished">Opens the attachment editor to change the attachment of the selected object</translation>
+      <translation>打开附着编辑器以更改选定对象的附着</translation>
     </message>
   </context>
   <context>
@@ -6876,12 +6863,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect Shapes</source>
-      <translation type="unfinished">Connect Shapes</translation>
+      <translation>连接形状</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
       <source>Fuses shapes, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses shapes, taking care to preserve voids</translation>
+      <translation>融合形状，注意保留空腔</translation>
     </message>
   </context>
   <context>
@@ -6889,12 +6876,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
       <source>Embed Shapes</source>
-      <translation type="unfinished">Embed Shapes</translation>
+      <translation>嵌入形状</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses one shape into another, taking care to preserve voids</translation>
+      <translation>将一个形状融合到另一个形状中，注意保留空腔</translation>
     </message>
   </context>
   <context>
@@ -6902,12 +6889,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
       <source>Cutout Shape</source>
-      <translation type="unfinished">Cutout Shape</translation>
+      <translation>切出形状</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
-      <translation type="unfinished">Creates a cutout in the selected shape to fit another shape</translation>
+      <translation>在选定形状中创建切口以适配另一个形状</translation>
     </message>
   </context>
   <context>
@@ -6915,12 +6902,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
+      <translation>布尔碎片</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="185"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
-      <translation type="unfinished">Creates a boolean union which is sliced at the intersections of the selected shapes</translation>
+      <translation>创建一个布尔并集，并在选定形状的交点处进行切片</translation>
     </message>
   </context>
   <context>
@@ -6928,12 +6915,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="333"/>
       <source>Slice to Compound</source>
-      <translation type="unfinished">Slice to Compound</translation>
+      <translation>切片为复合体</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="338"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation type="unfinished">Slices the selected object by using other objects as cutting tools and storing the results in one compound</translation>
+      <translation>使用其他对象作为切割工具切片所选对象，并将结果存储在一个复合体中</translation>
     </message>
   </context>
   <context>
@@ -6941,12 +6928,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="363"/>
       <source>Slice Apart</source>
-      <translation type="unfinished">Slice Apart</translation>
+      <translation>分离切片</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation type="unfinished">Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</translation>
+      <translation>使用其他对象切片所选对象并将其分开，为每个切片创建复合过滤器</translation>
     </message>
   </context>
   <context>
@@ -6954,7 +6941,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box Definition</source>
-      <translation type="unfinished">Box Definition</translation>
+      <translation>方体定义</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
@@ -7012,12 +6999,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew Shape</source>
-      <translation type="unfinished">Sew Shape</translation>
+      <translation>缝合形状</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Tolerance for sewing the shape</source>
-      <translation type="unfinished">Tolerance for sewing the shape</translation>
+      <translation>缝合形状的容差</translation>
     </message>
   </context>
   <context>
@@ -7025,12 +7012,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="366"/>
       <source>Ring facemaker</source>
-      <translation type="unfinished">Ring facemaker</translation>
+      <translation>环形面生成器</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
       <source>Supports making planar faces with holes and holes as faces</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+      <translation>支持制作带孔的平面以及将孔作为面</translation>
     </message>
   </context>
   <context>
@@ -7043,7 +7030,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2201"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
-      <translation type="unfinished">Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</translation>
+      <translation>创建一个新对象，作为所有可见形状与选定轴平面的布尔交集</translation>
     </message>
   </context>
   <context>
@@ -7051,12 +7038,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="44"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>选择过滤器</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="45"/>
       <source>Changes the selection filter</source>
-      <translation type="unfinished">Changes the selection filter</translation>
+      <translation>更改选择过滤器</translation>
     </message>
   </context>
   <context>
@@ -7064,12 +7051,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="171"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>顶点选择</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="172"/>
       <source>Only allows the selection of vertices</source>
-      <translation type="unfinished">Only allows the selection of vertices</translation>
+      <translation>仅允许选择顶点</translation>
     </message>
   </context>
   <context>
@@ -7077,12 +7064,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="196"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>边选择</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="197"/>
       <source>Only allows the selection of edges</source>
-      <translation type="unfinished">Only allows the selection of edges</translation>
+      <translation>仅允许选择边</translation>
     </message>
   </context>
   <context>
@@ -7090,12 +7077,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="221"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>面选择</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="222"/>
       <source>Only allows the selection of faces</source>
-      <translation type="unfinished">Only allows the selection of faces</translation>
+      <translation>仅允许选择面</translation>
     </message>
   </context>
   <context>
@@ -7103,12 +7090,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="246"/>
       <source>No Selection Filters</source>
-      <translation type="unfinished">No Selection Filters</translation>
+      <translation>无选择过滤器</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="247"/>
       <source>Clears all selection filters</source>
-      <translation type="unfinished">Clears all selection filters</translation>
+      <translation>清除所有选择过滤器</translation>
     </message>
   </context>
   <context>
@@ -7116,7 +7103,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="206"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>不再显示此对话框</translation>
     </message>
   </context>
   <context>
@@ -7124,7 +7111,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgImportStep.cpp" line="147"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>不再显示此对话框</translation>
     </message>
   </context>
   <context>
@@ -7142,7 +7129,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="50"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation type="unfinished">Reverse the direction of the pattern.</translation>
+      <translation>反转阵列方向。</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="68"/>
@@ -7168,7 +7155,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="141"/>
       <source>Add spacing to create spacing patterns.</source>
-      <translation type="unfinished">Add spacing to create spacing patterns.</translation>
+      <translation>添加间距以创建间距阵列。</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="158"/>
@@ -7184,12 +7171,12 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../PatternParametersWidget.cpp" line="361"/>
       <location filename="../../PatternParametersWidget.cpp" line="452"/>
       <source>Spacing %1</source>
-      <translation type="unfinished">Spacing %1</translation>
+      <translation>间距 %1</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="377"/>
       <source>Remove this spacing definition.</source>
-      <translation type="unfinished">Remove this spacing definition.</translation>
+      <translation>移除此间距定义。</translation>
     </message>
   </context>
   <context>
@@ -7197,7 +7184,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="232"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
-      <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
+      <translation>渲染预览时失败：%1。这通常表示模型存在错误。</translation>
     </message>
   </context>
 </TS>

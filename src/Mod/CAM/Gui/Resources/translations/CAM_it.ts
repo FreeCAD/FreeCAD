@@ -9498,17 +9498,17 @@ Questo non eliminerà gli utensili contenuti al suo interno.</translation>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="155"/>
       <source>Tapping Operation requires a Tap tool with Pitch</source>
-      <translation type="unfinished">Tapping Operation requires a Tap tool with Pitch</translation>
+      <translation>L'operazione di filettatura richiede un utensile di filettatura con passo</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="233"/>
       <source>Tapping Operation requires a Tap tool with non-zero Pitch</source>
-      <translation type="unfinished">Tapping Operation requires a Tap tool with non-zero Pitch</translation>
+      <translation>L'operazione di filettatura richiede un utensile di filettatura con passo diverso da zero</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="243"/>
       <source>Tapping Operation requires a ToolController with non-zero SpindleSpeed</source>
-      <translation type="unfinished">Tapping Operation requires a ToolController with non-zero SpindleSpeed</translation>
+      <translation>L'operazione di filettatura richiede un controllore utensile con velocità mandrino diversa da zero</translation>
     </message>
   </context>
 </TS>

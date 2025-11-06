@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // AreaClipper.cpp
 
 // implements CArea methods using Angus Johnson's "Clipper"

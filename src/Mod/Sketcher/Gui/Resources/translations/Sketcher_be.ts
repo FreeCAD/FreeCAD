@@ -4833,7 +4833,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Залішнія абмежаванні не з'яўляюцца аўтаматычнымі абмежаваннямі.
 Аніякіх аўтаматычных абмежаванняў ці дадатковых абмежаванняў не было дададзена.
-Калі ласка, паведаміце!</translation>
+Паведаміце!</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="1038"/>

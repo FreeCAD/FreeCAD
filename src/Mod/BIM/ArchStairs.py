@@ -1888,7 +1888,6 @@ class _Stairs(ArchComponent.Component):
                 # TODO Why 'reuse' vBase?
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
-
                 for i in range(numOfSteps - 1):
                     if not lProfile:
                         lProfile.append(vBase)
@@ -1971,6 +1970,11 @@ class _Stairs(ArchComponent.Component):
                 else:
                     lProfile.append(lProfile[-1].add(Vector(h.x, h.y, -resHeight2)))
 
+                # Add back vertex before start vertex offsetted riser thickness
+                if vRiserThickness.Length and downstartstairs != "HorizontalCut":
+                    lProfile.append(vBasedAligned)
+
+                # Add start vertex as last vertex to complete a closed polygon
                 lProfile.append(vBase)
 
                 pol = Part.makePolygon(lProfile)

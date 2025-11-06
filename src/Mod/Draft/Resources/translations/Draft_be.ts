@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Рэдактар стыляў заметак</translation>
+      <translation>Сродак праўкі стыляў заметак</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
@@ -445,7 +445,7 @@ It must be at least 2.</source>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
       <translation>Каардынаты кропкі, праз якую праходзіць вось вярчэння.
-Змяніце напрамак самой восі ў рэдактары ўласцівасцяў.</translation>
+Змяніце напрамак самой восі ў сродку праўкі ўласцівасцяў.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="147"/>
@@ -689,7 +689,7 @@ It must be at least 2.</source>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
       <translation>Каардынаты кропкі, праз якую праходзіць вось вярчэння.
-Змяніце напрамак самой восі ў рэдактары ўласцівасцяў.</translation>
+Змяніце напрамак самой восі ў сродку праўкі ўласцівасцяў.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="101"/>
@@ -2781,7 +2781,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Заўвага:&lt;/span&gt;Налады DXF таксама прымяняюцца да файлаў DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Заўвага: налады DXF таксама прымяняюцца да файлаў DWG.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3562,7 +3562,7 @@ Please set one manually under menu Edit → Preferences → Import/Export → DW
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
       <translation>Не знойдзены прыдатны вонкавы сродак пераўтварэння DWG.
-Калі ласка, задайце яго ўручную ў меню Праўка → Перавагі → Імпартаваць/экспартаваць → DWG
+Задайце яго ўручную ў меню Праўка → Перавагі → Імпартаваць/экспартаваць → DWG
 Каб атрымаць дадатковую інфармацыі, глядзіце: https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -3730,13 +3730,13 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftutils/utils.py" line="1112"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Дадзеная функцыя будзе састарэлай у '{}'.
-Калі ласка, ужывайце '{}'.</translation>
+Ужывайце '{}'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1118"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Дадзеная функцыя будзе састарэлай у '{}'.
-Калі ласка, ужывайце '{}'.</translation>
+Ужывайце '{}'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="638"/>
@@ -3751,7 +3751,8 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="888"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation>%s мае агульную аснову з %d іншымі аб'ектамі. Калі ласка, праверце, ці жадаеце вы гэтае змяніць.</translation>
+      <translation>%s мае агульную аснову з %d іншымі аб'ектамі.
+Праверце, ці жадаеце вы гэтае змяніць.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1034"/>
@@ -5688,7 +5689,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="70"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
-      <translation>Эскіз занадта складаны для змены: прапануецца ўжыць першапачатковы рэдактар варштату Эскіза</translation>
+      <translation>Эскіз занадта складаны для праўкі: прапануецца ўжыць першапачатковы сродак праўкі варштату Эскіза</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="85"/>
@@ -7011,7 +7012,7 @@ in the same proportion.</source>
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
       <translation>Стыль заметкі, які ўжываецца да аб'екту.
-Пры ўжыванні захаванага стылю некаторыя ўласцівасці прадстаўлення стануць даступныя толькі для чытання; іх можна будзе мяняць, толькі калі змяніць стыль з дапамогай інструмента 'Рэдактар стыляў заметкі'.</translation>
+Пры ўжыванні захаванага стылю некаторыя ўласцівасці прадстаўлення стануць даступныя толькі для чытання; іх можна будзе мяняць, толькі калі змяніць стыль з дапамогай інструмента 'Сродак праўкі стыляў заметкі'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="221"/>

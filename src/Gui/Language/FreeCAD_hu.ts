@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="712"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>Tesztkimenet konzol</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="713"/>
@@ -169,12 +169,12 @@
     <message>
       <location filename="../CommandView.cpp" line="923"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>Átláthatóság kapcsolása</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1040"/>
       <source>Toggle Selectability</source>
-      <translation type="unfinished">Toggle Selectability</translation>
+      <translation>Kiválaszthatóság kapcsolása</translation>
     </message>
   </context>
   <context>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="537"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Fa nézet</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="538"/>
@@ -270,22 +270,22 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
       <source>Global sensitivity</source>
-      <translation type="unfinished">Global sensitivity</translation>
+      <translation>Globális érzékenység</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="54"/>
       <source>Dominant mode</source>
-      <translation type="unfinished">Dominant mode</translation>
+      <translation>Meghatározó mód</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="72"/>
       <source>Enable translations</source>
-      <translation type="unfinished">Enable translations</translation>
+      <translation>Fordítások engedélyezése</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="82"/>
       <source>Enable rotations</source>
-      <translation type="unfinished">Enable rotations</translation>
+      <translation>Forgatások engedélyezése</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="107"/>
@@ -323,19 +323,19 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="26"/>
       <source>Expression Editor</source>
-      <translation type="unfinished">Expression Editor</translation>
+      <translation>Kifejezés szerkesztő</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
       <source>Store the expression in a newly created property in the selected Variable Set.
 The property of this object will refer to the property of the Variable Set.</source>
-      <translation type="unfinished">Store the expression in a newly created property in the selected Variable Set.
-The property of this object will refer to the property of the Variable Set.</translation>
+      <translation>Tárolja a kifejezést egy nemrég létrehozott tulajdonságban a kiválasztott változóhalmazban. 
+Ennek az objektumnak a tulajdonsága a változóhalmazban lévő tulajdonságra fog hivatkozni.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set...</source>
-      <translation type="unfinished">Store in Variable Set...</translation>
+      <translation>Mentés egy változókészletben...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -345,7 +345,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="284"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Változó készlet</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="301"/>
@@ -406,7 +406,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="299"/>
       <source>The object will have the color of its individual faces editable with the Appearance per Face command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Appearance per Face command</translation>
+      <translation>Az objektum az egyes felületeinek színét fogja viselni, melyeket a Felület szerinti megjelenés parancs segítségével lehet szerkeszteni</translation>
     </message>
     <message>
       <location filename="../Application.h" line="289"/>
@@ -424,7 +424,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../QuantitySpinBox_p.h" line="63"/>
       <source>Enter expression… (=)</source>
-      <translation type="unfinished">Enter expression… (=)</translation>
+      <translation>Kifejezés bevitel… (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="64"/>
@@ -511,7 +511,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="51"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>Nyomja meg a SHIFT és a középső egér gombot</translation>
     </message>
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="53"/>
@@ -539,14 +539,13 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left or middle+right mouse button</source>
-      <translation type="unfinished">Press middle+left or middle+right mouse button</translation>
+      <translation>Nyomja meg a középső+bal vagy a középső+jobb egér gombot</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll mouse wheel or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Forgassa az egérgörgetőt, vagy tartsa lenyomva a görgőt - középső gombot -, miközben jobb vagy bal egérgombbal kattint, majd mozgassa az egeret felfelé vagy lefelé</translation>
     </message>
   </context>
   <context>
@@ -572,17 +571,17 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="125"/>
       <source>Renames the object</source>
-      <translation type="unfinished">Renames the object</translation>
+      <translation>Objektum átnevezése</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="132"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>Szerkesztés befejezése</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="133"/>
       <source>Finishes editing the object</source>
-      <translation type="unfinished">Finishes editing the object</translation>
+      <translation>Objektumszerkesztés befejezés</translation>
     </message>
   </context>
   <context>
@@ -621,7 +620,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="225"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Másolás a vágólapra</translation>
     </message>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="261"/>
@@ -655,7 +654,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgAbout.cpp" line="324"/>
       <source>FreeCAD would not be possible without the contributions of:</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of:</translation>
+      <translation>A FreeCAD nem jöhetett volna létre az alábbi együttműködők hozzájárulása nélkül:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAbout.cpp" line="326"/>
@@ -701,7 +700,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="238"/>
       <source>Cache Directory</source>
-      <translation type="unfinished">Cache Directory</translation>
+      <translation>Gyorsítótár elérési útvonala</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="240"/>
@@ -711,12 +710,12 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="241"/>
       <source>Clear it now?</source>
-      <translation type="unfinished">Clear it now?</translation>
+      <translation>Törlés most?</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="242"/>
       <source>Warning: Make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Figyelmeztetés: Biztosítsa, hogy ez az %1 egyetlen példány fut, és hogy nincsenek megnyitva dokumentumok, mivel ez adatvesztést okozhat!</translation>
     </message>
   </context>
   <context>
@@ -729,7 +728,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="284"/>
       <source>Out of range</source>
-      <translation type="unfinished">Out of range</translation>
+      <translation>Tartományon kívül</translation>
     </message>
   </context>
   <context>
@@ -737,7 +736,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="359"/>
       <source>Camera Settings</source>
-      <translation type="unfinished">Camera Settings</translation>
+      <translation>Kamera beállítások</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="366"/>
@@ -767,7 +766,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="419"/>
       <source>Current View</source>
-      <translation type="unfinished">Current View</translation>
+      <translation>Aktuális nézet</translation>
     </message>
   </context>
   <context>
@@ -810,7 +809,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Custom Clipping Direction</source>
-      <translation type="unfinished">Custom Clipping Direction</translation>
+      <translation>Személyre szabott vágásirány</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -926,7 +925,7 @@ while doing a left or right click and move the mouse up or down</translation>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="498"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Tulajdonság hozzáadása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="37"/>
@@ -961,32 +960,32 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="589"/>
       <source>Invalid group name</source>
-      <translation type="unfinished">Invalid group name</translation>
+      <translation>Érvénytelen csoport név</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="592"/>
       <source>Invalid type name</source>
-      <translation type="unfinished">Invalid type name</translation>
+      <translation>Érvénytelen típus név</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="598"/>
       <source>Invalid property name '%1'</source>
-      <translation type="unfinished">Invalid property name '%1'</translation>
+      <translation>Érvénytelen tulajdonság név '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="601"/>
       <source>Property '%1' already exists</source>
-      <translation type="unfinished">Property '%1' already exists</translation>
+      <translation>Már létező '%1' tulajdonság</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="604"/>
       <source>'%1' is a constant</source>
-      <translation type="unfinished">'%1' is a constant</translation>
+      <translation>'%1' egy állandó</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="607"/>
       <source>'%1' is a unit</source>
-      <translation type="unfinished">'%1' is a unit</translation>
+      <translation>'%1' egy mértékegység</translation>
     </message>
   </context>
   <context>
@@ -1049,7 +1048,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgChooseIcon.ui" line="38"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Ikon mappák</translation>
     </message>
   </context>
   <context>
@@ -1080,7 +1079,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="159"/>
       <source>Export configuration</source>
-      <translation type="unfinished">Export configuration</translation>
+      <translation>Beállítás exportálás</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="167"/>
@@ -1090,7 +1089,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="168"/>
       <source>A preference pack with that name already exists. Overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite it?</translation>
+      <translation>Már létezik ilyen nevű testreszabás csomag. Felülírja azt?</translation>
     </message>
   </context>
   <context>
@@ -1113,7 +1112,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="67"/>
       <source>Menu text</source>
-      <translation type="unfinished">Menu text</translation>
+      <translation>Menü szöveg</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="74"/>
@@ -1123,17 +1122,17 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="81"/>
       <source>Status text</source>
-      <translation type="unfinished">Status text</translation>
+      <translation>Állapot szöveg</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="88"/>
       <source>What's this</source>
-      <translation type="unfinished">What's this</translation>
+      <translation>Mi ez</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation type="unfinished">Accelerator</translation>
+      <translation>Gyorsító</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
@@ -1143,7 +1142,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>Válasszon egy ikont</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>
@@ -1181,7 +1180,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="211"/>
       <source>Could not find macro file '%1'</source>
-      <translation type="unfinished">Could not find macro file '%1'</translation>
+      <translation>'%1' makró fájl nem található</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="235"/>
@@ -1191,7 +1190,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="235"/>
       <source>Specify the macro first</source>
-      <translation type="unfinished">Specify the macro first</translation>
+      <translation>Makrót határozzon meg először</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="240"/>
@@ -1203,7 +1202,7 @@ while doing a left or right click and move the mouse up or down</translation>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="240"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="310"/>
       <source>Specify the menu text first</source>
-      <translation type="unfinished">Specify the menu text first</translation>
+      <translation>Menü szöveget határozzon meg először</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="305"/>
@@ -1213,7 +1212,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="305"/>
       <source>Select a macro item first</source>
-      <translation type="unfinished">Select a macro item first</translation>
+      <translation>Makrót tételt válasszon először</translation>
     </message>
   </context>
   <context>
@@ -1254,27 +1253,27 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="48"/>
       <source>&amp;Category</source>
-      <translation type="unfinished">&amp;Category</translation>
+      <translation>&amp;Kategória</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="100"/>
       <source>Current shortcut</source>
-      <translation type="unfinished">Current shortcut</translation>
+      <translation>Aktuális billentyűparancs</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="119"/>
       <source>&amp;New shortcut</source>
-      <translation type="unfinished">&amp;New shortcut</translation>
+      <translation>&amp;Új billentyűparancs</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay</source>
-      <translation type="unfinished">Multi-key sequence delay</translation>
+      <translation>Többkulcsos szekvencia késleltetés</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="191"/>
       <source>Shortcut priority list</source>
-      <translation type="unfinished">Shortcut priority list</translation>
+      <translation>Billentyűparancsok prioritási listája</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="238"/>
@@ -1331,7 +1330,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="149"/>
       <source>Type to search…</source>
-      <translation type="unfinished">Type to search…</translation>
+      <translation>Írja be a keresendő szöveget…</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="231"/>
@@ -1384,42 +1383,42 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="119"/>
       <source>Move Right</source>
-      <translation type="unfinished">Move Right</translation>
+      <translation>Mozgatás jobbra</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="122"/>
       <source>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd a kijelölt elemet egy szinttel lefelé.&lt;/b&gt;&lt;p&gt;Ez a szülőelem szintjét is megváltoztatja.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="145"/>
       <source>Move Left</source>
-      <translation type="unfinished">Move Left</translation>
+      <translation>Mozgatás balra</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="148"/>
       <source>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd a kijelölt elemet egy szinttel feljebb.&lt;/b&gt;&lt;p&gt;Ez a szülőelem szintjét is megváltoztatja.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Mozgatás felfelé</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
       <source>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd az kijelölt elemet felfelé.&lt;/b&gt;&lt;p&gt;Az elem a hierarchia szintjén belül fog mozogni.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Mozgatás lefelé</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
       <source>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mozgasd le az elemet.&lt;/b&gt;&lt;p&gt;Az elem a hierarchia szintjén belül fog mozogni.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="300"/>
@@ -1528,7 +1527,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="44"/>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="133"/>
       <source>No Spaceball present</source>
-      <translation type="unfinished">No Spaceball present</translation>
+      <translation>Nincs 3D-s egér</translation>
     </message>
   </context>
   <context>
@@ -1541,7 +1540,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="674"/>
       <source>No Spaceball present</source>
-      <translation type="unfinished">No Spaceball present</translation>
+      <translation>Nincs 3D-s egér</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="723"/>
@@ -1604,22 +1603,22 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="14"/>
       <source>Execute Macro</source>
-      <translation type="unfinished">Execute Macro</translation>
+      <translation>Makró végrehajtása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="55"/>
       <source>Macro Name</source>
-      <translation type="unfinished">Macro Name</translation>
+      <translation>Makrónév</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="85"/>
       <source>Find file</source>
-      <translation type="unfinished">Find file</translation>
+      <translation>Fájl keresése</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="99"/>
       <source>Find in files</source>
-      <translation type="unfinished">Find in files</translation>
+      <translation>Keresés fájlokban</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="122"/>
@@ -1669,27 +1668,27 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="281"/>
       <source>Launches a guide on how to set up a macro in a custom global toolbar</source>
-      <translation type="unfinished">Launches a guide on how to set up a macro in a custom global toolbar</translation>
+      <translation>Indíts útmutatót arról, hogyan állítható be egy makró egy testreszabott globális eszköztáron</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="307"/>
       <source>Opens the Addon Manager to download macros created by the community</source>
-      <translation type="unfinished">Opens the Addon Manager to download macros created by the community</translation>
+      <translation>Nyissa meg a bővítmények kezelőt, hogy letöltse a közösség által készített makrókat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="321"/>
       <source>User Macros Location</source>
-      <translation type="unfinished">User Macros Location</translation>
+      <translation>Felhasználói makrók helye</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="355"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>Nyissa meg a makrók mappáját a rendszer fájlkezelőben</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="358"/>
       <source>Open Folder</source>
-      <translation type="unfinished">Open Folder</translation>
+      <translation>Mappa megnyitása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="284"/>
@@ -1699,7 +1698,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="106"/>
       <source>Filter by file content, case-insensitive. Regular expressions are supported.</source>
-      <translation type="unfinished">Filter by file content, case-insensitive. Regular expressions are supported.</translation>
+      <translation>Szűrj fájl tartalma szerint, a kis- és nagybetűk megkülönböztetése nélkül. Álltalános kifejezések is használhatók.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="310"/>
@@ -1793,38 +1792,38 @@ Megjegyzés: a módosítások csak a következő munkaasztal váltásakor érvé
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="450"/>
       <source>Read-Only</source>
-      <translation type="unfinished">Read-Only</translation>
+      <translation>Csak olvasható</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="469"/>
       <source>Enter a file name:</source>
-      <translation type="unfinished">Enter a file name:</translation>
+      <translation>Írjon be egy fájlnevet:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
       <source>Delete the macro '%1'?</source>
-      <translation type="unfinished">Delete the macro '%1'?</translation>
+      <translation>Törölni szeretné a '%1' makrót?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="630"/>
       <source>Walkthrough, Dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, Dialog 1 of 2</translation>
+      <translation>Útmutató, párbeszéd 1/2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="695"/>
       <source>Walkthrough, Dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, Dialog 1 of 1</translation>
+      <translation>Útmutató, párbeszéd 1/1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="696"/>
       <source>Walkthrough, Dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, Dialog 2 of 2</translation>
+      <translation>Útmutató, párbeszéd 2/2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="865"/>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1026"/>
       <source>Enter new name</source>
-      <translation type="unfinished">Enter new name</translation>
+      <translation>Írjon be egy új nevet</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
@@ -1867,22 +1866,22 @@ Esetleg fájl jogosultsági hiba?</translation>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="14"/>
       <source>Record Macro</source>
-      <translation type="unfinished">Record Macro</translation>
+      <translation>Makró rögzítése</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="35"/>
       <source>Macro Name</source>
-      <translation type="unfinished">Macro Name</translation>
+      <translation>Makrónév</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="62"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>Makró elérési útja</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="96"/>
       <source>Choose Folder</source>
-      <translation type="unfinished">Choose Folder</translation>
+      <translation>Válasszon mappát</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="123"/>
@@ -1912,22 +1911,22 @@ Esetleg fájl jogosultsági hiba?</translation>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="103"/>
       <source>Specify a place to save first.</source>
-      <translation type="unfinished">Specify a place to save first.</translation>
+      <translation>Először adjon meg egy helyet a mentéshez.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="112"/>
       <source>The macro directory does not exist. Choose another one.</source>
-      <translation type="unfinished">The macro directory does not exist. Choose another one.</translation>
+      <translation>A makró könyvtár nem létezik. Válasszon egy másikat.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="127"/>
       <source>The macro '%1' already exists. Overwrite it?</source>
-      <translation type="unfinished">The macro '%1' already exists. Overwrite it?</translation>
+      <translation>A '%1' makró már létezik. Felül szeretné írni?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="140"/>
       <source>You have no write permission for the directory. Choose another one.</source>
-      <translation type="unfinished">You have no write permission for the directory. Choose another one.</translation>
+      <translation>Nincs írási engedélyed a könyvtárban. Válassz egy másikat.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="126"/>
@@ -1960,7 +1959,7 @@ Esetleg fájl jogosultsági hiba?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="14"/>
       <source>Material Properties</source>
-      <translation type="unfinished">Material Properties</translation>
+      <translation>Az anyag tulajdonságai</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="47"/>
@@ -1975,12 +1974,12 @@ Esetleg fájl jogosultsági hiba?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="78"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Környezeti szín</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="114"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Tükröződési szín</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="131"/>
@@ -1990,7 +1989,7 @@ Esetleg fájl jogosultsági hiba?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="148"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Sugárzó szín</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
@@ -2007,12 +2006,12 @@ Esetleg fájl jogosultsági hiba?</translation>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="14"/>
       <source>Online Help</source>
-      <translation type="unfinished">Online Help</translation>
+      <translation>Online súgó</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="26"/>
       <source>Help Viewer</source>
-      <translation type="unfinished">Help Viewer</translation>
+      <translation>Segítség megjelenítő</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="38"/>
@@ -2037,9 +2036,9 @@ Esetleg fájl jogosultsági hiba?</translation>
       <source>Access denied to '%1'
 
 Specify another directory.</source>
-      <translation type="unfinished">Access denied to '%1'
+      <translation>A hozzáférés a '%1'-hez megtagadva. 
 
-Specify another directory.</translation>
+Adjon meg egy másik könyvtárat.</translation>
     </message>
   </context>
   <context>
@@ -2062,7 +2061,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="70"/>
       <source>Enter a group name to search</source>
-      <translation type="unfinished">Enter a group name to search</translation>
+      <translation>Írjon be egy csoportnevet a kereséshez</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="86"/>
@@ -2077,7 +2076,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="73"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>Keres egy csoportot</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="112"/>
@@ -2101,12 +2100,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="32"/>
       <source>Find What</source>
-      <translation type="unfinished">Find What</translation>
+      <translation>Keresendő szöveg</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="55"/>
       <source>Look At</source>
-      <translation type="unfinished">Look At</translation>
+      <translation>Keresni</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="61"/>
@@ -2126,7 +2125,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="94"/>
       <source>Match exact string</source>
-      <translation type="unfinished">Match exact string</translation>
+      <translation>Egyezik a pontos karakterlánccal</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="45"/>
@@ -2141,7 +2140,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="308"/>
       <source>Cannot find the text: %1</source>
-      <translation type="unfinished">Cannot find the text: %1</translation>
+      <translation>Nem található szöveg: %1</translation>
     </message>
   </context>
   <context>
@@ -2183,7 +2182,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="125"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>Keres egy csoportot</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="473"/>
@@ -2206,7 +2205,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>Bővítmények kezelő megnyitása</translation>
     </message>
   </context>
   <context>
@@ -2229,17 +2228,17 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="137"/>
       <source>Deletes the user-saved preference pack '%1'</source>
-      <translation type="unfinished">Deletes the user-saved preference pack '%1'</translation>
+      <translation>Törli a '%1' felhasználó által mentett beállításcsomagot</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="147"/>
       <source>Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</source>
-      <translation type="unfinished">Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</translation>
+      <translation>'%1' bővítmény testreszabás megjelenítésének bekapcsolása/kikapcsolása (a bővítmény végleges eltávolításához használja a bővítménykezelőt)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="160"/>
       <source>Delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation type="unfinished">Delete the preference pack named '%1'? This cannot be undone.</translation>
+      <translation>Eltávolítja a '%1' nevű testreszabás csomagot? Ez nem vonható vissza.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="159"/>
@@ -2267,7 +2266,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="233"/>
       <source>Search preferences...</source>
-      <translation type="unfinished">Search preferences...</translation>
+      <translation>Testreszabások keresése...</translation>
     </message>
     <message>
       <source/>
@@ -2279,7 +2278,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="769"/>
       <source>Reset Page '%1'</source>
-      <translation type="unfinished">Reset Page '%1'</translation>
+      <translation>'%1' lap visszaállítása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="773"/>
@@ -2289,47 +2288,47 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="776"/>
       <source>Reset Group '%1'</source>
-      <translation type="unfinished">Reset Group '%1'</translation>
+      <translation>'%1' csoport visszaállítása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="784"/>
       <source>Reset All</source>
-      <translation type="unfinished">Reset All</translation>
+      <translation>Összes visszaállítása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
       <source>Clear User Settings</source>
-      <translation type="unfinished">Clear User Settings</translation>
+      <translation>Felhasználói beállítások törlése</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
       <source>Clear all your user settings?</source>
-      <translation type="unfinished">Clear all your user settings?</translation>
+      <translation>Összes felhasználói beállítás törlése?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
       <source>All settings will be cleared.</source>
-      <translation type="unfinished">All settings will be cleared.</translation>
+      <translation>Minden beállítás törlésre kerül.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="947"/>
       <source>Restart Required</source>
-      <translation type="unfinished">Restart Required</translation>
+      <translation>Újraindítás szükséges</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="948"/>
       <source>Restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">Restart FreeCAD for changes to take effect.</translation>
+      <translation>FreeCAD újraindítása a módosítások érvénybe léptetéséhez.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="953"/>
       <source>Restart Now</source>
-      <translation type="unfinished">Restart Now</translation>
+      <translation>Újraindítás most</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="954"/>
       <source>Restart Later</source>
-      <translation type="unfinished">Restart Later</translation>
+      <translation>Újraindítás később</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="780"/>
@@ -2352,7 +2351,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="14"/>
       <source>Document Information</source>
-      <translation type="unfinished">Document Information</translation>
+      <translation>Dokumentum adatai</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="26"/>
@@ -2362,7 +2361,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="47"/>
       <source>&amp;Name</source>
-      <translation type="unfinished">&amp;Name</translation>
+      <translation>&amp;Név</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="73"/>
@@ -2377,42 +2376,42 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="119"/>
       <source>Program version</source>
-      <translation type="unfinished">Program version</translation>
+      <translation>Program verziója</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="142"/>
       <source>Unit system</source>
-      <translation type="unfinished">Unit system</translation>
+      <translation>Mértékegységrendszer</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="159"/>
       <source>Created &amp;by</source>
-      <translation type="unfinished">Created &amp;by</translation>
+      <translation>Alkotó</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="182"/>
       <source>Creation &amp;date</source>
-      <translation type="unfinished">Creation &amp;date</translation>
+      <translation>Létrehozás &amp;dátuma</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="208"/>
       <source>&amp;Last modified by</source>
-      <translation type="unfinished">&amp;Last modified by</translation>
+      <translation>Utoljára módosította</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="231"/>
       <source>Last &amp;modification date</source>
-      <translation type="unfinished">Last &amp;modification date</translation>
+      <translation>Utolsó &amp;módosítás dátuma</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="257"/>
       <source>Com&amp;pany</source>
-      <translation type="unfinished">Com&amp;pany</translation>
+      <translation>Vállalat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="280"/>
       <source>License information</source>
-      <translation type="unfinished">License information</translation>
+      <translation>Információk az engedélyről</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="308"/>
@@ -2422,7 +2421,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="317"/>
       <source>&amp;Comment</source>
-      <translation type="unfinished">&amp;Comment</translation>
+      <translation>&amp;Megjegyzés</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="152"/>
@@ -2444,12 +2443,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="14"/>
       <source>Document Utility</source>
-      <translation type="unfinished">Document Utility</translation>
+      <translation>Eszközök dokumentum</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="22"/>
       <source>Extract Document</source>
-      <translation type="unfinished">Extract Document</translation>
+      <translation>Dokumentum kibontás</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="28"/>
@@ -2471,7 +2470,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="72"/>
       <source>Create Document</source>
-      <translation type="unfinished">Create Document</translation>
+      <translation>Dokumentum létrehozás</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="137"/>
@@ -2538,7 +2537,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.ui" line="53"/>
       <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation type="unfinished">Synchronizes the 3D view selection with the full object hierarchy</translation>
+      <translation>Szinkronizálja a 3D nézet kijelölését a teljes objektumhierarchiával</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.ui" line="56"/>
@@ -2583,12 +2582,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</translation>
+      <translation>FIGYELMEZTETÉS: ez a folyamat visszavonja a megadott dátum óta végrehajtott beállítási módosításokat, és a legutóbbi fájljaidat és makróidat is visszaállítja az adott dátum szerinti állapotra.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="52"/>
       <source>Available backup files</source>
-      <translation type="unfinished">Available backup files</translation>
+      <translation>Elérhető biztonsági másolat fájlok</translation>
     </message>
   </context>
   <context>
@@ -2604,7 +2603,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="20"/>
       <source>Running External Program</source>
-      <translation type="unfinished">Running External Program</translation>
+      <translation>Külső program futtatása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="38"/>
@@ -2619,7 +2618,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="104"/>
       <source>Accept Changes</source>
-      <translation type="unfinished">Accept Changes</translation>
+      <translation>Változások elfogadása</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="111"/>
@@ -2629,7 +2628,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="118"/>
       <source>Abort Program</source>
-      <translation type="unfinished">Abort Program</translation>
+      <translation>Program megszakítás</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="138"/>
@@ -2669,22 +2668,22 @@ jobb alsó sarok a megnyitott fájlokban</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="107"/>
       <source>Axis letter and FPS counter color</source>
-      <translation type="unfinished">Axis letter and FPS counter color</translation>
+      <translation>Tengelyek és a képkockasebesség-számláló betűszíne</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="131"/>
       <source>X-axis color</source>
-      <translation type="unfinished">X-axis color</translation>
+      <translation>X-tengely színe</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="171"/>
       <source>Y-axis color</source>
-      <translation type="unfinished">Y-axis color</translation>
+      <translation>Y-tengely színe</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="211"/>
       <source>Z-axis color</source>
-      <translation type="unfinished">Z-axis color</translation>
+      <translation>Z-tengely színe</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="240"/>
@@ -2753,7 +2752,7 @@ a bal alsó sarokban jelenik meg a megnyitott fájlokban</translation>
     <message>
       <location filename="../Multisample.cpp" line="42"/>
       <source>Line smoothing</source>
-      <translation type="unfinished">Line smoothing</translation>
+      <translation>Vonal simítás</translation>
     </message>
     <message>
       <location filename="../Multisample.cpp" line="43"/>
@@ -2803,26 +2802,26 @@ a bal alsó sarokban jelenik meg a megnyitott fájlokban</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="64"/>
       <source>Relative size</source>
-      <translation type="unfinished">Relative size</translation>
+      <translation>Relatív méret</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="74"/>
       <source>Size of main coordinate system representation
 in the corner in % of height/width of the viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner in % of height/width of the viewport</translation>
+      <translation>A fő koordináta rendszer ábrázolásának mérete
+a betekintés sarkában a magasság/szélesség százalékában</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="100"/>
       <source>Letter color</source>
-      <translation type="unfinished">Letter color</translation>
+      <translation>Betűszín</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="286"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
-Changing this option requires a restart of the application.</translation>
+      <translation>Ez a beállítás a grafikus kártya és az illesztőprogram hibaelhárításához hasznos.
+A beállítás módosításához újra kell indítani az alkalmazást.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
@@ -2836,21 +2835,21 @@ can be rendered directly by the GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by the GPU.
+      <translation>Ha bejelölt, akkor a csúcsponttároló objektumokat (VBO) használja.
+A VBO egy OpenGL funkció, amely módszereket biztosít a
+csúcspont adatok (pozíció, aktuális vektor, szín stb.) a grafikus kártyára töltésére.
+A VBO jelentős teljesítménynövekedést kínál, mivel az adatok
+a grafikus memóriában, nem pedig a rendszermemóriában, és így
+közvetlenül a GPU-val leképezhetők. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support.</translation>
+Megjegyzés: Előfordulhat, hogy ez a funkció számos különböző hibát,
+grafikus anomáliáktól a GPU összeomlási hibákig, generál. Ne felejtsd
+el ezt a beállítást engedélyezettként jelenteni, amikor támogatást kérsz.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="387"/>
       <source>Method of multisample anti-aliasing</source>
-      <translation type="unfinished">Method of multisample anti-aliasing</translation>
+      <translation>Többszörös mintavételezéses élsimítási módszer</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="479"/>
@@ -2865,7 +2864,7 @@ report this setting as enabled when seeking support.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="469"/>
       <source>Transparent objects</source>
-      <translation type="unfinished">Transparent objects</translation>
+      <translation>Átlátszó objektumok</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="350"/>
@@ -2876,13 +2875,11 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render caching' is another way to say 'Rendering acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>A 'Leképző gyorsítótár' egy másik módja a 'Leképzési gyorsítótárazás' kimondásának.
+Ennek elérésére 3 lehetőség áll rendelkezésre: 
+1) 'Auto' (alapértelmezett), hagyja a Coin3D döntse el, hogy hova gyorsítótáraz.
+2) 'Elosztott', manuálisan kapcsolja be a gyorsítótárat az összes nézetszolgáltató gyökércsomópontjához.
+3) 'Központosított', manuálisan kapcsolja ki a gyorsítótárat az összes nézetszolgáltató összes csomópontjában, és csak a helyszínen rajzolt grafikus gyökér csomópontot gyorsítja. Ez a leggyorsabb gyorsító sebesség, de lassabban válaszol minden jelenet változásokra.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="407"/>
@@ -2896,12 +2893,12 @@ az aktuálisan megjelenített 3D objektum határolókeret méretével.</translat
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="502"/>
       <source>Datum size</source>
-      <translation type="unfinished">Datum size</translation>
+      <translation>Dátum méret</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="515"/>
       <source>Size of core datum objects</source>
-      <translation type="unfinished">Size of core datum objects</translation>
+      <translation>Adatvonalak és síkok megjelenítési mérete</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="518"/>
@@ -2911,12 +2908,12 @@ az aktuálisan megjelenített 3D objektum határolókeret méretével.</translat
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
       <source>Camera Type</source>
-      <translation type="unfinished">Camera Type</translation>
+      <translation>Kamera típus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="588"/>
       <source>Objects will be in orthographic projection</source>
-      <translation type="unfinished">Objects will be in orthographic projection</translation>
+      <translation>Az objektumok függőleges vetületben jelennek meg</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="572"/>
@@ -3011,7 +3008,7 @@ az aktuálisan megjelenített 3D objektum határolókeret méretével.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache Directory</source>
-      <translation type="unfinished">Cache Directory</translation>
+      <translation>Gyorsítótár elérési útvonala</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
@@ -3801,7 +3798,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="69"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>Makró elérési útja</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
@@ -4121,19 +4118,19 @@ Az érték a képernyőn elférő gömb átmérője.</translation>
       <source>Prevents view tilting when pinch-zooming.
 Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Megakadályozza, hogy a nézet két ujjal nagyításkor vagy kicsinyítéskor megbillenjen.
+Csak a kézmozdulat navigációs stílusra vonatkozik.
+Ez a beállítás nem tiltja le az egérrel döntés beállítást.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
       <source>Space Mouse</source>
-      <translation type="unfinished">Space Mouse</translation>
+      <translation>SpaceMouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
       <source>Enable support of legacy SpaceMouse devices</source>
-      <translation type="unfinished">Enable support of legacy SpaceMouse devices</translation>
+      <translation>SpaceMouse egér eszközök támogatásának engedélyezése</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="777"/>
@@ -4153,17 +4150,17 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation Cube</source>
-      <translation type="unfinished">Navigation Cube</translation>
+      <translation>Navigációskocka</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="84"/>
       <source>Corner where the navigation cube is displayed</source>
-      <translation type="unfinished">Corner where the navigation cube is displayed</translation>
+      <translation>Sarok, ahol a navigációs kocka megjelenik</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="120"/>
       <source>Rotates to nearest possible state when clicking a face of the cube</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a face of the cube</translation>
+      <translation>Kocka felületére kattintva a lehető legközelebbi állapotába forog</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="139"/>
@@ -4173,24 +4170,24 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="282"/>
       <source>Rotation Center Indicator</source>
-      <translation type="unfinished">Rotation Center Indicator</translation>
+      <translation>Forgatási középpont jelző</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="384"/>
       <source>3D navigation</source>
-      <translation type="unfinished">3D navigation</translation>
+      <translation>3D navigáció</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="421"/>
       <source>Lists the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">Lists the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <translation>Felsorolja az egérgomb konfigurációját az egyes kiválasztott navigációs beállításokhoz.
+Jelöljön ki egy beállítást, majd nyomja meg a gombot a beállítások megtekintéséhez.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="425"/>
       <source>Mouse Configuration</source>
-      <translation type="unfinished">Mouse Configuration</translation>
+      <translation>Egér beállítása</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="619"/>
@@ -4331,17 +4328,17 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (ms)</source>
-      <translation type="unfinished">Python profiler interval (ms)</translation>
+      <translation>Python profilkészítő intervallum (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation type="unfinished">The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+      <translation>Az az intervallum, amelyben a profilozó fut, amikor Python-kód fut (hogy a GUI válaszoljon). Kikapcsoláshoz állítsa 0-ra.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="125"/>
       <source>Path to external Python executable (optional)</source>
-      <translation type="unfinished">Path to external Python executable (optional)</translation>
+      <translation>Python külső végrehajtható fájl elérés (választható)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
@@ -4369,7 +4366,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="20"/>
       <source>Viewport Selection Behavior</source>
-      <translation type="unfinished">Viewport Selection Behavior</translation>
+      <translation>Viselkedés a nézetablak kiválasztásakor</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="67"/>
@@ -4381,9 +4378,8 @@ horizontal space in Python console</source>
       <source>Area for selecting elements in the 3D view.
 A larger value makes it easier to select elements, but may prevent selection of small features.
       </source>
-      <translation type="unfinished">Area for selecting elements in the 3D view.
-A larger value makes it easier to select elements, but may prevent selection of small features.
-      </translation>
+      <translation>Elemválasztási terület a 3D nézetben.
+A nagyobb érték megkönnyíti az elemek kiválasztását, de megakadályozza a kis formák kiválasztását      </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="154"/>
@@ -4398,17 +4394,17 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="173"/>
       <source>Preselect the object in the 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in the 3D view when hovering the cursor over the tree item</translation>
+      <translation>Objektum előre kijelölése 3D nézetben, amikor az egeret a fa tétele fölé mozgatja</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="189"/>
       <source>Tree Selection Behavior</source>
-      <translation type="unfinished">Tree Selection Behavior</translation>
+      <translation>Fa kiválasztási viselkedés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="208"/>
       <source>Auto expand tree item when the corresponding object is selected in the 3D view</source>
-      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in the 3D view</translation>
+      <translation>A fa automatikus kibontása, ha a társított objektum 3D nézetben kijelölt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="46"/>
@@ -4491,7 +4487,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="508"/>
       <source> pt</source>
-      <translation type="unfinished"> pt</translation>
+      <translation> pt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="163"/>
@@ -4501,19 +4497,19 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="23"/>
       <source>Background Color</source>
-      <translation type="unfinished">Background Color</translation>
+      <translation>Háttérszín</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="61"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="123"/>
       <source>Background will have the selected color</source>
-      <translation type="unfinished">Background will have the selected color</translation>
+      <translation>Kiválasztott színű lesz a háttér</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="77"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="96"/>
       <source>Background will have the selected color gradient</source>
-      <translation type="unfinished">Background will have the selected color gradient</translation>
+      <translation>Kiválasztott színátmenetű lesz a háttér</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="166"/>
@@ -4528,12 +4524,12 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="204"/>
       <source>Middle</source>
-      <translation type="unfinished">Middle</translation>
+      <translation>Középen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="231"/>
       <source>Color gradient will get the selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get the selected color as middle color</translation>
+      <translation>A színátmenet a kiválasztott színt kapja középső színként</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="247"/>
@@ -4543,32 +4539,32 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Fa nézet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
       <source>Background color for objects in the tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in the tree view that are currently edited</translation>
+      <translation>Aktuálisan szerkesztett fanézetben lévő objektumok háttérszíne</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="361"/>
       <source>Active container object</source>
-      <translation type="unfinished">Active container object</translation>
+      <translation>Aktív tároló objektum</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="374"/>
       <source>Background color for active containers (e.g. part or body) in the tree view</source>
-      <translation type="unfinished">Background color for active containers (e.g. part or body) in the tree view</translation>
+      <translation>Háttérszín az aktív munkaterületekhez (pl. alkatrész vagy test) a fanézetben</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
       <source>Color bar label text color (e.g. in Mesh and FEM)</source>
-      <translation type="unfinished">Color bar label text color (e.g. in Mesh and FEM)</translation>
+      <translation>A színsáv címkéjének szövegszíne (pl. Háló és VEM esetén)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
       <source>Color bar label text size (e.g. in Mesh and FEM)</source>
-      <translation type="unfinished">Color bar label text size (e.g. in Mesh and FEM)</translation>
+      <translation>A színsáv címkéjének mérete (pl. Háló és VEM esetén)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="234"/>
@@ -4618,17 +4614,17 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="14"/>
       <source>Units Converter</source>
-      <translation type="unfinished">Units Converter</translation>
+      <translation>Mértékegységek átváltó</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="35"/>
       <source>as</source>
-      <translation type="unfinished">as</translation>
+      <translation>mint</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="48"/>
       <source>Input the unit for the result</source>
-      <translation type="unfinished">Input the unit for the result</translation>
+      <translation>Mértékegység bevitele az eredményhez</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="58"/>
@@ -4656,39 +4652,39 @@ Számítás hozzáadásához nyomja meg a Return billentyűt az értékbeviteli 
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="117"/>
       <source>Unit system</source>
-      <translation type="unfinished">Unit system</translation>
+      <translation>Mértékegységrendszer</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="124"/>
       <source>Unit system to be used for the Quantity.
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity.
-The preference system is the one set in the general preferences.</translation>
+      <translation>Mértékegység rendszer a mennyiséghez.
+A használt rendszer az, amelyet az általános beállításokban adnak meg.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="132"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Tizedesjegyek</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="139"/>
       <source>Decimals for the quantity</source>
-      <translation type="unfinished">Decimals for the quantity</translation>
+      <translation>Tizedesjegyek a mennyiséghez</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="155"/>
       <source>Unit category</source>
-      <translation type="unfinished">Unit category</translation>
+      <translation>Mértékegység kategória</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="168"/>
       <source>Unit category for the quantity</source>
-      <translation type="unfinished">Unit category for the quantity</translation>
+      <translation>A mennyiség mértékegység kategóriája</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="193"/>
       <source>Copies the result to the clipboard</source>
-      <translation type="unfinished">Copies the result to the clipboard</translation>
+      <translation>Másolja vágólapra az eredményt</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="196"/>
@@ -4741,12 +4737,12 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../DocumentRecovery.ui" line="49"/>
       <source>Status of recovered documents</source>
-      <translation type="unfinished">Status of recovered documents</translation>
+      <translation>Helyreállított dokumentumok állapota</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="60"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Dokumentum neve</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="65"/>
@@ -4761,7 +4757,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../DocumentRecovery.cpp" line="199"/>
       <source>Original file corrupted</source>
-      <translation type="unfinished">Original file corrupted</translation>
+      <translation>Az eredeti fájl sérült</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="202"/>
@@ -4798,22 +4794,22 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../DocumentRecovery.cpp" line="626"/>
       <source>Delete the selected transient directories?</source>
-      <translation type="unfinished">Delete the selected transient directories?</translation>
+      <translation>Törölni szeretné a kijelölt ideiglenes könyvtárakat?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="627"/>
       <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory it is not possible to recover any files afterwards.</translation>
+      <translation>A kiválasztott átmeneti könyvtár törlése után a fájlok már nem állíthatók vissza.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="658"/>
       <source>Delete all transient directories?</source>
-      <translation type="unfinished">Delete all transient directories?</translation>
+      <translation>Törölje az összes ideiglenes könyvtárat?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="659"/>
       <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories it is not possible to recover any files afterwards.</translation>
+      <translation>Az összes ideiglenes könyvtár törlése után nem lehet visszaállítani semmilyen fájlt.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
@@ -4843,7 +4839,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../DownloadItem.cpp" line="440"/>
       <source>Open Containing Folder</source>
-      <translation type="unfinished">Open Containing Folder</translation>
+      <translation>Tartalmazó mappa megnyitása</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="457"/>
@@ -4916,7 +4912,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../DownloadManager.ui" line="34"/>
       <source>Clean Up</source>
-      <translation type="unfinished">Clean Up</translation>
+      <translation>Takarítás</translation>
     </message>
     <message>
       <location filename="../DownloadManager.ui" line="56"/>
@@ -4944,7 +4940,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="457"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Ikon mappák</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="594"/>
@@ -4967,7 +4963,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="622"/>
       <source>Removing a folder only takes effect after an application restart</source>
-      <translation type="unfinished">Removing a folder only takes effect after an application restart</translation>
+      <translation>Könyvtár mappa eltávolítása csak az alkalmazás újraindításával lép érvénybe</translation>
     </message>
   </context>
   <context>
@@ -4975,7 +4971,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../InputVector.ui" line="14"/>
       <source>Input Vector</source>
-      <translation type="unfinished">Input Vector</translation>
+      <translation>Bemeneti vektor</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="20"/>
@@ -5003,7 +4999,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../MouseButtons.ui" line="14"/>
       <source>Mouse Buttons</source>
-      <translation type="unfinished">Mouse Buttons</translation>
+      <translation>Egérgombok</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="20"/>
@@ -5028,7 +5024,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../MouseButtons.ui" line="88"/>
       <source>Zooming</source>
-      <translation type="unfinished">Zooming</translation>
+      <translation>Nagyítás</translation>
     </message>
   </context>
   <context>
@@ -6797,7 +6793,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>Nyomja meg a SHIFT és a középső egér gombot</translation>
     </message>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
@@ -7439,7 +7435,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3410"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>Szerkesztés befejezése</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3411"/>
@@ -7816,7 +7812,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="645"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Fa nézet</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="672"/>
@@ -11989,7 +11985,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Fa nézet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12009,7 +12005,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="244"/>
       <source> pt</source>
-      <translation type="unfinished"> pt</translation>
+      <translation> pt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="306"/>
@@ -13322,7 +13318,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="314"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>Nyissa meg a makrók mappáját a rendszer fájlkezelőben</translation>
     </message>
   </context>
   <context>
@@ -13486,7 +13482,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="166"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Változó készlet</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="167"/>
@@ -14376,7 +14372,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="3785"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Fa nézet</translation>
     </message>
   </context>
   <context>

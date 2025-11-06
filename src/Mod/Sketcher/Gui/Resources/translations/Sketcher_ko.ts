@@ -4420,7 +4420,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Tools</source>
-      <translation type="unfinished">Visual Tools</translation>
+      <translation>시각 도구</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4774,7 +4774,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
       <source>Failed to add box</source>
-      <translation type="unfinished">Failed to add box</translation>
+      <translation>상자 추가 실패</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="184"/>

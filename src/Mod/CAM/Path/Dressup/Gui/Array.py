@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path

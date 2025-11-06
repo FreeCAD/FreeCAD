@@ -11438,7 +11438,7 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
     <message>
       <location filename="../ui/dialogSetup.ui" line="100"/>
       <source>US/Imperial</source>
-      <translation>US / brytyjskie</translation>
+      <translation>US / brytyjski</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>

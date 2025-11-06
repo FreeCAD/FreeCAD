@@ -1142,7 +1142,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="145"/>
       <source>Choose an icon</source>
-      <translation type="unfinished">Choose an icon</translation>
+      <translation>Scegli un'icona</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="234"/>
@@ -2038,9 +2038,9 @@ Forse un errore di autorizzazione del file?</translation>
       <source>Access denied to '%1'
 
 Specify another directory.</source>
-      <translation type="unfinished">Access denied to '%1'
-
-Specify another directory.</translation>
+      <translation>Accesso negato a '%1'
+		
+Specificare un'altra cartella.</translation>
     </message>
   </context>
   <context>
@@ -2063,7 +2063,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="70"/>
       <source>Enter a group name to search</source>
-      <translation type="unfinished">Enter a group name to search</translation>
+      <translation>Inserisci un nome di gruppo da cercare</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="86"/>
@@ -2078,7 +2078,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="73"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>Cerca gruppo</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="112"/>
@@ -2184,7 +2184,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="125"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>Cerca gruppo</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="473"/>
@@ -6130,13 +6130,13 @@ Save all changes?</translation>
       <location filename="../MainWindow.cpp" line="407"/>
       <source>Input hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input hints</translation>
+      <translation>Suggerimenti su inserimenti</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="417"/>
       <source>Quick measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation type="unfinished">Quick measure</translation>
+      <translation>Misura rapida</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="427"/>
@@ -7533,7 +7533,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="1158"/>
       <source>Shows a description column for items. An item's description can be set by editing the 'label2' property.</source>
-      <translation type="unfinished">Shows a description column for items. An item's description can be set by editing the 'label2' property.</translation>
+      <translation>Mostra una colonna di descrizione per gli elementi. Una descrizione di elemento può essere impostata modificando la proprietà 'label2'.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3407"/>
@@ -9017,17 +9017,17 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="235"/>
       <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation type="unfinished">The group '%1' contains %2 object(s). Do you want to delete them as well?</translation>
+      <translation>Il gruppo '%1' contiene %2 oggetto(i). Vuoi eliminare anche loro?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="240"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
-      <translation type="unfinished">The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</translation>
+      <translation>Il gruppo '%1' contiene %2 figli diretti e %3 discendenti totali (inclusi i gruppi annidati). Vuoi eliminarli tutti ricorsivamente?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="248"/>
       <source>Delete group contents recursively?</source>
-      <translation type="unfinished">Delete group contents recursively?</translation>
+      <translation>Eliminare ricorsivamente i contenuti di gruppo?</translation>
     </message>
   </context>
   <context>
@@ -11992,12 +11992,12 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="232"/>
       <source>Font size override, set to 0 for the default value.</source>
-      <translation type="unfinished">Font size override, set to 0 for the default value.</translation>
+      <translation>Sovrascrivi la dimensione del carattere, impostata a 0 per il valore predefinito.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="244"/>
       <source> pt</source>
-      <translation type="unfinished"> pt</translation>
+      <translation> pt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="306"/>

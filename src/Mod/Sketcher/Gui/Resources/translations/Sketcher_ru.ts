@@ -644,7 +644,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10457"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Переключить ограничения в построительные/основные</translation>
+      <translation>Переключить ограничения в основные/вспомогательные</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -2037,7 +2037,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="110"/>
       <source>Geometric</source>
-      <translation>Геометрический</translation>
+      <translation>Геометрические</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="111"/>
@@ -5826,7 +5826,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="1665"/>
       <source>Toggle Constraints</source>
-      <translation>Переключить ограничения</translation>
+      <translation>Активировать/деактивировать ограничения</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1666"/>
@@ -6138,7 +6138,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10346"/>
       <source>Toggle Driving/Reference Constraints</source>
-      <translation>Переключить ограничения во вспомогательные/основные</translation>
+      <translation>Переключить ограничения в основные/вспомогательные</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10347"/>
@@ -6151,7 +6151,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10501"/>
       <source>Toggle Constraints</source>
-      <translation>Переключить ограничения</translation>
+      <translation>Активировать/деактивировать ограничения</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10502"/>
@@ -6814,12 +6814,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="122"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Гребень кривизны B-сплайна</translation>
+      <translation>Эпюра кривизны B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="123"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Переключает видимость гребня кривизны для всех B-сплайнов</translation>
+      <translation>Переключает видимость эпюры кривизны для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
@@ -6873,7 +6873,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="310"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Гребень кривизны B-сплайна</translation>
+      <translation>Эпюра кривизны B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="319"/>
@@ -6910,7 +6910,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../CommandSketcherOverlay.cpp" line="313"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="316"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Переключает видимость гребня кривизны для всех B-сплайнов</translation>
+      <translation>Переключает видимость эпюры кривизны для всех B-сплайнов</translation>
     </message>
   </context>
   <context>
