@@ -51,6 +51,29 @@ if(BUILD_GUI)
     list (APPEND Import_Scripts TestImportGui.py)
 endif(BUILD_GUI)
 
+# Add importtests package files so they are available in the build/install tree.
+# Non-GUI test shims and fixtures
+list(APPEND Import_Scripts
+    TestImport.py
+    importtests/__init__.py
+    importtests/TestImportBase.py
+)
+
+if(BUILD_GUI)
+    # GUI-only test shims
+    list(APPEND Import_Scripts
+        importtests/TestImportBaseGui.py
+        importtests/TestImportStepGui.py
+    )
+endif(BUILD_GUI)
+
+# Fixtures used by importtests (copied into build tree and installed)
+set(importtests_FIXTURES
+    importtests/fixtures/__init__.py
+    importtests/fixtures/README.md
+)
+
+
 add_custom_target(ImportScripts ALL
     SOURCES ${Import_Scripts} ${DXF_Plate}
 )
@@ -60,6 +83,9 @@ fc_target_copy_resource(ImportScripts
     ${CMAKE_BINARY_DIR}/Mod/Import
     ${Import_Scripts}
 )
+
+# Copy fixtures into the build tree so tests can access them
+fc_copy_sources(ImportScripts "${CMAKE_BINARY_DIR}/Mod/Import" ${importtests_FIXTURES})
 
 fc_target_copy_resource(ImportScripts
     ${CMAKE_SOURCE_DIR}/src/Mod/Import
@@ -73,6 +99,13 @@ INSTALL(
         #${Import_QRC_SRCS}
     DESTINATION
         Mod/Import
+)
+
+INSTALL(
+    FILES
+        ${importtests_FIXTURES}
+    DESTINATION
+        Mod/Import/importtests/fixtures
 )
 
 INSTALL(
