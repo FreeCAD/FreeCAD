@@ -423,15 +423,16 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
     bool found_face_color = false;
     std::vector<Base::Color> faceColors;
     faceColors.resize(n_faces, color);
-    // This code assumes that xp provides a consistent iteration order each time, and that this order also matches
-    // the ordering expected in the color vector we are creating.
+    // This code assumes that xp provides a consistent iteration order each time, and that this
+    // order also matches the ordering expected in the color vector we are creating.
     int face_index = 0;
     for (xp.Init(aShape, TopAbs_FACE); xp.More(); xp.Next()) {
         ++face_index;
         TDF_Label currentShapeLabel;
-        // XCAFDoc_ShapeTool::Search is a slow operation, proportional to the number of shapes in the document.
-        // Perhaps we can build a dictionary of the shapes' labels as we build aShape; a lookup in such a dictionary would
-        // be much faster (O(log(n)) perhaps, where n is the number of sub-shapes in aShape rather than in the document)
+        // XCAFDoc_ShapeTool::Search is a slow operation, proportional to the number of shapes in
+        // the document. Perhaps we can build a dictionary of the shapes' labels as we build aShape;
+        // a lookup in such a dictionary would be much faster (O(log(n)) perhaps, where n is the
+        // number of sub-shapes in aShape rather than in the document)
         if (!aColorTool->ShapeTool()->Search(xp.Current(), currentShapeLabel)) {
             continue;
         }
