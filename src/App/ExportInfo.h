@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 #ifndef SRC_APP_EXPORTINFO_H_
 #define SRC_APP_EXPORTINFO_H_
