@@ -236,6 +236,9 @@ inline const UnitsSchemaSpec s3
         { "Magnetization", {
             { 0               , "A/m"        , 1e-3            }}
         },
+        { "ElectromagneticPotential", {
+            { 0               , "Wb/m"        , 1e3            }}
+        },
         { "ElectricalConductance", {
             { 1e-9            , "\xC2\xB5S"  , 1e-12           },
             { 1e-6            , "mS"         , 1e-9            },
@@ -444,6 +447,9 @@ inline const UnitsSchemaSpec s4
         },
         { "Magnetization", {
             { 0               , "A/m"        , 1e-3            }}
+        },
+        { "ElectromagneticPotential", {
+            { 0               , "Wb/m"        , 1e3            }}
         },
         { "ElectricalConductance", {
             { 1e-9            , "\xC2\xB5S"  , 1e-12           },
