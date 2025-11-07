@@ -73,7 +73,8 @@ class BIMWorkbench(Workbench):
         # build menus and toolbars
         self.draftingtools = [
             "BIM_Sketch",
-            "BIM_LineTools",
+            "Draft_Line",
+            "Draft_Wire",
             "Draft_Circle",
             "BIM_ArcTools",
             "Draft_Fillet",
@@ -87,7 +88,9 @@ class BIMWorkbench(Workbench):
         self.annotationtools = [
             "BIM_Text",
             "Draft_ShapeString",
-            "BIM_DimensionTools",
+            "BIM_DimensionAligned",
+            "BIM_DimensionHorizontal",
+            "BIM_DimensionVertical",
             "BIM_Leader",
             "Draft_Label",
             "Draft_Hatch",
@@ -117,7 +120,8 @@ class BIMWorkbench(Workbench):
             "BIM_Slab",
             "BIM_Door",
             "Arch_Window",
-            "BIM_PipeTools",
+            "Arch_Pipe",
+            "Arch_PipeConnector",
             "Arch_Stairs",
             "Arch_Roof",
             "Arch_Panel",
@@ -139,7 +143,8 @@ class BIMWorkbench(Workbench):
         ]
 
         self.modify_gen = [
-            "BIM_MoveCopyTools",
+            "Draft_Move",
+            "BIM_Copy",
             "Draft_Rotate",
             "BIM_Clone",
             "BIM_SimpleCopy",
@@ -243,19 +248,6 @@ class BIMWorkbench(Workbench):
         ]
 
         # --- Grouped popup command classes ---
-        class BIM_LineTools:
-            def GetCommands(self):
-                # default: Draft_Wire (polyline)
-                return ("Draft_Wire", "Draft_Line")
-
-            def GetResources(self):
-                label = QT_TRANSLATE_NOOP("BIM_LineTools", "Line Tools")
-                tooltip = label
-                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Draft_Line"}
-
-            def IsActive(self):
-                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
-
         class BIM_ArcTools:
             def GetCommands(self):
                 return ("Draft_Arc", "Draft_Arc_3Points")
@@ -280,19 +272,6 @@ class BIMWorkbench(Workbench):
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
 
-        class BIM_DimensionTools:
-            def GetCommands(self):
-                # default: horizontal
-                return ("BIM_DimensionHorizontal", "BIM_DimensionAligned", "BIM_DimensionVertical")
-
-            def GetResources(self):
-                label = QT_TRANSLATE_NOOP("BIM_DimensionTools", "Dimension Tools")
-                tooltip = label
-                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_DimensionHorizontal"}
-
-            def IsActive(self):
-                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
-
         class BIM_AxisTools:
             def GetCommands(self):
                 return ("Arch_Axis", "Arch_AxisSystem")
@@ -301,30 +280,6 @@ class BIMWorkbench(Workbench):
                 label = QT_TRANSLATE_NOOP("BIM_AxisTools", "Axis Tools")
                 tooltip = label
                 return {"MenuText": label, "ToolTip": tooltip, "Icon": "Arch_Axis"}
-
-            def IsActive(self):
-                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
-
-        class BIM_PipeTools:
-            def GetCommands(self):
-                return ("Arch_Pipe", "Arch_PipeConnector")
-
-            def GetResources(self):
-                label = QT_TRANSLATE_NOOP("BIM_PipeTools", "Pipe Tools")
-                tooltip = label
-                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Arch_Pipe"}
-
-            def IsActive(self):
-                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
-
-        class BIM_MoveCopyTools:
-            def GetCommands(self):
-                return ("Draft_Move", "BIM_Copy")
-
-            def GetResources(self):
-                label = QT_TRANSLATE_NOOP("BIM_MoveCopyTools", "Move / Copy")
-                tooltip = label
-                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Draft_Move"}
 
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -392,13 +347,9 @@ class BIMWorkbench(Workbench):
                 return True
 
         # Register grouped commands
-        FreeCADGui.addCommand("BIM_LineTools", BIM_LineTools())
         FreeCADGui.addCommand("BIM_ArcTools", BIM_ArcTools())
         FreeCADGui.addCommand("BIM_SplineTools", BIM_SplineTools())
-        FreeCADGui.addCommand("BIM_DimensionTools", BIM_DimensionTools())
         FreeCADGui.addCommand("BIM_AxisTools", BIM_AxisTools())
-        FreeCADGui.addCommand("BIM_PipeTools", BIM_PipeTools())
-        FreeCADGui.addCommand("BIM_MoveCopyTools", BIM_MoveCopyTools())
         FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
         FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
         FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
