@@ -123,6 +123,12 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
     Base::Quantity offset = side.Offset->getQuantityValue();
     Base::Quantity taper = side.TaperAngle->getQuantityValue();
     int typeIndex = side.Type->getValue();
+    // The Type/Type2 properties are stuck with the deprecated 'TwoLength' mode.
+    // Because enums do not store text just an index. So this create
+    // a inconsistence between the UI and the property.
+    if (typeIndex > static_cast<int>(Mode::ToShape)) {
+        typeIndex --;
+    }
 
     // --- Set up UI widgets with initial values ---
     side.lengthEdit->setValue(length);
@@ -1287,6 +1293,16 @@ void TaskExtrudeParameters::applyParameters()
         facename2 = getFaceName(ui->lineFaceName2);
     }
 
+    // Handle deprecated 'TwoLength' mode.
+    int type1 = getMode();
+    if (static_cast<Mode>(type1) == Mode::ToShape) {
+        type1++;
+    }
+    int type2 = getMode2();
+    if (static_cast<Mode>(type2) == Mode::ToShape) {
+        type2++;
+    }
+
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
     ui->taperEdit->apply();
@@ -1298,8 +1314,8 @@ void TaskExtrudeParameters::applyParameters()
     FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
     FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "SideType = " << getSidesMode());
-    FCMD_OBJ_CMD(obj, "Type = " << getMode());
-    FCMD_OBJ_CMD(obj, "Type2 = " << getMode2());
+    FCMD_OBJ_CMD(obj, "Type = " << type1);
+    FCMD_OBJ_CMD(obj, "Type2 = " << type2);
     FCMD_OBJ_CMD(obj, "UpToFace = " << facename.toLatin1().data());
     FCMD_OBJ_CMD(obj, "UpToFace2 = " << facename2.toLatin1().data());
     FCMD_OBJ_CMD(obj, "Reversed = " << (getReversed() ? 1 : 0));
@@ -1452,6 +1468,7 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
 
 
 
