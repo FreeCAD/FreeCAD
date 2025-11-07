@@ -459,41 +459,37 @@ class BIM_ProjectManager:
 
             form = self.form
 
-            presets : dict[ str , object ] = {
-                
-                'groupNewDocument' : int(form.groupNewProject.isChecked()) ,
-                'projectName' : form.projectName.text() ,
-                'groupSite' : int(form.groupSite.isChecked()) ,
-
-                'siteName' : form.siteName.text() ,
-                'siteAddress' : form.siteAddress.text() ,
-                'siteLongitude' : form.siteLongitude.value() ,
-                'siteLatitude' : form.siteLatitude.value() ,
-                'siteDeviation' : form.siteDeviation.value() ,
-                'siteElevation' : form.siteElevation.text() ,
-
-                'groupBuilding' : int(form.groupBuilding.isChecked()) ,
-                'buildingName' : form.buildingName.text() ,
-                'buildingUse' : form.buildingUse.currentIndex() ,
-                'buildingLength' : form.buildingLength.text() ,
-                'buildingWidth' : form.buildingWidth.text() ,
-                'countVAxes' : form.countVAxes.value() ,
-                'distVAxes' : form.distVAxes.text() ,
-                'countHAxes' : form.countHAxes.value() ,
-                'distHAxes' : form.distHAxes.text() ,
-                'countLevels' : form.countLevels.value() ,
-                'levelHeight' : form.levelHeight.text() ,
-                'lineWidth' : form.lineWidth.value() ,
-                'lineColor' : form.lineColor.property('color').getRgbF()[:3] ,
-                'groups' : ';;'.join(groups) ,
-                'addHumanFigure' : int(form.addHumanFigure.isChecked())
+            presets: dict[str, object] = {
+                "groupNewDocument": int(form.groupNewProject.isChecked()),
+                "projectName": form.projectName.text(),
+                "groupSite": int(form.groupSite.isChecked()),
+                "siteName": form.siteName.text(),
+                "siteAddress": form.siteAddress.text(),
+                "siteLongitude": form.siteLongitude.value(),
+                "siteLatitude": form.siteLatitude.value(),
+                "siteDeviation": form.siteDeviation.value(),
+                "siteElevation": form.siteElevation.text(),
+                "groupBuilding": int(form.groupBuilding.isChecked()),
+                "buildingName": form.buildingName.text(),
+                "buildingUse": form.buildingUse.currentIndex(),
+                "buildingLength": form.buildingLength.text(),
+                "buildingWidth": form.buildingWidth.text(),
+                "countVAxes": form.countVAxes.value(),
+                "distVAxes": form.distVAxes.text(),
+                "countHAxes": form.countHAxes.value(),
+                "distHAxes": form.distHAxes.text(),
+                "countLevels": form.countLevels.value(),
+                "levelHeight": form.levelHeight.text(),
+                "lineWidth": form.lineWidth.value(),
+                "lineColor": form.lineColor.property("color").getRgbF()[:3],
+                "groups": ";;".join(groups),
+                "addHumanFigure": int(form.addHumanFigure.isChecked()),
             }
 
+            preset = f"# FreeCAD BIM Project setup preset { name }\n"
 
-            preset = f'# FreeCAD BIM Project setup preset { name }\n'
-
-            for key , value in presets.items() :
-                preset += f'{ key }={ value }\n'
+            for key, value in presets.items():
+                preset += f"{ key }={ value }\n"
 
             f = open(os.path.join(presetdir, name + ".txt"), "w")
             f.write(preset)
