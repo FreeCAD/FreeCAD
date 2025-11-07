@@ -87,7 +87,6 @@ class BIMWorkbench(Workbench):
 
         self.annotationtools = [
             "BIM_Text",
-            "Draft_ShapeString",
             "BIM_DimensionAligned",
             "BIM_DimensionHorizontal",
             "BIM_DimensionVertical",
