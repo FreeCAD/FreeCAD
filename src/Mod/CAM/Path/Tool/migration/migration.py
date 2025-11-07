@@ -33,7 +33,7 @@ import pathlib
 import os
 import glob
 from ..assets.ui import AssetOpenDialog
-from ..camassets import cam_assets, ensure_assets_initialized
+from ..camassets import cam_assets
 from ..library.serializers import all_serializers as library_serializers
 from ..library.models import Library
 
