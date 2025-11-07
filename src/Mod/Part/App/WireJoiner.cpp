@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2022 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -210,7 +212,7 @@ public:
         std::unique_ptr<Geometry> geo {};
         Standard_Real firstParam {};
         Standard_Real lastParam {};
-        Handle_Geom_Curve curve;
+        Handle(Geom_Curve) curve;
         GeomAbs_CurveType type {};
         bool isLinear;
 
@@ -2648,7 +2650,7 @@ public:
 
     // This method was originally part of WireJoinerP::makeCleanWire(), split to reduce cognitive
     // complexity
-    void printHistoryInit(const Handle_BRepTools_History& newHistory,
+    void printHistoryInit(const Handle(BRepTools_History)& newHistory,
                           const std::vector<TopoShape>& inputEdges)
     {
         FC_MSG("init:");

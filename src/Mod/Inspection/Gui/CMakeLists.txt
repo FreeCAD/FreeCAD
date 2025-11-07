@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(InspectionGui_LIBS
     Inspection
     FreeCADGui

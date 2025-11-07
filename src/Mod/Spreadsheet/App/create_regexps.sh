@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # DerivedGeneralCategory.txt used below can be downloaded from
 # http://www.unicode.org/Public/UNIDATA/extracted/DerivedGeneralCategory.txt

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import FreeCAD
 from FreeCAD import Vector, Base, newDocument, closeDocument
 import Part

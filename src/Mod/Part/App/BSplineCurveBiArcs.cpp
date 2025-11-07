@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // This file is released under the BSD license
 //
 // Copyright (c) 2009, Daniel Heeks

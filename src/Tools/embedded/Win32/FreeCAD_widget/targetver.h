@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #pragma once
 
 // The following macros define the minimum required platform.  The minimum required platform

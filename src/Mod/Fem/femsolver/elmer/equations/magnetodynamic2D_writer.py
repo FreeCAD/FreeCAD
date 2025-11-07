@@ -199,17 +199,22 @@ class MgDyn2Dwriter:
                     )
             self.write.handled(obj)
 
-    def handleMagnetodynamic2DBndConditions(self):
+    def handleMagnetodynamic2DBndConditions(self, equation):
         for obj in self.write.getMember("Fem::ConstraintElectrostaticPotential"):
             if obj.References:
                 for name in obj.References[0][1]:
                     # output the FreeCAD label as comment
                     if obj.Label:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    if obj.PotentialEnabled:
-                        if hasattr(obj, "Potential"):
-                            potential = obj.Potential.getValueAs("V")
+
+                    if obj.BoundaryCondition == "Dirichlet":
+                        if obj.EnableAV_3:
+                            potential = obj.AV_re_3.getValueAs("Wb/m")
                             self.write.boundary(name, "Potential", potential)
+                            if equation.IsHarmonic:
+                                potential = obj.AV_im_3.getValueAs("Wb/m")
+                                self.write.boundary(name, "Potential im", potential)
+
                     if obj.ElectricInfinity:
                         self.write.boundary(name, "Infinity BC", True)
                 self.write.handled(obj)

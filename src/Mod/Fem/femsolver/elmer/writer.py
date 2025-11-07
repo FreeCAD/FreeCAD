@@ -42,9 +42,7 @@ from FreeCAD import ParamGet
 
 import Fem
 from . import sifio
-from . import solver as solverClass
 from .. import settings
-from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
@@ -98,7 +96,7 @@ class Writer:
     def getHandledConstraints(self):
         return self._handledObjects
 
-    def write_solver_input(self):
+    def _writeBlocks(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
         self._handleDeformation()
@@ -113,8 +111,9 @@ class Writer:
         self._handleStaticCurrent()
         self._addOutputSolver()
 
+    def write_solver_input(self):
+        self._writeBlocks()
         self._writeSif()
-        self._writeMesh()
         self._writeStartinfo()
 
     def _handleUnits(self):
@@ -212,90 +211,6 @@ class Writer:
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
 
-    def _writeMesh(self):
-        mesh = self.getSingleMember("Fem::FemMeshObject")
-        unvPath = os.path.join(self.directory, "mesh.unv")
-        groups = []
-        groups.extend(self._builder.getBodyNames())
-        groups.extend(self._builder.getBoundaryNames())
-        self._exportToUnv(groups, mesh, unvPath)
-        if self.testmode:
-            Console.PrintMessage(
-                "Solver Elmer testmode, ElmerGrid will not be used. It might not be installed.\n"
-            )
-        else:
-            binary = settings.get_binary("ElmerGrid")
-            num_cores = settings.get_cores("ElmerGrid")
-            if binary is None:
-                raise WriteError("Could not find ElmerGrid binary.")
-            # for multithreading we first need a normal mesh creation run
-            # then a second to split the mesh into the number of used cores
-            argsBasic = [binary, _ELMERGRID_IFORMAT, _ELMERGRID_OFORMAT, unvPath]
-            args = argsBasic
-            args.extend(["-out", self.directory])
-            if system() == "Windows":
-                subprocess.call(
-                    args, stdout=subprocess.DEVNULL, startupinfo=femutils.startProgramInfo("hide")
-                )
-            else:
-                subprocess.call(args, stdout=subprocess.DEVNULL)
-            if num_cores > 1:
-                args = argsBasic
-                args.extend(["-partdual", "-metiskway", str(num_cores), "-out", self.directory])
-                if system() == "Windows":
-                    subprocess.call(
-                        args,
-                        stdout=subprocess.DEVNULL,
-                        startupinfo=femutils.startProgramInfo("hide"),
-                    )
-                else:
-                    subprocess.call(args, stdout=subprocess.DEVNULL)
-
-    def _writeStartinfo(self):
-        path = os.path.join(self.directory, _STARTINFO_NAME)
-        with open(path, "w") as f:
-            f.write(f"{_SIF_NAME}\n")
-
-    def _exportToUnv(self, groups, mesh, meshPath):
-        unvGmshFd, unvGmshPath = tempfile.mkstemp(suffix=".unv")
-        brepFd, brepPath = tempfile.mkstemp(suffix=".brep")
-        geoFd, geoPath = tempfile.mkstemp(suffix=".geo")
-        os.close(brepFd)
-        os.close(geoFd)
-        os.close(unvGmshFd)
-
-        tools = gmshtools.GmshTools(mesh)
-        tools.group_elements = {g: [g] for g in groups}
-        tools.group_nodes_export = False
-        tools.ele_length_map = {}
-        tools.temp_file_geometry = brepPath
-        tools.temp_file_geo = geoPath
-        tools.temp_file_mesh = unvGmshPath
-
-        tools.get_dimension()
-        tools.get_region_data()
-        tools.get_boundary_layer_data()
-        tools.write_part_file()
-        tools.write_geo()
-        if self.testmode:
-            Console.PrintMessage(
-                "Solver Elmer testmode, Gmsh will not be used. It might not be installed.\n"
-            )
-            import shutil
-
-            shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
-        else:
-            tools.get_gmsh_command()
-            tools.run_gmsh_with_geo()
-
-            ioMesh = Fem.FemMesh()
-            ioMesh.read(unvGmshPath)
-            ioMesh.write(meshPath)
-
-        os.remove(brepPath)
-        os.remove(geoPath)
-        os.remove(unvGmshPath)
-
     def _handleRedifinedConstants(self):
         """
         redefine constants in self.constsdef according constant redefine objects
@@ -315,17 +230,6 @@ class Writer:
             )
 
     def _handleSimulation(self):
-        # check if we need to update the equation
-        self._updateSimulation(self.solver)
-        # output the equation parameters
-        # first check what equations we have
-
-        # hasHeat ist not used, thus commented ATM
-        # hasHeat = False
-        # for equation in self.solver.Group:
-        #    if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
-        #        hasHeat = True
-
         self._simulation("Coordinate System", self.solver.CoordinateSystem)
         self._simulation("Coordinate Mapping", (1, 2, 3))
         # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
@@ -343,62 +247,10 @@ class Writer:
             self._simulation("Timestepping Method", "BDF")
         self._simulation("Use Mesh Names", True)
 
-    def _updateSimulation(self, solver):
-        # updates older simulations
-        if not hasattr(self.solver, "CoordinateSystem"):
-            solver.addProperty(
-                "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", "", locked=True
-            )
-            solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
-            solver.CoordinateSystem = "Cartesian"
-        if not hasattr(self.solver, "BDFOrder"):
-            solver.addProperty(
-                "App::PropertyIntegerConstraint",
-                "BDFOrder",
-                "Timestepping",
-                "Order of time stepping method 'BDF'",
-                locked=True,
-            )
-            solver.BDFOrder = (2, 1, 5, 1)
-        if not hasattr(self.solver, "OutputIntervals"):
-            solver.addProperty(
-                "App::PropertyIntegerList",
-                "OutputIntervals",
-                "Timestepping",
-                "After how many time steps a result file is output",
-                locked=True,
-            )
-            solver.OutputIntervals = [1]
-        if not hasattr(self.solver, "SimulationType"):
-            solver.addProperty(
-                "App::PropertyEnumeration", "SimulationType", "Type", "", locked=True
-            )
-            solver.SimulationType = solverClass.SIMULATION_TYPE
-            solver.SimulationType = "Steady State"
-        if not hasattr(self.solver, "TimestepIntervals"):
-            solver.addProperty(
-                "App::PropertyIntegerList",
-                "TimestepIntervals",
-                "Timestepping",
-                (
-                    "List of maximum optimization rounds if 'Simulation Type'\n"
-                    "is either 'Scanning' or 'Transient'"
-                ),
-                locked=True,
-            )
-            solver.TimestepIntervals = [100]
-        if not hasattr(self.solver, "TimestepSizes"):
-            solver.addProperty(
-                "App::PropertyFloatList",
-                "TimestepSizes",
-                "Timestepping",
-                (
-                    "List of time steps of optimization if 'Simulation Type'\n"
-                    "is either 'Scanning' or 'Transient'"
-                ),
-                locked=True,
-            )
-            solver.TimestepSizes = [0.1]
+    def _writeStartinfo(self):
+        path = os.path.join(self.directory, _STARTINFO_NAME)
+        with open(path, "w") as f:
+            f.write(f"{_SIF_NAME}\n")
 
     # -------------------------------------------------------------------------------------------
     # Deformation
@@ -614,7 +466,7 @@ class Writer:
                     MgDyn2D.handleMagnetodynamic2DEquation(activeIn, equation)
         if activeIn:
             MgDyn2D.handleMagnetodynamic2DConstants()
-            MgDyn2D.handleMagnetodynamic2DBndConditions()
+            MgDyn2D.handleMagnetodynamic2DBndConditions(equation)
             MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn, equation)
             MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
 

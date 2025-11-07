@@ -3747,11 +3747,17 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
         case Radius:
         case Diameter:
         case Equal: {
-            // Only transfer to one of them (arbitrarily chosen here as the first)
-            Constraint* trans = con->copy();
-            trans->substituteIndex(oldId, newIds.front());
-            newConstraints.push_back(trans);
-            break;
+            // Only transfer to one of them (arbitrarily chosen here as the first) and only if the
+            // curve is a conic or its arc
+            // TODO: Some equalities may be transferred, using something along the lines of
+            // `getDirectlyCoincidentPoints`
+            if (geo->isDerivedFrom<Part::GeomConic>()
+                || geo->isDerivedFrom<Part::GeomArcOfConic>()) {
+                Constraint* trans = con->copy();
+                trans->substituteIndex(oldId, newIds.front());
+                newConstraints.push_back(trans);
+                break;
+            }
         }
         default:
             // Release other constraints

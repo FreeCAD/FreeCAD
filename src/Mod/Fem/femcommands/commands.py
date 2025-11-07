@@ -1174,18 +1174,17 @@ class _SolverRun(CommandManager):
         self.tool = None
 
     def Activated(self):
-        if self.selobj.Proxy.Type == "Fem::SolverCalculiX":
-            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        if self.selobj.Proxy.Type in ["Fem::SolverCalculiX", "Fem::SolverElmer"]:
             try:
-                from femsolver.calculix.calculixtools import CalculiXTools
-
-                self.tool = CalculiXTools(self.selobj)
+                QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+                self._set_tool()
                 self._conn(self.tool)
                 self.tool.prepare()
                 self.tool.compute()
             except Exception as e:
                 QtGui.QApplication.restoreOverrideCursor()
-                raise
+                FreeCAD.Console.PrintError(e)
+                return
 
         else:
             from femsolver.run import run_fem_solver
@@ -1193,6 +1192,17 @@ class _SolverRun(CommandManager):
             run_fem_solver(self.selobj)
             FreeCADGui.Selection.clearSelection()
             FreeCAD.ActiveDocument.recompute()
+
+    def _set_tool(self):
+        match self.selobj.Proxy.Type:
+            case "Fem::SolverCalculiX":
+                from femsolver.calculix.calculixtools import CalculiXTools
+
+                self.tool = CalculiXTools(self.selobj)
+            case "Fem::SolverElmer":
+                from femsolver.elmer.elmertools import ElmerTools
+
+                self.tool = ElmerTools(self.selobj)
 
     def _conn(self, tool):
         QtCore.QObject.connect(
