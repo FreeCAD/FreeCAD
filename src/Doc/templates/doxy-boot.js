@@ -1,4 +1,7 @@
-$( document ).ready(function() {
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+
+
+$(document).ready(function () {
 
     $("div.headertitle").addClass("page-header");
     $("div.title").addClass("h1");
