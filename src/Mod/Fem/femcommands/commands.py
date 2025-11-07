@@ -107,6 +107,11 @@ class _ClippingPlaneAdd(CommandManager):
         )
         self.is_active = "with_document"
 
+    def GetResources(self):
+        resources = super().GetResources()
+        resources["CmdType"] = "ForEdit | Alter3DView"
+        return resources
+
     def Activated(self):
         from pivy import coin
         from femtools.femutils import getBoundBoxOfAllDocumentShapes
@@ -162,6 +167,11 @@ class _ClippingPlaneRemoveAll(CommandManager):
             "FEM_ClippingPlaneRemoveAll", "Removes all clipping planes"
         )
         self.is_active = "with_document"
+
+    def GetResources(self):
+        resources = super().GetResources()
+        resources["CmdType"] = "ForEdit | Alter3DView"
+        return resources
 
     def Activated(self):
         line1 = "for node in list(sg.getChildren()):\n"
