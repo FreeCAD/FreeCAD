@@ -1546,6 +1546,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
         if (this->property("QuitOnClosed").isValid()) {
             QApplication::closeAllWindows();
+            qApp->processEvents();  // flush all pending deferredDelete events
             qApp->quit(); // stop the event loop
         }
     }
