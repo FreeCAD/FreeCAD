@@ -3014,11 +3014,11 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 // Skip iteration if this IntPoint has already been processed
                 bool intRepeat = false;
                 if (interp.m_min && newToolPos == interp.m_min->first.second) {
-                    interp.addPoint(interp.m_min->second, {angle, newToolPos});
+                    interp.m_min = {{angle, newToolPos}, interp.m_min->second};
                     intRepeat = true;
                 }
                 if (interp.m_max && newToolPos == interp.m_max->first.second) {
-                    interp.addPoint(interp.m_max->second, {angle, newToolPos});
+                    interp.m_max = {{angle, newToolPos}, interp.m_max->second};
                     intRepeat = true;
                 }
 
@@ -3033,14 +3033,19 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                             continue;
                         }
                         // exit early, selecting the better of the two adjacent integers
+                        double error;
                         if (abs(interp.m_min->second) < abs(interp.m_max->second)) {
                             newToolDir = rotate(toolDir, interp.m_min->first.first);
                             newToolPos = interp.m_min->first.second;
+                            error = interp.m_min->second;
                         }
                         else {
                             newToolDir = rotate(toolDir, interp.m_max->first.first);
                             newToolPos = interp.m_max->first.second;
+                            error = interp.m_max->second;
                         }
+                        areaPD = error + targetAreaPD;
+                        area = areaPD * double(stepScaled);
                         break;
                     }
                     continue;
