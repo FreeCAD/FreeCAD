@@ -43,7 +43,7 @@ int Point::PushOwnParams(VEC_pD& pvec) const
     return cnt;
 }
 
-void Point::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Point::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
     x = pvec[cnt];
     cnt++;
@@ -143,27 +143,12 @@ DeriVector2 Line::Value(double u, double du, const double* derivparam) const
 
 int Line::PushOwnParams(VEC_pD& pvec)
 {
-    int cnt = 0;
-    pvec.push_back(p1.x);
-    cnt++;
-    pvec.push_back(p1.y);
-    cnt++;
-    pvec.push_back(p2.x);
-    cnt++;
-    pvec.push_back(p2.y);
-    cnt++;
-    return cnt;
+    return p1.PushOwnParams(pvec) + p2.PushOwnParams(pvec);
 }
-void Line::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Line::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
-    p1.x = pvec[cnt];
-    cnt++;
-    p1.y = pvec[cnt];
-    cnt++;
-    p2.x = pvec[cnt];
-    cnt++;
-    p2.y = pvec[cnt];
-    cnt++;
+    p1.ReconstructOnNewPvec(pvec, cnt);
+    p2.ReconstructOnNewPvec(pvec, cnt);
 }
 Line* Line::Copy()
 {
@@ -199,21 +184,14 @@ DeriVector2 Circle::Value(double u, double du, const double* derivparam) const
 
 int Circle::PushOwnParams(VEC_pD& pvec)
 {
-    int cnt = 0;
-    pvec.push_back(center.x);
-    cnt++;
-    pvec.push_back(center.y);
-    cnt++;
+    int cnt = center.PushOwnParams(pvec);
     pvec.push_back(rad);
     cnt++;
     return cnt;
 }
-void Circle::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Circle::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
-    center.x = pvec[cnt];
-    cnt++;
-    center.y = pvec[cnt];
-    cnt++;
+    center.ReconstructOnNewPvec(pvec, cnt);
     rad = pvec[cnt];
     cnt++;
 }
@@ -227,31 +205,19 @@ int Arc::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Circle::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
     cnt++;
     return cnt;
 }
-void Arc::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Arc::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
     Circle::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -357,28 +323,16 @@ DeriVector2 Ellipse::Value(double u, double du, const double* derivparam) const
 int Ellipse::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(center.x);
-    cnt++;
-    pvec.push_back(center.y);
-    cnt++;
-    pvec.push_back(focus1.x);
-    cnt++;
-    pvec.push_back(focus1.y);
-    cnt++;
+    cnt += center.PushOwnParams(pvec);
+    cnt += focus1.PushOwnParams(pvec);
     pvec.push_back(radmin);
     cnt++;
     return cnt;
 }
-void Ellipse::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Ellipse::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
-    center.x = pvec[cnt];
-    cnt++;
-    center.y = pvec[cnt];
-    cnt++;
-    focus1.x = pvec[cnt];
-    cnt++;
-    focus1.y = pvec[cnt];
-    cnt++;
+    center.ReconstructOnNewPvec(pvec, cnt);
+    focus1.ReconstructOnNewPvec(pvec, cnt);
     radmin = pvec[cnt];
     cnt++;
 }
@@ -393,31 +347,19 @@ int ArcOfEllipse::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Ellipse::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
     cnt++;
     return cnt;
 }
-void ArcOfEllipse::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void ArcOfEllipse::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
     Ellipse::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -521,28 +463,16 @@ DeriVector2 Hyperbola::Value(double u, double du, const double* derivparam) cons
 int Hyperbola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(center.x);
-    cnt++;
-    pvec.push_back(center.y);
-    cnt++;
-    pvec.push_back(focus1.x);
-    cnt++;
-    pvec.push_back(focus1.y);
-    cnt++;
+    cnt += center.PushOwnParams(pvec);
+    focus1.PushOwnParams(pvec);
     pvec.push_back(radmin);
     cnt++;
     return cnt;
 }
-void Hyperbola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Hyperbola::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
-    center.x = pvec[cnt];
-    cnt++;
-    center.y = pvec[cnt];
-    cnt++;
-    focus1.x = pvec[cnt];
-    cnt++;
-    focus1.y = pvec[cnt];
-    cnt++;
+    center.ReconstructOnNewPvec(pvec, cnt);
+    focus1.ReconstructOnNewPvec(pvec, cnt);
     radmin = pvec[cnt];
     cnt++;
 }
@@ -556,31 +486,19 @@ int ArcOfHyperbola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Hyperbola::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
     cnt++;
     return cnt;
 }
-void ArcOfHyperbola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void ArcOfHyperbola::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
     Hyperbola::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -640,30 +558,14 @@ DeriVector2 Parabola::Value(double u, double du, const double* derivparam) const
 
 int Parabola::PushOwnParams(VEC_pD& pvec)
 {
-    int cnt = 0;
-    pvec.push_back(vertex.x);
-    cnt++;
-    pvec.push_back(vertex.y);
-    cnt++;
-    pvec.push_back(focus1.x);
-    cnt++;
-    pvec.push_back(focus1.y);
-    cnt++;
-    return cnt;
+    return vertex.PushOwnParams(pvec) + focus1.PushOwnParams(pvec);
 }
 
-void Parabola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void Parabola::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
-    vertex.x = pvec[cnt];
-    cnt++;
-    vertex.y = pvec[cnt];
-    cnt++;
-    focus1.x = pvec[cnt];
-    cnt++;
-    focus1.y = pvec[cnt];
-    cnt++;
+    vertex.ReconstructOnNewPvec(pvec, cnt);
+    focus1.ReconstructOnNewPvec(pvec, cnt);
 }
-
 Parabola* Parabola::Copy()
 {
     return new Parabola(*this);
@@ -674,31 +576,19 @@ int ArcOfParabola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Parabola::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    start.PushOwnParams(pvec);
+    end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
     cnt++;
     return cnt;
 }
-void ArcOfParabola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void ArcOfParabola::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
     Parabola::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -1000,37 +890,35 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
     std::size_t cnt = 0;
 
     for (const auto& pole : poles) {
-        pvec.push_back(pole.x);
-        pvec.push_back(pole.y);
+        pole.PushOwnParams(pvec);
     }
 
     cnt = cnt + poles.size() * 2;
 
-    pvec.insert(pvec.end(), weights.begin(), weights.end());
+    for (const auto& weight : weights) {
+        pvec.push_back(weight);
+    }
+    // TODO-theo-vt
+    // pvec.insert(pvec.end(), weights.begin(), weights.end());
     cnt = cnt + weights.size();
 
-    pvec.insert(pvec.end(), knots.begin(), knots.end());
+    for (const auto& knot : knots) {
+        pvec.push_back(knot);
+    }
+    // pvec.insert(pvec.end(), knots.begin(), knots.end());
+
     cnt = cnt + knots.size();
 
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
 
     return static_cast<int>(cnt);
 }
 
-void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+void BSpline::ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt)
 {
     for (auto& pole : poles) {
-        pole.x = pvec[cnt];
-        cnt++;
-        pole.y = pvec[cnt];
-        cnt++;
+        pole.ReconstructOnNewPvec(pvec, cnt);
     }
 
     for (auto& weight : weights) {
@@ -1043,14 +931,8 @@ void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
         cnt++;
     }
 
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
 }
 
 BSpline* BSpline::Copy()

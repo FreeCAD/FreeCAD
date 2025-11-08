@@ -25,6 +25,7 @@
 
 #include "Util.h"
 #include <boost/math/constants/constants.hpp>
+#include <vector>
 #include "../../SketcherGlobal.h"
 
 #ifdef _MSC_VER
@@ -46,10 +47,11 @@ public:
         : x(px)
         , y(py)
     {}
-    double* x;
-    double* y;
+    DeriParam x;
+    DeriParam y;
+
     int PushOwnParams(VEC_pD& pvec) const;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt);
 };
 
 using VEC_P = std::vector<Point>;
@@ -194,7 +196,8 @@ public:
     virtual int PushOwnParams(VEC_pD& pvec) = 0;
     // recunstruct curve's parameters reading them from pvec starting from index cnt.
     // cnt will be incremented by the same value as returned by PushOwnParams()
-    virtual void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) = 0;
+    virtual void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) = 0;
+
     // DeepSOIC: I haven't found a way to simply copy a curve object provided pointer to a curve
     // object.
     virtual Curve* Copy() = 0;
@@ -208,7 +211,7 @@ public:
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     Line* Copy() override;
 };
 
@@ -216,26 +219,26 @@ class SketcherExport Circle: public Curve
 {
 public:
     Point center;
-    double* rad {nullptr};
+    DeriParam rad;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     Circle* Copy() override;
 };
 
 class SketcherExport Arc: public Circle
 {
 public:
-    double* startAngle {nullptr};
-    double* endAngle {nullptr};
+    DeriParam startAngle;
+    DeriParam endAngle;
     // double *rad{nullptr}; //inherited
     // start and end points are computed by an ArcRules constraint
     Point start;
     Point end;
     // Point center; //inherited
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     Arc* Copy() override;
 };
 
@@ -260,28 +263,26 @@ class SketcherExport Ellipse: public MajorRadiusConic
 public:
     Point center;
     Point focus1;
-    double* radmin {nullptr};
-    double getRadMaj(
-        const DeriVector2& center,
-        const DeriVector2& f1,
-        double b,
-        double db,
-        double& ret_dRadMaj
-    ) const override;
+    DeriParam radmin;
+    double getRadMaj(const DeriVector2& center,
+                     const DeriVector2& f1,
+                     double b,
+                     double db,
+                     double& ret_dRadMaj) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     Ellipse* Copy() override;
 };
 
 class SketcherExport ArcOfEllipse: public Ellipse
 {
 public:
-    double* startAngle {nullptr};
-    double* endAngle {nullptr};
+    DeriParam startAngle;
+    DeriParam endAngle;
     // double *radmin; //inherited
     Point start;
     Point end;
@@ -289,7 +290,7 @@ public:
     // double *focus1.x; //inherited
     // double *focus1.y; //inherited
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     ArcOfEllipse* Copy() override;
 };
 
@@ -298,20 +299,18 @@ class SketcherExport Hyperbola: public MajorRadiusConic
 public:
     Point center;
     Point focus1;
-    double* radmin {nullptr};
-    double getRadMaj(
-        const DeriVector2& center,
-        const DeriVector2& f1,
-        double b,
-        double db,
-        double& ret_dRadMaj
-    ) const override;
+    DeriParam radmin;
+    double getRadMaj(const DeriVector2& center,
+                     const DeriVector2& f1,
+                     double b,
+                     double db,
+                     double& ret_dRadMaj) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     Hyperbola* Copy() override;
 };
 
@@ -319,13 +318,13 @@ class SketcherExport ArcOfHyperbola: public Hyperbola
 {
 public:
     // parameters
-    double* startAngle {nullptr};
-    double* endAngle {nullptr};
+    DeriParam startAngle;
+    DeriParam endAngle;
     Point start;
     Point end;
     // interface helpers
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     ArcOfHyperbola* Copy() override;
 };
 
@@ -337,7 +336,7 @@ public:
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     Parabola* Copy() override;
 };
 
@@ -345,13 +344,13 @@ class SketcherExport ArcOfParabola: public Parabola
 {
 public:
     // parameters
-    double* startAngle {nullptr};
-    double* endAngle {nullptr};
+    DeriParam startAngle;
+    DeriParam endAngle;
     Point start;
     Point end;
     // interface helpers
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     ArcOfParabola* Copy() override;
 };
 
@@ -360,8 +359,8 @@ class SketcherExport BSpline: public Curve
 public:
     // parameters
     VEC_P poles;  // TODO: use better data structures so poles.x and poles.y
-    VEC_pD weights;
-    VEC_pD knots;
+    std::vector<DeriParam> weights;
+    std::vector<DeriParam> knots;
     // dependent parameters (depends on previous parameters,
     // but an "arcrules" constraint alike would be required to gain the commodity of simple
     // coincident with endpoint constraints)
@@ -390,7 +389,7 @@ public:
         double* dwdu
     ) const;
     int PushOwnParams(VEC_pD& pvec) override;
-    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt) override;
     BSpline* Copy() override;
     /// finds the value B_i(x) such that spline(x) = sum(poles[i] * B_i(x))
     /// x is the point at which combination is needed

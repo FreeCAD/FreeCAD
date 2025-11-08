@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Mod/Sketcher/App/planegcs/Util.h"
 #ifdef _MSC_VER
 # pragma warning(disable : 4251)
 #endif
@@ -61,7 +62,7 @@ void Constraint::redirectParams(const MAP_pD_pD& redirectionmap)
     for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
         MAP_pD_pD::const_iterator it = redirectionmap.find(*param);
         if (it != redirectionmap.end()) {
-            pvec[i] = it->second;
+            pvec[i] = DeriParam(it->second, it->second);
         }
     }
     pvecChangedFlag = true;
@@ -69,8 +70,14 @@ void Constraint::redirectParams(const MAP_pD_pD& redirectionmap)
 
 void Constraint::revertParams()
 {
-    pvec = origpvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
+}
+void Constraint::assignOrigToPvec()
+{
+    for (size_t i = 0; i < origpvec.size(); ++i) {
+        pvec[i] = origpvec[i];
+    }
 }
 
 ConstraintType Constraint::getTypeId()
@@ -106,9 +113,10 @@ int Constraint::findParamInPvec(double* param)
 ConstraintEqual::ConstraintEqual(double* p1, double* p2, double p1p2ratio)
     : ratio(p1p2ratio)
 {
-    pvec.push_back(p1);
-    pvec.push_back(p2);
-    origpvec = pvec;
+    origpvec.push_back(p1);
+    origpvec.push_back(p2);
+    assignOrigToPvec();
+
     rescale();
 }
 
@@ -145,10 +153,11 @@ ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     : factors(givenfactors)
     , numpoles(givennumpoles)
 {
-    pvec = givenpvec;
-    assert(pvec.size() == 2 * numpoles + 1);
+    origpvec = givenpvec;
+    assert(origpvec.size() == 2 * numpoles + 1);
     assert(factors.size() == numpoles);
-    origpvec = pvec;
+    assignOrigToPvec();
+
     rescale();
 }
 
@@ -217,11 +226,11 @@ ConstraintCenterOfGravity::ConstraintCenterOfGravity(
     : weights(givenweights)
     , numpoints(givenpvec.size() - 1)
 {
-    pvec = givenpvec;
+    origpvec = givenpvec;
 
-    assert(pvec.size() > 1);
+    assert(origpvec.size() > 1);
     assert(weights.size() == numpoints);
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
@@ -268,7 +277,7 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     // slope at knot doesn't make sense if there's only C0 continuity
     assert(numpoles >= 2);
 
-    pvec.reserve(3 * numpoles + 4);
+    origpvec.reserve(3 * numpoles + 4);
 
     // `startpole` is the first pole affecting the knot with `knotindex`
     size_t startpole = 0;
@@ -281,18 +290,18 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     }
 
     for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+        origpvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
     }
     for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+        origpvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
     }
     for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
+        origpvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
     }
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
+    origpvec.push_back(l.p1.x);
+    origpvec.push_back(l.p1.y);
+    origpvec.push_back(l.p2.x);
+    origpvec.push_back(l.p2.y);
 
     // Set up factors to get slope at knot point
     std::vector<double> tempfactors((numpoles + 1), 1.0 / (numpoles + 1));
@@ -312,7 +321,7 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
         slopefactors[i] = b.degree * (tempfactors[i] - tempfactors[i + 1]);
     }
 
-    origpvec = pvec;
+    assignOrigToPvec();
     ConstraintSlopeAtBSplineKnot::rescale();
 }
 
@@ -493,29 +502,29 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(
     // This is always going to be true
     numpoints = bsp.degree + 1;
 
-    pvec.reserve(2 + 2 * b.poles.size());
-    pvec.push_back(point);
-    pvec.push_back(initparam);
+    origpvec.reserve(2 + 2 * b.poles.size());
+    origpvec.push_back(point);
+    origpvec.push_back(initparam);
 
     setStartPole(*initparam);
 
     for (size_t i = 0; i < b.poles.size(); ++i) {
         if (coordidx == 0) {
-            pvec.push_back(b.poles[i].x);
+            origpvec.push_back(b.poles[i].x);
         }
         else {
-            pvec.push_back(b.poles[i].y);
+            origpvec.push_back(b.poles[i].y);
         }
     }
     for (size_t i = 0; i < b.weights.size(); ++i) {
-        pvec.push_back(b.weights[i]);
+        origpvec.push_back(b.weights[i]);
     }
 
     if (bsp.flattenedknots.empty()) {
         bsp.setupFlattenedKnots();
     }
 
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
@@ -626,10 +635,10 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
 // Difference
 ConstraintDifference::ConstraintDifference(double* p1, double* p2, double* d)
 {
-    pvec.push_back(p1);
-    pvec.push_back(p2);
-    pvec.push_back(d);
-    origpvec = pvec;
+    origpvec.push_back(p1);
+    origpvec.push_back(p2);
+    origpvec.push_back(d);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -663,12 +672,12 @@ double ConstraintDifference::grad(double* param)
 // P2PDistance
 ConstraintP2PDistance::ConstraintP2PDistance(Point& p1, Point& p2, double* d)
 {
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    pvec.push_back(d);
-    origpvec = pvec;
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    origpvec.push_back(d);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -759,12 +768,12 @@ double ConstraintP2PDistance::maxStep(MAP_pD_D& dir, double lim)
 ConstraintP2PAngle::ConstraintP2PAngle(Point& p1, Point& p2, double* a, double da_)
     : da(da_)
 {
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    pvec.push_back(a);
-    origpvec = pvec;
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    origpvec.push_back(a);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -838,14 +847,14 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 // P2LDistance
 ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
-    pvec.push_back(d);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(l.p1.x);
+    origpvec.push_back(l.p1.y);
+    origpvec.push_back(l.p2.x);
+    origpvec.push_back(l.p2.y);
+    origpvec.push_back(d);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -965,26 +974,18 @@ double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // PointOnLine
 ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Line& l)
-{
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintPointOnLine(p, l.p1, l.p2)
+{}
 
 ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Point& lp1, Point& lp2)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(lp1.x);
-    pvec.push_back(lp1.y);
-    pvec.push_back(lp2.x);
-    pvec.push_back(lp2.y);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(lp1.x);
+    origpvec.push_back(lp1.y);
+    origpvec.push_back(lp2.x);
+    origpvec.push_back(lp2.y);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1042,26 +1043,18 @@ double ConstraintPointOnLine::grad(double* param)
 // --------------------------------------------------------
 // PointOnPerpBisector
 ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Line& l)
-{
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintPointOnPerpBisector(p, l.p1, l.p2)
+{}
 
 ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Point& lp1, Point& lp2)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(lp1.x);
-    pvec.push_back(lp1.y);
-    pvec.push_back(lp2.x);
-    pvec.push_back(lp2.y);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(lp1.x);
+    origpvec.push_back(lp1.y);
+    origpvec.push_back(lp2.x);
+    origpvec.push_back(lp2.y);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1099,15 +1092,15 @@ void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double*
 // Parallel
 ConstraintParallel::ConstraintParallel(Line& l1, Line& l2)
 {
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    origpvec = pvec;
+    origpvec.push_back(l1.p1.x);
+    origpvec.push_back(l1.p1.y);
+    origpvec.push_back(l1.p2.x);
+    origpvec.push_back(l1.p2.y);
+    origpvec.push_back(l2.p1.x);
+    origpvec.push_back(l2.p1.y);
+    origpvec.push_back(l2.p2.x);
+    origpvec.push_back(l2.p2.y);
+    assignOrigToPvec();
     ConstraintParallel::rescale();
 }
 
@@ -1170,30 +1163,20 @@ double ConstraintParallel::grad(double* param)
 // --------------------------------------------------------
 // Perpendicular
 ConstraintPerpendicular::ConstraintPerpendicular(Line& l1, Line& l2)
-{
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    origpvec = pvec;
-    ConstraintPerpendicular::rescale();
-}
+    : ConstraintPerpendicular(l1.p1, l1.p2, l2.p1, l2.p2)
+{}
 
 ConstraintPerpendicular::ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
 {
-    pvec.push_back(l1p1.x);
-    pvec.push_back(l1p1.y);
-    pvec.push_back(l1p2.x);
-    pvec.push_back(l1p2.y);
-    pvec.push_back(l2p1.x);
-    pvec.push_back(l2p1.y);
-    pvec.push_back(l2p2.x);
-    pvec.push_back(l2p2.y);
-    origpvec = pvec;
+    origpvec.push_back(l1p1.x);
+    origpvec.push_back(l1p1.y);
+    origpvec.push_back(l1p2.x);
+    origpvec.push_back(l1p2.y);
+    origpvec.push_back(l2p1.x);
+    origpvec.push_back(l2p1.y);
+    origpvec.push_back(l2p2.x);
+    origpvec.push_back(l2p2.y);
+    assignOrigToPvec();
     ConstraintPerpendicular::rescale();
 }
 
@@ -1256,32 +1239,21 @@ double ConstraintPerpendicular::grad(double* param)
 // --------------------------------------------------------
 // L2LAngle
 ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
-{
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    pvec.push_back(a);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintL2LAngle(l1.p1, l1.p2, l2.p1, l2.p2, a)
+{}
 
 ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* a)
 {
-    pvec.push_back(l1p1.x);
-    pvec.push_back(l1p1.y);
-    pvec.push_back(l1p2.x);
-    pvec.push_back(l1p2.y);
-    pvec.push_back(l2p1.x);
-    pvec.push_back(l2p1.y);
-    pvec.push_back(l2p2.x);
-    pvec.push_back(l2p2.y);
-    pvec.push_back(a);
-    origpvec = pvec;
+    origpvec.push_back(l1p1.x);
+    origpvec.push_back(l1p1.y);
+    origpvec.push_back(l1p2.x);
+    origpvec.push_back(l1p2.y);
+    origpvec.push_back(l2p1.x);
+    origpvec.push_back(l2p1.y);
+    origpvec.push_back(l2p2.x);
+    origpvec.push_back(l2p2.y);
+    origpvec.push_back(a);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1375,30 +1347,20 @@ double ConstraintL2LAngle::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // MidpointOnLine
 ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
-{
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintMidpointOnLine(l1.p1, l1.p2, l2.p1, l2.p2)
+{}
 
 ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
 {
-    pvec.push_back(l1p1.x);
-    pvec.push_back(l1p1.y);
-    pvec.push_back(l1p2.x);
-    pvec.push_back(l1p2.y);
-    pvec.push_back(l2p1.x);
-    pvec.push_back(l2p1.y);
-    pvec.push_back(l2p2.x);
-    pvec.push_back(l2p2.y);
-    origpvec = pvec;
+    origpvec.push_back(l1p1.x);
+    origpvec.push_back(l1p1.y);
+    origpvec.push_back(l1p2.x);
+    origpvec.push_back(l1p2.y);
+    origpvec.push_back(l2p1.x);
+    origpvec.push_back(l2p1.y);
+    origpvec.push_back(l2p2.x);
+    origpvec.push_back(l2p2.y);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1475,13 +1437,13 @@ ConstraintTangentCircumf::ConstraintTangentCircumf(
     : internal(internal_)
 {
 
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    pvec.push_back(rad1);
-    pvec.push_back(rad2);
-    origpvec = pvec;
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    origpvec.push_back(rad1);
+    origpvec.push_back(rad2);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1571,14 +1533,14 @@ double ConstraintTangentCircumf::grad(double* param)
 // ConstraintPointOnEllipse
 ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point& p, Ellipse& e)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(e.center.x);
-    pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
-    pvec.push_back(e.radmin);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(e.center.x);
+    origpvec.push_back(e.center.y);
+    origpvec.push_back(e.focus1.x);
+    origpvec.push_back(e.focus1.y);
+    origpvec.push_back(e.radmin);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1664,10 +1626,10 @@ ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line& l, Ellipse& e)
     , e(e)
 {
 
-    this->l.PushOwnParams(pvec);
-    this->e.PushOwnParams(pvec);  // DeepSOIC: hopefully, this won't push arc's parameters
+    this->l.PushOwnParams(origpvec);
+    this->e.PushOwnParams(origpvec);  // DeepSOIC: hopefully, this won't push arc's parameters
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -1734,10 +1696,10 @@ ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellip
     , p(p1)
     , AlignmentType(alignmentType)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    this->e.PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    this->e.PushOwnParams(origpvec);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1832,10 +1794,10 @@ ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyp
     , p(p1)
     , AlignmentType(alignmentType)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    this->e.PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    this->e.PushOwnParams(origpvec);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1930,9 +1892,9 @@ ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a
     : e1(a1)
     , e2(a2)
 {
-    this->e1->PushOwnParams(pvec);
-    this->e2->PushOwnParams(pvec);
-    origpvec = pvec;
+    this->e1->PushOwnParams(origpvec);
+    this->e2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -1971,10 +1933,10 @@ void ConstraintEqualMajorAxesConic::errorgrad(double* err, double* grad, double*
 ConstraintEqualFocalDistance::ConstraintEqualFocalDistance(ArcOfParabola* a1, ArcOfParabola* a2)
 {
     this->e1 = a1;
-    this->e1->PushOwnParams(pvec);
+    this->e1->PushOwnParams(origpvec);
     this->e2 = a2;
-    this->e2->PushOwnParams(pvec);
-    origpvec = pvec;
+    this->e2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2030,13 +1992,13 @@ void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* 
 ConstraintCurveValue::ConstraintCurveValue(Point& p, double* pcoord, Curve& c, double* u)
     : crv(c.Copy())
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(pcoord);
-    pvec.push_back(u);
-    crv->PushOwnParams(pvec);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(pcoord);
+    origpvec.push_back(u);
+    crv->PushOwnParams(origpvec);
     pvecChangedFlag = true;
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
@@ -2112,27 +2074,27 @@ double ConstraintCurveValue::maxStep(MAP_pD_D& /*dir*/, double lim)
 // ConstraintPointOnHyperbola
 ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, Hyperbola& e)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(e.center.x);
-    pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
-    pvec.push_back(e.radmin);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(e.center.x);
+    origpvec.push_back(e.center.y);
+    origpvec.push_back(e.focus1.x);
+    origpvec.push_back(e.focus1.y);
+    origpvec.push_back(e.radmin);
+    assignOrigToPvec();
     rescale();
 }
 
 ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, ArcOfHyperbola& e)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(e.center.x);
-    pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
-    pvec.push_back(e.radmin);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(e.center.x);
+    origpvec.push_back(e.center.y);
+    origpvec.push_back(e.focus1.x);
+    origpvec.push_back(e.focus1.y);
+    origpvec.push_back(e.radmin);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -2229,22 +2191,22 @@ double ConstraintPointOnHyperbola::grad(double* param)
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, Parabola& e)
     : parab(e.Copy())
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    parab->PushOwnParams(pvec);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    parab->PushOwnParams(origpvec);
     pvecChangedFlag = true;
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, ArcOfParabola& e)
     : parab(e.Copy())
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    parab->PushOwnParams(pvec);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    parab->PushOwnParams(origpvec);
     pvecChangedFlag = true;
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
@@ -2314,12 +2276,12 @@ ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve& acrv1, Curve& acrv2, Poi
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2407,14 +2369,14 @@ ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2506,13 +2468,13 @@ ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(cparam);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(cparam);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2602,14 +2564,14 @@ ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(cparam1);
-    pvec.push_back(cparam2);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(cparam1);
+    origpvec.push_back(cparam2);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2706,14 +2668,14 @@ ConstraintSnell::ConstraintSnell(
     , flipn1(flipn1)
     , flipn2(flipn2)
 {
-    pvec.push_back(n1);
-    pvec.push_back(n2);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    ray1->PushOwnParams(pvec);
-    ray2->PushOwnParams(pvec);
-    boundary->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(n1);
+    origpvec.push_back(n2);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    ray1->PushOwnParams(origpvec);
+    ray2->PushOwnParams(origpvec);
+    boundary->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
 
     rescale();
@@ -2787,9 +2749,9 @@ ConstraintEqualLineLength::ConstraintEqualLineLength(Line& l1, Line& l2)
     : l1(l1)
     , l2(l2)
 {
-    this->l1.PushOwnParams(pvec);
-    this->l2.PushOwnParams(pvec);
-    origpvec = pvec;
+    this->l1.PushOwnParams(origpvec);
+    this->l2.PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2876,11 +2838,11 @@ ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d)
     : c1(c1)
     , c2(c2)
 {
-    pvec.push_back(d);
-    this->c1.PushOwnParams(pvec);
-    this->c2.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->c1.PushOwnParams(origpvec);
+    this->c2.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2961,11 +2923,11 @@ ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
     : circle(c)
     , line(l)
 {
-    pvec.push_back(d);
-    this->circle.PushOwnParams(pvec);
-    this->line.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->circle.PushOwnParams(origpvec);
+    this->line.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -3048,11 +3010,11 @@ ConstraintP2CDistance::ConstraintP2CDistance(Point& p, Circle& c, double* d)
     : circle(c)
     , pt(p)
 {
-    pvec.push_back(d);
-    this->circle.PushOwnParams(pvec);
-    this->pt.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->circle.PushOwnParams(origpvec);
+    this->pt.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -3111,10 +3073,10 @@ void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
 ConstraintArcLength::ConstraintArcLength(Arc& a, double* d)
     : arc(a)
 {
-    pvec.push_back(d);
-    this->arc.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->arc.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
