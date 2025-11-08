@@ -1494,8 +1494,6 @@ protected:
     Gui::Action* createAction() override;
 
 private:
-    void updateIcon(bool value);
-
     ParameterGrp::handle getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
@@ -1537,23 +1535,11 @@ void CmdSketcherSnap::OnChange(Base::Subject<const char*>& rCaller, const char* 
     }
 }
 
-void CmdSketcherSnap::updateIcon(bool value)
-{
-    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap");
-    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap_Deactivated");
-
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    pcAction->setIcon(value ? active : inactive);
-}
-
 void CmdSketcherSnap::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     getParameterPath()->SetBool("Snap", !snapEnabled);
-
-    // snapEnable updated via observer
-    updateIcon(snapEnabled);
 
     // Update the widget :
     if (!_pcAction)
@@ -1583,9 +1569,6 @@ Gui::Action* CmdSketcherSnap::createAction()
         ssa->updateWidget(snapEnabled);
     });
 
-    // set the right pixmap
-    updateIcon(snapEnabled);
-
     return pcAction;
 }
 
@@ -1608,8 +1591,6 @@ bool CmdSketcherSnap::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        updateIcon(snapEnabled);
-
         return true;
     }
 
