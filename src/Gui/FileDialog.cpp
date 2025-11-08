@@ -53,7 +53,7 @@ using namespace Gui;
 
 bool DialogOptions::dontUseNativeFileDialog()
 {
-#if defined(USE_QT_DIALOGS)
+#if defined(USE_QT_FILEDIALOG)
     constexpr bool notNativeDialog = true;
 #else
     constexpr bool notNativeDialog = false;
@@ -66,7 +66,7 @@ bool DialogOptions::dontUseNativeFileDialog()
 
 bool DialogOptions::dontUseNativeColorDialog()
 {
-#if defined(USE_QT_DIALOGS)
+#if defined(USE_QT_COLORDIALOG)
     constexpr bool notNativeDialog = true;
 #else
     constexpr bool notNativeDialog = false;

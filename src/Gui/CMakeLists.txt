@@ -1512,8 +1512,12 @@ if(FREECAD_USE_PCH)
             PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
-if (FREECAD_USE_QT_DIALOGS)
-    set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_DIALOGS)
+if (FREECAD_USE_QT_FILEDIALOG)
+    set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_FILEDIALOG)
+endif()
+
+if (FREECAD_USE_QT_COLORDIALOG)
+    set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_COLORDIALOG)
 endif()
 
 # Suppress some very long Eigen3 warnings of older versions and
