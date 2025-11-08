@@ -1294,7 +1294,16 @@ void MainWindow::setActiveSubWindow(QWidget* window)
     }
 
     auto view = qobject_cast<MDIView*>(mdi->widget());
-    setActiveWindow(view);
+    if (view) {
+        setActiveWindow(view);
+    }
+    else {
+        // check for non mdiview widgets ie. the plot widget
+        d->mdiArea->setActiveSubWindow(mdi);
+        if (mdi->widget()) {
+            mdi->widget()->setFocus();
+        }
+    }
 }
 
 void MainWindow::setActiveWindow(MDIView* view)
