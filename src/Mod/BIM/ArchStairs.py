@@ -2018,7 +2018,7 @@ class _Stairs(ArchComponent.Component):
                 #           ∕        │          ∕        │
                 #          ∕         │         ∕         │ p1c
                 #         /          ∕        /          ∕
-                #        /          /        /          /     p1a __________ p1b 
+                #        /          /        /          /     p1a __________ p1b
                 #       /          ∕        /          ∕         /          ∕
                 #      /          ∕        /          ∕         /          ∕
                 #     /          ⁄        /          ∕         /          ∕
