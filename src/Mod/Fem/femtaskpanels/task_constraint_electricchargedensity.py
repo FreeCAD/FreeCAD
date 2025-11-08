@@ -71,11 +71,16 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             QtCore.SIGNAL("currentIndexChanged(int)"),
             self.mode_changed,
         )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_concentrated,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.concentrated_changed,
+        )
 
         # geometry selection widget
         # start with Solid in list!
         self.selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Solid", "Face", "Edge"], False, False
+            obj.References, ["Solid", "Face", "Edge", "Vertex"], False, False
         )
 
         # form made from param and selection widget
@@ -109,6 +114,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.InterfaceChargeDensity = self.interface_charge_density
         self.obj.TotalCharge = self.total_charge
         self.obj.Mode = self.mode
+        self.obj.Concentrated = self.concentrated
 
         self.selection_widget.finish_selection()
         self.restore_visibility()
@@ -129,6 +135,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.source_charge_density = self.obj.SourceChargeDensity
         self.interface_charge_density = self.obj.InterfaceChargeDensity
         self.total_charge = self.obj.TotalCharge
+        self.concentrated = self.obj.Concentrated
+
         FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_source_charge_density).bind(
             self.obj, "SourceChargeDensity"
         )
@@ -155,6 +163,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.parameter_widget.cb_mode.setCurrentIndex(index)
         self.mode_changed(index)
 
+        self.parameter_widget.ckb_concentrated.setChecked(self.concentrated)
+        if self.mode == "Total Source":
+            self.parameter_widget.ckb_concentrated.setVisible(True)
+
     def source_charge_density_changed(self, base_quantity_value):
         self.source_charge_density = base_quantity_value
 
@@ -166,6 +178,15 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def mode_changed(self, index):
         self.mode = self.mode_enum[index]
-        if self.mode in ["Total Interface", "Total Source"]:
-            index = 2
+        match self.mode:
+            case "Total Interface":
+                index = 2
+                self.parameter_widget.ckb_concentrated.setVisible(False)
+            case "Total Source":
+                index = 2
+                self.parameter_widget.ckb_concentrated.setVisible(True)
+
         self.parameter_widget.sw_mode.setCurrentIndex(index)
+
+    def concentrated_changed(self, value):
+        self.concentrated = value

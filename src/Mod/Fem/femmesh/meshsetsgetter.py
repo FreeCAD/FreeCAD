@@ -159,6 +159,7 @@ class MeshSetsGetter:
         self.get_constraints_temperature_nodes()
         self.get_constraints_initialtemperature_nodes()
         self.get_constraints_electrostatic_nodes()
+        self.get_constraints_electricchargedensity_nodes()
 
         # constraints sets with constraint data
         self.get_constraints_force_nodeloads()
@@ -284,6 +285,18 @@ class MeshSetsGetter:
         for femobj in self.member.cons_electrostatic:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             if femobj["Object"].BoundaryCondition == "Dirichlet":
+                print_obj_info(femobj["Object"])
+                femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                    self.femmesh, femobj
+                )
+
+    def get_constraints_electricchargedensity_nodes(self):
+        if not self.member.cons_electricchargedensity:
+            return
+        # get nodes
+        for femobj in self.member.cons_electricchargedensity:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            if femobj["Object"].Concentrated:
                 print_obj_info(femobj["Object"])
                 femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                     self.femmesh, femobj
