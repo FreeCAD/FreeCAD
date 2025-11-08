@@ -29,11 +29,10 @@ macro(InitializeFreeCADBuildOptions)
 
     if (APPLE)
         # System file dialog crashed FC on MacOS
-        option(FREECAD_USE_QT_COLORDIALOG "Use Qt's color dialog instead of the native one." OFF)
-    else()
         option(FREECAD_USE_QT_COLORDIALOG "Use Qt's color dialog instead of the native one." ON)
+    else()
+        option(FREECAD_USE_QT_COLORDIALOG "Use Qt's color dialog instead of the native one." OFF)
     endif()
-
 
     # == Win32 is default behaviour use the LibPack copied in Source tree ==========
     if(MSVC)
