@@ -1736,8 +1736,6 @@ protected:
     Gui::Action* createAction() override;
 
 private:
-    void updateIcon();
-
     ParameterGrp::handle getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
@@ -1777,28 +1775,6 @@ void CmdRenderingOrder::OnChange(Base::Subject<const char*>& rCaller, const char
 
     if (strcmp(sReason, "TopRenderGeometryId") == 0) {
         TopElement = static_cast<ElementType>(getParameterPath()->GetInt("TopRenderGeometryId", 1));
-
-        updateIcon();
-    }
-}
-
-void CmdRenderingOrder::updateIcon()
-{
-    static QIcon normal = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Normal");
-    static QIcon construction =
-        Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Construction");
-    static QIcon external = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_External");
-
-    if (auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction())) {
-        if (TopElement == ElementType::Normal) {
-            pcAction->setIcon(normal);
-        }
-        else if (TopElement == ElementType::Construction) {
-            pcAction->setIcon(construction);
-        }
-        else if (TopElement == ElementType::External) {
-            pcAction->setIcon(external);
-        }
     }
 }
 
@@ -1823,9 +1799,6 @@ Gui::Action* CmdRenderingOrder::createAction()
         Q_UNUSED(menu)
         roa->updateWidget();
     });
-
-    // set the right pixmap
-    updateIcon();
 
     return pcAction;
 }
