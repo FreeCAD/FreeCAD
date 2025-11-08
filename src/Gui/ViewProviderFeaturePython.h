@@ -399,7 +399,7 @@ public:
     }
     /// Starts to drag the object
     void dragObject(App::DocumentObject* obj) override {
-        App::AutoTransaction committer;
+        // App::AutoTransaction committer;
         switch (imp->dragObject(obj)) {
         case ViewProviderFeaturePythonImp::Accepted:
         case ViewProviderFeaturePythonImp::Rejected:
@@ -432,7 +432,7 @@ public:
     }
     /// If the dropped object type is accepted the object will be added as child
     void dropObject(App::DocumentObject* obj) override {
-        App::AutoTransaction committer;
+        // App::AutoTransaction committer; // TODO-theo-vt what is this trying to commit?
         switch (imp->dropObject(obj)) {
         case ViewProviderFeaturePythonImp::Accepted:
         case ViewProviderFeaturePythonImp::Rejected:
@@ -468,7 +468,7 @@ public:
     std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) override
     {
-        App::AutoTransaction committer;
+        // App::AutoTransaction committer;
         std::string ret;
         if(!imp->dropObjectEx(obj,owner,subname,elements,ret))
             ret = ViewProviderT::dropObjectEx(obj,owner,subname,elements);
@@ -606,7 +606,7 @@ protected:
     }
 
     int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override {
-        App::AutoTransaction committer;
+        // App::AutoTransaction committer;
         switch (imp->replaceObject(oldObj,newObj)) {
         case ViewProviderFeaturePythonImp::Accepted:
             return 1;
@@ -640,7 +640,7 @@ public:
 protected:
     bool doubleClicked() override
     {
-        App::AutoTransaction committer;
+        // App::AutoTransaction committer;
         switch (imp->doubleClicked()) {
         case ViewProviderFeaturePythonImp::Accepted:
             return true;

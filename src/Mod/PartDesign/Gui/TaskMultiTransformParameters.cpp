@@ -259,7 +259,7 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirror"));
+        pcBody->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Mirror"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
@@ -296,7 +296,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Linear Pattern"));
+        pcBody->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Linear Pattern"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
@@ -340,7 +340,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Polar Pattern"));
+        pcBody->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Polar Pattern"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
@@ -377,7 +377,7 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale"));
+        pcBody->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Scale"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");

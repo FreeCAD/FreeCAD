@@ -32,7 +32,6 @@
 #include <Base/Interpreter.h>
 
 #include <App/Application.h>
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
@@ -371,8 +370,9 @@ TEST_F(RenameProperty, undoRenameProperty)
     // Act
     bool isRenamed = false;
     {
-        App::AutoTransaction transaction("Rename Property");
+        _doc->openTransaction("Rename Property");
         isRenamed = varSet->renameDynamicProperty(prop, "NewName");
+        _doc->commitTransaction();
     }
 
     // Assert
@@ -403,8 +403,9 @@ TEST_F(RenameProperty, redoRenameProperty)
     // Act
     bool isRenamed = false;
     {
-        App::AutoTransaction transaction("Rename Property");
+        _doc->openTransaction("Rename Property");
         isRenamed = varSet->renameDynamicProperty(prop, "NewName");
+        _doc->commitTransaction();
     }
 
     // Assert

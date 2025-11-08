@@ -91,6 +91,7 @@ public:
     DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgFilletEdges() override;
     bool accept();
+    void setSelectionGate();
 
 protected:
     void findShapes();
@@ -162,6 +163,8 @@ public:
     void clicked(int) override;
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }

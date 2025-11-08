@@ -181,6 +181,14 @@ void TaskDialog::onRedo()
 
 }
 
+void TaskDialog::activate()
+{
+
+}
+void TaskDialog::deactivate()
+{
+    
+}
 
 
 

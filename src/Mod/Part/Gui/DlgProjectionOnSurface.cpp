@@ -135,8 +135,6 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::DlgProjectionOnSurface)
     , m_projectionObjectName(tr("Projection object"))
-    , filterEdge(nullptr)
-    , filterFace(nullptr)
 {
     ui->setupUi(this);
     setupConnections();
@@ -292,22 +290,30 @@ void PartGui::DlgProjectionOnSurface::reject()
         m_partDocument->abortTransaction();
     }
 }
+void PartGui::DlgProjectionOnSurface::setSelectionGate()
+{
+    if (selectionMode == SelectionMode::Face) {
+        Gui::Selection().addSelectionGate(new FaceSelection());
+    } else if (selectionMode == SelectionMode::Edge) {
+        Gui::Selection().addSelectionGate(new EdgeSelection());
+    }
+}
 
 void PartGui::DlgProjectionOnSurface::onPushButtonAddFaceClicked()
 {
     if (ui->pushButtonAddFace->isChecked()) {
         m_currentSelection = "add_face";
         disable_ui_elements(m_guiObjectVec, ui->pushButtonAddFace);
-        if (!filterFace) {
-            filterFace = new FaceSelection();
-            Gui::Selection().addSelectionGate(filterFace);
+        if (selectionMode != SelectionMode::Face) {
+            selectionMode = SelectionMode::Face;
+            setSelectionGate();
         }
     }
     else {
         m_currentSelection = "";
         enable_ui_elements(m_guiObjectVec, nullptr);
         Gui::Selection().rmvSelectionGate();
-        filterFace = nullptr;
+        selectionMode = SelectionMode::None;
     }
 }
 
@@ -316,9 +322,9 @@ void PartGui::DlgProjectionOnSurface::onPushButtonAddEdgeClicked()
     if (ui->pushButtonAddEdge->isChecked()) {
         m_currentSelection = "add_edge";
         disable_ui_elements(m_guiObjectVec, ui->pushButtonAddEdge);
-        if (!filterEdge) {
-            filterEdge = new EdgeSelection();
-            Gui::Selection().addSelectionGate(filterEdge);
+        if (selectionMode != SelectionMode::Edge) {
+            selectionMode = SelectionMode::Edge;
+            setSelectionGate();
         }
         ui->radioButtonEdges->setChecked(true);
         onRadioButtonEdgesClicked();
@@ -327,7 +333,7 @@ void PartGui::DlgProjectionOnSurface::onPushButtonAddEdgeClicked()
         m_currentSelection = "";
         enable_ui_elements(m_guiObjectVec, nullptr);
         Gui::Selection().rmvSelectionGate();
-        filterEdge = nullptr;
+        selectionMode = SelectionMode::None;
     }
 }
 
@@ -1079,16 +1085,16 @@ void PartGui::DlgProjectionOnSurface::onPushButtonAddProjFaceClicked()
     if (ui->pushButtonAddProjFace->isChecked()) {
         m_currentSelection = "add_projection_surface";
         disable_ui_elements(m_guiObjectVec, ui->pushButtonAddProjFace);
-        if (!filterFace) {
-            filterFace = new FaceSelection();
-            Gui::Selection().addSelectionGate(filterFace);
+        if (selectionMode != SelectionMode::Face) {
+            selectionMode = SelectionMode::Face;
+            setSelectionGate();
         }
     }
     else {
         m_currentSelection = "";
         enable_ui_elements(m_guiObjectVec, nullptr);
         Gui::Selection().rmvSelectionGate();
-        filterFace = nullptr;
+        selectionMode = SelectionMode::None;
     }
 }
 void PartGui::DlgProjectionOnSurface::onRadioButtonShowAllClicked()
@@ -1121,9 +1127,9 @@ void PartGui::DlgProjectionOnSurface::onPushButtonAddWireClicked()
     if (ui->pushButtonAddWire->isChecked()) {
         m_currentSelection = "add_wire";
         disable_ui_elements(m_guiObjectVec, ui->pushButtonAddWire);
-        if (!filterEdge) {
-            filterEdge = new EdgeSelection();
-            Gui::Selection().addSelectionGate(filterEdge);
+        if (selectionMode != SelectionMode::Edge) {
+            selectionMode = SelectionMode::Edge;
+            setSelectionGate();
         }
         ui->radioButtonEdges->setChecked(true);
         onRadioButtonEdgesClicked();
@@ -1132,7 +1138,7 @@ void PartGui::DlgProjectionOnSurface::onPushButtonAddWireClicked()
         m_currentSelection = "";
         enable_ui_elements(m_guiObjectVec, nullptr);
         Gui::Selection().rmvSelectionGate();
-        filterEdge = nullptr;
+        selectionMode = SelectionMode::None;
     }
 }
 
@@ -1177,6 +1183,15 @@ bool TaskProjectionOnSurface::reject()
     widget->reject();
     return true;
 }
+void TaskProjectionOnSurface::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskProjectionOnSurface::deactivate()
+{
+    widget->detachSelection();
+}
 
 void TaskProjectionOnSurface::clicked(int id)
 {
@@ -1194,8 +1209,6 @@ void TaskProjectionOnSurface::clicked(int id)
 DlgProjectOnSurface::DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::DlgProjectionOnSurface)
-    , filterEdge(nullptr)
-    , filterFace(nullptr)
     , feature(feature)
 {
     ui->setupUi(this);
@@ -1213,7 +1226,7 @@ DlgProjectOnSurface::DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidge
 
 DlgProjectOnSurface::~DlgProjectOnSurface()
 {
-    if (filterFace || filterEdge) {
+    if (selectionMode != SelectionMode::None) {
         Gui::Selection().rmvSelectionGate();
     }
 }
@@ -1290,42 +1303,37 @@ void DlgProjectOnSurface::reject()
 void DlgProjectOnSurface::onAddProjFaceClicked()
 {
     if (ui->pushButtonAddProjFace->isChecked()) {
-        selectionMode = SelectionMode::SupportFace;
-        if (!filterFace) {
-            filterFace = new FaceSelection();
-            Gui::Selection().addSelectionGate(filterFace);
+        if (selectionMode != SelectionMode::SupportFace) {
+            selectionMode = SelectionMode::SupportFace;
+            setSelectionGate();
         }
     }
     else {
         selectionMode = SelectionMode::None;
         Gui::Selection().rmvSelectionGate();
-        filterFace = nullptr;
     }
 }
 
 void DlgProjectOnSurface::onAddFaceClicked()
 {
     if (ui->pushButtonAddFace->isChecked()) {
-        selectionMode = SelectionMode::AddFace;
-        if (!filterFace) {
-            filterFace = new FaceSelection();
-            Gui::Selection().addSelectionGate(filterFace);
+        if (selectionMode != SelectionMode::AddFace) {
+            selectionMode = SelectionMode::AddFace;
+            setSelectionGate();
         }
     }
     else {
         selectionMode = SelectionMode::None;
         Gui::Selection().rmvSelectionGate();
-        filterFace = nullptr;
     }
 }
 
 void DlgProjectOnSurface::onAddWireClicked()
 {
     if (ui->pushButtonAddWire->isChecked()) {
-        selectionMode = SelectionMode::AddWire;
-        if (!filterEdge) {
-            filterEdge = new EdgeSelection();
-            Gui::Selection().addSelectionGate(filterEdge);
+        if (selectionMode != SelectionMode::AddWire) {
+            selectionMode = SelectionMode::AddWire;
+            setSelectionGate();
         }
         ui->radioButtonEdges->setChecked(true);
         onEdgesClicked();
@@ -1333,25 +1341,31 @@ void DlgProjectOnSurface::onAddWireClicked()
     else {
         selectionMode = SelectionMode::None;
         Gui::Selection().rmvSelectionGate();
-        filterEdge = nullptr;
     }
 }
 
 void DlgProjectOnSurface::onAddEdgeClicked()
 {
     if (ui->pushButtonAddEdge->isChecked()) {
-        selectionMode = SelectionMode::AddEdge;
-        if (!filterEdge) {
-            filterEdge = new EdgeSelection();
-            Gui::Selection().addSelectionGate(filterEdge);
+        if (selectionMode != SelectionMode::AddEdge) {
+            selectionMode = SelectionMode::AddEdge;
+            setSelectionGate();
         }
+
         ui->radioButtonEdges->setChecked(true);
         onEdgesClicked();
     }
     else {
         selectionMode = SelectionMode::None;
         Gui::Selection().rmvSelectionGate();
-        filterEdge = nullptr;
+    }
+}
+void DlgProjectOnSurface::setSelectionGate()
+{
+    if (selectionMode == SelectionMode::SupportFace || selectionMode == SelectionMode::AddFace) {
+        Gui::Selection().addSelectionGate(new FaceSelection());
+    } else if (selectionMode == SelectionMode::AddEdge || selectionMode == SelectionMode::AddWire) {
+        Gui::Selection().addSelectionGate(new EdgeSelection());
     }
 }
 
@@ -1595,6 +1609,15 @@ bool TaskProjectOnSurface::reject()
     widget->reject();
     resetEdit();
     return true;
+}
+void TaskProjectOnSurface::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskProjectOnSurface::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_DlgProjectionOnSurface.cpp"

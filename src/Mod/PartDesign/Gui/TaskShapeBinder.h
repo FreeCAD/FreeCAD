@@ -46,7 +46,7 @@ namespace PartDesignGui {
 
 
 
-class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
+class TaskShapeBinder : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -99,6 +99,8 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
 protected:
     TaskShapeBinder  *parameter;

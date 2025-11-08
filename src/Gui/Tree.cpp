@@ -49,6 +49,7 @@
 #include <Base/Writer.h>
 
 #include <Base/Color.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
@@ -1207,10 +1208,11 @@ void TreeWidget::showEvent(QShowEvent* ev) {
 void TreeWidget::onCreateGroup()
 {
     QString name = tr("Group");
-    App::AutoTransaction trans("Create group");
     if (this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
+        App::AutoTransaction trans(doc->openTransaction("Create group"));
+
         QString cmd = QStringLiteral("App.getDocument(\"%1\").addObject"
             "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
             .arg(QString::fromLatin1(doc->getName()), name);
@@ -1221,6 +1223,8 @@ void TreeWidget::onCreateGroup()
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
+        App::AutoTransaction trans(doc->openTransaction("Create group"));
+
         QString cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\")"
             ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\"")
             .arg(QString::fromLatin1(doc->getName()),
@@ -1397,9 +1401,12 @@ void TreeWidget::onRecomputeObject() {
             objs.back()->enforceRecompute();
         }
     }
-    if (objs.empty())
+    if (objs.empty()) {
         return;
-    App::AutoTransaction committer("Recompute object");
+    }
+
+    // TODO-theo-vt should recompute commands be application wide transaction so any dependent document may stick to it?
+    App::AutoTransaction committer(objs.front()->getDocument()->openTransaction("Recompute object"));
     objs.front()->getDocument()->recompute(objs, true);
 }
 
@@ -1818,7 +1825,10 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
             auto objitem = static_cast<DocumentObjectItem*>(item);
             ViewProviderDocumentObject* vp = objitem->object();
 
-            objitem->getOwnerDocument()->document()->setActiveView(vp);
+            Gui::Document* guidoc = objitem->getOwnerDocument()->document();
+            App::Document* appdoc = guidoc->getDocument();
+
+            guidoc->setActiveView(vp);            
             auto manager = Application::Instance->macroManager();
             auto lines = manager->getLines();
 
@@ -1828,8 +1838,9 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 
             const char* commandText = vp->getTransactionText();
             if (commandText) {
-                auto editDoc = Application::Instance->editDocument();
-                App::AutoTransaction committer(commandText, true);
+                bool inEditInit = Application::Instance->isInEdit(guidoc);
+                // App::AutoTransaction committer(commandText, true);
+                appdoc->openTransaction(commandText);
 
                 if (!vp->doubleClicked())
                     QTreeWidget::mouseDoubleClickEvent(event);
@@ -1837,8 +1848,12 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
                     manager->addLine(MacroManager::Gui, ss.str().c_str());
 
                 // If the double click starts an editing, let the transaction persist
-                if (!editDoc && Application::Instance->editDocument())
-                    committer.setEnable(false);
+                // if (!editDoc && Application::Instance->editDocument()) 
+                //     committer.setEnable(false);
+                // TODO-theo-vt check logic here -- specificaly with ViewProviderDocumentObject::startDefaultEditMode
+                if (!inEditInit && Application::Instance->isInEdit(guidoc)) {
+                    appdoc->commitTransaction();
+                }
             }
             else {
                 if (!vp->doubleClicked())
@@ -2181,20 +2196,23 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
     infos.reserve(items.size());
     bool syncPlacement = TreeParams::getSyncPlacement();
 
-    App::AutoTransaction committer(
-        da == Qt::LinkAction ? "Link object" :
-        da == Qt::CopyAction ? "Copy object" : "Move object");
+    int tid = 0;
+    std::string transName = da == Qt::LinkAction ? "Link object"
+        : da == Qt::CopyAction                   ? "Copy object"
+                                                 : "Move object";
 
     // check if items can be dragged
     for (auto& v : items) {
         auto item = v.first;
         auto obj = item->object()->getObject();
         auto parentItem = item->getParentItem();
+
+        tid = obj->getDocument()->openTransaction(transName.c_str(), false, tid); // If the same document already has this transaction opened, it is ignored
         if (parentItem) {
             bool allParentsOK = canDragFromParents(parentItem, obj, nullptr);
 
             if (!allParentsOK || !parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
-                committer.close(true);
+                App::GetApplication().abortTransaction(tid);
                 TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << parentItem->object()->getObject()->getFullName() << "'");
                 return false;
             }
@@ -2373,10 +2391,12 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
         errMsg = "Unknown exception";
     }
     if (!errMsg.empty()) {
-        committer.close(true);
+        App::GetApplication().abortTransaction(tid);
         QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"), QString::fromUtf8(errMsg.c_str()));
         return false;
     }
+
+    App::GetApplication().commitTransaction(tid);
     return touched;
 }
 
@@ -2434,14 +2454,12 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         Selection().addSelection(targetParent->getDocument()->getName(), targetParent->getNameInDocument());
     }
 
-    // Open command
-    App::AutoTransaction committer("Drop object");
-
     bool syncPlacement = TreeParams::getSyncPlacement() && targetItemObj->isGroup();
     bool setSelection = true;
     std::vector<App::DocumentObject*> draggedObjects;
     std::vector<std::pair<App::DocumentObject*, std::string> > droppedObjects;
     std::vector<ItemInfo> infos;
+    int tid = 0;
     // Only keep text names here, because you never know when doing drag
     // and drop some object may delete other objects.
     infos.reserve(items.size());
@@ -2450,6 +2468,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         auto& info = infos.back();
         auto item = v.first;
         App::DocumentObject* obj = item->object()->getObject();
+        tid = obj->getDocument()->openTransaction("Drop object");
 
         std::ostringstream str;
         App::DocumentObject* topParent = nullptr;
@@ -2485,7 +2504,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                     info.parentDoc = vpp->getObject()->getDocument()->getName();
                 }
                 else {
-                    committer.close(true);
+                    App::GetApplication().abortTransaction(tid);
                     return false;
                 }
             }
@@ -2496,13 +2515,13 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         {
             if (event->possibleActions() & Qt::LinkAction) {
                 if (items.size() > 1) {
-                    committer.close(true);
+                    App::GetApplication().abortTransaction(tid);
                     TREE_TRACE("Cannot replace with more than one object");
                     return false;
                 }
                 auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
                 if ((!ext || !ext->getLinkedObjectProperty()) && !targetItemObj->getParentItem()) {
-                    committer.close(true);
+                    App::GetApplication().abortTransaction(tid);
                     TREE_TRACE("Cannot replace without parent");
                     return false;
                 }
@@ -2735,11 +2754,12 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         errMsg = "Unknown exception";
     }
     if (!errMsg.empty()) {
-        committer.close(true);
+        App::GetApplication().abortTransaction(tid);
         QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
             QString::fromUtf8(errMsg.c_str()));
         return false;
     }
+    App::GetApplication().commitTransaction(tid);
     return touched;
 }
 
@@ -3909,16 +3929,19 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
     QColor color(Base::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
-        auto doc = Application::Instance->editDocument();
-        if (!doc)
+        // TODO-theo-vt is this really what this was trying to do?
+        if (!Application::Instance->isInEdit(document())) {
             return;
+        }
         ViewProviderDocumentObject* parentVp = nullptr;
         std::string subname;
-        auto vp = doc->getInEdit(&parentVp, &subname);
-        if (!parentVp)
+        auto vp = document()->getInEdit(&parentVp, &subname);
+        if (!parentVp) {
             parentVp = freecad_cast<ViewProviderDocumentObject*>(vp);
-        if (parentVp)
+        }
+        if (parentVp) {
             getTree()->editingItem = findItemByObject(true, parentVp->getObject(), subname.c_str());
+        }
     }
 
     if (getTree()->editingItem)

@@ -187,8 +187,8 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
 
-
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    bool openedModal = false;
 
     std::string bodyName = getUniqueObjectName("Body");
     const char* bodyString = bodyName.c_str();
@@ -216,7 +216,7 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-
+    
     if (actPart) {
         doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
                  actPart->getNameInDocument(), bodyString);
@@ -282,15 +282,22 @@ void CmdPartDesignBody::activated(int iMsg)
                     std::string docname = getDocument()->getName();
                     auto quitter = [docname]() {
                         Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-                        if (document)
+                        if (document) {
                             document->abortCommand();
+                        }
                     };
 
                     // Show dialog and let user pick plane
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
-                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
+                        openedModal = true;
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes,
+                                                                                        status,
+                                                                                        accepter,
+                                                                                        worker,
+                                                                                        true,
+                                                                                        quitter));
                     }
                 }
             }
@@ -298,6 +305,10 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     updateActive();
+
+    if (!openedModal) {
+        commitCommand();
+    }
 }
 
 bool CmdPartDesignBody::isActive()
@@ -433,7 +444,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -659,6 +670,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     }
 
     updateActive();
+
+    commitCommand();
 }
 
 bool CmdPartDesignDuplicateSelection::isActive()
@@ -830,6 +843,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     }*/
 
     updateActive();
+
+    commitCommand();
 }
 
 bool CmdPartDesignMoveFeature::isActive()
@@ -986,6 +1001,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     updateActive();
+
+    commitCommand();
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive()

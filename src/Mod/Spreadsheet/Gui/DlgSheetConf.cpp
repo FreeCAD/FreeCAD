@@ -25,7 +25,6 @@
 
 #include <QMessageBox>
 
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>
@@ -199,7 +198,7 @@ void DlgSheetConf::accept()
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
-        AutoTransaction guard("Setup conf table");
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Setup conf table"));
         commandActive = true;
 
         // unbind any previous binding
@@ -273,14 +272,14 @@ void DlgSheetConf::accept()
             from.row() + 2);
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Setup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
-            Gui::Command::abortCommand();
+            sheet->getDocument()->abortTransaction();
         }
     }
 }
@@ -296,7 +295,7 @@ void DlgSheetConf::onDiscard()
 
         Range range(from, to);
 
-        AutoTransaction guard("Unsetup conf table");
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Unsetup conf table"));
         commandActive = true;
 
         // unbind any previous binding
@@ -331,14 +330,14 @@ void DlgSheetConf::onDiscard()
         }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Unsetup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
-            Gui::Command::abortCommand();
+            sheet->getDocument()->abortTransaction();
         }
     }
 }

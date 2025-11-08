@@ -471,11 +471,13 @@ protected:
     virtual void unsetEdit(int ModNum);
     /// return the edit mode or -1 if nothing is being edited
     int getEditingMode() const;
-
+    
 public:
     virtual ViewProvider *startEditing(int ModNum=0);
     bool isEditing() const;
     void finishEditing();
+    virtual void setActive(bool active);
+
     /// adjust viewer settings when editing a view provider
     virtual void setEditViewer(View3DInventorViewer*, int ModNum);
     /// restores viewer settings when leaving editing mode

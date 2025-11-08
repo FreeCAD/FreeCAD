@@ -284,9 +284,7 @@ bool ViewProviderAssembly::setEdit(int mode)
                                 PARTKEY,
                                 this->getObject()->getNameInDocument());
 
-        setDragger();
-
-        attachSelection();
+        setupActiveAndInEdit();
 
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
@@ -311,8 +309,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
-        unsetDragger();
-        detachSelection();
+        unsetupActiveAndInEdit();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
@@ -380,6 +377,26 @@ bool ViewProviderAssembly::isInEditMode() const
 {
     return asmDragger != nullptr;
 }
+void ViewProviderAssembly::setupActiveAndInEdit()
+{
+    setDragger();
+    attachSelection();
+}
+void ViewProviderAssembly::unsetupActiveAndInEdit()
+{
+    unsetDragger();
+    detachSelection();
+}
+void ViewProviderAssembly::setActive(bool active)
+{
+    if (active) {
+        setupActiveAndInEdit();
+    }
+    else {
+        unsetupActiveAndInEdit();
+    }
+}
+
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
@@ -394,7 +411,7 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
-            if (Gui::Control().activeDialog()) {
+            if (Gui::Control().activeDialog(nullptr)) {
                 return true;
             }
 
@@ -1009,7 +1026,7 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     }
 
     if (moveInCommand) {
-        Gui::Command::openCommand(tr("Move part").toStdString().c_str());
+        getDocument()->openCommand(tr("Move part").toStdString().c_str());
     }
     partMoving = true;
 
@@ -1069,7 +1086,7 @@ void ViewProviderAssembly::endMove()
     }
 
     if (moveInCommand) {
-        Gui::Command::commitCommand();
+        getDocument()->commitCommand();
     }
 }
 
