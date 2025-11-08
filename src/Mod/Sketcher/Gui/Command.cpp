@@ -1296,10 +1296,6 @@ protected:
     bool isActive() override;
     Gui::Action* createAction() override;
 
-private:
-    void updateIcon(bool value);
-    void updateInactiveHandlerIcon();
-
 public:
     CmdSketcherGrid(const CmdSketcherGrid&) = delete;
     CmdSketcherGrid(CmdSketcherGrid&&) = delete;
@@ -1320,26 +1316,6 @@ CmdSketcherGrid::CmdSketcherGrid()
     eType = 0;
 }
 
-void CmdSketcherGrid::updateIcon(bool value)
-{
-    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle");
-    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle_Deactivated");
-
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    pcAction->setIcon(value ? active : inactive);
-}
-
-void CmdSketcherGrid::updateInactiveHandlerIcon()
-{
-    auto* vp = getInactiveHandlerEditModeSketchViewProvider();
-
-    if (vp) {
-        auto value = vp->ShowGrid.getValue();
-
-        updateIcon(value);
-    }
-}
-
 void CmdSketcherGrid::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -1351,8 +1327,6 @@ void CmdSketcherGrid::activated(int iMsg)
 
     auto value = sketchView->ShowGrid.getValue();
     sketchView->ShowGrid.setValue(!value);
-
-    updateIcon(!value);
 }
 
 Gui::Action* CmdSketcherGrid::createAction()
@@ -1371,9 +1345,6 @@ Gui::Action* CmdSketcherGrid::createAction()
         Q_UNUSED(menu)
         gsa->updateWidget();
     });
-
-    // set the right pixmap
-    updateInactiveHandlerIcon();
 
     return pcAction;
 }
@@ -1397,10 +1368,6 @@ bool CmdSketcherGrid::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        auto value = vp->ShowGrid.getValue();
-
-        updateIcon(value);
-
         return true;
     }
 
