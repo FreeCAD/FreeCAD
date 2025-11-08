@@ -118,6 +118,9 @@ if(BUILD_START)
     add_subdirectory(Start)
 endif(BUILD_START)
 
+# ArchGen AI Module - Always build
+add_subdirectory(ArchGenAI)
+
 if(BUILD_SURFACE)
   add_subdirectory(Surface)
 endif(BUILD_SURFACE)

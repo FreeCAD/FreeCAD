@@ -1,6 +1,7 @@
 
 SET(Stylesheets_Files
 	"FreeCAD.qss"
+	"ArchGen.qss"
 	#remove below after testing new stylesheet system 8/6/2025
 	"FreeCAD Dark.qss"
 	"FreeCAD Light.qss"

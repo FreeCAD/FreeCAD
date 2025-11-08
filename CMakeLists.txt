@@ -48,8 +48,10 @@ if(FREECAD_USE_CCACHE)
     endif()
 endif()
 
-project(FreeCAD)
+project(ArchGenCAD)
 
+set(PACKAGE_NAME "ArchGenCAD")
+set(APPLICATION_NAME "ArchGen CAD")
 set(PACKAGE_VERSION_MAJOR "1")
 set(PACKAGE_VERSION_MINOR "1")
 set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
@@ -57,7 +59,7 @@ set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" 
 set(PACKAGE_BUILD_VERSION "0") # used when the same FreeCAD version will be re-released (for example using an updated LibPack)
 
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
-set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
+set(PACKAGE_STRING "${APPLICATION_NAME} ${PACKAGE_VERSION}")
 
 # include local modules
 include(CheckCXXCompilerFlag)
