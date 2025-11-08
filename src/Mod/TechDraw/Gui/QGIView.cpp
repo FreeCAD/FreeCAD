@@ -1,4 +1,6 @@
-﻿/***************************************************************************
+﻿// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
