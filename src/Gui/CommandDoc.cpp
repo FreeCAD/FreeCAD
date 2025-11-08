@@ -980,19 +980,27 @@ bool StdCmdPrintPdf::isActive()
 // Std_Quit
 //===========================================================================
 
-DEF_STD_CMD(StdCmdQuit)
+DEF_STD_CMD_C(StdCmdQuit)
 
 StdCmdQuit::StdCmdQuit()
   :Command("Std_Quit")
 {
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("E&xit");
+  // sMenuText     = No menu text here, Qt sets it based on QAction::QuitRole
   sToolTipText  = QT_TR_NOOP("Quits the application");
   sWhatsThis    = "Std_Quit";
   sStatusTip    = sToolTipText;
   sPixmap       = "application-exit";
   sAccel        = keySequenceToAccel(QKeySequence::Quit);
   eType         = NoTransaction;
+}
+
+Action * StdCmdQuit::createAction()
+{
+    Action *pcAction = Command::createAction();
+    pcAction->setMenuRole(QAction::QuitRole);
+
+    return pcAction;
 }
 
 void StdCmdQuit::activated(int iMsg)
