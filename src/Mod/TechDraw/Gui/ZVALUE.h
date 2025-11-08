@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #ifndef TECHDRAW_ZVALUE_
 #define TECHDRAW_ZVALUE_
 namespace ZVALUE {
