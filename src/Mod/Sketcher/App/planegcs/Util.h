@@ -25,19 +25,67 @@
 
 #include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 
 namespace GCS
 {
+
 using VEC_pD = std::vector<double*>;
 using VEC_D = std::vector<double>;
 using VEC_I = std::vector<int>;
 using MAP_pD_pD = std::map<double*, double*>;
 using MAP_pD_D = std::map<double*, double>;
 using MAP_pD_I = std::map<double*, int>;
+using UMAP_pD_pD = std::unordered_map<double*, double*>;
 using SET_pD = std::set<double*>;
 using SET_I = std::set<int>;
+
+struct DeriParam
+{
+    double* param {nullptr};
+    double* deriParam {nullptr};
+
+    DeriParam() = default;
+    DeriParam(double* param_)
+        : param(param_)
+        , deriParam(param_)
+    {}
+    DeriParam(double* param_, double* deri_)
+        : param(param_)
+        , deriParam(deri_)
+    {}
+
+    void fill(const UMAP_pD_pD& paramToDeriv)
+    {
+        auto foundParam = paramToDeriv.find(param);
+
+        if (foundParam != paramToDeriv.end()) {
+            deriParam = foundParam->second;
+        }
+        else {
+            deriParam = nullptr;
+        }
+    }
+
+    operator double*() const
+    {
+        return param;
+    }
+    double& operator*() const
+    {
+        return *param;
+    }
+
+    bool operator==(double* deri) const
+    {
+        return deri == deriParam;
+    }
+};
+
+using VEC_Deri = std::vector<DeriParam>;
+
 }  // namespace GCS
 
 #endif  // PLANEGCS_UTIL_H

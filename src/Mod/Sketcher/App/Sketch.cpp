@@ -52,6 +52,7 @@
 #include "Constraint.h"
 #include "GeometryFacade.h"
 #include "Sketch.h"
+#include "Mod/Sketcher/App/planegcs/Util.h"
 #include "SolverGeometryExtension.h"
 
 
@@ -1430,9 +1431,12 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     std::vector<Base::Vector3d> poles = bsp->getPoles();
     std::vector<double> weights = bsp->getWeights();
     std::vector<double> knots = bsp->getKnots();
-    std::vector<int> mult = bsp->getMultiplicities();
-    int degree = bsp->getDegree();
-    bool periodic = bsp->isPeriodic();
+
+    GCS::BSpline bs;
+    bs.mult = bsp->getMultiplicities();
+    bs.degree = bsp->getDegree();
+    bs.periodic = bsp->isPeriodic();
+    def.index = BSplines.size();
 
     // OCC hack
     // c means there is a constraint on that weight, nc no constraint
@@ -1466,8 +1470,6 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     Base::Vector3d startPnt = bsp->getStartPoint();
     Base::Vector3d endPnt = bsp->getEndPoint();
 
-    std::vector<GCS::Point> spoles;
-
     int i = 0;
     for (const auto& pole : poles) {
         params.push_back(new double(pole.x));
@@ -1477,7 +1479,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
         p.x = params[params.size() - 2];
         p.y = params[params.size() - 1];
 
-        spoles.push_back(p);
+        bs.poles.push_back(p);
 
         if (!fixed) {
             param2geoelement.emplace(
@@ -1493,12 +1495,10 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
         }
     }
 
-    std::vector<double*> sweights;
-
     for (const auto& weight : weights) {
         auto r = new double(weight);
         params.push_back(r);
-        sweights.push_back(params[params.size() - 1]);
+        bs.weights.emplace_back(params[params.size() - 1]);
 
         if (!fixed) {
             param2geoelement.emplace(
@@ -1509,15 +1509,12 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
         }
     }
 
-    std::vector<double*> sknots;
 
     for (const auto& knot : knots) {
         double* _knot = new double(knot);
         // params.push_back(knot);
-        sknots.push_back(_knot);
+        bs.knots.emplace_back(_knot);
     }
-
-    GCS::Point p1, p2;
 
     double* p1x = new double(startPnt.x);
     double* p1y = new double(startPnt.y);
@@ -1529,8 +1526,8 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     params.push_back(p1x);
     params.push_back(p1y);
 
-    p1.x = p1x;
-    p1.y = p1y;
+    bs.start.x = p1x;
+    bs.start.y = p1y;
 
     double* p2x = new double(endPnt.x);
     double* p2y = new double(endPnt.y);
@@ -1542,24 +1539,13 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     params.push_back(p2x);
     params.push_back(p2y);
 
-    p2.x = p2x;
-    p2.y = p2y;
+    bs.end.x = p2x;
+    bs.end.y = p2y;
 
     def.startPointId = Points.size();
-    Points.push_back(p1);
+    Points.push_back(bs.start);
     def.endPointId = Points.size();
-    Points.push_back(p2);
-
-    GCS::BSpline bs;
-    bs.start = p1;
-    bs.end = p2;
-    bs.poles = spoles;
-    bs.weights = sweights;
-    bs.knots = sknots;
-    bs.mult = mult;
-    bs.degree = degree;
-    bs.periodic = periodic;
-    def.index = BSplines.size();
+    Points.push_back(bs.end);
 
     // non-solver related, just to enable initialization of knotspoints which is not a parameter of
     // the solver
@@ -1584,7 +1570,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
         if (bs.mult[0] > bs.degree) {
             GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()), bs.start);
         }
-        if (bs.mult[mult.size() - 1] > bs.degree) {
+        if (bs.mult[bs.mult.size() - 1] > bs.degree) {
             GCSsys.addConstraintP2PCoincident(*(bs.poles.end() - 1), bs.end);
         }
     }
@@ -1593,24 +1579,20 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
         // Note: Poles and weight parameters are emplaced above
         param2geoelement.emplace(
             std::piecewise_construct,
-            std::forward_as_tuple(p1.x),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0)
-        );
+            std::forward_as_tuple(bs.start.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0));
         param2geoelement.emplace(
             std::piecewise_construct,
-            std::forward_as_tuple(p1.y),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1)
-        );
+            std::forward_as_tuple(bs.start.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1));
         param2geoelement.emplace(
             std::piecewise_construct,
-            std::forward_as_tuple(p2.x),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 0)
-        );
+            std::forward_as_tuple(bs.end.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 0));
         param2geoelement.emplace(
             std::piecewise_construct,
-            std::forward_as_tuple(p2.y),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 1)
-        );
+            std::forward_as_tuple(bs.end.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 1));
     }
 
     // return the position of the newly added geometry
@@ -4680,7 +4662,7 @@ void Sketch::updateBSpline(const GeoDef& def)
     std::vector<double> weights;
 
     std::vector<GCS::Point>::const_iterator it1;
-    std::vector<double*>::const_iterator it2;
+    std::vector<GCS::DeriParam>::const_iterator it2;
 
     for (it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin();
          it1 != mybsp.poles.end() && it2 != mybsp.weights.end();

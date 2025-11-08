@@ -564,7 +564,7 @@ int System::addConstraint(Constraint* constr)
     }
 
     clist.push_back(constr);
-    VEC_pD constr_params = constr->params();
+    VEC_pD constr_params = constr->origParams();
     for (const auto& param : constr_params) {
         // jacobi.set(constr, *param, 0.);
         c2p[constr].push_back(param);

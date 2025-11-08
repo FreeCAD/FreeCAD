@@ -25,6 +25,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
+#include "Mod/Sketcher/App/planegcs/Util.h"
 
 // This enables debugging code intended to extract information to file bug reports against Eigen,
 // not for production code
@@ -119,7 +120,7 @@ public:
 
     _PROTECTED_UNLESS_EXTRACT_MODE_
         : VEC_pD origpvec;  // is used only as a reference for redirecting and reverting pvec
-    VEC_pD pvec;
+    VEC_Deri pvec;
     double scale;
     int tag;
     // indicates that pvec has changed and saved pointers must be reconstructed (currently used only
@@ -133,13 +134,18 @@ public:
     virtual ~Constraint()
     {}
 
-    VEC_pD params()
+    VEC_pD origParams() const
+    {
+        return origpvec;
+    }
+    VEC_Deri params() const
     {
         return pvec;
     }
 
     void redirectParams(const MAP_pD_pD& redirectionmap);
     void revertParams();
+    void assignOrigToPvec();
     void setTag(int tagId)
     {
         tag = tagId;
