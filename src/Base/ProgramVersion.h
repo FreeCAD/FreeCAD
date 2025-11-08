@@ -25,15 +25,14 @@
 #define BASE_PROGRAM_VERSION_H
 
 #include <algorithm>
-#include <array>
-#include <map>
+#include <cstdint>
 #include <string_view>
 #include <FCGlobal.h>
 
 namespace Base
 {
 
-enum class Version
+enum class Version : std::uint8_t
 {
     v0_1x,
     v0_16,
@@ -48,27 +47,31 @@ enum class Version
     v1_x,
 };
 
-Version getVersion(std::string_view str)
+inline Version getVersion(std::string_view str)
 {
     // clang-format off
-    using VersionItem = std::pair<std::string_view, Version>;
-    static constexpr std::array<VersionItem, 9> items = {{
-        {"0.16", Version::v0_16},
-        {"0.17", Version::v0_17},
-        {"0.18", Version::v0_18},
-        {"0.19", Version::v0_19},
-        {"0.20", Version::v0_20},
-        {"0.21", Version::v0_21},
-        {"0.22", Version::v0_22},
-        {"1.0" , Version::v1_0 },
-        {"1.1" , Version::v1_1 },
-    }};
+    struct VersionItem
+    {
+        std::string_view name;
+        Version version;
+    };
+    static const std::initializer_list<VersionItem> items = {
+        {.name="0.16", .version=Version::v0_16},
+        {.name="0.17", .version=Version::v0_17},
+        {.name="0.18", .version=Version::v0_18},
+        {.name="0.19", .version=Version::v0_19},
+        {.name="0.20", .version=Version::v0_20},
+        {.name="0.21", .version=Version::v0_21},
+        {.name="0.22", .version=Version::v0_22},
+        {.name="1.0" , .version=Version::v1_0 },
+        {.name="1.1" , .version=Version::v1_1 },
+    };
     // clang-format on
-    auto it = std::find_if(items.begin(), items.end(), [str](const auto& item) {
-        return str.compare(0, item.first.size(), item.first) == 0;
+    auto it = std::ranges::find_if(items, [str](const auto& item) {
+        return str.compare(0, item.name.size(), item.name) == 0;
     });
     if (it != items.end()) {
-        return it->second;
+        return it->version;
     }
     if (!str.empty() && str[0] == '0') {
         return Version::v0_1x;

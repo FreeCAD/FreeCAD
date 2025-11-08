@@ -1093,7 +1093,7 @@ protected:
     Base::Color getPyValue(PyObject* py) const override;
 
 private:
-    bool oldProgramVersion {false};
+    bool requiresAlphaConversion {false}; // In 1.1 the handling of alpha was inverted
 };
 
 
@@ -1297,10 +1297,10 @@ private:
     void verifyIndex(int index) const;
     void setMinimumSizeOne();
     int resizeByOneIfNeeded(int index);
-    void convertAlpha(std::vector<App::Material>& materials);
+    void convertAlpha(std::vector<App::Material>& materials) const;
 
     Format formatVersion {Version_0};
-    bool oldProgramVersion {false};
+    bool requiresAlphaConversion {false};  // In 1.1 the handling of alpha was inverted
 };
 
 

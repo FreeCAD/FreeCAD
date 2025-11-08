@@ -2227,6 +2227,25 @@ unsigned int PropertyBoolList::getMemSize() const
 // PropertyColor
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+namespace
+{
+/// The definition of "alpha" was corrected in FreeCAD 1.1 -- returns true if the reader is working
+/// on a file that pre-dates that correction.
+bool readerRequiresAlphaConversion(const Base::XMLReader &reader)
+{
+    return Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
+}
+
+/// Given a material, invert the alpha channel of all of its colors.
+void convertAlphaInMaterial(App::Material& material)
+{
+    material.ambientColor.a = 1.0F - material.ambientColor.a;
+    material.diffuseColor.a = 1.0F - material.diffuseColor.a;
+    material.specularColor.a = 1.0F - material.specularColor.a;
+    material.emissiveColor.a = 1.0F - material.emissiveColor.a;
+}
+}
+
 TYPESYSTEM_SOURCE(App::PropertyColor, App::Property)
 
 //**************************************************************************
@@ -2368,10 +2387,11 @@ void PropertyColor::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyColor");
     // get the value of my Attribute
     unsigned long rgba = reader.getAttribute<unsigned long>("value");
-    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1) {
+    if (readerRequiresAlphaConversion(reader)) {
         // Convert transparency / alpha value
-        unsigned long alpha = 0xff - (rgba & 0xff);
-        rgba = rgba - (rgba & 0xff) + alpha;
+        constexpr unsigned long alphaMax = 0xff;
+        unsigned long alpha = alphaMax - (rgba & alphaMax);
+        rgba = rgba - (rgba & alphaMax) + alpha;
     }
     setValue(rgba);
 }
@@ -2455,7 +2475,7 @@ void PropertyColorList::Restore(Base::XMLReader& reader)
             reader.addFile(file.c_str(), this);
         }
 
-        oldProgramVersion = Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
+        requiresAlphaConversion = readerRequiresAlphaConversion(reader);
     }
 }
 
@@ -2480,7 +2500,7 @@ void PropertyColorList::RestoreDocFile(Base::Reader& reader)
         str >> value;
         it.setPackedValue(value);
     }
-    if (oldProgramVersion) {
+    if (requiresAlphaConversion) {
         for (auto& it : values) {
             it.a = 1.0F - it.a;
         }
@@ -2715,11 +2735,8 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     _cMat.emissiveColor.setPackedValue(reader.getAttribute<unsigned long>("emissiveColor"));
     _cMat.shininess = (float)reader.getAttribute<double>("shininess");
     _cMat.transparency = (float)reader.getAttribute<double>("transparency");
-    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1) {
-        _cMat.ambientColor.a = 1.0F - _cMat.ambientColor.a;
-        _cMat.diffuseColor.a = 1.0F - _cMat.diffuseColor.a;
-        _cMat.specularColor.a = 1.0F - _cMat.specularColor.a;
-        _cMat.emissiveColor.a = 1.0F - _cMat.emissiveColor.a;
+    if (readerRequiresAlphaConversion(reader)) {
+        convertAlphaInMaterial(_cMat);
     }
     if (reader.hasAttribute("image")) {
         _cMat.image = reader.getAttribute<const char*>("image");
@@ -3267,7 +3284,7 @@ void PropertyMaterialList::Restore(Base::XMLReader& reader)
             reader.addFile(file.c_str(), this);
         }
 
-        oldProgramVersion = Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
+        requiresAlphaConversion = readerRequiresAlphaConversion(reader);
     }
 }
 
@@ -3386,15 +3403,10 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
     setValues(values);
 }
 
-void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials)
+void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials) const
 {
-    if (oldProgramVersion) {
-        for (auto& it : materials) {
-            it.ambientColor.a = 1.0F - it.ambientColor.a;
-            it.diffuseColor.a = 1.0F - it.diffuseColor.a;
-            it.specularColor.a = 1.0F - it.specularColor.a;
-            it.emissiveColor.a = 1.0F - it.emissiveColor.a;
-        }
+    if (requiresAlphaConversion) {
+        std::ranges::for_each(materials, convertAlphaInMaterial);
     }
 }
 
