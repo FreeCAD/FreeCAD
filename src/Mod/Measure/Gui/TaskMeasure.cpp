@@ -165,7 +165,7 @@ TaskMeasure::TaskMeasure()
 
     if (auto* doc = App::GetApplication().getActiveDocument()) {
         m_deletedConnection = doc->signalDeletedObject.connect(
-            std::bind(&TaskMeasure::onObjectDeleted, this, std::placeholders::_1));
+            [this](auto && obj) { onObjectDeleted(obj); });
     }
 
     if (!App::GetApplication().getActiveTransaction()) {
