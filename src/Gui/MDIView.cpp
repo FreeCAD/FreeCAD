@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <boost/signals2.hpp>
 # include <boost/core/ignore_unused.hpp>
+# include <fastsignals/signal.h>
 # include <QAction>
 # include <QApplication>
 # include <QEvent>
