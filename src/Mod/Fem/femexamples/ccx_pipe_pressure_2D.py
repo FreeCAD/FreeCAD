@@ -24,7 +24,6 @@
 import FreeCAD as App
 
 import Part
-import Fem
 import ObjectsFem
 
 from . import manager
@@ -93,18 +92,17 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = ""
+        solver_obj.SplitInputWriter = False
+        solver_obj.AnalysisType = "static"
+        solver_obj.ModelSpace = "plane strain"
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "ccxtools":
-        solver_obj.SplitInputWriter = False
-        solver_obj.AnalysisType = "static"
-        solver_obj.ModelSpace = "plane strain"
-        
+
     analysis.addObject(solver_obj)
-    
+
     # 2D element thickness
     thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 50.0, "ShellThickness")
     analysis.addObject(thickness_obj)
@@ -150,11 +148,8 @@ def setup(doc=None, solvertype="ccxtools"):
     from femmesh import gmshtools
 
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
+    gmsh_mesh.create_mesh()
 
     doc.recompute()
     return doc
+
