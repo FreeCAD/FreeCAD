@@ -1,7 +1,17 @@
 /* SPDX-License-Identifier: LGPL-2.1-or-later */
 
+document.addEventListener('DOMContentLoaded', function () {
+    var path = window.location.pathname || window.location.href || '';
+    var filename = path.split('/').pop() || '';
 
-$(document).ready(function () {
+    var isGroup = filename.indexOf('group__') !== -1
+
+    if (isGroup) {
+	document.body.classList.add('group-page');
+    }
+});
+
+$( document ).ready(function() {
 
     /*
     $("div.headertitle").addClass("page-header");
