@@ -95,13 +95,12 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.ModelSpace = "plane strain"
+        analysis.addObject(solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-
-    analysis.addObject(solver_obj)
 
     # 2D element thickness
     thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 50.0, "ShellThickness")
@@ -152,4 +151,5 @@ def setup(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
+
 
