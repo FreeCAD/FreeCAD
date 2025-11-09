@@ -1,3 +1,14 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var path = window.location.pathname || window.location.href || '';
+    var filename = path.split('/').pop() || '';
+
+    var isGroup = filename.indexOf('group__') !== -1
+
+    if (isGroup) {
+	document.body.classList.add('group-page');
+    }
+});
+
 $( document ).ready(function() {
 
     /*
