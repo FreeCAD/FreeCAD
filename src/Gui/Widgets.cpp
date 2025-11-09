@@ -749,7 +749,13 @@ void ColorButton::showModal()
             setColor(currentColor);
             Q_EMIT changed();
         }
+        setProperty("modal_dialog_active", false);
     });
+
+    /* A FocusOut event is sent when a native macOS color picker is opened, which
+     * closes the editor and destroys this object. Set a property to ignore this event.
+     */
+    setProperty("modal_dialog_active", true);
 
     dlg->exec();
 }
