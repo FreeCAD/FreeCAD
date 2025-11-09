@@ -64,9 +64,6 @@ class BIM_Sketch:
             sk.ViewObject.GridSize = s
             sk.ViewObject.GridSnap = True
         sk.MapMode = "Deactivated"
-        sk.ViewObject.LineColor = params.get_param_view("DefaultShapeLineColor")
-        sk.ViewObject.PointColor = params.get_param_view("DefaultShapeLineColor")
-        sk.ViewObject.LineWidth = params.get_param_view("DefaultShapeLineWidth")
         sk.Placement = WorkingPlane.get_working_plane().get_placement()
         FreeCADGui.ActiveDocument.setEdit(sk.Name)
         FreeCADGui.activateWorkbench("SketcherWorkbench")
