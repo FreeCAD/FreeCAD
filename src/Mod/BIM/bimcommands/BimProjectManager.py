@@ -205,13 +205,14 @@ class BIM_ProjectManager:
             elif self.form.radioNative3.isChecked():
                 self.project = ifc_tools.convert_document(doc, silent=True)
 
-        # human
+        # Human
         human = None
         if self.form.addHumanFigure.isChecked():
-            humanshape = Part.Shape()
-            humanshape.importBrep(":/geometry/HumanFigure.brep")
+            from draftguitools import gui_trackers
+
+            pts = gui_trackers.gridTracker.get_human_figure(None)
             human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-            human.Shape = humanshape
+            human.Shape = Part.makePolygon(pts)
             human.Placement.move(FreeCAD.Vector(500, 500, 0))
 
         # Site creation or edition
