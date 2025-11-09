@@ -25,7 +25,7 @@
 #define GUI_DOCUMENTOBSERVERPYTHON_H
 
 #include <FCGlobal.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <CXX/Objects.hxx>
 #include <string>
 #include <vector>
@@ -87,7 +87,7 @@ private:
     static std::vector<DocumentObserverPython*> _instances;
 
     using Connection = struct PythonObject {
-       boost::signals2::scoped_connection slot;
+       fastsignals::scoped_connection slot;
        Py::Object py;
        PyObject* ptr() {
            return py.ptr();
