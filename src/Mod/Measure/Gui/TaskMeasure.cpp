@@ -164,8 +164,9 @@ TaskMeasure::TaskMeasure()
     attachSelection();
 
     if (auto* doc = App::GetApplication().getActiveDocument()) {
-        m_deletedConnection = doc->signalDeletedObject.connect(
-            [this](auto && obj) { onObjectDeleted(obj); });
+        m_deletedConnection = doc->signalDeletedObject.connect([this](auto&& obj) {
+            onObjectDeleted(obj);
+        });
     }
 
     if (!App::GetApplication().getActiveTransaction()) {
