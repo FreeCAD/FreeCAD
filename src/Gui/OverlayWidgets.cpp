@@ -2235,7 +2235,7 @@ void OverlaySizeGrip::paintEvent(QPaintEvent*)
     QPainter painter(this);
     painter.setPen(Qt::transparent);
     painter.setOpacity(0.5);
-    painter.setBrush(QBrush(Qt::black, Qt::Dense6Pattern));
+    painter.setBrush(QBrush(palette().color(QPalette::Shadow), Qt::Dense6Pattern));
     QRect rect(this->rect());
     painter.drawRect(rect);
 }
