@@ -163,6 +163,12 @@ TaskMeasure::TaskMeasure()
     // engage the selectionObserver
     attachSelection();
 
+    if (auto* doc = App::GetApplication().getActiveDocument()) {
+        m_deletedConnection = doc->signalDeletedObject.connect([this](auto&& obj) {
+            onObjectDeleted(obj);
+        });
+    }
+
     if (!App::GetApplication().getActiveTransaction()) {
         App::GetApplication().setActiveTransaction("Add Measurement");
     }
@@ -174,6 +180,7 @@ TaskMeasure::TaskMeasure()
 
 TaskMeasure::~TaskMeasure()
 {
+    m_deletedConnection.disconnect();
     Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     detachSelection();
 }
@@ -521,6 +528,13 @@ void TaskMeasure::quitMeasurement()
     }
     else {
         this->reject();
+    }
+}
+
+void TaskMeasure::onObjectDeleted(const App::DocumentObject& obj)
+{
+    if (&obj == _mMeasureObject) {
+        _mMeasureObject = nullptr;
     }
 }
 
