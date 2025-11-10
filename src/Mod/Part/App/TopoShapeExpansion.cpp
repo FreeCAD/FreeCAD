@@ -5779,6 +5779,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     bool buildShell = true;
 
     std::vector<TopoShape> _shapes;
+    bool isFuseCompound = false;
     if (strcmp(maker, Part::OpCodes::Fuse) == 0) {
         for (auto it = shapes.begin(); it != shapes.end(); ++it) {
             auto& s = *it;
@@ -5789,6 +5790,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
                 FC_THROWM(NullShapeException, "Null input shape");
             }
             if (s.shapeType() == TopAbs_COMPOUND) {
+                isFuseCompound = true;
                 if (_shapes.empty()) {
                     _shapes.insert(_shapes.end(), shapes.begin(), it);
                 }
@@ -5875,7 +5877,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     mk->SetTools(shapeTools);
     if (tolerance > 0.0) {
         mk->SetFuzzyValue(tolerance);
-    } else if (tolerance < 0.0) {
+    }
+    if (tolerance < 0.0 && !isFuseCompound) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
 #if OCC_VERSION_HEX >= 0x070600
