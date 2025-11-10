@@ -40,6 +40,7 @@
 #include <QMimeData>
 #include <QOpenGLWidget>
 #include <QPainter>
+#include <QProcess>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
@@ -1793,7 +1794,46 @@ void MainWindow::delayedStartup()
         );
         safeModePopup.exec();
     }
+
+#ifdef Q_OS_MAC
+    // Register QuickLook extensions on first launch
+    registerQuickLookExtensions();
+#endif
 }
+
+#ifdef Q_OS_MAC
+void MainWindow::registerQuickLookExtensions()
+{
+    // Check if we've already registered extensions to avoid repeated registration
+    static bool quickLookRegistered = false;
+    if (quickLookRegistered) {
+        return;
+    }
+
+    // Get the path to FreeCAD.app/Contents/PlugIns
+    QString appPath = QApplication::applicationDirPath();
+    QString plugInsPath = appPath + "/../PlugIns";
+    
+    QString thumbnailExt = plugInsPath + "/FreeCADThumbnailExtension.appex";
+    QString previewExt = plugInsPath + "/FreeCADPreviewExtension.appex";
+    
+    // Check if extensions exist before attempting registration
+    if (QFileInfo::exists(thumbnailExt) && QFileInfo::exists(previewExt)) {
+        // Register extensions with pluginkit
+        QProcess::execute("pluginkit", QStringList() << "-a" << thumbnailExt);
+        QProcess::execute("pluginkit", QStringList() << "-a" << previewExt);
+        
+        // Activate extensions
+        QProcess::execute("pluginkit", QStringList() << "-e" << "use" << "-i" << "org.freecad.FreeCAD.quicklook.thumbnail");
+        QProcess::execute("pluginkit", QStringList() << "-e" << "use" << "-i" << "org.freecad.FreeCAD.quicklook.preview");
+        
+        quickLookRegistered = true;
+        
+        // Optional: Log successful registration (will appear in system notification)
+        Base::Console().log("QuickLook extensions registered successfully\n");
+    }
+}
+#endif
 
 void MainWindow::appendRecentFile(const QString& filename)
 {
