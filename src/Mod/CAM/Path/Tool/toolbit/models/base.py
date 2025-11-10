@@ -52,8 +52,15 @@ class ToolBitRecomputeObserver:
 
     def slotRecomputedDocument(self, doc):
         """Called when document recompute is finished."""
+        # Check if the toolbit object is still valid
+        try:
+            obj_doc = self.toolbit_proxy.obj.Document
+        except ReferenceError:
+            # Object has been deleted or does not exist, nothing to do
+            return
+
         # Only process updates for the correct document
-        if doc != self.toolbit_proxy.obj.Document:
+        if doc != obj_doc:
             return
 
         # Process any queued visual updates
