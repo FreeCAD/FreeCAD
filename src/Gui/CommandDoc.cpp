@@ -986,7 +986,7 @@ StdCmdQuit::StdCmdQuit()
   :Command("Std_Quit")
 {
   sGroup        = "File";
-  // sMenuText     = No menu text here, Qt sets it based on QAction::QuitRole
+  sMenuText     = QT_TR_NOOP("E&xit");
   sToolTipText  = QT_TR_NOOP("Quits the application");
   sWhatsThis    = "Std_Quit";
   sStatusTip    = sToolTipText;
