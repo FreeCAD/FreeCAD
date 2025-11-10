@@ -76,8 +76,10 @@ private:
 protected:
     void expressionChange(const App::ObjectIdentifier& id);
     void objectDeleted(const App::DocumentObject&);
+    void onDocumentDeleted(const App::Document&);
     boost::signals2::scoped_connection expressionchanged;
     boost::signals2::scoped_connection objectdeleted;
+    boost::signals2::scoped_connection documentdeleted;
     bool m_autoApply{false};
 };
 
