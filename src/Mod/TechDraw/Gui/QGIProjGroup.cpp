@@ -61,59 +61,55 @@ bool QGIProjGroup::autoDistributeEnabled() const
     return getDrawView() && getDrawView()->AutoDistribute.getValue();
 }
 
+
+// note that we are not actually handling any of these events (ie we don't return true, and we don't
+// set the the event to ignore) here.
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
     auto qvpart = dynamic_cast<QGIViewPart*>(watched);
-    std::vector<App::DocumentObject*> outlist = getViewObject()->getOutList();
     if (!qvpart ||
         !isMember(qvpart->getViewObject())) {
         // if qwatched is not in this projgroup, we ignore the event as none of our business
         return false;
     }
 
-// i want to handle events before the child item that would ordinarily receive them
+    // i want to handle events before the child item that would ordinarily receive them
     if(event->type() == QEvent::GraphicsSceneMousePress ||
        event->type() == QEvent::GraphicsSceneMouseMove  ||
        event->type() == QEvent::GraphicsSceneMouseRelease) {
-        QGIView *qAnchor = getAnchorQItem();
         auto* qWatched = dynamic_cast<QGIView*>(watched);
         if (!qWatched) {
             return false;
         }
 
-        // If AutoDistribute is enabled, catch events and move the anchor directly
-        //? the anchor doesn't move??
-        if(qAnchor && (watched == qAnchor ||
-                      (autoDistributeEnabled() && qWatched != nullptr))) {
-            auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
+        auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
-            // Disable moves on the view to prevent double drag
-            std::vector<QGraphicsItem*> modifiedChildren;
-            for (auto* child : childItems()) {
-                if (child->isSelected() && (child->flags() & QGraphicsItem::ItemIsMovable)) {
-                    child->setFlag(QGraphicsItem::ItemIsMovable, false);
-                    modifiedChildren.push_back(child);
-                }
+        // Disable moves on the view to prevent double drag
+        std::vector<QGraphicsItem*> modifiedChildren;
+        for (auto* child : childItems()) {
+            if (child->isSelected() && (child->flags() & QGraphicsItem::ItemIsMovable)) {
+                child->setFlag(QGraphicsItem::ItemIsMovable, false);
+                modifiedChildren.push_back(child);
             }
-
-            switch (event->type()) {
-                case QEvent::GraphicsSceneMousePress:
-                    mousePressEvent(mEvent);
-                    break;
-                case QEvent::GraphicsSceneMouseMove:
-                    mouseMoveEvent(mEvent);
-                    break;
-                case QEvent::GraphicsSceneMouseRelease:
-                    mouseReleaseEvent(qWatched, mEvent);
-                    break;
-                default:
-                    break;
-            }
-            for (auto* child : modifiedChildren) {
-                child->setFlag(QGraphicsItem::ItemIsMovable, true);
-            }
-            return true;
         }
+
+        switch (event->type()) {
+            case QEvent::GraphicsSceneMousePress:
+                mousePressEvent(mEvent);
+                break;
+            case QEvent::GraphicsSceneMouseMove:
+                mouseMoveEvent(mEvent);
+                break;
+            case QEvent::GraphicsSceneMouseRelease:
+                mouseReleaseEvent(qWatched, mEvent);
+                break;
+            default:
+                break;
+        }
+        for (auto* child : modifiedChildren) {
+            child->setFlag(QGraphicsItem::ItemIsMovable, true);
+        }
+        return false;
     }
 
     return false;
@@ -159,9 +155,7 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
 
 void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    // TODO: this bit is obsolete?  you can click on any secondary view to drag now.
-    // test event location against each secondary or just use the PG's bounding rect (ie if we got the
-    // event, the click must have been within the BR).
+    // save the new mousePos, but don't do anything else.
     QGIView *qAnchor = getAnchorQItem();
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
