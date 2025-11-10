@@ -220,7 +220,7 @@ Base::Vector2d SnapManager::snap(Base::Vector2d inputPos, SnapType mask)
     if ((static_cast<int>(mask) & static_cast<int>(SnapType::Grid)) && snapToGridRequested
         /*&& viewProvider.ShowGrid.getValue() */) {  // Snap to grid is enabled
                                                      // even if the grid is not visible.
-        
+
         // use snapPos as input (which may have one coordinate locked by axis)
         Base::Vector2d gridSnapResult = snapPos;
         if (snapToGrid(snapPos, gridSnapResult)) {
