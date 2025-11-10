@@ -755,10 +755,19 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         hGrp = handle;
         return;
     }
-    if (!parentWidget())
-        return;
 
-    std::string widgets = handle->GetASCII("Widgets", getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : "");
+    if (!parentWidget()) {
+        return;
+    }
+
+    const char* defaultWidgets = "";
+
+    // If overlay was ever used and disabled by the user it should respect that choice
+    if (handle->GetInt("Width", 0) == 0 || handle->GetInt("Height", 0) == 0) {
+        defaultWidgets = getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : "";
+    }
+
+    std::string widgets = handle->GetASCII("Widgets", defaultWidgets);
 
     for(auto &name : QString::fromUtf8(widgets.c_str()).split(QLatin1Char(','))) {
         if(name.isEmpty())
@@ -2226,7 +2235,7 @@ void OverlaySizeGrip::paintEvent(QPaintEvent*)
     QPainter painter(this);
     painter.setPen(Qt::transparent);
     painter.setOpacity(0.5);
-    painter.setBrush(QBrush(Qt::black, Qt::Dense6Pattern));
+    painter.setBrush(QBrush(palette().color(QPalette::Shadow), Qt::Dense6Pattern));
     QRect rect(this->rect());
     painter.drawRect(rect);
 }
