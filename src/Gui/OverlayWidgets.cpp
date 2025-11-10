@@ -777,12 +777,29 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         if(dock)
             addWidget(dock, dock->windowTitle());
     }
-    int width = handle->GetInt("Width", getDockArea() == Qt::RightDockWidgetArea ? 400 : 0);
-    int height = handle->GetInt("Height", 0);
+
+    QSize minimumSizeHint = parentWidget()->minimumSizeHint();
+
+    int width = handle->GetInt("Width", minimumSizeHint.width());
+    int height = handle->GetInt("Height", minimumSizeHint.height());
     int offset1 = handle->GetInt("Offset1", 0);
     int offset2 = handle->GetInt("Offset3", 0);
     setOffset(QSize(offset1,offset2));
     setSizeDelta(handle->GetInt("Offset2", 0));
+
+    // Special handling for broken state in #24963.
+    //
+    // This basically is due to how OverlayTabWidget::setRect is implemented. If it faces width (or
+    // height) of 0 it forces the width to be minimumOverlayWidth * 3, which in the default config
+    // appears to be 90. 90 is obviously way too small of a value to display any widget in the side
+    // panel, so we need to basically need to treat anything smaller or equal to that as an
+    // incorrect value for width. We use here 100 just to be safe.
+    //
+    // For the height value of 100 may be reasonable, so we leave it as is.
+    if (width <= 100) { // NOLINT(*-avoid-magic-numbers)
+        width = minimumSizeHint.width();
+    }
+
     if (width || height) {
         QRect rect(0, 0, width > 0 ? width : this->width(), height > 0 ? height : this->height());
         switch(dockArea) {
@@ -795,6 +812,7 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         default:
             break;
         }
+
         setRect(rect);
     }
     if (handle->GetBool("AutoHide", false))
