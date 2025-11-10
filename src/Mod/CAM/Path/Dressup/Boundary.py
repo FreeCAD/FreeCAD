@@ -284,7 +284,6 @@ class PathBoundary:
                                             e,
                                             flip,
                                             False,
-                                            50,
                                             tc.HorizFeed.Value,
                                             tc.VertFeed.Value,
                                         )

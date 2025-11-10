@@ -279,15 +279,13 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     return speed
 
 
-def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vSpeed=0):
-    """cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
+def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, hSpeed=0, vSpeed=0):
+    """cmdsForEdge(edge, flip=False, useHelixForBSpline=True) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
     If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
     to represent a helix and results in G2 or G3 command. Otherwise edge has
-    no direct Path.Command mapping and will be approximated by straight segments.
-    segm is a factor for the segmentation of arbitrary curves not mapped to G1/2/3
-    commands. The higher the value the more segments will be used."""
+    no direct Path.Command mapping and will be approximated by straight segments."""
     pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
     if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
