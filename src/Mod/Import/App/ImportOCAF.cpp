@@ -107,10 +107,8 @@ void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matri
 
 void ImportOCAF::loadShapes()
 {
-    std::vector<App::DocumentObject*> lValue;
     myRefShapes.clear();
-    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false, lValue);
-    lValue.clear();
+    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
 }
 
 void ImportOCAF::setMerge(bool merge)
@@ -118,13 +116,12 @@ void ImportOCAF::setMerge(bool merge)
     this->merge = merge;
 }
 
-void ImportOCAF::loadShapes(
+App::DocumentObject* ImportOCAF::loadShapes(
     const TDF_Label& label,
     const TopLoc_Location& loc,
     const std::string& defaultname,
     const std::string& assembly,
-    bool isRef,
-    std::vector<App::DocumentObject*>& lValue
+    bool isRef
 )
 {
     int hash = 0;
@@ -205,7 +202,7 @@ void ImportOCAF::loadShapes(
 
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
-        loadShapes(ref, part_loc, part_name, asm_name, true, lValue);
+        return loadShapes(ref, part_loc, part_name, asm_name, true);
     }
 
     if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
@@ -224,10 +221,10 @@ void ImportOCAF::loadShapes(
             // STEP Compound Shape into a single Shape Part::Feature which is an OpenCascade
             // computed Compound
             if (isRef) {
-                createShape(label, loc, part_name, lValue, this->merge);
+                return createShape(label, loc, part_name, this->merge);
             }
             else {
-                createShape(label, part_loc, part_name, localValue, this->merge);
+                (void)createShape(label, part_loc, part_name, this->merge);
             }
         }
         else {
@@ -237,16 +234,20 @@ void ImportOCAF::loadShapes(
                 // within the global shape
                 // This is standard behavior of many STEP reader and avoid to register a crazy
                 // amount of Shape within the Tree as STEP file do mostly contain large assemblies
-                return;
+                return nullptr;
             }
 
             // This is probably an Assembly let's try to create a Compound with the name
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
+                App::DocumentObject* createdDocObj; 
                 if (isRef) {
-                    loadShapes(it.Value(), part_loc, part_name, asm_name, false, localValue);
+                    createdDocObj = loadShapes(it.Value(), part_loc, part_name, asm_name, false);
                 }
                 else {
-                    loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
+                    createdDocObj = loadShapes(it.Value(), part_loc, part_name, asm_name, isRef);
+                }
+                if (createdDocObj != nullptr) {
+                    localValue.push_back(createdDocObj);
                 }
             }
 
@@ -262,18 +263,18 @@ void ImportOCAF::loadShapes(
                     // standard FreeCAD placement was absolute we are now moving to relative
 
                     tryPlacementFromLoc(pcPart, part_loc);
-                    lValue.push_back(pcPart);
+                    return pcPart;
                 }
             }
         }
     }
+    return nullptr;
 }
 
-void ImportOCAF::createShape(
+App::DocumentObject* ImportOCAF::createShape(
     const TDF_Label& label,
     const TopLoc_Location& loc,
     const std::string& name,
-    std::vector<App::DocumentObject*>& lValue,
     bool mergeShape
 )
 {
@@ -286,7 +287,6 @@ void ImportOCAF::createShape(
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
-        std::vector<App::DocumentObject*> localValue;
         App::Part* pcPart = nullptr;
 
         if (mergeShape) {
@@ -342,45 +342,47 @@ void ImportOCAF::createShape(
                 }
 
                 part->Label.setValue(name);
-                lValue.push_back(part);
 
                 loadColors(part, aShape);
+                return part;
             }
         }
         else {
+            std::vector<App::DocumentObject*> localValue;
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
-                createShape(xp.Current(), loc, name, localValue);
+                App::DocumentObject* createdDocObj = createShape(xp.Current(), loc, name);
+                if (createdDocObj != nullptr) {
+                    localValue.push_back(createdDocObj);
+                }
             }
             for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
-                createShape(xp.Current(), loc, name, localValue);
+                App::DocumentObject* createdDocObj = createShape(xp.Current(), loc, name);
+                if (createdDocObj != nullptr) {
+                    localValue.push_back(createdDocObj);
+                }
             }
-        }
+            if (!localValue.empty() && !mergeShape) {
+                pcPart = doc->addObject<App::Part>(name.c_str());
+                pcPart->Label.setValue(name);
 
-        if (!localValue.empty() && !mergeShape) {
-            pcPart = doc->addObject<App::Part>(name.c_str());
-            pcPart->Label.setValue(name);
+                // localValue contain the objects that  must added to the local Part
+                // We must add the PartOrigin and the Part itself
+                pcPart->addObjects(localValue);
 
-            // localValue contain the objects that  must added to the local Part
-            // We must add the PartOrigin and the Part itself
-            pcPart->addObjects(localValue);
-
-            lValue.push_back(pcPart);
-        }
-
-        if (ctSolids > 0 || ctShells > 0) {
-            return;
+                return pcPart;
+            }
         }
     }
     else if (!aShape.IsNull()) {
-        createShape(aShape, loc, name, lValue);
+        return createShape(aShape, loc, name);
     }
+    return nullptr;
 }
 
-void ImportOCAF::createShape(
+App::DocumentObject* ImportOCAF::createShape(
     const TopoDS_Shape& aShape,
     const TopLoc_Location& loc,
-    const std::string& name,
-    std::vector<App::DocumentObject*>& lvalue
+    const std::string& name
 )
 {
     Part::Feature* part = doc->addObject<Part::Feature>();
@@ -393,9 +395,10 @@ void ImportOCAF::createShape(
     }
 
     part->Label.setValue(name);
-    lvalue.push_back(part);
 
     loadColors(part, aShape);
+
+    return part;
 }
 
 void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
