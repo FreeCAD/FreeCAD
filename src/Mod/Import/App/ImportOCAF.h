@@ -76,19 +76,18 @@ private:
     App::DocumentObject* createShape(
         const TDF_Label& label,
         const TopLoc_Location&,
-        const std::string&,
-        bool
+        const std::string&
     );
     App::DocumentObject* createShape(
         const TopoDS_Shape& label,
         const TopLoc_Location&,
+        bool setPlacementFromLocation,
         const std::string&
     );
     void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
     virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
     static void tryPlacementFromLoc(App::GeoFeature*, const TopLoc_Location&);
-    static void tryPlacementFromMatrix(App::GeoFeature*, const Base::Matrix4D&);
 
 private:
     Handle(TDocStd_Document) pDoc;

@@ -90,14 +90,10 @@ void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Locatio
     }
 
     Part::TopoShape::convertToMatrix(trf, mtrx);
-    tryPlacementFromMatrix(part, mtrx);
-}
 
-void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matrix4D& mat)
-{
     try {
         Base::Placement pl;
-        pl.fromMatrix(mat);
+        pl.fromMatrix(mtrx);
         part->Placement.setValue(pl);
     }
     catch (const Base::ValueError& e) {
@@ -130,8 +126,6 @@ App::DocumentObject* ImportOCAF::loadShapes(
     task_group g;
 #endif
     TopoDS_Shape aShape;
-
-    std::vector<App::DocumentObject*> localValue;
 
     if (aShapeTool->GetShape(label, aShape)) {
         hash = Part::ShapeMapHasher {}(aShape);
@@ -211,60 +205,63 @@ App::DocumentObject* ImportOCAF::loadShapes(
             myRefShapes.insert(Part::ShapeMapHasher {}(aShape));
         }
 
-        if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {
-            if (!asm_name.empty()) {
-                part_name = asm_name;
-            }
+        if (aShapeTool->IsSimpleShape(label)) {
+            if (isRef || aShapeTool->IsFree(label)) {
+                if (!asm_name.empty()) {
+                    part_name = asm_name;
+                }
 
-            // TODO: The merge parameter (last one from createShape) should become an
-            // Importer/Exporter option within the FreeCAD preference menu Currently it is merging
-            // STEP Compound Shape into a single Shape Part::Feature which is an OpenCascade
-            // computed Compound
-            if (isRef) {
-                return createShape(label, loc, part_name, this->merge);
-            }
-            else {
-                (void)createShape(label, part_loc, part_name, this->merge);
-            }
-        }
-        else {
-            if (aShapeTool->IsSimpleShape(label)) {
-                // We are not creating a list of Part::Feature in that case but just
-                // a single Part::Feature which has as a Shape a Compound of the Subshapes contained
-                // within the global shape
-                // This is standard behavior of many STEP reader and avoid to register a crazy
-                // amount of Shape within the Tree as STEP file do mostly contain large assemblies
-                return nullptr;
-            }
-
-            // This is probably an Assembly let's try to create a Compound with the name
-            for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                App::DocumentObject* createdDocObj; 
                 if (isRef) {
-                    createdDocObj = loadShapes(it.Value(), part_loc, part_name, asm_name, false);
+                    return createShape(label, loc, part_name);
                 }
                 else {
-                    createdDocObj = loadShapes(it.Value(), part_loc, part_name, asm_name, isRef);
+                    // Note: This does not return the created shape.
+                    // This is carrying forward behaviour that may have been intentional, but looked
+                    // more like a mistake in previous code: Older code, rather than returning the
+                    // created DocumentObjects, the groups of methods accepted a vector which the
+                    // part was pushed back onto. In this particular instance rather than passing
+                    // the collection we received on to createShape, a local collection called
+                    // 'localValue' was passed, and its contents subsequently ignored. The effect of
+                    // this would be that if an Assembly directly (not through a ref) contains a
+                    // Simple Shape and that shape's label is a Free Label, that shape would be at
+                    // the top level of the FC model rather than a child of the Part corresponding
+                    // to the Assembly. I'm not sure this condition can actually exist.
+                    (void)createShape(label, part_loc, part_name);
                 }
+            }
+            // A simple shape that does not have a Free Label and is not reached through a ref.
+
+            // We are not creating a list of Part::Feature in that case but just
+            // a single Part::Feature which has as a Shape a Compound of the Subshapes contained
+            // within the global shape
+            // This is standard behavior of many STEP reader and avoid to register a crazy
+            // amount of Shape within the Tree as STEP file do mostly contain large assemblies
+        }
+        else {
+            // This is probably an Assembly. Either way we create its contents, and if it turns out
+            // to be an Assembly, we will create a Part and place all the contents in that Part.
+            // Otherwise they will be left as top-level document objects.
+            std::vector<App::DocumentObject*> localValue;
+
+            for (TDF_ChildIterator it(label); it.More(); it.Next()) {
+                App::DocumentObject* createdDocObj = loadShapes(it.Value(), part_loc, part_name, asm_name, false);
                 if (createdDocObj != nullptr) {
                     localValue.push_back(createdDocObj);
                 }
             }
 
-            if (!localValue.empty()) {
-                if (aShapeTool->IsAssembly(label)) {
-                    App::Part* pcPart = nullptr;
-                    pcPart = doc->addObject<App::Part>(asm_name.c_str());
-                    pcPart->Label.setValue(asm_name);
-                    pcPart->addObjects(localValue);
+            if (!localValue.empty() && aShapeTool->IsAssembly(label)) {
+                App::Part* pcPart = nullptr;
+                pcPart = doc->addObject<App::Part>(asm_name.c_str());
+                pcPart->Label.setValue(asm_name);
+                pcPart->addObjects(localValue);
 
-                    // STEP reader is now a hierarchical reader. Node and leaf must have
-                    // there local placement updated and relative to the STEP file content
-                    // standard FreeCAD placement was absolute we are now moving to relative
+                // STEP reader is now a hierarchical reader. Node and leaf must have
+                // there local placement updated and relative to the STEP file content
+                // standard FreeCAD placement was absolute we are now moving to relative
 
-                    tryPlacementFromLoc(pcPart, part_loc);
-                    return pcPart;
-                }
+                tryPlacementFromLoc(pcPart, part_loc);
+                return pcPart;
             }
         }
     }
@@ -274,8 +271,7 @@ App::DocumentObject* ImportOCAF::loadShapes(
 App::DocumentObject* ImportOCAF::createShape(
     const TDF_Label& label,
     const TopLoc_Location& loc,
-    const std::string& name,
-    bool mergeShape
+    const std::string& name
 )
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
@@ -284,12 +280,17 @@ App::DocumentObject* ImportOCAF::createShape(
     task_group g;
 #endif
 
-    if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
+    if (aShape.IsNull()) {
+        return nullptr;
+    }
+    if (aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
         App::Part* pcPart = nullptr;
 
-        if (mergeShape) {
+        if (this->merge) {
+            // Combine all the SOLID, SHELL, EDGE, and VERTEX subshapes into a new compound as a
+            // single Part::Feature
 
             // We should do that only if there is more than a single shape inside
             // Computing Compounds takes time
@@ -300,93 +301,78 @@ App::DocumentObject* ImportOCAF::createShape(
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
 
-            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
+            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            for (xp.Init(aShape, TopAbs_EDGE); xp.More(); xp.Next(), ctEdges++) {
+            for (xp.Init(aShape, TopAbs_EDGE); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            for (xp.Init(aShape, TopAbs_VERTEX); xp.More(); xp.Next(), ctVertices++) {
+            for (xp.Init(aShape, TopAbs_VERTEX); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            // Ok we got a Compound which is computed
-            // Just need to add it to a Part::Feature and push it to lValue
-            if (!comp.IsNull() && (ctSolids || ctShells || ctEdges || ctVertices)) {
-                Part::Feature* part = doc->addObject<Part::Feature>();
-                // Let's allocate the relative placement of the Compound from the STEP file
-                tryPlacementFromLoc(part, loc);
-                if (!loc.IsIdentity()) {
-                    part->Shape.setValue(comp.Moved(loc));
-                }
-                else {
-                    part->Shape.setValue(comp);
-                }
-
-                part->Label.setValue(name);
-
-                loadColors(part, aShape);
-                return part;
-            }
+            // Create the single compound shape, setting its Placement from loc.
+            return comp.IsNull() ? nullptr : createShape(comp, loc, true, name);
         }
         else {
-            std::vector<App::DocumentObject*> localValue;
-            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
-                App::DocumentObject* createdDocObj = createShape(xp.Current(), loc, name);
-                if (createdDocObj != nullptr) {
-                    localValue.push_back(createdDocObj);
-                }
+            // Create a new Part::Feature for each of the subshapes, and nest them all into an
+            // App::Part
+            std::vector<App::DocumentObject*> partComponents;
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+                partComponents.push_back(createShape(xp.Current(), loc, false, name));
             }
-            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
-                App::DocumentObject* createdDocObj = createShape(xp.Current(), loc, name);
-                if (createdDocObj != nullptr) {
-                    localValue.push_back(createdDocObj);
-                }
+            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+                partComponents.push_back(createShape(xp.Current(), loc, false, name));
             }
-            if (!localValue.empty() && !mergeShape) {
-                pcPart = doc->addObject<App::Part>(name.c_str());
-                pcPart->Label.setValue(name);
+            if (partComponents.empty()) {
+                return nullptr;
+            }
+            pcPart = doc->addObject<App::Part>(name.c_str());
+            pcPart->Label.setValue(name);
 
-                // localValue contain the objects that  must added to the local Part
-                // We must add the PartOrigin and the Part itself
-                pcPart->addObjects(localValue);
+            // partComponents contain the objects that must added to the local Part
+            // We must add the PartOrigin and the Part itself
+            pcPart->addObjects(partComponents);
 
-                return pcPart;
-            }
+            return pcPart;
         }
     }
-    else if (!aShape.IsNull()) {
-        return createShape(aShape, loc, name);
+    else {
+        // aShape is not a Compound Shape, make a single Part::Feature for it
+        return createShape(aShape, loc, false, name);
     }
-    return nullptr;
 }
 
 App::DocumentObject* ImportOCAF::createShape(
     const TopoDS_Shape& aShape,
     const TopLoc_Location& loc,
+    bool setPlacementFromLocation,
     const std::string& name
 )
 {
     Part::Feature* part = doc->addObject<Part::Feature>();
 
+    if (setPlacementFromLocation) {
+        tryPlacementFromLoc(part, loc);
+    }
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
     }
