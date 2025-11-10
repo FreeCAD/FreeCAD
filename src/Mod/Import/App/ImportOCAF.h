@@ -88,7 +88,6 @@ private:
     virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
     static void tryPlacementFromLoc(App::GeoFeature*, const TopLoc_Location&);
-    static void tryPlacementFromMatrix(App::GeoFeature*, const Base::Matrix4D&);
 
 private:
     Handle(TDocStd_Document) pDoc;

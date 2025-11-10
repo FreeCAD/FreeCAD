@@ -90,14 +90,10 @@ void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Locatio
     }
 
     Part::TopoShape::convertToMatrix(trf, mtrx);
-    tryPlacementFromMatrix(part, mtrx);
-}
 
-void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matrix4D& mat)
-{
     try {
         Base::Placement pl;
-        pl.fromMatrix(mat);
+        pl.fromMatrix(mtrx);
         part->Placement.setValue(pl);
     }
     catch (const Base::ValueError& e) {
