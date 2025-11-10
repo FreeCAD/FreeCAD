@@ -38,34 +38,159 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
-        _docName = App::GetApplication().getUniqueDocumentName("test");
-        _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
+        std::string docName = App::GetApplication().getUniqueDocumentName("test");
+        doc = App::GetApplication().newDocument(docName.c_str(), "testUser");
     }
 
     void SetUp() override
     {
-        varSet = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSet"));
+        varSet = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "VarSet"));
         prop = freecad_cast<App::PropertyInteger*>(
             varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
-        prop->setValue(Value);
+        prop->setValue(value);
     }
 
     void TearDown() override
     {
-        _doc->removeObject(varSet->getNameInDocument());
+        doc->removeObject(varSet->getNameInDocument());
     }
 
     static void TearDownTestSuite()
     {
-        App::GetApplication().closeDocument(_docName.c_str());
+        App::GetApplication().closeDocument(doc->getName());
     }
 
-    const long Value = 123;
-    App::VarSet* varSet {};
-    App::PropertyInteger* prop {};
+    const long value = 123;
+    App::VarSet* varSet;
+    App::PropertyInteger* prop;
 
-    static std::string _docName;
-    static App::Document* _doc;
+    static App::Document* doc;
 };
 
+class MoveProperty: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+
+    void SetUp() override
+    {
+        std::string docName1 = App::GetApplication().getUniqueDocumentName("test");
+        std::string docName2 = App::GetApplication().getUniqueDocumentName("test");
+        doc1 = App::GetApplication().newDocument(docName1.c_str());
+        doc2 = App::GetApplication().newDocument(docName2.c_str());
+
+        varSet1Doc1 = freecad_cast<App::VarSet*>(doc1->addObject("App::VarSet", "VarSet"));
+        varSet2Doc1 = freecad_cast<App::VarSet*>(doc1->addObject("App::VarSet", "VarSet"));
+        varSetDoc2 = freecad_cast<App::VarSet*>(doc2->addObject("App::VarSet", "VarSet"));
+
+        prop = freecad_cast<App::PropertyInteger*>(
+            varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+        prop->setValue(value);
+    }
+
+    void TearDown() override
+    {
+        for (auto* obj : doc1->topologicalSort()) {
+            doc1->removeObject(obj->getNameInDocument());
+        }
+        doc2->removeObject(varSetDoc2->getNameInDocument());
+        App::GetApplication().closeDocument(doc1->getName());
+        App::GetApplication().closeDocument(doc2->getName());
+    }
+
+    void assertMovedProperty(App::Property* property, App::DocumentObject* target);
+
+    void testMoveProperty(App::DocumentObject* target);
+
+    void testMovePropertyExpressionWithAct(App::DocumentObject* sourceProp2,
+                                           App::DocumentObject* target,
+                                           const char* exprString,
+                                           const std::function<App::Property*()>& act);
+
+    void testMovePropertyExpression(App::DocumentObject* source,
+                                    App::DocumentObject* target,
+                                    const char* exprString);
+
+    void testUndoProperty(App::DocumentObject* target);
+
+    void testUndoMovePropertyExpression(App::DocumentObject* sourceProp2,
+                                        App::DocumentObject* target,
+                                        const char* exprString,
+                                        const char* exprStringAfterUndo);
+
+    void testRedoMovePropertyExpression(App::DocumentObject* sourceProp2,
+                                        App::DocumentObject* target,
+                                        const char* exprString,
+                                        const char* exprStringAfterUndo);
+
+    static void TearDownTestSuite()
+    {}
+
+    const long value = 123;
+
+    App::Document* doc1;
+    App::Document* doc2;
+
+    App::VarSet* varSet1Doc1;
+    App::VarSet* varSet2Doc1;
+    App::VarSet* varSetDoc2;
+    App::PropertyInteger* prop;
+};
+
+class CopyProperty: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+
+    void SetUp() override
+    {
+        std::string docName1 = App::GetApplication().getUniqueDocumentName("test");
+        std::string docName2 = App::GetApplication().getUniqueDocumentName("test");
+        doc1 = App::GetApplication().newDocument(docName1.c_str());
+        doc2 = App::GetApplication().newDocument(docName2.c_str());
+
+        varSet1Doc1 = freecad_cast<App::VarSet*>(doc1->addObject("App::VarSet", "VarSet"));
+        varSet2Doc1 = freecad_cast<App::VarSet*>(doc1->addObject("App::VarSet", "VarSet"));
+        varSetDoc2 = freecad_cast<App::VarSet*>(doc2->addObject("App::VarSet", "VarSet"));
+
+        prop = freecad_cast<App::PropertyInteger*>(
+            varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+        prop->setValue(value);
+    }
+
+    void TearDown() override
+    {
+        for (auto* obj : doc1->topologicalSort()) {
+            doc1->removeObject(obj->getNameInDocument());
+        }
+        doc2->removeObject(varSetDoc2->getNameInDocument());
+        App::GetApplication().closeDocument(doc1->getName());
+        App::GetApplication().closeDocument(doc2->getName());
+    }
+
+    static void TearDownTestSuite()
+    {}
+
+    void assertCopiedProperty(App::Property* property, App::DocumentObject* target);
+
+    void testCopyProperty(App::DocumentObject* target);
+
+    void testUndoProperty(App::DocumentObject* target);
+
+    const long value = 123;
+
+    App::Document* doc1;
+    App::Document* doc2;
+
+    App::VarSet* varSet1Doc1;
+    App::VarSet* varSet2Doc1;
+    App::VarSet* varSetDoc2;
+    App::PropertyInteger* prop;
+};
 #endif
