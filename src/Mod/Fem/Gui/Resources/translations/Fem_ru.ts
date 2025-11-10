@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Диалог</translation>
@@ -764,14 +764,14 @@
       <translation>Выберите вершины, линии и поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <source>Temperature</source>
       <translation>Температура</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1088,7 +1088,7 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
@@ -1109,8 +1109,8 @@ Only takes effect if 'Pipeline only' is enabled</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
-      <source>Number of processes</source>
-      <translation>Количество процессов</translation>
+      <source>Number of tasks</source>
+      <translation type="unfinished">Number of tasks</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
@@ -1124,27 +1124,37 @@ Only takes effect if 'Pipeline only' is enabled</source>
 количество ядер слишком велико.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
+      <source>Threads per task</source>
+      <translation type="unfinished">Threads per task</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="185"/>
+      <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
+      <translation type="unfinished">Number of threads per task. Take effect if Elmer uses OpenMP.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="206"/>
       <source>Results</source>
       <translation>Результаты</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="212"/>
       <source>Save result in binary format</source>
       <translation>Сохранить результат в бинарном формате</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="215"/>
       <source>Use binary format</source>
       <translation>Использовать бинарный формат</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Save the index of geometric entities</source>
       <translation>Сохранить индекс геометрических сущностей</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="234"/>
       <source>Save geometry IDs</source>
       <translation>Сохранить ID геометрии</translation>
     </message>
@@ -1164,7 +1174,7 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <translation>Параметры</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
       <translation>Исполняемый '%1' не найден</translation>
     </message>
@@ -2151,7 +2161,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="647"/>
       <source>Selected object is not a part object!</source>
-      <translation>Выбранный объект не является объектом детали!</translation>
+      <translation>Выбранный объект не является деталью!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="656"/>
@@ -2821,9 +2831,9 @@ that "MAXKOI" needs to be increased.</source>
       <translation>Давление на входе</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Давление</translation>
     </message>
@@ -2953,12 +2963,12 @@ that "MAXKOI" needs to be increased.</source>
       <translation>Оборотов в секунду</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Параметр</translation>
     </message>
@@ -3122,18 +3132,18 @@ Note: has no effect if a solid was selected</source>
       <translation>Определить скалярный потенциал и магнитный векторный потенциал</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <source>Real</source>
       <translation>Действительная часть</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <source>Imaginary</source>
       <translation>Мнимая часть</translation>
     </message>
@@ -3225,6 +3235,7 @@ Note: has no effect if a solid was selected</source>
       <translation>Ширина</translation>
     </message>
     <message>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
@@ -3232,7 +3243,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
@@ -3289,40 +3299,40 @@ Note: has no effect if a solid was selected</source>
       <translation>T4 толщина</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>Формула</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
       <translation>Не указана</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
       <translation>Скорость по оси y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
       <translation>Скорость по оси y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
       <translation>Скорость по оси z</translation>
     </message>
@@ -3332,14 +3342,14 @@ Note: has no effect if a solid was selected</source>
       <translation>Нормаль к границе</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Свойства функции анализа</translation>
     </message>
@@ -3366,8 +3376,8 @@ Note: has no effect if a solid was selected</source>
       <translation>Скорость рассеивания</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>Мнимая часть используется только для уравнений с гармоническим/колеблющимся током возбуждения</translation>
@@ -3434,9 +3444,9 @@ with harmonic/oscillating driving current</source>
       <translation>Выберите пользовательский режим для включения векторной плотности</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3451,9 +3461,9 @@ with harmonic/oscillating driving current</source>
       <translation>Мнимая часть x-компоненты плотности тока</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3468,9 +3478,9 @@ with harmonic/oscillating driving current</source>
       <translation>Мнимая часть y-компоненты плотности тока</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3510,16 +3520,16 @@ with harmonic/oscillating driving current</source>
       <translation>Максимальный размер элемента</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Поле</translation>
     </message>
@@ -3535,8 +3545,8 @@ with harmonic/oscillating driving current</source>
       <translation>По одному полю для каждого кадра</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
       <translation>Индекс</translation>
     </message>
@@ -3546,8 +3556,8 @@ with harmonic/oscillating driving current</source>
       <translation>Поле X</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <source>Y field</source>
       <translation>Y поле</translation>
     </message>
@@ -5590,12 +5600,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1220"/>
+      <location filename="../../../femcommands/commands.py" line="1230"/>
       <source>Solver Z88</source>
       <translation>Решатель Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1232"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Создает задачу для решателя МКЭ Z88</translation>
     </message>
@@ -5984,8 +5994,8 @@ No matching module was found in the current Python path.</source>
       <translation>Какую часть вектора поля Y использовать для оси Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Укажите, следует ли извлекать поле для каждого доступного кадра.</translation>
     </message>
@@ -6005,14 +6015,14 @@ No matching module was found in the current Python path.</source>
       <translation>Правка {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
       <translation>Показать график</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
       <translation>Показать данные</translation>
     </message>
@@ -6707,11 +6717,11 @@ No matching module was found in the current Python path.</source>
       <translation>Удалить элементы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
       <location filename="../../TaskCreateElementSet.cpp" line="228"/>
       <location filename="../../TaskCreateElementSet.cpp" line="238"/>
       <location filename="../../TaskCreateElementSet.cpp" line="469"/>
       <location filename="../../TaskCreateElementSet.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
@@ -7059,27 +7069,22 @@ Leave blank to use default Python executable</source>
       <translation>Путь к рабочей папке</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="66"/>
-      <source>…</source>
-      <translation>…</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
       <translation>Тип анализа</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <location filename="../ui/SolverCalculiX.ui" line="122"/>
       <source>Time</source>
       <translation>Время</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="78"/>
+      <location filename="../ui/SolverCalculiX.ui" line="74"/>
       <source>Solver Parameters</source>
       <translation>Параметры решателя</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="133"/>
+      <location filename="../ui/SolverCalculiX.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Версия решателя</translation>
     </message>
@@ -7107,8 +7112,8 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Форма глифа</translation>
     </message>
@@ -7150,10 +7155,10 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Какое векторное поле используется для ориентации глифов</translation>
     </message>
@@ -7165,8 +7170,8 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Ничего</translation>
     </message>
@@ -7189,8 +7194,8 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Постоянный мультипликатор глифов масштабируется с</translation>
     </message>
@@ -7206,8 +7211,8 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Если данные масштаба являются вектором, то это свойство определяет, масштабируется ли глиф по векторной величине или по отдельным компонентам</translation>
     </message>
@@ -7299,27 +7304,27 @@ Leave blank to use default Python executable</source>
       <translation>Возрастающий</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
       <translation> Условное обозначение</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Показать</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
       <translation>Надписи</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
       <translation>Ось Y</translation>
     </message>
@@ -7329,8 +7334,8 @@ Leave blank to use default Python executable</source>
       <translation>Ось X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
       <translation>Заголовок</translation>
     </message>
@@ -7758,12 +7763,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1242"/>
       <source>Glyph Filter</source>
       <translation>Фильтр глифов</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1237"/>
+      <location filename="../../../femcommands/commands.py" line="1247"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation>Добавляет фильтр постобработки, который добавляет глифы к вершинам сетки для визуализации данных вершин</translation>
     </message>
@@ -7807,35 +7812,35 @@ Leave blank to use default Python executable</source>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Стиль рисования контуров (Нет — контуры не рисуются)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>Ничего</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Толщина всех линий (контура и штриховки)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>Шаблон штриховки</translation>
     </message>
@@ -7855,8 +7860,8 @@ Leave blank to use default Python executable</source>
       <translation>Полосы</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>Легенда</translation>
     </message>
@@ -7866,8 +7871,8 @@ Leave blank to use default Python executable</source>
       <translation>Цвет всех линий (контура полосы и штриховки)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>Цвет полос в гистограмме</translation>
     </message>
@@ -7981,6 +7986,54 @@ Leave blank to use default Python executable</source>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
       <translation>Селектор опорных осей</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation type="unfinished">Solver Elmer Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Рабочий каталог</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Записать</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Редактировать</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory</source>
+      <translation>Путь к рабочей папке</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Параметры решателя</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation type="unfinished">Simulation type</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Время</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Версия решателя</translation>
     </message>
   </context>
 </TS>

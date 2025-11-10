@@ -625,18 +625,18 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
       <translation>接地オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="354"/>
+      <location filename="../../../CommandCreateView.py" line="391"/>
       <source>The objects moved by the move</source>
       <translation>運動によって移動するオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="366"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>これは運動の動きです。終了位置は開始位置 * この位置の結果となります。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="375"/>
       <source>The type of the move</source>
       <translation>運動のタイプ</translation>
     </message>
@@ -892,60 +892,60 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>オブジェクトを移動して関連付けられているジョイントを削除しますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
       <source>Move part</source>
       <translation>パーツを移動</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
       <source>Empty Assembly</source>
       <translation>空のアセンブリ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
       <source>Over-constrained:</source>
       <translation>過剰拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
       <source>Malformed joints:</source>
       <translation>不正なジョイント:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
       <source>Redundant joints:</source>
       <translation>冗長なジョイント:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
       <source>Partially redundant:</source>
       <translation>部分的に冗長:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
       <source>Solver failed to converge</source>
       <translation>ソルバーの収束に失敗</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
       <source>Under-constrained:</source>
       <translation>未拘束:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
       <source>Fully constrained</source>
       <translation>完全拘束</translation>
     </message>
@@ -1080,7 +1080,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
       <source>Joints</source>
       <translation>ジョイント</translation>
     </message>
@@ -1466,27 +1466,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation>ソルバーメッセージ</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
       <source>Click to select these conflicting joints.</source>
       <translation>クリックしてこれらの競合するジョイントを選択します。</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these redundant joints.</source>
       <translation>クリックしてこれらの冗長なジョイントを選択します。</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation>アセンブリには拘束されていないコンポーネントがあり、それが自由度を上げています。クリックしてこれらの拘束されていないコンポーネントを選択してください。</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
       <source>Click to select these malformed joints.</source>
       <translation>クリックしてこれらの不正なジョイントを選択します。</translation>
     </message>

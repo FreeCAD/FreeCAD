@@ -625,18 +625,18 @@ SLOPE definisce la pendenza della transizione tra 0 e H1 e H2 a 0 al tempo = T1 
       <translation>L'oggetto è fissato</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="354"/>
+      <location filename="../../../CommandCreateView.py" line="391"/>
       <source>The objects moved by the move</source>
       <translation>Gli oggetti spostati dal movimento</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="366"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Questo è lo spostamento del movimento. Il posizionamento finale è il risultato di posizionamento iniziale * questo posizionamento.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="375"/>
       <source>The type of the move</source>
       <translation>Il tipo di movimento</translation>
     </message>
@@ -892,53 +892,53 @@ I file sono denominati "runPreDrag. asmt" e "dragging.log" e si trovano nella di
       <translation>Si desidera spostare l'oggetto ed eliminare i vincoli associati?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
       <source>Move part</source>
       <translation>Sposta parte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
       <source>Empty Assembly</source>
       <translation>Assieme vuoto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
       <source>Over-constrained:</source>
       <translation>Sovravincolato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
       <source>Malformed joints:</source>
       <translation>Giunti malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
       <source>Redundant joints:</source>
       <translation>Giunti ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
       <source>Partially redundant:</source>
       <translation>Parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
       <source>Solver failed to converge</source>
       <translation>Risolutore impossibilitato a convergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
       <source>Under-constrained:</source>
       <translation>Sottovincolato:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Gradi di libertà</numerusform>
@@ -946,7 +946,7 @@ I file sono denominati "runPreDrag. asmt" e "dragging.log" e si trovano nella di
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
       <source>Fully constrained</source>
       <translation>Completamente vincolato</translation>
     </message>
@@ -1081,7 +1081,7 @@ I file sono denominati "runPreDrag. asmt" e "dragging.log" e si trovano nella di
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
       <source>Joints</source>
       <translation>Giunti</translation>
     </message>
@@ -1467,27 +1467,27 @@ I file sono denominati "runPreDrag. asmt" e "dragging.log" e si trovano nella di
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation>Messaggi del risolutore</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
       <source>Click to select these conflicting joints.</source>
       <translation>Fare clic per selezionare questi giunti in conflitto.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these redundant joints.</source>
       <translation>Fare clic per selezionare questi giunti ridondanti.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation>L'assieme ha componenti senza vincoli che danno origine a quei gradi di libertà. Fare clic per selezionare questi componenti senza vincoli.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
       <source>Click to select these malformed joints.</source>
       <translation>Fare clic per selezionare questi giunti malformati.</translation>
     </message>

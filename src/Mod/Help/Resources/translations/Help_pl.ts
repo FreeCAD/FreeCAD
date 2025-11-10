@@ -151,30 +151,30 @@ Działa to tylko wtedy, gdy Markdown jest wybrany powyżej.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="73"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Nie można pobrać zawartości tej strony. 
 Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="77"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Nie można określić lokalizacji plików pomocy. 
 Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="81"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny. 
 Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="85"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>W systemie nie ma zainstalowanego renderera Markdown, więc ta strona pomocy jest renderowana tak, jak jest. Zainstaluj moduły Markdown lub Pandoc Python, aby poprawić jakość renderowania tej strony.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="117"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Pomoc</translation>
     </message>
@@ -182,7 +182,7 @@ Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="433"/>
+      <location filename="../../Help.py" line="435"/>
       <source>General</source>
       <translation>Ogólne</translation>
     </message>

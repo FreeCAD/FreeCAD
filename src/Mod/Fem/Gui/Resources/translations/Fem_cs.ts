@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Vazba ložiska</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="289"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Vazba přímím kontaktem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="290"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="355"/>
       <source>Displacement Boundary Condition</source>
-      <translation type="unfinished">Displacement Boundary Condition</translation>
+      <translation>Okrajová podmínka posunutí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="356"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Fixed Boundary Condition</source>
-      <translation type="unfinished">Fixed Boundary Condition</translation>
+      <translation>Okrajová podmínka vetknutí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="507"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Okrajová podmínka tekutiny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="509"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <source>Force Load</source>
-      <translation type="unfinished">Force Load</translation>
+      <translation>Zatížení silou</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="560"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="616"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Vazba ozubeného kola</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="664"/>
       <source>Heat Flux Load</source>
-      <translation type="unfinished">Heat Flux Load</translation>
+      <translation>Zatížení tepelným tokem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Initial Temperature</source>
-      <translation type="unfinished">Initial Temperature</translation>
+      <translation>Počáteční teplota</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Plane Multi-Point Constraint</source>
-      <translation type="unfinished">Plane Multi-Point Constraint</translation>
+      <translation>Rovinná vícebodová vazba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="777"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Pressure Load</source>
-      <translation type="unfinished">Pressure Load</translation>
+      <translation>Zatížení tlakem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="828"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="938"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>Vazba kladky</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="939"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>Okrajová podmínka pružiny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Vytvoří podmínku pružiny na ploše</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="991"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>Okrajová podmínka teploty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="992"/>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="1042"/>
       <source>Local Coordinate System</source>
-      <translation type="unfinished">Local Coordinate System</translation>
+      <translation>Lokální souřadnicový systém</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1043"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation type="unfinished">Creates a local coordinate system on a face</translation>
+      <translation>Vytvořit lokální souřadnicový systém na ploše</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1188"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Sada uzlů</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1189"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set.</translation>
+      <translation>Vyberte jednu MKP síť nebo množinu uzlů.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Vyberte jednu MKP síť.</translation>
     </message>
   </context>
   <context>
@@ -314,12 +314,12 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>Množina uzlů dle polygonu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>Vytvoří množinu uzlů pomocí vybraného polygonu</translation>
     </message>
   </context>
   <context>
@@ -332,12 +332,12 @@
     <message>
       <location filename="../../Command.cpp" line="2623"/>
       <source>Apply Changes to Pipeline</source>
-      <translation type="unfinished">Apply Changes to Pipeline</translation>
+      <translation>Aplikovat změny na pipeline</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2624"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
-      <translation type="unfinished">Applies changes to parameters directly and not on recompute only</translation>
+      <translation>Aplikovat změny parametrů přímo a ne pouze při přepočtu</translation>
     </message>
   </context>
   <context>
@@ -350,17 +350,17 @@
     <message>
       <location filename="../../Command.cpp" line="2028"/>
       <source>Region Clip Filter</source>
-      <translation type="unfinished">Region Clip Filter</translation>
+      <translation>Výřezový filtr oblasti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2030"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Defines a clip filter which uses functions to define the clipped region</translation>
+      <translation>Definuje výřezový filtr oblasti za pomoci funkcí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2525"/>
       <source>Select a pipeline.</source>
-      <translation type="unfinished">Select a pipeline.</translation>
+      <translation>Vyberte pipeline.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2524"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Command.cpp" line="2066"/>
       <source>Function Cut Filter</source>
-      <translation type="unfinished">Function Cut Filter</translation>
+      <translation>Řezový filtr funkce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2067"/>
       <source>Cuts the data along an implicit function</source>
-      <translation type="unfinished">Cuts the data along an implicit function</translation>
+      <translation>Ořízne data podél implicitní funkce</translation>
     </message>
   </context>
   <context>
@@ -396,7 +396,7 @@
     <message>
       <location filename="../../Command.cpp" line="2103"/>
       <source>Line Clip Filter</source>
-      <translation type="unfinished">Line Clip Filter</translation>
+      <translation>Výřezový filtr přímkou</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2104"/>
@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialogové okno</translation>
@@ -764,14 +764,14 @@
       <translation type="unfinished">Select the vertices, lines and surfaces</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <source>Temperature</source>
       <translation>Teplota</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <source>ºC</source>
       <translation>°C</translation>
     </message>
@@ -1087,7 +1087,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
@@ -1108,8 +1108,8 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
-      <source>Number of processes</source>
-      <translation type="unfinished">Number of processes</translation>
+      <source>Number of tasks</source>
+      <translation type="unfinished">Number of tasks</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
@@ -1117,27 +1117,37 @@ Only takes effect if 'Pipeline only' is enabled</translation>
       <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
+      <source>Threads per task</source>
+      <translation type="unfinished">Threads per task</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="185"/>
+      <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
+      <translation type="unfinished">Number of threads per task. Take effect if Elmer uses OpenMP.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="206"/>
       <source>Results</source>
       <translation>Výsledky</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="212"/>
       <source>Save result in binary format</source>
       <translation type="unfinished">Save result in binary format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="215"/>
       <source>Use binary format</source>
       <translation type="unfinished">Use binary format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Save the index of geometric entities</source>
       <translation type="unfinished">Save the index of geometric entities</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="234"/>
       <source>Save geometry IDs</source>
       <translation type="unfinished">Save geometry IDs</translation>
     </message>
@@ -1157,7 +1167,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
       <translation>Možnosti</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
       <translation type="unfinished">Executable '%1' not found</translation>
     </message>
@@ -2808,9 +2818,9 @@ Pokud při použití iterativního řešiče obdržíte chybovou zprávu, že "M
       <translation>Vstupní tlak</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Tlak</translation>
     </message>
@@ -2940,12 +2950,12 @@ Pokud při použití iterativního řešiče obdržíte chybovou zprávu, že "M
       <translation>Otáčky za sekundu</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametr</translation>
     </message>
@@ -3109,18 +3119,18 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <source>Real</source>
       <translation>Reálná</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <source>Imaginary</source>
       <translation>Imaginární</translation>
     </message>
@@ -3212,6 +3222,7 @@ Note: has no effect if a solid was selected</translation>
       <translation>Šířka</translation>
     </message>
     <message>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
@@ -3219,7 +3230,6 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3276,40 +3286,40 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">T4 thickness</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>Vzorec</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
       <translation type="unfinished">Unspecified</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
       <translation type="unfinished">Velocity X</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
       <translation type="unfinished">Velocity Y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
       <translation type="unfinished">Velocity Z</translation>
     </message>
@@ -3319,14 +3329,14 @@ Note: has no effect if a solid was selected</translation>
       <translation>Normála k okraji</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation type="unfinished">Analysis Feature Properties</translation>
     </message>
@@ -3353,8 +3363,8 @@ Note: has no effect if a solid was selected</translation>
       <translation type="unfinished">Dissipation rate</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation type="unfinished">Imaginary part is only used for equations
@@ -3422,9 +3432,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Select custom mode to enable vector current density</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3439,9 +3449,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Imaginary part of current density x-component</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3456,9 +3466,9 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Imaginary part of current density y-component</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3498,16 +3508,16 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Maximum element size</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Návrh</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Pole</translation>
     </message>
@@ -3523,8 +3533,8 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">One field for each frame</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
       <translation type="unfinished">Index</translation>
     </message>
@@ -3534,8 +3544,8 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">X field</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <source>Y field</source>
       <translation type="unfinished">Y field</translation>
     </message>
@@ -5576,12 +5586,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1220"/>
+      <location filename="../../../femcommands/commands.py" line="1230"/>
       <source>Solver Z88</source>
       <translation>Řešič Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1232"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Vytvoří MKP řešič Z88</translation>
     </message>
@@ -5972,8 +5982,8 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -5993,14 +6003,14 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Edit {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
       <translation type="unfinished">Show Plot</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
       <translation type="unfinished">Show Data</translation>
     </message>
@@ -6695,11 +6705,11 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Erase Elements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
       <location filename="../../TaskCreateElementSet.cpp" line="228"/>
       <location filename="../../TaskCreateElementSet.cpp" line="238"/>
       <location filename="../../TaskCreateElementSet.cpp" line="469"/>
       <location filename="../../TaskCreateElementSet.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
@@ -7047,27 +7057,22 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Path to working directory</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="66"/>
-      <source>…</source>
-      <translation type="unfinished">…</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
       <translation>Typ analýzy</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <location filename="../ui/SolverCalculiX.ui" line="122"/>
       <source>Time</source>
       <translation>Čas</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="78"/>
+      <location filename="../ui/SolverCalculiX.ui" line="74"/>
       <source>Solver Parameters</source>
       <translation type="unfinished">Solver Parameters</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="133"/>
+      <location filename="../ui/SolverCalculiX.ui" line="129"/>
       <source>Solver Version</source>
       <translation type="unfinished">Solver Version</translation>
     </message>
@@ -7095,8 +7100,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation type="unfinished">The form of the glyph</translation>
     </message>
@@ -7138,10 +7143,10 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
     </message>
@@ -7153,8 +7158,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Žádný</translation>
     </message>
@@ -7177,8 +7182,8 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
     </message>
@@ -7194,8 +7199,8 @@ Leave blank to use default Python executable</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
     </message>
@@ -7287,27 +7292,27 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Cumulative</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Zobrazit</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
       <translation>Štítky</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
       <translation>osa Y</translation>
     </message>
@@ -7317,8 +7322,8 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">X Axis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
       <translation>Nadpis</translation>
     </message>
@@ -7746,12 +7751,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1242"/>
       <source>Glyph Filter</source>
       <translation type="unfinished">Glyph Filter</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1237"/>
+      <location filename="../../../femcommands/commands.py" line="1247"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
     </message>
@@ -7795,35 +7800,35 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Návrh</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation type="unfinished">Outline draw style (None does not draw outlines)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>Žádný</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation type="unfinished">Width of all lines (outline and hatch)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation type="unfinished">Hatch pattern</translation>
     </message>
@@ -7843,8 +7848,8 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Bars</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
@@ -7854,8 +7859,8 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Color of all lines (bar outline and hatches)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation type="unfinished">Color of the bars in histogram</translation>
     </message>
@@ -7969,6 +7974,54 @@ Leave blank to use default Python executable</translation>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
       <translation type="unfinished">Axis Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation type="unfinished">Solver Elmer Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Pracovní adresář</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Zapsat</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Upravit</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory</source>
+      <translation type="unfinished">Path to working directory</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation type="unfinished">Solver Parameters</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation type="unfinished">Simulation type</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Čas</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation type="unfinished">Solver Version</translation>
     </message>
   </context>
 </TS>

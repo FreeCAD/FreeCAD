@@ -9,17 +9,17 @@
       <translation>სტანდარტული (მმ, კგ, წმ, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="323"/>
+      <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>სი (მ, კგ, წმ, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="587"/>
+      <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
       <translation>US საბაჟო ერთეულები (დუიმი, გირვანქა)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="636"/>
+      <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>იმპერიული საზომი ერთეულები სამოქალაქო ინჟინერიისთვის(ფუტი, გირვანქა, მილი/სთ)</translation>
     </message>
@@ -29,12 +29,12 @@
       <translation>იმპერიული საზ. ერთ.(დუი, გირვან)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="548"/>
+      <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>სამშენებლო ევრო (სმ, მ², მ³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="625"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>სამშენებლო აშშ (ფუტი-დუიმი,კვ. ფტ, კუბ. ფტ.)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>მეტრული პატარა ნაწილები &amp; CNC(მმ, მმ/წთ)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="575"/>
+      <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
       <translation>სასრული ელემენტების მეთოდი (მმ, ნ, წმ)</translation>
     </message>

@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Diàleg</translation>
@@ -764,14 +764,14 @@
       <translation>Seleccioneu els vèrtexs, línies i superfícies</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <source>Temperature</source>
       <translation>Temperatura</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1087,7 +1087,7 @@ Només té afecte si l'opció 'Només canonada' està marcada</translation>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
@@ -1108,8 +1108,8 @@ Només té afecte si l'opció 'Només canonada' està marcada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
-      <source>Number of processes</source>
-      <translation>Nombre de processos</translation>
+      <source>Number of tasks</source>
+      <translation type="unfinished">Number of tasks</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
@@ -1117,27 +1117,37 @@ Només té afecte si l'opció 'Només canonada' està marcada</translation>
       <translation>Nombre de tasques paral·leles. Establiu-ho a `1` si l'Elmer no utilitza MPI.&lt;br&gt;Es recomana utilitzar un nombre parell de nuclis per beneficiar-te de les simetries de malla&lt;br&gt;(L'ús de 8 nuclis pot ser més ràpid que 9).&lt;br&gt;En casos extrems, és possible que ElmerSolver no convergi si el nombre de nuclis és massa alt.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
+      <source>Threads per task</source>
+      <translation type="unfinished">Threads per task</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="185"/>
+      <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
+      <translation type="unfinished">Number of threads per task. Take effect if Elmer uses OpenMP.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="206"/>
       <source>Results</source>
       <translation>Resultats</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="212"/>
       <source>Save result in binary format</source>
       <translation>Desa el resultat en format binari</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="215"/>
       <source>Use binary format</source>
       <translation>Utilitza el format binari</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Save the index of geometric entities</source>
       <translation>Desa l'índex d'entitats geomètriques</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="234"/>
       <source>Save geometry IDs</source>
       <translation>Desa els ID de geometria</translation>
     </message>
@@ -1157,7 +1167,7 @@ Només té afecte si l'opció 'Només canonada' està marcada</translation>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
       <translation>No s'ha trobat l'executable '%1'</translation>
     </message>
@@ -2814,9 +2824,9 @@ d'error que s'ha d'augmentar "MAXKOI".</translation>
       <translation>Pressió d'entrada</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Pressió</translation>
     </message>
@@ -2946,12 +2956,12 @@ d'error que s'ha d'augmentar "MAXKOI".</translation>
       <translation>Revolucions per segon</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paràmetre</translation>
     </message>
@@ -3114,18 +3124,18 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
       <translation>Definir el potencial escalar i el potencial vectorial magnètic</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <source>Real</source>
       <translation>Real</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <source>Imaginary</source>
       <translation>Imaginària</translation>
     </message>
@@ -3217,6 +3227,7 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
       <translation>Amplària</translation>
     </message>
     <message>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
@@ -3224,7 +3235,6 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3281,40 +3291,40 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
       <translation>Gruix T4</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>Fórmula</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
       <translation>No especificat</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
       <translation>Velocitat X</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
       <translation>Velocitat Y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
       <translation>Velocitat Z</translation>
     </message>
@@ -3324,14 +3334,14 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
       <translation>Normal al límit</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Propietats de la característica d'anàlisi</translation>
     </message>
@@ -3358,8 +3368,8 @@ Nota: no té cap efecte si s'ha seleccionat un sòlid</translation>
       <translation>Taxa de dissipació</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>La part imaginària només s'utilitza per a equacions
@@ -3427,9 +3437,9 @@ motrius harmòniques/oscilants</translation>
       <translation>Seleccioneu el mode personalitzat per habilitar la densitat de corrent vectorial</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3444,9 +3454,9 @@ motrius harmòniques/oscilants</translation>
       <translation>Part imaginària del component x de la densitat de corrent</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3461,9 +3471,9 @@ motrius harmòniques/oscilants</translation>
       <translation>Part imaginària del component y de la densitat de corrent</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3503,16 +3513,16 @@ motrius harmòniques/oscilants</translation>
       <translation>Mida màxima d'element</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Camp</translation>
     </message>
@@ -3528,8 +3538,8 @@ motrius harmòniques/oscilants</translation>
       <translation>Un camp per a cada pas</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
       <translation>Índex</translation>
     </message>
@@ -3539,8 +3549,8 @@ motrius harmòniques/oscilants</translation>
       <translation>Camp X</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <source>Y field</source>
       <translation>Camp Y</translation>
     </message>
@@ -5583,12 +5593,12 @@ vector normal de la cara s'utilitza com a direcció</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1220"/>
+      <location filename="../../../femcommands/commands.py" line="1230"/>
       <source>Solver Z88</source>
       <translation>Solucionador Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1232"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Crea un solucionador FEM Z88</translation>
     </message>
@@ -5979,8 +5989,8 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
       <translation>Quina part del vector del camp Y s'utilitza per a l'eix Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Especifica si el camp s'ha d'extreure per a cada fotograma disponible</translation>
     </message>
@@ -6000,14 +6010,14 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
       <translation>Edita {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
       <translation>Mostra el gràfic</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
       <translation>Mostra les dades</translation>
     </message>
@@ -6702,11 +6712,11 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
       <translation>Esborra elements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
       <location filename="../../TaskCreateElementSet.cpp" line="228"/>
       <location filename="../../TaskCreateElementSet.cpp" line="238"/>
       <location filename="../../TaskCreateElementSet.cpp" line="469"/>
       <location filename="../../TaskCreateElementSet.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -7054,27 +7064,22 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
       <translation>Camí el directori de treball</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="66"/>
-      <source>…</source>
-      <translation>…</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
       <translation>Tipus d'anàlisi</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <location filename="../ui/SolverCalculiX.ui" line="122"/>
       <source>Time</source>
       <translation>Temps</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="78"/>
+      <location filename="../ui/SolverCalculiX.ui" line="74"/>
       <source>Solver Parameters</source>
       <translation>Paràmetres del solucionador</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="133"/>
+      <location filename="../ui/SolverCalculiX.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Versió del solucionador</translation>
     </message>
@@ -7102,8 +7107,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>La forma del glif</translation>
     </message>
@@ -7145,10 +7150,10 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Camp vectorial a utilitzar per a orientar els glifs</translation>
     </message>
@@ -7160,8 +7165,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
@@ -7184,8 +7189,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Un multiplicador constant amb què els glifs s'escalen</translation>
     </message>
@@ -7201,8 +7206,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Si les dades d'escala són un vector, aquesta propietat determinarà si el glif és escalat per la magnitud del vector o per les components individuals</translation>
     </message>
@@ -7294,27 +7299,27 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
       <translation>Acumulatiu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
       <translation>Llegenda</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Mostra</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
       <translation>Etiquetes</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
       <translation>Eix-Y</translation>
     </message>
@@ -7324,8 +7329,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
       <translation>Eix X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
       <translation>Títol</translation>
     </message>
@@ -7753,12 +7758,12 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1242"/>
       <source>Glyph Filter</source>
       <translation>Filtre de glifs</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1237"/>
+      <location filename="../../../femcommands/commands.py" line="1247"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation>Afegeix un filtre de postprocessat que afegeix glifs als vèrtexs de la malla per a la visualització de dades de vèrtex</translation>
     </message>
@@ -7802,35 +7807,35 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Estil de dibuix del contorn (Cap no dibuixa contorns)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Amplada de totes les línies (contorn i ombrejat)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>Patró d'ombrejat</translation>
     </message>
@@ -7850,8 +7855,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
       <translation>Barres</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>Llegenda</translation>
     </message>
@@ -7861,8 +7866,8 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
       <translation>Color de totes les línies (contorn de barra i ombrejat)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>Color de les barres a l'histograma</translation>
     </message>
@@ -7976,6 +7981,54 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
       <translation>Seleccioneu la referència de l'eix</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation type="unfinished">Solver Elmer Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Directori de treball</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Escriure</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Edita</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory</source>
+      <translation>Camí el directori de treball</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Paràmetres del solucionador</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation type="unfinished">Simulation type</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Temps</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Versió del solucionador</translation>
     </message>
   </context>
 </TS>

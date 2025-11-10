@@ -206,17 +206,17 @@ så profilet ikke overlapper sig selv.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2315"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Boolean Operation</source>
       <translation>Boolesk operation</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Anvender booleske operationer med valgte objekter og det aktive emne</translation>
     </message>
@@ -926,7 +926,7 @@ så profilet ikke overlapper sig selv.</translation>
       <translation>Ny Skitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2333"/>
+      <location filename="../../Command.cpp" line="2335"/>
       <source>Create Boolean</source>
       <translation>Opret boolesk operation</translation>
     </message>
@@ -1674,13 +1674,13 @@ Please adjust the parameters and try again.</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1357"/>
       <source>No face selected</source>
       <translation>Ingen flade valgt</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="161"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1135"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1137"/>
       <source>Face</source>
       <translation>Flade</translation>
     </message>
@@ -1690,63 +1690,63 @@ Please adjust the parameters and try again.</translation>
       <translation>Fjern</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="345"/>
       <source>Preview</source>
       <translation>Forhåndsvisning</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="353"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
       <source>Select Faces</source>
       <translation>Vælg flader</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
       <source>Select reference…</source>
       <translation>Vælg reference…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="596"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
       <source>No shape selected</source>
       <translation>Ingen figur er markeret</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="681"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="677"/>
       <source>Sketch normal</source>
       <translation>Normal til skitse</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="680"/>
       <source>Face normal</source>
       <translation>Fladenormal</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="692"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="697"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="693"/>
       <source>Custom direction</source>
       <translation>Brugerdefineret retning</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1081"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1083"/>
       <source>Click on a shape in the model</source>
       <translation>Klik på en flade på modellen</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1342"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
       <source>One sided</source>
       <translation>Ensidet</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1343"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1345"/>
       <source>Two sided</source>
       <translation>Tosidet</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1346"/>
       <source>Symmetric</source>
       <translation>Symmetrisk</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1350"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1352"/>
       <source>Click on a face in the model</source>
       <translation>Klik på en flade på modellen</translation>
     </message>
@@ -2032,130 +2032,130 @@ Please adjust the parameters and try again.</translation>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="52"/>
+      <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Counterbore</source>
       <translation>Plan undersænkning</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="53"/>
+      <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Countersink</source>
       <translation>Undersænkning</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="54"/>
+      <location filename="../../TaskHoleParameters.cpp" line="57"/>
       <source>Counterdrill</source>
       <translation>Boret undersænkning</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Hole Parameters</source>
       <translation>Hulparametre</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="67"/>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="68"/>
+      <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular</source>
       <translation>ISO metrisk standardgevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine</source>
       <translation>ISO metrisk fingevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse</source>
       <translation>UTS grovgevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="71"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine</source>
       <translation>UTS fingevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine</source>
       <translation>UTS ekstra fingevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ANSI pipes</source>
       <translation>ANSI rørgevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>ISO/BSP pipes</source>
       <translation>ISO/BSP rørgevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>BSW whitworth</source>
       <translation>BSW whitworth standardgevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>BSF whitworth fine</source>
       <translation>BSF whitworth fingevind</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ISO tyre valves</source>
       <translation>ISO dækventiler</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="671"/>
+      <location filename="../../TaskHoleParameters.cpp" line="674"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Medium</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="672"/>
+      <location filename="../../TaskHoleParameters.cpp" line="675"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Fin</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="673"/>
+      <location filename="../../TaskHoleParameters.cpp" line="676"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Grov</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="676"/>
+      <location filename="../../TaskHoleParameters.cpp" line="679"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="677"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Luk</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Løs</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="681"/>
+      <location filename="../../TaskHoleParameters.cpp" line="684"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Luk</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="683"/>
+      <location filename="../../TaskHoleParameters.cpp" line="686"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Bredde</translation>
@@ -2387,43 +2387,38 @@ Please adjust the parameters and try again.</translation>
       <translation>Retning</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="527"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="541"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
       <translation>Definer en retning eller vælg en
 kant fra modellen som reference</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="532"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="546"/>
       <source>Sketch normal</source>
       <translation>Normal til skitse</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="542"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="556"/>
       <source>Custom direction</source>
       <translation>Brugerdefineret retning</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="552"/>
-      <source>Show direction</source>
-      <translation>Vis retning</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="562"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="569"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Brug en brugerudpeget vektor som ekstruderinsretning, 
 ellers vil skitseplanets normalvektor blive brugt</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="671"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="521"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>Hvis ikke afkrydset, vil længden blive
 målt i den angivne retning</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="675"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="525"/>
       <source>Length along sketch normal</source>
       <translation>Længde langs skitsens normal</translation>
     </message>
@@ -2439,42 +2434,42 @@ målt i den angivne retning</translation>
       <translation>Modsat</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="520"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="534"/>
       <source>Direction/edge</source>
       <translation>Retning/kant</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="537"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="551"/>
       <source>Select reference…</source>
       <translation>Vælg reference…</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="575"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
       <translation>X-komponenten af retningsvektoren</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="604"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
       <translation>Y-komponenten af retningsvektoren</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="633"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
       <translation>Z-komponenten af retningsvektoren</translation>
     </message>
@@ -2513,7 +2508,7 @@ målt i den angivne retning</translation>
       <translation>Vælger alle flader på geometrien</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="685"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="678"/>
       <source>Recompute on change</source>
       <translation>Genberegn ved ændringer</translation>
     </message>
@@ -3195,11 +3190,11 @@ målt i den angivne retning</translation>
       <translation>Ingen gyldige konstruktionsplaner i dette dokument</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
       <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialog er allerede åben i opgavepanelet</translation>
     </message>
@@ -3239,11 +3234,11 @@ målt i den angivne retning</translation>
       <translation>Ingen skitse tilgængelig i dokumentet</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <source>Close this dialog?</source>
       <translation>Luk denne dialog?</translation>
     </message>
@@ -3537,10 +3532,10 @@ For ældre dokumenter med Part-Design objekter som mangler et emne, skal du brug
       <translation>For at kunne bruge denne funktion skal den tilhøre en komponent i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="91"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <source>Edit %1</source>
       <translation>Rediger %1</translation>
     </message>
@@ -4216,7 +4211,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>&amp;Sketch</source>
-      <translation>&amp;Skitse</translation>
+      <translation>&amp;Sketcher</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -4241,7 +4236,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Dress-Up Features</source>
-      <translation>Finish funktioner</translation>
+      <translation>Tilføj finish</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -4483,20 +4478,20 @@ over 90: større hulradius i bunden</translation>
       <translation>Udgangsgeometrien er nul</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Operationen resulterer i flere massive elementer. Aktiver 'Tillad sammensatte emner' i det aktive emne.</translation>
     </message>
@@ -4532,10 +4527,10 @@ over 90: større hulradius i bunden</translation>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <source>Resulting shape is not a solid</source>
       <translation>Resulterende geometri er ikke én sammenhængende geometri</translation>
     </message>
@@ -4545,8 +4540,8 @@ over 90: større hulradius i bunden</translation>
       <translation>Kunne ikke oprette rejfning</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <location filename="../../../App/FeatureDraft.cpp" line="289"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <source>Resulting shape is null</source>
       <translation>Resulterende geometri er ugyldig</translation>
     </message>
@@ -4612,9 +4607,9 @@ over 90: større hulradius i bunden</translation>
       <translation>Oprettelse mislykkedes, fordi retningen vinkelret på skitsens normalvektor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="141"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creating a face from sketch failed</source>
       <translation>Oprettelse af en flade fra en skitse mislykkedes</translation>
     </message>
@@ -4624,20 +4619,20 @@ over 90: større hulradius i bunden</translation>
       <translation>Vinklerne for afdrejningen ophæver hinanden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Omdrejningsaksen skærer skitsen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="241"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <source>Could not revolve the sketch!</source>
       <translation>Kunne ikke dreje skitsen!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="253"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Kunne ikke oprette en flade fra skitsen.
@@ -5089,8 +5084,8 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <translation>Drejningsvinklerne ophæver hinanden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="134"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <source>Reference axis is invalid</source>
       <translation>Referenceaksen er ugyldig</translation>
     </message>
@@ -5203,12 +5198,12 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2378"/>
+      <location filename="../../Command.cpp" line="2380"/>
       <source>Create Datum</source>
       <translation>Opret konstruktionsgeometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="2381"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Opretter et konstruktionselement eller et lokalt koordinatsystem</translation>
     </message>
@@ -5216,12 +5211,12 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2413"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Create Datum</source>
       <translation>Opret konstruktionsplan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2414"/>
+      <location filename="../../Command.cpp" line="2416"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Opretter et konstruktionselement eller et lokalt koordinatsystem</translation>
     </message>
