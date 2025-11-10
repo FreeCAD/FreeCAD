@@ -147,6 +147,8 @@ protected:
     App::PropertyPlacement& getPlacement() const;
     void initBase(bool force);
 
+    void handleLegacyTangentPlaneOrientation();
+
 public:
     void updateAttacherVals(bool base = false) const;
     // This update both _props and _baseProps if base = false

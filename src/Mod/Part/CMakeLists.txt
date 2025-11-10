@@ -78,6 +78,7 @@ set(Part_tests
     parttests/ColorPerFaceTest.py
     parttests/ColorTransparencyTest.py
     parttests/TopoShapeTest.py
+    parttests/TestTangentMode3-0.21.FCStd
 )
 
 add_custom_target(PartScripts ALL SOURCES
