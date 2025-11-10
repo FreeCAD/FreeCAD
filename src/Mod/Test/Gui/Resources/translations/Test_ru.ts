@@ -11,7 +11,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation>Тест модуля FreeCAD</translation>
+      <translation>Модульное тестирование FreeCAD</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>

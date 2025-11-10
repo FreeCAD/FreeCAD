@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a 2D Draft document</source>
-      <translation>Opretter et 2D udkast</translation>
+      <translation>Opret et 2D udkast</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="225"/>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../StartView.cpp" line="206"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>Opretter en ny tom FreeCAD-fil</translation>
+      <translation>Opret en ny tom FreeCAD-fil</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Creates an assembly project</source>
-      <translation>Opretter en samlet konstruktion af emner og komponenter</translation>
+      <translation>Opret en samling af komponenter</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="226"/>

@@ -9,17 +9,17 @@
       <translation>Стандарт (мм, кг, с, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="323"/>
+      <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>МКС (м, кг, с, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="587"/>
+      <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
       <translation>Умовні позначення США (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="636"/>
+      <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
     </message>
@@ -29,12 +29,12 @@
       <translation>Імперська десяткова система (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="548"/>
+      <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Будівництво Євро (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="625"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Будівництво США (ft-in, sqft, cft)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>Метричні дрібні деталі та ЧПК (мм, мм/хв)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="575"/>
+      <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
       <translation>МСЕ (мм, Н, с)</translation>
     </message>

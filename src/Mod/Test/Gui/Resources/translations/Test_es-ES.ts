@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation>Fallos</translation>
+      <translation>Errores</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>

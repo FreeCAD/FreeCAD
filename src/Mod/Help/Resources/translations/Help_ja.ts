@@ -148,27 +148,27 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="73"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>このページのコンテンツを取得できませんでした。メニューの編集→設定→全般→ヘルプ にある設定を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="77"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>ヘルプファイルの場所が特定できませんでした。メニューの編集→設定→全般→ヘルプにある設定を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="81"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgetsモジュールは利用できません。システムブラウザによる補助レンダリングが行なわれました。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="85"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>システムにMarkdownレンダラーがインストールされていないため、このヘルプページはそのままレンダリングされます。このページのレンダリングを改善するには、MarkdownまたはPandoc Pythonモジュールをインストールしてください。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="117"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>ヘルプ</translation>
     </message>
@@ -176,7 +176,7 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="433"/>
+      <location filename="../../Help.py" line="435"/>
       <source>General</source>
       <translation>標準</translation>
     </message>

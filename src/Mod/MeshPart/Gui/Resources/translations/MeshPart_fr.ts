@@ -139,7 +139,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation>Longueur</translation>
+      <translation>Distance</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
