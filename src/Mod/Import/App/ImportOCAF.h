@@ -76,12 +76,12 @@ private:
     App::DocumentObject* createShape(
         const TDF_Label& label,
         const TopLoc_Location&,
-        const std::string&,
-        bool
+        const std::string&
     );
     App::DocumentObject* createShape(
         const TopoDS_Shape& label,
         const TopLoc_Location&,
+        bool setPlacementFromLocation,
         const std::string&
     );
     void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
