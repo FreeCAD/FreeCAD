@@ -73,11 +73,7 @@ private:
         const std::string& assembly,
         bool isRef
     );
-    App::DocumentObject* createShape(
-        const TDF_Label& label,
-        const TopLoc_Location&,
-        const std::string&
-    );
+    App::DocumentObject* createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&);
     App::DocumentObject* createShape(
         const TopoDS_Shape& shape,
         const TDF_Label& labelHint,

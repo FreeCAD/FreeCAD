@@ -104,9 +104,9 @@ void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Locatio
 void ImportOCAF::loadShapes()
 {
     myRefShapes.clear();
-    // Build the mapping from shapes to Labels, used to obtain the colours of the elements of the model.
-    // This is necessary because XCAFDoc_ColorTool::GetLabel(TopoDS_Shape) is dismally slow, taking time
-    // proportional to the number of Labels in the whole document.
+    // Build the mapping from shapes to Labels, used to obtain the colours of the elements of the
+    // model. This is necessary because XCAFDoc_ColorTool::GetLabel(TopoDS_Shape) is dismally slow,
+    // taking time proportional to the number of Labels in the whole document.
     TDF_ChildIterator labelIterator(pDoc->Main(), true);
     TopoDS_Shape sh;
     while (labelIterator.More()) {
@@ -256,7 +256,8 @@ App::DocumentObject* ImportOCAF::loadShapes(
             std::vector<App::DocumentObject*> localValue;
 
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                App::DocumentObject* createdDocObj = loadShapes(it.Value(), part_loc, part_name, asm_name, false);
+                App::DocumentObject* createdDocObj
+                    = loadShapes(it.Value(), part_loc, part_name, asm_name, false);
                 if (createdDocObj != nullptr) {
                     localValue.push_back(createdDocObj);
                 }
@@ -296,14 +297,14 @@ App::DocumentObject* ImportOCAF::createShape(
     }
     if (aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
-        
+
         if (this->merge) {
             // Combine all the SOLID, SHELL, EDGE, and VERTEX subshapes into a new compound as a
             // single Part::Feature.
             // It may seem strange to pick apart a compound only to make a new compound but perhaps
             // aShape contains topology other than the solids, hollow shells, edges, and vertices
-            // that we transfer to the new compound. (perhaps a Solid from the STEP file also has a Shell
-            // that we don't want???)
+            // that we transfer to the new compound. (perhaps a Solid from the STEP file also has a
+            // Shell that we don't want???)
             BRep_Builder builder;
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
@@ -337,7 +338,8 @@ App::DocumentObject* ImportOCAF::createShape(
             }
 
             // Create the single compound shape, setting its Placement from loc.
-            // We pass the Label of the original compound so if it has any colour applied that will be used.
+            // We pass the Label of the original compound so if it has any colour applied that will
+            // be used.
             return comp.IsNull() ? nullptr : createShape(comp, label, loc, true, name);
         }
         else {
@@ -367,7 +369,8 @@ App::DocumentObject* ImportOCAF::createShape(
     }
 }
 
-bool ImportOCAF::getShapeColour(const TopoDS_Shape& shape, TDF_Label labelHint, Base::Color& foundColour) {
+bool ImportOCAF::getShapeColour(const TopoDS_Shape& shape, TDF_Label labelHint, Base::Color& foundColour)
+{
     TDF_Label shapeLabel = labelHint;
     if (shapeLabel.IsNull() && shapeToLabelMap.contains(shape)) {
         shapeLabel = shapeToLabelMap[shape];
@@ -386,7 +389,7 @@ bool ImportOCAF::getShapeColour(const TopoDS_Shape& shape, TDF_Label labelHint, 
 
 App::DocumentObject* ImportOCAF::createShape(
     const TopoDS_Shape& aShape,
-    const TDF_Label &labelHint,
+    const TDF_Label& labelHint,
     const TopLoc_Location& loc,
     bool setPlacementFromLocation,
     const std::string& name
@@ -407,8 +410,8 @@ App::DocumentObject* ImportOCAF::createShape(
     part->Label.setValue(name);
 
     // Find and apply colours to the creted part.
-    // There may be a colour for the overall Part, and/or some of the topology that makes up the shape
-    // may have their own colours.
+    // There may be a colour for the overall Part, and/or some of the topology that makes up the
+    // shape may have their own colours.
     std::vector<Base::Color> faceColors;
     Quantity_ColorRGBA aColor;
     Base::Color color(0.8f, 0.8f, 0.8f);
@@ -424,8 +427,8 @@ App::DocumentObject* ImportOCAF::createShape(
     for (; xp.More(); xp.Next(), ++face_index) {
         if (getShapeColour(xp.Current(), TDF_Label(), color)) {
             if (face_index >= faceColors.size()) {
-                // We've just realized we need per-element colours. Make the colour vector large enough
-                // for all the elements. First count the number of faces in aShape
+                // We've just realized we need per-element colours. Make the colour vector large
+                // enough for all the elements. First count the number of faces in aShape
                 int n_faces = 0;
                 TopExp_Explorer xp2(aShape, TopAbs_FACE);
                 while (xp2.More()) {
