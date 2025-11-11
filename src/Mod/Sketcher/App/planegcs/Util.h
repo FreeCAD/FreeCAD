@@ -26,6 +26,7 @@
 #include <map>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 
@@ -39,8 +40,10 @@ using MAP_pD_pD = std::map<double*, double*>;
 using MAP_pD_D = std::map<double*, double>;
 using MAP_pD_I = std::map<double*, int>;
 using UMAP_pD_pD = std::unordered_map<double*, double*>;
+using UMAP_pD_I = std::unordered_map<double*, int>;
 using SET_pD = std::set<double*>;
 using SET_I = std::set<int>;
+using USET_pD = std::unordered_set<double*>;
 
 struct DeriParam
 {
