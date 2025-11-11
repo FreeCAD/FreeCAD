@@ -75,6 +75,7 @@ void Constraint::revertParams()
 }
 void Constraint::assignOrigToPvec()
 {
+    pvec.resize(origpvec.size());
     for (size_t i = 0; i < origpvec.size(); ++i) {
         pvec[i] = origpvec[i];
     }
