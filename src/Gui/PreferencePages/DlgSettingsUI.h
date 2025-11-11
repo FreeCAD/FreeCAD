@@ -46,6 +46,8 @@ public:
   explicit DlgSettingsUI(QWidget* parent = nullptr);
   ~DlgSettingsUI() override;
 
+  static void loadThemeDefaults();
+
   void saveSettings() override;
   void loadSettings() override;
 
@@ -62,6 +64,7 @@ protected:
 
   void openThemeEditor();
 private:
+  void resetSettingsToDefaults() override;
   std::unique_ptr<Ui_DlgSettingsUI> ui;
 };
 

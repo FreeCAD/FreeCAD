@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <filesystem>
+#include <vector>
 
 # include <QApplication>
 # include <QMessageBox>
@@ -29,6 +31,7 @@
 
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Gui/Multisample.h>
@@ -189,19 +192,95 @@ void DlgSettings3DViewImp::loadMarkerSize()
     // NOLINTEND
 }
 
+void DlgSettings3DViewImp::loadThemeDefaults()
+{
+    // get current theme name
+    ParameterGrp::handle hMainWindow = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    std::string themeName = hMainWindow->GetASCII("Theme", "");
+
+    if (themeName.empty()) {
+#ifdef FC_DEBUG
+        Base::Console().message("No theme set, skipping theme color defaults\n");
+#endif
+        return;  // no theme active, use current colors
+    }
+
+#ifdef FC_DEBUG
+    Base::Console().message("Loading 3D View color defaults for theme: %s\n", themeName.c_str());
+#endif
+
+    // construct path to the theme's config file
+    std::string appPath = App::Application::getResourceDir();
+    std::filesystem::path configFile = std::filesystem::path(appPath) / "Gui" / "PreferencePacks"
+        / themeName / (themeName + ".cfg");
+
+    if (!std::filesystem::exists(configFile)) {
+#ifdef FC_DEBUG
+        Base::Console().warning("Config file not found for theme '%s'\n", themeName.c_str());
+#endif
+        return;
+    }
+
+    // load theme config into temporary parameters
+    auto themeParams = ParameterManager::Create();
+    themeParams->LoadDocument(Base::FileInfo::pathToString(configFile).c_str());
+
+    // get the view group from the theme config
+    auto themeViewGroup =
+        themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+
+    // get the current user's View group
+    auto userViewGroup =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    // list of 3D view color parameters to copy from theme
+    std::vector<std::string> viewColors = {"AxisLetterColor",
+                                           "AxisXColor",
+                                           "AxisYColor",
+                                           "AxisZColor"};
+
+    // copy only the 3D view colors from theme to user config
+    for (const auto& colorName : viewColors) {
+        unsigned long colorValue = themeViewGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
+        if (colorValue != UINT_MAX) {
+            userViewGroup->SetUnsigned(colorName.c_str(), colorValue);
+        }
+    }
+}
+
 void DlgSettings3DViewImp::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
     //reset "AntiAliasing" parameter
     hGrp->RemoveInt("AntiAliasing");
+
     //reset "RenderCache" parameter
     hGrp->RemoveInt("RenderCache");
+
     //reset "MarkerSize" parameter
     hGrp->RemoveInt("MarkerSize");
 
+    // remove all 3D view color parameters so theme defaults can be applied fresh
+    std::vector<std::string> viewColors = {"AxisLetterColor",
+                                           "AxisXColor",
+                                           "AxisYColor",
+                                           "AxisZColor"};
+
+    for (const auto& colorName : viewColors) {
+        hGrp->RemoveUnsigned(colorName.c_str());
+    }
+
+    // apply theme specific color defaults
+    loadThemeDefaults();
+
     //finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
+
+    // reload the settings to update the GUI
+    loadSettings();
 }
 
 /**
@@ -240,5 +319,4 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
 }
 
 #include "moc_DlgSettings3DViewImp.cpp"
-
 

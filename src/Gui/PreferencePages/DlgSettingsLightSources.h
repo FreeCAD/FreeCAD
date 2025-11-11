@@ -55,6 +55,8 @@ public:
     explicit DlgSettingsLightSources(QWidget* parent = nullptr);
     ~DlgSettingsLightSources() override = default;
 
+    static void loadThemeDefaults();
+
     void saveSettings() override;
     void loadSettings() override;
     void resetSettingsToDefaults() override;
@@ -77,7 +79,8 @@ private:
     QPointer <View3DInventorViewer> view;
     SoOrthographicCamera *camera = nullptr;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View/LightSources");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View/LightSources");
 
     float zoomStep = 3.0f;
 };

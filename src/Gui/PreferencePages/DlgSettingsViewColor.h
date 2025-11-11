@@ -44,8 +44,11 @@ public:
   explicit DlgSettingsViewColor(QWidget* parent = nullptr);
   ~DlgSettingsViewColor() override;
 
+  static void loadThemeDefaults();
+
   void saveSettings() override;
   void loadSettings() override;
+  void resetSettingsToDefaults() override;
 
 protected:
   void changeEvent(QEvent *e) override;

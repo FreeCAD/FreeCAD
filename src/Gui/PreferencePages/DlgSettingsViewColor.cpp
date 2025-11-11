@@ -20,8 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <filesystem>
+#include <vector>
+
 #include <QPushButton>
 
+#include <App/Application.h>
+#include <Base/Console.h>
 
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"
@@ -103,6 +108,119 @@ void DlgSettingsViewColor::loadSettings()
     else {
         onRadioButtonRadialGradientToggled(true);
     }
+}
+
+void DlgSettingsViewColor::loadThemeDefaults()
+{
+    // get current theme name
+    ParameterGrp::handle hMainWindow = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    std::string themeName = hMainWindow->GetASCII("Theme", "");
+
+    if (themeName.empty()) {
+#ifdef FC_DEBUG
+        Base::Console().message("No theme set, skipping theme color defaults\n");
+#endif
+        return;  // no theme active, use current colors
+    }
+
+#ifdef FC_DEBUG
+    Base::Console().message("Loading View Colors defaults for theme: %s\n", themeName.c_str());
+#endif
+
+    // construct path to the theme's config file
+    std::string appPath = App::Application::getResourceDir();
+    std::filesystem::path configFile = std::filesystem::path(appPath) / "Gui" / "PreferencePacks"
+        / themeName / (themeName + ".cfg");
+
+    if (!std::filesystem::exists(configFile)) {
+#ifdef FC_DEBUG
+        Base::Console().warning("Config file not found for theme '%s'\n", themeName.c_str());
+#endif
+        return;
+    }
+
+    // load theme config into temporary parameters
+    auto themeParams = ParameterManager::Create();
+    themeParams->LoadDocument(Base::FileInfo::pathToString(configFile).c_str());
+
+    // get the view group from the theme config
+    auto themeViewGroup =
+        themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+
+    // get the current user's View group
+    auto userViewGroup =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    // list of View color parameters to copy from theme
+    std::vector<std::string> viewColors = {"BackgroundColor",
+                                           "BackgroundColor2",
+                                           "BackgroundColor3",
+                                           "BackgroundColor4",
+                                           "CbLabelColor"};
+
+    // copy only the view colors from theme to user config
+    for (const auto& colorName : viewColors) {
+        unsigned long colorValue = themeViewGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
+        if (colorValue != UINT_MAX) {
+            userViewGroup->SetUnsigned(colorName.c_str(), colorValue);
+        }
+    }
+
+    // get the TreeView group from the theme config
+    auto themeTreeViewGroup =
+        themeParams->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("TreeView");
+
+    // get the current user's TreeView group
+    auto userTreeViewGroup =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+
+    // list of TreeView color parameters to copy from theme
+    std::vector<std::string> treeViewColors = {"TreeEditColor", "TreeActiveColor"};
+
+    // copy only the tree view colors from theme to user config
+    for (const auto& colorName : treeViewColors) {
+        unsigned long colorValue = themeTreeViewGroup->GetUnsigned(colorName.c_str(), UINT_MAX);
+        if (colorValue != UINT_MAX) {
+            userTreeViewGroup->SetUnsigned(colorName.c_str(), colorValue);
+        }
+    }
+}
+
+void DlgSettingsViewColor::resetSettingsToDefaults()
+{
+    // get parameter groups
+    ParameterGrp::handle hView =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hTreeView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/TreeView");
+
+    // remove all View color parameters so theme defaults can be applied fresh
+    std::vector<std::string> viewColors = {"BackgroundColor",
+                                           "BackgroundColor2",
+                                           "BackgroundColor3",
+                                           "BackgroundColor4",
+                                           "CbLabelColor"};
+
+    for (const auto& colorName : viewColors) {
+        hView->RemoveUnsigned(colorName.c_str());
+    }
+
+    // remove all TreeView color parameters
+    std::vector<std::string> treeViewColors = {"TreeEditColor", "TreeActiveColor"};
+
+    for (const auto& colorName : treeViewColors) {
+        hTreeView->RemoveUnsigned(colorName.c_str());
+    }
+
+    // reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+
+    // apply theme default colors
+    loadThemeDefaults();
+
+    // reload the settings to update the GUI
+    loadSettings();
 }
 
 /**

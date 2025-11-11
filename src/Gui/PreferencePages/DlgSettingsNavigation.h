@@ -47,6 +47,8 @@ public:
     explicit DlgSettingsNavigation(QWidget* parent = nullptr);
     ~DlgSettingsNavigation() override;
 
+    static void loadThemeDefaults();
+
     void saveSettings() override;
     void loadSettings() override;
     void resetSettingsToDefaults() override;
@@ -62,6 +64,7 @@ protected:
     void translateOrientations();
 
 private:
+
     std::unique_ptr<Ui_DlgSettingsNavigation> ui;
     double q0, q1, q2, q3;
 };
