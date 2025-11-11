@@ -62,6 +62,7 @@ jobs:
           title: "Update translations from Crowdin"
           body: "Automatic Crowdin update."
           labels: "translations, automated"
+          token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
           delete-branch: true
           add-paths: |
             src
