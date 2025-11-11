@@ -1227,6 +1227,7 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
 
                 // refresh completion list
                 completer->setCompletionPrefix(completer->currentCompletion());
+                adjustCompleterToCursor();
                 if (completer->completionCount() == 1) {
                     completer->popup()->setVisible(false);
                 }
