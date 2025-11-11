@@ -130,7 +130,6 @@ private:
     Gui::RadialGizmo* rotationGizmo2 = nullptr;
     void setupGizmos(ViewProvider* vp);
     void setGizmoPositions();
-    void reverseGizmoDir();
     void setGizmoVisibility();
 };
 
