@@ -27,24 +27,24 @@ bool CArea::m_set_processing_length_in_split = false;
 double CArea::m_after_MakeOffsets_length = 0.0;
 // static const double PI = 3.1415926535897932;
 
-#define _CAREA_PARAM_DEFINE(_class, _type, _name)                                                  \
-    _type CArea::get_##_name()                                                                     \
-    {                                                                                              \
-        return _class::_name;                                                                      \
-    }                                                                                              \
-    void CArea::set_##_name(_type _name)                                                           \
-    {                                                                                              \
-        _class::_name = _name;                                                                     \
+#define _CAREA_PARAM_DEFINE(_class, _type, _name) \
+    _type CArea::get_##_name() \
+    { \
+        return _class::_name; \
+    } \
+    void CArea::set_##_name(_type _name) \
+    { \
+        _class::_name = _name; \
     }
 
-#define CAREA_PARAM_DEFINE(_type, _name)                                                           \
-    _type CArea::get_##_name()                                                                     \
-    {                                                                                              \
-        return m_##_name;                                                                          \
-    }                                                                                              \
-    void CArea::set_##_name(_type _name)                                                           \
-    {                                                                                              \
-        m_##_name = _name;                                                                         \
+#define CAREA_PARAM_DEFINE(_type, _name) \
+    _type CArea::get_##_name() \
+    { \
+        return m_##_name; \
+    } \
+    void CArea::set_##_name(_type _name) \
+    { \
+        m_##_name = _name; \
     }
 
 _CAREA_PARAM_DEFINE(Point, double, tolerance)
@@ -228,14 +228,18 @@ static double one_over_units = 0.0;
 
 static Point rotated_point(const Point& p)
 {
-    return Point(p.x * cos_angle_for_zigs - p.y * sin_angle_for_zigs,
-                 p.x * sin_angle_for_zigs + p.y * cos_angle_for_zigs);
+    return Point(
+        p.x * cos_angle_for_zigs - p.y * sin_angle_for_zigs,
+        p.x * sin_angle_for_zigs + p.y * cos_angle_for_zigs
+    );
 }
 
 static Point unrotated_point(const Point& p)
 {
-    return Point(p.x * cos_minus_angle_for_zigs - p.y * sin_minus_angle_for_zigs,
-                 p.x * sin_minus_angle_for_zigs + p.y * cos_minus_angle_for_zigs);
+    return Point(
+        p.x * cos_minus_angle_for_zigs - p.y * sin_minus_angle_for_zigs,
+        p.x * sin_minus_angle_for_zigs + p.y * cos_minus_angle_for_zigs
+    );
 }
 
 static CVertex rotated_vertex(const CVertex& v)
@@ -267,13 +271,7 @@ static void rotate_area(CArea& a)
     }
 }
 
-void test_y_point(int i,
-                  const Point& p,
-                  Point& best_p,
-                  bool& found,
-                  int& best_index,
-                  double y,
-                  bool left_not_right)
+void test_y_point(int i, const Point& p, Point& best_p, bool& found, int& best_index, double y, bool left_not_right)
 {
     // only consider points at y
     if (fabs(p.y - y) < 0.002 * one_over_units) {
@@ -334,27 +332,9 @@ static void make_zig_curve(const CCurve& input_curve, double y0, double y)
          VIt++, i++) {
         const CVertex& vertex = *VIt;
 
-        test_y_point(i,
-                     vertex.m_p,
-                     top_right,
-                     top_right_found,
-                     top_right_index,
-                     y,
-                     !rightward_for_zigs);
-        test_y_point(i,
-                     vertex.m_p,
-                     top_left,
-                     top_left_found,
-                     top_left_index,
-                     y,
-                     rightward_for_zigs);
-        test_y_point(i,
-                     vertex.m_p,
-                     bottom_left,
-                     bottom_left_found,
-                     bottom_left_index,
-                     y0,
-                     rightward_for_zigs);
+        test_y_point(i, vertex.m_p, top_right, top_right_found, top_right_index, y, !rightward_for_zigs);
+        test_y_point(i, vertex.m_p, top_left, top_left_found, top_left_index, y, rightward_for_zigs);
+        test_y_point(i, vertex.m_p, bottom_left, bottom_left_found, bottom_left_index, y0, rightward_for_zigs);
     }
 
     int start_index = 0;
@@ -606,8 +586,7 @@ static void zigzag(const CArea& input_a)
     CArea::m_processing_done += 0.2 * CArea::m_single_area_processing_length;
 }
 
-void CArea::SplitAndMakePocketToolpath(std::list<CCurve>& curve_list,
-                                       const CAreaPocketParams& params) const
+void CArea::SplitAndMakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketParams& params) const
 {
     CArea::m_processing_done = 0.0;
 
@@ -728,16 +707,14 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
                         }
                         else {
                             if (nmin != endCurve.m_vertices.back().m_p) {
-                                endCurve.append(CVertex(smin.m_v.m_type,
-                                                        nmin,
-                                                        smin.m_v.m_c,
-                                                        smin.m_v.m_user_data));
+                                endCurve.append(
+                                    CVertex(smin.m_v.m_type, nmin, smin.m_v.m_c, smin.m_v.m_user_data)
+                                );
                             }
                             if (nmin != it->m_v.m_p) {
-                                startCurve.append(CVertex(smin.m_v.m_type,
-                                                          it->m_v.m_p,
-                                                          smin.m_v.m_c,
-                                                          smin.m_v.m_user_data));
+                                startCurve.append(
+                                    CVertex(smin.m_v.m_type, it->m_v.m_p, smin.m_v.m_c, smin.m_v.m_user_data)
+                                );
                             }
                         }
                     }
@@ -747,8 +724,7 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
                 // curve
                 const auto appendCurve = [&curve_list](const CCurve& curve) {
                     if (curve_list.size() > 0
-                        && curve_list.back().m_vertices.back().m_p
-                            == curve.m_vertices.front().m_p) {
+                        && curve_list.back().m_vertices.back().m_p == curve.m_vertices.front().m_p) {
                         auto it = curve.m_vertices.begin();
                         for (it++; it != curve.m_vertices.end(); it++) {
                             curve_list.back().append(*it);
@@ -809,8 +785,7 @@ void CArea::Split(std::list<CArea>& m_areas) const
             return;
         }
 
-        for (std::list<CCurve>::const_iterator It = a.m_curves.begin(); It != a.m_curves.end();
-             It++) {
+        for (std::list<CCurve>::const_iterator It = a.m_curves.begin(); It != a.m_curves.end(); It++) {
             const CCurve& curve = *It;
             if (curve.IsClockwise()) {
                 if (m_areas.size() > 0) {
@@ -978,8 +953,7 @@ void CArea::InsideCurves(const CCurve& curve, std::list<CCurve>& curves_inside) 
     curve.ExtractSeparateCurves(pts, separate_curves);
 
     // 3. if the midpoint of a separate curve lies in a1, then we return it.
-    for (std::list<CCurve>::iterator It = separate_curves.begin(); It != separate_curves.end();
-         It++) {
+    for (std::list<CCurve>::iterator It = separate_curves.begin(); It != separate_curves.end(); It++) {
         CCurve& curve = *It;
         double length = curve.Perim();
         Point mid_point = curve.PerimToPoint(length * 0.5);

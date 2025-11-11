@@ -88,7 +88,8 @@ void SimDisplay::CreateFboQuad()
                             // positions   // texCoords
                             -1.0f, 1.0f,  0.0f, 1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
                             1.0f,  -1.0f, 1.0f, 0.0f, -1.0f, 1.0f,  0.0f, 1.0f,
-                            1.0f,  -1.0f, 1.0f, 0.0f, 1.0f,  1.0f,  1.0f, 1.0f};
+                            1.0f,  -1.0f, 1.0f, 0.0f, 1.0f,  1.0f,  1.0f, 1.0f
+    };
 
     glGenVertexArrays(1, &mFboQuadVAO);
     glGenBuffers(1, &mFboQuadVBO);
@@ -101,11 +102,7 @@ void SimDisplay::CreateFboQuad()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 }
 
-void SimDisplay::CreateGBufTex(GLenum texUnit,
-                               GLint intFormat,
-                               GLenum format,
-                               GLenum type,
-                               GLuint& texid)
+void SimDisplay::CreateGBufTex(GLenum texUnit, GLint intFormat, GLenum format, GLenum type, GLuint& texid)
 {
     glActiveTexture(texUnit);
     glGenTextures(1, &texid);
@@ -154,9 +151,7 @@ void SimDisplay::CreateDisplayFbos()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mFboNormTexture, 0);
 
 
-    unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0,
-                                   GL_COLOR_ATTACHMENT1,
-                                   GL_COLOR_ATTACHMENT2};
+    unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
     glDrawBuffers(3, attachments);
 
     glGenRenderbuffers(1, &mRboDepthStencil);
@@ -165,11 +160,14 @@ void SimDisplay::CreateDisplayFbos()
         GL_RENDERBUFFER,
         GL_DEPTH24_STENCIL8,
         mWidth,
-        mHeight);  // use a single renderbuffer object for both a depth AND stencil buffer.
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER,
-                              GL_DEPTH_STENCIL_ATTACHMENT,
-                              GL_RENDERBUFFER,
-                              mRboDepthStencil);  // now actually attach it
+        mHeight
+    );  // use a single renderbuffer object for both a depth AND stencil buffer.
+    glFramebufferRenderbuffer(
+        GL_FRAMEBUFFER,
+        GL_DEPTH_STENCIL_ATTACHMENT,
+        GL_RENDERBUFFER,
+        mRboDepthStencil
+    );  // now actually attach it
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         return;
@@ -198,11 +196,7 @@ void SimDisplay::CreateSsaoFbos()
     glGenFramebuffers(1, &mSsaoBlurFbo);
     glBindFramebuffer(GL_FRAMEBUFFER, mSsaoBlurFbo);
     CreateGBufTex(GL_TEXTURE0, GL_R16F, GL_RED, GL_FLOAT, mFboSsaoBlurTexture);
-    glFramebufferTexture2D(GL_FRAMEBUFFER,
-                           GL_COLOR_ATTACHMENT0,
-                           GL_TEXTURE_2D,
-                           mFboSsaoBlurTexture,
-                           0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboSsaoBlurTexture, 0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         mSsaoValid = false;
         return;

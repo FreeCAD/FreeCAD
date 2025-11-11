@@ -11,14 +11,22 @@ TEST(ZipFile, TestValidity)
     zipios::ZipFile zf;
     EXPECT_EQ(zf.isValid(), false);
     EXPECT_THROW(zf.entries(), zipios::InvalidStateException);
-    EXPECT_THROW(zf.getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH),
-                 zipios::InvalidStateException);
-    EXPECT_THROW(zf.getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE),
-                 zipios::InvalidStateException);
-    EXPECT_THROW(zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH),
-                 zipios::InvalidStateException);
-    EXPECT_THROW(zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE),
-                 zipios::InvalidStateException);
+    EXPECT_THROW(
+        zf.getEntry("inexistant", zipios::FileCollection::MatchPath::MATCH),
+        zipios::InvalidStateException
+    );
+    EXPECT_THROW(
+        zf.getEntry("inexistant", zipios::FileCollection::MatchPath::IGNORE),
+        zipios::InvalidStateException
+    );
+    EXPECT_THROW(
+        zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::MATCH),
+        zipios::InvalidStateException
+    );
+    EXPECT_THROW(
+        zf.getInputStream("inexistant", zipios::FileCollection::MatchPath::IGNORE),
+        zipios::InvalidStateException
+    );
     EXPECT_THROW(zf.getName(), zipios::InvalidStateException);
     EXPECT_THROW(zf.size(), zipios::InvalidStateException);
     zf.close();

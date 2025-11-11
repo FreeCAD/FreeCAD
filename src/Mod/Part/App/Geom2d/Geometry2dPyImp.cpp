@@ -22,11 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <gp_Dir2d.hxx>
-# include <gp_Pnt2d.hxx>
-# include <gp_Trsf.hxx>
-# include <gp_Trsf2d.hxx>
-# include <gp_Vec2d.hxx>
+#include <gp_Dir2d.hxx>
+#include <gp_Pnt2d.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_Trsf2d.hxx>
+#include <gp_Vec2d.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -44,11 +44,13 @@ std::string Geometry2dPy::representation() const
     return "<Geometry2d object>";
 }
 
-PyObject *Geometry2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* Geometry2dPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'Geometry'.");
+    PyErr_SetString(
+        PyExc_RuntimeError,
+        "You cannot create an instance of the abstract class 'Geometry'."
+    );
     return nullptr;
 }
 
@@ -58,10 +60,10 @@ int Geometry2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* Geometry2dPy::mirror(PyObject *args)
+PyObject* Geometry2dPy::mirror(PyObject* args)
 {
     PyObject* o;
-    if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(),&o)) {
+    if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(), &o)) {
         Base::Vector2d vec = Py::toVector2d(o);
         gp_Pnt2d pnt(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Mirror(pnt);
@@ -70,20 +72,29 @@ PyObject* Geometry2dPy::mirror(PyObject *args)
 
     PyErr_Clear();
     PyObject* axis;
-    if (PyArg_ParseTuple(args, "O!O!", Base::Vector2dPy::type_object(),&o,
-                                       Base::Vector2dPy::type_object(),&axis)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!O!",
+            Base::Vector2dPy::type_object(),
+            &o,
+            Base::Vector2dPy::type_object(),
+            &axis
+        )) {
         Base::Vector2d pnt = Py::toVector2d(o);
         Base::Vector2d dir = Py::toVector2d(axis);
-        gp_Ax2d ax1(gp_Pnt2d(pnt.x,pnt.y), gp_Dir2d(dir.x,dir.y));
+        gp_Ax2d ax1(gp_Pnt2d(pnt.x, pnt.y), gp_Dir2d(dir.x, dir.y));
         getGeometry2dPtr()->handle()->Mirror(ax1);
         Py_Return;
     }
 
-    PyErr_SetString(PartExceptionOCCError, "either a point (vector) or axis (vector, vector) must be given");
+    PyErr_SetString(
+        PartExceptionOCCError,
+        "either a point (vector) or axis (vector, vector) must be given"
+    );
     return nullptr;
 }
 
-PyObject* Geometry2dPy::rotate(PyObject *args)
+PyObject* Geometry2dPy::rotate(PyObject* args)
 {
     PyObject* o;
     double angle;
@@ -99,7 +110,7 @@ PyObject* Geometry2dPy::rotate(PyObject *args)
     return nullptr;
 }
 
-PyObject* Geometry2dPy::scale(PyObject *args)
+PyObject* Geometry2dPy::scale(PyObject* args)
 {
     PyObject* o;
     double scale;
@@ -115,11 +126,12 @@ PyObject* Geometry2dPy::scale(PyObject *args)
     return nullptr;
 }
 
-PyObject* Geometry2dPy::transform(PyObject *args)
+PyObject* Geometry2dPy::transform(PyObject* args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O", &o))
+    if (!PyArg_ParseTuple(args, "O", &o)) {
         return nullptr;
+    }
     Py::Sequence list(o);
     double a11 = static_cast<double>(Py::Float(list.getItem(0)));
     double a12 = static_cast<double>(Py::Float(list.getItem(1)));
@@ -136,11 +148,11 @@ PyObject* Geometry2dPy::transform(PyObject *args)
     Py_Return;
 }
 
-PyObject* Geometry2dPy::translate(PyObject *args)
+PyObject* Geometry2dPy::translate(PyObject* args)
 {
     PyObject* o;
     Base::Vector2d vec;
-    if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(),&o)) {
+    if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(), &o)) {
         vec = Py::toVector2d(o);
         gp_Vec2d trl(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Translate(trl);
@@ -151,17 +163,19 @@ PyObject* Geometry2dPy::translate(PyObject *args)
     return nullptr;
 }
 
-PyObject* Geometry2dPy::copy(PyObject *args) const
+PyObject* Geometry2dPy::copy(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Part::Geometry2d* geom = this->getGeometry2dPtr();
     PyTypeObject* type = this->GetType();
     PyObject* cpy = nullptr;
     // let the type object decide
-    if (type->tp_new)
+    if (type->tp_new) {
         cpy = type->tp_new(type, const_cast<Geometry2dPy*>(this), nullptr);
+    }
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
         return nullptr;
@@ -178,7 +192,7 @@ PyObject* Geometry2dPy::copy(PyObject *args) const
     return cpy;
 }
 
-PyObject *Geometry2dPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* Geometry2dPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

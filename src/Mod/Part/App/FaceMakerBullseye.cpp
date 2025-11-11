@@ -22,22 +22,22 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepClass_FaceClassifier.hxx>
-# include <BRepLib_FindSurface.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <QtGlobal>
-# include <TopExp.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepClass_FaceClassifier.hxx>
+#include <BRepLib_FindSurface.hxx>
+#include <Geom_Plane.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Precision.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
+#include <QtGlobal>
+#include <TopExp.hxx>
 
 #include "FaceMakerBullseye.h"
 #include "FaceMakerCheese.h"
@@ -198,8 +198,9 @@ FaceMakerBullseye::FaceDriller::FaceDriller(const gp_Pln& plane, TopoDS_Wire out
     this->myTopoFace = TopoShape(this->myFace);
 }
 
-FaceMakerBullseye::FaceDriller::HitTest
-FaceMakerBullseye::FaceDriller::hitTest(const TopoShape& shape) const
+FaceMakerBullseye::FaceDriller::HitTest FaceMakerBullseye::FaceDriller::hitTest(
+    const TopoShape& shape
+) const
 {
     auto vertex = TopoDS::Vertex(shape.getSubShape(TopAbs_VERTEX, 1));
     if (!myFaceBound.IsNull()) {
@@ -256,9 +257,11 @@ FaceMakerBullseye::FaceDriller::hitTest(const TopoShape& shape) const
     }
 }
 
-void FaceMakerBullseye::FaceDriller::copyFaceBound(TopoDS_Face& face,
-                                                   TopoShape& topoFace,
-                                                   const TopoShape& source)
+void FaceMakerBullseye::FaceDriller::copyFaceBound(
+    TopoDS_Face& face,
+    TopoShape& topoFace,
+    const TopoShape& source
+)
 {
     face = BRepBuilderAPI_MakeFace(myHPlane, TopoDS::Wire(source.getSubShape(TopAbs_WIRE, 1)));
     topoFace = TopoShape(face);
@@ -279,8 +282,7 @@ void FaceMakerBullseye::FaceDriller::addHole(TopoDS_Wire w)
     builder.Add(this->myFace, w);
 }
 
-void FaceMakerBullseye::FaceDriller::addHole(const WireInfo& wireInfo,
-                                             std::vector<TopoShape>& sources)
+void FaceMakerBullseye::FaceDriller::addHole(const WireInfo& wireInfo, std::vector<TopoShape>& sources)
 {
     if (this->myFaceBound.IsNull()) {
         copyFaceBound(this->myFaceBound, this->myTopoFaceBound, this->myTopoFace);
@@ -336,18 +338,19 @@ void FaceMakerBullseye::FaceDriller::addHole(const WireInfo& wireInfo,
 
 int FaceMakerBullseye::FaceDriller::getWireDirection(const gp_Pln& plane, const TopoDS_Wire& wire)
 {
-    //make a test face
+    // make a test face
     BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
     TopoDS_Face tmpFace = mkFace.Face();
     if (tmpFace.IsNull()) {
         throw Standard_Failure("getWireDirection: Failed to create face from wire");
     }
 
-    //compare face surface normal with our plane's one
+    // compare face surface normal with our plane's one
     BRepAdaptor_Surface surf(tmpFace);
     bool normal_co = surf.Plane().Axis().Direction().Dot(plane.Axis().Direction()) > 0;
 
-    //unlikely, but just in case OCC decided to reverse our wire for the face...  take that into account!
+    // unlikely, but just in case OCC decided to reverse our wire for the face...  take that into
+    // account!
     TopoDS_Iterator it(tmpFace, /*CumOri=*/Standard_False);
     normal_co ^= it.Value().Orientation() != wire.Orientation();
 

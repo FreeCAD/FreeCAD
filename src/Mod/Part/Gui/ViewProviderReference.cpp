@@ -22,11 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <cmath>
+#include <cmath>
 
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoShapeHints.h>
 
 #include <App/Document.h>
 #include <Base/Parameter.h>
@@ -45,136 +45,136 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartReference, Gui::ViewProviderGeometryObj
 ViewProviderPartReference::ViewProviderPartReference()
 {
     App::Material mat;
-    mat.ambientColor.set(0.2f,0.2f,0.2f);
-    mat.diffuseColor.set(0.1f,0.1f,0.1f);
-    mat.specularColor.set(0.0f,0.0f,0.0f);
-    mat.emissiveColor.set(0.0f,0.0f,0.0f);
+    mat.ambientColor.set(0.2f, 0.2f, 0.2f);
+    mat.diffuseColor.set(0.1f, 0.1f, 0.1f);
+    mat.specularColor.set(0.0f, 0.0f, 0.0f);
+    mat.emissiveColor.set(0.0f, 0.0f, 0.0f);
     mat.shininess = 0.0f;
     mat.transparency = 0.0f;
-    //ADD_PROPERTY(LineMaterial,(mat));
-    //ADD_PROPERTY(PointMaterial,(mat));
-    //ADD_PROPERTY(LineColor,(mat.diffuseColor));
-    //ADD_PROPERTY(PointColor,(mat.diffuseColor));
-    //ADD_PROPERTY(LineWidth,(2.0f));
-    //LineWidth.setConstraints(&floatRange);
-    //PointSize.setConstraints(&floatRange);
-    //ADD_PROPERTY(PointSize,(2.0f));
-    //ADD_PROPERTY(ControlPoints,(false));
-    //ADD_PROPERTY(Lighting,(1));
-    //Lighting.setEnums(LightingEnums);
+    // ADD_PROPERTY(LineMaterial,(mat));
+    // ADD_PROPERTY(PointMaterial,(mat));
+    // ADD_PROPERTY(LineColor,(mat.diffuseColor));
+    // ADD_PROPERTY(PointColor,(mat.diffuseColor));
+    // ADD_PROPERTY(LineWidth,(2.0f));
+    // LineWidth.setConstraints(&floatRange);
+    // PointSize.setConstraints(&floatRange);
+    // ADD_PROPERTY(PointSize,(2.0f));
+    // ADD_PROPERTY(ControlPoints,(false));
+    // ADD_PROPERTY(Lighting,(1));
+    // Lighting.setEnums(LightingEnums);
 
-    //EdgeRoot = new SoSeparator();
-    //EdgeRoot->ref();
-    //FaceRoot = new SoSeparator();
-    //FaceRoot->ref();
-    //VertexRoot = new SoSeparator();
-    //VertexRoot->ref();
-    //pcLineMaterial = new SoMaterial;
-    //pcLineMaterial->ref();
-    //LineMaterial.touch();
+    // EdgeRoot = new SoSeparator();
+    // EdgeRoot->ref();
+    // FaceRoot = new SoSeparator();
+    // FaceRoot->ref();
+    // VertexRoot = new SoSeparator();
+    // VertexRoot->ref();
+    // pcLineMaterial = new SoMaterial;
+    // pcLineMaterial->ref();
+    // LineMaterial.touch();
 
-    //pcPointMaterial = new SoMaterial;
-    //pcPointMaterial->ref();
-    //PointMaterial.touch();
+    // pcPointMaterial = new SoMaterial;
+    // pcPointMaterial->ref();
+    // PointMaterial.touch();
 
-    //pcLineStyle = new SoDrawStyle();
-    //pcLineStyle->ref();
-    //pcLineStyle->style = SoDrawStyle::LINES;
-    //pcLineStyle->lineWidth = LineWidth.getValue();
+    // pcLineStyle = new SoDrawStyle();
+    // pcLineStyle->ref();
+    // pcLineStyle->style = SoDrawStyle::LINES;
+    // pcLineStyle->lineWidth = LineWidth.getValue();
 
-    //pcPointStyle = new SoDrawStyle();
-    //pcPointStyle->ref();
-    //pcPointStyle->style = SoDrawStyle::POINTS;
-    //pcPointStyle->pointSize = PointSize.getValue();
+    // pcPointStyle = new SoDrawStyle();
+    // pcPointStyle->ref();
+    // pcPointStyle->style = SoDrawStyle::POINTS;
+    // pcPointStyle->pointSize = PointSize.getValue();
 
-    //pShapeHints = new SoShapeHints;
-    //pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-    //pShapeHints->ref();
-    //Lighting.touch();
+    // pShapeHints = new SoShapeHints;
+    // pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    // pShapeHints->ref();
+    // Lighting.touch();
 
     sPixmap = "Part_3D_object";
-    //loadParameter();
+    // loadParameter();
 }
 
 ViewProviderPartReference::~ViewProviderPartReference()
 {
-    //EdgeRoot->unref();
-    //FaceRoot->unref();
-    //VertexRoot->unref();
-    //pcLineMaterial->unref();
-    //pcPointMaterial->unref();
-    //pcLineStyle->unref();
-    //pcPointStyle->unref();
-    //pShapeHints->unref();
+    // EdgeRoot->unref();
+    // FaceRoot->unref();
+    // VertexRoot->unref();
+    // pcLineMaterial->unref();
+    // pcPointMaterial->unref();
+    // pcLineStyle->unref();
+    // pcPointStyle->unref();
+    // pShapeHints->unref();
 }
 
 void ViewProviderPartReference::onChanged(const App::Property* /*prop*/)
 {
-    //if (prop == &LineWidth) {
-    //    pcLineStyle->lineWidth = LineWidth.getValue();
-    //}
-    //else if (prop == &PointSize) {
-    //    pcPointStyle->pointSize = PointSize.getValue();
-    //}
-    //else if (prop == &LineColor) {
-    //    const Base::Color& c = LineColor.getValue();
-    //    pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
-    //    if (c != LineMaterial.getValue().diffuseColor)
-    //    LineMaterial.setDiffuseColor(c);
-    //}
-    //else if (prop == &PointColor) {
-    //    const Base::Color& c = PointColor.getValue();
-    //    pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
-    //    if (c != PointMaterial.getValue().diffuseColor)
-    //    PointMaterial.setDiffuseColor(c);
-    //}
-    //else if (prop == &LineMaterial) {
-    //    const App::Material& Mat = LineMaterial.getValue();
-    //    if (LineColor.getValue() != Mat.diffuseColor)
-    //    LineColor.setValue(Mat.diffuseColor);
-    //    pcLineMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
-    //    pcLineMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
-    //    pcLineMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
-    //    pcLineMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
-    //    pcLineMaterial->shininess.setValue(Mat.shininess);
-    //    pcLineMaterial->transparency.setValue(Mat.transparency);
-    //}
-    //else if (prop == &PointMaterial) {
-    //    const App::Material& Mat = PointMaterial.getValue();
-    //    if (PointColor.getValue() != Mat.diffuseColor)
-    //    PointColor.setValue(Mat.diffuseColor);
-    //    pcPointMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
-    //    pcPointMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
-    //    pcPointMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
-    //    pcPointMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
-    //    pcPointMaterial->shininess.setValue(Mat.shininess);
-    //    pcPointMaterial->transparency.setValue(Mat.transparency);
-    //}
-    //else if (prop == &ControlPoints) {
-    //    App::DocumentObject* obj = this->pcObject;
-    //    App::Property* shape = obj->getPropertyByName("Shape");
-    //    showControlPoints(ControlPoints.getValue(), shape);
-    //}
-    //else if (prop == &Lighting) {
-    //    if (Lighting.getValue() == 0)
-    //        pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-    //    else
-    //        pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
-    //}
-    //else {
-    //    ViewProviderGeometryObject::onChanged(prop);
-    //}
+    // if (prop == &LineWidth) {
+    //     pcLineStyle->lineWidth = LineWidth.getValue();
+    // }
+    // else if (prop == &PointSize) {
+    //     pcPointStyle->pointSize = PointSize.getValue();
+    // }
+    // else if (prop == &LineColor) {
+    //     const Base::Color& c = LineColor.getValue();
+    //     pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+    //     if (c != LineMaterial.getValue().diffuseColor)
+    //     LineMaterial.setDiffuseColor(c);
+    // }
+    // else if (prop == &PointColor) {
+    //     const Base::Color& c = PointColor.getValue();
+    //     pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+    //     if (c != PointMaterial.getValue().diffuseColor)
+    //     PointMaterial.setDiffuseColor(c);
+    // }
+    // else if (prop == &LineMaterial) {
+    //     const App::Material& Mat = LineMaterial.getValue();
+    //     if (LineColor.getValue() != Mat.diffuseColor)
+    //     LineColor.setValue(Mat.diffuseColor);
+    //     pcLineMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
+    //     pcLineMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
+    //     pcLineMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
+    //     pcLineMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
+    //     pcLineMaterial->shininess.setValue(Mat.shininess);
+    //     pcLineMaterial->transparency.setValue(Mat.transparency);
+    // }
+    // else if (prop == &PointMaterial) {
+    //     const App::Material& Mat = PointMaterial.getValue();
+    //     if (PointColor.getValue() != Mat.diffuseColor)
+    //     PointColor.setValue(Mat.diffuseColor);
+    //     pcPointMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
+    //     pcPointMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
+    //     pcPointMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
+    //     pcPointMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
+    //     pcPointMaterial->shininess.setValue(Mat.shininess);
+    //     pcPointMaterial->transparency.setValue(Mat.transparency);
+    // }
+    // else if (prop == &ControlPoints) {
+    //     App::DocumentObject* obj = this->pcObject;
+    //     App::Property* shape = obj->getPropertyByName("Shape");
+    //     showControlPoints(ControlPoints.getValue(), shape);
+    // }
+    // else if (prop == &Lighting) {
+    //     if (Lighting.getValue() == 0)
+    //         pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+    //     else
+    //         pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    // }
+    // else {
+    //     ViewProviderGeometryObject::onChanged(prop);
+    // }
 }
 
-void ViewProviderPartReference::attach(App::DocumentObject *pcFeat)
+void ViewProviderPartReference::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
     ViewProviderGeometryObject::attach(pcFeat);
 
     SoGroup* pcNormalRoot = new SoGroup();
-    //SoGroup* pcFlatRoot = new SoGroup();
-    //SoGroup* pcWireframeRoot = new SoGroup();
-    //SoGroup* pcPointsRoot = new SoGroup();
+    // SoGroup* pcFlatRoot = new SoGroup();
+    // SoGroup* pcWireframeRoot = new SoGroup();
+    // SoGroup* pcPointsRoot = new SoGroup();
 
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -187,15 +187,15 @@ void ViewProviderPartReference::attach(App::DocumentObject *pcFeat)
     pcNormalRoot->addChild(VertexRoot);
 
     // just faces with no edges or points
-    //pcFlatRoot->addChild(pShapeHints);
-    //pcFlatRoot->addChild(FaceRoot);
+    // pcFlatRoot->addChild(pShapeHints);
+    // pcFlatRoot->addChild(FaceRoot);
 
     // only edges
-    //pcWireframeRoot->addChild(EdgeRoot);
-    //pcWireframeRoot->addChild(VertexRoot);
+    // pcWireframeRoot->addChild(EdgeRoot);
+    // pcWireframeRoot->addChild(VertexRoot);
 
     // normal viewing with edges and points
-    //pcPointsRoot->addChild(VertexRoot);
+    // pcPointsRoot->addChild(VertexRoot);
 
     // putting all together with the switch
     addDisplayMaskMode(pcNormalRoot, "Reference");
@@ -203,10 +203,11 @@ void ViewProviderPartReference::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderPartReference::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Reference",ModeName)==0 )
+    if (strcmp("Reference", ModeName) == 0) {
         setDisplayMaskMode("Reference");
+    }
 
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderPartReference::getDisplayModes() const
@@ -224,6 +225,5 @@ std::vector<std::string> ViewProviderPartReference::getDisplayModes() const
 }
 
 
-void ViewProviderPartReference::updateData(const App::Property* )
-{
-}
+void ViewProviderPartReference::updateData(const App::Property*)
+{}

@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include "Workbench.h"
 #include <Base/Interpreter.h>
 #include <Gui/MenuManager.h>
@@ -31,7 +30,7 @@
 
 using namespace PartGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "&Part");
     qApp->translate("Workbench", "&Simple");
     qApp->translate("Workbench", "&Parametric");
@@ -48,7 +47,8 @@ using namespace PartGui;
 /// @namespace PartGui @class Workbench
 TYPESYSTEM_SOURCE(PartGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench() {
+Workbench::Workbench()
+{
     /** If we are to have Sketcher_NewSketch as command in toolbar and menu,
      then we must assure SketcherGui has already been loaded.
      By putting this in a try/except block we avoid creating a dependency
@@ -56,16 +56,14 @@ Workbench::Workbench() {
      Note that BUILD_SKETCHER is a cmake-gui option.
      **/
 
-    const char* code =
-            "try:\n"
-            "    import SketcherGui\n"
-            "    success = 'True'\n"
-            "except ImportError:\n"
-            "    success = 'False'";
+    const char* code = "try:\n"
+                       "    import SketcherGui\n"
+                       "    success = 'True'\n"
+                       "except ImportError:\n"
+                       "    success = 'False'";
 
     const std::string result = Base::Interpreter().runStringWithKey(code, "success", "False");
     hasSketcher = (result == "True");
-
 }
 
 Workbench::~Workbench() = default;
@@ -123,20 +121,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     part->setCommand("&Part");
     *part << "Part_BoxSelection"
           << "Separator";
-    *part << prim
-          << "Part_Primitives"
+    *part << prim << "Part_Primitives"
           << "Part_Builder"
           << "Separator"
           << "Part_ShapeFromMesh"
           << "Part_PointsFromMesh"
           << "Part_MakeSolid"
-          << "Part_ReverseShape"
-          << copy
-          << "Separator"
-          << bop << join << split << compound
+          << "Part_ReverseShape" << copy << "Separator" << bop << join << split << compound
           << "Separator";
     if (hasSketcher) {
-      *part << "Sketcher_NewSketch";
+        *part << "Sketcher_NewSketch";
     }
     *part << "Part_Extrude"
           << "Part_Revolve"

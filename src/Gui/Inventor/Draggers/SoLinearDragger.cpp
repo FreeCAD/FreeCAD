@@ -57,7 +57,15 @@ SoLinearDragger::SoLinearDragger()
 #endif
 
     SO_KIT_ADD_CATALOG_ENTRY(baseGeomSwitch, SoToggleSwitch, true, topSeparator, motionMatrix, true);
-    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(baseGeom, SoLinearGeometryBaseKit, SoArrowBase, true, baseGeomSwitch, "", true);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(
+        baseGeom,
+        SoLinearGeometryBaseKit,
+        SoArrowBase,
+        true,
+        baseGeomSwitch,
+        "",
+        true
+    );
 
     FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, geomSeparator);
     FC_ADD_CATALOG_ENTRY(activeSwitch, SoToggleSwitch, geomSeparator);
@@ -65,7 +73,15 @@ SoLinearDragger::SoLinearDragger()
     FC_ADD_CATALOG_ENTRY(labelSwitch, SoToggleSwitch, geomSeparator);
     FC_ADD_CATALOG_ENTRY(labelSeparator, SoSeparator, labelSwitch);
     FC_ADD_CATALOG_ENTRY(scale, SoScale, geomSeparator);
-    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(arrow, SoLinearGeometryKit, SoArrowGeometry, true, geomSeparator, "", true);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(
+        arrow,
+        SoLinearGeometryKit,
+        SoArrowGeometry,
+        true,
+        geomSeparator,
+        "",
+        true
+    );
 
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
     SO_KIT_ADD_FIELD(translationIncrement, (1.0));
@@ -238,8 +254,8 @@ void SoLinearDragger::drag()
     SbVec3f localMovement = hitPoint - startingPoint;
 
     // scale the increment to match local space.
-    float scaledIncrement =
-        static_cast<float>(translationIncrement.getValue()) / autoScaleResult.getValue();
+    float scaledIncrement = static_cast<float>(translationIncrement.getValue())
+        / autoScaleResult.getValue();
 
     localMovement = roundTranslation(localMovement, scaledIncrement);
     // when the movement vector is null either the appendTranslation or
@@ -255,12 +271,15 @@ void SoLinearDragger::drag()
         setMotionMatrix(appendTranslation(getStartMotionMatrix(), localMovement));
     }
 
-    Base::Quantity quantity(static_cast<double>(translationIncrementCount.getValue())
-                                * translationIncrement.getValue(),
-                            Base::Unit::Length);
+    Base::Quantity quantity(
+        static_cast<double>(translationIncrementCount.getValue()) * translationIncrement.getValue(),
+        Base::Unit::Length
+    );
 
-    QString message =
-        QStringLiteral("%1 %2").arg(QObject::tr("Translation:"), QString::fromStdString(quantity.getUserString()));
+    QString message = QStringLiteral("%1 %2").arg(
+        QObject::tr("Translation:"),
+        QString::fromStdString(quantity.getUserString())
+    );
     getMainWindow()->showMessage(message, 3000);
 }
 
@@ -365,7 +384,8 @@ SoLinearDraggerContainer::SoLinearDraggerContainer()
     getDragger()->color.connectFrom(&color);
 }
 
-SoTransform* SoLinearDraggerContainer::buildTransform() {
+SoTransform* SoLinearDraggerContainer::buildTransform()
+{
     auto transform = new SoTransform;
     transform->translation.connectFrom(&this->translation);
     transform->rotation.connectFrom(&this->rotation);
@@ -392,6 +412,6 @@ void SoLinearDraggerContainer::setPointerDirection(const SbVec3f& dir)
     // This is the direction from the origin to the tip of the dragger
     SbVec3f draggerDir = SO_GET_ANY_PART(this, "arrow", SoLinearGeometryKit)->tipPosition.getValue();
 
-    SbRotation rot{draggerDir, dir};
+    SbRotation rot {draggerDir, dir};
     rotation.setValue(rot);
 }

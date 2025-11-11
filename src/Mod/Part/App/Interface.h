@@ -36,14 +36,16 @@ class PartExport Interface
 {
 public:
     // See https://dev.opencascade.org/doc/overview/html/occt_user_guides__step.html
-    enum class Assembly {
+    enum class Assembly
+    {
         Off = 0,  /**< (Default) writes STEP files without assemblies */
         On = 1,   /**< writes all shapes in the form of STEP assemblies */
         Auto = 2, /**< writes shapes having a structure of (possibly nested)
                        TopoDS_Compounds in the form of STEP assemblies, single
                        shapes are written without assembly structures */
     };
-    enum class Unit {
+    enum class Unit
+    {
         Millimeter = 0,
         Meter = 1,
         Inch = 2,
@@ -77,6 +79,6 @@ public:
     //@}
 };
 
-} //namespace Part
+}  // namespace Part
 
 #endif

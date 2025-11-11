@@ -31,10 +31,11 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_DlgRevolution;
-class DlgRevolution : public QDialog, public Gui::SelectionObserver
+class DlgRevolution: public QDialog, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -45,12 +46,12 @@ public:
 
     Base::Vector3d getDirection() const;
     Base::Vector3d getPosition() const;
-    void getAxisLink(App::PropertyLinkSub &lnk) const;
+    void getAxisLink(App::PropertyLinkSub& lnk) const;
     double getAngle() const;
 
     void setDirection(Base::Vector3d dir);
     void setPosition(Base::Vector3d dir);
-    void setAxisLink(const App::PropertyLinkSub &lnk);
+    void setAxisLink(const App::PropertyLinkSub& lnk);
     void setAxisLink(const char* objname, const char* subname);
 
     std::vector<App::DocumentObject*> getShapesToRevolve() const;
@@ -58,7 +59,7 @@ public:
     bool validate();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void keyPressEvent(QKeyEvent*) override;
 
 private:
@@ -73,10 +74,10 @@ private:
     void findShapes();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
+    /// returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToRevolve() const;
 
-    ///automatically checks Solid checkbox depending on input shape
+    /// automatically checks Solid checkbox depending on input shape
     void autoSolid();
 
 private:
@@ -85,7 +86,7 @@ private:
     EdgeSelection* filter;
 };
 
-class TaskRevolution : public Gui::TaskView::TaskDialog
+class TaskRevolution: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -96,12 +97,14 @@ public:
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     DlgRevolution* widget;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGREVOLUTION_H
+#endif  // PARTGUI_DLGREVOLUTION_H

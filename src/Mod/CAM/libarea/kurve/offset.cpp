@@ -16,11 +16,7 @@ namespace geoff_geometry
 static Kurve eliminateLoops(const Kurve& k, const Kurve& originalk, double offset, int& ret);
 static bool DoesIntersInterfere(const Point& pInt, const Kurve& k, double offset);
 
-int Kurve::Offset(vector<Kurve*>& OffsetKurves,
-                  double offset,
-                  int direction,
-                  int method,
-                  int& ret) const
+int Kurve::Offset(vector<Kurve*>& OffsetKurves, double offset, int direction, int method, int& ret) const
 {
 
     switch (method) {
@@ -111,8 +107,8 @@ int Kurve::OffsetMethod1(Kurve& kOffset, double off, int direction, int method, 
                     // see if offset spans intersect
 
                     double cp = prevSpanOff.ve ^ curSpanOff.vs;
-                    bool inters =
-                        (cp > 0 && direction == GEOFF_LEFT) || (cp < 0 && direction == GEOFF_RIGHT);
+                    bool inters = (cp > 0 && direction == GEOFF_LEFT)
+                        || (cp < 0 && direction == GEOFF_RIGHT);
 
                     if (inters) {
                         double t[4];
@@ -121,11 +117,13 @@ int Kurve::OffsetMethod1(Kurve& kOffset, double off, int direction, int method, 
 
                     if (numint == 1) {
                         // intersection - modify previous endpoint
-                        kOffset.Replace(kOffset.m_nVertices - 1,
-                                        prevSpanOff.dir,
-                                        p0,
-                                        prevSpanOff.pc,
-                                        prevSpanOff.ID);
+                        kOffset.Replace(
+                            kOffset.m_nVertices - 1,
+                            prevSpanOff.dir,
+                            p0,
+                            prevSpanOff.pc,
+                            prevSpanOff.ID
+                        );
                     }
                     else {
                         // 0 or 2 intersections, add roll around (remove -ve loops in elimination
@@ -240,8 +238,7 @@ static Kurve eliminateLoops(const Kurve& k, const Kurve& originalk, double offse
                     double t[4];
                     int numint = sp0.Intof(sp1, pInt, pIntOther, t);  // find span intersections
                     if (numint && sp0.p0.Dist(pInt) < geoff_geometry::TOLERANCE) {
-                        numint =
-                            0;  // check that intersection is not at the start of the check span
+                        numint = 0;  // check that intersection is not at the start of the check span
                     }
                     if (numint) {
 

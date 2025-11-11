@@ -95,8 +95,10 @@ PyMOD_INIT_FUNC(PointsGui)
     PointsGui::ViewProviderPython       ::init();
     PointsGui::Workbench                ::init();
     // clang-format on
-    Gui::ViewProviderBuilder::add(Points::PropertyPointKernel::getClassTypeId(),
-                                  PointsGui::ViewProviderPoints::getClassTypeId());
+    Gui::ViewProviderBuilder::add(
+        Points::PropertyPointKernel::getClassTypeId(),
+        PointsGui::ViewProviderPoints::getClassTypeId()
+    );
 
     // add resources and reloads the translators
     loadPointsResource();

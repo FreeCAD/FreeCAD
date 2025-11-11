@@ -25,10 +25,10 @@
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
+#  define GL_GLEXT_PROTOTYPES 1
 # endif
 #else
-#include <windows.h>
+# include <windows.h>
 #endif
 
 #ifdef FC_OS_MACOSX
@@ -53,11 +53,11 @@ using namespace Gui;
 
 
 OpenGLBuffer::OpenGLBuffer(GLenum type)
-  : target(type)
-  , bufferId(0)
-  , context(-1)
-  , currentContext(-1)
-  , glue(nullptr)
+    : target(type)
+    , bufferId(0)
+    , context(-1)
+    , currentContext(-1)
+    , glue(nullptr)
 {
     SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
@@ -78,11 +78,13 @@ OpenGLBuffer::~OpenGLBuffer()
 bool OpenGLBuffer::isVBOSupported(uint32_t ctx)
 {
     auto glue = cc_glglue_instance(ctx);
-    if (!glue || !cc_glglue_has_vertex_buffer_object(glue))
+    if (!glue || !cc_glglue_has_vertex_buffer_object(glue)) {
         return false;
-    const GLubyte * str = glGetString(GL_EXTENSIONS);
-    if (!str)
+    }
+    const GLubyte* str = glGetString(GL_EXTENSIONS);
+    if (!str) {
         return false;
+    }
     std::string ext = reinterpret_cast<const char*>(str);
     return (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
 }
@@ -95,11 +97,13 @@ void OpenGLBuffer::setCurrentContext(uint32_t ctx)
 
 bool OpenGLBuffer::create()
 {
-    if (bufferId > 0)
+    if (bufferId > 0) {
         return true;
+    }
 
-    if (!cc_glglue_has_vertex_buffer_object(glue))
+    if (!cc_glglue_has_vertex_buffer_object(glue)) {
         return false;
+    }
 
     cc_glglue_glGenBuffers(glue, 1, &bufferId);
     context = currentContext;
@@ -115,13 +119,13 @@ void OpenGLBuffer::destroy()
 {
     // schedule delete for all allocated GL resources
     if (bufferId > 0) {
-        void * ptr0 = (void*) ((uintptr_t) bufferId);
+        void* ptr0 = (void*)((uintptr_t)bufferId);
         SoGLCacheContextElement::scheduleDeleteCallback(context, buffer_delete, ptr0);
         bufferId = 0;
     }
 }
 
-void OpenGLBuffer::allocate(const void *data, int count)
+void OpenGLBuffer::allocate(const void* data, int count)
 {
     if (bufferId > 0) {
         cc_glglue_glBufferData(glue, target, count, data, GL_STATIC_DRAW);
@@ -132,8 +136,7 @@ bool OpenGLBuffer::bind()
 {
     if (bufferId) {
         if (context != currentContext) {
-            SoDebugError::postWarning("OpenGLBuffer::bind",
-                                      "buffer not created");
+            SoDebugError::postWarning("OpenGLBuffer::bind", "buffer not created");
             return false;
         }
 
@@ -169,12 +172,12 @@ int OpenGLBuffer::size() const
     return value;
 }
 
-void OpenGLBuffer::context_destruction_cb(uint32_t context, void * userdata)
+void OpenGLBuffer::context_destruction_cb(uint32_t context, void* userdata)
 {
     auto self = static_cast<OpenGLBuffer*>(userdata);
 
     if (self->context == context && self->bufferId) {
-        const cc_glglue * glue = cc_glglue_instance((int) context);
+        const cc_glglue* glue = cc_glglue_instance((int)context);
         GLuint buffer = self->bufferId;
         cc_glglue_glDeleteBuffers(glue, 1, &buffer);
         self->context = -1;
@@ -182,20 +185,20 @@ void OpenGLBuffer::context_destruction_cb(uint32_t context, void * userdata)
     }
 }
 
-void OpenGLBuffer::buffer_delete(void * closure, uint32_t contextid)
+void OpenGLBuffer::buffer_delete(void* closure, uint32_t contextid)
 {
-    const cc_glglue * glue = cc_glglue_instance((int) contextid);
-    auto id = (GLuint) ((uintptr_t) closure);
+    const cc_glglue* glue = cc_glglue_instance((int)contextid);
+    auto id = (GLuint)((uintptr_t)closure);
     cc_glglue_glDeleteBuffers(glue, 1, &id);
 }
 
 // ----------------------------------------------------------------------------
 
 OpenGLMultiBuffer::OpenGLMultiBuffer(GLenum type)
-  : target(type)
-  , currentBuf(nullptr)
-  , currentContext(-1)
-  , glue(nullptr)
+    : target(type)
+    , currentBuf(nullptr)
+    , currentContext(-1)
+    , glue(nullptr)
 {
     SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
@@ -216,15 +219,18 @@ void OpenGLMultiBuffer::setCurrentContext(uint32_t ctx)
 
 bool OpenGLMultiBuffer::create()
 {
-    if (!currentBuf)
+    if (!currentBuf) {
         return false;
+    }
 
-    auto &bufferId = *currentBuf;
-    if (bufferId > 0)
+    auto& bufferId = *currentBuf;
+    if (bufferId > 0) {
         return true;
+    }
 
-    if (!cc_glglue_has_vertex_buffer_object(glue))
+    if (!cc_glglue_has_vertex_buffer_object(glue)) {
         return false;
+    }
 
     cc_glglue_glGenBuffers(glue, 1, &bufferId);
     return true;
@@ -239,9 +245,9 @@ bool OpenGLMultiBuffer::isCreated(uint32_t context) const
 void OpenGLMultiBuffer::destroy()
 {
     // schedule delete for all allocated GL resources
-    for (auto &v : bufs) {
+    for (auto& v : bufs) {
         if (v.second > 0) {
-            void * ptr0 = (void*) ((uintptr_t) v.second);
+            void* ptr0 = (void*)((uintptr_t)v.second);
             SoGLCacheContextElement::scheduleDeleteCallback(v.first, buffer_delete, ptr0);
         }
     }
@@ -250,7 +256,7 @@ void OpenGLMultiBuffer::destroy()
     currentBuf = nullptr;
 }
 
-void OpenGLMultiBuffer::allocate(const void *data, int count)
+void OpenGLMultiBuffer::allocate(const void* data, int count)
 {
     if (currentBuf && *currentBuf) {
         cc_glglue_glBufferData(glue, target, count, data, GL_STATIC_DRAW);
@@ -288,25 +294,25 @@ int OpenGLMultiBuffer::size() const
     return value;
 }
 
-void OpenGLMultiBuffer::context_destruction_cb(uint32_t context, void * userdata)
+void OpenGLMultiBuffer::context_destruction_cb(uint32_t context, void* userdata)
 {
     auto self = static_cast<OpenGLMultiBuffer*>(userdata);
 
     auto it = self->bufs.find(context);
     if (it != self->bufs.end() && it->second) {
-        const cc_glglue * glue = cc_glglue_instance((int) context);
+        const cc_glglue* glue = cc_glglue_instance((int)context);
         GLuint buffer = it->second;
         cc_glglue_glDeleteBuffers(glue, 1, &buffer);
-        if (self->currentBuf == &it->second)
+        if (self->currentBuf == &it->second) {
             self->currentBuf = nullptr;
+        }
         self->bufs.erase(it);
     }
 }
 
-void OpenGLMultiBuffer::buffer_delete(void * closure, uint32_t contextid)
+void OpenGLMultiBuffer::buffer_delete(void* closure, uint32_t contextid)
 {
-    const cc_glglue * glue = cc_glglue_instance((int) contextid);
-    auto id = (GLuint) ((uintptr_t) closure);
+    const cc_glglue* glue = cc_glglue_instance((int)contextid);
+    auto id = (GLuint)((uintptr_t)closure);
     cc_glglue_glDeleteBuffers(glue, 1, &id);
 }
-

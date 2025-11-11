@@ -28,12 +28,14 @@ struct CAreaPocketParams
     PocketMode mode;
     double zig_angle;
     bool only_cut_first_offset;
-    CAreaPocketParams(double Tool_radius,
-                      double Extra_offset,
-                      double Stepover,
-                      bool From_center,
-                      PocketMode Mode,
-                      double Zig_angle)
+    CAreaPocketParams(
+        double Tool_radius,
+        double Extra_offset,
+        double Stepover,
+        bool From_center,
+        PocketMode Mode,
+        double Zig_angle
+    )
     {
         tool_radius = Tool_radius;
         extra_offset = Extra_offset;
@@ -75,11 +77,13 @@ public:
     static CArea UniteCurves(std::list<CCurve>& curves);
     void Xor(const CArea& a2);
     void Offset(double inwards_value);
-    void OffsetWithClipper(double offset,
-                           ClipperLib::JoinType joinType = ClipperLib::jtRound,
-                           ClipperLib::EndType endType = ClipperLib::etOpenRound,
-                           double miterLimit = 5.0,
-                           double roundPrecision = 0.0);
+    void OffsetWithClipper(
+        double offset,
+        ClipperLib::JoinType joinType = ClipperLib::jtRound,
+        ClipperLib::EndType endType = ClipperLib::etOpenRound,
+        double miterLimit = 5.0,
+        double roundPrecision = 0.0
+    );
     void Thicken(double value);
     void FitArcs();
     unsigned int num_curves()
@@ -90,8 +94,7 @@ public:
     void GetBox(CBox2D& box);
     void Reorder();
     void MakePocketToolpath(std::list<CCurve>& toolpath, const CAreaPocketParams& params) const;
-    void SplitAndMakePocketToolpath(std::list<CCurve>& toolpath,
-                                    const CAreaPocketParams& params) const;
+    void SplitAndMakePocketToolpath(std::list<CCurve>& toolpath, const CAreaPocketParams& params) const;
     void MakeOnePocketCurve(std::list<CCurve>& curve_list, const CAreaPocketParams& params) const;
     static bool HolesLinked();
     void Split(std::list<CArea>& m_areas) const;
@@ -103,8 +106,8 @@ public:
     void ChangeStartToNearest(const Point* pstart = NULL, double min_dist = 1.0);
 
     // Avoid outside direct accessing static member variable because of Windows DLL issue
-#define CAREA_PARAM_DECLARE(_type, _name)                                                          \
-    static _type get_##_name();                                                                    \
+#define CAREA_PARAM_DECLARE(_type, _name) \
+    static _type get_##_name(); \
     static void set_##_name(_type _name);
 
     CAREA_PARAM_DECLARE(double, tolerance)
@@ -119,10 +122,12 @@ public:
 
     // Following functions is add to operate on possible open curves
     void PopulateClipper(ClipperLib::Clipper& c, ClipperLib::PolyType type) const;
-    void Clip(ClipperLib::ClipType op,
-              const CArea* a,
-              ClipperLib::PolyFillType subjFillType = ClipperLib::pftEvenOdd,
-              ClipperLib::PolyFillType clipFillType = ClipperLib::pftEvenOdd);
+    void Clip(
+        ClipperLib::ClipType op,
+        const CArea* a,
+        ClipperLib::PolyFillType subjFillType = ClipperLib::pftEvenOdd,
+        ClipperLib::PolyFillType clipFillType = ClipperLib::pftEvenOdd
+    );
 };
 
 enum eOverlapType

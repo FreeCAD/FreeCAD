@@ -121,12 +121,14 @@ public:
                     base.z,
                     axis.x,
                     axis.y,
-                    axis.z);
+                    axis.z
+                );
 
                 Gui::Command::doCommand(
                     Gui::Command::App,
                     "axis = cyl.Placement.Rotation.multVec(App.Vector(0,0,1))\n"
-                    "print('Final axis: ({}, {}, {})'.format(axis.x, axis.y, axis.z))\n");
+                    "print('Final axis: ({}, {}, {})'.format(axis.x, axis.y, axis.z))\n"
+                );
             }
             catch (...) {
             }
@@ -158,11 +160,13 @@ public:
 };
 }  // namespace MeshGui
 
-ParametersDialog::ParametersDialog(std::vector<float>& val,
-                                   FitParameter* fitPar,
-                                   ParameterList par,
-                                   Mesh::Feature* mesh,
-                                   QWidget* parent)
+ParametersDialog::ParametersDialog(
+    std::vector<float>& val,
+    FitParameter* fitPar,
+    ParameterList par,
+    Mesh::Feature* mesh,
+    QWidget* parent
+)
     : QDialog(parent)
     , values(val)
     , fitParameter(fitPar)
@@ -301,9 +305,7 @@ void ParametersDialog::onComputeClicked()
         meshSel.clearSelection();
     }
     else {
-        QMessageBox::warning(this,
-                             tr("No selection"),
-                             tr("Before fitting the surface select an area."));
+        QMessageBox::warning(this, tr("No selection"), tr("Before fitting the surface select an area."));
     }
 }
 
@@ -412,8 +414,7 @@ void SegmentationBestFit::onCylinderParametersClicked()
 
     static QPointer<QDialog> dialog = nullptr;
     if (!dialog) {
-        dialog =
-            new ParametersDialog(cylinderParameter, new CylinderFitParameter, list, myMesh, this);
+        dialog = new ParametersDialog(cylinderParameter, new CylinderFitParameter, list, myMesh, this);
     }
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
@@ -454,18 +455,23 @@ void SegmentationBestFit::accept()
         MeshCore::AbstractSurfaceFit* fitter {};
         if (cylinderParameter.size() == 7) {
             std::vector<float>& p = cylinderParameter;
-            fitter = new MeshCore::CylinderSurfaceFit(Base::Vector3f(p[0], p[1], p[2]),
-                                                      Base::Vector3f(p[3], p[4], p[5]),
-                                                      p[6]);
+            fitter = new MeshCore::CylinderSurfaceFit(
+                Base::Vector3f(p[0], p[1], p[2]),
+                Base::Vector3f(p[3], p[4], p[5]),
+                p[6]
+            );
         }
         else {
             fitter = new MeshCore::CylinderSurfaceFit;
         }
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(fitter,
-                                                                             kernel,
-                                                                             ui->numCyl->value(),
-                                                                             ui->tolCyl->value()));
+            std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(
+                fitter,
+                kernel,
+                ui->numCyl->value(),
+                ui->tolCyl->value()
+            )
+        );
     }
     if (ui->groupBoxSph->isChecked()) {
         MeshCore::AbstractSurfaceFit* fitter {};
@@ -477,26 +483,34 @@ void SegmentationBestFit::accept()
             fitter = new MeshCore::SphereSurfaceFit;
         }
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(fitter,
-                                                                             kernel,
-                                                                             ui->numSph->value(),
-                                                                             ui->tolSph->value()));
+            std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(
+                fitter,
+                kernel,
+                ui->numSph->value(),
+                ui->tolSph->value()
+            )
+        );
     }
     if (ui->groupBoxPln->isChecked()) {
         MeshCore::AbstractSurfaceFit* fitter {};
         if (planeParameter.size() == 6) {
             std::vector<float>& p = planeParameter;
-            fitter = new MeshCore::PlaneSurfaceFit(Base::Vector3f(p[0], p[1], p[2]),
-                                                   Base::Vector3f(p[3], p[4], p[5]));
+            fitter = new MeshCore::PlaneSurfaceFit(
+                Base::Vector3f(p[0], p[1], p[2]),
+                Base::Vector3f(p[3], p[4], p[5])
+            );
         }
         else {
             fitter = new MeshCore::PlaneSurfaceFit;
         }
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(fitter,
-                                                                             kernel,
-                                                                             ui->numPln->value(),
-                                                                             ui->tolPln->value()));
+            std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(
+                fitter,
+                kernel,
+                ui->numPln->value(),
+                ui->tolPln->value()
+            )
+        );
     }
     finder.FindSegments(segm);
 

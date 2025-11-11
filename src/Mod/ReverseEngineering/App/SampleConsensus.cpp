@@ -32,13 +32,13 @@
 
 
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-#include <pcl/features/normal_3d.h>
-#include <pcl/point_types.h>
-#include <pcl/sample_consensus/ransac.h>
-#include <pcl/sample_consensus/sac_model_cone.h>
-#include <pcl/sample_consensus/sac_model_cylinder.h>
-#include <pcl/sample_consensus/sac_model_plane.h>
-#include <pcl/sample_consensus/sac_model_sphere.h>
+# include <pcl/features/normal_3d.h>
+# include <pcl/point_types.h>
+# include <pcl/sample_consensus/ransac.h>
+# include <pcl/sample_consensus/sac_model_cone.h>
+# include <pcl/sample_consensus/sac_model_cylinder.h>
+# include <pcl/sample_consensus/sac_model_plane.h>
+# include <pcl/sample_consensus/sac_model_sphere.h>
 
 using namespace std;
 using namespace Reen;
@@ -46,9 +46,11 @@ using pcl::PointCloud;
 using pcl::PointNormal;
 using pcl::PointXYZ;
 
-SampleConsensus::SampleConsensus(SacModel sac,
-                                 const Points::PointKernel& pts,
-                                 const std::vector<Base::Vector3d>& nor)
+SampleConsensus::SampleConsensus(
+    SacModel sac,
+    const Points::PointKernel& pts,
+    const std::vector<Base::Vector3d>& nor
+)
     : mySac(sac)
     , myPoints(pts)
     , myNormals(nor)
@@ -59,8 +61,7 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y)
-            && !boost::math::isnan(it->z)) {
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z)) {
             cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
         }
     }
@@ -71,7 +72,7 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
 
     pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>());
     if (mySac == SACMODEL_CONE || mySac == SACMODEL_CYLINDER) {
-#if 0
+# if 0
         // Create search tree
         pcl::search::KdTree<pcl::PointXYZ>::Ptr tree;
         tree.reset (new pcl::search::KdTree<PointXYZ> (false));
@@ -84,7 +85,7 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
         n.setSearchMethod (tree);
         n.setKSearch (ksearch);
         n.compute (*normals);
-#else
+# else
         normals->reserve(myNormals.size());
         for (std::vector<Base::Vector3d>::const_iterator it = myNormals.begin();
              it != myNormals.end();
@@ -94,7 +95,7 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
                 normals->push_back(pcl::Normal(it->x, it->y, it->z));
             }
         }
-#endif
+# endif
     }
 
     // created RandomSampleConsensus object and compute the appropriated model
@@ -110,14 +111,16 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
         }
         case SACMODEL_CONE: {
             pcl::SampleConsensusModelCone<pcl::PointXYZ, pcl::Normal>::Ptr model_c(
-                new pcl::SampleConsensusModelCone<pcl::PointXYZ, pcl::Normal>(cloud));
+                new pcl::SampleConsensusModelCone<pcl::PointXYZ, pcl::Normal>(cloud)
+            );
             model_c->setInputNormals(normals);
             model_p = model_c;
             break;
         }
         case SACMODEL_CYLINDER: {
             pcl::SampleConsensusModelCylinder<pcl::PointXYZ, pcl::Normal>::Ptr model_c(
-                new pcl::SampleConsensusModelCylinder<pcl::PointXYZ, pcl::Normal>(cloud));
+                new pcl::SampleConsensusModelCylinder<pcl::PointXYZ, pcl::Normal>(cloud)
+            );
             model_c->setInputNormals(normals);
             model_p = model_c;
             break;

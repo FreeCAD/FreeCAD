@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -22,13 +22,15 @@
 # *                                                                         *
 # ***************************************************************************/
 
-__title__="BOPTools.Utils module"
+__title__ = "BOPTools.Utils module"
 __author__ = "DeepSOIC"
 __url__ = "https://www.freecad.org"
 __doc__ = "Utility code, used by various modules of BOPTools."
 
+
 class HashableShape(object):
     "Decorator for Part.Shape, that can be used as key in dicts. Based on isSame method."
+
     def __init__(self, shape):
         self.Shape = shape
         self.hash = shape.hashCode()
@@ -39,15 +41,16 @@ class HashableShape(object):
     def __hash__(self):
         return self.hash
 
+
 class HashableShape_Deep(object):
     """Similar to HashableShape, except that the things the shape is composed of are compared.
 
-Example:
-    >>> wire2 = Part.Wire(wire1.childShapes())
-    >>> wire2.isSame(wire1)
-    False # <--- the wire2 is a new wire, although made of edges of wire1
-    >>> HashableShape_Deep(wire2) == HashableShape_Deep(wire1)
-    True # <--- made of same set of elements
+    Example:
+        >>> wire2 = Part.Wire(wire1.childShapes())
+        >>> wire2.isSame(wire1)
+        False # <--- the wire2 is a new wire, although made of edges of wire1
+        >>> HashableShape_Deep(wire2) == HashableShape_Deep(wire1)
+        True # <--- made of same set of elements
     """
 
     def __init__(self, shape):
@@ -67,6 +70,7 @@ Example:
     def __hash__(self):
         return self.hash
 
+
 def compoundLeaves(shape_or_compound):
     """compoundLeaves(shape_or_compound): extracts all non-compound shapes from a nested compound.
     Note: shape_or_compound may be a non-compound; then, it is the only thing in the
@@ -75,12 +79,13 @@ def compoundLeaves(shape_or_compound):
     if shape_or_compound.ShapeType == "Compound":
         leaves = []
         for child in shape_or_compound.childShapes():
-            leaves.extend( compoundLeaves(child) )
+            leaves.extend(compoundLeaves(child))
         return leaves
     else:
         return [shape_or_compound]
 
-def upgradeToAggregateIfNeeded(list_of_shapes, types = None):
+
+def upgradeToAggregateIfNeeded(list_of_shapes, types=None):
     """upgradeToAggregateIfNeeded(list_of_shapes, types = None): upgrades non-aggregate type
     shapes to aggregate-type shapes if the list has a mix of aggregate and non-aggregate
     type shapes. Returns the new list. Recursively traverses into compounds.
@@ -97,6 +102,7 @@ def upgradeToAggregateIfNeeded(list_of_shapes, types = None):
     'types' argument is needed for recursive traversal. Do not supply."""
 
     import Part
+
     if types is None:
         types = set()
     for shape in list_of_shapes:
@@ -105,22 +111,42 @@ def upgradeToAggregateIfNeeded(list_of_shapes, types = None):
         for subshape in subshapes:
             types.add(subshape.ShapeType)
     if "Wire" in types:
-        list_of_shapes = [(Part.Wire([shape]) if shape.ShapeType == "Edge" else shape) for shape in list_of_shapes]
+        list_of_shapes = [
+            (Part.Wire([shape]) if shape.ShapeType == "Edge" else shape) for shape in list_of_shapes
+        ]
     if "Shell" in types:
-        list_of_shapes = [(Part.makeShell([shape]) if shape.ShapeType == "Face" else shape) for shape in list_of_shapes]
+        list_of_shapes = [
+            (Part.makeShell([shape]) if shape.ShapeType == "Face" else shape)
+            for shape in list_of_shapes
+        ]
     if "CompSolid" in types:
-        list_of_shapes = [(Part.CompSolid([shape]) if shape.ShapeType == "Solid" else shape) for shape in list_of_shapes]
+        list_of_shapes = [
+            (Part.CompSolid([shape]) if shape.ShapeType == "Solid" else shape)
+            for shape in list_of_shapes
+        ]
     if "Compound" in types:
-        list_of_shapes = [(Part.makeCompound(upgradeToAggregateIfNeeded(shape.childShapes(), types)) if shape.ShapeType == "Compound" else shape) for shape in list_of_shapes]
+        list_of_shapes = [
+            (
+                Part.makeCompound(upgradeToAggregateIfNeeded(shape.childShapes(), types))
+                if shape.ShapeType == "Compound"
+                else shape
+            )
+            for shape in list_of_shapes
+        ]
     return list_of_shapes
+
 
 # adapted from http://stackoverflow.com/a/3603824/6285007
 class FrozenClass(object):
-    '''FrozenClass: prevents adding new attributes to class outside of __init__'''
+    """FrozenClass: prevents adding new attributes to class outside of __init__"""
+
     __isfrozen = False
+
     def __setattr__(self, key, value):
         if self.__isfrozen and not hasattr(self, key):
-            raise TypeError( "{cls} has no attribute {attr}".format(cls= self.__class__.__name__, attr= key) )
+            raise TypeError(
+                "{cls} has no attribute {attr}".format(cls=self.__class__.__name__, attr=key)
+            )
         object.__setattr__(self, key, value)
 
     def _freeze(self):

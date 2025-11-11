@@ -72,7 +72,7 @@
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
 #if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
-#include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_MEFISTO_2D.hxx>
 #endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
@@ -106,7 +106,7 @@
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
 #if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HSurface.hxx>
+# include <BRepAdaptor_HSurface.hxx>
 #endif
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
@@ -152,7 +152,7 @@
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
 #if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 3, 0)
-#include <vtkCleanUnstructuredGrid.h>
+# include <vtkCleanUnstructuredGrid.h>
 #endif
 #include <vtkCompositeDataSet.h>
 #include <vtkDataArray.h>
@@ -205,9 +205,9 @@
 
 // Netgen
 #ifdef FCWithNetgen
-#include <NETGENPlugin_Hypothesis.hxx>
-#include <NETGENPlugin_Mesher.hxx>
-#include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+# include <NETGENPlugin_Hypothesis.hxx>
+# include <NETGENPlugin_Mesher.hxx>
+# include <NETGENPlugin_SimpleHypothesis_3D.hxx>
 #endif
 
 #endif

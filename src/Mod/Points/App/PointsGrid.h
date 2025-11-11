@@ -80,8 +80,10 @@ public:
      * grid gets rebuilt automatically. */
     virtual void Attach(const PointKernel& rclM);
     /** Rebuilds the grid structure. */
-    virtual void Rebuild(unsigned long ulPerGrid = POINTS_CT_GRID,
-                         unsigned long ulMaxGrid = POINTS_MAX_GRIDS);
+    virtual void Rebuild(
+        unsigned long ulPerGrid = POINTS_CT_GRID,
+        unsigned long ulMaxGrid = POINTS_MAX_GRIDS
+    );
     /** Rebuilds the grid structure. */
     virtual void Rebuild(int iCtGridPerAxis = POINTS_CT_GRID_PER_AXIS);
     /** Rebuilds the grid structure. */
@@ -90,18 +92,24 @@ public:
     /** @name Search */
     //@{
     /** Searches for elements lying in the intersection area of the grid and the bounding box. */
-    virtual unsigned long InSide(const Base::BoundBox3d& rclBB,
-                                 std::vector<unsigned long>& raulElements,
-                                 bool bDelDoubles = true) const;
+    virtual unsigned long InSide(
+        const Base::BoundBox3d& rclBB,
+        std::vector<unsigned long>& raulElements,
+        bool bDelDoubles = true
+    ) const;
     /** Searches for elements lying in the intersection area of the grid and the bounding box. */
-    virtual unsigned long InSide(const Base::BoundBox3d& rclBB,
-                                 std::set<unsigned long>& raulElementss) const;
+    virtual unsigned long InSide(
+        const Base::BoundBox3d& rclBB,
+        std::set<unsigned long>& raulElementss
+    ) const;
     /** Searches for elements lying in the intersection area of the grid and the bounding box. */
-    virtual unsigned long InSide(const Base::BoundBox3d& rclBB,
-                                 std::vector<unsigned long>& raulElements,
-                                 const Base::Vector3d& rclOrg,
-                                 double fMaxDist,
-                                 bool bDelDoubles = true) const;
+    virtual unsigned long InSide(
+        const Base::BoundBox3d& rclBB,
+        std::vector<unsigned long>& raulElements,
+        const Base::Vector3d& rclOrg,
+        double fMaxDist,
+        bool bDelDoubles = true
+    ) const;
     /** Searches for the nearest grids that contain elements from a point, the result are grid
      * indices. */
     void SearchNearestFromPoint(const Base::Vector3d& rclPt, std::set<unsigned long>& rclInd) const;
@@ -125,8 +133,7 @@ public:
     /** @name Boundings */
     //@{
     /** Returns the bounding box of a given grid element. */
-    inline Base::BoundBox3d
-    GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const;
+    inline Base::BoundBox3d GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const;
     /** Returns the bounding box of the whole. */
     inline Base::BoundBox3d GetBoundBox() const;
     //@}
@@ -136,8 +143,7 @@ public:
         return _aulGrid[ulX][ulY][ulZ].size();
     }
     /** Finds all points that lie in the same grid as the point \a rclPoint. */
-    unsigned long FindElements(const Base::Vector3d& rclPoint,
-                               std::set<unsigned long>& aulElements) const;
+    unsigned long FindElements(const Base::Vector3d& rclPoint, std::set<unsigned long>& aulElements) const;
     /** Validates the grid structure and rebuilds it if needed. */
     virtual void Validate(const PointKernel& rclM);
     /** Validates the grid structure and rebuilds it if needed. */
@@ -146,15 +152,19 @@ public:
     virtual bool Verify() const;
     /** Returns the indices of the grid this point lies in. If the point is outside the grid then
      * the indices of the nearest grid element are taken.*/
-    virtual void Position(const Base::Vector3d& rclPoint,
-                          unsigned long& rulX,
-                          unsigned long& rulY,
-                          unsigned long& rulZ) const;
+    virtual void Position(
+        const Base::Vector3d& rclPoint,
+        unsigned long& rulX,
+        unsigned long& rulY,
+        unsigned long& rulZ
+    ) const;
     /** Returns the indices of the elements in the given grid. */
-    unsigned long GetElements(unsigned long ulX,
-                              unsigned long ulY,
-                              unsigned long ulZ,
-                              std::set<unsigned long>& raclInd) const;
+    unsigned long GetElements(
+        unsigned long ulX,
+        unsigned long ulY,
+        unsigned long ulZ,
+        std::set<unsigned long>& raclInd
+    ) const;
 
 protected:
     /** Checks if this is a valid grid position. */
@@ -176,15 +186,17 @@ protected:
     }
     /** Get the indices of all elements lying in the grids around a given grid with distance \a
      * ulDistance. */
-    void GetHull(unsigned long ulX,
-                 unsigned long ulY,
-                 unsigned long ulZ,
-                 unsigned long ulDistance,
-                 std::set<unsigned long>& raclInd) const;
+    void GetHull(
+        unsigned long ulX,
+        unsigned long ulY,
+        unsigned long ulZ,
+        unsigned long ulDistance,
+        std::set<unsigned long>& raclInd
+    ) const;
 
 private:
-    std::vector<std::vector<std::vector<std::set<unsigned long>>>>
-        _aulGrid;                  /**< Grid data structure. */
+    std::vector<std::vector<std::vector<std::set<unsigned long>>>> _aulGrid; /**< Grid data
+                                                                                structure. */
     const PointKernel* _pclPoints; /**< The point kernel. */
     unsigned long _ulCtElements;   /**< Number of grid elements for validation issues. */
     unsigned long _ulCtGridsX;     /**< Number of grid elements in z. */
@@ -207,10 +219,12 @@ protected:
      * ulPtIndex the corresponding index in the point kernel. */
     void AddPoint(const Base::Vector3d& rclPt, unsigned long ulPtIndex, float fEpsilon = 0.0F);
     /** Returns the grid numbers to the given point \a rclPoint. */
-    void Pos(const Base::Vector3d& rclPoint,
-             unsigned long& rulX,
-             unsigned long& rulY,
-             unsigned long& rulZ) const;
+    void Pos(
+        const Base::Vector3d& rclPoint,
+        unsigned long& rulX,
+        unsigned long& rulY,
+        unsigned long& rulZ
+    ) const;
 };
 
 /**
@@ -230,9 +244,11 @@ public:
     /** Returns indices of the elements in the current grid. */
     void GetElements(std::vector<unsigned long>& raulElements) const
     {
-        raulElements.insert(raulElements.end(),
-                            _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(),
-                            _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
+        raulElements.insert(
+            raulElements.end(),
+            _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(),
+            _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end()
+        );
     }
     /** @name Iteration */
     //@{
@@ -268,14 +284,18 @@ public:
     /** @name Tests with rays */
     //@{
     /** Searches for facets around the ray. */
-    bool InitOnRay(const Base::Vector3d& rclPt,
-                   const Base::Vector3d& rclDir,
-                   std::vector<unsigned long>& raulElements);
+    bool InitOnRay(
+        const Base::Vector3d& rclPt,
+        const Base::Vector3d& rclDir,
+        std::vector<unsigned long>& raulElements
+    );
     /** Searches for facets around the ray. */
-    bool InitOnRay(const Base::Vector3d& rclPt,
-                   const Base::Vector3d& rclDir,
-                   float fMaxSearchArea,
-                   std::vector<unsigned long>& raulElements);
+    bool InitOnRay(
+        const Base::Vector3d& rclPt,
+        const Base::Vector3d& rclDir,
+        float fMaxSearchArea,
+        std::vector<unsigned long>& raulElements
+    );
     /** Searches for facets around the ray. */
     bool NextOnRay(std::vector<unsigned long>& raulElements);
     //@}
@@ -328,8 +348,7 @@ private:
 
 // --------------------------------------------------------------
 
-inline Base::BoundBox3d
-PointsGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
+inline Base::BoundBox3d PointsGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
     double fX = _fMinX + (double(ulX) * _fGridLenX);
     double fY = _fMinY + (double(ulY) * _fGridLenY);
@@ -340,12 +359,14 @@ PointsGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ)
 
 inline Base::BoundBox3d PointsGrid::GetBoundBox() const
 {
-    return Base::BoundBox3d(_fMinX,
-                            _fMinY,
-                            _fMinZ,
-                            _fMinX + (_fGridLenX * double(_ulCtGridsX)),
-                            _fMinY + (_fGridLenY * double(_ulCtGridsY)),
-                            _fMinZ + (_fGridLenZ * double(_ulCtGridsZ)));
+    return Base::BoundBox3d(
+        _fMinX,
+        _fMinY,
+        _fMinZ,
+        _fMinX + (_fGridLenX * double(_ulCtGridsX)),
+        _fMinY + (_fGridLenY * double(_ulCtGridsY)),
+        _fMinZ + (_fGridLenZ * double(_ulCtGridsZ))
+    );
 }
 
 inline bool PointsGrid::CheckPos(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const

@@ -21,13 +21,12 @@
  ******************************************************************************/
 
 
-
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <QMenu>
+#include <Bnd_Box.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <QMenu>
 
 
 #include <App/Document.h>
@@ -47,7 +46,7 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderTransformed, PartDesignGui::ViewProvider)
 
-const std::string & ViewProviderTransformed::featureName() const
+const std::string& ViewProviderTransformed::featureName() const
 {
     static const std::string name = "undefined";
     return name;
@@ -66,7 +65,8 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
+Gui::ViewProvider* ViewProviderTransformed::startEditing(int ModNum)
+{
     auto* pcTransformed = getObject<PartDesign::Transformed>();
 
     if (!pcTransformed->Originals.getSize()) {
@@ -94,8 +94,7 @@ bool ViewProviderTransformed::setEdit(int ModNum)
 }
 
 void ViewProviderTransformed::attachPreview()
-{
-}
+{}
 
 void ViewProviderTransformed::updatePreview()
 {
@@ -129,16 +128,19 @@ void ViewProviderTransformed::updatePreview()
                 pcPreviewRoot->addChild(sep);
             }
         }
-    } catch (const Base::ValueError&) {
+    }
+    catch (const Base::ValueError&) {
         // no-op - ignore misconfigured objects
-    } catch (const Base::Exception& e) {
+    }
+    catch (const Base::Exception& e) {
         e.reportException();
     }
 
     ViewProvider::updatePreview();
 }
 
-void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* pcTransformed) {
+void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* pcTransformed)
+{
     unsigned rejected = 0;
 
     TopoDS_Shape cShape = pcTransformed->rejected;
@@ -150,12 +152,17 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
 
     if (rejected > 0) {
         if (rejected == 1) {
-            Base::Console().translatedUserWarning("ViewProviderTransformed",
-                "One transformed shape does not intersect the support");
+            Base::Console().translatedUserWarning(
+                "ViewProviderTransformed",
+                "One transformed shape does not intersect the support"
+            );
         }
         else {
-            Base::Console().translatedUserWarning("ViewProviderTransformed",
-                "%d transformed shapes do not intersect the support", rejected);
+            Base::Console().translatedUserWarning(
+                "ViewProviderTransformed",
+                "%d transformed shapes do not intersect the support",
+                rejected
+            );
         }
     }
 

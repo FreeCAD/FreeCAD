@@ -97,9 +97,12 @@ void Segmentation::accept()
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxPln->isChecked()) {
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshCurvaturePlanarSegment>(meshCurv.GetCurvature(),
-                                                                   ui->numPln->value(),
-                                                                   ui->curvTolPln->value()));
+            std::make_shared<MeshCore::MeshCurvaturePlanarSegment>(
+                meshCurv.GetCurvature(),
+                ui->numPln->value(),
+                ui->curvTolPln->value()
+            )
+        );
     }
     finder.FindSegments(segm);
 
@@ -117,14 +120,15 @@ void Segmentation::accept()
                 if (fit.Fit() < std::numeric_limits<float>::max()) {
                     Base::Vector3f base = fit.GetBase();
                     Base::Vector3f axis = fit.GetNormal();
-                    MeshCore::AbstractSurfaceFit* fitter =
-                        new MeshCore::PlaneSurfaceFit(base, axis);
+                    MeshCore::AbstractSurfaceFit* fitter = new MeshCore::PlaneSurfaceFit(base, axis);
                     segmSurf.emplace_back(
                         std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>(
                             fitter,
                             kernel,
                             ui->numPln->value(),
-                            ui->distToPln->value()));
+                            ui->distToPln->value()
+                        )
+                    );
                 }
             }
         }
@@ -147,8 +151,8 @@ void Segmentation::accept()
 
     for (const auto& it : segmSurf) {
         const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
-        std::shared_ptr<MeshCore::MeshDistanceGenericSurfaceFitSegment> genSegm =
-            std::dynamic_pointer_cast<MeshCore::MeshDistanceGenericSurfaceFitSegment>(it);
+        std::shared_ptr<MeshCore::MeshDistanceGenericSurfaceFitSegment> genSegm
+            = std::dynamic_pointer_cast<MeshCore::MeshDistanceGenericSurfaceFitSegment>(it);
 
         bool isPlanar = (strcmp(genSegm->GetType(), "Plane") == 0);
         for (const auto& jt : data) {
@@ -156,8 +160,9 @@ void Segmentation::accept()
             algo.ResetFacetsFlag(jt, MeshCore::MeshFacet::TMP0);
 
             Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(
+                group->addObject("Mesh::Feature", "Segment")
+            );
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();
@@ -190,7 +195,8 @@ void Segmentation::accept()
                             [&hPlane](const Base::Vector3f& v) {
                                 gp_Pnt p(v.x, v.y, v.z);
                                 return GeomAPI_ProjectPointOnSurf(p, hPlane).NearestPoint();
-                            });
+                            }
+                        );
 
                         BRepBuilderAPI_MakePolygon mkPoly;
                         for (std::vector<gp_Pnt>::reverse_iterator it = polygon.rbegin();
@@ -210,14 +216,18 @@ void Segmentation::accept()
                         }
                         else {
                             failures.push_back(feaSegm);
-                            Base::Console().warning("Failed to create face from %s\n",
-                                                    feaSegm->Label.getValue());
+                            Base::Console().warning(
+                                "Failed to create face from %s\n",
+                                feaSegm->Label.getValue()
+                            );
                         }
                     }
                     catch (Standard_Failure&) {
                         failures.push_back(feaSegm);
-                        Base::Console().error("Fatal failure to create face from %s\n",
-                                              feaSegm->Label.getValue());
+                        Base::Console().error(
+                            "Fatal failure to create face from %s\n",
+                            feaSegm->Label.getValue()
+                        );
                     }
                 }
             }
@@ -231,22 +241,25 @@ void Segmentation::accept()
 
         if (!unusedFacets.empty()) {
             std::unique_ptr<Mesh::MeshObject> segment(mesh->meshFromSegment(unusedFacets));
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Unused"));
+            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(
+                group->addObject("Mesh::Feature", "Unused")
+            );
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();
         }
     }
     if (createCompound) {
-        Part::Feature* shapeFea =
-            static_cast<Part::Feature*>(group->addObject("Part::Feature", "Compound"));
+        Part::Feature* shapeFea = static_cast<Part::Feature*>(
+            group->addObject("Part::Feature", "Compound")
+        );
         shapeFea->Shape.setValue(compound);
 
         // create a sub-group where to move the problematic segments
         if (!failures.empty()) {
             App::DocumentObjectGroup* subgroup = static_cast<App::DocumentObjectGroup*>(
-                group->addObject("App::DocumentObjectGroup", "Failed"));
+                group->addObject("App::DocumentObjectGroup", "Failed")
+            );
             failures = group->removeObjects(failures);
             subgroup->Group.setValues(failures);
         }

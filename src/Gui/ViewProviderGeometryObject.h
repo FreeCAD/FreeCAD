@@ -79,9 +79,11 @@ public:
      * If \a pickAll is false (the default) only the intersection point closest to the camera will
      * be picked, otherwise all intersection points will be picked.
      */
-    SoPickedPointList getPickedPoints(const SbVec2s& pos,
-                                      const View3DInventorViewer& viewer,
-                                      bool pickAll = false) const;
+    SoPickedPointList getPickedPoints(
+        const SbVec2s& pos,
+        const View3DInventorViewer& viewer,
+        bool pickAll = false
+    ) const;
     /**
      * This method is provided for convenience and does basically the same as getPickedPoints()
      * unless that only the closest point to the camera will be picked. \note It is in the response
@@ -104,9 +106,11 @@ protected:
 
     virtual unsigned long getBoundColor() const;
 
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
     void setCoinAppearance(const App::Material& source);
 
 private:

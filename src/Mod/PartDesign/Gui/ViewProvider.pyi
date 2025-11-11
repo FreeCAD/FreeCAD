@@ -6,7 +6,7 @@ from typing import Final, overload
     Include="Mod/PartDesign/Gui/ViewProvider.h",
     Namespace="PartDesignGui",
     FatherInclude="Mod/Part/Gui/ViewProviderPartExtPy.h",
-    FatherNamespace="PartGui"
+    FatherNamespace="PartGui",
 )
 class ViewProvider(ViewProviderPartExt):
     """

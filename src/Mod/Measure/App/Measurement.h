@@ -111,8 +111,7 @@ public:
     double diameter() const;
 
     // Calculates the angle between two edges
-    double
-    angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
+    double angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
 
     // Calculate the center of mass
     Base::Vector3d massCenter() const;
@@ -134,9 +133,11 @@ public:
 protected:
     // Hint parameter helps sort out compound shapes by specifying a subelement type
     // use hint = TopAbs_COMPOUND to give no hint
-    TopoDS_Shape getShape(App::DocumentObject* obj,
-                          const char* subName,
-                          TopAbs_ShapeEnum hint = TopAbs_COMPOUND) const;
+    TopoDS_Shape getShape(
+        App::DocumentObject* obj,
+        const char* subName,
+        TopAbs_ShapeEnum hint = TopAbs_COMPOUND
+    ) const;
 
 private:
     MeasureType measureType;

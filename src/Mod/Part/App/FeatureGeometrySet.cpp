@@ -34,18 +34,18 @@ PROPERTY_SOURCE(Part::FeatureGeometrySet, Part::Feature)
 
 FeatureGeometrySet::FeatureGeometrySet()
 {
-    ADD_PROPERTY(GeometrySet,(nullptr));
+    ADD_PROPERTY(GeometrySet, (nullptr));
 }
 
 
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute()
+App::DocumentObjectExecReturn* FeatureGeometrySet::execute()
 {
     TopoShape result;
 
-    const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
+    const std::vector<Geometry*>& Geoms = GeometrySet.getValues();
 
     bool first = true;
-    for(auto Geom : Geoms) {
+    for (auto Geom : Geoms) {
         TopoDS_Shape sh = Geom->toShape();
         if (first) {
             first = false;

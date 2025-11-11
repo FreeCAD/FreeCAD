@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
+#include <QMenu>
 
 
 #include "ViewProviderHelixParametric.h"

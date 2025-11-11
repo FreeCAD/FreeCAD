@@ -433,11 +433,13 @@ void cStock::SetFacetPoints(MeshCore::MeshGeomFacet& facet, Point3D& p1, Point3D
     facet.CalcNormal();
 }
 
-void cStock::AddQuad(Point3D& p1,
-                     Point3D& p2,
-                     Point3D& p3,
-                     Point3D& p4,
-                     std::vector<MeshCore::MeshGeomFacet>& facets)
+void cStock::AddQuad(
+    Point3D& p1,
+    Point3D& p2,
+    Point3D& p3,
+    Point3D& p4,
+    std::vector<MeshCore::MeshGeomFacet>& facets
+)
 {
     MeshCore::MeshGeomFacet facet;
     SetFacetPoints(facet, p1, p2, p3);
@@ -779,14 +781,14 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res)
     // duration.count() / 1000);
 }
 
-float cSimTool::GetToolProfileAt(
-    float pos)  // pos is -1..1 location along the radius of the tool (0 is center)
+float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool
+                                             // (0 is center)
 {
     toolShapePoint test;
     test.radiusPos = std::abs(pos) * radius;
 
-    auto it =
-        std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
+    auto it
+        = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
     return it != m_toolShape.end() ? it->heightPos : 0.0f;
 }
 

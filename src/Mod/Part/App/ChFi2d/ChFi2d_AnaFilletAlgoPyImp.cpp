@@ -24,9 +24,9 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <Standard_Failure.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
 
 
 #include "ChFi2d/ChFi2d_AnaFilletAlgoPy.h"
@@ -38,7 +38,7 @@
 
 using namespace Part;
 
-PyObject *ChFi2d_AnaFilletAlgoPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ChFi2d_AnaFilletAlgoPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of ChFi2d_AnaFilletAlgoPy and the Twin object
     return new ChFi2d_AnaFilletAlgoPy(new ChFi2d_AnaFilletAlgo);
@@ -47,15 +47,18 @@ PyObject *ChFi2d_AnaFilletAlgoPy::PyMake(struct _typeobject *, PyObject *, PyObj
 // constructor method
 int ChFi2d_AnaFilletAlgoPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    if (PyArg_ParseTuple(args, ""))
+    if (PyArg_ParseTuple(args, "")) {
         return 0;
+    }
 
     PyErr_Clear();
     PyObject* wire;
     PyObject* plane;
     if (PyArg_ParseTuple(args, "O!O!", &TopoShapeWirePy::Type, &wire, &PlanePy::Type, &plane)) {
         TopoDS_Shape shape = static_cast<TopoShapeWirePy*>(wire)->getTopoShapePtr()->getShape();
-        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
+        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(
+            static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle()
+        );
         getChFi2d_AnaFilletAlgoPtr()->Init(TopoDS::Wire(shape), hPlane->Pln());
         return 0;
     }
@@ -63,20 +66,32 @@ int ChFi2d_AnaFilletAlgoPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     PyObject* edge1;
     PyObject* edge2;
-    if (PyArg_ParseTuple(args, "O!O!O!", &TopoShapeEdgePy::Type, &edge1,
-                                         &TopoShapeEdgePy::Type, &edge2,
-                                         &PlanePy::Type, &plane)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!O!O!",
+            &TopoShapeEdgePy::Type,
+            &edge1,
+            &TopoShapeEdgePy::Type,
+            &edge2,
+            &PlanePy::Type,
+            &plane
+        )) {
         TopoDS_Shape shape1 = static_cast<TopoShapeEdgePy*>(edge1)->getTopoShapePtr()->getShape();
         TopoDS_Shape shape2 = static_cast<TopoShapeEdgePy*>(edge2)->getTopoShapePtr()->getShape();
-        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
+        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(
+            static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle()
+        );
         getChFi2d_AnaFilletAlgoPtr()->Init(TopoDS::Edge(shape1), TopoDS::Edge(shape2), hPlane->Pln());
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Wrong arguments:\n"
-                                     "-- AnaFilletAlgo()\n"
-                                     "-- AnaFilletAlgo(wire, plane)"
-                                     "-- AnaFilletAlgo(edge, edge, plane)\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Wrong arguments:\n"
+        "-- AnaFilletAlgo()\n"
+        "-- AnaFilletAlgo(wire, plane)"
+        "-- AnaFilletAlgo(edge, edge, plane)\n"
+    );
     return -1;
 }
 
@@ -86,13 +101,15 @@ std::string ChFi2d_AnaFilletAlgoPy::representation() const
     return {"<AnaFilletAlgo object>"};
 }
 
-PyObject* ChFi2d_AnaFilletAlgoPy::init(PyObject *args)
+PyObject* ChFi2d_AnaFilletAlgoPy::init(PyObject* args)
 {
     PyObject* wire;
     PyObject* plane;
     if (PyArg_ParseTuple(args, "O!O!", &TopoShapeWirePy::Type, &wire, &PlanePy::Type, &plane)) {
         TopoDS_Shape shape = static_cast<TopoShapeWirePy*>(wire)->getTopoShapePtr()->getShape();
-        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
+        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(
+            static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle()
+        );
         getChFi2d_AnaFilletAlgoPtr()->Init(TopoDS::Wire(shape), hPlane->Pln());
         Py_Return;
     }
@@ -100,27 +117,40 @@ PyObject* ChFi2d_AnaFilletAlgoPy::init(PyObject *args)
     PyErr_Clear();
     PyObject* edge1;
     PyObject* edge2;
-    if (PyArg_ParseTuple(args, "O!O!O!", &TopoShapeEdgePy::Type, &edge1,
-                                         &TopoShapeEdgePy::Type, &edge2,
-                                         &PlanePy::Type, &plane)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!O!O!",
+            &TopoShapeEdgePy::Type,
+            &edge1,
+            &TopoShapeEdgePy::Type,
+            &edge2,
+            &PlanePy::Type,
+            &plane
+        )) {
         TopoDS_Shape shape1 = static_cast<TopoShapeEdgePy*>(edge1)->getTopoShapePtr()->getShape();
         TopoDS_Shape shape2 = static_cast<TopoShapeEdgePy*>(edge2)->getTopoShapePtr()->getShape();
-        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
+        Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(
+            static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle()
+        );
         getChFi2d_AnaFilletAlgoPtr()->Init(TopoDS::Edge(shape1), TopoDS::Edge(shape2), hPlane->Pln());
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Wrong arguments:\n"
-                                     "-- init(wire, plane)"
-                                     "-- init(edge, edge, plane)\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Wrong arguments:\n"
+        "-- init(wire, plane)"
+        "-- init(edge, edge, plane)\n"
+    );
     return nullptr;
 }
 
-PyObject* ChFi2d_AnaFilletAlgoPy::perform(PyObject *args)
+PyObject* ChFi2d_AnaFilletAlgoPy::perform(PyObject* args)
 {
     double radius;
-    if (!PyArg_ParseTuple(args, "d", &radius))
+    if (!PyArg_ParseTuple(args, "d", &radius)) {
         return nullptr;
+    }
 
     try {
         bool ok = getChFi2d_AnaFilletAlgoPtr()->Perform(radius);
@@ -132,18 +162,21 @@ PyObject* ChFi2d_AnaFilletAlgoPy::perform(PyObject *args)
     }
 }
 
-PyObject* ChFi2d_AnaFilletAlgoPy::result(PyObject *args)
+PyObject* ChFi2d_AnaFilletAlgoPy::result(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         TopoDS_Edge theEdge1, theEdge2;
         TopoDS_Shape res_edge = getChFi2d_AnaFilletAlgoPtr()->Result(theEdge1, theEdge2);
 
-        Py::TupleN tuple(Py::asObject(TopoShape(res_edge).getPyObject()),
-                         Py::asObject(TopoShape(theEdge1).getPyObject()),
-                         Py::asObject(TopoShape(theEdge2).getPyObject()));
+        Py::TupleN tuple(
+            Py::asObject(TopoShape(res_edge).getPyObject()),
+            Py::asObject(TopoShape(theEdge1).getPyObject()),
+            Py::asObject(TopoShape(theEdge2).getPyObject())
+        );
         return Py::new_reference_to(tuple);
     }
     catch (Standard_Failure& e) {
@@ -152,7 +185,7 @@ PyObject* ChFi2d_AnaFilletAlgoPy::result(PyObject *args)
     }
 }
 
-PyObject *ChFi2d_AnaFilletAlgoPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ChFi2d_AnaFilletAlgoPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

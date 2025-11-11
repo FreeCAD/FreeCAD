@@ -29,15 +29,20 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-namespace Gui {
+namespace Gui
+{
 class LinearGizmo;
 class GizmoContainer;
+}  // namespace Gui
+
+namespace Part
+{
+class Thickness;
 }
+namespace PartGui
+{
 
-namespace Part { class Thickness; }
-namespace PartGui {
-
-class ThicknessWidget : public QWidget
+class ThicknessWidget: public QWidget
 {
     Q_OBJECT
 
@@ -60,7 +65,7 @@ private:
     void onUpdateViewToggled(bool);
 
 private:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* linearGizmo = nullptr;
@@ -72,7 +77,7 @@ private:
     Private* d;
 };
 
-class TaskThickness : public Gui::TaskView::TaskDialog
+class TaskThickness: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -87,12 +92,14 @@ public:
     Part::Thickness* getObject() const;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     ThicknessWidget* widget;
 };
 
-} //namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_TASKTHICKNESS_H
+#endif  // PARTGUI_TASKTHICKNESS_H

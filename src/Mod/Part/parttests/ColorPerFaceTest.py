@@ -11,6 +11,7 @@ import unittest
 from BOPTools import BOPFeatures
 from pivy import coin
 
+
 class ColorPerFaceTest(unittest.TestCase):
     def setUp(self):
         TempPath = tempfile.gettempdir()
@@ -21,15 +22,17 @@ class ColorPerFaceTest(unittest.TestCase):
         App.closeDocument(self.doc.Name)
 
     def testBox(self):
-        box = self.doc.addObject("Part::Box","Box")
+        box = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [(1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,1.,0.,1.),
-                                       (1.,1.,0.,1.)]
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+        ]
 
         box.Visibility = False
         self.doc.recompute()
@@ -53,17 +56,19 @@ class ColorPerFaceTest(unittest.TestCase):
         self.assertEqual(mat.diffuseColor.getNum(), 6)
 
     def testBoxAndLink(self):
-        box = self.doc.addObject("Part::Box","Box")
+        box = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [(1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,1.,0.,1.),
-                                       (1.,1.,0.,1.)]
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+        ]
 
-        link = self.doc.addObject('App::Link','Link')
+        link = self.doc.addObject("App::Link", "Link")
         link.setLink(box)
         box.Visibility = False
         self.doc.recompute()
@@ -90,15 +95,17 @@ class ColorPerFaceTest(unittest.TestCase):
         """
         If color per face is set then changing the transparency must not revert it
         """
-        box = self.doc.addObject("Part::Box","Box")
+        box = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [(1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,0.,0.,1.),
-                                       (1.,1.,0.,1.),
-                                       (1.,1.,0.,1.)]
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+        ]
 
         box.ViewObject.Transparency = 35
         self.assertEqual(box.ViewObject.Transparency, 35)
@@ -127,10 +134,10 @@ class ColorPerFaceTest(unittest.TestCase):
         """
         Both input objects are red. So, it's expected that the output object is red, too.
         """
-        box = self.doc.addObject("Part::Box","Box")
-        cyl = self.doc.addObject("Part::Cylinder","Cylinder")
-        box.ViewObject.ShapeColor = (1.,0.,0.,1.)
-        cyl.ViewObject.ShapeColor = (1.,0.,0.,1.)
+        box = self.doc.addObject("Part::Box", "Box")
+        cyl = self.doc.addObject("Part::Cylinder", "Cylinder")
+        box.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+        cyl.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
         self.doc.recompute()
 
         bp = BOPFeatures.BOPFeatures(self.doc)
@@ -161,13 +168,13 @@ class ColorPerFaceTest(unittest.TestCase):
 
         self.assertEqual(len(fuse.Shape.Faces), 11)
         self.assertEqual(len(fuse.ViewObject.DiffuseColor), 11)
-        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.,0.,0.,1.))
+        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.0, 0.0, 0.0, 1.0))
 
     def testMultiFuseSaveRestore(self):
-        box = self.doc.addObject("Part::Box","Box")
-        cyl = self.doc.addObject("Part::Cylinder","Cylinder")
-        box.ViewObject.ShapeColor = (1.,0.,0.,1.)
-        cyl.ViewObject.ShapeColor = (1.,0.,0.,1.)
+        box = self.doc.addObject("Part::Box", "Box")
+        cyl = self.doc.addObject("Part::Cylinder", "Cylinder")
+        box.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+        cyl.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
         self.doc.recompute()
 
         bp = BOPFeatures.BOPFeatures(self.doc)
@@ -176,7 +183,7 @@ class ColorPerFaceTest(unittest.TestCase):
         fuse.Refine = False
         self.doc.recompute()
 
-        fuse.ViewObject.DiffuseColor = [(1.,0.,0.,1.)] * 11
+        fuse.ViewObject.DiffuseColor = [(1.0, 0.0, 0.0, 1.0)] * 11
 
         self.doc.saveAs(self.fileName)
         App.closeDocument(self.doc.Name)
@@ -186,7 +193,7 @@ class ColorPerFaceTest(unittest.TestCase):
         fuse = self.doc.ActiveObject
         self.assertEqual(len(fuse.Shape.Faces), 11)
         self.assertEqual(len(fuse.ViewObject.DiffuseColor), 11)
-        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.,0.,0.,1.))
+        self.assertEqual(fuse.ViewObject.DiffuseColor[0], (1.0, 0.0, 0.0, 1.0))
 
         sa = coin.SoSearchAction()
         sa.setType(coin.SoMaterialBinding.getClassTypeId())

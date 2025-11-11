@@ -59,13 +59,14 @@ class SoNormalBinding;
 class SoMaterialBinding;
 class SoIndexedLineSet;
 
-namespace PartGui {
+namespace PartGui
+{
 
 class SoBrepFaceSet;
 class SoBrepEdgeSet;
 class SoBrepPointSet;
 
-class PartGuiExport ViewProviderPartExt : public Gui::ViewProviderGeometryObject
+class PartGuiExport ViewProviderPartExt: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartExt);
 
@@ -95,7 +96,7 @@ public:
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes() const override;
@@ -119,22 +120,29 @@ public:
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
-    bool useNewSelectionModel() const override {return true;}
+    bool useNewSelectionModel() const override
+    {
+        return true;
+    }
     /// return a hit element to the selection path or 0
     std::string getElement(const SoDetail*) const override;
     SoDetail* getDetail(const char*) const override;
-    std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const override;
+    std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint*) const override;
     /// return the highlight lines for a given element or the whole shape
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
-    virtual Part::TopoShape getRenderedShape() const {
-        return Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    virtual Part::TopoShape getRenderedShape() const
+    {
+        return Part::Feature::getTopoShape(
+            getObject(),
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
     }
 
     /** @name Highlight handling
-    * This group of methods do the highlighting of elements.
-    */
+     * This group of methods do the highlighting of elements.
+     */
     //@{
     void setHighlightedFaces(const std::vector<App::Material>& materials);
     void setHighlightedFaces(const App::PropertyMaterialList& appearance);
@@ -148,18 +156,25 @@ public:
     /** @name Color management methods
      */
     //@{
-    std::map<std::string,Base::Color> getElementColors(const char *element=nullptr) const override;
+    std::map<std::string, Base::Color> getElementColors(const char* element = nullptr) const override;
     //@}
 
-    bool isUpdateForced() const override {
-        return forceUpdateCount>0;
+    bool isUpdateForced() const override
+    {
+        return forceUpdateCount > 0;
     }
     void forceUpdate(bool enable = true) override;
 
-    bool allowOverride(const App::DocumentObject &) const override;
+    bool allowOverride(const App::DocumentObject&) const override;
 
-    void setFaceHighlightActive(bool active) { faceHighlightActive = active; }
-    bool isFaceHighlightActive() const { return faceHighlightActive; }
+    void setFaceHighlightActive(bool active)
+    {
+        faceHighlightActive = active;
+    }
+    bool isFaceHighlightActive() const
+    {
+        return faceHighlightActive;
+    }
 
     /** @name Edit methods */
     //@{
@@ -169,21 +184,25 @@ public:
     PyObject* getPyObject() override;
 
     /// configures Coin nodes so they render given toposhape
-    static void setupCoinGeometry(TopoDS_Shape shape,
-                                  SoCoordinate3* coords,
-                                  SoBrepFaceSet* faceset,
-                                  SoNormal* norm,
-                                  SoBrepEdgeSet* lineset,
-                                  SoBrepPointSet* nodeset,
-                                  double deviation,
-                                  double angularDeflection,
-                                  bool normalsFromUV = false);
+    static void setupCoinGeometry(
+        TopoDS_Shape shape,
+        SoCoordinate3* coords,
+        SoBrepFaceSet* faceset,
+        SoNormal* norm,
+        SoBrepEdgeSet* lineset,
+        SoBrepPointSet* nodeset,
+        double deviation,
+        double angularDeflection,
+        bool normalsFromUV = false
+    );
 
-    static void setupCoinGeometry(TopoDS_Shape shape,
-                                  SoFCShape* node,
-                                  double deviation,
-                                  double angularDeflection,
-                                  bool normalsFromUV = false);
+    static void setupCoinGeometry(
+        TopoDS_Shape shape,
+        SoFCShape* node,
+        double deviation,
+        double angularDeflection,
+        bool normalsFromUV = false
+    );
 
 protected:
     bool setEdit(int ModNum) override;
@@ -195,26 +214,28 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 
     // nodes for the data representation
-    SoMaterialBinding * pcFaceBind;
-    SoMaterialBinding * pcLineBind;
-    SoMaterialBinding * pcPointBind;
-    SoMaterial        * pcLineMaterial;
-    SoMaterial        * pcPointMaterial;
-    SoDrawStyle       * pcLineStyle;
-    SoDrawStyle       * pcPointStyle;
-    SoShapeHints      * pShapeHints;
+    SoMaterialBinding* pcFaceBind;
+    SoMaterialBinding* pcLineBind;
+    SoMaterialBinding* pcPointBind;
+    SoMaterial* pcLineMaterial;
+    SoMaterial* pcPointMaterial;
+    SoDrawStyle* pcLineStyle;
+    SoDrawStyle* pcPointStyle;
+    SoShapeHints* pShapeHints;
 
-    SoCoordinate3     * coords;
-    SoBrepFaceSet     * faceset;
-    SoNormal          * norm;
-    SoNormalBinding   * normb;
-    SoBrepEdgeSet     * lineset;
-    SoBrepPointSet    * nodeset;
+    SoCoordinate3* coords;
+    SoBrepFaceSet* faceset;
+    SoNormal* norm;
+    SoNormalBinding* normb;
+    SoBrepEdgeSet* lineset;
+    SoBrepPointSet* nodeset;
 
     bool VisualTouched;
     bool NormalsFromUV;
@@ -235,6 +256,6 @@ private:
     App::PropertyColorList _diffuseColor;
 };
 
-}
+}  // namespace PartGui
 
-#endif // PARTGUI_VIEWPROVIDERPARTEXT_H
+#endif  // PARTGUI_VIEWPROVIDERPARTEXT_H

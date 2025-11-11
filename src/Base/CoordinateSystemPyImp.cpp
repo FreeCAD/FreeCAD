@@ -41,8 +41,7 @@ std::string CoordinateSystemPy::representation() const
     return {"<CoordinateSystem object>"};
 }
 
-PyObject*
-CoordinateSystemPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
+PyObject* CoordinateSystemPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of CoordinateSystemPy and the Twin object
     return new CoordinateSystemPy(new CoordinateSystem);
@@ -59,15 +58,19 @@ PyObject* CoordinateSystemPy::setAxes(PyObject* args)
     PyObject* axis {};
     PyObject* xdir {};
     if (PyArg_ParseTuple(args, "O!O!", &(AxisPy::Type), &axis, &(VectorPy::Type), &xdir)) {
-        getCoordinateSystemPtr()->setAxes(*static_cast<AxisPy*>(axis)->getAxisPtr(),
-                                          *static_cast<VectorPy*>(xdir)->getVectorPtr());
+        getCoordinateSystemPtr()->setAxes(
+            *static_cast<AxisPy*>(axis)->getAxisPtr(),
+            *static_cast<VectorPy*>(xdir)->getVectorPtr()
+        );
         Py_Return;
     }
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!O!", &(VectorPy::Type), &axis, &(VectorPy::Type), &xdir)) {
-        getCoordinateSystemPtr()->setAxes(*static_cast<VectorPy*>(axis)->getVectorPtr(),
-                                          *static_cast<VectorPy*>(xdir)->getVectorPtr());
+        getCoordinateSystemPtr()->setAxes(
+            *static_cast<VectorPy*>(axis)->getVectorPtr(),
+            *static_cast<VectorPy*>(xdir)->getVectorPtr()
+        );
         Py_Return;
     }
 
@@ -82,7 +85,8 @@ PyObject* CoordinateSystemPy::displacement(PyObject* args) const
         return nullptr;
     }
     Placement plm = getCoordinateSystemPtr()->displacement(
-        *static_cast<CoordinateSystemPy*>(cs)->getCoordinateSystemPtr());
+        *static_cast<CoordinateSystemPy*>(cs)->getCoordinateSystemPtr()
+    );
     return new PlacementPy(new Placement(plm));
 }
 

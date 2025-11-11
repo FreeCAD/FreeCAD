@@ -10,20 +10,16 @@ class TopoShapeAssertions:
 
     def assertAttrEqual(self, toposhape, attr_value_list, msg=None):
         for attr, value in attr_value_list:
-            result = toposhape.__getattribute__(
-                attr
-            )  # Look up each attribute by string name
+            result = toposhape.__getattribute__(attr)  # Look up each attribute by string name
             if result.__str__() != value.__str__():
                 if msg == None:
-                    msg = f"TopoShape {attr} is incorrect:  {result} should be {value}",
+                    msg = (f"TopoShape {attr} is incorrect:  {result} should be {value}",)
                 raise AssertionError(msg)
 
     def assertAttrAlmostEqual(self, toposhape, attr_value_list, places=5, msg=None):
-        range = 1 / 10 ** places
+        range = 1 / 10**places
         for attr, value in attr_value_list:
-            result = toposhape.__getattribute__(
-                attr
-            )  # Look up each attribute by string name
+            result = toposhape.__getattribute__(attr)  # Look up each attribute by string name
             if abs(result - value) > range:
                 if msg == None:
                     msg = f"TopoShape {attr} is incorrect:  {result} should be {value}"
@@ -31,9 +27,7 @@ class TopoShapeAssertions:
 
     def assertAttrCount(self, toposhape, attr_value_list, msg=None):
         for attr, value in attr_value_list:
-            result = toposhape.__getattribute__(
-                attr
-            )  # Look up each attribute by string name
+            result = toposhape.__getattribute__(attr)  # Look up each attribute by string name
             if len(result) != value:
                 if msg == None:
                     msg = f"TopoShape {attr} is incorrect:  {result} should have {value} elements"
@@ -80,7 +74,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.Cylinder1.Height = 2
         self.doc.Cylinder1.Angle = 360
         self.doc.addObject("Part::Compound", "Compound1")
-        self.doc.Compound1.Links = [ self.doc.Box1, self.doc.Box2 ]
+        self.doc.Compound1.Links = [self.doc.Box1, self.doc.Box2]
 
         self.doc.recompute()
         self.box = self.doc.Box1.Shape
@@ -99,15 +93,16 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             ["CenterOfMass", App.Vector(1, 0.5, 1)],
             ["CompSolids", []],
             ["Compounds", []],
-            ["Content", "<ElementMap/>\n"], # Our element map is empty, or there would be more here.
+            [
+                "Content",
+                "<ElementMap/>\n",
+            ],  # Our element map is empty, or there would be more here.
             ["ElementMap", {}],
             ["ElementReverseMap", {}],
-            ['Hasher', None],
+            ["Hasher", None],
             [
                 "MatrixOfInertia",
-                App.Matrix(
-                    1.66667, 0, 0, 0, 0, 2.66667, 0, 0, 0, 0, 1.66667, 0, 0, 0, 0, 1
-                ),
+                App.Matrix(1.66667, 0, 0, 0, 0, 2.66667, 0, 0, 0, 0, 1.66667, 0, 0, 0, 0, 1),
             ],
             ["Module", "Part"],
             ["Orientation", "Forward"],
@@ -174,9 +169,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         """Tests TopoShape elementMap"""
         # Arrange
         # Act No elementMaps exist in base shapes until we perform an operation.
-        compound1 = Part.Compound(
-            [self.doc.Objects[-1].Shape, self.doc.Objects[-2].Shape]
-        )
+        compound1 = Part.Compound([self.doc.Objects[-1].Shape, self.doc.Objects[-2].Shape])
         self.doc.addObject("Part::Compound", "Compound")
         self.doc.Compound.Links = [
             App.activeDocument().Box1,
@@ -209,36 +202,37 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         common1 = self.doc.Common.Shape
         # Assert elementMap
         if common1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertKeysInMap(common1.ElementReverseMap,
-                                 [
-                                     "Edge1",
-                                     "Edge2",
-                                     "Edge3",
-                                     "Edge4",
-                                     "Edge5",
-                                     "Edge6",
-                                     "Edge7",
-                                     "Edge8",
-                                     "Edge9",
-                                     "Edge10",
-                                     "Edge11",
-                                     "Edge12",
-                                     "Face1",
-                                     "Face2",
-                                     "Face3",
-                                     "Face4",
-                                     "Face5",
-                                     "Face6",
-                                     "Vertex1",
-                                     "Vertex2",
-                                     "Vertex3",
-                                     "Vertex4",
-                                     "Vertex5",
-                                     "Vertex6",
-                                     "Vertex7",
-                                     "Vertex8",
-                                 ],
-                                 )
+            self.assertKeysInMap(
+                common1.ElementReverseMap,
+                [
+                    "Edge1",
+                    "Edge2",
+                    "Edge3",
+                    "Edge4",
+                    "Edge5",
+                    "Edge6",
+                    "Edge7",
+                    "Edge8",
+                    "Edge9",
+                    "Edge10",
+                    "Edge11",
+                    "Edge12",
+                    "Face1",
+                    "Face2",
+                    "Face3",
+                    "Face4",
+                    "Face5",
+                    "Face6",
+                    "Vertex1",
+                    "Vertex2",
+                    "Vertex3",
+                    "Vertex4",
+                    "Vertex5",
+                    "Vertex6",
+                    "Vertex7",
+                    "Vertex8",
+                ],
+            )
         # Assert Shape
         self.assertBounds(common1, App.BoundBox(0, 0, 0, 1, 1, 2))
 
@@ -252,36 +246,37 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         cut1 = self.doc.Cut.Shape
         # Assert elementMap
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertKeysInMap(cut1.ElementReverseMap,
-                                 [
-                                     "Edge1",
-                                     "Edge2",
-                                     "Edge3",
-                                     "Edge4",
-                                     "Edge5",
-                                     "Edge6",
-                                     "Edge7",
-                                     "Edge8",
-                                     "Edge9",
-                                     "Edge10",
-                                     "Edge11",
-                                     "Edge12",
-                                     "Face1",
-                                     "Face2",
-                                     "Face3",
-                                     "Face4",
-                                     "Face5",
-                                     "Face6",
-                                     "Vertex1",
-                                     "Vertex2",
-                                     "Vertex3",
-                                     "Vertex4",
-                                     "Vertex5",
-                                     "Vertex6",
-                                     "Vertex7",
-                                     "Vertex8",
-                                 ],
-                                 )
+            self.assertKeysInMap(
+                cut1.ElementReverseMap,
+                [
+                    "Edge1",
+                    "Edge2",
+                    "Edge3",
+                    "Edge4",
+                    "Edge5",
+                    "Edge6",
+                    "Edge7",
+                    "Edge8",
+                    "Edge9",
+                    "Edge10",
+                    "Edge11",
+                    "Edge12",
+                    "Face1",
+                    "Face2",
+                    "Face3",
+                    "Face4",
+                    "Face5",
+                    "Face6",
+                    "Vertex1",
+                    "Vertex2",
+                    "Vertex3",
+                    "Vertex4",
+                    "Vertex5",
+                    "Vertex6",
+                    "Vertex7",
+                    "Vertex8",
+                ],
+            )
         # Assert Shape
         self.assertBounds(cut1, App.BoundBox(0, 1, 0, 1, 2, 2))
 
@@ -485,8 +480,9 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         compound = self.doc.Compound.Shape
         # Act
-        compound_replaced = compound.replaceShape([(App.activeDocument().Box2.Shape,
-                                                    App.activeDocument().Box1.Shape)])
+        compound_replaced = compound.replaceShape(
+            [(App.activeDocument().Box2.Shape, App.activeDocument().Box1.Shape)]
+        )
         # Assert elementMap
         if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(compound.ElementMapSize, 52)
@@ -684,7 +680,9 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         offset = box_toposhape.Faces[0].makeOffset(2.0)
         # Assert elementMap
         if box_toposhape.Faces[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(box_toposhape.Faces[0].ElementMapSize, 9)  # 1 Face, 4 Edges, 4 Vertexes
+            self.assertEqual(
+                box_toposhape.Faces[0].ElementMapSize, 9
+            )  # 1 Face, 4 Edges, 4 Vertexes
             self.assertEqual(offset.ElementMapSize, 17)  # 1 Face, 8 Edges, 8 Vertexes
 
     # Todo:  makeEvolved doesn't work right, probably due to missing c++ code.
@@ -720,17 +718,17 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
 
     def testTopoShapeMapSubElement(self):
         # Arrange
-        box = Part.makeBox(1,2,3)
+        box = Part.makeBox(1, 2, 3)
         # face = box.Faces[0]   # Do not do this.  Need the subelement call each usage.
         # Assert everything empty
-        self.assertEqual(box.ElementMapSize,0)
-        self.assertEqual(box.Faces[0].ElementMapSize,0)
+        self.assertEqual(box.ElementMapSize, 0)
+        self.assertEqual(box.Faces[0].ElementMapSize, 0)
         # Act
         box.mapSubElement(box.Faces[0])
         # Assert elementMaps created
         if box.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(box.ElementMapSize,9)  # 1 Face, 4 Edges, 4 Vertexes
-            self.assertEqual(box.Faces[0].ElementMapSize,9)
+            self.assertEqual(box.ElementMapSize, 9)  # 1 Face, 4 Edges, 4 Vertexes
+            self.assertEqual(box.Faces[0].ElementMapSize, 9)
 
     def testTopoShapeGetElementHistory(self):
         self.doc.addObject("Part::Fuse", "Fuse")
@@ -742,7 +740,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         if fuse1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             history1 = fuse1.getElementHistory(fuse1.ElementReverseMap["Vertex1"])
             # Assert
-            self.assertEqual(len(history1),3)   # Just the Fuse operation
+            self.assertEqual(len(history1), 3)  # Just the Fuse operation
 
     # Todo:  Still broken, still can't find parms that consistently work to test this.
     #           However, the results with an empty elementMap are consistent with making the
@@ -777,15 +775,32 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         cut1 = self.doc.Cut.Shape
         # Assert elementMap
         refkeys = [
-            'Vertex6', 'Vertex5', 'Edge7', 'Edge8', 'Edge9', 'Edge5', 'Edge6', 'Face4', 'Face2',
-            'Edge1', 'Vertex4', 'Edge4', 'Vertex3', 'Edge2', 'Edge3', 'Face1', 'Face5', 'Face3',
-            'Vertex1', 'Vertex2'
+            "Vertex6",
+            "Vertex5",
+            "Edge7",
+            "Edge8",
+            "Edge9",
+            "Edge5",
+            "Edge6",
+            "Face4",
+            "Face2",
+            "Edge1",
+            "Vertex4",
+            "Edge4",
+            "Vertex3",
+            "Edge2",
+            "Edge3",
+            "Face1",
+            "Face5",
+            "Face3",
+            "Vertex1",
+            "Vertex2",
         ]
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertKeysInMap(cut1.ElementReverseMap, refkeys )
-        self.assertEqual(len(cut1.ElementReverseMap.keys()),len(refkeys))
+            self.assertKeysInMap(cut1.ElementReverseMap, refkeys)
+        self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))
         # Assert Volume
-        self.assertAlmostEqual(cut1.Volume, self.doc.Cylinder1.Shape.Volume * (3/4))
+        self.assertAlmostEqual(cut1.Volume, self.doc.Cylinder1.Shape.Volume * (3 / 4))
 
     def testPartCompoundCut2(self):
         # Arrange
@@ -798,13 +813,54 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         cut1 = self.doc.Cut.Shape
         # Assert elementMap
         refkeys = [
-            'Vertex3', 'Vertex4', 'Vertex8', 'Vertex10', 'Vertex7', 'Vertex9', 'Vertex13',
-            'Vertex14', 'Vertex18', 'Vertex20', 'Vertex17', 'Vertex19', 'Edge3', 'Edge15', 'Edge9',
-            'Edge12', 'Edge13', 'Edge11', 'Edge8', 'Edge17', 'Edge18', 'Edge19', 'Edge30', 'Edge24',
-            'Edge27', 'Edge28', 'Edge29', 'Edge25', 'Edge26', 'Edge23', 'Face7', 'Face4', 'Face8',
-            'Face14', 'Face13', 'Face11', 'Face12', 'Face10', 'Edge22', 'Vertex12', 'Edge20',
-            'Vertex11', 'Edge21', 'Edge16', 'Face9', 'Vertex15', 'Vertex16'
+            "Vertex3",
+            "Vertex4",
+            "Vertex8",
+            "Vertex10",
+            "Vertex7",
+            "Vertex9",
+            "Vertex13",
+            "Vertex14",
+            "Vertex18",
+            "Vertex20",
+            "Vertex17",
+            "Vertex19",
+            "Edge3",
+            "Edge15",
+            "Edge9",
+            "Edge12",
+            "Edge13",
+            "Edge11",
+            "Edge8",
+            "Edge17",
+            "Edge18",
+            "Edge19",
+            "Edge30",
+            "Edge24",
+            "Edge27",
+            "Edge28",
+            "Edge29",
+            "Edge25",
+            "Edge26",
+            "Edge23",
+            "Face7",
+            "Face4",
+            "Face8",
+            "Face14",
+            "Face13",
+            "Face11",
+            "Face12",
+            "Face10",
+            "Edge22",
+            "Vertex12",
+            "Edge20",
+            "Vertex11",
+            "Edge21",
+            "Edge16",
+            "Face9",
+            "Vertex15",
+            "Vertex16",
         ]
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertKeysInMap(cut1.ElementReverseMap, refkeys )
-        self.assertEqual(len(cut1.ElementReverseMap.keys()),len(refkeys))
+            self.assertKeysInMap(cut1.ElementReverseMap, refkeys)
+        self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))

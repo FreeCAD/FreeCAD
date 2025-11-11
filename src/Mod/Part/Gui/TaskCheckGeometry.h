@@ -45,7 +45,8 @@ class QCheckBox;
 class QTextEdit;
 class QTreeView;
 
-namespace PartGui {
+namespace PartGui
+{
 
 class ResultEntry
 {
@@ -54,93 +55,108 @@ public:
     ~ResultEntry();
     void buildEntryName();
 
-    TopoDS_Shape shape;//invisible
+    TopoDS_Shape shape;  // invisible
     QString name;
     QString type;
     QString error;
-    SoSeparator *viewProviderRoot;
-    SoSeparator *boxSep;
-    SoSwitch *boxSwitch;
-    ResultEntry *parent;
-    QList<ResultEntry *> children;
+    SoSeparator* viewProviderRoot;
+    SoSeparator* boxSep;
+    SoSwitch* boxSwitch;
+    ResultEntry* parent;
+    QList<ResultEntry*> children;
     QStringList selectionStrings;
 };
 
-QString buildSelectionName(const ResultEntry *entry, const TopoDS_Shape &shape);
-void goSetupResultTypedSelection(ResultEntry *entry, const TopoDS_Shape &shape, TopAbs_ShapeEnum type);
-void goSetupResultBoundingBox(ResultEntry *entry);
-void goSetupResultShellNotClosed(ResultEntry *entry);
-void goSetupResultWireNotClosed(ResultEntry *entry);
-void goSetupResultInvalidPointCurve(ResultEntry *entry);
-void goSetupResultIntersectingWires(ResultEntry *entry);
-void goSetupResultInvalidCurveSurface(ResultEntry *entry);
-void goSetupResultInvalidSameParameterFlag(ResultEntry *entry);
-void goSetupResultUnorientableShapeFace(ResultEntry *entry);
+QString buildSelectionName(const ResultEntry* entry, const TopoDS_Shape& shape);
+void goSetupResultTypedSelection(ResultEntry* entry, const TopoDS_Shape& shape, TopAbs_ShapeEnum type);
+void goSetupResultBoundingBox(ResultEntry* entry);
+void goSetupResultShellNotClosed(ResultEntry* entry);
+void goSetupResultWireNotClosed(ResultEntry* entry);
+void goSetupResultInvalidPointCurve(ResultEntry* entry);
+void goSetupResultIntersectingWires(ResultEntry* entry);
+void goSetupResultInvalidCurveSurface(ResultEntry* entry);
+void goSetupResultInvalidSameParameterFlag(ResultEntry* entry);
+void goSetupResultUnorientableShapeFace(ResultEntry* entry);
 
-using ResultFunction = std::function<void (ResultEntry *entry)>;
+using ResultFunction = std::function<void(ResultEntry* entry)>;
 using FunctionMapType = std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction>;
 
-class ResultModel : public QAbstractItemModel
+class ResultModel: public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit ResultModel(QObject *parent = nullptr);
+    explicit ResultModel(QObject* parent = nullptr);
     ~ResultModel() override;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
-    QModelIndex parent(const QModelIndex &child) const override;
-    int rowCount(const QModelIndex &parent) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent) const override;
+    QModelIndex parent(const QModelIndex& child) const override;
+    int rowCount(const QModelIndex& parent) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-//    virtual Qt::ItemFlags flags (const QModelIndex &index) const;
+    //    virtual Qt::ItemFlags flags (const QModelIndex &index) const;
 
-    void setResults(ResultEntry *resultsIn);
-    ResultEntry* getEntry(const QModelIndex &index);
+    void setResults(ResultEntry* resultsIn);
+    ResultEntry* getEntry(const QModelIndex& index);
+
 private:
-    ResultEntry* nodeFromIndex(const QModelIndex &index) const;
-    ResultEntry *root;
+    ResultEntry* nodeFromIndex(const QModelIndex& index) const;
+    ResultEntry* root;
 };
 
-class TaskCheckGeometryResults : public QWidget
+class TaskCheckGeometryResults: public QWidget
 {
     Q_OBJECT
 public:
-    explicit TaskCheckGeometryResults(QWidget *parent = nullptr);
+    explicit TaskCheckGeometryResults(QWidget* parent = nullptr);
     ~TaskCheckGeometryResults() override;
     QString getShapeContentString();
     void goCheck();
 
 private Q_SLOTS:
-    void currentRowChanged (const QModelIndex &current, const QModelIndex &previous);
+    void currentRowChanged(const QModelIndex& current, const QModelIndex& previous);
 
 
 private:
     void setupInterface();
     QStringList reportViewStrings;
     void generateReport();
-    void recursiveCheck(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
-                        ResultEntry *parent);
-    void checkSub(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
-                  const TopAbs_ShapeEnum subType, ResultEntry *parent);
-    void dispatchError(ResultEntry *entry, const BRepCheck_Status &stat);
-    bool split(QString &input, QString &doc, QString &object, QString &sub);
+    void recursiveCheck(
+        const BRepCheck_Analyzer& shapeCheck,
+        const TopoDS_Shape& shape,
+        ResultEntry* parent
+    );
+    void checkSub(
+        const BRepCheck_Analyzer& shapeCheck,
+        const TopoDS_Shape& shape,
+        const TopAbs_ShapeEnum subType,
+        ResultEntry* parent
+    );
+    void dispatchError(ResultEntry* entry, const BRepCheck_Status& stat);
+    bool split(QString& input, QString& doc, QString& object, QString& sub);
     void setupFunctionMap();
 
-    int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
-                         const Message_ProgressScope& theScope);
+    int goBOPSingleCheck(
+        const TopoDS_Shape& shapeIn,
+        ResultEntry* theRoot,
+        const QString& baseName,
+        const Message_ProgressScope& theScope
+    );
 
-    void buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape);
-    ResultModel *model;
-    QTreeView *treeView;
-    QLabel *message;
+    void buildShapeContent(
+        App::DocumentObject* pObject,
+        const QString& baseName,
+        const TopoDS_Shape& shape
+    );
+    ResultModel* model;
+    QTreeView* treeView;
+    QLabel* message;
     TopTools_MapOfShape checkedMap;
-    SoSeparator *currentSeparator;
+    SoSeparator* currentSeparator;
     std::vector<FunctionMapType> functionMap;
     std::string shapeContentString;
-
 };
 
-class TaskCheckGeometryDialog : public Gui::TaskView::TaskDialog
+class TaskCheckGeometryDialog: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 public:
@@ -148,10 +164,17 @@ public:
     ~TaskCheckGeometryDialog() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-        {return QDialogButtonBox::Ok | QDialogButtonBox::Close;}
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Close;
+    }
     bool isAllowedAlterDocument() const override
-        {return false;}
-    bool needsFullSpace() const override {return true;}
+    {
+        return false;
+    }
+    bool needsFullSpace() const override
+    {
+        return true;
+    }
 
 private:
     void onRunBOPCheckBoxToggled(bool isOn);
@@ -176,38 +199,37 @@ private:
     Gui::TaskView::TaskBox* taskbox;
     Gui::TaskView::TaskBox* shapeContentBox;
     Gui::TaskView::TaskBox* settingsBox;
-    QTextEdit *contentLabel;
-    QCheckBox *autoRunCheckBox;
-    QCheckBox *runBOPCheckBox;
-    QCheckBox *runSingleThreadedCheckBox;
-    QCheckBox *logErrorsCheckBox;
-    QCheckBox *expandShapeContentCheckBox;
-    QCheckBox *advancedShapeContentCheckBox;
-    QCheckBox *argumentTypeModeCheckBox;
-    QCheckBox *selfInterModeCheckBox;
-    QCheckBox *smallEdgeModeCheckBox;
-    QCheckBox *rebuildFaceModeCheckBox;
-    QCheckBox *continuityModeCheckBox;
-    QCheckBox *tangentModeCheckBox;
-    QCheckBox *mergeVertexModeCheckBox;
-    QCheckBox *mergeEdgeModeCheckBox;
-    QCheckBox *curveOnSurfaceModeCheckBox;
+    QTextEdit* contentLabel;
+    QCheckBox* autoRunCheckBox;
+    QCheckBox* runBOPCheckBox;
+    QCheckBox* runSingleThreadedCheckBox;
+    QCheckBox* logErrorsCheckBox;
+    QCheckBox* expandShapeContentCheckBox;
+    QCheckBox* advancedShapeContentCheckBox;
+    QCheckBox* argumentTypeModeCheckBox;
+    QCheckBox* selfInterModeCheckBox;
+    QCheckBox* smallEdgeModeCheckBox;
+    QCheckBox* rebuildFaceModeCheckBox;
+    QCheckBox* continuityModeCheckBox;
+    QCheckBox* tangentModeCheckBox;
+    QCheckBox* mergeVertexModeCheckBox;
+    QCheckBox* mergeEdgeModeCheckBox;
+    QCheckBox* curveOnSurfaceModeCheckBox;
     bool accept() override;
     bool reject() override;
     void modifyStandardButtons(QDialogButtonBox*) override;
-    QPushButton *okBtn;
-    QPushButton *settingsBtn;
-    QPushButton *resultsBtn;
+    QPushButton* okBtn;
+    QPushButton* settingsBtn;
+    QPushButton* resultsBtn;
 };
 
-class BOPProgressIndicator : public Message_ProgressIndicator
+class BOPProgressIndicator: public Message_ProgressIndicator
 {
 public:
-    BOPProgressIndicator (const QString &title, QWidget* parent);
-    ~BOPProgressIndicator () override;
+    BOPProgressIndicator(const QString& title, QWidget* parent);
+    ~BOPProgressIndicator() override;
 
-    void Show (const Message_ProgressScope& theScope,
-                       const Standard_Boolean isForce) override;
+    void Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce) override;
     void Reset() override;
 
     Standard_Boolean UserBreak() override;
@@ -218,6 +240,6 @@ private:
     QElapsedTimer time;
     QProgressDialog* myProgress;
 };
-}
+}  // namespace PartGui
 
-#endif // TASKCHECKGEOMETRY_H
+#endif  // TASKCHECKGEOMETRY_H

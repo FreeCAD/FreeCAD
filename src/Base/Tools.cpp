@@ -152,8 +152,8 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     Base::PyGILStateLocker lock;
     std::string string;
 
-    PyObject* unicode =
-        PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
+    PyObject* unicode
+        = PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
     if (!unicode) {
         return string;
     }

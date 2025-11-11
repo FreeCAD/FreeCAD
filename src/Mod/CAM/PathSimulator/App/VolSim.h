@@ -36,7 +36,7 @@
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP 1
 #define SIM_TESSEL_BOT 2
-#define SIM_WALK_RES                                                                               \
+#define SIM_WALK_RES \
     0.6  // step size in pixel units (to make sure all pixels in the path are visited)
 
 struct toolShapePoint
@@ -238,11 +238,13 @@ private:
     float FindRectTop(int& xp, int& yp, int& x_size, int& y_size, bool scanHoriz);
     void FindRectBot(int& xp, int& yp, int& x_size, int& y_size, bool scanHoriz);
     void SetFacetPoints(MeshCore::MeshGeomFacet& facet, Point3D& p1, Point3D& p2, Point3D& p3);
-    void AddQuad(Point3D& p1,
-                 Point3D& p2,
-                 Point3D& p3,
-                 Point3D& p4,
-                 std::vector<MeshCore::MeshGeomFacet>& facets);
+    void AddQuad(
+        Point3D& p1,
+        Point3D& p2,
+        Point3D& p3,
+        Point3D& p4,
+        std::vector<MeshCore::MeshGeomFacet>& facets
+    );
     int TesselTop(int x, int y);
     int TesselBot(int x, int y);
     int TesselSidesX(int yp);

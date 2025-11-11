@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Inventor/SbSphere.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <sstream>
-# include <QApplication>
-# include <QByteArray>
-# include <QDir>
-# include <QKeySequence>
-# include <QMessageBox>
+#include <Inventor/SbSphere.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <sstream>
+#include <QApplication>
+#include <QByteArray>
+#include <QDir>
+#include <QKeySequence>
+#include <QMessageBox>
 
 #include <boost/algorithm/string/replace.hpp>
 
@@ -76,27 +76,38 @@ using namespace Gui::DockWnd;
     \ingroup GUI
     \brief Structure for registering commands to the FreeCAD system
  * \section Overview
- * In GUI applications many commands can be invoked via a menu item, a toolbar button or an accelerator key. The answer of Qt to master this
- * challenge is the class \a QAction. A QAction object can be added to a popup menu or a toolbar and keep the state of the menu item and
+ * In GUI applications many commands can be invoked via a menu item, a toolbar button or an
+ accelerator key. The answer of Qt to master this
+ * challenge is the class \a QAction. A QAction object can be added to a popup menu or a toolbar and
+ keep the state of the menu item and
  * the toolbar button synchronized.
  *
- * For example, if the user clicks the menu item of a toggle action then the toolbar button gets also pressed
+ * For example, if the user clicks the menu item of a toggle action then the toolbar button gets
+ also pressed
  * and vice versa. For more details refer to your Qt documentation.
  *
  * \section Drawbacks
- * Since QAction inherits QObject and emits the \a triggered() signal or \a toggled() signal for toggle actions it is very convenient to connect
- * these signals e.g. with slots of your MainWindow class. But this means that for every action an appropriate slot of MainWindow is necessary
- * and leads to an inflated MainWindow class. Furthermore, it's simply impossible to provide plugins that may also need special slots -- without
+ * Since QAction inherits QObject and emits the \a triggered() signal or \a toggled() signal for
+ toggle actions it is very convenient to connect
+ * these signals e.g. with slots of your MainWindow class. But this means that for every action an
+ appropriate slot of MainWindow is necessary
+ * and leads to an inflated MainWindow class. Furthermore, it's simply impossible to provide plugins
+ that may also need special slots -- without
  * changing the MainWindow class.
  *
  * \section wayout Way out
- * To solve these problems we have introduced the command framework to decouple QAction and MainWindow. The base classes of the framework are
- * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world.
+ * To solve these problems we have introduced the command framework to decouple QAction and
+ MainWindow. The base classes of the framework are
+ * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the
+ FreeCAD's command world.
  *
- * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created
- * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a menu or toolbar.
+ * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save
+ memory -- that gets created
+ * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a
+ menu or toolbar.
  *
- * Now, the implementation of the slots of MainWindow can be done in the method \a activated() of subclasses of Command instead.
+ * Now, the implementation of the slots of MainWindow can be done in the method \a activated() of
+ subclasses of Command instead.
  *
  * For example, the implementation of the "Open file" command can be done as follows.
  * \code
@@ -124,7 +135,8 @@ using namespace Gui::DockWnd;
  *   }
  * };
  * \endcode
- * An instance of \a OpenCommand must be created and added to the \ref Gui::CommandManager to make the class known to FreeCAD.
+ * An instance of \a OpenCommand must be created and added to the \ref Gui::CommandManager to make
+ the class known to FreeCAD.
  * To see how menus and toolbars can be built go to the @ref workbench.
  *
  * @see Gui::Command, Gui::CommandManager
@@ -133,9 +145,11 @@ using namespace Gui::DockWnd;
 // list of modules already loaded by a command (not issue again for macro cleanness)
 std::set<std::string> alreadyLoadedModule;
 
-class StringCache {
+class StringCache
+{
 public:
-    static const char* New(const char* str) {
+    static const char* New(const char* str)
+    {
         using StringList = std::list<std::string>;
         static StringList strings;
         strings.emplace_back(str);
@@ -143,28 +157,34 @@ public:
     }
 };
 
-CommandBase::CommandBase(const char* sMenu, const char* sToolTip, const char* sWhat,
-                         const char* sStatus, const char* sPixmap, const char* sAcc)
-  : sMenuText(sMenu)
-  , sToolTipText(sToolTip)
-  , sWhatsThis(sWhat ? sWhat : sToolTip)
-  , sStatusTip(sStatus ? sStatus : sToolTip)
-  , sPixmap(sPixmap)
-  , sAccel(sAcc)
-  , _pcAction(nullptr)
-{
-}
+CommandBase::CommandBase(
+    const char* sMenu,
+    const char* sToolTip,
+    const char* sWhat,
+    const char* sStatus,
+    const char* sPixmap,
+    const char* sAcc
+)
+    : sMenuText(sMenu)
+    , sToolTipText(sToolTip)
+    , sWhatsThis(sWhat ? sWhat : sToolTip)
+    , sStatusTip(sStatus ? sStatus : sToolTip)
+    , sPixmap(sPixmap)
+    , sAccel(sAcc)
+    , _pcAction(nullptr)
+{}
 
 CommandBase::~CommandBase()
 {
-    //Note: The Action object becomes a children of MainWindow which gets destroyed _before_ the
-    //command manager hence before any command object. So the action pointer is a dangling pointer
-    //at this state.
+    // Note: The Action object becomes a children of MainWindow which gets destroyed _before_ the
+    // command manager hence before any command object. So the action pointer is a dangling pointer
+    // at this state.
 
     // Command can be destroyed before the MainWindow, for example, dynamic
     // command created (and later deleted) by user for a pie menu.
-    if (getMainWindow())
+    if (getMainWindow()) {
         delete _pcAction;
+    }
 }
 
 Action* CommandBase::getAction() const
@@ -172,7 +192,7 @@ Action* CommandBase::getAction() const
     return _pcAction;
 }
 
-Action * CommandBase::createAction()
+Action* CommandBase::createAction()
 {
     // does nothing
     return nullptr;
@@ -219,40 +239,46 @@ Command::Command(const char* name)
     , sName(name)
     , sHelpUrl(nullptr)
 {
-    sAppModule  = "FreeCAD";
-    sGroup      = "Standard";
-    eType       = AlterDoc | Alter3DView | AlterSelection;
-    bEnabled    = true;
-    bCanLog     = true;
+    sAppModule = "FreeCAD";
+    sGroup = "Standard";
+    eType = AlterDoc | Alter3DView | AlterSelection;
+    bEnabled = true;
+    bCanLog = true;
 }
 
 Command::~Command() = default;
 
-void Command::setShortcut(const QString &shortcut)
+void Command::setShortcut(const QString& shortcut)
 {
-    if (_pcAction)
+    if (_pcAction) {
         _pcAction->setShortcut(shortcut);
+    }
 }
 
 QString Command::getShortcut() const
 {
-    if (_pcAction)
+    if (_pcAction) {
         return _pcAction->shortcut().toString();
+    }
     return ShortcutManager::instance()->getShortcut(getName());
 }
 
 bool Command::isViewOfType(Base::Type t) const
 {
-    Gui::Document *d = getGuiApplication()->activeDocument();
-    if (!d)
+    Gui::Document* d = getGuiApplication()->activeDocument();
+    if (!d) {
         return false;
-    Gui::BaseView *v = d->getActiveView();
-    if (!v)
+    }
+    Gui::BaseView* v = d->getActiveView();
+    if (!v) {
         return false;
-    if (v->isDerivedFrom(t))
+    }
+    if (v->isDerivedFrom(t)) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 }
 
 void Command::initAction()
@@ -269,7 +295,7 @@ void Command::initAction()
     }
 }
 
-void Command::addTo(QWidget *pcWidget)
+void Command::addTo(QWidget* pcWidget)
 {
     initAction();
     _pcAction->addTo(pcWidget);
@@ -287,7 +313,7 @@ void Command::addToGroup(ActionGroup* group)
     group->addAction(_pcAction->findChild<QAction*>());
 }
 
-Application *Command::getGuiApplication()
+Application* Command::getGuiApplication()
 {
     return Application::Instance;
 }
@@ -320,85 +346,98 @@ App::DocumentObject* Command::getObject(const char* Name) const
 
 int Command::_busy;
 
-class PendingLine {
+class PendingLine
+{
 public:
-    PendingLine(MacroManager::LineType type, const char *line) {
+    PendingLine(MacroManager::LineType type, const char* line)
+    {
         Application::Instance->macroManager()->addPendingLine(type, line);
     }
-    ~PendingLine() {
+    ~PendingLine()
+    {
         cancel();
     }
-    void cancel() {
+    void cancel()
+    {
         Application::Instance->macroManager()->addPendingLine(MacroManager::Cmt, nullptr);
     }
 };
 
-class CommandTrigger {
+class CommandTrigger
+{
 public:
-    CommandTrigger(Command::TriggerSource &trigger, Command::TriggerSource source)
-        :trigger(trigger),saved(trigger)
+    CommandTrigger(Command::TriggerSource& trigger, Command::TriggerSource source)
+        : trigger(trigger)
+        , saved(trigger)
     {
         trigger = source;
     }
 
-    ~CommandTrigger() {
+    ~CommandTrigger()
+    {
         trigger = saved;
     }
+
 private:
-    Command::TriggerSource &trigger;
+    Command::TriggerSource& trigger;
     Command::TriggerSource saved;
 };
 
-void Command::setupCheckable(int iMsg) {
-    QAction *action = nullptr;
+void Command::setupCheckable(int iMsg)
+{
+    QAction* action = nullptr;
     auto pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    if(pcActionGroup) {
+    if (pcActionGroup) {
         QList<QAction*> a = pcActionGroup->actions();
         assert(iMsg < a.size());
         action = a[iMsg];
-    }else
+    }
+    else {
         action = _pcAction->action();
+    }
 
-    if(!action)
+    if (!action) {
         return;
+    }
 
     bool checkable = action->isCheckable();
     _pcAction->setCheckable(checkable);
-    if(checkable) {
+    if (checkable) {
         bool checked = false;
-        switch(triggerSource()) {
-        case TriggerNone:
-            checked = !action->isChecked();
-            break;
-        case TriggerAction:
-            checked = _pcAction->isChecked();
-            break;
-        case TriggerChildAction:
-            checked = action->isChecked();
-            break;
+        switch (triggerSource()) {
+            case TriggerNone:
+                checked = !action->isChecked();
+                break;
+            case TriggerAction:
+                checked = _pcAction->isChecked();
+                break;
+            case TriggerChildAction:
+                checked = action->isChecked();
+                break;
         }
         bool blocked = action->blockSignals(true);
         action->setChecked(checked);
         action->blockSignals(blocked);
-        if(action!=_pcAction->action())
+        if (action != _pcAction->action()) {
             _pcAction->setBlockedChecked(checked);
+        }
     }
-
 }
 
 void Command::invoke(int i, TriggerSource trigger)
 {
-    CommandTrigger cmdTrigger(_trigger,trigger);
+    CommandTrigger cmdTrigger(_trigger, trigger);
     if (displayText.empty()) {
         displayText = getMenuText() ? getMenuText() : "";
-        boost::replace_all(displayText,"&","");
-        if (displayText.empty())
+        boost::replace_all(displayText, "&", "");
+        if (displayText.empty()) {
             displayText = getName();
+        }
     }
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().log("CmdG: %s\n",sName);
+    Base::Console().log("CmdG: %s\n", sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -461,14 +500,15 @@ void Command::_invoke(int id, bool disablelog)
             getMainWindow()->updateActions();
 
             // If this command starts an editing, let the transaction persist
-            if (!editDoc && getGuiApplication()->editDocument())
+            if (!editDoc && getGuiApplication()->editDocument()) {
                 committer.setEnable(false);
+            }
         }
     }
     catch (const Base::SystemExitException&) {
         throw;
     }
-    catch (Base::PyException &e) {
+    catch (Base::PyException& e) {
         e.reportException();
     }
     catch (Py::Exception&) {
@@ -478,12 +518,12 @@ void Command::_invoke(int id, bool disablelog)
     }
     catch (Base::AbortException&) {
     }
-    catch (Base::Exception &e) {
+    catch (Base::Exception& e) {
         e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
-    catch (std::exception &e) {
+    catch (std::exception& e) {
         Base::Console().error("C++ exception thrown (%s)\n", e.what());
     }
     catch (const char* e) {
@@ -498,35 +538,38 @@ void Command::_invoke(int id, bool disablelog)
 
 void Command::testActive()
 {
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
 
     if (_blockCmd || !bEnabled) {
         _pcAction->setEnabled(false);
         return;
     }
 
-    if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
+    if (!(eType & ForEdit)) {  // special case for commands which are only in some edit modes active
 
-        if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
-            (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
-            (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
-             _pcAction->setEnabled(false);
+        if ((!Gui::Control().isAllowedAlterDocument() && eType & AlterDoc)
+            || (!Gui::Control().isAllowedAlterView() && eType & Alter3DView)
+            || (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
+            _pcAction->setEnabled(false);
             return;
         }
     }
 
     auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    if(pcAction) {
-        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (pcAction) {
+        Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
         const auto actions = pcAction->actions();
-        for(auto action : actions) {
+        for (auto action : actions) {
             auto name = action->property("CommandName").toByteArray();
-            if(!name.size())
+            if (!name.size()) {
                 continue;
+            }
             Command* cmd = rcCmdMgr.getCommandByName(name);
-            if(cmd)
+            if (cmd) {
                 action->setEnabled(cmd->isActive());
+            }
         }
     }
 
@@ -556,40 +599,55 @@ bool Command::hasObject(const char* Name)
     return getDocument() != nullptr && getDocument()->getObject(Name) != nullptr;
 }
 
-Gui::SelectionSingleton&  Command::getSelection()
+Gui::SelectionSingleton& Command::getSelection()
 {
     return Gui::Selection();
 }
 
-std::string Command::getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj) const
+std::string Command::getUniqueObjectName(const char* BaseName, const App::DocumentObject* obj) const
 {
-    auto doc = obj?obj->getDocument():App::GetApplication().getActiveDocument();
+    auto doc = obj ? obj->getDocument() : App::GetApplication().getActiveDocument();
     assert(doc);
     return doc->getUniqueObjectName(BaseName);
 }
 
-std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
-        const char *prefix, const char *postfix, bool gui)
+std::string Command::getObjectCmd(
+    const char* Name,
+    const App::Document* doc,
+    const char* prefix,
+    const char* postfix,
+    bool gui
+)
 {
-    if(!doc) doc = App::GetApplication().getActiveDocument();
-    if(!doc || !Name)
+    if (!doc) {
+        doc = App::GetApplication().getActiveDocument();
+    }
+    if (!doc || !Name) {
         return {"None"};
+    }
     std::ostringstream str;
-    if(prefix)
+    if (prefix) {
         str << prefix;
-    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName()
-        << "').getObject('" << Name << "')";
-    if(postfix)
+    }
+    str << (gui ? "Gui" : "App") << ".getDocument('" << doc->getName() << "').getObject('" << Name
+        << "')";
+    if (postfix) {
         str << postfix;
+    }
     return str.str();
 }
 
-std::string Command::getObjectCmd(const App::DocumentObject *obj,
-        const char *prefix, const char *postfix, bool gui)
+std::string Command::getObjectCmd(
+    const App::DocumentObject* obj,
+    const char* prefix,
+    const char* postfix,
+    bool gui
+)
 {
-    if(!obj || !obj->isAttachedToDocument())
+    if (!obj || !obj->isAttachedToDocument()) {
         return {"None"};
-    return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix,gui);
+    }
+    return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix, gui);
 }
 
 void Command::setAppModuleName(const char* s)
@@ -605,8 +663,9 @@ void Command::setGroupName(const char* s)
 QString Command::translatedGroupName() const
 {
     QString text = qApp->translate(className(), getGroupName());
-    if (text == QString::fromLatin1(getGroupName()))
+    if (text == QString::fromLatin1(getGroupName())) {
         text = qApp->translate("CommandGroup", getGroupName());
+    }
     return text;
 }
 
@@ -623,8 +682,9 @@ QString Command::translatedGroupName() const
  */
 void Command::openCommand(const char* sCmdName)
 {
-    if (!sCmdName)
+    if (!sCmdName) {
         sCmdName = "Command";
+    }
     App::GetApplication().setActiveTransaction(sCmdName);
 }
 
@@ -651,7 +711,7 @@ void Command::blockCommand(bool block)
 }
 
 /// Run a App level Action
-void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const char* sCmd, ...)
+void Command::_doCommand(const char* file, int line, DoCmd_Type eType, const char* sCmd, ...)
 {
     va_list ap;
     va_start(ap, sCmd);
@@ -666,151 +726,200 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     Base::Console().log("CmdC: %s\n", format.constData());
 #endif
 
-    _runCommand(file,line,eType,format.constData());
+    _runCommand(file, line, eType, format.constData());
 }
 
-void Command::printPyCaller() {
-    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+void Command::printPyCaller()
+{
+    if (!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         return;
+    }
     PyFrameObject* frame = PyEval_GetFrame();
-    if(!frame)
+    if (!frame) {
         return;
+    }
     int line = PyFrame_GetLineNumber(frame);
 #if PY_VERSION_HEX < 0x030b0000
-    const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
-    printCaller(file?file:"<no file>",line);
+    const char* file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+    printCaller(file ? file : "<no file>", line);
 #else
     PyCodeObject* code = PyFrame_GetCode(frame);
     const char* file = PyUnicode_AsUTF8(code->co_filename);
-    printCaller(file?file:"<no file>",line);
+    printCaller(file ? file : "<no file>", line);
     Py_DECREF(code);
 #endif
 }
 
-void Command::printCaller(const char *file, int line) {
-    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+void Command::printCaller(const char* file, int line)
+{
+    if (!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         return;
+    }
     std::ostringstream str;
 #ifdef FC_OS_WIN32
-    const char *_f = std::strstr(file, "\\src\\");
+    const char* _f = std::strstr(file, "\\src\\");
 #else
-    const char *_f = std::strstr(file, "/src/");
+    const char* _f = std::strstr(file, "/src/");
 #endif
-    str << "## " << (_f?_f+5:file)<<'('<<line<<')';
-    Gui::Application::Instance->macroManager()->addLine(MacroManager::Cmt,str.str().c_str());
+    str << "## " << (_f ? _f + 5 : file) << '(' << line << ')';
+    Gui::Application::Instance->macroManager()->addLine(MacroManager::Cmt, str.str().c_str());
 }
 
 /// Run a App level Action
-void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const char* sCmd)
+void Command::_runCommand(const char* file, int line, DoCmd_Type eType, const char* sCmd)
 {
     LogDisabler d1;
     SelectionLogDisabler d2;
     Base::PyGILStateLocker lock;
 
-    printCaller(file,line);
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
+    printCaller(file, line);
+    if (eType == Gui) {
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
+    }
+    else {
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+    }
 
     try {
         Base::Interpreter().runString(sCmd);
     }
-    catch(Py::Exception &) {
+    catch (Py::Exception&) {
         Base::PyException::throwException();
     }
 }
 
 /// Run a App level Action
-void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const QByteArray& sCmd)
+void Command::_runCommand(const char* file, int line, DoCmd_Type eType, const QByteArray& sCmd)
 {
-    _runCommand(file,line,eType,sCmd.constData());
+    _runCommand(file, line, eType, sCmd.constData());
 }
 
-void Command::addModule(DoCmd_Type eType,const char* sModuleName)
+void Command::addModule(DoCmd_Type eType, const char* sModuleName)
 {
-    if(alreadyLoadedModule.find(sModuleName) == alreadyLoadedModule.end()) {
+    if (alreadyLoadedModule.find(sModuleName) == alreadyLoadedModule.end()) {
         LogDisabler d1;
         SelectionLogDisabler d2;
         std::string sCmd("import ");
         sCmd += sModuleName;
-        if (eType == Gui)
-            Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.c_str());
-        else
-            Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.c_str());
+        if (eType == Gui) {
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd.c_str());
+        }
+        else {
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd.c_str());
+        }
         Base::Interpreter().runString(sCmd.c_str());
         alreadyLoadedModule.insert(sModuleName);
     }
 }
 
-std::string Command::_assureWorkbench(const char *file, int line, const char * sName)
+std::string Command::_assureWorkbench(const char* file, int line, const char* sName)
 {
     // check if the WB is already open?
     std::string actName = WorkbenchManager::instance()->active()->name();
     // if yes, do nothing
-    if(actName == sName)
+    if (actName == sName) {
         return actName;
+    }
 
     // else - switch to new WB
-    _doCommand(file,line,Gui,"Gui.activateWorkbench('%s')",sName);
+    _doCommand(file, line, Gui, "Gui.activateWorkbench('%s')", sName);
 
     return actName;
-
 }
 
-void Command::_copyVisual(const char *file, int line, const char* to, const char* attr, const char* from)
+void Command::_copyVisual(const char* file, int line, const char* to, const char* attr, const char* from)
 {
-    _copyVisual(file,line,to,attr,from,attr);
+    _copyVisual(file, line, to, attr, from, attr);
 }
 
-void Command::_copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from)
+void Command::_copyVisual(
+    const char* file,
+    int line,
+    const char* to,
+    const char* attr_to,
+    const char* from,
+    const char* attr_from
+)
 {
     auto doc = App::GetApplication().getActiveDocument();
-    if(!doc)
+    if (!doc) {
         return;
-    return _copyVisual(file,line,doc->getObject(to),attr_to,
-            doc->getObject(from),attr_from);
+    }
+    return _copyVisual(file, line, doc->getObject(to), attr_to, doc->getObject(from), attr_from);
 }
 
-void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr_to, const App::DocumentObject *from, const char *attr_from)
+void Command::_copyVisual(
+    const char* file,
+    int line,
+    const App::DocumentObject* to,
+    const char* attr_to,
+    const App::DocumentObject* from,
+    const char* attr_from
+)
 {
-    if(!from || !from->isAttachedToDocument() || !to || !to->isAttachedToDocument())
+    if (!from || !from->isAttachedToDocument() || !to || !to->isAttachedToDocument()) {
         return;
-    static std::map<std::string,std::string> attrMap = {
+    }
+    static std::map<std::string, std::string> attrMap = {
         {"ShapeAppearance", "ShapeMaterial"},
-        {"Transparency","Transparency"},
+        {"Transparency", "Transparency"},
     };
     auto it = attrMap.find(attr_to);
     auto objCmd = getObjectCmd(to);
-    if(it!=attrMap.end()) {
+    if (it != attrMap.end()) {
         auto obj = from;
-        for(int depth=0;;++depth) {
+        for (int depth = 0;; ++depth) {
             auto vp = dynamic_cast<Gui::ViewProviderLink*>(
-                    Gui::Application::Instance->getViewProvider(obj));
-            if(vp && vp->OverrideMaterial.getValue()) {
-                _doCommand(file,line,Gui,"%s.ViewObject.%s=%s.ViewObject.%s",
-                        objCmd.c_str(),attr_to,getObjectCmd(obj).c_str(),it->second.c_str());
+                Gui::Application::Instance->getViewProvider(obj)
+            );
+            if (vp && vp->OverrideMaterial.getValue()) {
+                _doCommand(
+                    file,
+                    line,
+                    Gui,
+                    "%s.ViewObject.%s=%s.ViewObject.%s",
+                    objCmd.c_str(),
+                    attr_to,
+                    getObjectCmd(obj).c_str(),
+                    it->second.c_str()
+                );
                 return;
             }
-            auto linked = obj->getLinkedObject(false,nullptr,false,depth);
-            if(!linked || linked==obj)
+            auto linked = obj->getLinkedObject(false, nullptr, false, depth);
+            if (!linked || linked == obj) {
                 break;
+            }
             obj = linked;
         }
     }
 
     try {
-        _doCommand(file,line,Gui,
-                "%s.ViewObject.%s=getattr(%s.getLinkedObject(True).ViewObject,'%s',%s.ViewObject.%s)",
-                objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
+        _doCommand(
+            file,
+            line,
+            Gui,
+            "%s.ViewObject.%s=getattr(%s.getLinkedObject(True).ViewObject,'%s',%s.ViewObject.%s)",
+            objCmd.c_str(),
+            attr_to,
+            getObjectCmd(from).c_str(),
+            attr_from,
+            objCmd.c_str(),
+            attr_to
+        );
     }
-    catch(Base::Exception& /*e*/) {
+    catch (Base::Exception& /*e*/) {
     }
 }
 
-void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr, const App::DocumentObject *from)
+void Command::_copyVisual(
+    const char* file,
+    int line,
+    const App::DocumentObject* to,
+    const char* attr,
+    const App::DocumentObject* from
+)
 {
-    _copyVisual(file,line,to,attr,from,attr);
+    _copyVisual(file, line, to, attr, from, attr);
 }
 
 std::string Command::getPythonTuple(const std::string& name, const std::vector<std::string>& subnames)
@@ -818,10 +927,11 @@ std::string Command::getPythonTuple(const std::string& name, const std::vector<s
     std::stringstream str;
     auto last = --subnames.end();
     str << "(App.ActiveDocument." << name << ",[";
-    for (auto it = subnames.cbegin(); it!=subnames.cend(); ++it){
+    for (auto it = subnames.cbegin(); it != subnames.cend(); ++it) {
         str << "\"" << *it << "\"";
-        if (it != last)
+        if (it != last) {
             str << ",";
+        }
     }
     str << "])";
     return str.str();
@@ -836,7 +946,7 @@ const std::string Command::strToPython(const char* Str)
 void Command::updateActive()
 {
     WaitCursor wc;
-    doCommand(App,"App.ActiveDocument.recompute()");
+    doCommand(App, "App.ActiveDocument.recompute()");
 }
 
 bool Command::isActiveObjectValid()
@@ -854,37 +964,34 @@ bool Command::isActiveObjectValid()
 //--------------------------------------------------------------------------
 
 /// returns the begin of a online help page
-const char * Command::beginCmdHelp()
+const char* Command::beginCmdHelp()
 {
-    return  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n"
-            "<html>\n"
-            "<head>\n"
-            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">\n"
-            "<title>FreeCAD Main Index</title>\n"
-            "</head>\n"
-            "<body bgcolor=\"#ffffff\">\n\n";
+    return "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n"
+           "<html>\n"
+           "<head>\n"
+           "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">\n"
+           "<title>FreeCAD Main Index</title>\n"
+           "</head>\n"
+           "<body bgcolor=\"#ffffff\">\n\n";
 }
 
 /// returns the end of a online help page
-const char * Command::endCmdHelp()
+const char* Command::endCmdHelp()
 {
     return "</body></html>\n\n";
 }
 
 void Command::applyCommandData(const char* context, Action* action)
 {
-    action->setText(QCoreApplication::translate(
-        context, getMenuText()));
-    action->setToolTip(QCoreApplication::translate(
-        context, getToolTipText()));
-    action->setWhatsThis(QCoreApplication::translate(
-        context, getWhatsThis()));
-    if (sStatusTip)
-        action->setStatusTip(QCoreApplication::translate(
-            context, getStatusTip()));
-    else
-        action->setStatusTip(QCoreApplication::translate(
-            context, getToolTipText()));
+    action->setText(QCoreApplication::translate(context, getMenuText()));
+    action->setToolTip(QCoreApplication::translate(context, getToolTipText()));
+    action->setWhatsThis(QCoreApplication::translate(context, getWhatsThis()));
+    if (sStatusTip) {
+        action->setStatusTip(QCoreApplication::translate(context, getStatusTip()));
+    }
+    else {
+        action->setStatusTip(QCoreApplication::translate(context, getToolTipText()));
+    }
 
     // Default to QAction::NoRole instead of QAction::TextHeuristicRole to stop collisions with
     // e.g. "Preferences" and "Copy"
@@ -921,17 +1028,25 @@ const char* Command::keySequenceToAccel(int sk) const
 void Command::printConflictingAccelerators() const
 {
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
-    if (cmd)
-        Base::Console().warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+    if (cmd) {
+        Base::Console().warning(
+            "Accelerator conflict between %s (%s) and %s (%s)\n",
+            sName,
+            sAccel,
+            cmd->sName,
+            cmd->sAccel
+        );
+    }
 }
 
-Action * Command::createAction()
+Action* Command::createAction()
 {
-    Action *pcAction;
-    pcAction = new Action(this,getMainWindow());
+    Action* pcAction;
+    pcAction = new Action(this, getMainWindow());
     applyCommandData(this->className(), pcAction);
-    if (sPixmap)
+    if (sPixmap) {
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    }
     return pcAction;
 }
 
@@ -943,15 +1058,14 @@ void Command::languageChange()
 }
 
 void Command::updateAction(int)
-{
-}
+{}
 
 //===========================================================================
 // GroupCommand
 //===========================================================================
 
-GroupCommand::GroupCommand(const char *name)
-    :Command(name)
+GroupCommand::GroupCommand(const char* name)
+    : Command(name)
 {}
 
 bool GroupCommand::isCheckable() const
@@ -994,28 +1108,34 @@ void GroupCommand::setDropDownMenu(bool on)
     dropDownMenu = on;
 }
 
-int GroupCommand::addCommand(Command *cmd, bool reg) {
-    cmds.emplace_back(cmd,cmds.size());
-    if(cmd && reg)
+int GroupCommand::addCommand(Command* cmd, bool reg)
+{
+    cmds.emplace_back(cmd, cmds.size());
+    if (cmd && reg) {
         Application::Instance->commandManager().addCommand(cmd);
-    return (int)cmds.size()-1;
+    }
+    return (int)cmds.size() - 1;
 }
 
-Command *GroupCommand::addCommand(const char *name) {
+Command* GroupCommand::addCommand(const char* name)
+{
     auto cmd = Application::Instance->commandManager().getCommandByName(name);
-    if(cmd)
-        addCommand(cmd,false);
+    if (cmd) {
+        addCommand(cmd, false);
+    }
     return cmd;
 }
 
-Command *GroupCommand::getCommand(int idx) const
+Command* GroupCommand::getCommand(int idx) const
 {
-    if (idx >= 0 && idx < (int)cmds.size())
+    if (idx >= 0 && idx < (int)cmds.size()) {
         return cmds[idx].first;
+    }
     return nullptr;
 }
 
-Action * GroupCommand::createAction() {
+Action* GroupCommand::createAction()
+{
     auto* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(hasDropDownMenu());
@@ -1024,11 +1144,13 @@ Action * GroupCommand::createAction() {
     pcAction->setRememberLast(doesRememberLast());
     pcAction->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
-    for(auto &v : cmds) {
-        if(!v.first)
+    for (auto& v : cmds) {
+        if (!v.first) {
             pcAction->addAction(QStringLiteral(""))->setSeparator(true);
-        else
+        }
+        else {
             v.first->addToGroup(pcAction);
+        }
     }
 
     pcAction->setProperty("defaultAction", QVariant(0));
@@ -1038,57 +1160,70 @@ Action * GroupCommand::createAction() {
 
 void GroupCommand::activated(int iMsg)
 {
-    if(iMsg<0 || iMsg>=(int)cmds.size())
+    if (iMsg < 0 || iMsg >= (int)cmds.size()) {
         return;
+    }
 
-    auto &v = cmds[iMsg];
-    if(!v.first)
+    auto& v = cmds[iMsg];
+    if (!v.first) {
         return;
+    }
 
-    if(triggerSource()!=TriggerChildAction)
+    if (triggerSource() != TriggerChildAction) {
         v.first->invoke(0);
+    }
 
     Action* cmdAction = v.first->getAction();
-    if(_pcAction && cmdAction) {
+    if (_pcAction && cmdAction) {
         _pcAction->setProperty("defaultAction", QVariant((int)v.second));
         setup(_pcAction);
     }
 }
 
-void GroupCommand::languageChange() {
+void GroupCommand::languageChange()
+{
     Command::languageChange();
-    if (_pcAction)
+    if (_pcAction) {
         setup(_pcAction);
+    }
 }
 
-void GroupCommand::setup(Action *pcAction) {
+void GroupCommand::setup(Action* pcAction)
+{
 
     // The tooltip for the group is the tooltip of the active tool (that is, the tool that will
     // be activated when the main portion of the button is clicked).
     int idx = pcAction->property("defaultAction").toInt();
-    if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
+    if (idx >= 0 && idx < (int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
         QString shortcut = cmd->getShortcut();
         pcAction->setShortcut(shortcut);
         pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
         QIcon icon;
-        if (auto childAction = cmd->getAction())
+        if (auto childAction = cmd->getAction()) {
             icon = childAction->icon();
-        if (icon.isNull())
+        }
+        if (icon.isNull()) {
             icon = BitmapFactory().iconFromTheme(cmd->getPixmap());
+        }
         pcAction->setIcon(icon);
-        const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
-        const char *tooltip = cmd->getToolTipText();
-        const char *statustip = cmd->getStatusTip();
-        if (!statustip || '\0' == *statustip)
+        const char* context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
+        const char* tooltip = cmd->getToolTipText();
+        const char* statustip = cmd->getStatusTip();
+        if (!statustip || '\0' == *statustip) {
             statustip = tooltip;
-        pcAction->setToolTip(QCoreApplication::translate(context,tooltip),
-                             QCoreApplication::translate(cmd->className(), cmd->getMenuText()));
-        pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
-    } else {
+        }
+        pcAction->setToolTip(
+            QCoreApplication::translate(context, tooltip),
+            QCoreApplication::translate(cmd->className(), cmd->getMenuText())
+        );
+        pcAction->setStatusTip(QCoreApplication::translate(context, statustip));
+    }
+    else {
         applyCommandData(this->className(), pcAction);
-        if (sPixmap)
+        if (sPixmap) {
             pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+        }
     }
 }
 
@@ -1099,11 +1234,11 @@ void GroupCommand::setup(Action *pcAction) {
 /* TRANSLATOR Gui::MacroCommand */
 
 MacroCommand::MacroCommand(const char* name, bool system)
-  : Command(StringCache::New(name))
-  , systemMacro(system)
+    : Command(StringCache::New(name))
+    , systemMacro(system)
 {
     sGroup = "Macros";
-    eType  = 0;
+    eType = 0;
     sScriptName = nullptr;
 }
 
@@ -1117,93 +1252,104 @@ void MacroCommand::activated(int iMsg)
     if (!systemMacro) {
         std::string cMacroPath;
 
-        cMacroPath = App::GetApplication().GetParameterGroupByPath
-                             ("User parameter:BaseApp/Preferences/Macro")->GetASCII("MacroPath",
-                                     App::Application::getUserMacroDir().c_str());
+        cMacroPath = App::GetApplication()
+                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                         ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
 
         d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath())
+            + QStringLiteral("Macro");
         d = QDir(dirstr);
     }
 
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
-        QMessageBox::critical(Gui::getMainWindow(),
+        QMessageBox::critical(
+            Gui::getMainWindow(),
             qApp->translate("Gui::MacroCommand", "Macro file doesn't exist"),
-            qApp->translate("Gui::MacroCommand", "No such macro file: '%1'").arg(fi.absoluteFilePath()));
+            qApp->translate("Gui::MacroCommand", "No such macro file: '%1'").arg(fi.absoluteFilePath())
+        );
     }
     else {
         Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document
-        if (Application::Instance->activeDocument())
+        if (Application::Instance->activeDocument()) {
             Application::Instance->activeDocument()->getDocument()->recompute();
+        }
     }
 }
 
-Action * MacroCommand::createAction()
+Action* MacroCommand::createAction()
 {
-    Action *pcAction;
-    pcAction = new Action(this,getMainWindow());
+    Action* pcAction;
+    pcAction = new Action(this, getMainWindow());
     pcAction->setText(QString::fromUtf8(sMenuText));
     pcAction->setToolTip(QString::fromUtf8(sToolTipText));
     pcAction->setStatusTip(QString::fromUtf8(sStatusTip));
-    if (pcAction->statusTip().isEmpty())
+    if (pcAction->statusTip().isEmpty()) {
         pcAction->setStatusTip(pcAction->toolTip());
+    }
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
-    if (sPixmap)
+    if (sPixmap) {
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
+    }
 
     return pcAction;
 }
 
-void MacroCommand::setScriptName( const char* s )
+void MacroCommand::setScriptName(const char* s)
 {
     this->sScriptName = StringCache::New(s);
 }
 
 void MacroCommand::load()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Macro");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Macro"
+    );
 
     if (hGrp->HasGroup("Macros")) {
         hGrp = hGrp->GetGroup("Macros");
-        std::vector<Base::Reference<ParameterGrp> > macros = hGrp->GetGroups();
-        for (const auto & it : macros) {
+        std::vector<Base::Reference<ParameterGrp>> macros = hGrp->GetGroups();
+        for (const auto& it : macros) {
             auto macro = new MacroCommand(it->GetGroupName());
-            macro->setScriptName  ( it->GetASCII( "Script"     ).c_str() );
-            macro->setMenuText    ( it->GetASCII( "Menu"       ).c_str() );
-            macro->setToolTipText ( it->GetASCII( "Tooltip"    ).c_str() );
-            macro->setWhatsThis   ( it->GetASCII( "WhatsThis"  ).c_str() );
-            macro->setStatusTip   ( it->GetASCII( "Statustip"  ).c_str() );
-            if (it->GetASCII("Pixmap", "nix") != "nix")
-                macro->setPixmap    ( it->GetASCII( "Pixmap"     ).c_str() );
-            macro->setAccel       ( it->GetASCII( "Accel",nullptr    ).c_str() );
+            macro->setScriptName(it->GetASCII("Script").c_str());
+            macro->setMenuText(it->GetASCII("Menu").c_str());
+            macro->setToolTipText(it->GetASCII("Tooltip").c_str());
+            macro->setWhatsThis(it->GetASCII("WhatsThis").c_str());
+            macro->setStatusTip(it->GetASCII("Statustip").c_str());
+            if (it->GetASCII("Pixmap", "nix") != "nix") {
+                macro->setPixmap(it->GetASCII("Pixmap").c_str());
+            }
+            macro->setAccel(it->GetASCII("Accel", nullptr).c_str());
             macro->systemMacro = it->GetBool("System", false);
-            Application::Instance->commandManager().addCommand( macro );
+            Application::Instance->commandManager().addCommand(macro);
         }
     }
 }
 
 void MacroCommand::save()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Macro")->GetGroup("Macros");
+    ParameterGrp::handle hGrp = App::GetApplication()
+                                    .GetParameterGroupByPath("User parameter:BaseApp/Macro")
+                                    ->GetGroup("Macros");
     hGrp->Clear();
 
     std::vector<Command*> macros = Application::Instance->commandManager().getGroupCommands("Macros");
-    if ( !macros.empty() ) {
-        for (const auto & it : macros) {
+    if (!macros.empty()) {
+        for (const auto& it : macros) {
             auto macro = (MacroCommand*)it;
             ParameterGrp::handle hMacro = hGrp->GetGroup(macro->getName());
-            hMacro->SetASCII( "Script",    macro->getScriptName () );
-            hMacro->SetASCII( "Menu",      macro->getMenuText   () );
-            hMacro->SetASCII( "Tooltip",   macro->getToolTipText() );
-            hMacro->SetASCII( "WhatsThis", macro->getWhatsThis  () );
-            hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
-            hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
-            hMacro->SetASCII( "Accel",     macro->getAccel      () );
-            hMacro->SetBool( "System",     macro->systemMacro );
+            hMacro->SetASCII("Script", macro->getScriptName());
+            hMacro->SetASCII("Menu", macro->getMenuText());
+            hMacro->SetASCII("Tooltip", macro->getToolTipText());
+            hMacro->SetASCII("WhatsThis", macro->getWhatsThis());
+            hMacro->SetASCII("Statustip", macro->getStatusTip());
+            hMacro->SetASCII("Pixmap", macro->getPixmap());
+            hMacro->SetASCII("Accel", macro->getAccel());
+            hMacro->SetBool("System", macro->systemMacro);
         }
     }
 }
@@ -1212,12 +1358,13 @@ void MacroCommand::save()
 // PythonCommand
 //===========================================================================
 
-PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString)
-  : Command(StringCache::New(name))
-  ,_pcPyCommand(pcPyCommand)
+PythonCommand::PythonCommand(const char* name, PyObject* pcPyCommand, const char* pActivationString)
+    : Command(StringCache::New(name))
+    , _pcPyCommand(pcPyCommand)
 {
-    if (pActivationString)
+    if (pActivationString) {
         Activation = pActivationString;
+    }
 
     sGroup = "Python";
 
@@ -1227,32 +1374,37 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
     _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
     // check if the "GetResources()" method returns a Dict object
     if (!PyDict_Check(_pcPyResourceDict)) {
-        throw Base::TypeError("PythonCommand::PythonCommand(): Method GetResources() of the Python "
-                              "command object returns the wrong type (has to be dict)");
+        throw Base::TypeError(
+            "PythonCommand::PythonCommand(): Method GetResources() of the Python "
+            "command object returns the wrong type (has to be dict)"
+        );
     }
 
     // check for command type
     std::string cmdType = getResource("CmdType");
     if (!cmdType.empty()) {
         int type = 0;
-        if (cmdType.find("AlterDoc") != std::string::npos)
+        if (cmdType.find("AlterDoc") != std::string::npos) {
             type += int(AlterDoc);
-        if (cmdType.find("Alter3DView") != std::string::npos)
+        }
+        if (cmdType.find("Alter3DView") != std::string::npos) {
             type += int(Alter3DView);
-        if (cmdType.find("AlterSelection") != std::string::npos)
+        }
+        if (cmdType.find("AlterSelection") != std::string::npos) {
             type += int(AlterSelection);
-        if (cmdType.find("ForEdit") != std::string::npos)
+        }
+        if (cmdType.find("ForEdit") != std::string::npos) {
             type += int(ForEdit);
-        if (cmdType.find("NoTransaction") != std::string::npos)
+        }
+        if (cmdType.find("NoTransaction") != std::string::npos) {
             type += int(NoTransaction);
+        }
         eType = type;
     }
 
     auto& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect([this]() {
-        this->onActionInit();
-    });
+    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect([this]() { this->onActionInit(); });
 }
 
 PythonCommand::~PythonCommand()
@@ -1267,12 +1419,15 @@ const char* PythonCommand::getResource(const char* sName) const
     PyObject* pcTemp;
 
     // get the "MenuText" resource string
-    pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
-    if (!pcTemp)
+    pcTemp = PyDict_GetItemString(_pcPyResourceDict, sName);
+    if (!pcTemp) {
         return "";
+    }
     if (!PyUnicode_Check(pcTemp)) {
-        throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
-                              "command object returns a dictionary which holds not only strings");
+        throw Base::TypeError(
+            "PythonCommand::getResource(): Method GetResources() of the Python "
+            "command object returns a dictionary which holds not only strings"
+        );
     }
     return PyUnicode_AsUTF8(pcTemp);
 }
@@ -1289,15 +1444,19 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
-                                  sName, e.getStackTrace().c_str(), e.what());
+            Base::Console().error(
+                "Running the Python command '%s' failed:\n%s\n%s",
+                sName,
+                e.getStackTrace().c_str(),
+                e.what()
+            );
         }
         catch (const Base::Exception&) {
-            Base::Console().error("Running the Python command '%s' failed, try to resume",sName);
+            Base::Console().error("Running the Python command '%s' failed, try to resume", sName);
         }
     }
     else {
-        runCommand(Doc,Activation.c_str());
+        runCommand(Doc, Activation.c_str());
     }
 }
 
@@ -1311,11 +1470,12 @@ bool PythonCommand::isActive()
             Py::Tuple args;
             Py::Object ret = call.apply(args);
             // if return type is not boolean or not true
-            if (!PyBool_Check(ret.ptr()) || ret.ptr() != Py_True)
+            if (!PyBool_Check(ret.ptr()) || ret.ptr() != Py_True) {
                 return false;
+            }
         }
     }
-    catch(Py::Exception& e) {
+    catch (Py::Exception& e) {
         Base::PyGILStateLocker lock;
         e.clear();
         return false;
@@ -1335,22 +1495,25 @@ const char* PythonCommand::getHelpUrl() const
 {
     PyObject* pcTemp;
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
-    if (! pcTemp )
+    if (!pcTemp) {
         return "";
-    if (! PyUnicode_Check(pcTemp) )
+    }
+    if (!PyUnicode_Check(pcTemp)) {
         throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
+    }
     return PyUnicode_AsUTF8(pcTemp);
 }
 
-Action * PythonCommand::createAction()
+Action* PythonCommand::createAction()
 {
     auto qtAction = new QAction(nullptr);
-    Action *pcAction;
+    Action* pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
     applyCommandData(this->getName(), pcAction);
-    if (strcmp(getResource("Pixmap"),"") != 0)
+    if (strcmp(getResource("Pixmap"), "") != 0) {
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));
+    }
 
     try {
         if (isCheckable()) {
@@ -1371,8 +1534,9 @@ Action * PythonCommand::createAction()
 const char* PythonCommand::getWhatsThis() const
 {
     const char* whatsthis = getResource("WhatsThis");
-    if (Base::Tools::isNullOrEmpty(whatsthis))
+    if (Base::Tools::isNullOrEmpty(whatsthis)) {
         whatsthis = this->getName();
+    }
     return whatsthis;
 }
 
@@ -1405,25 +1569,29 @@ const char* PythonCommand::getAccel() const
 bool PythonCommand::isCheckable() const
 {
     Base::PyGILStateLocker lock;
-    PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
+    PyObject* item = PyDict_GetItemString(_pcPyResourceDict, "Checkable");
     return item ? true : false;
 }
 
 bool PythonCommand::isChecked() const
 {
     Base::PyGILStateLocker lock;
-    PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
+    PyObject* item = PyDict_GetItemString(_pcPyResourceDict, "Checkable");
     if (!item) {
-        throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
-                               "command object doesn't contain the key 'Checkable'");
+        throw Base::ValueError(
+            "PythonCommand::isChecked(): Method GetResources() of the Python "
+            "command object doesn't contain the key 'Checkable'"
+        );
     }
 
     if (PyBool_Check(item)) {
         return Base::asBoolean(item);
     }
     else {
-        throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "
-                               "command object contains the key 'Checkable' which is not a boolean");
+        throw Base::ValueError(
+            "PythonCommand::isChecked(): Method GetResources() of the Python "
+            "command object contains the key 'Checkable' which is not a boolean"
+        );
     }
 }
 
@@ -1438,7 +1606,7 @@ void PythonCommand::onActionInit() const
             Py::Object ret = call.apply(args);
         }
     }
-    catch(Py::Exception& e) {
+    catch (Py::Exception& e) {
         Base::PyGILStateLocker lock;
         e.clear();
     }
@@ -1450,9 +1618,9 @@ void PythonCommand::onActionInit() const
 // PythonGroupCommand
 //===========================================================================
 
-PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
-  : Command(StringCache::New(name))
-  ,_pcPyCommand(pcPyCommand)
+PythonGroupCommand::PythonGroupCommand(const char* name, PyObject* pcPyCommand)
+    : Command(StringCache::New(name))
+    , _pcPyCommand(pcPyCommand)
 {
     sGroup = "Python";
 
@@ -1462,30 +1630,34 @@ PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
     _pcPyResource = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
     // check if the "GetResources()" method returns a Dict object
     if (!PyDict_Check(_pcPyResource)) {
-        throw Base::TypeError("PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
-                              "command object returns the wrong type (has to be dict)");
+        throw Base::TypeError(
+            "PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
+            "command object returns the wrong type (has to be dict)"
+        );
     }
 
     // check for command type
     std::string cmdType = getResource("CmdType");
     if (!cmdType.empty()) {
         int type = 0;
-        if (cmdType.find("AlterDoc") != std::string::npos)
+        if (cmdType.find("AlterDoc") != std::string::npos) {
             type += int(AlterDoc);
-        if (cmdType.find("Alter3DView") != std::string::npos)
+        }
+        if (cmdType.find("Alter3DView") != std::string::npos) {
             type += int(Alter3DView);
-        if (cmdType.find("AlterSelection") != std::string::npos)
+        }
+        if (cmdType.find("AlterSelection") != std::string::npos) {
             type += int(AlterSelection);
-        if (cmdType.find("ForEdit") != std::string::npos)
+        }
+        if (cmdType.find("ForEdit") != std::string::npos) {
             type += int(ForEdit);
+        }
         eType = type;
     }
 
     auto& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect([this]() {
-        this->onActionInit();
-    });
+    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect([this]() { this->onActionInit(); });
 }
 
 PythonGroupCommand::~PythonGroupCommand()
@@ -1514,20 +1686,23 @@ void PythonGroupCommand::activated(int iMsg)
         }
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
         else {
-            Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+            Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
             auto cmd = rcCmdMgr.getCommandByName(act->property("CommandName").toByteArray());
-            if(cmd) {
+            if (cmd) {
                 bool checked = act->isCheckable() && act->isChecked();
-                cmd->invoke(checked?1:0,TriggerAction);
+                cmd->invoke(checked ? 1 : 0, TriggerAction);
             }
         }
-
     }
-    catch(Py::Exception&) {
+    catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
-                              sName, e.getStackTrace().c_str(), e.what());
+        Base::Console().error(
+            "Running the Python command '%s' failed:\n%s\n%s",
+            sName,
+            e.getStackTrace().c_str(),
+            e.what()
+        );
     }
 }
 
@@ -1542,11 +1717,12 @@ bool PythonGroupCommand::isActive()
             Py::Tuple args;
             Py::Object ret = call.apply(args);
             // if return type is not boolean or not true
-            if (!PyBool_Check(ret.ptr()) || ret.ptr() != Py_True)
+            if (!PyBool_Check(ret.ptr()) || ret.ptr() != Py_True) {
                 return false;
+            }
         }
     }
-    catch(Py::Exception& e) {
+    catch (Py::Exception& e) {
         Base::PyGILStateLocker lock;
         e.clear();
         return false;
@@ -1555,7 +1731,7 @@ bool PythonGroupCommand::isActive()
     return true;
 }
 
-Action * PythonGroupCommand::createAction()
+Action* PythonGroupCommand::createAction()
 {
     auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(hasDropDownMenu());
@@ -1568,7 +1744,7 @@ Action * PythonGroupCommand::createAction()
     try {
         Base::PyGILStateLocker lock;
         Py::Object cmd(_pcPyCommand);
-        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
         Py::Callable call(cmd.getAttr("GetCommands"));
         Py::Sequence args;
@@ -1578,14 +1754,18 @@ Action * PythonGroupCommand::createAction()
             QAction* cmd = pcAction->addAction(QString());
             cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
 
-            PythonCommand* pycmd = dynamic_cast<PythonCommand*>(rcCmdMgr.getCommandByName(cmd->property("CommandName").toByteArray()));
+            PythonCommand* pycmd = dynamic_cast<PythonCommand*>(
+                rcCmdMgr.getCommandByName(cmd->property("CommandName").toByteArray())
+            );
             if (pycmd && pycmd->isCheckable()) {
                 cmd->setCheckable(true);
                 cmd->blockSignals(true);
                 cmd->setChecked(pycmd->isChecked());
                 cmd->blockSignals(false);
             }
-            cmd->setShortcut(ShortcutManager::instance()->getShortcut(cmd->property("CommandName").toByteArray()));
+            cmd->setShortcut(
+                ShortcutManager::instance()->getShortcut(cmd->property("CommandName").toByteArray())
+            );
         }
 
         if (cmd.hasAttr("GetDefaultCommand")) {
@@ -1603,33 +1783,40 @@ Action * PythonGroupCommand::createAction()
                     qtAction->blockSignals(true);
                     qtAction->setChecked(true);
                     qtAction->blockSignals(false);
-                }else if(qtAction->isCheckable()){
+                }
+                else if (qtAction->isCheckable()) {
                     pcAction->setCheckable(true);
                     pcAction->setBlockedChecked(qtAction->isChecked());
                 }
             }
         }
     }
-    catch(Py::Exception&) {
+    catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error("createAction() of the Python command '%s' failed:\n%s\n%s",
-                              sName, e.getStackTrace().c_str(), e.what());
+        Base::Console().error(
+            "createAction() of the Python command '%s' failed:\n%s\n%s",
+            sName,
+            e.getStackTrace().c_str(),
+            e.what()
+        );
     }
 
     _pcAction = pcAction;
     languageChange();
 
-    if (strcmp(getResource("Pixmap"),"") != 0) {
+    if (strcmp(getResource("Pixmap"), "") != 0) {
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));
     }
     else {
         QList<QAction*> a = pcAction->actions();
         // if out of range then set to 0
-        if (defaultId < 0 || defaultId >= a.size())
+        if (defaultId < 0 || defaultId >= a.size()) {
             defaultId = 0;
-        if (a.size() > defaultId)
+        }
+        if (a.size() > defaultId) {
             pcAction->setIcon(a[defaultId]->icon());
+        }
     }
 
     pcAction->setProperty("defaultAction", QVariant(defaultId));
@@ -1639,12 +1826,13 @@ Action * PythonGroupCommand::createAction()
 
 void PythonGroupCommand::languageChange()
 {
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
 
     applyCommandData(this->getName(), _pcAction);
 
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     // Reapply setup to ensure group action tooltip includes shortcut
     auto* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
@@ -1652,24 +1840,33 @@ void PythonGroupCommand::languageChange()
     int idx = _pcAction->property("defaultAction").toInt();
     if (idx >= 0 && idx < groupActions.size()) {
         QAction* defaultAction = groupActions[idx];
-        Gui::Command* cmd = rcCmdMgr.getCommandByName(defaultAction->property("CommandName").toByteArray());
+        Gui::Command* cmd = rcCmdMgr.getCommandByName(
+            defaultAction->property("CommandName").toByteArray()
+        );
         if (cmd) {
-            const char *context = cmd->getName();
+            const char* context = cmd->getName();
             QString tip = QApplication::translate(context, cmd->getToolTipText());
             _pcAction->setShortcut(cmd->getShortcut());
-            QString newTip = Gui::Action::createToolTip(tip, _pcAction->text(), _pcAction->action()->font(), _pcAction->shortcut().toString(), cmd);
+            QString newTip = Gui::Action::createToolTip(
+                tip,
+                _pcAction->text(),
+                _pcAction->action()->font(),
+                _pcAction->shortcut().toString(),
+                cmd
+            );
             _pcAction->setToolTip(newTip);
         }
     }
     auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> actions = pcAction->actions();
-    for (const auto & it : actions) {
+    for (const auto& it : actions) {
         Gui::Command* cmd = rcCmdMgr.getCommandByName(it->property("CommandName").toByteArray());
         if (cmd) {
             // Python command use getName as context
-            const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
-            const char *tooltip = cmd->getToolTipText();
-            const char *statustip = cmd->getStatusTip();
+            const char* context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName()
+                                                                    : cmd->className();
+            const char* tooltip = cmd->getToolTipText();
+            const char* statustip = cmd->getStatusTip();
             if (!statustip || '\0' == *statustip) {
                 statustip = tooltip;
             }
@@ -1699,11 +1896,14 @@ const char* PythonGroupCommand::getResource(const char* sName) const
 
     // get the "MenuText" resource string
     pcTemp = PyDict_GetItemString(_pcPyResource, sName);
-    if (!pcTemp)
+    if (!pcTemp) {
         return "";
+    }
     if (!PyUnicode_Check(pcTemp)) {
-        throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
-                               "group command object returns a dictionary which holds not only strings");
+        throw Base::ValueError(
+            "PythonGroupCommand::getResource(): Method GetResources() of the Python "
+            "group command object returns a dictionary which holds not only strings"
+        );
     }
     return PyUnicode_AsUTF8(pcTemp);
 }
@@ -1711,8 +1911,9 @@ const char* PythonGroupCommand::getResource(const char* sName) const
 const char* PythonGroupCommand::getWhatsThis() const
 {
     const char* whatsthis = getResource("WhatsThis");
-    if (Base::Tools::isNullOrEmpty(whatsthis))
+    if (Base::Tools::isNullOrEmpty(whatsthis)) {
         whatsthis = this->getName();
+    }
     return whatsthis;
 }
 
@@ -1744,7 +1945,7 @@ const char* PythonGroupCommand::getAccel() const
 
 bool PythonGroupCommand::isExclusive() const
 {
-    PyObject* item = PyDict_GetItemString(_pcPyResource,"Exclusive");
+    PyObject* item = PyDict_GetItemString(_pcPyResource, "Exclusive");
     if (!item) {
         return false;
     }
@@ -1753,14 +1954,16 @@ bool PythonGroupCommand::isExclusive() const
         return Base::asBoolean(item);
     }
     else {
-        throw Base::TypeError("PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
-                              "command object contains the key 'Exclusive' which is not a boolean");
+        throw Base::TypeError(
+            "PythonGroupCommand::isExclusive(): Method GetResources() of the Python "
+            "command object contains the key 'Exclusive' which is not a boolean"
+        );
     }
 }
 
 bool PythonGroupCommand::hasDropDownMenu() const
 {
-    PyObject* item = PyDict_GetItemString(_pcPyResource,"DropDownMenu");
+    PyObject* item = PyDict_GetItemString(_pcPyResource, "DropDownMenu");
     if (!item) {
         return true;
     }
@@ -1769,8 +1972,10 @@ bool PythonGroupCommand::hasDropDownMenu() const
         return Base::asBoolean(item);
     }
     else {
-        throw Base::TypeError("PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
-                              "command object contains the key 'DropDownMenu' which is not a boolean");
+        throw Base::TypeError(
+            "PythonGroupCommand::hasDropDownMenu(): Method GetResources() of the Python "
+            "command object contains the key 'DropDownMenu' which is not a boolean"
+        );
     }
 }
 
@@ -1785,7 +1990,7 @@ void PythonGroupCommand::onActionInit() const
             Py::Object ret = call.apply(args);
         }
     }
-    catch(Py::Exception& e) {
+    catch (Py::Exception& e) {
         Base::PyGILStateLocker lock;
         e.clear();
     }
@@ -1806,10 +2011,11 @@ CommandManager::~CommandManager()
 
 void CommandManager::addCommand(Command* pCom)
 {
-    auto &cmd = _sCommands[pCom->getName()];
+    auto& cmd = _sCommands[pCom->getName()];
     if (cmd) {
-        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_ERR("duplicate command " << pCom->getName());
+        }
         return;
     }
     ++_revision;
@@ -1819,7 +2025,7 @@ void CommandManager::addCommand(Command* pCom)
 
 void CommandManager::removeCommand(Command* pCom)
 {
-    std::map <std::string,Command*>::iterator It = _sCommands.find(pCom->getName());
+    std::map<std::string, Command*>::iterator It = _sCommands.find(pCom->getName());
     if (It != _sCommands.end()) {
         ++_revision;
         delete It->second;
@@ -1847,29 +2053,36 @@ std::string CommandManager::newMacroName() const
                 break;
             }
         }
-        if (!used)
+        if (!used) {
             name = test_name.str();
+        }
     }
 
     return name;
 }
 void CommandManager::clearCommands()
 {
-    for ( std::map<std::string,Command*>::iterator it = _sCommands.begin(); it != _sCommands.end(); ++it )
+    for (std::map<std::string, Command*>::iterator it = _sCommands.begin(); it != _sCommands.end();
+         ++it) {
         delete it->second;
+    }
     _sCommands.clear();
     ++_revision;
     signalChanged();
 }
 
-bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
+bool CommandManager::addTo(const char* Name, QWidget* pcWidget)
 {
     if (_sCommands.find(Name) == _sCommands.end()) {
-        // Print in release mode only a log message instead of an error message to avoid to annoy the user
+        // Print in release mode only a log message instead of an error message to avoid to annoy
+        // the user
 #ifdef FC_DEBUG
-        Base::Console().error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
+        Base::Console().error(
+            "CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",
+            Name
+        );
 #else
-        Base::Console().warning("Unknown command '%s'\n",Name);
+        Base::Console().warning("Unknown command '%s'\n", Name);
 #endif
         return false;
     }
@@ -1880,36 +2093,44 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
     }
 }
 
-std::vector <Command*> CommandManager::getModuleCommands(const char *sModName) const
+std::vector<Command*> CommandManager::getModuleCommands(const char* sModName) const
 {
-    std::vector <Command*> vCmds;
+    std::vector<Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
-        if ( strcmp(It->second->getAppModuleName(),sModName) == 0)
+    for (std::map<std::string, Command*>::const_iterator It = _sCommands.begin();
+         It != _sCommands.end();
+         ++It) {
+        if (strcmp(It->second->getAppModuleName(), sModName) == 0) {
             vCmds.push_back(It->second);
+        }
     }
 
     return vCmds;
 }
 
-std::vector <Command*> CommandManager::getAllCommands() const
+std::vector<Command*> CommandManager::getAllCommands() const
 {
-    std::vector <Command*> vCmds;
+    std::vector<Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
+    for (std::map<std::string, Command*>::const_iterator It = _sCommands.begin();
+         It != _sCommands.end();
+         ++It) {
         vCmds.push_back(It->second);
     }
 
     return vCmds;
 }
 
-std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) const
+std::vector<Command*> CommandManager::getGroupCommands(const char* sGrpName) const
 {
-    std::vector <Command*> vCmds;
+    std::vector<Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
-        if ( strcmp(It->second->getGroupName(),sGrpName) == 0)
+    for (std::map<std::string, Command*>::const_iterator It = _sCommands.begin();
+         It != _sCommands.end();
+         ++It) {
+        if (strcmp(It->second->getGroupName(), sGrpName) == 0) {
             vCmds.push_back(It->second);
+        }
     }
 
     return vCmds;
@@ -1917,21 +2138,23 @@ std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) co
 
 Command* CommandManager::getCommandByName(const char* sName) const
 {
-    std::map<std::string,Command*>::const_iterator it = _sCommands.find( sName );
-    return ( it != _sCommands.end() ) ? it->second : 0;
+    std::map<std::string, Command*>::const_iterator it = _sCommands.find(sName);
+    return (it != _sCommands.end()) ? it->second : 0;
 }
 
-void CommandManager::runCommandByName (const char* sName) const
+void CommandManager::runCommandByName(const char* sName) const
 {
     Command* pCmd = getCommandByName(sName);
 
-    if (pCmd)
+    if (pCmd) {
         pCmd->invoke(0);
+    }
 }
 
 void CommandManager::testActive()
 {
-    for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
+    for (std::map<std::string, Command*>::iterator It = _sCommands.begin(); It != _sCommands.end();
+         ++It) {
         It->second->testActive();
     }
 }
@@ -1943,40 +2166,49 @@ void CommandManager::addCommandMode(const char* sContext, const char* sName)
 
 void CommandManager::updateCommands(const char* sContext, int mode)
 {
-    std::map<std::string, std::list<std::string> >::iterator it = _sCommandModes.find(sContext);
+    std::map<std::string, std::list<std::string>>::iterator it = _sCommandModes.find(sContext);
     int rev = _revision;
     if (it != _sCommandModes.end()) {
-        for (const auto & jt : it->second) {
+        for (const auto& jt : it->second) {
             Command* cmd = getCommandByName(jt.c_str());
             if (cmd) {
                 cmd->updateAction(mode);
             }
         }
     }
-    if (rev != _revision)
+    if (rev != _revision) {
         signalChanged();
+    }
 }
 
-const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* accel, const Command* ignore) const
+const Command* Gui::CommandManager::checkAcceleratorForConflicts(
+    const char* accel,
+    const Command* ignore
+) const
 {
-    if (Base::Tools::isNullOrEmpty(accel))
+    if (Base::Tools::isNullOrEmpty(accel)) {
         return nullptr;
+    }
 
     QString newCombo = QString::fromLatin1(accel);
-    if (newCombo.isEmpty())
+    if (newCombo.isEmpty()) {
         return nullptr;
+    }
     auto newSequence = QKeySequence::fromString(newCombo);
-    if (newSequence.isEmpty())
+    if (newSequence.isEmpty()) {
         return nullptr;
+    }
 
     // Does this command shortcut conflict with other commands already defined?
     auto commands = Application::Instance->commandManager().getAllCommands();
     for (const auto& cmd : commands) {
-        if (cmd == ignore)
+        if (cmd == ignore) {
             continue;
+        }
         auto existingAccel = cmd->getAccel();
-        if (Base::Tools::isNullOrEmpty(existingAccel))
+        if (Base::Tools::isNullOrEmpty(existingAccel)) {
             continue;
+        }
 
         // Three possible conflict scenarios:
         // 1) Exactly the same combo as another command
@@ -1984,15 +2216,18 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         // 3) The old command is a one-char combo that overrides the new command
 
         QString existingCombo = QString::fromLatin1(existingAccel);
-        if (existingCombo.isEmpty())
+        if (existingCombo.isEmpty()) {
             continue;
+        }
         auto existingSequence = QKeySequence::fromString(existingCombo);
-        if (existingSequence.isEmpty())
+        if (existingSequence.isEmpty()) {
             continue;
+        }
 
         // Exact match
-        if (existingSequence == newSequence)
+        if (existingSequence == newSequence) {
             return cmd;
+        }
 
         // If it's not exact, then see if one of the sequences is a partial match for
         // the beginning of the other sequence
@@ -2004,8 +2239,9 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
                 break;
             }
         }
-        if (firstNMatch)
+        if (firstNMatch) {
             return cmd;
+        }
     }
 
     return nullptr;

@@ -147,38 +147,27 @@ ViewProviderPath::ViewProviderPath()
     , coordStart(-1)
     , coordEnd(-1)
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/CAM");
-    unsigned long lcol =
-        hGrp->GetUnsigned("DefaultNormalPathColor", 11141375UL);  // dark green (0,170,0)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/CAM"
+    );
+    unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor", 11141375UL);  // dark green
+                                                                                   // (0,170,0)
     float lr, lg, lb;
     lr = ((lcol >> 24) & 0xff) / 255.0;
     lg = ((lcol >> 16) & 0xff) / 255.0;
     lb = ((lcol >> 8) & 0xff) / 255.0;
-    unsigned long mcol =
-        hGrp->GetUnsigned("DefaultPathMarkerColor", 1442775295UL);  // lime green (85,255,0)
+    unsigned long mcol = hGrp->GetUnsigned("DefaultPathMarkerColor", 1442775295UL);  // lime green
+                                                                                     // (85,255,0)
     float mr, mg, mb;
     mr = ((mcol >> 24) & 0xff) / 255.0;
     mg = ((mcol >> 16) & 0xff) / 255.0;
     mb = ((mcol >> 8) & 0xff) / 255.0;
     int lwidth = hGrp->GetInt("DefaultPathLineWidth", 1);
     float arrowScale = hGrp->GetFloat("DefaultArrowScale", 3.0f);
-    ADD_PROPERTY_TYPE(NormalColor,
-                      (lr, lg, lb),
-                      "Path",
-                      App::Prop_None,
-                      "The color of the feed rate moves");
-    ADD_PROPERTY_TYPE(MarkerColor,
-                      (mr, mg, mb),
-                      "Path",
-                      App::Prop_None,
-                      "The color of the markers");
+    ADD_PROPERTY_TYPE(NormalColor, (lr, lg, lb), "Path", App::Prop_None, "The color of the feed rate moves");
+    ADD_PROPERTY_TYPE(MarkerColor, (mr, mg, mb), "Path", App::Prop_None, "The color of the markers");
     ADD_PROPERTY_TYPE(LineWidth, (lwidth), "Path", App::Prop_None, "The line width of this path");
-    ADD_PROPERTY_TYPE(ShowNodes,
-                      (false),
-                      "Path",
-                      App::Prop_None,
-                      "Turns the display of nodes on/off");
+    ADD_PROPERTY_TYPE(ShowNodes, (false), "Path", App::Prop_None, "Turns the display of nodes on/off");
 
 
     ShowCountConstraints.LowerBound = 0;
@@ -189,17 +178,15 @@ ViewProviderPath::ViewProviderPath()
     StartIndexConstraints.UpperBound = std::numeric_limits<int>::max();
     StartIndexConstraints.StepSize = 1;
     StartIndex.setConstraints(&StartIndexConstraints);
-    ADD_PROPERTY_TYPE(StartPosition,
-                      (Base::Vector3d()),
-                      "Show",
-                      App::Prop_None,
-                      "Tool initial position");
+    ADD_PROPERTY_TYPE(StartPosition, (Base::Vector3d()), "Show", App::Prop_None, "Tool initial position");
     ADD_PROPERTY_TYPE(StartIndex, (0), "Show", App::Prop_None, "The index of first GCode to show");
-    ADD_PROPERTY_TYPE(ShowCount,
-                      (0),
-                      "Show",
-                      App::Prop_None,
-                      "Number of movement GCode to show, 0 means all");
+    ADD_PROPERTY_TYPE(
+        ShowCount,
+        (0),
+        "Show",
+        App::Prop_None,
+        "Number of movement GCode to show, 0 means all"
+    );
 
     pcLineCoords = new SoCoordinate3();
     pcLineCoords->ref();
@@ -214,10 +201,9 @@ ViewProviderPath::ViewProviderPath()
     pcMarkerStyle = new SoDrawStyle();
     pcMarkerStyle->ref();
     pcMarkerStyle->style = SoDrawStyle::POINTS;
-    pcMarkerStyle->pointSize =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-            ->GetInt("MarkerSize", 4);
+    pcMarkerStyle->pointSize = App::GetApplication()
+                                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                   ->GetInt("MarkerSize", 4);
 
     pcDrawStyle = new SoDrawStyle();
     pcDrawStyle->ref();
@@ -388,16 +374,17 @@ void ViewProviderPath::onChanged(const App::Property* prop)
         if (!colorindex.empty() && coordStart >= 0 && coordStart < (int)colorindex.size()) {
             const Base::Color& c = NormalColor.getValue();
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/CAM");
-            unsigned long rcol =
-                hGrp->GetUnsigned("DefaultRapidPathColor", 2852126975UL);  // dark red (170,0,0)
+                "User parameter:BaseApp/Preferences/Mod/CAM"
+            );
+            unsigned long rcol
+                = hGrp->GetUnsigned("DefaultRapidPathColor", 2852126975UL);  // dark red (170,0,0)
             float rr, rg, rb;
             rr = ((rcol >> 24) & 0xff) / 255.0;
             rg = ((rcol >> 16) & 0xff) / 255.0;
             rb = ((rcol >> 8) & 0xff) / 255.0;
 
-            unsigned long pcol =
-                hGrp->GetUnsigned("DefaultProbePathColor", 4293591295UL);  // yellow (255,255,5)
+            unsigned long pcol
+                = hGrp->GetUnsigned("DefaultProbePathColor", 4293591295UL);  // yellow (255,255,5)
             float pr, pg, pb;
             pr = ((pcol >> 24) & 0xff) / 255.0;
             pg = ((pcol >> 16) & 0xff) / 255.0;
@@ -471,8 +458,9 @@ void ViewProviderPath::showBoundingBox(bool show)
 
 unsigned long ViewProviderPath::getBoundColor() const
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/CAM");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/CAM"
+    );
     if (SelectionStyle.getValue() == 0 || !Selectable.getValue()) {
         return hGrp->GetUnsigned("DefaultBBoxNormalColor", 4294967295UL);  // white (255,255,255)
     }
@@ -531,15 +519,17 @@ void ViewProviderPath::hideSelection()
 class VisualPathSegmentVisitor: public PathSegmentVisitor
 {
 public:
-    VisualPathSegmentVisitor(const Toolpath& tp,
-                             SoCoordinate3* pcLineCoords_,
-                             SoCoordinate3* pcMarkerCoords_,
-                             std::vector<int>& command2Edge_,
-                             std::deque<int>& edge2Command_,
-                             std::deque<int>& edgeIndices_,
-                             std::vector<int>& colorindex_,
-                             std::deque<Base::Vector3d>& points_,
-                             std::deque<Base::Vector3d>& markers_)
+    VisualPathSegmentVisitor(
+        const Toolpath& tp,
+        SoCoordinate3* pcLineCoords_,
+        SoCoordinate3* pcMarkerCoords_,
+        std::vector<int>& command2Edge_,
+        std::deque<int>& edge2Command_,
+        std::deque<int>& edgeIndices_,
+        std::vector<int>& colorindex_,
+        std::deque<Base::Vector3d>& points_,
+        std::deque<Base::Vector3d>& markers_
+    )
         : pcLineCoords(pcLineCoords_)
         , pcMarkerCoords(pcMarkerCoords_)
         , command2Edge(command2Edge_)
@@ -567,41 +557,49 @@ public:
         markers.push_back(last);
     }
 
-    void g0(int id,
-            const Base::Vector3d& last,
-            const Base::Vector3d& next,
-            const std::deque<Base::Vector3d>& pts) override
+    void g0(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts
+    ) override
     {
         (void)last;
         gx(id, &next, pts, 0);
     }
 
-    void g1(int id,
-            const Base::Vector3d& last,
-            const Base::Vector3d& next,
-            const std::deque<Base::Vector3d>& pts) override
+    void g1(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts
+    ) override
     {
         (void)last;
         gx(id, &next, pts, 1);
     }
 
-    void g23(int id,
-             const Base::Vector3d& last,
-             const Base::Vector3d& next,
-             const std::deque<Base::Vector3d>& pts,
-             const Base::Vector3d& center) override
+    void g23(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts,
+        const Base::Vector3d& center
+    ) override
     {
         (void)last;
         gx(id, &next, pts, 1);
         markers.push_back(center);
     }
 
-    void g8x(int id,
-             const Base::Vector3d& last,
-             const Base::Vector3d& next,
-             const std::deque<Base::Vector3d>& pts,
-             const std::deque<Base::Vector3d>& p,
-             const std::deque<Base::Vector3d>& q) override
+    void g8x(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts,
+        const std::deque<Base::Vector3d>& p,
+        const std::deque<Base::Vector3d>& q
+    ) override
     {
         (void)last;
 
@@ -664,8 +662,7 @@ private:
     std::deque<Base::Vector3d>& points;
     std::deque<Base::Vector3d>& markers;
 
-    virtual void
-    gx(int id, const Base::Vector3d* next, const std::deque<Base::Vector3d>& pts, int color)
+    virtual void gx(int id, const Base::Vector3d* next, const std::deque<Base::Vector3d>& pts, int color)
     {
         for (std::deque<Base::Vector3d>::const_iterator it = pts.begin(); pts.end() != it; ++it) {
             points.push_back(*it);
@@ -705,15 +702,17 @@ void ViewProviderPath::updateVisual(bool rebuild)
         std::deque<Base::Vector3d> points;
         std::deque<Base::Vector3d> markers;
 
-        VisualPathSegmentVisitor collect(tp,
-                                         pcLineCoords,
-                                         pcMarkerCoords,
-                                         command2Edge,
-                                         edge2Command,
-                                         edgeIndices,
-                                         colorindex,
-                                         points,
-                                         markers);
+        VisualPathSegmentVisitor collect(
+            tp,
+            pcLineCoords,
+            pcMarkerCoords,
+            command2Edge,
+            edge2Command,
+            edgeIndices,
+            colorindex,
+            points,
+            markers
+        );
 
         PathSegmentWalker segments(tp);
         segments.walk(collect, StartPosition.getValue());

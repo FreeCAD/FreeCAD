@@ -118,9 +118,11 @@ public:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
 
 protected:
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   const char* propName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
 
     bool setupPipeline();
     void updateVtk();

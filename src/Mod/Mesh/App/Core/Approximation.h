@@ -27,7 +27,7 @@
 
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 #include <algorithm>
 #include <limits>
@@ -64,9 +64,11 @@ public:
     // the function
     Real F(const Vector3<Real>& rkP) const override
     {
-        return (m_afCoeff[0] * rkP.X() * rkP.X() + m_afCoeff[1] * rkP.Y() * rkP.Y()
-                + m_afCoeff[2] * rkP.X() + m_afCoeff[3] * rkP.Y() + m_afCoeff[4] * rkP.X() * rkP.Y()
-                + m_afCoeff[5] - rkP.Z());
+        return (
+            m_afCoeff[0] * rkP.X() * rkP.X() + m_afCoeff[1] * rkP.Y() * rkP.Y()
+            + m_afCoeff[2] * rkP.X() + m_afCoeff[3] * rkP.Y() + m_afCoeff[4] * rkP.X() * rkP.Y()
+            + m_afCoeff[5] - rkP.Z()
+        );
     }
 
     // first-order partial derivatives
@@ -204,8 +206,7 @@ protected:
     // NOLINTBEGIN
     std::list<Base::Vector3f> _vPoints; /**< Holds the points for the fit algorithm.  */
     bool _bIsFitted {false};            /**< Flag, whether the fit has been called. */
-    float _fLastResult {
-        std::numeric_limits<float>::max()}; /**< Stores the last result of the fit */
+    float _fLastResult {std::numeric_limits<float>::max()}; /**< Stores the last result of the fit */
     // NOLINTEND
 };
 
@@ -322,14 +323,16 @@ public:
      * @param dDistance
      * @return bool Success = true, otherwise false
      */
-    bool GetCurvatureInfo(double x,
-                          double y,
-                          double z,
-                          double& rfCurv0,
-                          double& rfCurv1,
-                          Base::Vector3f& rkDir0,
-                          Base::Vector3f& rkDir1,
-                          double& dDistance);
+    bool GetCurvatureInfo(
+        double x,
+        double y,
+        double z,
+        double& rfCurv0,
+        double& rfCurv1,
+        Base::Vector3f& rkDir0,
+        Base::Vector3f& rkDir1,
+        double& dDistance
+    );
 
     bool GetCurvatureInfo(double x, double y, double z, double& rfCurv0, double& rfcurv1);
     /**
@@ -341,12 +344,14 @@ public:
      * @param clEV2    Eigenvector 2
      * @param clEV3    Eigenvector 3
      */
-    void CalcEigenValues(double& dLambda1,
-                         double& dLambda2,
-                         double& dLambda3,
-                         Base::Vector3f& clEV1,
-                         Base::Vector3f& clEV2,
-                         Base::Vector3f& clEV3) const;
+    void CalcEigenValues(
+        double& dLambda1,
+        double& dLambda2,
+        double& dLambda3,
+        Base::Vector3f& clEV1,
+        Base::Vector3f& clEV2,
+        Base::Vector3f& clEV3
+    ) const;
 
 private:
     double _fCoeff[10] {}; /**< Coefficients of the fit */
@@ -367,14 +372,16 @@ class MeshExport SurfaceFit: public PlaneFit
 public:
     SurfaceFit();
 
-    bool GetCurvatureInfo(double x,
-                          double y,
-                          double z,
-                          double& rfCurv0,
-                          double& rfCurv1,
-                          Base::Vector3f& rkDir0,
-                          Base::Vector3f& rkDir1,
-                          double& dDistance);
+    bool GetCurvatureInfo(
+        double x,
+        double y,
+        double z,
+        double& rfCurv0,
+        double& rfCurv1,
+        Base::Vector3f& rkDir0,
+        Base::Vector3f& rkDir1,
+        double& dDistance
+    );
     bool GetCurvatureInfo(double x, double y, double z, double& rfCurv0, double& rfcurv1);
     float Fit() override;
     double Value(double x, double y) const;
@@ -393,8 +400,12 @@ public:
      * @param vmax Parameter range
      * @return control points of the Bezier surface
      */
-    std::vector<Base::Vector3d>
-    toBezier(double umin = 0.0, double umax = 1.0, double vmin = 0.0, double vmax = 1.0) const;
+    std::vector<Base::Vector3d> toBezier(
+        double umin = 0.0,
+        double umax = 1.0,
+        double vmin = 0.0,
+        double vmax = 1.0
+    ) const;
 
 private:
     double PolynomFit();
@@ -561,29 +572,35 @@ public:
      * @param dDistance Gives distances from the point to the quadric.
      * @return bool Success = true, otherwise false
      */
-    bool CurvatureInfo(double x,
-                       double y,
-                       double z,
-                       double& rfCurv0,
-                       double& rfCurv1,
-                       Wm4::Vector3<double>& rkDir0,
-                       Wm4::Vector3<double>& rkDir1,
-                       double& dDistance)
+    bool CurvatureInfo(
+        double x,
+        double y,
+        double z,
+        double& rfCurv0,
+        double& rfCurv1,
+        Wm4::Vector3<double>& rkDir0,
+        Wm4::Vector3<double>& rkDir1,
+        double& dDistance
+    )
     {
         (void)dDistance;
-        return pImplSurf->ComputePrincipalCurvatureInfo(Wm4::Vector3<double>(x, y, z),
-                                                        rfCurv0,
-                                                        rfCurv1,
-                                                        rkDir0,
-                                                        rkDir1);
+        return pImplSurf->ComputePrincipalCurvatureInfo(
+            Wm4::Vector3<double>(x, y, z),
+            rfCurv0,
+            rfCurv1,
+            rkDir0,
+            rkDir1
+        );
     }
 
     Base::Vector3f GetGradient(double x, double y, double z) const
     {
         Wm4::Vector3<double> grad = pImplSurf->GetGradient(Wm4::Vector3<double>(x, y, z));
-        return Base::Vector3f(static_cast<float>(grad.X()),
-                              static_cast<float>(grad.Y()),
-                              static_cast<float>(grad.Z()));
+        return Base::Vector3f(
+            static_cast<float>(grad.X()),
+            static_cast<float>(grad.Y()),
+            static_cast<float>(grad.Z())
+        );
     }
 
     Base::Matrix4D GetHessian(double x, double y, double z) const
@@ -630,9 +647,11 @@ public:
     //+++++++++ Quadric +++++++++++++++++++++++++++++++++++++++
     double F(double x, double y, double z)
     {
-        return (dKoeff[0] + dKoeff[1] * x + dKoeff[2] * y + dKoeff[3] * z + dKoeff[4] * x * x
-                + dKoeff[5] * y * y + dKoeff[6] * z * z + dKoeff[7] * x * y + dKoeff[8] * x * z
-                + dKoeff[9] * y * z);
+        return (
+            dKoeff[0] + dKoeff[1] * x + dKoeff[2] * y + dKoeff[3] * z + dKoeff[4] * x * x
+            + dKoeff[5] * y * y + dKoeff[6] * z * z + dKoeff[7] * x * y + dKoeff[8] * x * z
+            + dKoeff[9] * y * z
+        );
     }
 
     //+++++++++ 1. derivations ++++++++++++++++++++++++++++++++

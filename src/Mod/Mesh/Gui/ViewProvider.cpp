@@ -104,8 +104,7 @@ using MeshCore::MeshKernel;
 using MeshCore::MeshPointIterator;
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-pro-bounds*)
-void ViewProviderMeshBuilder::buildNodes(const App::Property* prop,
-                                         std::vector<SoNode*>& nodes) const
+void ViewProviderMeshBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
     SoCoordinate3* pcPointsCoord = nullptr;
     SoIndexedFaceSet* pcFaces = nullptr;
@@ -130,18 +129,22 @@ void ViewProviderMeshBuilder::buildNodes(const App::Property* prop,
     }
 }
 
-void ViewProviderMeshBuilder::createMesh(const App::Property* prop,
-                                         SoCoordinate3* coords,
-                                         SoIndexedFaceSet* faces) const
+void ViewProviderMeshBuilder::createMesh(
+    const App::Property* prop,
+    SoCoordinate3* coords,
+    SoIndexedFaceSet* faces
+) const
 {
     const auto mesh = dynamic_cast<const Mesh::PropertyMeshKernel*>(prop);
     const MeshCore::MeshKernel& rcMesh = mesh->getValue().getKernel();
     createMesh(rcMesh, coords, faces);
 }
 
-void ViewProviderMeshBuilder::createMesh(const MeshCore::MeshKernel& kernel,
-                                         SoCoordinate3* coords,
-                                         SoIndexedFaceSet* faces) const
+void ViewProviderMeshBuilder::createMesh(
+    const MeshCore::MeshKernel& kernel,
+    SoCoordinate3* coords,
+    SoIndexedFaceSet* faces
+) const
 {
 
     // set the point coordinates
@@ -264,8 +267,9 @@ ViewProviderMesh::ViewProviderMesh()
     LineColor.touch();
 
     // read the correct shape color from the preferences
-    Base::Reference<ParameterGrp> hGrp =
-        Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
+    Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup(
+        "Mod/Mesh"
+    );
 
     // Mesh color
     Base::Color color = ShapeAppearance.getDiffuseColor();
@@ -359,8 +363,8 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         tryColorPerVertexOrFace(Coloring.getValue());
     }
     else if (prop == &SelectionStyle) {
-        pcHighlight->style =
-            SelectionStyle.getValue() ? Gui::SoFCSelection::BOX : Gui::SoFCSelection::EMISSIVE;
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         // Set the inverse color for open edges
@@ -686,9 +690,7 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes() const
     return StrList;
 }
 
-bool ViewProviderMesh::exportToVrml(const char* filename,
-                                    const MeshCore::Material& mat,
-                                    bool binary) const
+bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Material& mat, bool binary) const
 {
     auto coords = new SoCoordinate3();
     auto faces = new SoIndexedFaceSet();
@@ -793,27 +795,25 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     auto func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Display Components"));
     act->setCheckable(true);
-    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE
-                    && highlightMode == HighlighMode::Component);
-    func->toggle(act, [this](bool on) {
-        this->setHighlightedComponents(on);
-    });
+    act->setChecked(
+        pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE
+        && highlightMode == HighlighMode::Component
+    );
+    func->toggle(act, [this](bool on) { this->setHighlightedComponents(on); });
 
     QAction* seg = menu->addAction(QObject::tr("Display Segments"));
     seg->setCheckable(true);
-    seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE
-                    && highlightMode == HighlighMode::Segment);
-    func->toggle(seg, [this](bool on) {
-        this->setHighlightedSegments(on);
-    });
+    seg->setChecked(
+        pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE
+        && highlightMode == HighlighMode::Segment
+    );
+    func->toggle(seg, [this](bool on) { this->setHighlightedSegments(on); });
 
     QAction* col = menu->addAction(QObject::tr("Display Colors"));
     col->setVisible(canHighlightColors());
     col->setCheckable(true);
     col->setChecked(highlightMode == HighlighMode::Color);
-    func->toggle(col, [this](bool on) {
-        this->setHighlightedColors(on);
-    });
+    func->toggle(col, [this](bool on) { this->setHighlightedColors(on); });
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -837,10 +837,12 @@ void ViewProviderMesh::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly,
-                                      const SbViewVolume& vol,
-                                      const Base::Vector3f& rcNormal,
-                                      std::vector<MeshCore::MeshGeomFacet>& aFaces)
+bool ViewProviderMesh::createToolMesh(
+    const std::vector<SbVec2f>& rclPoly,
+    const SbViewVolume& vol,
+    const Base::Vector3f& rcNormal,
+    std::vector<MeshCore::MeshGeomFacet>& aFaces
+)
 {
     float fX {};
     float fY {};
@@ -942,9 +944,7 @@ namespace MeshGui
 class MeshSplit
 {
 public:
-    MeshSplit(ViewProviderMesh* mesh,
-              std::vector<SbVec2f> poly,
-              const Gui::ViewVolumeProjection& proj)
+    MeshSplit(ViewProviderMesh* mesh, std::vector<SbVec2f> poly, const Gui::ViewVolumeProjection& proj)
         : mesh(mesh)
         , poly(std::move(poly))
         , proj(proj)
@@ -1009,11 +1009,11 @@ void ViewProviderMesh::clipMeshCallback(void* ud, SoEventCallback* cb)
         clPoly.push_back(clPoly.front());
     }
 
-    std::vector<Gui::ViewProvider*> views =
-        view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(
+        ViewProviderMesh::getClassTypeId()
+    );
     if (!views.empty()) {
-        Gui::Application::Instance->activeDocument()->openCommand(
-            QT_TRANSLATE_NOOP("Command", "Cut"));
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut"));
         bool commitCommand = false;
         for (auto it : views) {
             auto self = static_cast<ViewProviderMesh*>(it);
@@ -1022,8 +1022,7 @@ void ViewProviderMesh::clipMeshCallback(void* ud, SoEventCallback* cb)
                 SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
-                proj.setTransform(
-                    self->getObject<Mesh::Feature>()->Placement.getValue().toMatrix());
+                proj.setTransform(self->getObject<Mesh::Feature>()->Placement.getValue().toMatrix());
                 if (role == Gui::SelectionRole::Inner) {
                     self->cutMesh(clPoly, proj, true);
                     commitCommand = true;
@@ -1039,9 +1038,7 @@ void ViewProviderMesh::clipMeshCallback(void* ud, SoEventCallback* cb)
                     auto func = new Gui::TimerFunction();
                     func->setAutoDelete(true);
                     auto split = new MeshSplit(self, clPoly, proj);
-                    func->setFunction([split]() {
-                        split->cutMesh();
-                    });
+                    func->setFunction([split]() { split->cutMesh(); });
                     func->singleShot(0);
                 }
             }
@@ -1078,11 +1075,11 @@ void ViewProviderMesh::trimMeshCallback(void* ud, SoEventCallback* cb)
         clPoly.push_back(clPoly.front());
     }
 
-    std::vector<Gui::ViewProvider*> views =
-        view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(
+        ViewProviderMesh::getClassTypeId()
+    );
     if (!views.empty()) {
-        Gui::Application::Instance->activeDocument()->openCommand(
-            QT_TRANSLATE_NOOP("Command", "Trim"));
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Trim"));
         bool commitCommand = false;
         for (auto it : views) {
             auto self = static_cast<ViewProviderMesh*>(it);
@@ -1091,8 +1088,7 @@ void ViewProviderMesh::trimMeshCallback(void* ud, SoEventCallback* cb)
                 SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
-                proj.setTransform(
-                    self->getObject<Mesh::Feature>()->Placement.getValue().toMatrix());
+                proj.setTransform(self->getObject<Mesh::Feature>()->Placement.getValue().toMatrix());
                 if (role == Gui::SelectionRole::Inner) {
                     self->trimMesh(clPoly, proj, true);
                     commitCommand = true;
@@ -1108,9 +1104,7 @@ void ViewProviderMesh::trimMeshCallback(void* ud, SoEventCallback* cb)
                     auto func = new Gui::TimerFunction();
                     func->setAutoDelete(true);
                     auto split = new MeshSplit(self, clPoly, proj);
-                    func->setFunction([split]() {
-                        split->trimMesh();
-                    });
+                    func->setFunction([split]() { split->trimMesh(); });
                     func->singleShot(0);
                 }
             }
@@ -1158,8 +1152,10 @@ void ViewProviderMesh::partMeshCallback(void* ud, SoEventCallback* cb)
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
     if (!ViewProviderMesh::createToolMesh(clPoly, vol, cNormal, aFaces)) {
-        Base::Console().message("The picked polygon seems to have self-overlappings. This could "
-                                "lead to strange results.");
+        Base::Console().message(
+            "The picked polygon seems to have self-overlappings. This could "
+            "lead to strange results."
+        );
     }
 
     MeshCore::MeshKernel toolMesh;
@@ -1168,12 +1164,12 @@ void ViewProviderMesh::partMeshCallback(void* ud, SoEventCallback* cb)
     Base::Sequencer().setLocked(locked);
 
     // Open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Split"));
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Split"));
 
     try {
-        std::vector<Gui::ViewProvider*> views =
-            view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(
+            ViewProviderMesh::getClassTypeId()
+        );
         for (auto view : views) {
             auto that = static_cast<ViewProviderMesh*>(view);
             if (that->getEditingMode() > -1) {
@@ -1231,8 +1227,10 @@ void ViewProviderMesh::segmMeshCallback(void* ud, SoEventCallback* cb)
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
     if (!ViewProviderMesh::createToolMesh(clPoly, vol, cNormal, aFaces)) {
-        Base::Console().message("The picked polygon seems to have self-overlappings. This could "
-                                "lead to strange results.");
+        Base::Console().message(
+            "The picked polygon seems to have self-overlappings. This could "
+            "lead to strange results."
+        );
     }
 
     MeshCore::MeshKernel toolMesh;
@@ -1241,12 +1239,12 @@ void ViewProviderMesh::segmMeshCallback(void* ud, SoEventCallback* cb)
     Base::Sequencer().setLocked(locked);
 
     // Open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Segment"));
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Segment"));
 
     try {
-        std::vector<Gui::ViewProvider*> views =
-            view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(
+            ViewProviderMesh::getClassTypeId()
+        );
         for (auto view : views) {
             auto that = static_cast<ViewProviderMesh*>(view);
             if (that->getEditingMode() > -1) {
@@ -1325,22 +1323,26 @@ void ViewProviderMesh::selectGLCallback(void* ud, SoEventCallback* cb)
         auto that = static_cast<ViewProviderMesh*>(it);
         if (that->getEditingMode() > -1) {
             that->finishEditing();
-            that->selectArea(x,
-                             y,
-                             w,
-                             h,
-                             view->getSoRenderManager()->getViewportRegion(),
-                             view->getSoRenderManager()->getCamera());
+            that->selectArea(
+                x,
+                y,
+                w,
+                h,
+                view->getSoRenderManager()->getViewportRegion(),
+                view->getSoRenderManager()->getCamera()
+            );
         }
     }
 
     view->redraw();
 }
 
-void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
-                                            const Base::ViewProjMethod& proj,
-                                            SbBool inner,
-                                            std::vector<Mesh::FacetIndex>& indices) const
+void ViewProviderMesh::getFacetsFromPolygon(
+    const std::vector<SbVec2f>& picked,
+    const Base::ViewProjMethod& proj,
+    SbBool inner,
+    std::vector<Mesh::FacetIndex>& indices
+) const
 {
     const bool ok = true;
     Base::Polygon2d polygon;
@@ -1365,14 +1367,18 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
     }
 
     if (!ok) {  // note: the mouse grabbing needs to be released
-        Base::Console().message("The picked polygon seems to have self-overlappings. This could "
-                                "lead to strange results.");
+        Base::Console().message(
+            "The picked polygon seems to have self-overlappings. This could "
+            "lead to strange results."
+        );
     }
 }
 
-std::vector<Mesh::FacetIndex> ViewProviderMesh::getFacetsOfRegion(const SbViewportRegion& select,
-                                                                  const SbViewportRegion& region,
-                                                                  SoCamera* camera) const
+std::vector<Mesh::FacetIndex> ViewProviderMesh::getFacetsOfRegion(
+    const SbViewportRegion& select,
+    const SbViewportRegion& region,
+    SoCamera* camera
+) const
 {
     auto root = new SoSeparator();
     root->ref();
@@ -1388,11 +1394,13 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getFacetsOfRegion(const SbViewpo
     return faces;
 }
 
-void ViewProviderMesh::panCamera(SoCamera* cam,
-                                 float aspectratio,
-                                 const SbPlane& panplane,
-                                 const SbVec2f& currpos,
-                                 const SbVec2f& prevpos)
+void ViewProviderMesh::panCamera(
+    SoCamera* cam,
+    float aspectratio,
+    const SbPlane& panplane,
+    const SbVec2f& currpos,
+    const SbVec2f& prevpos
+)
 {
     if (!cam) {  // can happen for empty scenegraph
         return;
@@ -1461,10 +1469,11 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion& vp, S
     }
 }
 
-std::vector<Mesh::FacetIndex>
-ViewProviderMesh::getVisibleFacetsAfterZoom(const SbBox2s& rect,
-                                            const SbViewportRegion& vp,
-                                            SoCamera* camera) const
+std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacetsAfterZoom(
+    const SbBox2s& rect,
+    const SbViewportRegion& vp,
+    SoCamera* camera
+) const
 {
     // camera copy will be deleted inside getVisibleFacets()
     // because the ref counter reaches 0
@@ -1488,9 +1497,11 @@ namespace MeshGui
 class Vertex
 {
 public:
-    Vertex(const MeshCore::MeshKernel& kernel,
-           const MeshCore::MeshFacetGrid& grid,
-           const Base::Vector3f& pos)
+    Vertex(
+        const MeshCore::MeshKernel& kernel,
+        const MeshCore::MeshFacetGrid& grid,
+        const Base::Vector3f& pos
+    )
         : kernel(kernel)
         , grid(grid)
         , pos(pos)
@@ -1510,8 +1521,10 @@ private:
 
 }  // namespace MeshGui
 
-std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewportRegion& vp,
-                                                                 SoCamera* camera) const
+std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(
+    const SbViewportRegion& vp,
+    SoCamera* camera
+) const
 {
     const Mesh::MeshObject& mesh = getMeshObject();
     uint32_t count = (uint32_t)mesh.countFacets();
@@ -1572,9 +1585,11 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     return faces;
 }
 
-void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& polygon,
-                               const Base::ViewProjMethod& proj,
-                               SbBool inner)
+void ViewProviderMesh::cutMesh(
+    const std::vector<SbVec2f>& polygon,
+    const Base::ViewProjMethod& proj,
+    SbBool inner
+)
 {
     // Get the facet indices inside the tool mesh
     std::vector<Mesh::FacetIndex> indices;
@@ -1582,9 +1597,11 @@ void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& polygon,
     removeFacets(indices);
 }
 
-void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon,
-                                const Base::ViewProjMethod& proj,
-                                SbBool inner)
+void ViewProviderMesh::trimMesh(
+    const std::vector<SbVec2f>& polygon,
+    const Base::ViewProjMethod& proj,
+    SbBool inner
+)
 {
     Mesh::PropertyMeshKernel& prop = getMeshProperty();
     Mesh::MeshObject* mesh = prop.startEditing();
@@ -1600,9 +1617,11 @@ void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon,
     getObject()->purgeTouched();
 }
 
-void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
-                                 const Base::Vector3f& normal,
-                                 SbBool clip_inner)
+void ViewProviderMesh::splitMesh(
+    const MeshCore::MeshKernel& toolMesh,
+    const Base::Vector3f& normal,
+    SbBool clip_inner
+)
 {
     // Get the attached mesh property
     Mesh::PropertyMeshKernel& meshProp = getMeshProperty();
@@ -1635,9 +1654,11 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
     getObject()->purgeTouched();
 }
 
-void ViewProviderMesh::segmentMesh(const MeshCore::MeshKernel& toolMesh,
-                                   const Base::Vector3f& normal,
-                                   SbBool clip_inner)
+void ViewProviderMesh::segmentMesh(
+    const MeshCore::MeshKernel& toolMesh,
+    const Base::Vector3f& normal,
+    SbBool clip_inner
+)
 {
     // Get the attached mesh property
     Mesh::PropertyMeshKernel& meshProp = getMeshProperty();
@@ -1683,8 +1704,9 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
             view->setEditing(false);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), faceInfoCallback, ud);
-            std::list<Gui::GLGraphicsItem*> glItems =
-                view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
+                Gui::GLFlagWindow::getClassTypeId()
+            );
             for (auto glItem : glItems) {
                 view->removeGraphicsItem(glItem);
                 delete glItem;
@@ -1692,7 +1714,8 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
 
             // See comment below
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
+                "User parameter:BaseApp/Preferences/View"
+            );
             hGrp->SetBool("ShowNaviCube", hGrp->GetBool("ShowNaviCube", true));
         }
     }
@@ -1727,8 +1750,9 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
             Mesh::FacetIndex uFacet = faceDetail->getFaceIndex();
             that->faceInfo(uFacet);
             Gui::GLFlagWindow* flags = nullptr;
-            std::list<Gui::GLGraphicsItem*> glItems =
-                view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
+                Gui::GLFlagWindow::getClassTypeId()
+            );
             if (glItems.empty()) {
                 flags = new Gui::GLFlagWindow(view);
                 view->addGraphicsItem(flags);
@@ -1737,16 +1761,18 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
                 flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
             }
 
-            int point1 =
-                static_cast<const SoPointDetail*>(faceDetail->getPoint(0))->getCoordinateIndex();
-            int point2 =
-                static_cast<const SoPointDetail*>(faceDetail->getPoint(1))->getCoordinateIndex();
-            int point3 =
-                static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
+            int point1
+                = static_cast<const SoPointDetail*>(faceDetail->getPoint(0))->getCoordinateIndex();
+            int point2
+                = static_cast<const SoPointDetail*>(faceDetail->getPoint(1))->getCoordinateIndex();
+            int point3
+                = static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
             auto flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
-            QString toolTip = QStringLiteral("Facet index: %1\n"
-                                             "Points: <%2, %3, %4>")
+            QString toolTip = QStringLiteral(
+                                  "Facet index: %1\n"
+                                  "Points: <%2, %3, %4>"
+            )
                                   .arg(uFacet)
                                   .arg(point1)
                                   .arg(point2)
@@ -1813,8 +1839,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
         // Mark all incoming mouse button events as handled, especially, to deactivate the selection
         // node
         cb->getAction()->setHandled();
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-            && mbe->getState() == SoButtonEvent::UP) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
             cb->setHandled();
             // context-menu
             QMenu menu;
@@ -1825,28 +1850,30 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
             if (cl == id) {
                 view->setEditing(false);
                 view->setSelectionEnabled(true);
-                view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                          markPartCallback,
-                                          ud);
+                view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), markPartCallback, ud);
 
-                std::vector<ViewProvider*> views =
-                    view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getViewProvidersOfType(
+                    ViewProviderMesh::getClassTypeId()
+                );
                 for (auto view : views) {
                     static_cast<ViewProviderMesh*>(view)->clearSelection();
                 }
             }
             else if (cf == id) {
-                std::vector<ViewProvider*> views =
-                    view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getViewProvidersOfType(
+                    ViewProviderMesh::getClassTypeId()
+                );
                 for (auto view : views) {
                     static_cast<ViewProviderMesh*>(view)->clearSelection();
                 }
             }
             else if (rm == id) {
                 Gui::Application::Instance->activeDocument()->openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Delete"));
-                std::vector<ViewProvider*> views =
-                    view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                    QT_TRANSLATE_NOOP("Command", "Delete")
+                );
+                std::vector<ViewProvider*> views = view->getViewProvidersOfType(
+                    ViewProviderMesh::getClassTypeId()
+                );
                 for (auto view : views) {
                     static_cast<ViewProviderMesh*>(view)->deleteSelection();
                 }
@@ -1871,8 +1898,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
                 const SoDetail* detail = point->getDetail(that->getShapeNode());
                 if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                     // get the boundary to the picked facet
-                    Mesh::FacetIndex uFacet =
-                        static_cast<const SoFaceDetail*>(detail)->getFaceIndex();
+                    Mesh::FacetIndex uFacet = static_cast<const SoFaceDetail*>(detail)->getFaceIndex();
                     that->selectComponent(uFacet);
                 }
             }
@@ -1906,15 +1932,17 @@ void ViewProviderMesh::faceInfo(Mesh::FacetIndex uFacet)
             tria._aclPoints[1].z,
             tria._aclPoints[2].x,
             tria._aclPoints[2].y,
-            tria._aclPoints[2].z);
+            tria._aclPoints[2].z
+        );
     }
 }
 
 void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 {
     // get parameter from user settings
-    Base::Reference<ParameterGrp> hGrp =
-        Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
+    Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup(
+        "Mod/Mesh"
+    );
     int level = (int)hGrp->GetInt("FillHoleLevel", 2);
 
     // get the boundary to the picked facet
@@ -1970,7 +1998,8 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 
     // add the facets to the mesh and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Fill hole"));
+        QT_TRANSLATE_NOOP("Command", "Fill hole")
+    );
     auto& prop = getMeshProperty();
     Mesh::MeshObject* kernel = prop.startEditing();
     kernel->addFacets(newFacets, newPoints, true);
@@ -2207,10 +2236,10 @@ void ViewProviderMesh::invertSelection()
     const Mesh::MeshObject& rMesh = getMeshObject();
     const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
     MeshCore::MeshIsNotFlag<MeshCore::MeshFacet> flag;
-    unsigned long num_notsel =
-        std::count_if(faces.begin(), faces.end(), [flag](const MeshCore::MeshFacet& f) {
-            return flag(f, MeshCore::MeshFacet::SELECTED);
-        });
+    unsigned long num_notsel
+        = std::count_if(faces.begin(), faces.end(), [flag](const MeshCore::MeshFacet& f) {
+              return flag(f, MeshCore::MeshFacet::SELECTED);
+          });
     std::vector<Mesh::FacetIndex> notselect;
     notselect.reserve(num_notsel);
     auto beg = faces.begin();
@@ -2248,12 +2277,14 @@ bool ViewProviderMesh::hasSelection() const
     return rMesh.hasSelectedFacets();
 }
 
-void ViewProviderMesh::selectArea(short x,
-                                  short y,
-                                  short w,
-                                  short h,
-                                  const SbViewportRegion& region,
-                                  SoCamera* camera)
+void ViewProviderMesh::selectArea(
+    short x,
+    short y,
+    short w,
+    short h,
+    const SbViewportRegion& region,
+    SoCamera* camera
+)
 {
     SbViewportRegion vp;
     vp.setViewportPixels(x, y, w, h);
@@ -2419,15 +2450,13 @@ void ViewProviderMesh::highlightColors()
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop =
-            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
+        auto prop = freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             setColorPerFace(prop);
         }
     }
     {
-        auto prop =
-            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
+        auto prop = freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             setColorPerVertex(prop);
         }
@@ -2438,15 +2467,13 @@ bool ViewProviderMesh::canHighlightColors() const
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop =
-            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
+        auto prop = freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             return true;
         }
     }
     {
-        auto prop =
-            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
+        auto prop = freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             return true;
         }
@@ -2493,12 +2520,13 @@ void ViewProviderIndexedFaceSet::attach(App::DocumentObject* obj)
     pcHighlight->addChild(pcMeshFaces);
 
     // read the threshold from the preferences
-    Base::Reference<ParameterGrp> hGrp =
-        Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
+    Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup(
+        "Mod/Mesh"
+    );
     long size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
-        static_cast<SoFCIndexedFaceSet*>(pcMeshFaces)->renderTriangleLimit =
-            (unsigned int)(pow(10.0F, size));
+        static_cast<SoFCIndexedFaceSet*>(pcMeshFaces)->renderTriangleLimit
+            = (unsigned int)(pow(10.0F, size));
     }
 }
 
@@ -2584,8 +2612,9 @@ void ViewProviderMeshObject::attach(App::DocumentObject* obj)
     pcHighlight->addChild(pcMeshShape);
 
     // read the threshold from the preferences
-    Base::Reference<ParameterGrp> hGrp =
-        Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
+    Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup(
+        "Mod/Mesh"
+    );
     long size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
         pcMeshShape->renderTriangleLimit = (unsigned int)(pow(10.0F, size));
@@ -2596,8 +2625,7 @@ void ViewProviderMeshObject::updateData(const App::Property* prop)
 {
     ViewProviderMesh::updateData(prop);
     if (const auto mesh = dynamic_cast<const Mesh::PropertyMeshKernel*>(prop)) {
-        this->pcMeshNode->mesh.setValue(
-            Base::Reference<const Mesh::MeshObject>(mesh->getValuePtr()));
+        this->pcMeshNode->mesh.setValue(Base::Reference<const Mesh::MeshObject>(mesh->getValuePtr()));
         // Needs to update internal bounding box caches
         this->pcMeshShape->touch();
     }

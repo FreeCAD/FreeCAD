@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/GeometryPyCXX.h>
@@ -44,20 +43,24 @@ std::string SelectionObjectPy::representation() const
     return "<SelectionObject>";
 }
 
-PyObject* SelectionObjectPy::remove(PyObject * args)
+PyObject* SelectionObjectPy::remove(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
-    Selection().rmvSelection(getSelectionObjectPtr()->getDocName(),
-                             getSelectionObjectPtr()->getFeatName());
+    }
+    Selection().rmvSelection(
+        getSelectionObjectPtr()->getDocName(),
+        getSelectionObjectPtr()->getFeatName()
+    );
     Py_Return;
 }
 
-PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
+PyObject* SelectionObjectPy::isObjectTypeOf(PyObject* args)
 {
     char* type;
-    if (!PyArg_ParseTuple(args, "s", &type))
+    if (!PyArg_ParseTuple(args, "s", &type)) {
         return nullptr;
+    }
     Base::Type id = Base::Type::fromName(type);
     if (id.isBad()) {
         PyErr_SetString(PyExc_TypeError, "Not a valid type");
@@ -80,8 +83,9 @@ Py::Tuple SelectionObjectPy::getSubElementNames() const
 
     Py::Tuple temp(objs.size());
     Py::sequence_index_type index = 0;
-    for(const auto & obj : objs)
+    for (const auto& obj : objs) {
         temp.setItem(index++, Py::String(obj));
+    }
 
     return temp;
 }
@@ -103,40 +107,45 @@ Py::String SelectionObjectPy::getDocumentName() const
 
 Py::Object SelectionObjectPy::getDocument() const
 {
-    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
-    if (!obj)
+    App::DocumentObject* obj = getSelectionObjectPtr()->getObject();
+    if (!obj) {
         throw Py::RuntimeError("Cannot get document of deleted object");
+    }
     return Py::Object(obj->getDocument()->getPyObject(), true);
 }
 
 Py::Object SelectionObjectPy::getObject() const
 {
-    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
-    if (!obj)
+    App::DocumentObject* obj = getSelectionObjectPtr()->getObject();
+    if (!obj) {
         throw Py::RuntimeError("Object already deleted");
+    }
     return Py::Object(obj->getPyObject(), true);
 }
 
 Py::Tuple SelectionObjectPy::getSubObjects() const
 {
-    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
-    if (!obj)
+    App::DocumentObject* obj = getSelectionObjectPtr()->getObject();
+    if (!obj) {
         throw Py::RuntimeError("Cannot get sub-objects of deleted object");
+    }
 
-    std::vector<PyObject *> subObjs;
+    std::vector<PyObject*> subObjs;
 
-    for(const auto &subname : getSelectionObjectPtr()->getSubNames()) {
-        PyObject *pyObj=nullptr;
+    for (const auto& subname : getSelectionObjectPtr()->getSubNames()) {
+        PyObject* pyObj = nullptr;
         Base::Matrix4D mat;
-        obj->getSubObject(subname.c_str(),&pyObj,&mat);
-        if(pyObj)
+        obj->getSubObject(subname.c_str(), &pyObj, &mat);
+        if (pyObj) {
             subObjs.push_back(pyObj);
+        }
     }
 
     Py::Tuple temp(subObjs.size());
     Py::sequence_index_type index = 0;
-    for(const auto & subObj : subObjs)
+    for (const auto& subObj : subObjs) {
         temp.setItem(index++, Py::asObject(subObj));
+    }
 
     return temp;
 }
@@ -152,13 +161,14 @@ Py::Tuple SelectionObjectPy::getPickedPoints() const
 
     Py::Tuple temp(points.size());
     Py::sequence_index_type index = 0;
-    for(const auto & point : points)
+    for (const auto& point : points) {
         temp.setItem(index++, Py::Vector(point));
+    }
 
     return temp;
 }
 
-PyObject *SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

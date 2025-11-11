@@ -12,6 +12,7 @@ if "BUILD_SKETCHER" in FreeCAD.__cmake__:
 
 import unittest
 
+
 class RegressionTests(unittest.TestCase):
 
     # pylint: disable=attribute-defined-outside-init
@@ -111,21 +112,21 @@ class RegressionTests(unittest.TestCase):
 
     def test_CircularReference(self):
 
-        cube = self.Doc.addObject("Part::Box","Cube")
-        cube.setExpression('Length', 'Width + 10mm')
+        cube = self.Doc.addObject("Part::Box", "Cube")
+        cube.setExpression("Length", "Width + 10mm")
         with self.assertRaises(RuntimeError) as context:
-            cube.setExpression('Width', 'Length + 10mm')
+            cube.setExpression("Width", "Length + 10mm")
         assert "Width reference creates a cyclic dependency." in str(context.exception)
 
-        cube.setExpression('.Placement.Base.x', '.Placement.Base.y + 10mm')
+        cube.setExpression(".Placement.Base.x", ".Placement.Base.y + 10mm")
         with self.assertRaises(RuntimeError) as context:
-            cube.setExpression('.Placement.Base.y', '.Placement.Base.x + 10mm')
+            cube.setExpression(".Placement.Base.y", ".Placement.Base.x + 10mm")
         assert ".Placement.Base.y reference creates a cyclic dependency." in str(context.exception)
 
         cube.recompute()
         v1 = cube.Placement.Base
         cube.recompute()
-        assert cube.Placement.Base.isEqual(v1,1e-6)
+        assert cube.Placement.Base.isEqual(v1, 1e-6)
 
     def test_TangentMode3_Issue24254(self):
         """In FreeCAD 1.1 we changed the behavior of the mmTangentPlane, but added code to handle old files
@@ -133,7 +134,7 @@ class RegressionTests(unittest.TestCase):
         tangent plane setup."""
 
         location = os.path.dirname(os.path.realpath(__file__))
-        FreeCAD.openDocument(os.path.join(location,"TestTangentMode3-0.21.FCStd"), True)
+        FreeCAD.openDocument(os.path.join(location, "TestTangentMode3-0.21.FCStd"), True)
 
         def check_plane(name, expected_pos, expected_normal, expected_xaxis):
             obj = FreeCAD.ActiveDocument.getObject(name)
@@ -143,8 +144,8 @@ class RegressionTests(unittest.TestCase):
 
             pos = obj.Placement.Base
             rot = obj.Placement.Rotation
-            normal = rot.multVec(FreeCAD.Vector(0,0,1))
-            xaxis  = rot.multVec(FreeCAD.Vector(1,0,0))
+            normal = rot.multVec(FreeCAD.Vector(0, 0, 1))
+            xaxis = rot.multVec(FreeCAD.Vector(1, 0, 0))
 
             # position
             self.assertAlmostEqual((pos - expected_pos).Length, 0)
@@ -161,26 +162,24 @@ class RegressionTests(unittest.TestCase):
         sin30 = math.sin(rad30)
 
         expected_planes = [
-            ("Sketch001",
-             FreeCAD.Vector(-1 * r, 0, 0), # position
-             FreeCAD.Vector(1, 0, 0),      # normal
-             FreeCAD.Vector(0, -1, 0)),    # tangent x-axis
-            ("Sketch002",
-             FreeCAD.Vector(sin30 * r,
-                            cos30 * cos30 * (-r),
-                            cos30 * sin30 * r),
-             FreeCAD.Vector(sin30,
-                            cos30 * cos30 * (-1),
-                            cos30 * sin30),
-             FreeCAD.Vector(0, sin30, cos30)),
-            ("Sketch003",
-             FreeCAD.Vector(cos30 * cos30 * r,
-                            sin30 * r,
-                            cos30 * sin30 * r),
-             FreeCAD.Vector(cos30 * cos30,
-                            sin30,
-                            cos30 * sin30),
-             FreeCAD.Vector(sin30, 0, -cos30)),
+            (
+                "Sketch001",
+                FreeCAD.Vector(-1 * r, 0, 0),  # position
+                FreeCAD.Vector(1, 0, 0),  # normal
+                FreeCAD.Vector(0, -1, 0),
+            ),  # tangent x-axis
+            (
+                "Sketch002",
+                FreeCAD.Vector(sin30 * r, cos30 * cos30 * (-r), cos30 * sin30 * r),
+                FreeCAD.Vector(sin30, cos30 * cos30 * (-1), cos30 * sin30),
+                FreeCAD.Vector(0, sin30, cos30),
+            ),
+            (
+                "Sketch003",
+                FreeCAD.Vector(cos30 * cos30 * r, sin30 * r, cos30 * sin30 * r),
+                FreeCAD.Vector(cos30 * cos30, sin30, cos30 * sin30),
+                FreeCAD.Vector(sin30, 0, -cos30),
+            ),
         ]
 
         for name, pos, normal, xaxis in expected_planes:

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include "ViewProvider.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy.xml)
@@ -36,12 +35,12 @@ std::string ViewProviderPy::representation() const
     return {"<PartDesign::ViewProvider>"};
 }
 
-PyObject *ViewProviderPy::getCustomAttributes(const char* ) const
+PyObject* ViewProviderPy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int ViewProviderPy::setCustomAttributes(const char* , PyObject *)
+int ViewProviderPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }

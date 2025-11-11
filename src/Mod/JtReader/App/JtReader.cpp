@@ -32,10 +32,10 @@ vector<SimpleMeshFacet> result;
 vector<SimpleMeshFacet>::const_iterator resultIt;
 
 
-#define indent(i)                                                                                  \
-    {                                                                                              \
-        for (int l = 0; l < i; l++)                                                                \
-            InfoOut << "   ";                                                                      \
+#define indent(i) \
+    { \
+        for (int l = 0; l < i; l++) \
+            InfoOut << "   "; \
     }
 
 void printXform(JtkTransform* partXform, int level)
@@ -153,15 +153,17 @@ void printShape(JtkShape* partShape, int level)
         float *vertex = NULL, *normal = NULL, *color = NULL, *texture = NULL;
         int vertexCount = -1, normCount = -1, colorCount = -1, textCount = -1;
 
-        partShape->getInternal(vertex,
-                               vertexCount,
-                               normal,
-                               normCount,
-                               color,
-                               colorCount,
-                               texture,
-                               textCount,
-                               set);
+        partShape->getInternal(
+            vertex,
+            vertexCount,
+            normal,
+            normCount,
+            color,
+            colorCount,
+            texture,
+            textCount,
+            set
+        );
 
         if (vertex && (vertexCount > 0)) {
             indent(level + 2);
@@ -425,15 +427,17 @@ void insertShapeFaces(JtkShape* partShape)
         float *vertex = NULL, *normal = NULL, *color = NULL, *texture = NULL;
         int vertexCount = -1, normCount = -1, colorCount = -1, textCount = -1;
 
-        partShape->getInternal(vertex,
-                               vertexCount,
-                               normal,
-                               normCount,
-                               color,
-                               colorCount,
-                               texture,
-                               textCount,
-                               set);
+        partShape->getInternal(
+            vertex,
+            vertexCount,
+            normal,
+            normCount,
+            color,
+            colorCount,
+            texture,
+            textCount,
+            set
+        );
 
         if (normCount < 3) {
             return;

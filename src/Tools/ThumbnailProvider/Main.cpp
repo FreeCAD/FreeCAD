@@ -134,7 +134,8 @@ STDAPI DllRegisterServer()
          L".FCBak\\shellex\\{E357FCCD-A995-4576-B01F-234630154E96}",
          NULL,
          REG_SZ,
-         (DWORD_PTR)szCLSID_SampleThumbnailProvider}};
+         (DWORD_PTR)szCLSID_SampleThumbnailProvider}
+    };
 
     return CreateRegistryKeys(keys, ARRAYSIZE(keys));
 }
@@ -172,12 +173,14 @@ STDAPI CreateRegistryKey(REGKEY_SUBKEY_AND_VALUE* pKey)
     }
 
     if (SUCCEEDED(hr)) {
-        LSTATUS status = SHSetValue(pKey->hKey,
-                                    pKey->lpszSubKey,
-                                    pKey->lpszValue,
-                                    pKey->dwType,
-                                    pvData,
-                                    (DWORD)cbData);
+        LSTATUS status = SHSetValue(
+            pKey->hKey,
+            pKey->lpszSubKey,
+            pKey->lpszValue,
+            pKey->dwType,
+            pvData,
+            (DWORD)cbData
+        );
         if (NOERROR != status) {
             hr = HRESULT_FROM_WIN32(status);
         }

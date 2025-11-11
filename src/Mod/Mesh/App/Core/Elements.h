@@ -199,9 +199,11 @@ public:
      * \a rclDir with the edge. The intersection must be inside the edge. If there is no
      * intersection false is returned.
      */
-    bool IntersectWithLine(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           Base::Vector3f& rclRes) const;
+    bool IntersectWithLine(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        Base::Vector3f& rclRes
+    ) const;
     /** Calculates the intersection point of an edge with this edge.
      * The intersection must be inside both edges. If there is no intersection false is returned.
      */
@@ -210,9 +212,11 @@ public:
      * direction \a rclDir with the edge. The intersection must be inside the edge. If there is no
      * intersection false is returned.
      */
-    bool IntersectWithPlane(const Base::Vector3f& rclPt,
-                            const Base::Vector3f& rclDir,
-                            Base::Vector3f& rclRes) const;
+    bool IntersectWithPlane(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        Base::Vector3f& rclRes
+    ) const;
     /**
      * Calculates the projection of a point onto the line defined by the edge. The caller must check
      * if the projection point is inside the edge.
@@ -223,10 +227,12 @@ public:
      * line defined by \a rclPt and \a rclDir. If the two points are identical then both lines
      * intersect each other.
      */
-    void ClosestPointsToLine(const Base::Vector3f& linePt,
-                             const Base::Vector3f& lineDir,
-                             Base::Vector3f& rclPnt1,
-                             Base::Vector3f& rclPnt2) const;
+    void ClosestPointsToLine(
+        const Base::Vector3f& linePt,
+        const Base::Vector3f& lineDir,
+        Base::Vector3f& rclPnt1,
+        Base::Vector3f& rclPnt2
+    ) const;
     /**
      * Checks if the point is part of the edge. A point is regarded as part
      * of an edge if the distance is lower than \a fDistance to the projected point
@@ -291,12 +297,14 @@ public:
     inline MeshFacet();
     inline MeshFacet(const MeshFacet& rclF) = default;
     inline MeshFacet(MeshFacet&& rclF) = default;
-    inline MeshFacet(PointIndex p1,
-                     PointIndex p2,
-                     PointIndex p3,
-                     FacetIndex n1 = FACET_INDEX_MAX,
-                     FacetIndex n2 = FACET_INDEX_MAX,
-                     FacetIndex n3 = FACET_INDEX_MAX);
+    inline MeshFacet(
+        PointIndex p1,
+        PointIndex p2,
+        PointIndex p3,
+        FacetIndex n1 = FACET_INDEX_MAX,
+        FacetIndex n2 = FACET_INDEX_MAX,
+        FacetIndex n3 = FACET_INDEX_MAX
+    );
     ~MeshFacet() = default;
     //@}
 
@@ -568,9 +576,7 @@ public:
      * Return is the number of intersections points: 0: no intersection, 1: one intersection point
      * (rclPt0), 2: two intersections points (rclPt0, rclPt1)
      */
-    int IntersectWithFacet(const MeshGeomFacet& facet,
-                           Base::Vector3f& rclPt0,
-                           Base::Vector3f& rclPt1) const;
+    int IntersectWithFacet(const MeshGeomFacet& facet, Base::Vector3f& rclPt0, Base::Vector3f& rclPt1) const;
     /** Calculates the shortest distance from the line segment defined by \a rcP1 and \a rcP2 to
      * this facet.
      */
@@ -589,39 +595,46 @@ public:
      * \a rclDir with the facet. The intersection must be inside the facet. If there is no
      * intersection false is returned.
      */
-    bool IntersectWithLine(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           Base::Vector3f& rclRes) const;
+    bool IntersectWithLine(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        Base::Vector3f& rclRes
+    ) const;
     /** Calculates the intersection point of the line defined by the base \a rclPt and the direction
      * \a rclDir with the facet. The intersection must be inside the facet. If there is no
      * intersection false is returned. This does actually the same as IntersectWithLine() with one
      * additionally constraint that the angle between the direction of the line and the normal of
      * the plane must not exceed \a fMaxAngle.
      */
-    bool Foraminate(const Base::Vector3f& P,
-                    const Base::Vector3f& dir,
-                    Base::Vector3f& I,
-                    float fMaxAngle = Mathf::PI) const;
+    bool Foraminate(
+        const Base::Vector3f& P,
+        const Base::Vector3f& dir,
+        Base::Vector3f& I,
+        float fMaxAngle = Mathf::PI
+    ) const;
     /** Checks if the facet intersects with the plane defined by the base \a rclBase and the normal
      * \a rclNormal and returns true if two points are found, false otherwise.
      */
-    bool IntersectWithPlane(const Base::Vector3f& rclBase,
-                            const Base::Vector3f& rclNormal,
-                            Base::Vector3f& rclP1,
-                            Base::Vector3f& rclP2) const;
+    bool IntersectWithPlane(
+        const Base::Vector3f& rclBase,
+        const Base::Vector3f& rclNormal,
+        Base::Vector3f& rclP1,
+        Base::Vector3f& rclP2
+    ) const;
     /**
      * Checks if the facet intersects with the plane defined by the base \a rclBase and the normal
      * \a rclNormal.
      */
-    inline bool IntersectWithPlane(const Base::Vector3f& rclBase,
-                                   const Base::Vector3f& rclNormal) const;
+    inline bool IntersectWithPlane(const Base::Vector3f& rclBase, const Base::Vector3f& rclNormal) const;
     /** Checks if the plane defined by the facet \a rclFacet intersects with the line defined by the
      * base \a rclBase and the direction \a rclNormal and returns the intersection point \a rclRes
      * if possible.
      */
-    bool IntersectPlaneWithLine(const Base::Vector3f& rclPt,
-                                const Base::Vector3f& rclDir,
-                                Base::Vector3f& rclRes) const;
+    bool IntersectPlaneWithLine(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        Base::Vector3f& rclRes
+    ) const;
     /** Calculates the volume of the prism defined by two facets.
      * \note The two facets must not intersect.
      */
@@ -636,8 +649,7 @@ public:
     unsigned short NearestEdgeToPoint(const Base::Vector3f& rclPt) const;
     /** Returns the edge number \a side of the facet and the distance to the edge that is nearest to
      * the point \a rclPt. */
-    void
-    NearestEdgeToPoint(const Base::Vector3f& rclPt, float& fDistance, unsigned short& side) const;
+    void NearestEdgeToPoint(const Base::Vector3f& rclPt, float& fDistance, unsigned short& side) const;
     /** Returns the edge for \a side. */
     MeshGeomEdge GetEdge(short side) const;
     /** The center and radius of the circum circle define a sphere in 3D. If the point \a rP is part
@@ -985,12 +997,16 @@ inline bool MeshGeomFacet::ContainedByOrIntersectBoundingBox(const Base::BoundBo
     return (IntersectBoundingBox(rclBB));
 }
 
-inline bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
-                                              const Base::Vector3f& rclNormal) const
+inline bool MeshGeomFacet::IntersectWithPlane(
+    const Base::Vector3f& rclBase,
+    const Base::Vector3f& rclNormal
+) const
 {
     bool bD0 = (_aclPoints[0].DistanceToPlane(rclBase, rclNormal) > 0.0F);
-    return !((bD0 == (_aclPoints[1].DistanceToPlane(rclBase, rclNormal) > 0.0F))
-             && (bD0 == (_aclPoints[2].DistanceToPlane(rclBase, rclNormal) > 0.0F)));
+    return !(
+        (bD0 == (_aclPoints[1].DistanceToPlane(rclBase, rclNormal) > 0.0F))
+        && (bD0 == (_aclPoints[2].DistanceToPlane(rclBase, rclNormal) > 0.0F))
+    );
 }
 
 inline MeshFacet::MeshFacet()  // NOLINT
@@ -1001,12 +1017,14 @@ inline MeshFacet::MeshFacet()  // NOLINT
     memset(_aulPoints, 0xff, sizeof(PointIndex) * 3);
 }
 
-inline MeshFacet::MeshFacet(PointIndex p1,
-                            PointIndex p2,
-                            PointIndex p3,
-                            FacetIndex n1,
-                            FacetIndex n2,
-                            FacetIndex n3)
+inline MeshFacet::MeshFacet(
+    PointIndex p1,
+    PointIndex p2,
+    PointIndex p3,
+    FacetIndex n1,
+    FacetIndex n2,
+    FacetIndex n3
+)
     : _ucFlag(0)
     , _ulProp(0)
     , _aulPoints {p1, p2, p3}

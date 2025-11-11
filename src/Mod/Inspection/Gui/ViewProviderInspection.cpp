@@ -70,16 +70,20 @@ PROPERTY_SOURCE(InspectionGui::ViewProviderInspection, Gui::ViewProviderDocument
 
 ViewProviderInspection::ViewProviderInspection()
 {
-    ADD_PROPERTY_TYPE(OutsideGrayed,
-                      (false),
-                      "",
-                      (App::PropertyType)(App::Prop_Output | App::Prop_Hidden),
-                      "");
-    ADD_PROPERTY_TYPE(PointSize,
-                      (1.0),
-                      "Display",
-                      (App::PropertyType)(App::Prop_None /*App::Prop_Hidden*/),
-                      "");
+    ADD_PROPERTY_TYPE(
+        OutsideGrayed,
+        (false),
+        "",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Hidden),
+        ""
+    );
+    ADD_PROPERTY_TYPE(
+        PointSize,
+        (1.0),
+        "Display",
+        (App::PropertyType)(App::Prop_None /*App::Prop_Hidden*/),
+        ""
+    );
     PointSize.setConstraints(&floatRange);
 
     pcColorRoot = new SoSeparator();
@@ -123,12 +127,14 @@ ViewProviderInspection::~ViewProviderInspection()
         Base::Console().destructorError(
             "ViewProviderInspection",
             "ViewProviderInspection::deleteColorBar() threw an exception: %s\n",
-            e.what());
+            e.what()
+        );
     }
     catch (...) {
         Base::Console().destructorError(
             "ViewProviderInspection",
-            "ViewProviderInspection destructor threw an unknown exception");
+            "ViewProviderInspection destructor threw an unknown exception"
+        );
     }
 }
 
@@ -191,8 +197,8 @@ void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcColorShadedRoot, "ColorShaded");
 
     // Check for an already existing color bar
-    Gui::SoFCColorBar* pcBar =
-        ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+    Gui::SoFCColorBar* pcBar
+        = ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
         float fMin = pcColorBar->getMinValue();
         float fMax = pcColorBar->getMaxValue();
@@ -243,8 +249,10 @@ bool ViewProviderInspection::setupLines(const Data::ComplexGeoData* data)
     return true;
 }
 
-bool ViewProviderInspection::setupPoints(const Data::ComplexGeoData* data,
-                                         App::PropertyContainer* container)
+bool ViewProviderInspection::setupPoints(
+    const Data::ComplexGeoData* data,
+    App::PropertyContainer* container
+)
 {
     std::vector<Base::Vector3d> points;
     std::vector<Base::Vector3f> normals;
@@ -256,12 +264,12 @@ bool ViewProviderInspection::setupPoints(const Data::ComplexGeoData* data,
     }
 
     normals.reserve(normals_d.size());
-    std::transform(normals_d.cbegin(),
-                   normals_d.cend(),
-                   std::back_inserter(normals),
-                   [](const Base::Vector3d& p) {
-                       return Base::toVector<float>(p);
-                   });
+    std::transform(
+        normals_d.cbegin(),
+        normals_d.cend(),
+        std::back_inserter(normals),
+        [](const Base::Vector3d& p) { return Base::toVector<float>(p); }
+    );
 
     // If getPoints() doesn't deliver normals check a second property
     if (normals.empty() && container) {
@@ -346,10 +354,10 @@ void ViewProviderInspection::updateData(const App::Property* prop)
 {
     // set to the expected size
     if (prop->isDerivedFrom<App::PropertyLink>()) {
-        App::GeoFeature* object =
-            static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
-        const App::PropertyComplexGeoData* propData =
-            object ? object->getPropertyOfGeometry() : nullptr;
+        App::GeoFeature* object
+            = static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
+        const App::PropertyComplexGeoData* propData = object ? object->getPropertyOfGeometry()
+                                                             : nullptr;
         if (propData) {
             Gui::coinRemoveAllChildren(this->pcLinkRoot);
 
@@ -401,13 +409,14 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post(
             "ViewProviderInspection::setDistances",
             "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)",
-            pDistances->getTypeId().getName());
+            pDistances->getTypeId().getName()
+        );
         return;
     }
 
     // distance values
-    const std::vector<float>& fValues =
-        static_cast<Inspection::PropertyDistanceList*>(pDistances)->getValues();
+    const std::vector<float>& fValues
+        = static_cast<Inspection::PropertyDistanceList*>(pDistances)->getValues();
     if ((int)fValues.size() != this->pcCoords->point.getNum()) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
         return;
@@ -496,12 +505,13 @@ public:
         if (!widget.isNull()) {
             QList<Gui::Flag*> flags = widget->findChildren<Gui::Flag*>();
             if (!flags.isEmpty()) {
-                int ret =
-                    QMessageBox::question(Gui::getMainWindow(),
-                                          QObject::tr("Remove annotations"),
-                                          QObject::tr("Do you want to remove all annotations?"),
-                                          QMessageBox::Yes,
-                                          QMessageBox::No);
+                int ret = QMessageBox::question(
+                    Gui::getMainWindow(),
+                    QObject::tr("Remove annotations"),
+                    QObject::tr("Do you want to remove all annotations?"),
+                    QMessageBox::Yes,
+                    QMessageBox::No
+                );
                 if (ret == QMessageBox::Yes) {
                     for (auto it : flags) {
                         it->deleteLater();
@@ -513,8 +523,7 @@ public:
         this->deleteLater();
     }
 
-    static void
-    addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint* point)
+    static void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint* point)
     {
         Gui::Flag* flag = new Gui::Flag;
         QPalette p;
@@ -524,8 +533,9 @@ public:
         flag->setText(text);
         flag->setOrigin(point->getPoint());
         Gui::GLFlagWindow* flags = nullptr;
-        std::list<Gui::GLGraphicsItem*> glItems =
-            view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+        std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
+            Gui::GLFlagWindow::getClassTypeId()
+        );
         if (glItems.empty()) {
             flags = new Gui::GLFlagWindow(view);
             view->addGraphicsItem(flags);
@@ -552,8 +562,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
         // node
         n->getAction()->setHandled();
         n->setHandled();
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-            && mbe->getState() == SoButtonEvent::UP) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
             n->setHandled();
             // context-menu
             QMenu menu;
@@ -568,8 +577,10 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
             else if (cl == id) {
                 // post an event to a proxy object to make sure to avoid problems
                 // when opening a modal dialog
-                QApplication::postEvent(new ViewProviderProxyObject(view->getGLWidget()),
-                                        new QEvent(QEvent::User));
+                QApplication::postEvent(
+                    new ViewProviderProxyObject(view->getGLWidget()),
+                    new QEvent(QEvent::User)
+                );
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
@@ -648,13 +659,15 @@ float calcArea(const SbVec3f& v1, const SbVec3f& v2, const SbVec3f& v3)
     return a.cross(b).length() / 2.0f;
 }
 
-bool calcWeights(const SbVec3f& v1,
-                 const SbVec3f& v2,
-                 const SbVec3f& v3,
-                 const SbVec3f& p,
-                 float& w0,
-                 float& w1,
-                 float& w2)
+bool calcWeights(
+    const SbVec3f& v1,
+    const SbVec3f& v2,
+    const SbVec3f& v3,
+    const SbVec3f& p,
+    float& w0,
+    float& w1,
+    float& w2
+)
 {
     float fAreaABC = calcArea(v1, v2, v3);
     float fAreaPBC = calcArea(p, v2, v3);
@@ -678,8 +691,9 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         const SoFaceDetail* facedetail = static_cast<const SoFaceDetail*>(detail);
         App::Property* pDistance = this->pcObject->getPropertyByName("Distances");
         if (pDistance && pDistance->is<Inspection::PropertyDistanceList>()) {
-            Inspection::PropertyDistanceList* dist =
-                static_cast<Inspection::PropertyDistanceList*>(pDistance);
+            Inspection::PropertyDistanceList* dist = static_cast<Inspection::PropertyDistanceList*>(
+                pDistance
+            );
             int index1 = facedetail->getPoint(0)->getCoordinateIndex();
             int index2 = facedetail->getPoint(1)->getCoordinateIndex();
             int index3 = facedetail->getPoint(2)->getCoordinateIndex();
@@ -693,8 +707,7 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
                 if (fVal1 > fSearchRadius || fVal2 > fSearchRadius || fVal3 > fSearchRadius) {
                     info = QObject::tr("Distance: > %1").arg(fSearchRadius);
                 }
-                else if (fVal1 < -fSearchRadius || fVal2 < -fSearchRadius
-                         || fVal3 < -fSearchRadius) {
+                else if (fVal1 < -fSearchRadius || fVal2 < -fSearchRadius || fVal3 < -fSearchRadius) {
                     info = QObject::tr("Distance: < %1").arg(-fSearchRadius);
                 }
                 else {
@@ -705,8 +718,7 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
                     SoPath* selectionPath = searchAction.getPath();
 
                     if (selectionPath) {
-                        SoCoordinate3* coords =
-                            static_cast<SoCoordinate3*>(selectionPath->getTail());
+                        SoCoordinate3* coords = static_cast<SoCoordinate3*>(selectionPath->getTail());
                         const SbVec3f& v1 = coords->point[index1];
                         const SbVec3f& v2 = coords->point[index2];
                         const SbVec3f& v3 = coords->point[index3];
@@ -729,8 +741,9 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         int index = pointdetail->getCoordinateIndex();
         App::Property* prop = this->pcObject->getPropertyByName("Distances");
         if (prop && prop->is<Inspection::PropertyDistanceList>()) {
-            Inspection::PropertyDistanceList* dist =
-                static_cast<Inspection::PropertyDistanceList*>(prop);
+            Inspection::PropertyDistanceList* dist = static_cast<Inspection::PropertyDistanceList*>(
+                prop
+            );
             float fVal = (*dist)[index];
             info = QObject::tr("Distance: %1").arg(fVal);
         }

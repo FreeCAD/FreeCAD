@@ -87,10 +87,10 @@ std::ostream& MeshInfo::DetailedEdgeInfo(std::ostream& rclStream) const
     while (pFIter < rFacets.end()) {
         const MeshFacet& rFacet = *pFIter;
         for (int j = 0; j < 3; j++) {
-            PointIndex ulPt0 =
-                std::min<PointIndex>(rFacet._aulPoints[j], rFacet._aulPoints[(j + 1) % 3]);
-            PointIndex ulPt1 =
-                std::max<PointIndex>(rFacet._aulPoints[j], rFacet._aulPoints[(j + 1) % 3]);
+            PointIndex ulPt0
+                = std::min<PointIndex>(rFacet._aulPoints[j], rFacet._aulPoints[(j + 1) % 3]);
+            PointIndex ulPt1
+                = std::max<PointIndex>(rFacet._aulPoints[j], rFacet._aulPoints[(j + 1) % 3]);
             std::pair<PointIndex, PointIndex> cEdge(ulPt0, ulPt1);
             lEdges[cEdge]++;
         }

@@ -61,24 +61,26 @@ GuiItem guiItems[] = {
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
 #define TEX_SIZE 256
 
-std::vector<std::string> guiFileNames = {"Slider.png",
-                                         "Thumb.png",
-                                         "Pause.png",
-                                         "Play.png",
-                                         "SingleStep.png",
-                                         "Slower.png",
-                                         "Faster.png",
-                                         "x.png",
-                                         "1.png",
-                                         "5.png",
-                                         "10.png",
-                                         "25.png",
-                                         "50.png",
-                                         "Rotate.png",
-                                         "Path.png",
-                                         "AmbientOclusion.png",
-                                         "View.png",
-                                         "Home.png"};
+std::vector<std::string> guiFileNames = {
+    "Slider.png",
+    "Thumb.png",
+    "Pause.png",
+    "Play.png",
+    "SingleStep.png",
+    "Slower.png",
+    "Faster.png",
+    "x.png",
+    "1.png",
+    "5.png",
+    "10.png",
+    "25.png",
+    "50.png",
+    "Rotate.png",
+    "Path.png",
+    "AmbientOclusion.png",
+    "View.png",
+    "Home.png"
+};
 
 void GuiDisplay::UpdateProjection()
 {
@@ -118,12 +120,7 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(Vertex2D),
-                          (void*)offsetof(Vertex2D, tx));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     glBindVertexArray(0);
 
@@ -175,12 +172,7 @@ bool MillSim::GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(Vertex2D),
-                          (void*)offsetof(Vertex2D, tx));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     glBindVertexArray(0);
 
@@ -272,28 +264,32 @@ void GuiDisplay::RenderItem(int itemId)
 
 void MillSim::GuiDisplay::SetupTooltips()
 {
-    guiItems[eGuiItemPause].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Pause simulation", nullptr);
-    guiItems[eGuiItemPlay].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Play simulation", nullptr);
-    guiItems[eGuiItemSingleStep].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Single step simulation", nullptr);
-    guiItems[eGuiItemSlower].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Decrease simulation speed", nullptr);
-    guiItems[eGuiItemFaster].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Increase simulation speed", nullptr);
-    guiItems[eGuiItemPath].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Show/Hide tool path", nullptr);
-    guiItems[eGuiItemRotate].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
-                                                                   "Toggle turn table animation",
-                                                                   nullptr);
-    guiItems[eGuiItemAmbientOclusion].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient occlusion", nullptr);
-    guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
-                                                                 "Toggle view simulation/model",
-                                                                 nullptr);
-    guiItems[eGuiItemHome].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Reset camera", nullptr);
+    guiItems[eGuiItemPause].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Pause simulation", nullptr);
+    guiItems[eGuiItemPlay].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Play simulation", nullptr);
+    guiItems[eGuiItemSingleStep].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Single step simulation", nullptr);
+    guiItems[eGuiItemSlower].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Decrease simulation speed", nullptr);
+    guiItems[eGuiItemFaster].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Increase simulation speed", nullptr);
+    guiItems[eGuiItemPath].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Show/Hide tool path", nullptr);
+    guiItems[eGuiItemRotate].toolTip = QCoreApplication::translate(
+        "CAM:Simulator:Tooltips",
+        "Toggle turn table animation",
+        nullptr
+    );
+    guiItems[eGuiItemAmbientOclusion].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient occlusion", nullptr);
+    guiItems[eGuiItemView].toolTip = QCoreApplication::translate(
+        "CAM:Simulator:Tooltips",
+        "Toggle view simulation/model",
+        nullptr
+    );
+    guiItems[eGuiItemHome].toolTip
+        = QCoreApplication::translate("CAM:Simulator:Tooltips", "Reset camera", nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)

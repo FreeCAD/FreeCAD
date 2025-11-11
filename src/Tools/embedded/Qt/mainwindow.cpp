@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #if defined(Q_WS_X11)
-#include <QX11EmbedContainer>
+# include <QX11EmbedContainer>
 #endif
 
 #include "mainwindow.h"

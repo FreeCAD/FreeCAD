@@ -31,7 +31,8 @@ class gp_Vec;
 
 namespace PartDesign
 {
-enum class LinearPatternMode {
+enum class LinearPatternMode
+{
     Extent,
     Spacing
 };
@@ -42,62 +43,68 @@ enum class LinearPatternDirection : std::uint8_t
     Second
 };
 
-class PartDesignExport LinearPattern : public PartDesign::Transformed
+class PartDesignExport LinearPattern: public PartDesign::Transformed
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::LinearPattern);
 
 public:
     LinearPattern();
 
-    App::PropertyLinkSub     Direction;
-    App::PropertyBool        Reversed;
+    App::PropertyLinkSub Direction;
+    App::PropertyBool Reversed;
     App::PropertyEnumeration Mode;
-    App::PropertyLength      Length;
-    App::PropertyLength      Offset;
+    App::PropertyLength Length;
+    App::PropertyLength Offset;
     App::PropertyIntegerConstraint Occurrences;
-    App::PropertyFloatList   Spacings;
-    App::PropertyFloatList   SpacingPattern;
+    App::PropertyFloatList Spacings;
+    App::PropertyFloatList SpacingPattern;
 
-    App::PropertyLinkSub     Direction2;
-    App::PropertyBool        Reversed2;
+    App::PropertyLinkSub Direction2;
+    App::PropertyBool Reversed2;
     App::PropertyEnumeration Mode2;
-    App::PropertyLength      Length2;
-    App::PropertyLength      Offset2;
+    App::PropertyLength Length2;
+    App::PropertyLength Offset2;
     App::PropertyIntegerConstraint Occurrences2;
-    App::PropertyFloatList   Spacings2;
-    App::PropertyFloatList   SpacingPattern2;
+    App::PropertyFloatList Spacings2;
+    App::PropertyFloatList SpacingPattern2;
 
 
-   /** @name methods override feature */
+    /** @name methods override feature */
     //@{
     short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderLinearPattern";
     }
     //@}
 
     /** Create transformations
-      * Returns a list of (Occurrences - 1) transformations since the first, untransformed instance
-      * is not counted. 
-      * 
-      * Depending on Mode selection list will be constructed differently:
-      * 1. For "Overall Length" each transformation will move the shape it is applied to by the distance
-      *    (Length / (Occurrences - 1)) so that the transformations will cover the total Length.
-      * 2. For "Spacing" each transformation will move the shape by the distance explicitly given in 
-      *    the Offset parameter.
-      * 
-      * If Direction contains a feature and a face name, then the transformation direction will be
-      *   the normal of the given face, which must be planar. If it contains an edge name, then the
-      *   transformation direction will be parallel to the given edge, which must be linear
-      * 
-      * If Reversed is true, the direction of transformation will be opposite
-      */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> ) override;
+     * Returns a list of (Occurrences - 1) transformations since the first, untransformed instance
+     * is not counted.
+     *
+     * Depending on Mode selection list will be constructed differently:
+     * 1. For "Overall Length" each transformation will move the shape it is applied to by the
+     * distance (Length / (Occurrences - 1)) so that the transformations will cover the total
+     * Length.
+     * 2. For "Spacing" each transformation will move the shape by the distance explicitly given in
+     *    the Offset parameter.
+     *
+     * If Direction contains a feature and a face name, then the transformation direction will be
+     *   the normal of the given face, which must be planar. If it contains an edge name, then the
+     *   transformation direction will be parallel to the given edge, which must be linear
+     *
+     * If Reversed is true, the direction of transformation will be opposite
+     */
+    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     void onChanged(const App::Property* prop) override;
 
     static const App::PropertyIntegerConstraint::Constraints intOccurrences;
@@ -117,7 +124,7 @@ private:
     std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureLinearPattern_H
+#endif  // PARTDESIGN_FeatureLinearPattern_H

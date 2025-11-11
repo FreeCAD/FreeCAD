@@ -31,14 +31,17 @@
 #include <QScopedPointer>
 
 
-namespace Gui { namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class DocumentRecoveryPrivate;
 
 /*!
  @author Werner Mayer
  */
-class DocumentRecovery : public QDialog
+class DocumentRecovery: public QDialog
 {
     Q_OBJECT
 
@@ -66,7 +69,8 @@ private:
     Q_DECLARE_PRIVATE(DocumentRecovery)
 };
 
-class DocumentRecoveryFinder {
+class DocumentRecoveryFinder
+{
 public:
     bool checkForPreviousCrashes();
 
@@ -78,12 +82,16 @@ private:
     QList<QFileInfo> restoreDocFiles;
 };
 
-class DocumentRecoveryHandler {
+class DocumentRecoveryHandler
+{
 public:
-    void checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const;
+    void checkForPreviousCrashes(
+        const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)>& callableFunc
+    ) const;
 };
 
-class DocumentRecoveryCleaner {
+class DocumentRecoveryCleaner
+{
 public:
     void clearDirectory(const QFileInfo& dir);
     void setIgnoreFiles(const QStringList&);
@@ -98,9 +106,9 @@ private:
     QFileInfoList ignoreDirs;
 };
 
-} //namespace Dialog
+}  // namespace Dialog
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif //GUI_DIALOG_DOCUMENTRECOVERY_H
+#endif  // GUI_DIALOG_DOCUMENTRECOVERY_H

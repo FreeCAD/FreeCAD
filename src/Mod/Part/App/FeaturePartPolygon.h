@@ -33,7 +33,7 @@
 namespace Part
 {
 
-class Polygon : public Part::Feature
+class Polygon: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Polygon);
 
@@ -42,16 +42,16 @@ public:
     ~Polygon() override;
 
     App::PropertyVectorList Nodes;
-    App::PropertyBool       Close;
+    App::PropertyBool Close;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
 };
 
-} //namespace Part
+}  // namespace Part
 
-#endif // PART_FEATUREPARTPOLYGON_H
+#endif  // PART_FEATUREPARTPOLYGON_H

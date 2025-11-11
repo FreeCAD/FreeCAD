@@ -39,23 +39,25 @@ import math
 import sys
 
 
-
 class CommandTube:
     """Command for creating Tube."""
+
     def GetResources(self):
-        return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Tube"),
-                'Accel': "",
-                'CmdType': "AlterDoc:Alter3DView:AlterSelection",
-                'Pixmap': "Part_Tube_Parametric",
-                'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_Tube","Creates a tube")}
+        return {
+            "MenuText": Qt.QT_TRANSLATE_NOOP("Part_Tube", "Tube"),
+            "Accel": "",
+            "CmdType": "AlterDoc:Alter3DView:AlterSelection",
+            "Pixmap": "Part_Tube_Parametric",
+            "ToolTip": Qt.QT_TRANSLATE_NOOP("Part_Tube", "Creates a tube"),
+        }
 
     def Activated(self):
         text = FreeCAD.Qt.translate("QObject", "Create tube")
         FreeCAD.ActiveDocument.openTransaction(text)
-        tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
+        tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Tube")
         Shapes.TubeFeature(tube)
         vp = ViewProviderShapes.ViewProviderTube(tube.ViewObject)
-        activePart = FreeCADGui.activeView().getActiveObject('part')
+        activePart = FreeCADGui.activeView().getActiveObject("part")
         if activePart:
             activePart.addObject(tube)
         FreeCAD.ActiveDocument.recompute()
@@ -65,4 +67,4 @@ class CommandTube:
         return not FreeCAD.ActiveDocument is None
 
 
-FreeCADGui.addCommand('Part_Tube', CommandTube())
+FreeCADGui.addCommand("Part_Tube", CommandTube())

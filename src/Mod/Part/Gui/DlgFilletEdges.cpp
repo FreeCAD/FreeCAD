@@ -22,28 +22,28 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <algorithm>
-# include <climits>
-# include <sstream>
-# include <QHeaderView>
-# include <QItemDelegate>
-# include <QItemSelectionModel>
-# include <QLocale>
-# include <QMessageBox>
-# include <QTimer>
-# include <QVBoxLayout>
+#include <algorithm>
+#include <climits>
+#include <sstream>
+#include <QHeaderView>
+#include <QItemDelegate>
+#include <QItemSelectionModel>
+#include <QLocale>
+#include <QMessageBox>
+#include <QTimer>
+#include <QVBoxLayout>
 
-# include <BRep_Tool.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopExp.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <BRep_Tool.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopExp.hxx>
+#include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoLineDetail.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/details/SoLineDetail.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -75,17 +75,21 @@ FC_LOG_LEVEL_INIT("Part", true, true)
 using namespace PartGui;
 namespace sp = std::placeholders;
 
-FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
-{
-}
+FilletRadiusDelegate::FilletRadiusDelegate(QObject* parent)
+    : QItemDelegate(parent)
+{}
 
-QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &/* option */,
-                                            const QModelIndex & index) const
+QWidget* FilletRadiusDelegate::createEditor(
+    QWidget* parent,
+    const QStyleOptionViewItem& /* option */,
+    const QModelIndex& index
+) const
 {
-    if (index.column() < 1)
+    if (index.column() < 1) {
         return nullptr;
+    }
 
-    Gui::QuantitySpinBox *editor = new Gui::QuantitySpinBox(parent);
+    Gui::QuantitySpinBox* editor = new Gui::QuantitySpinBox(parent);
     editor->setUnit(Base::Unit::Length);
     editor->setMinimum(0.0);
     editor->setMaximum(std::numeric_limits<int>::max());
@@ -94,54 +98,59 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
     return editor;
 }
 
-void FilletRadiusDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void FilletRadiusDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
     Base::Quantity value = index.model()->data(index, Qt::EditRole).value<Base::Quantity>();
 
-    Gui::QuantitySpinBox *spinBox = static_cast<Gui::QuantitySpinBox*>(editor);
+    Gui::QuantitySpinBox* spinBox = static_cast<Gui::QuantitySpinBox*>(editor);
     spinBox->setValue(value);
 }
 
-void FilletRadiusDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
-                                        const QModelIndex &index) const
+void FilletRadiusDelegate::setModelData(
+    QWidget* editor,
+    QAbstractItemModel* model,
+    const QModelIndex& index
+) const
 {
-    Gui::QuantitySpinBox *spinBox = static_cast<Gui::QuantitySpinBox*>(editor);
+    Gui::QuantitySpinBox* spinBox = static_cast<Gui::QuantitySpinBox*>(editor);
     spinBox->interpretText();
-    //double value = spinBox->value();
-    //QString value = QStringLiteral("%1").arg(spinBox->value(),0,'f',2);
-    //QString value = QLocale().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
+    // double value = spinBox->value();
+    // QString value = QStringLiteral("%1").arg(spinBox->value(),0,'f',2);
+    // QString value = QLocale().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
     Base::Quantity value = spinBox->value();
 
     model->setData(index, QVariant::fromValue<Base::Quantity>(value), Qt::EditRole);
 }
 
-void FilletRadiusDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
-                                                const QModelIndex &/* index */) const
+void FilletRadiusDelegate::
+    updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& /* index */) const
 {
     editor->setGeometry(option.rect);
 }
 
 // --------------------------------------------------------------
 
-FilletRadiusModel::FilletRadiusModel(QObject * parent) : QStandardItemModel(parent)
-{
-}
+FilletRadiusModel::FilletRadiusModel(QObject* parent)
+    : QStandardItemModel(parent)
+{}
 
 void FilletRadiusModel::updateCheckStates()
 {
-    // See http://www.qtcentre.org/threads/18856-Checkboxes-in-Treeview-do-not-get-refreshed?s=b0fea2bfc66da1098413ae9f2a651a68&p=93201#post93201
+    // See
+    // http://www.qtcentre.org/threads/18856-Checkboxes-in-Treeview-do-not-get-refreshed?s=b0fea2bfc66da1098413ae9f2a651a68&p=93201#post93201
     Q_EMIT layoutChanged();
 }
 
-Qt::ItemFlags FilletRadiusModel::flags (const QModelIndex & index) const
+Qt::ItemFlags FilletRadiusModel::flags(const QModelIndex& index) const
 {
     Qt::ItemFlags fl = QStandardItemModel::flags(index);
-    if (index.column() == 0)
+    if (index.column() == 0) {
         fl = fl | Qt::ItemIsUserCheckable;
+    }
     return fl;
 }
 
-bool FilletRadiusModel::setData (const QModelIndex & index, const QVariant & value, int role)
+bool FilletRadiusModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     bool ok = QStandardItemModel::setData(index, value, role);
     if (role == Qt::CheckStateRole) {
@@ -163,72 +172,84 @@ QVariant FilletRadiusModel::data(const QModelIndex& index, int role) const
 
 // --------------------------------------------------------------
 
-namespace PartGui {
-    class EdgeFaceSelection : public Gui::SelectionFilterGate
-    {
-        bool allowEdge{true};
-        App::DocumentObject*& object;
-    public:
-        explicit EdgeFaceSelection(App::DocumentObject*& obj)
-            : Gui::SelectionFilterGate(nullPointer())
-            , object(obj)
-        {
-        }
-        void selectEdges()
-        {
-            allowEdge = true;
-        }
-        void selectFaces()
-        {
-            allowEdge = false;
-        }
-        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
-        {
-            if (pObj != this->object)
-                return false;
-            if (Base::Tools::isNullOrEmpty(sSubName))
-                return false;
-            std::string element(sSubName);
-            if (allowEdge)
-                return element.substr(0,4) == "Edge";
-            else
-                return element.substr(0,4) == "Face";
-        }
-    };
-    class DlgFilletEdges::Private
-    {
-    public:
-        App::DocumentObject* object;
-        EdgeFaceSelection* selection;
-        Part::FilletBase* fillet;
-        QTimer* highlighttimer;
-        FilletType filletType;
-        std::vector<int> edge_ids;
-        TopTools_IndexedMapOfShape all_edges;
-        TopTools_IndexedMapOfShape all_faces;
-        using Connection = boost::signals2::connection;
-        Connection connectApplicationDeletedObject;
-        Connection connectApplicationDeletedDocument;
+namespace PartGui
+{
+class EdgeFaceSelection: public Gui::SelectionFilterGate
+{
+    bool allowEdge {true};
+    App::DocumentObject*& object;
 
-        class SelectionObjectCompare
+public:
+    explicit EdgeFaceSelection(App::DocumentObject*& obj)
+        : Gui::SelectionFilterGate(nullPointer())
+        , object(obj)
+    {}
+    void selectEdges()
+    {
+        allowEdge = true;
+    }
+    void selectFaces()
+    {
+        allowEdge = false;
+    }
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
+    {
+        if (pObj != this->object) {
+            return false;
+        }
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
+            return false;
+        }
+        std::string element(sSubName);
+        if (allowEdge) {
+            return element.substr(0, 4) == "Edge";
+        }
+        else {
+            return element.substr(0, 4) == "Face";
+        }
+    }
+};
+class DlgFilletEdges::Private
+{
+public:
+    App::DocumentObject* object;
+    EdgeFaceSelection* selection;
+    Part::FilletBase* fillet;
+    QTimer* highlighttimer;
+    FilletType filletType;
+    std::vector<int> edge_ids;
+    TopTools_IndexedMapOfShape all_edges;
+    TopTools_IndexedMapOfShape all_faces;
+    using Connection = boost::signals2::connection;
+    Connection connectApplicationDeletedObject;
+    Connection connectApplicationDeletedDocument;
+
+    class SelectionObjectCompare
+    {
+    public:
+        App::DocumentObject* obj;
+        explicit SelectionObjectCompare(App::DocumentObject* obj)
+            : obj(obj)
+        {}
+        bool operator()(const Gui::SelectionObject& sel) const
         {
-        public:
-            App::DocumentObject* obj;
-            explicit SelectionObjectCompare(App::DocumentObject* obj) : obj(obj)
-            {
-            }
-            bool operator()(const Gui::SelectionObject& sel) const
-            {
-                return (sel.getObject() == obj);
-            }
-        };
+            return (sel.getObject() == obj);
+        }
     };
-}
+};
+}  // namespace PartGui
 
 /* TRANSLATOR PartGui::DlgFilletEdges */
 
-DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidget* parent, Qt::WindowFlags fl)
-  : QWidget(parent, fl), ui(new Ui_DlgFilletEdges()), d(new Private())
+DlgFilletEdges::DlgFilletEdges(
+    FilletType type,
+    Part::FilletBase* fillet,
+    QWidget* parent,
+    Qt::WindowFlags fl
+)
+    : QWidget(parent, fl)
+    , ui(new Ui_DlgFilletEdges())
+    , d(new Private())
 {
     ui->setupUi(this);
     setupConnections();
@@ -246,23 +267,23 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     Gui::Selection().addSelectionGate(d->selection);
 
     d->fillet = fillet;
-    //NOLINTBEGIN
-    d->connectApplicationDeletedObject = App::GetApplication().signalDeletedObject
-        .connect(std::bind(&DlgFilletEdges::onDeleteObject, this, sp::_1));
-    d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
-        .connect(std::bind(&DlgFilletEdges::onDeleteDocument, this, sp::_1));
-    //NOLINTEND
-    // set tree view with three columns
+    // NOLINTBEGIN
+    d->connectApplicationDeletedObject = App::GetApplication().signalDeletedObject.connect(
+        std::bind(&DlgFilletEdges::onDeleteObject, this, sp::_1)
+    );
+    d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(
+        std::bind(&DlgFilletEdges::onDeleteDocument, this, sp::_1)
+    );
+    // NOLINTEND
+    //  set tree view with three columns
     FilletRadiusModel* model = new FilletRadiusModel(this);
-    connect(model, &FilletRadiusModel::toggleCheckState,
-            this, &DlgFilletEdges::toggleCheckState);
-    model->insertColumns(0,3);
+    connect(model, &FilletRadiusModel::toggleCheckState, this, &DlgFilletEdges::toggleCheckState);
+    model->insertColumns(0, 3);
 
     // timer for highlighting
     d->highlighttimer = new QTimer(this);
     d->highlighttimer->setSingleShot(true);
-    connect(d->highlighttimer, &QTimer::timeout,
-            this, &DlgFilletEdges::onHighlightEdges);
+    connect(d->highlighttimer, &QTimer::timeout, this, &DlgFilletEdges::onHighlightEdges);
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
@@ -333,16 +354,17 @@ void DlgFilletEdges::setupConnections()
 void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // no object selected in the combobox or no sub-element was selected
-    if (!d->object || !msg.pSubName)
+    if (!d->object || !msg.pSubName) {
         return;
-    if (msg.Type == Gui::SelectionChanges::AddSelection ||
-        msg.Type == Gui::SelectionChanges::RmvSelection) {
+    }
+    if (msg.Type == Gui::SelectionChanges::AddSelection
+        || msg.Type == Gui::SelectionChanges::RmvSelection) {
         // when adding a sub-element to the selection check
         // whether this is the currently handled object
         App::Document* doc = d->object->getDocument();
         std::string docname = doc->getName();
         std::string objname = d->object->getNameInDocument();
-        if (docname==msg.pDocName && objname==msg.pObjectName) {
+        if (docname == msg.pDocName && objname == msg.pObjectName) {
             QString subelement = QString::fromLatin1(msg.pSubName);
             if (subelement.startsWith(QLatin1String("Edge"))) {
                 onSelectEdge(subelement, msg.Type);
@@ -355,9 +377,10 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
     }
 
-    if (msg.Type != Gui::SelectionChanges::SetPreselect &&
-        msg.Type != Gui::SelectionChanges::RmvPreselect)
+    if (msg.Type != Gui::SelectionChanges::SetPreselect
+        && msg.Type != Gui::SelectionChanges::RmvPreselect) {
         d->highlighttimer->start(20);
+    }
 }
 
 void DlgFilletEdges::onHighlightEdges()
@@ -396,7 +419,9 @@ void DlgFilletEdges::onHighlightEdges()
             searchAction.apply(view->getRoot());
             SoPath* selectionPath = searchAction.getPath();
             if (selectionPath) {
-                ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+                ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup(
+                    "View"
+                );
                 SbColor selectionColor(0.1f, 0.8f, 0.1f);
                 unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
                 selection = hGrp->GetUnsigned("SelectionColor", selection);
@@ -414,15 +439,15 @@ void DlgFilletEdges::onHighlightEdges()
                 QAbstractItemModel* model = ui->treeView->model();
                 SoLineDetail detail;
                 action.setElement(&detail);
-                for (int i=0; i<model->rowCount(); ++i) {
-                    QVariant value = model->index(i,0).data(Qt::CheckStateRole);
+                for (int i = 0; i < model->rowCount(); ++i) {
+                    QVariant value = model->index(i, 0).data(Qt::CheckStateRole);
                     Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
 
                     // is item checked
                     if (checkState & Qt::Checked) {
                         // the index value of the edge
-                        int id = model->index(i,0).data(Qt::UserRole).toInt();
-                        detail.setLineIndex(id-1);
+                        int id = model->index(i, 0).data(Qt::UserRole).toInt();
+                        detail.setLineIndex(id - 1);
                         action.apply(selectionPath);
                     }
                 }
@@ -435,20 +460,19 @@ void DlgFilletEdges::onSelectEdge(const QString& subelement, int type)
 {
     Gui::SelectionChanges::MsgType msgType = Gui::SelectionChanges::MsgType(type);
     QAbstractItemModel* model = ui->treeView->model();
-    for (int i=0; i<model->rowCount(); ++i) {
-        int id = model->data(model->index(i,0), Qt::UserRole).toInt();
+    for (int i = 0; i < model->rowCount(); ++i) {
+        int id = model->data(model->index(i, 0), Qt::UserRole).toInt();
         QString name = QStringLiteral("Edge%1").arg(id);
         if (name == subelement) {
             // ok, check the selected sub-element
-            Qt::CheckState checkState =
-                (msgType == Gui::SelectionChanges::AddSelection
-                ? Qt::Checked : Qt::Unchecked);
+            Qt::CheckState checkState
+                = (msgType == Gui::SelectionChanges::AddSelection ? Qt::Checked : Qt::Unchecked);
             QVariant value(static_cast<int>(checkState));
-            QModelIndex index = model->index(i,0);
+            QModelIndex index = model->index(i, 0);
             model->setData(index, value, Qt::CheckStateRole);
             // select the item
-            ui->treeView->selectionModel()->setCurrentIndex(index,QItemSelectionModel::NoUpdate);
-            QItemSelection selection(index, model->index(i,1));
+            ui->treeView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::NoUpdate);
+            QItemSelection selection(index, model->index(i, 1));
             ui->treeView->selectionModel()->select(selection, QItemSelectionModel::ClearAndSelect);
             ui->treeView->update();
             break;
@@ -466,15 +490,18 @@ void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
             TopTools_IndexedMapOfShape mapOfEdges;
             TopExp::MapShapes(face, TopAbs_EDGE, mapOfEdges);
 
-            for(int j = 1; j <= mapOfEdges.Extent(); ++j) {
+            for (int j = 1; j <= mapOfEdges.Extent(); ++j) {
                 TopoDS_Edge edge = TopoDS::Edge(mapOfEdges.FindKey(j));
                 int id = d->all_edges.FindIndex(edge);
                 QString name = QStringLiteral("Edge%1").arg(id);
                 onSelectEdge(name, type);
                 Gui::SelectionChanges::MsgType msgType = Gui::SelectionChanges::MsgType(type);
                 if (msgType == Gui::SelectionChanges::AddSelection) {
-                    Gui::Selection().addSelection(d->object->getDocument()->getName(),
-                        d->object->getNameInDocument(), (const char*)name.toLatin1());
+                    Gui::Selection().addSelection(
+                        d->object->getDocument()->getName(),
+                        d->object->getNameInDocument(),
+                        (const char*)name.toLatin1()
+                    );
                 }
             }
         }
@@ -503,7 +530,7 @@ void DlgFilletEdges::onDeleteObject(const App::DocumentObject& obj)
     else {
         QString shape = QString::fromLatin1(obj.getNameInDocument());
         // start from the second item
-        for (int i=1; i<ui->shapeObject->count(); i++) {
+        for (int i = 1; i < ui->shapeObject->count(); i++) {
             if (ui->shapeObject->itemData(i).toString() == shape) {
                 ui->shapeObject->removeItem(i);
                 break;
@@ -530,8 +557,9 @@ void DlgFilletEdges::onDeleteDocument(const App::Document& doc)
 
 void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
 {
-    if (!d->object)
+    if (!d->object) {
         return;
+    }
     QVariant check = index.data(Qt::CheckStateRole);
     int id = index.data(Qt::UserRole).toInt();
     QString name = QStringLiteral("Edge%1").arg(id);
@@ -542,15 +570,19 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
     // is item checked
     if (checkState & Qt::Checked) {
         App::Document* doc = d->object->getDocument();
-        Gui::Selection().addSelection(doc->getName(),
+        Gui::Selection().addSelection(
+            doc->getName(),
             d->object->getNameInDocument(),
-            (const char*)name.toLatin1());
+            (const char*)name.toLatin1()
+        );
     }
     else {
         App::Document* doc = d->object->getDocument();
-        Gui::Selection().rmvSelection(doc->getName(),
+        Gui::Selection().rmvSelection(
+            doc->getName(),
             d->object->getNameInDocument(),
-            (const char*)name.toLatin1());
+            (const char*)name.toLatin1()
+        );
     }
 
     this->blockSelection(block);
@@ -559,14 +591,17 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
 void DlgFilletEdges::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc)
+    if (!activeDoc) {
         return;
+    }
 
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
-        (Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType(
+        Part::Feature::getClassTypeId()
+    );
     int index = 1;
     int current_index = 0;
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it, ++index) {
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end();
+         ++it, ++index) {
         ui->shapeObject->addItem(QString::fromUtf8((*it)->Label.getValue()));
         ui->shapeObject->setItemData(index, QString::fromLatin1((*it)->getNameInDocument()));
         if (current_index == 0) {
@@ -577,8 +612,9 @@ void DlgFilletEdges::findShapes()
     }
 
     // if only one object is in the document then simply use that
-    if (objs.size() == 1)
+    if (objs.size() == 1) {
         current_index = 1;
+    }
 
     if (current_index > 0) {
         ui->shapeObject->setCurrentIndex(current_index);
@@ -595,23 +631,28 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 {
     App::DocumentObject* base = d->fillet->Base.getValue();
     const std::vector<Part::FilletElement>& e = d->fillet->Edges.getValues();
-    const auto &subs = d->fillet->EdgeLinks.getShadowSubs();
-    if(subs.size()!=e.size()) {
+    const auto& subs = d->fillet->EdgeLinks.getShadowSubs();
+    if (subs.size() != e.size()) {
         FC_ERR("edge link size mismatch");
         return;
     }
     std::set<std::string> subSet;
-    for(auto &sub : subs)
-        subSet.insert(sub.newName.empty()?sub.oldName:sub.newName);
+    for (auto& sub : subs) {
+        subSet.insert(sub.newName.empty() ? sub.oldName : sub.newName);
+    }
 
     if (auto it = std::ranges::find(objs, base); it != objs.end()) {
         // toggle visibility
         std::string tmp;
         Gui::ViewProvider* vp;
         vp = Gui::Application::Instance->getViewProvider(d->fillet);
-        if (vp) vp->hide();
+        if (vp) {
+            vp->hide();
+        }
         vp = Gui::Application::Instance->getViewProvider(base);
-        if (vp) vp->show();
+        if (vp) {
+            vp->show();
+        }
 
         int current_index = (it - objs.begin()) + 1;
         ui->shapeObject->setCurrentIndex(current_index);
@@ -623,56 +664,73 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         bool twoRadii = false;
 
         std::vector<std::string> subElements;
-        QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
-        bool block = model->blockSignals(true); // do not call toggleCheckState
-        auto baseShape = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
+        bool block = model->blockSignals(true);  // do not call toggleCheckState
+        auto baseShape = Part::Feature::getTopoShape(
+            base,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
         std::set<Part::FilletElement> elements;
-        for(size_t i=0;i<e.size();++i) {
-            auto &sub = subs[i];
-            if(sub.newName.empty()) {
+        for (size_t i = 0; i < e.size(); ++i) {
+            auto& sub = subs[i];
+            if (sub.newName.empty()) {
                 int idx = 0;
-                sscanf(sub.oldName.c_str(),"Edge%d",&idx);
-                if(idx==0)
+                sscanf(sub.oldName.c_str(), "Edge%d", &idx);
+                if (idx == 0) {
                     FC_WARN("missing element reference: " << sub.oldName);
-                else
+                }
+                else {
                     elements.insert(e[i]);
+                }
                 continue;
             }
-            auto &ref = sub.newName;
+            auto& ref = sub.newName;
             Part::TopoShape edge;
             try {
                 edge = baseShape.getSubShape(ref.c_str());
-            }catch(...) {}
-            if(!edge.isNull())  {
+            }
+            catch (...) {
+            }
+            if (!edge.isNull()) {
                 elements.insert(e[i]);
                 continue;
             }
             FC_WARN("missing element reference: " << base->getFullName() << "." << ref);
 
-            for(auto &mapped : Part::Feature::getRelatedElements(base,ref.c_str())) {
+            for (auto& mapped : Part::Feature::getRelatedElements(base, ref.c_str())) {
                 tmp.clear();
-                if(!subSet.insert(mapped.index.appendToStringBuffer(tmp)).second
-                    || !subSet.insert(mapped.name.toString(0)).second)
+                if (!subSet.insert(mapped.index.appendToStringBuffer(tmp)).second
+                    || !subSet.insert(mapped.name.toString(0)).second) {
                     continue;
+                }
                 FC_WARN("guess element reference: " << ref << " -> " << mapped.index);
-                elements.emplace(mapped.index.getIndex(),e[i].radius1,e[i].radius2);
+                elements.emplace(mapped.index.getIndex(), e[i].radius1, e[i].radius2);
             }
         }
 
-        for (const auto & et : e) {
+        for (const auto& et : e) {
             auto it2 = std::ranges::find(d->edge_ids, et.edgeid);
             if (it2 != d->edge_ids.end()) {
                 int index = it2 - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
-                //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
-                //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
-                model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius1, Base::Unit::Length)));
-                model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius2, Base::Unit::Length)));
+                // model->setData(model->index(index, 1),
+                // QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
+                // model->setData(model->index(index, 2),
+                // QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
+                model->setData(
+                    model->index(index, 1),
+                    QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius1, Base::Unit::Length))
+                );
+                model->setData(
+                    model->index(index, 2),
+                    QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius2, Base::Unit::Length))
+                );
 
                 startRadius = et.radius1;
                 endRadius = et.radius2;
-                if (startRadius != endRadius)
+                if (startRadius != endRadius) {
                     twoRadii = true;
+                }
 
                 int id = model->index(index, 0).data(Qt::UserRole).toInt();
                 std::stringstream str;
@@ -698,36 +756,36 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
         App::Document* doc = d->object->getDocument();
         // get current selection and their sub-elements
-        //std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx(doc->getName());
-        //std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
+        // std::vector<Gui::SelectionObject> selObj =
+        // Gui::Selection().getSelectionEx(doc->getName());
+        // std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(),
+        // selObj.end(),
         //    Private::SelectionObjectCompare(d->object));
 
 
-         /*
-          * Edit: the following check is no longer necessary, as Gui::Selection
-          * will do the check
-          *
-        // If sub-objects are already selected then only add the un-selected parts.
-        // This is important to avoid recursive calls of rmvSelection() which
-        // invalidates the internal iterator (#0002200).
-        if (selIt != selObj.end()) {
-            std::vector<std::string> selElements = selIt->getSubNames();
-            std::sort(selElements.begin(), selElements.end());
-            std::sort(subElements.begin(), subElements.end());
+        /*
+         * Edit: the following check is no longer necessary, as Gui::Selection
+         * will do the check
+         *
+       // If sub-objects are already selected then only add the un-selected parts.
+       // This is important to avoid recursive calls of rmvSelection() which
+       // invalidates the internal iterator (#0002200).
+       if (selIt != selObj.end()) {
+           std::vector<std::string> selElements = selIt->getSubNames();
+           std::sort(selElements.begin(), selElements.end());
+           std::sort(subElements.begin(), subElements.end());
 
-            std::vector<std::string> complementary;
-            std::back_insert_iterator<std::vector<std::string> > biit(complementary);
-            std::set_difference(subElements.begin(), subElements.end(), selElements.begin(), selElements.end(), biit);
-            subElements = complementary;
-        }
-        */
+           std::vector<std::string> complementary;
+           std::back_insert_iterator<std::vector<std::string> > biit(complementary);
+           std::set_difference(subElements.begin(), subElements.end(), selElements.begin(),
+       selElements.end(), biit); subElements = complementary;
+       }
+       */
 
         Gui::Selection().clearSelection(doc->getName());
 
         if (!subElements.empty()) {
-            Gui::Selection().addSelections(doc->getName(),
-                d->object->getNameInDocument(),
-                subElements);
+            Gui::Selection().addSelections(doc->getName(), d->object->getNameInDocument(), subElements);
         }
     }
 }
@@ -735,7 +793,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgFilletEdges::changeEvent(QEvent *e)
+void DlgFilletEdges::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int index = ui->shapeObject->currentIndex();
@@ -743,21 +801,21 @@ void DlgFilletEdges::changeEvent(QEvent *e)
         int count = ui->shapeObject->count() - 1;
         QStringList text;
         QList<QVariant> data;
-        for (int i=0; i<count; i++) {
-            text << ui->shapeObject->itemText(i+1);
-            data << ui->shapeObject->itemData(i+1);
+        for (int i = 0; i < count; i++) {
+            text << ui->shapeObject->itemText(i + 1);
+            data << ui->shapeObject->itemData(i + 1);
         }
 
         ui->retranslateUi(this);
-        for (int i=0; i<count; i++) {
+        for (int i = 0; i < count; i++) {
             ui->shapeObject->addItem(text.at(i));
-            ui->shapeObject->setItemData(i+1, data.at(i));
+            ui->shapeObject->setItemData(i + 1, data.at(i));
         }
 
         ui->shapeObject->setCurrentIndex(index);
-        QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
+        QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         count = model->rowCount();
-        for (int i=0; i<count; i++) {
+        for (int i = 0; i < count; i++) {
             int id = model->data(model->index(i, 0), Qt::UserRole).toInt();
             model->setData(model->index(i, 0), QVariant(tr("Edge%1").arg(id)));
         }
@@ -770,13 +828,14 @@ void DlgFilletEdges::changeEvent(QEvent *e)
 void DlgFilletEdges::onShapeObjectActivated(int itemPos)
 {
     d->object = nullptr;
-    QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
     model->removeRows(0, model->rowCount());
 
     QByteArray name = ui->shapeObject->itemData(itemPos).toByteArray();
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc)
+    if (!doc) {
         return;
+    }
     App::DocumentObject* part = doc->getObject((const char*)name);
     if (part && part->isDerivedFrom<Part::Feature>()) {
         d->object = part;
@@ -796,7 +855,7 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
 
         // populate the model
         d->edge_ids.clear();
-        for (int i=1; i<= edge2Face.Extent(); ++i) {
+        for (int i = 1; i <= edge2Face.Extent(); ++i) {
             // set the index value as user data to use it in accept()
             const TopTools_ListOfShape& los = edge2Face.FindFromIndex(i);
             if (los.Extent() == 2) {
@@ -806,9 +865,11 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
                 // faces
                 const TopoDS_Shape& face1 = los.First();
                 const TopoDS_Shape& face2 = los.Last();
-                GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(edge),
-                                                           TopoDS::Face(face1),
-                                                           TopoDS::Face(face2));
+                GeomAbs_Shape cont = BRep_Tool::Continuity(
+                    TopoDS::Edge(edge),
+                    TopoDS::Face(face1),
+                    TopoDS::Face(face2)
+                );
                 if (cont == GeomAbs_C0) {
                     int id = mapOfShape.FindIndex(edge);
                     d->edge_ids.push_back(id);
@@ -821,16 +882,26 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
         for (int id : d->edge_ids) {
             model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(id)));
             model->setData(model->index(index, 0), QVariant(id), Qt::UserRole);
-          //model->setData(model->index(index, 1), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
-          //model->setData(model->index(index, 2), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
-            model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
-            model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
+            // model->setData(model->index(index, 1),
+            // QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+            // model->setData(model->index(index, 2),
+            // QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+            model->setData(
+                model->index(index, 1),
+                QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0, Base::Unit::Length))
+            );
+            model->setData(
+                model->index(index, 2),
+                QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0, Base::Unit::Length))
+            );
             std::stringstream element;
             element << "Edge" << id;
-            if (Gui::Selection().isSelected(part, element.str().c_str()))
+            if (Gui::Selection().isSelected(part, element.str().c_str())) {
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
-            else
+            }
+            else {
                 model->setData(model->index(index, 0), Qt::Unchecked, Qt::CheckStateRole);
+            }
             index++;
         }
     }
@@ -838,21 +909,25 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
 
 void DlgFilletEdges::onSelectEdgesToggled(bool on)
 {
-    if (on) d->selection->selectEdges();
+    if (on) {
+        d->selection->selectEdges();
+    }
 }
 
 void DlgFilletEdges::onSelectFacesToggled(bool on)
 {
-    if (on) d->selection->selectFaces();
+    if (on) {
+        d->selection->selectFaces();
+    }
 }
 
 void DlgFilletEdges::onSelectAllButtonClicked()
 {
     std::vector<std::string> subElements;
     FilletRadiusModel* model = static_cast<FilletRadiusModel*>(ui->treeView->model());
-    bool block = model->blockSignals(true); // do not call toggleCheckState
-    for (int i=0; i<model->rowCount(); ++i) {
-        QModelIndex index = model->index(i,0);
+    bool block = model->blockSignals(true);  // do not call toggleCheckState
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QModelIndex index = model->index(i, 0);
 
         // is not yet checked?
         QVariant check = index.data(Qt::CheckStateRole);
@@ -873,20 +948,18 @@ void DlgFilletEdges::onSelectAllButtonClicked()
 
     if (d->object) {
         App::Document* doc = d->object->getDocument();
-        Gui::Selection().addSelections(doc->getName(),
-            d->object->getNameInDocument(),
-            subElements);
+        Gui::Selection().addSelections(doc->getName(), d->object->getNameInDocument(), subElements);
     }
 }
 
 void DlgFilletEdges::onSelectNoneButtonClicked()
 {
     FilletRadiusModel* model = static_cast<FilletRadiusModel*>(ui->treeView->model());
-    bool block = model->blockSignals(true); // do not call toggleCheckState
-    for (int i=0; i<model->rowCount(); ++i) {
+    bool block = model->blockSignals(true);  // do not call toggleCheckState
+    for (int i = 0; i < model->rowCount(); ++i) {
         Qt::CheckState checkState = Qt::Unchecked;
         QVariant value(static_cast<int>(checkState));
-        model->setData(model->index(i,0), value, Qt::CheckStateRole);
+        model->setData(model->index(i, 0), value, Qt::CheckStateRole);
     }
     model->blockSignals(block);
     model->updateCheckStates();
@@ -899,20 +972,24 @@ void DlgFilletEdges::onSelectNoneButtonClicked()
 
 void DlgFilletEdges::onFilletTypeActivated(int index)
 {
-    QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
     if (index == 0) {
-        if (d->filletType == DlgFilletEdges::CHAMFER)
+        if (d->filletType == DlgFilletEdges::CHAMFER) {
             model->setHeaderData(1, Qt::Horizontal, tr("Length"), Qt::DisplayRole);
-        else
+        }
+        else {
             model->setHeaderData(1, Qt::Horizontal, tr("Radius"), Qt::DisplayRole);
+        }
         ui->treeView->hideColumn(2);
         ui->filletEndRadius->hide();
     }
     else {
-        if (d->filletType == DlgFilletEdges::CHAMFER)
+        if (d->filletType == DlgFilletEdges::CHAMFER) {
             model->setHeaderData(1, Qt::Horizontal, tr("Start length"), Qt::DisplayRole);
-        else
+        }
+        else {
             model->setHeaderData(1, Qt::Horizontal, tr("Start radius"), Qt::DisplayRole);
+        }
         ui->treeView->showColumn(2);
         ui->filletEndRadius->show();
     }
@@ -925,8 +1002,8 @@ void DlgFilletEdges::onFilletTypeActivated(int index)
 void DlgFilletEdges::onFilletStartRadiusValueChanged(const Base::Quantity& radius)
 {
     QAbstractItemModel* model = ui->treeView->model();
-    for (int i=0; i<model->rowCount(); ++i) {
-        QVariant value = model->index(i,0).data(Qt::CheckStateRole);
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QVariant value = model->index(i, 0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
 
         // is item checked
@@ -939,8 +1016,8 @@ void DlgFilletEdges::onFilletStartRadiusValueChanged(const Base::Quantity& radiu
 void DlgFilletEdges::onFilletEndRadiusValueChanged(const Base::Quantity& radius)
 {
     QAbstractItemModel* model = ui->treeView->model();
-    for (int i=0; i<model->rowCount(); ++i) {
-        QVariant value = model->index(i,0).data(Qt::CheckStateRole);
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QVariant value = model->index(i, 0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
 
         // is item checked
@@ -958,9 +1035,12 @@ const char* DlgFilletEdges::getFilletType() const
 bool DlgFilletEdges::accept()
 {
     if (!d->object) {
-        QMessageBox::warning(this, tr("No shape selected"),
+        QMessageBox::warning(
+            this,
+            tr("No shape selected"),
             tr("No valid shape is selected.\n"
-               "Select a valid shape in the drop-down box first."));
+               "Select a valid shape in the drop-down box first.")
+        );
         return false;
     }
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
@@ -974,61 +1054,70 @@ bool DlgFilletEdges::accept()
     shape = ui->shapeObject->itemData(index).toString();
     type = QStringLiteral("Part::%1").arg(QString::fromLatin1(fillet.c_str()));
 
-    if (d->fillet)
+    if (d->fillet) {
         name = QString::fromLatin1(d->fillet->getNameInDocument());
-    else
+    }
+    else {
         name = QString::fromLatin1(activeDoc->getUniqueObjectName(fillet.c_str()).c_str());
+    }
 
     activeDoc->openTransaction(fillet.c_str());
     QString code;
     if (!d->fillet) {
         code = QStringLiteral(
-        "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
-        "FreeCAD.ActiveDocument.%2.Base = FreeCAD.ActiveDocument.%3\n")
-        .arg(type, name, shape);
+                   "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
+                   "FreeCAD.ActiveDocument.%2.Base = FreeCAD.ActiveDocument.%3\n"
+        )
+                   .arg(type, name, shape);
     }
     code += QStringLiteral("__fillets__ = []\n");
-    for (int i=0; i<model->rowCount(); ++i) {
-        QVariant value = model->index(i,0).data(Qt::CheckStateRole);
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QVariant value = model->index(i, 0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
 
         // is item checked
         if (checkState & Qt::Checked) {
             // the index value of the edge
-            int id = model->index(i,0).data(Qt::UserRole).toInt();
-            Base::Quantity r1 = model->index(i,1).data(Qt::EditRole).value<Base::Quantity>();
+            int id = model->index(i, 0).data(Qt::UserRole).toInt();
+            Base::Quantity r1 = model->index(i, 1).data(Qt::EditRole).value<Base::Quantity>();
             Base::Quantity r2 = r1;
-            if (end_radius)
-                r2 = model->index(i,2).data(Qt::EditRole).value<Base::Quantity>();
-            code += QStringLiteral(
-                "__fillets__.append((%1,%2,%3))\n")
-                .arg(id)
-                .arg(r1.getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(r2.getValue(),0,'f',Base::UnitsApi::getDecimals());
+            if (end_radius) {
+                r2 = model->index(i, 2).data(Qt::EditRole).value<Base::Quantity>();
+            }
+            code += QStringLiteral("__fillets__.append((%1,%2,%3))\n")
+                        .arg(id)
+                        .arg(r1.getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                        .arg(r2.getValue(), 0, 'f', Base::UnitsApi::getDecimals());
             todo = true;
         }
     }
 
     if (!todo) {
-        QMessageBox::warning(this, tr("No edge selected"),
+        QMessageBox::warning(
+            this,
+            tr("No edge selected"),
             tr("No edge entity is checked to fillet.\n"
-               "Check one or more edge entities first."));
+               "Check one or more edge entities first.")
+        );
         return false;
     }
 
     Gui::WaitCursor wc;
     code += QStringLiteral(
-        "FreeCAD.ActiveDocument.%1.Edges = __fillets__\n"
-        "del __fillets__\n"
-        "FreeCADGui.ActiveDocument.%2.Visibility = False\n")
-        .arg(name, shape);
+                "FreeCAD.ActiveDocument.%1.Edges = __fillets__\n"
+                "del __fillets__\n"
+                "FreeCADGui.ActiveDocument.%2.Visibility = False\n"
+    )
+                .arg(name, shape);
     Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
     activeDoc->commitTransaction();
     activeDoc->recompute();
     if (d->fillet) {
         Gui::ViewProvider* vp;
         vp = Gui::Application::Instance->getViewProvider(d->fillet);
-        if (vp) vp->show();
+        if (vp) {
+            vp->show();
+        }
     }
 
     QByteArray to = name.toLatin1();
@@ -1040,15 +1129,20 @@ bool DlgFilletEdges::accept()
 
 // ---------------------------------------
 
-FilletEdgesDialog::FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
+FilletEdgesDialog::FilletEdgesDialog(
+    DlgFilletEdges::FilletType type,
+    Part::FilletBase* fillet,
+    QWidget* parent,
+    Qt::WindowFlags fl
+)
+    : QDialog(parent, fl)
 {
     widget = new DlgFilletEdges(type, fillet, this);
     this->setWindowTitle(widget->windowTitle());
 
     QVBoxLayout* hboxLayout = new QVBoxLayout(this);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
 
     QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &FilletEdgesDialog::accept);
     QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &FilletEdgesDialog::reject);
@@ -1061,8 +1155,9 @@ FilletEdgesDialog::~FilletEdgesDialog() = default;
 
 void FilletEdgesDialog::accept()
 {
-    if (widget->accept())
+    if (widget->accept()) {
         QDialog::accept();
+    }
 }
 
 // ---------------------------------------
@@ -1079,24 +1174,23 @@ TaskFilletEdges::~TaskFilletEdges()
 }
 
 void TaskFilletEdges::open()
-{
-}
+{}
 
 void TaskFilletEdges::clicked(int)
-{
-}
+{}
 
 bool TaskFilletEdges::accept()
 {
     bool ok = widget->accept();
-    if (ok)
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    if (ok) {
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    }
     return ok;
 }
 
 bool TaskFilletEdges::reject()
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 
@@ -1105,7 +1199,7 @@ bool TaskFilletEdges::reject()
 /* TRANSLATOR PartGui::DlgChamferEdges */
 
 DlgChamferEdges::DlgChamferEdges(Part::FilletBase* chamfer, QWidget* parent, Qt::WindowFlags fl)
-  : DlgFilletEdges(DlgFilletEdges::CHAMFER, chamfer, parent, fl)
+    : DlgFilletEdges(DlgFilletEdges::CHAMFER, chamfer, parent, fl)
 {
     this->setWindowTitle(tr("Chamfer Edges"));
 }
@@ -1132,24 +1226,23 @@ TaskChamferEdges::~TaskChamferEdges()
 }
 
 void TaskChamferEdges::open()
-{
-}
+{}
 
 void TaskChamferEdges::clicked(int)
-{
-}
+{}
 
 bool TaskChamferEdges::accept()
 {
     bool ok = widget->accept();
-    if (ok)
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    if (ok) {
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    }
     return ok;
 }
 
 bool TaskChamferEdges::reject()
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 

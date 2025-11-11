@@ -111,7 +111,8 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
         if (base) {
             PartGui::ViewProviderPartExt* svp = dynamic_cast<PartGui::ViewProviderPartExt*>(
-                Gui::Application::Instance->getViewProvider(base));
+                Gui::Application::Instance->getViewProvider(base)
+            );
             if (svp) {
                 switch (type) {
                     case ViewProviderFilling::Vertex:
@@ -124,8 +125,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                             for (const auto& jt : it.second) {
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
-                                std::size_t idx =
-                                    static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
+                                std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
                                 if (idx < colors.size()) {
                                     colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
@@ -145,8 +145,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                             colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
                             for (const auto& jt : it.second) {
-                                std::size_t idx =
-                                    static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                                std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < colors.size()) {
@@ -168,13 +167,11 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                             materials.resize(fMap.Extent(), svp->ShapeAppearance[0]);
 
                             for (const auto& jt : it.second) {
-                                std::size_t idx =
-                                    static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
+                                std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < materials.size()) {
-                                    materials[idx].diffuseColor =
-                                        Base::Color(1.0, 0.0, 1.0);  // magenta
+                                    materials[idx].diffuseColor = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -342,8 +339,10 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
     App::DocumentObject* initFace = editedObject->InitialFace.getValue();
     const std::vector<std::string>& subList = editedObject->InitialFace.getSubValues();
     if (initFace && subList.size() == 1) {
-        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(initFace->Label.getValue()),
-                                                   QString::fromStdString(subList.front()));
+        QString text = QStringLiteral("%1.%2").arg(
+            QString::fromUtf8(initFace->Label.getValue()),
+            QString::fromStdString(subList.front())
+        );
         ui->lineInitFaceName->setText(text);
     }
 
@@ -375,8 +374,10 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listBoundary);
         ui->listBoundary->addItem(item);
 
-        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                   QString::fromStdString(edge));
+        QString text = QStringLiteral("%1.%2").arg(
+            QString::fromUtf8(obj->Label.getValue()),
+            QString::fromStdString(edge)
+        );
         item->setText(text);
 
         // The user data field of a list widget item
@@ -414,14 +415,15 @@ void FillingPanel::open()
     checkOpenCommand();
 
     // highlight the boundary edges
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                  editedObject->BoundaryEdges.getSubListValues(),
-                                  true);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Edge,
+        editedObject->BoundaryEdges.getSubListValues(),
+        true
+    );
 
     // highlight the referenced face
     std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.emplace_back(editedObject->InitialFace.getValue(),
-                       editedObject->InitialFace.getSubValues());
+    links.emplace_back(editedObject->InitialFace.getValue(), editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 
     Gui::Selection().clearSelection();
@@ -462,14 +464,18 @@ void FillingPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
     // If this view provider is being deleted then reset the colors of
     // referenced part objects. The dialog will be deleted later.
     if (this->vp == &Obj) {
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->BoundaryEdges.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(),
+            false
+        );
 
         // unhighlight the referenced face
         std::vector<App::PropertyLinkSubList::SubSet> links;
-        links.emplace_back(editedObject->InitialFace.getValue(),
-                           editedObject->InitialFace.getSubValues());
+        links.emplace_back(
+            editedObject->InitialFace.getValue(),
+            editedObject->InitialFace.getSubValues()
+        );
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
     }
 }
@@ -483,20 +489,23 @@ bool FillingPanel::accept()
         editedObject->recomputeFeature();
     }
     if (!editedObject->isValid()) {
-        QMessageBox::warning(this,
-                             tr("Invalid object"),
-                             QString::fromLatin1(editedObject->getStatusString()));
+        QMessageBox::warning(
+            this,
+            tr("Invalid object"),
+            QString::fromLatin1(editedObject->getStatusString())
+        );
         return false;
     }
 
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                  editedObject->BoundaryEdges.getSubListValues(),
-                                  false);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Edge,
+        editedObject->BoundaryEdges.getSubListValues(),
+        false
+    );
 
     // unhighlight the referenced face
     std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.emplace_back(editedObject->InitialFace.getValue(),
-                       editedObject->InitialFace.getSubValues());
+    links.emplace_back(editedObject->InitialFace.getValue(), editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
 
     return true;
@@ -505,14 +514,18 @@ bool FillingPanel::accept()
 bool FillingPanel::reject()
 {
     if (!editedObject.expired()) {
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->BoundaryEdges.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(),
+            false
+        );
 
         // unhighlight the referenced face
         std::vector<App::PropertyLinkSubList::SubSet> links;
-        links.emplace_back(editedObject->InitialFace.getValue(),
-                           editedObject->InitialFace.getSubValues());
+        links.emplace_back(
+            editedObject->InitialFace.getValue(),
+            editedObject->InitialFace.getSubValues()
+        );
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
     }
 
@@ -529,8 +542,10 @@ void FillingPanel::onLineInitFaceNameTextChanged(const QString& text)
 
         // unhighlight the referenced face
         std::vector<App::PropertyLinkSubList::SubSet> links;
-        links.emplace_back(editedObject->InitialFace.getValue(),
-                           editedObject->InitialFace.getSubValues());
+        links.emplace_back(
+            editedObject->InitialFace.getValue(),
+            editedObject->InitialFace.getSubValues()
+        );
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
 
         editedObject->InitialFace.setValue(nullptr);
@@ -593,10 +608,7 @@ void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
                 TopTools_IndexedMapOfShape faces;
                 TopExp::MapShapes(shape.getShape(), TopAbs_FACE, faces);
                 TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
-                TopExp::MapShapesAndAncestors(shape.getShape(),
-                                              TopAbs_EDGE,
-                                              TopAbs_FACE,
-                                              edge2Face);
+                TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, edge2Face);
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
@@ -629,9 +641,8 @@ void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
                 }
             }
 
-            Gui::Selection().addSelection(data[0].toByteArray(),
-                                          data[1].toByteArray(),
-                                          data[2].toByteArray());
+            Gui::Selection()
+                .addSelection(data[0].toByteArray(), data[1].toByteArray(), data[2].toByteArray());
         }
         catch (...) {
         }
@@ -648,9 +659,10 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         checkOpenCommand();
         if (selectionMode == InitFace) {
             Gui::SelectionObject sel(msg);
-            QString text =
-                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                                            QString::fromLatin1(msg.pSubName));
+            QString text = QStringLiteral("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName)
+            );
             ui->lineInitFaceName->setText(text);
 
             std::vector<std::string> subList;
@@ -670,9 +682,10 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listBoundary->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text =
-                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                                            QString::fromLatin1(msg.pSubName));
+            QString text = QStringLiteral("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName)
+            );
             item->setText(text);
 
             QList<QVariant> data;
@@ -702,9 +715,11 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 editedObject->BoundaryOrder.setValues(conts);
             }
 
-            this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                          editedObject->BoundaryEdges.getSubListValues(),
-                                          true);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Edge,
+                editedObject->BoundaryEdges.getSubListValues(),
+                true
+            );
         }
         else if (selectionMode == RemoveEdge) {
             Gui::SelectionObject sel(msg);
@@ -724,9 +739,11 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
 
-            this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                          editedObject->BoundaryEdges.getSubListValues(),
-                                          false);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Edge,
+                editedObject->BoundaryEdges.getSubListValues(),
+                false
+            );
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
             auto objects = editedObject->BoundaryEdges.getValues();
@@ -758,9 +775,11 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                     break;
                 }
             }
-            this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                          editedObject->BoundaryEdges.getSubListValues(),
-                                          true);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Edge,
+                editedObject->BoundaryEdges.getSubListValues(),
+                true
+            );
         }
 
         editedObject->recomputeFeature();
@@ -786,9 +805,11 @@ void FillingPanel::onDeleteEdge()
         auto element = editedObject->BoundaryEdges.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->BoundaryEdges.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(),
+            false
+        );
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
                 std::size_t index = std::distance(objects.begin(), it);
@@ -813,9 +834,11 @@ void FillingPanel::onDeleteEdge()
                 break;
             }
         }
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->BoundaryEdges.getSubListValues(),
-                                      true);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(),
+            true
+        );
 
         editedObject->recomputeFeature();
     }

@@ -87,8 +87,7 @@ class MeshGuiExport RemoveComponentsDialog: public QDialog
     Q_OBJECT
 
 public:
-    explicit RemoveComponentsDialog(QWidget* parent = nullptr,
-                                    Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit RemoveComponentsDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemoveComponentsDialog() override;
     void reject() override;
 

@@ -25,7 +25,8 @@
 
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * This class sets a waitcursor automatically while a slow operation is running.
@@ -60,7 +61,8 @@ namespace Gui {
 class GuiExport WaitCursor
 {
 public:
-    enum FilterEventsFlag {
+    enum FilterEventsFlag
+    {
         NoEvents = 0x00,
         KeyEvents = 0x01,
         MouseEvents = 0x02,
@@ -94,7 +96,6 @@ private:
     static int instances;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_WAIT_CURSOR_H
-
+#endif  // GUI_WAIT_CURSOR_H

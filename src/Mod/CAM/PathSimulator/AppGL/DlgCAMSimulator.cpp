@@ -136,10 +136,12 @@ void DlgCAMSimulator::addGcodeCommand(const char* cmd)
     mMillSimulator->AddGcodeLine(cmd);
 }
 
-void DlgCAMSimulator::addTool(const std::vector<float>& toolProfilePoints,
-                              int toolNumber,
-                              float diameter,
-                              float resolution)
+void DlgCAMSimulator::addTool(
+    const std::vector<float>& toolProfilePoints,
+    int toolNumber,
+    float diameter,
+    float resolution
+)
 {
     Q_UNUSED(resolution)
     std::string toolCmd = "T" + std::to_string(toolNumber);
@@ -174,10 +176,12 @@ void DlgCAMSimulator::resizeEvent(QResizeEvent* event)
     glViewport(0, 0, (int)(newWidth * retinaScale), (int)(newHeight * retinaScale));
 }
 
-void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
-                                  float resolution,
-                                  std::vector<Vertex>& verts,
-                                  std::vector<GLushort>& indices)
+void DlgCAMSimulator::GetMeshData(
+    const Part::TopoShape& tshape,
+    float resolution,
+    std::vector<Vertex>& verts,
+    std::vector<GLushort>& indices
+)
 {
     std::vector<int> normalCount;
     int nVerts = 0;

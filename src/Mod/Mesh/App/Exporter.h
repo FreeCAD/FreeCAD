@@ -244,9 +244,11 @@ public:
     /*!
      * meta information passed in is applied at the <amf> tag level
      */
-    ExporterAMF(std::string fileName,
-                const std::map<std::string, std::string>& meta,
-                bool compress = true);
+    ExporterAMF(
+        std::string fileName,
+        const std::map<std::string, std::string>& meta,
+        bool compress = true
+    );
 
     /// Writes AMF footer
     ~ExporterAMF() override;

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
+#include <QMenu>
 
 
 #include "TaskPocketParameters.h"
@@ -48,7 +47,7 @@ void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const 
 }
 
 
-TaskDlgFeatureParameters *ViewProviderPocket::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderPocket::getEditDialog()
 {
-    return new TaskDlgPocketParameters( this );
+    return new TaskDlgPocketParameters(this);
 }

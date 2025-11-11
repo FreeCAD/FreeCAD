@@ -23,14 +23,14 @@
 #ifndef GUI_UILOADER_H
 #define GUI_UILOADER_H
 
-#if !defined (__MINGW32__)
-#define HAVE_QT_UI_TOOLS
+#if !defined(__MINGW32__)
+# define HAVE_QT_UI_TOOLS
 #endif
 
-#if defined (HAVE_QT_UI_TOOLS)
-#include <QUiLoader>
+#if defined(HAVE_QT_UI_TOOLS)
+# include <QUiLoader>
 #else
-#include <QObject>
+# include <QObject>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -47,8 +47,8 @@ class QWidget;
 QT_END_NAMESPACE
 
 
-#if !defined (HAVE_QT_UI_TOOLS)
-class QUiLoader : public QObject
+#if !defined(HAVE_QT_UI_TOOLS)
+class QUiLoader: public QObject
 {
     Q_OBJECT
 public:
@@ -63,8 +63,16 @@ public:
     QStringList availableWidgets() const;
     QStringList availableLayouts() const;
 
-    virtual QWidget* createWidget(const QString& className, QWidget* parent = nullptr, const QString& name = QString());
-    virtual QLayout* createLayout(const QString& className, QObject* parent = nullptr, const QString& name = QString());
+    virtual QWidget* createWidget(
+        const QString& className,
+        QWidget* parent = nullptr,
+        const QString& name = QString()
+    );
+    virtual QLayout* createLayout(
+        const QString& className,
+        QObject* parent = nullptr,
+        const QString& name = QString()
+    );
     virtual QActionGroup* createActionGroup(QObject* parent = nullptr, const QString& name = QString());
     virtual QAction* createAction(QObject* parent = nullptr, const QString& name = QString());
 
@@ -84,9 +92,10 @@ private:
 };
 #endif
 
-namespace Gui {
+namespace Gui
+{
 
-class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
+class PySideUicModule: public Py::ExtensionModule<PySideUicModule>
 {
 
 public:
@@ -105,14 +114,14 @@ private:
  * extends QUiLoader by the creation of FreeCAD specific widgets.
  * @author Werner Mayer
  */
-class UiLoader : public QUiLoader
+class UiLoader: public QUiLoader
 {
 protected:
     /**
      * A protected construct for UiLoader.
      * To create an instance of UiLoader @see UiLoader::newInstance()
      */
-    explicit UiLoader(QObject* parent=nullptr);
+    explicit UiLoader(QObject* parent = nullptr);
 
 public:
     /**
@@ -128,7 +137,7 @@ public:
      *
      * @see https://github.com/FreeCAD/FreeCAD/issues/8708
      */
-    static std::unique_ptr<UiLoader> newInstance(QObject *parent=nullptr);
+    static std::unique_ptr<UiLoader> newInstance(QObject* parent = nullptr);
 
     ~UiLoader() override;
 
@@ -136,8 +145,11 @@ public:
      * Creates a widget of the type \a className with the parent \a parent.
      * For more details see the documentation to QWidgetFactory.
      */
-    QWidget* createWidget(const QString & className, QWidget * parent=nullptr,
-                          const QString& name = QString()) override;
+    QWidget* createWidget(
+        const QString& className,
+        QWidget* parent = nullptr,
+        const QString& name = QString()
+    ) override;
 
 private:
     QStringList cw;
@@ -145,10 +157,10 @@ private:
 
 // --------------------------------------------------------------------
 
-class UiLoaderPy : public Py::PythonExtension<UiLoaderPy>
+class UiLoaderPy: public Py::PythonExtension<UiLoaderPy>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     UiLoaderPy();
     ~UiLoaderPy() override;
@@ -168,12 +180,12 @@ public:
     Py::Object workingDirectory(const Py::Tuple&);
 
 private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+    static PyObject* PyMake(struct _typeobject*, PyObject*, PyObject*);
 
 private:
     std::unique_ptr<UiLoader> loader;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_UILOADER_H
+#endif  // GUI_UILOADER_H

@@ -26,7 +26,7 @@
 
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
+# include <BRepAdaptor_HCurve.hxx>
 #endif
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -173,7 +173,8 @@ int ImpExpDxfReadGui::GetDrawStyle() const
         // starts with dot : return dotted
         std::basic_regex("^dot", std::regex::icase),
         // dash & dot or center/centre/divide/phantom : return DashDot
-        std::basic_regex("dot.*dash|dash.*dot|^cent(er|re)|^divide|^phantom", std::regex::icase)};
+        std::basic_regex("dot.*dash|dash.*dot|^cent(er|re)|^divide|^phantom", std::regex::icase)
+    };
     // Some line type names can match several patterns, in particular dotdash can also match ^dot
     // and dashdot can match ^dash Rather than code the latter patterns to forbid subsequent "dash"
     // or "dot" so they are mutually exclusive, we just match the more specific pattern, which is

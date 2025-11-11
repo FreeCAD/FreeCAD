@@ -62,7 +62,8 @@ Tessellation::Tessellation(QWidget* parent)
     ui->stackedWidget->addTab(gmsh, tr("Gmsh"));
 
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
+        "User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard"
+    );
     double value = ui->spinSurfaceDeviation->value().getValue();
     value = handle->GetFloat("LinearDeflection", value);
     double angle = ui->spinAngularDeviation->value().getValue();
@@ -102,22 +103,20 @@ Tessellation::~Tessellation() = default;
 void Tessellation::setupConnections()
 {
     connect(gmsh, &Mesh2ShapeGmsh::processed, this, &Tessellation::gmshProcessed);
-    connect(ui->estimateMaximumEdgeLength,
-            &QPushButton::clicked,
-            this,
-            &Tessellation::onEstimateMaximumEdgeLengthClicked);
-    connect(ui->comboFineness,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &Tessellation::onComboFinenessCurrentIndexChanged);
-    connect(ui->checkSecondOrder,
-            &QCheckBox::toggled,
-            this,
-            &Tessellation::onCheckSecondOrderToggled);
-    connect(ui->checkQuadDominated,
-            &QCheckBox::toggled,
-            this,
-            &Tessellation::onCheckQuadDominatedToggled);
+    connect(
+        ui->estimateMaximumEdgeLength,
+        &QPushButton::clicked,
+        this,
+        &Tessellation::onEstimateMaximumEdgeLengthClicked
+    );
+    connect(
+        ui->comboFineness,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &Tessellation::onComboFinenessCurrentIndexChanged
+    );
+    connect(ui->checkSecondOrder, &QCheckBox::toggled, this, &Tessellation::onCheckSecondOrderToggled);
+    connect(ui->checkQuadDominated, &QCheckBox::toggled, this, &Tessellation::onCheckQuadDominatedToggled);
 }
 
 void Tessellation::meshingMethod(int id)
@@ -217,10 +216,11 @@ void Tessellation::onEstimateMaximumEdgeLengthClicked()
 
     double edgeLen = 0;
     for (auto& sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
-        auto shape = Part::Feature::getTopoShape(sel.pObject,
-                                                 Part::ShapeOption::ResolveLink
-                                                     | Part::ShapeOption::Transform,
-                                                 sel.SubName);
+        auto shape = Part::Feature::getTopoShape(
+            sel.pObject,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+            sel.SubName
+        );
         if (shape.hasSubShape(TopAbs_FACE)) {
             Base::BoundBox3d bbox = shape.getBoundBox();
             edgeLen = std::max<double>(edgeLen, bbox.LengthX());
@@ -252,10 +252,11 @@ bool Tessellation::accept()
     bool bodyWithNoTip = false;
     bool partWithNoFace = false;
     for (auto& sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
-        auto shape = Part::Feature::getTopoShape(sel.pObject,
-                                                 Part::ShapeOption::ResolveLink
-                                                     | Part::ShapeOption::Transform,
-                                                 sel.SubName);
+        auto shape = Part::Feature::getTopoShape(
+            sel.pObject,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+            sel.SubName
+        );
         if (shape.hasSubShape(TopAbs_FACE)) {
             shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
@@ -277,13 +278,16 @@ bool Tessellation::accept()
                 this,
                 windowTitle(),
                 tr("Error: body without a tip selected.\n"
-                   "Either set the tip of the body or select a different shape."));
+                   "Either set the tip of the body or select a different shape.")
+            );
         }
         else if (partWithNoFace) {
-            QMessageBox::critical(this,
-                                  windowTitle(),
-                                  tr("Error: shape without faces selected.\n"
-                                     "Select a different shape."));
+            QMessageBox::critical(
+                this,
+                windowTitle(),
+                tr("Error: shape without faces selected.\n"
+                   "Select a different shape.")
+            );
         }
         else {
             QMessageBox::critical(this, windowTitle(), tr("Select a shape for meshing, first."));
@@ -305,9 +309,7 @@ bool Tessellation::accept()
     return doClose;
 }
 
-void Tessellation::process(int method,
-                           App::Document* doc,
-                           const std::list<App::SubObjectT>& shapeObjects)
+void Tessellation::process(int method, App::Document* doc, const std::list<App::SubObjectT>& shapeObjects)
 {
     try {
         Gui::WaitCursor wc;
@@ -336,13 +338,15 @@ void Tessellation::process(int method,
 
             QString param = getMeshingParameters(method, sobj);
 
-            QString cmd = QStringLiteral("__doc__=FreeCAD.getDocument(\"%1\")\n"
-                                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                                         "__part__=__doc__.getObject(\"%2\")\n"
-                                         "__shape__=Part.getShape(__part__,\"%3\")\n"
-                                         "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
-                                         "__mesh__.Label=\"%5 (Meshed)\"\n"
-                                         "del __doc__, __mesh__, __part__, __shape__\n")
+            QString cmd = QStringLiteral(
+                              "__doc__=FreeCAD.getDocument(\"%1\")\n"
+                              "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
+                              "__part__=__doc__.getObject(\"%2\")\n"
+                              "__shape__=Part.getShape(__part__,\"%3\")\n"
+                              "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
+                              "__mesh__.Label=\"%5 (Meshed)\"\n"
+                              "del __doc__, __mesh__, __part__, __shape__\n"
+            )
                               .arg(this->document, objname, subname, param, label);
 
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
@@ -361,7 +365,8 @@ void Tessellation::saveParameters(int method)
 {
     if (method == Standard) {
         ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
+            "User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard"
+        );
         double value = ui->spinSurfaceDeviation->value().getValue();
         handle->SetFloat("LinearDeflection", value);
         double angle = ui->spinAngularDeviation->value().getValue();
@@ -376,12 +381,14 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
     // if Standard mesher is used and face colors should be applied
     if (method == Standard) {
         if (ui->meshShapeColors->isChecked()) {
-            Gui::ViewProvider* vpm =
-                Gui::Application::Instance->getViewProvider(doc->getActiveObject());
+            Gui::ViewProvider* vpm = Gui::Application::Instance->getViewProvider(
+                doc->getActiveObject()
+            );
             auto vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
 
             auto svp = freecad_cast<PartGui::ViewProviderPartExt*>(
-                Gui::Application::Instance->getViewProvider(obj));
+                Gui::Application::Instance->getViewProvider(obj)
+            );
             if (vpmesh && svp) {
                 std::vector<Base::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
                 if (ui->groupsFaceColors->isChecked()) {
@@ -412,7 +419,8 @@ void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<Base::Co
 
         auto typeId = App::PropertyColorList::getClassTypeId();
         if (auto prop = dynamic_cast<App::PropertyColorList*>(
-                mesh->addDynamicProperty(typeId.getName(), "FaceColors"))) {
+                mesh->addDynamicProperty(typeId.getName(), "FaceColors")
+            )) {
             prop->setValues(colorPerFace);
         }
     }
@@ -458,10 +466,12 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
     bool relative = ui->relativeDeviation->isChecked();
 
     QString param;
-    param = QStringLiteral("Shape=__shape__, "
-                           "LinearDeflection=%1, "
-                           "AngularDeflection=%2, "
-                           "Relative=%3")
+    param = QStringLiteral(
+                "Shape=__shape__, "
+                "LinearDeflection=%1, "
+                "AngularDeflection=%2, "
+                "Relative=%3"
+    )
                 .arg(devFace)
                 .arg(devAngle)
                 .arg(relative ? QStringLiteral("True") : QStringLiteral("False"));
@@ -470,7 +480,8 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
     }
 
     auto svp = freecad_cast<PartGui::ViewProviderPartExt*>(
-        Gui::Application::Instance->getViewProvider(obj));
+        Gui::Application::Instance->getViewProvider(obj)
+    );
     if (ui->groupsFaceColors->isChecked() && svp) {
         // TODO: currently, we can only retrieve part feature
         // color. The problem is that if the feature is linked,
@@ -484,8 +495,10 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
         // PartGui::ViewProviderPartExt::getShapeColors().
         //
         param += QStringLiteral(",GroupColors=Gui.getDocument('%1').getObject('%2').DiffuseColor")
-                     .arg(QString::fromLatin1(obj->getDocument()->getName()),
-                          QString::fromLatin1(obj->getNameInDocument()));
+                     .arg(
+                         QString::fromLatin1(obj->getDocument()->getName()),
+                         QString::fromLatin1(obj->getNameInDocument())
+                     );
     }
 
     return param;
@@ -511,17 +524,21 @@ QString Tessellation::getNetgenParameters() const
     bool optimize = ui->checkOptimizeSurface->isChecked();
     bool allowquad = ui->checkQuadDominated->isChecked();
     if (fineness <= int(VeryFine)) {
-        param = QStringLiteral("Shape=__shape__,"
-                               "Fineness=%1,SecondOrder=%2,Optimize=%3,AllowQuad=%4")
+        param = QStringLiteral(
+                    "Shape=__shape__,"
+                    "Fineness=%1,SecondOrder=%2,Optimize=%3,AllowQuad=%4"
+        )
                     .arg(fineness)
                     .arg(secondOrder ? 1 : 0)
                     .arg(optimize ? 1 : 0)
                     .arg(allowquad ? 1 : 0);
     }
     else {
-        param = QStringLiteral("Shape=__shape__,"
-                               "GrowthRate=%1,SegPerEdge=%2,SegPerRadius=%3,SecondOrder=%4,"
-                               "Optimize=%5,AllowQuad=%6")
+        param = QStringLiteral(
+                    "Shape=__shape__,"
+                    "GrowthRate=%1,SegPerEdge=%2,SegPerRadius=%3,SecondOrder=%4,"
+                    "Optimize=%5,AllowQuad=%6"
+        )
                     .arg(growthRate)
                     .arg(nbSegPerEdge)
                     .arg(nbSegPerRadius)
@@ -574,10 +591,11 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
 
         App::DocumentObject* part = sub.getObject();
         if (part) {
-            Part::TopoShape shape = Part::Feature::getTopoShape(part,
-                                                                Part::ShapeOption::ResolveLink
-                                                                    | Part::ShapeOption::Transform,
-                                                                sub.getSubName().c_str());
+            Part::TopoShape shape = Part::Feature::getTopoShape(
+                part,
+                Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+                sub.getSubName().c_str()
+            );
             shape.exportBrep(d->cadFile.c_str());
             d->label = part->Label.getStrValue() + " (Meshed)";
 

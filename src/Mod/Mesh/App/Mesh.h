@@ -133,10 +133,12 @@ public:
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     /** Get faces from segment */
-    void getFacesFromSubElement(const Data::Segment*,
-                                std::vector<Base::Vector3d>& Points,
-                                std::vector<Base::Vector3d>& PointNormals,
-                                std::vector<Facet>& faces) const override;
+    void getFacesFromSubElement(
+        const Data::Segment*,
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Base::Vector3d>& PointNormals,
+        std::vector<Facet>& faces
+    ) const override;
     //@}
 
     void setTransform(const Base::Matrix4D& rclTrf) override;
@@ -164,14 +166,18 @@ public:
     double getSurface() const;
     double getVolume() const;
     /** Get points from object with given accuracy */
-    void getPoints(std::vector<Base::Vector3d>& Points,
-                   std::vector<Base::Vector3d>& Normals,
-                   double Accuracy,
-                   uint16_t flags = 0) const override;
-    void getFaces(std::vector<Base::Vector3d>& Points,
-                  std::vector<Facet>& Topo,
-                  double Accuracy,
-                  uint16_t flags = 0) const override;
+    void getPoints(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Base::Vector3d>& Normals,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
+    void getFaces(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Facet>& Topo,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
     bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
     std::vector<TFaceSection> foraminate(const TRay& ray, double maxAngle) const;
@@ -198,14 +204,18 @@ public:
     void SaveDocFile(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
     void RestoreDocFile(Base::Reader& reader) override;
-    void save(const char* file,
-              MeshCore::MeshIO::Format f = MeshCore::MeshIO::Undefined,
-              const MeshCore::Material* mat = nullptr,
-              const char* objectname = nullptr) const;
-    void save(std::ostream&,
-              MeshCore::MeshIO::Format f,
-              const MeshCore::Material* mat = nullptr,
-              const char* objectname = nullptr) const;
+    void save(
+        const char* file,
+        MeshCore::MeshIO::Format f = MeshCore::MeshIO::Undefined,
+        const MeshCore::Material* mat = nullptr,
+        const char* objectname = nullptr
+    ) const;
+    void save(
+        std::ostream&,
+        MeshCore::MeshIO::Format f,
+        const MeshCore::Material* mat = nullptr,
+        const char* objectname = nullptr
+    ) const;
     bool load(const char* file, MeshCore::Material* mat = nullptr);
     bool load(std::istream&, MeshCore::MeshIO::Format f, MeshCore::Material* mat = nullptr);
     // Save and load in internal format
@@ -219,15 +229,21 @@ public:
     void addFacet(const MeshCore::MeshGeomFacet& facet);
     void addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
     void addFacets(const std::vector<MeshCore::MeshFacet>& facets, bool checkManifolds);
-    void addFacets(const std::vector<MeshCore::MeshFacet>& facets,
-                   const std::vector<Base::Vector3f>& points,
-                   bool checkManifolds);
-    void addFacets(const std::vector<Data::ComplexGeoData::Facet>& facets,
-                   const std::vector<Base::Vector3d>& points,
-                   bool checkManifolds);
+    void addFacets(
+        const std::vector<MeshCore::MeshFacet>& facets,
+        const std::vector<Base::Vector3f>& points,
+        bool checkManifolds
+    );
+    void addFacets(
+        const std::vector<Data::ComplexGeoData::Facet>& facets,
+        const std::vector<Base::Vector3d>& points,
+        bool checkManifolds
+    );
     void setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
-    void setFacets(const std::vector<Data::ComplexGeoData::Facet>& facets,
-                   const std::vector<Base::Vector3d>& points);
+    void setFacets(
+        const std::vector<Data::ComplexGeoData::Facet>& facets,
+        const std::vector<Base::Vector3d>& points
+    );
     /**
      * Combines two independent mesh objects.
      * @note The mesh object we want to add must not overlap or intersect with
@@ -251,8 +267,10 @@ public:
      * The point degree information is stored in \a point_degree. The return value
      * gives the number of points which will have a degree of zero.
      */
-    unsigned long getPointDegree(const std::vector<FacetIndex>& indices,
-                                 std::vector<PointIndex>& point_degree) const;
+    unsigned long getPointDegree(
+        const std::vector<FacetIndex>& indices,
+        std::vector<PointIndex>& point_degree
+    ) const;
     void fillupHoles(unsigned long, int, MeshCore::AbstractPolygonTriangulator&);
     void offset(float fSize);
     void offsetSpecial2(float fSize);
@@ -268,10 +286,12 @@ public:
     void decimate(int targetSize);
     Base::Vector3d getPointNormal(PointIndex) const;
     std::vector<Base::Vector3d> getPointNormals() const;
-    void crossSections(const std::vector<TPlane>&,
-                       std::vector<TPolylines>& sections,
-                       float fMinEps = 1.0e-2F,
-                       bool bConnectPolygons = false) const;
+    void crossSections(
+        const std::vector<TPlane>&,
+        std::vector<TPolylines>& sections,
+        float fMinEps = 1.0e-2F,
+        bool bConnectPolygons = false
+    ) const;
     void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trimByPlane(const Base::Vector3f& base, const Base::Vector3f& normal);
@@ -302,8 +322,11 @@ public:
     MeshObject* subtract(const MeshObject&) const;
     MeshObject* inner(const MeshObject&) const;
     MeshObject* outer(const MeshObject&) const;
-    std::vector<std::vector<Base::Vector3f>>
-    section(const MeshObject&, bool connectLines, float fMinDist) const;
+    std::vector<std::vector<Base::Vector3f>> section(
+        const MeshObject&,
+        bool connectLines,
+        float fMinDist
+    ) const;
     //@}
 
     /** @name Topological operations */

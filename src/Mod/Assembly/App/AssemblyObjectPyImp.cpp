@@ -205,12 +205,14 @@ PyObject* AssemblyObjectPy::getDownstreamParts(PyObject* args) const
     PyObject* pyJoint;
 
     // Parse the two arguments: a part object and a joint object
-    if (!PyArg_ParseTuple(args,
-                          "O!O!",
-                          &(App::DocumentObjectPy::Type),
-                          &pyPart,
-                          &(App::DocumentObjectPy::Type),
-                          &pyJoint)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!",
+            &(App::DocumentObjectPy::Type),
+            &pyPart,
+            &(App::DocumentObjectPy::Type),
+            &pyJoint
+        )) {
         return nullptr;
     }
 
@@ -218,8 +220,8 @@ PyObject* AssemblyObjectPy::getDownstreamParts(PyObject* args) const
     auto* joint = static_cast<App::DocumentObjectPy*>(pyJoint)->getDocumentObjectPtr();
 
     // Call the C++ method
-    std::vector<Assembly::ObjRef> downstreamParts =
-        this->getAssemblyObjectPtr()->getDownstreamParts(part, joint);
+    std::vector<Assembly::ObjRef> downstreamParts
+        = this->getAssemblyObjectPtr()->getDownstreamParts(part, joint);
 
     // Convert the result into a Python list of DocumentObjects
     Py::List ret;

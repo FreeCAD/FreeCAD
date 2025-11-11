@@ -677,14 +677,14 @@ inline std::string toFractional(const double value, std::size_t denominator)
     constexpr auto inchPerFoot {12};
     constexpr auto mmPerInch {25.4};
 
-    auto numFractUnits =
-        static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * denominator));
+    auto numFractUnits = static_cast<std::size_t>(
+        std::round(std::abs(value) / mmPerInch * denominator)
+    );
     if (numFractUnits == 0) {
         return "0";
     }
 
-    const auto feet =
-        static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * denominator)));
+    const auto feet = static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * denominator)));
     numFractUnits -= inchPerFoot * denominator * feet;
 
     const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / denominator));
@@ -773,12 +773,14 @@ inline const std::map<std::string, std::function<std::string(double, std::size_t
     }
 };  // clang-format on
 
-inline std::string runSpecial(const std::string& name,
-                              const double value,
-                              const std::size_t precision,
-                              const std::size_t denominator,
-                              double& factor,
-                              std::string& unitString)
+inline std::string runSpecial(
+    const std::string& name,
+    const double value,
+    const std::size_t precision,
+    const std::size_t denominator,
+    double& factor,
+    std::string& unitString
+)
 {
     return specials.contains(name)
         ? specials.at(name)(value, precision, denominator, factor, unitString)

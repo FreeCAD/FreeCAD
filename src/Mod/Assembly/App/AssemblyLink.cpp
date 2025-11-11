@@ -59,18 +59,22 @@ PROPERTY_SOURCE(Assembly::AssemblyLink, App::Part)
 
 AssemblyLink::AssemblyLink()
 {
-    ADD_PROPERTY_TYPE(Rigid,
-                      (true),
-                      "General",
-                      (App::PropertyType)(App::Prop_None),
-                      "If the sub-assembly is set to Rigid, it will act "
-                      "as a rigid body. Else its joints will be taken into account.");
+    ADD_PROPERTY_TYPE(
+        Rigid,
+        (true),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "If the sub-assembly is set to Rigid, it will act "
+        "as a rigid body. Else its joints will be taken into account."
+    );
 
-    ADD_PROPERTY_TYPE(LinkedObject,
-                      (nullptr),
-                      "General",
-                      (App::PropertyType)(App::Prop_None),
-                      "The linked assembly.");
+    ADD_PROPERTY_TYPE(
+        LinkedObject,
+        (nullptr),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "The linked assembly."
+    );
 }
 
 AssemblyLink::~AssemblyLink() = default;
@@ -105,8 +109,9 @@ void AssemblyLink::onChanged(const App::Property* prop)
         // If a rigid sub-assembly has an object that is grounded, we also remove it.
         auto groundedJoints = getParentAssembly()->getGroundedJoints();
         for (auto* joint : groundedJoints) {
-            auto* propObj =
-                dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("ObjectToGround"));
+            auto* propObj = dynamic_cast<App::PropertyLink*>(
+                joint->getPropertyByName("ObjectToGround")
+            );
             if (!propObj) {
                 continue;
             }
@@ -125,8 +130,7 @@ void AssemblyLink::onChanged(const App::Property* prop)
             // movePlc needs to be computed before updateContents.
             App::DocumentObject* firstLink = nullptr;
             for (auto* obj : Group.getValues()) {
-                if (obj
-                    && (obj->isDerivedFrom<App::Link>() || obj->isDerivedFrom<AssemblyLink>())) {
+                if (obj && (obj->isDerivedFrom<App::Link>() || obj->isDerivedFrom<AssemblyLink>())) {
                     firstLink = obj;
                     break;
                 }
@@ -143,9 +147,11 @@ void AssemblyLink::onChanged(const App::Property* prop)
 
                 if (sourceObj) {
                     auto* propSource = dynamic_cast<App::PropertyPlacement*>(
-                        sourceObj->getPropertyByName("Placement"));
+                        sourceObj->getPropertyByName("Placement")
+                    );
                     auto* propLink = dynamic_cast<App::PropertyPlacement*>(
-                        firstLink->getPropertyByName("Placement"));
+                        firstLink->getPropertyByName("Placement")
+                    );
 
                     if (propSource && propLink) {
                         movePlc = propLink->getValue() * propSource->getValue().inverse();
@@ -179,8 +185,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
 
                     if (obj->isLinkGroup()) {
                         auto* srcLink = static_cast<App::Link*>(obj);
-                        const std::vector<App::DocumentObject*> srcElements =
-                            srcLink->ElementList.getValues();
+                        const std::vector<App::DocumentObject*> srcElements
+                            = srcLink->ElementList.getValues();
 
                         for (auto elt : srcElements) {
                             if (!elt) {
@@ -188,7 +194,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
                             }
 
                             auto* prop = dynamic_cast<App::PropertyPlacement*>(
-                                elt->getPropertyByName("Placement"));
+                                elt->getPropertyByName("Placement")
+                            );
                             if (prop) {
                                 prop->setValue(plc * prop->getValue());
                             }
@@ -196,7 +203,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
                     }
                     else {
                         auto* prop = dynamic_cast<App::PropertyPlacement*>(
-                            obj->getPropertyByName("Placement"));
+                            obj->getPropertyByName("Placement")
+                        );
                         if (prop) {
                             prop->setValue(plc * prop->getValue());
                         }
@@ -278,10 +286,10 @@ void AssemblyLink::synchronizeComponents()
                         // same number of elements.
                         linkGroupsAdded.insert(srcLink);
 
-                        const std::vector<App::DocumentObject*> srcElements =
-                            srcLink->ElementList.getValues();
-                        const std::vector<App::DocumentObject*> newElements =
-                            link2->ElementList.getValues();
+                        const std::vector<App::DocumentObject*> srcElements
+                            = srcLink->ElementList.getValues();
+                        const std::vector<App::DocumentObject*> newElements
+                            = link2->ElementList.getValues();
                         for (int i = 0; i < srcElements.size(); ++i) {
                             objLinkMap[srcElements[i]] = newElements[i];
                         }
@@ -309,8 +317,8 @@ void AssemblyLink::synchronizeComponents()
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
 
-                App::DocumentObject* newObj =
-                    doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
+                App::DocumentObject* newObj
+                    = doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
                 auto* subAsmLink = static_cast<AssemblyLink*>(newObj);
                 subAsmLink->LinkedObject.setValue(obj);
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
@@ -321,18 +329,17 @@ void AssemblyLink::synchronizeComponents()
             else if (obj->isDerivedFrom<App::Link>() && obj->isLinkGroup()) {
                 auto* srcLink = static_cast<App::Link*>(obj);
 
-                auto* newLink =
-                    static_cast<App::Link*>(doc->addObject("App::Link", obj->getNameInDocument()));
+                auto* newLink = static_cast<App::Link*>(
+                    doc->addObject("App::Link", obj->getNameInDocument())
+                );
                 newLink->LinkedObject.setValue(srcLink->getTrueLinkedObject(false));
 
                 newLink->Label.setValue(obj->Label.getValue());
                 addObject(newLink);
 
                 newLink->ElementCount.setValue(srcLink->ElementCount.getValue());
-                const std::vector<App::DocumentObject*> srcElements =
-                    srcLink->ElementList.getValues();
-                const std::vector<App::DocumentObject*> newElements =
-                    newLink->ElementList.getValues();
+                const std::vector<App::DocumentObject*> srcElements = srcLink->ElementList.getValues();
+                const std::vector<App::DocumentObject*> newElements = newLink->ElementList.getValues();
                 for (int i = 0; i < srcElements.size(); ++i) {
                     auto* newObj = newElements[i];
                     auto* srcObj = srcElements[i];
@@ -387,9 +394,11 @@ void AssemblyLink::synchronizeComponents()
 namespace
 {
 template<typename T>
-void copyPropertyIfDifferent(App::DocumentObject* source,
-                             App::DocumentObject* target,
-                             const char* propertyName)
+void copyPropertyIfDifferent(
+    App::DocumentObject* source,
+    App::DocumentObject* target,
+    const char* propertyName
+)
 {
     auto sourceProp = freecad_cast<T*>(source->getPropertyByName(propertyName));
     auto targetProp = freecad_cast<T*>(target->getPropertyByName(propertyName));
@@ -412,8 +421,11 @@ std::string removeUpToName(const std::string& sub, const std::string& name)
     return sub;
 }
 
-std::string
-replaceLastOccurrence(const std::string& str, const std::string& oldStr, const std::string& newStr)
+std::string replaceLastOccurrence(
+    const std::string& str,
+    const std::string& oldStr,
+    const std::string& newStr
+)
 {
     size_t pos = str.rfind(oldStr);
     if (pos != std::string::npos) {
@@ -435,8 +447,8 @@ void AssemblyLink::synchronizeJoints()
 
     JointGroup* jGroup = ensureJointGroup();
 
-    std::vector<App::DocumentObject*> assemblyJoints =
-        assembly->getJoints(assembly->isTouched(), false, false);
+    std::vector<App::DocumentObject*> assemblyJoints
+        = assembly->getJoints(assembly->isTouched(), false, false);
     std::vector<App::DocumentObject*> assemblyLinkJoints = getJoints();
 
     // We delete the excess of joints if any
@@ -495,9 +507,11 @@ void AssemblyLink::synchronizeJoints()
 }
 
 
-void AssemblyLink::handleJointReference(App::DocumentObject* joint,
-                                        App::DocumentObject* lJoint,
-                                        const char* refName)
+void AssemblyLink::handleJointReference(
+    App::DocumentObject* joint,
+    App::DocumentObject* lJoint,
+    const char* refName
+)
 {
     AssemblyObject* assembly = getLinkedAssembly();
 

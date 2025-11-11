@@ -46,10 +46,12 @@ Base::Color Tools::convertColor(const Quantity_ColorRGBA& rgba)
 {
     Standard_Real red, green, blue;
     rgba.GetRGB().Values(red, green, blue, OCC_COLOR_SPACE);
-    return Base::Color(static_cast<float>(red),
-                       static_cast<float>(green),
-                       static_cast<float>(blue),
-                       static_cast<float>(rgba.Alpha()));
+    return Base::Color(
+        static_cast<float>(red),
+        static_cast<float>(green),
+        static_cast<float>(blue),
+        static_cast<float>(rgba.Alpha())
+    );
 }
 
 Quantity_ColorRGBA Tools::convertColor(const Base::Color& col)
@@ -81,10 +83,12 @@ std::string Tools::labelName(TDF_Label label)
     return txt;
 }
 
-void Tools::printLabel(TDF_Label label,
-                       Handle(XCAFDoc_ShapeTool) aShapeTool,
-                       Handle(XCAFDoc_ColorTool) aColorTool,
-                       const char* msg)
+void Tools::printLabel(
+    TDF_Label label,
+    Handle(XCAFDoc_ShapeTool) aShapeTool,
+    Handle(XCAFDoc_ColorTool) aColorTool,
+    const char* msg
+)
 {
     if (label.IsNull() || !FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         return;
@@ -127,10 +131,12 @@ void Tools::printLabel(TDF_Label label,
     Base::Console().notify<Base::LogStyle::Log>("ImportOCAF2", ss.str().c_str());
 }
 
-void Tools::dumpLabels(TDF_Label label,
-                       Handle(XCAFDoc_ShapeTool) aShapeTool,
-                       Handle(XCAFDoc_ColorTool) aColorTool,
-                       int depth)
+void Tools::dumpLabels(
+    TDF_Label label,
+    Handle(XCAFDoc_ShapeTool) aShapeTool,
+    Handle(XCAFDoc_ColorTool) aColorTool,
+    int depth
+)
 {
     std::string indent(depth * 2, ' ');
     printLabel(label, aShapeTool, aColorTool, indent.c_str());

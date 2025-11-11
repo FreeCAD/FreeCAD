@@ -31,16 +31,19 @@
 class SoEventCallback;
 class TopoDS_Shape;
 
-namespace Base {
+namespace Base
+{
 class Polygon2d;
 }
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
 class ViewVolumeProjection;
-}
+}  // namespace Gui
 
-namespace PartGui {
+namespace PartGui
+{
 
 class BoxSelection
 {
@@ -54,19 +57,22 @@ public:
 
 private:
     class FaceSelectionGate;
-    void addShapeToSelection(const char* doc, const char* obj,
-                             const Gui::ViewVolumeProjection& proj,
-                             const Base::Polygon2d& polygon,
-                             const TopoDS_Shape& shape,
-                             TopAbs_ShapeEnum subtype);
+    void addShapeToSelection(
+        const char* doc,
+        const char* obj,
+        const Gui::ViewVolumeProjection& proj,
+        const Base::Polygon2d& polygon,
+        const TopoDS_Shape& shape,
+        TopAbs_ShapeEnum subtype
+    );
     const char* nameFromShapeType(TopAbs_ShapeEnum) const;
-    static void selectionCallback(void * ud, SoEventCallback * cb);
+    static void selectionCallback(void* ud, SoEventCallback* cb);
 
 private:
-    bool autodelete{false};
-    TopAbs_ShapeEnum shapeEnum{TopAbs_SHAPE};
+    bool autodelete {false};
+    TopAbs_ShapeEnum shapeEnum {TopAbs_SHAPE};
 };
 
-} //namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_BOXSELECTION_H
+#endif  // PARTGUI_BOXSELECTION_H

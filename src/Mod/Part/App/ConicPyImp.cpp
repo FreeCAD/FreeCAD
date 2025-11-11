@@ -22,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Geom_Conic.hxx>
+#include <Geom_Conic.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -41,11 +41,10 @@ std::string ConicPy::representation() const
     return "<Conic object>";
 }
 
-PyObject *ConicPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ConicPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'Conic'.");
+    PyErr_SetString(PyExc_RuntimeError, "You cannot create an instance of the abstract class 'Conic'.");
     return nullptr;
 }
 
@@ -69,7 +68,7 @@ Py::Object ConicPy::getLocation() const
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-void  ConicPy::setCenter(Py::Object arg)
+void ConicPy::setCenter(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
@@ -79,14 +78,15 @@ void  ConicPy::setCenter(Py::Object arg)
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
         getGeomConicPtr()->setLocation(loc);
-    } else {
+    }
+    else {
         std::string error = std::string("type must be 'Vector', not ");
         error += p->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
 
-void  ConicPy::setLocation(Py::Object arg)
+void ConicPy::setLocation(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
@@ -96,7 +96,8 @@ void  ConicPy::setLocation(Py::Object arg)
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
         getGeomConicPtr()->setLocation(loc);
-    } else {
+    }
+    else {
         std::string error = std::string("type must be 'Vector', not ");
         error += p->ob_type->tp_name;
         throw Py::TypeError(error);
@@ -127,7 +128,7 @@ Py::Object ConicPy::getAxis() const
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
 
-void  ConicPy::setAxis(Py::Object arg)
+void ConicPy::setAxis(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     Base::Vector3d val;
@@ -163,7 +164,7 @@ Py::Object ConicPy::getXAxis() const
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
 
-void  ConicPy::setXAxis(Py::Object arg)
+void ConicPy::setXAxis(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     Base::Vector3d val;
@@ -199,7 +200,7 @@ Py::Object ConicPy::getYAxis() const
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
 
-void  ConicPy::setYAxis(Py::Object arg)
+void ConicPy::setYAxis(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     Base::Vector3d val;
@@ -227,12 +228,12 @@ void  ConicPy::setYAxis(Py::Object arg)
     }
 }
 
-PyObject *ConicPy::getCustomAttributes(const char* ) const
+PyObject* ConicPy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int ConicPy::setCustomAttributes(const char* , PyObject *)
+int ConicPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }

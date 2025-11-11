@@ -24,7 +24,7 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <TopoDS.hxx>
+#include <TopoDS.hxx>
 
 
 #include <Base/PlacementPy.h>
@@ -47,7 +47,7 @@ std::string ShapeFix_WirePy::representation() const
     return "<ShapeFix_Wire object>";
 }
 
-PyObject *ShapeFix_WirePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_WirePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     return new ShapeFix_WirePy(nullptr);
 }
@@ -65,8 +65,7 @@ int ShapeFix_WirePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* wire;
     PyObject* face;
     double prec;
-    if (PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire,
-                                        &TopoShapeFacePy::Type, &face, &prec)) {
+    if (PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire, &TopoShapeFacePy::Type, &face, &prec)) {
         setHandle(new ShapeFix_Wire);
         TopoDS_Shape w = static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
         TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
@@ -75,21 +74,23 @@ int ShapeFix_WirePy::PyInit(PyObject* args, PyObject* /*kwds*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Supported arguments are:\n"
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Supported arguments are:\n"
         "-- Empty\n"
         "-- Wire, Face, Precision"
     );
     return -1;
 }
 
-PyObject* ShapeFix_WirePy::init(PyObject *args)
+PyObject* ShapeFix_WirePy::init(PyObject* args)
 {
     PyObject* wire;
     PyObject* face;
     double prec;
-    if (!PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire,
-                                         &TopoShapeFacePy::Type, &face, &prec))
+    if (!PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire, &TopoShapeFacePy::Type, &face, &prec)) {
         return nullptr;
+    }
 
     TopoDS_Shape w = static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
     TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
@@ -98,10 +99,11 @@ PyObject* ShapeFix_WirePy::init(PyObject *args)
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::fixEdgeTool(PyObject *args)
+PyObject* ShapeFix_WirePy::fixEdgeTool(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Handle(ShapeFix_Edge) tool = getShapeFix_WirePtr()->FixEdgeTool();
     ShapeFix_EdgePy* edge = new ShapeFix_EdgePy(nullptr);
@@ -109,55 +111,61 @@ PyObject* ShapeFix_WirePy::fixEdgeTool(PyObject *args)
     return edge;
 }
 
-PyObject* ShapeFix_WirePy::clearModes(PyObject *args)
+PyObject* ShapeFix_WirePy::clearModes(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getShapeFix_WirePtr()->ClearModes();
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::clearStatuses(PyObject *args)
+PyObject* ShapeFix_WirePy::clearStatuses(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getShapeFix_WirePtr()->ClearStatuses();
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::load(PyObject *args)
+PyObject* ShapeFix_WirePy::load(PyObject* args)
 {
     PyObject* wire;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapeWirePy::Type, &wire))
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapeWirePy::Type, &wire)) {
         return nullptr;
+    }
 
     TopoDS_Shape w = static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
     getShapeFix_WirePtr()->Load(TopoDS::Wire(w));
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::setFace(PyObject *args)
+PyObject* ShapeFix_WirePy::setFace(PyObject* args)
 {
     PyObject* face;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face))
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face)) {
         return nullptr;
+    }
 
     TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
     getShapeFix_WirePtr()->SetFace(TopoDS::Face(f));
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::setSurface(PyObject *args)
+PyObject* ShapeFix_WirePy::setSurface(PyObject* args)
 {
     PyObject* surface;
     PyObject* plm = nullptr;
-    if (!PyArg_ParseTuple(args, "O!|O!", &GeometrySurfacePy::Type, &surface,
-                                         &Base::PlacementPy::Type, &plm))
+    if (!PyArg_ParseTuple(args, "O!|O!", &GeometrySurfacePy::Type, &surface, &Base::PlacementPy::Type, &plm)) {
         return nullptr;
+    }
 
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surface)->getGeomSurfacePtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(
+        static_cast<GeometrySurfacePy*>(surface)->getGeomSurfacePtr()->handle()
+    );
     if (plm) {
         Base::Placement* pm = static_cast<Base::PlacementPy*>(plm)->getPlacementPtr();
         TopLoc_Location loc = Tools::fromPlacement(*pm);
@@ -169,99 +177,109 @@ PyObject* ShapeFix_WirePy::setSurface(PyObject *args)
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::setMaxTailAngle(PyObject *args)
+PyObject* ShapeFix_WirePy::setMaxTailAngle(PyObject* args)
 {
     double angle;
-    if (!PyArg_ParseTuple(args, "d", &angle))
+    if (!PyArg_ParseTuple(args, "d", &angle)) {
         return nullptr;
+    }
 
     getShapeFix_WirePtr()->SetMaxTailAngle(angle);
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::setMaxTailWidth(PyObject *args)
+PyObject* ShapeFix_WirePy::setMaxTailWidth(PyObject* args)
 {
     double width;
-    if (!PyArg_ParseTuple(args, "d", &width))
+    if (!PyArg_ParseTuple(args, "d", &width)) {
         return nullptr;
+    }
 
     getShapeFix_WirePtr()->SetMaxTailWidth(width);
     Py_Return;
 }
 
-PyObject* ShapeFix_WirePy::isLoaded(PyObject *args)
+PyObject* ShapeFix_WirePy::isLoaded(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->IsLoaded();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::isReady(PyObject *args)
+PyObject* ShapeFix_WirePy::isReady(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->IsReady();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::numberOfEdges(PyObject *args)
+PyObject* ShapeFix_WirePy::numberOfEdges(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     int num = getShapeFix_WirePtr()->NbEdges();
     return Py::new_reference_to(Py::Long(num));
 }
 
-PyObject* ShapeFix_WirePy::wire(PyObject *args)
+PyObject* ShapeFix_WirePy::wire(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape wire = getShapeFix_WirePtr()->Wire();
     return wire.getPyObject();
 }
 
-PyObject* ShapeFix_WirePy::wireAPIMake(PyObject *args)
+PyObject* ShapeFix_WirePy::wireAPIMake(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape wire = getShapeFix_WirePtr()->WireAPIMake();
     return wire.getPyObject();
 }
 
-PyObject* ShapeFix_WirePy::face(PyObject *args)
+PyObject* ShapeFix_WirePy::face(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape face = getShapeFix_WirePtr()->Face();
     return face.getPyObject();
 }
 
-PyObject* ShapeFix_WirePy::perform(PyObject *args)
+PyObject* ShapeFix_WirePy::perform(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->Perform();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixReorder(PyObject *args)
+PyObject* ShapeFix_WirePy::fixReorder(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixReorder();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixSmall(PyObject *args)
+PyObject* ShapeFix_WirePy::fixSmall(PyObject* args)
 {
     PyObject* lock;
     double prec = 0.0;
@@ -289,13 +307,16 @@ PyObject* ShapeFix_WirePy::fixSmall(PyObject *args)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "Arguments must be:\n"
-                    "-- fixSmall(bool, [float]) or\n"
-                    "-- fixSmall(int, bool, float)");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Arguments must be:\n"
+        "-- fixSmall(bool, [float]) or\n"
+        "-- fixSmall(int, bool, float)"
+    );
     return nullptr;
 }
 
-PyObject* ShapeFix_WirePy::fixConnected(PyObject *args)
+PyObject* ShapeFix_WirePy::fixConnected(PyObject* args)
 {
     double prec = -1.0;
     if (PyArg_ParseTuple(args, "|d", &prec)) {
@@ -322,26 +343,31 @@ PyObject* ShapeFix_WirePy::fixConnected(PyObject *args)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "Arguments must be:\n"
-                    "-- fixConnected([float]) or\n"
-                    "-- fixConnected(int, float)");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Arguments must be:\n"
+        "-- fixConnected([float]) or\n"
+        "-- fixConnected(int, float)"
+    );
     return nullptr;
 }
 
-PyObject* ShapeFix_WirePy::fixEdgeCurves(PyObject *args)
+PyObject* ShapeFix_WirePy::fixEdgeCurves(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixEdgeCurves();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixDegenerated(PyObject *args)
+PyObject* ShapeFix_WirePy::fixDegenerated(PyObject* args)
 {
     int num = -1;
-    if (!PyArg_ParseTuple(args, "|i", &num))
+    if (!PyArg_ParseTuple(args, "|i", &num)) {
         return nullptr;
+    }
 
     try {
         Standard_Boolean ok = num > -1 ? getShapeFix_WirePtr()->FixDegenerated(num)
@@ -354,16 +380,17 @@ PyObject* ShapeFix_WirePy::fixDegenerated(PyObject *args)
     }
 }
 
-PyObject* ShapeFix_WirePy::fixSelfIntersection(PyObject *args)
+PyObject* ShapeFix_WirePy::fixSelfIntersection(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixSelfIntersection();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixLacking(PyObject *args)
+PyObject* ShapeFix_WirePy::fixLacking(PyObject* args)
 {
     PyObject* force = Py_False;
     if (PyArg_ParseTuple(args, "|O!", &PyBool_Type, &force)) {
@@ -391,46 +418,53 @@ PyObject* ShapeFix_WirePy::fixLacking(PyObject *args)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "Arguments must be:\n"
-                    "-- fixLacking([bool=False]) or\n"
-                    "-- fixLacking(int, bool)");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Arguments must be:\n"
+        "-- fixLacking([bool=False]) or\n"
+        "-- fixLacking(int, bool)"
+    );
     return nullptr;
 }
 
-PyObject* ShapeFix_WirePy::fixClosed(PyObject *args)
+PyObject* ShapeFix_WirePy::fixClosed(PyObject* args)
 {
     double prec = -1.0;
-    if (!PyArg_ParseTuple(args, "|d", &prec))
+    if (!PyArg_ParseTuple(args, "|d", &prec)) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixClosed(prec);
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixGaps3d(PyObject *args)
+PyObject* ShapeFix_WirePy::fixGaps3d(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixGaps3d();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixGaps2d(PyObject *args)
+PyObject* ShapeFix_WirePy::fixGaps2d(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixGaps2d();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixGap3d(PyObject *args)
+PyObject* ShapeFix_WirePy::fixGap3d(PyObject* args)
 {
     int num;
     PyObject* convert;
-    if (!PyArg_ParseTuple(args, "iO!", &num, &PyBool_Type, &convert))
+    if (!PyArg_ParseTuple(args, "iO!", &num, &PyBool_Type, &convert)) {
         return nullptr;
+    }
 
     try {
         Standard_Boolean ok = getShapeFix_WirePtr()->FixGap3d(num, Base::asBoolean(convert));
@@ -442,12 +476,13 @@ PyObject* ShapeFix_WirePy::fixGap3d(PyObject *args)
     }
 }
 
-PyObject* ShapeFix_WirePy::fixGap2d(PyObject *args)
+PyObject* ShapeFix_WirePy::fixGap2d(PyObject* args)
 {
     int num;
     PyObject* convert;
-    if (!PyArg_ParseTuple(args, "iO!", &num, &PyBool_Type, &convert))
+    if (!PyArg_ParseTuple(args, "iO!", &num, &PyBool_Type, &convert)) {
         return nullptr;
+    }
 
     try {
         Standard_Boolean ok = getShapeFix_WirePtr()->FixGap2d(num, Base::asBoolean(convert));
@@ -459,11 +494,12 @@ PyObject* ShapeFix_WirePy::fixGap2d(PyObject *args)
     }
 }
 
-PyObject* ShapeFix_WirePy::fixSeam(PyObject *args)
+PyObject* ShapeFix_WirePy::fixSeam(PyObject* args)
 {
     int num;
-    if (!PyArg_ParseTuple(args, "i", &num))
+    if (!PyArg_ParseTuple(args, "i", &num)) {
         return nullptr;
+    }
 
     try {
         Standard_Boolean ok = getShapeFix_WirePtr()->FixSeam(num);
@@ -475,28 +511,31 @@ PyObject* ShapeFix_WirePy::fixSeam(PyObject *args)
     }
 }
 
-PyObject* ShapeFix_WirePy::fixShifted(PyObject *args)
+PyObject* ShapeFix_WirePy::fixShifted(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixShifted();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixNotchedEdges(PyObject *args)
+PyObject* ShapeFix_WirePy::fixNotchedEdges(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixNotchedEdges();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WirePy::fixTails(PyObject *args)
+PyObject* ShapeFix_WirePy::fixTails(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_WirePtr()->FixTails();
     return Py::new_reference_to(Py::Boolean(ok));
@@ -792,7 +831,7 @@ void ShapeFix_WirePy::setFixTailMode(Py::Boolean arg)
     getShapeFix_WirePtr()->FixTailMode() = arg;
 }
 
-PyObject *ShapeFix_WirePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_WirePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
