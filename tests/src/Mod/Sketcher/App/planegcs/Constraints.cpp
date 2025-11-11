@@ -7,6 +7,7 @@
 
 #include "Mod/Sketcher/App/planegcs/GCS.h"
 #include "Mod/Sketcher/App/planegcs/Geo.h"
+#include "Mod/Sketcher/App/planegcs/Util.h"
 #include "Mod/Sketcher/App/planegcs/Constraints.h"
 
 class SystemTest: public GCS::System
@@ -82,18 +83,18 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
         bSplineControlPoints[i].y = &bSplineControlPointsY[i];
     }
     std::vector<double> weights(bSplineControlPoints.size(), 1.0);
-    std::vector<double*> weightsAsPtr;
+    std::vector<GCS::DeriParam> weightsAsPtr;
     std::vector<double> knots(bSplineControlPoints.size() - 2);  // Hardcoded for cubic
-    std::vector<double*> knotsAsPtr;
+    std::vector<GCS::DeriParam> knotsAsPtr;
     std::vector<int> mult(bSplineControlPoints.size() - 2, 1);  // Hardcoded for cubic
     mult.front() = 4;                                           // Hardcoded for cubic
     mult.back() = 4;                                            // Hardcoded for cubic
     for (size_t i = 0; i < bSplineControlPoints.size(); ++i) {
-        weightsAsPtr.push_back(&weights[i]);
+        weightsAsPtr.emplace_back(&weights[i]);
     }
     for (size_t i = 0; i < knots.size(); ++i) {
         knots[i] = static_cast<double>(i);
-        knotsAsPtr.push_back(&knots[i]);
+        knotsAsPtr.emplace_back(&knots[i]);
     }
     GCS::Arc arc;
     arc.start = arcStart;

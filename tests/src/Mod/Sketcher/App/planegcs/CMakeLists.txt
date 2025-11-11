@@ -7,3 +7,7 @@ target_sources(Sketcher_tests_run PRIVATE
 target_sources(Sketcher_tests_run PRIVATE
         Constraints.cpp
 )
+
+target_sources(Sketcher_tests_run PRIVATE
+        Substitution.cpp
+)
