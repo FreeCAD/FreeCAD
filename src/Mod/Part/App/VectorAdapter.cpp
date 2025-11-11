@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include <App/Application.h>
 #include <Mod/Part/PartGlobal.h>
 #include "VectorAdapter.h"
@@ -47,19 +46,19 @@
 
 using Attacher::AttachEnginePlane;
 
-namespace Part {
+namespace Part
+{
 
 
 VectorAdapter::VectorAdapter()
     : status(false)
-{
-}
+{}
 
-VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn)
+VectorAdapter::VectorAdapter(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn)
     : status(false)
     , origin(pickedPointIn)
 {
-    std::vector<std::function<bool(const TopoDS_Face &, const gp_Vec &)>> funcs = {
+    std::vector<std::function<bool(const TopoDS_Face&, const gp_Vec&)>> funcs = {
         [this](const TopoDS_Face& face, const gp_Vec& vec) {
             return this->handleElementarySurface(face, vec);
         },
@@ -74,7 +73,7 @@ VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPoin
     }
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn)
+VectorAdapter::VectorAdapter(const TopoDS_Edge& edgeIn, const gp_Vec& pickedPointIn)
     : status(false)
     , origin(pickedPointIn)
 {
@@ -90,13 +89,13 @@ VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPoin
     projectOriginOntoVector(pickedPointIn);
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In)
+VectorAdapter::VectorAdapter(const TopoDS_Vertex& vertex1In, const TopoDS_Vertex& vertex2In)
     : status(false)
 {
     vector = convert(vertex2In) - convert(vertex1In);
     vector.Normalize();
 
-    //build origin half way.
+    // build origin half way.
     gp_Vec tempVector = (convert(vertex2In) - convert(vertex1In));
     double mag = tempVector.Magnitude();
     tempVector.Normalize();
@@ -106,13 +105,13 @@ VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex
     status = true;
 }
 
-VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2)
+VectorAdapter::VectorAdapter(const gp_Vec& vector1, const gp_Vec& vector2)
     : status(false)
 {
-    vector = vector2- vector1;
+    vector = vector2 - vector1;
     vector.Normalize();
 
-    //build origin half way.
+    // build origin half way.
     gp_Vec tempVector = vector2 - vector1;
     double mag = tempVector.Magnitude();
     tempVector.Normalize();
@@ -122,7 +121,7 @@ VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2)
     status = true;
 }
 
-bool VectorAdapter::handleElementarySurface(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn)
+bool VectorAdapter::handleElementarySurface(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn)
 {
     Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
     if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface))) {
@@ -133,9 +132,8 @@ bool VectorAdapter::handleElementarySurface(const TopoDS_Face &faceIn, const gp_
         if (faceIn.Orientation() == TopAbs_REVERSED) {
             vector.Reverse();
         }
-        if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
-            surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
-        ) {
+        if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))
+            || surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
             origin = eSurface->Axis().Location().XYZ();
             projectOriginOntoVector(pickedPointIn);
         }
@@ -149,7 +147,7 @@ bool VectorAdapter::handleElementarySurface(const TopoDS_Face &faceIn, const gp_
     return false;
 }
 
-bool VectorAdapter::handlePlanarSurface(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn)
+bool VectorAdapter::handlePlanarSurface(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn)
 {
     Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
     GeomLib_IsPlanarSurface check(surface, AttachEnginePlane::planarPrecision());
@@ -175,7 +173,7 @@ bool VectorAdapter::handlePlanarSurface(const TopoDS_Face &faceIn, const gp_Vec 
     return false;
 }
 
-void VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
+void VectorAdapter::projectOriginOntoVector(const gp_Vec& pickedPointIn)
 {
     Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
     gp_Pnt tempPoint(pickedPointIn.XYZ());
@@ -194,11 +192,11 @@ VectorAdapter::operator gp_Lin() const
 
 
 /*convert a vertex to vector*/
-gp_Vec VectorAdapter::convert(const TopoDS_Vertex &vertex)
+gp_Vec VectorAdapter::convert(const TopoDS_Vertex& vertex)
 {
     gp_Pnt point = BRep_Tool::Pnt(vertex);
     gp_Vec out(point.X(), point.Y(), point.Z());
     return out;
 }
 
-}
+}  // namespace Part

@@ -24,11 +24,11 @@
 
 #include <FCConfig.h>
 
-# include <memory>
+#include <memory>
 
-# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
 
 #include <App/Application.h>
 #include <Base/Exception.h>
@@ -61,25 +61,39 @@ void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
 
 bool getRefineModelParameter()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
     return hGrp->GetBool("RefineModel", true);
 }
 
-}
+}  // namespace Part
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 
 Boolean::Boolean()
 {
-    ADD_PROPERTY(Base,(nullptr));
-    ADD_PROPERTY(Tool,(nullptr));
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY(Base, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history"
+    );
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(
+        Refine,
+        (0),
+        "Boolean",
+        (App::PropertyType)(App::Prop_None),
+        "Refine shape (clean up redundant edges) after this boolean operation"
+    );
 
     this->Refine.setValue(getRefineModelParameter());
 }
@@ -97,7 +111,7 @@ short Boolean::mustExecute() const
     return 0;
 }
 
-const char *Boolean::opCode() const
+const char* Boolean::opCode() const
 {
     return Part::OpCodes::Boolean;
 }
@@ -117,12 +131,16 @@ App::DocumentObjectExecReturn* Boolean::execute()
         std::vector<TopoShape> shapes;
         shapes.reserve(2);
         // Now, let's get the TopoDS_Shape
-        shapes.push_back(Feature::getTopoShape(Base.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform));
+        shapes.push_back(
+            Feature::getTopoShape(Base.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform)
+        );
         auto BaseShape = shapes[0].getShape();
         if (BaseShape.IsNull()) {
             throw NullShapeException("Base shape is null");
         }
-        shapes.push_back(Feature::getTopoShape(Tool.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform));
+        shapes.push_back(
+            Feature::getTopoShape(Tool.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform)
+        );
         auto ToolShape = shapes[1].getShape();
         if (ToolShape.IsNull()) {
             throw NullShapeException("Tool shape is null");
@@ -161,6 +179,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
-            "A fatal error occurred when running boolean operation");
+            "A fatal error occurred when running boolean operation"
+        );
     }
 }

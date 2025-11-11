@@ -26,7 +26,7 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 #include <cstring>
 #include <Python.h>
@@ -60,11 +60,13 @@ ConsoleObserverFile::~ConsoleObserverFile()
     cFileStream.close();
 }
 
-void ConsoleObserverFile::sendLog(const std::string& notifiername,
-                                  const std::string& msg,
-                                  LogStyle level,
-                                  IntendedRecipient recipient,
-                                  ContentType content)
+void ConsoleObserverFile::sendLog(
+    const std::string& notifiername,
+    const std::string& msg,
+    LogStyle level,
+    IntendedRecipient recipient,
+    ContentType content
+)
 {
     (void)notifiername;
 
@@ -113,11 +115,13 @@ ConsoleObserverStd::ConsoleObserverStd()
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::sendLog(const std::string& notifiername,
-                                 const std::string& msg,
-                                 LogStyle level,
-                                 IntendedRecipient recipient,
-                                 ContentType content)
+void ConsoleObserverStd::sendLog(
+    const std::string& notifiername,
+    const std::string& msg,
+    LogStyle level,
+    IntendedRecipient recipient,
+    ContentType content
+)
 {
     (void)notifiername;
 
@@ -156,8 +160,7 @@ void ConsoleObserverStd::Warning(const char* sWarn)
 {
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_GREEN | FOREGROUND_BLUE);
+        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE);
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;33m");
 #endif
@@ -167,8 +170,10 @@ void ConsoleObserverStd::Warning(const char* sWarn)
 
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        ::SetConsoleTextAttribute(
+            ::GetStdHandle(STD_ERROR_HANDLE),
+            FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+        );
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #endif
@@ -179,8 +184,10 @@ void ConsoleObserverStd::Error(const char* sErr)
 {
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_RED | FOREGROUND_INTENSITY);
+        ::SetConsoleTextAttribute(
+            ::GetStdHandle(STD_ERROR_HANDLE),
+            FOREGROUND_RED | FOREGROUND_INTENSITY
+        );
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;31m");
 #endif
@@ -190,8 +197,10 @@ void ConsoleObserverStd::Error(const char* sErr)
 
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        ::SetConsoleTextAttribute(
+            ::GetStdHandle(STD_ERROR_HANDLE),
+            FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+        );
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #endif
@@ -202,8 +211,7 @@ void ConsoleObserverStd::Log(const char* sLog)
 {
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_RED | FOREGROUND_GREEN);
+        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN);
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;36m");
 #endif
@@ -213,8 +221,10 @@ void ConsoleObserverStd::Log(const char* sLog)
 
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        ::SetConsoleTextAttribute(
+            ::GetStdHandle(STD_ERROR_HANDLE),
+            FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+        );
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #endif
@@ -225,8 +235,7 @@ void ConsoleObserverStd::Critical(const char* sCritical)
 {
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_GREEN | FOREGROUND_BLUE);
+        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE);
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;33m");
 #endif
@@ -236,8 +245,10 @@ void ConsoleObserverStd::Critical(const char* sCritical)
 
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),
-                                  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        ::SetConsoleTextAttribute(
+            ::GetStdHandle(STD_ERROR_HANDLE),
+            FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+        );
 #elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
 #endif

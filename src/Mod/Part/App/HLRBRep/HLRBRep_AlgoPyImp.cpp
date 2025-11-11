@@ -24,13 +24,13 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <limits>
+#include <limits>
 
-# include <gp_Ax2.hxx>
-# include <gp_Pnt.hxx>
-# include <HLRAlgo_Projector.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Pnt.hxx>
+#include <HLRAlgo_Projector.hxx>
 
-# include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -44,7 +44,7 @@
 
 using namespace Part;
 
-PyObject *HLRBRep_AlgoPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
+PyObject* HLRBRep_AlgoPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 {
     // create a new instance of HLRBRep_AlgoPy
     return new HLRBRep_AlgoPy(nullptr);
@@ -66,198 +66,231 @@ std::string HLRBRep_AlgoPy::representation() const
     return {"<HLRBRep_Algo object>"};
 }
 
-PyObject* HLRBRep_AlgoPy::add(PyObject *args)
+PyObject* HLRBRep_AlgoPy::add(PyObject* args)
 {
     PyObject* shape;
     int nbIso = 0;
-    if (!PyArg_ParseTuple(args, "O!|i", &Part::TopoShapePy::Type, &shape, &nbIso))
+    if (!PyArg_ParseTuple(args, "O!|i", &Part::TopoShapePy::Type, &shape, &nbIso)) {
         return nullptr;
+    }
 
     TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     getHLRBRep_AlgoPtr()->Add(input, nbIso);
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::remove(PyObject *args)
+PyObject* HLRBRep_AlgoPy::remove(PyObject* args)
 {
     int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->Remove(index);
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::index(PyObject *args)
+PyObject* HLRBRep_AlgoPy::index(PyObject* args)
 {
     PyObject* shape;
-    if (!PyArg_ParseTuple(args, "O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     int value = getHLRBRep_AlgoPtr()->Index(input);
     return Py_BuildValue("i", value);
 }
 
-PyObject* HLRBRep_AlgoPy::outLinedShapeNullify(PyObject *args)
+PyObject* HLRBRep_AlgoPy::outLinedShapeNullify(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->OutLinedShapeNullify();
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::setProjector(PyObject *args, PyObject *kwds)
+PyObject* HLRBRep_AlgoPy::setProjector(PyObject* args, PyObject* kwds)
 {
     PyObject* ps = nullptr;
     PyObject* zd = nullptr;
     PyObject* xd = nullptr;
     double focus = std::numeric_limits<double>::quiet_NaN();
 
-    static const std::array<const char *, 5> kwlist {"Origin", "ZDir", "XDir", "focus", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!O!O!d", kwlist,
-                                            &Base::VectorPy::Type, &ps,
-                                            &Base::VectorPy::Type, &zd,
-                                            &Base::VectorPy::Type, &xd,
-                                            &focus)) {
+    static const std::array<const char*, 5> kwlist {"Origin", "ZDir", "XDir", "focus", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "|O!O!O!d",
+            kwlist,
+            &Base::VectorPy::Type,
+            &ps,
+            &Base::VectorPy::Type,
+            &zd,
+            &Base::VectorPy::Type,
+            &xd,
+            &focus
+        )) {
         gp_Ax2 ax2;
         if (ps && zd && xd) {
-            Base::Vector3d p = Py::Vector(ps,false).toVector();
-            Base::Vector3d z = Py::Vector(zd,false).toVector();
-            Base::Vector3d x = Py::Vector(xd,false).toVector();
+            Base::Vector3d p = Py::Vector(ps, false).toVector();
+            Base::Vector3d z = Py::Vector(zd, false).toVector();
+            Base::Vector3d x = Py::Vector(xd, false).toVector();
             ax2.SetLocation(Base::convertTo<gp_Pnt>(p));
             ax2.SetDirection(Base::convertTo<gp_Dir>(z));
             ax2.SetXDirection(Base::convertTo<gp_Dir>(x));
         }
         else if (ps && zd) {
-            Base::Vector3d p = Py::Vector(ps,false).toVector();
-            Base::Vector3d z = Py::Vector(zd,false).toVector();
+            Base::Vector3d p = Py::Vector(ps, false).toVector();
+            Base::Vector3d z = Py::Vector(zd, false).toVector();
             ax2.SetLocation(Base::convertTo<gp_Pnt>(p));
             ax2.SetDirection(Base::convertTo<gp_Dir>(z));
         }
 
-        if (boost::math::isnan(focus))
+        if (boost::math::isnan(focus)) {
             getHLRBRep_AlgoPtr()->Projector(HLRAlgo_Projector(ax2));
-        else
+        }
+        else {
             getHLRBRep_AlgoPtr()->Projector(HLRAlgo_Projector(ax2, focus));
+        }
         Py_Return;
     }
 
     return nullptr;
 }
 
-PyObject* HLRBRep_AlgoPy::nbShapes(PyObject *args)
+PyObject* HLRBRep_AlgoPy::nbShapes(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     int num = getHLRBRep_AlgoPtr()->NbShapes();
     return Py_BuildValue("i", num);
 }
 
-PyObject* HLRBRep_AlgoPy::showAll(PyObject *args)
+PyObject* HLRBRep_AlgoPy::showAll(PyObject* args)
 {
-    int i=-1;
-    if (!PyArg_ParseTuple(args, "|i", &i))
+    int i = -1;
+    if (!PyArg_ParseTuple(args, "|i", &i)) {
         return nullptr;
+    }
 
-    if (i < 1)
+    if (i < 1) {
         getHLRBRep_AlgoPtr()->ShowAll();
-    else
+    }
+    else {
         getHLRBRep_AlgoPtr()->ShowAll(i);
+    }
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::hide(PyObject *args)
+PyObject* HLRBRep_AlgoPy::hide(PyObject* args)
 {
-    int i=-1, j=-1;
-    if (!PyArg_ParseTuple(args, "|ii", &i, &j))
+    int i = -1, j = -1;
+    if (!PyArg_ParseTuple(args, "|ii", &i, &j)) {
         return nullptr;
+    }
 
-    if (i < 1)
+    if (i < 1) {
         getHLRBRep_AlgoPtr()->Hide();
-    else if (j < 1)
+    }
+    else if (j < 1) {
         getHLRBRep_AlgoPtr()->Hide(i);
-    else
+    }
+    else {
         getHLRBRep_AlgoPtr()->Hide(i, j);
+    }
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::hideAll(PyObject *args)
+PyObject* HLRBRep_AlgoPy::hideAll(PyObject* args)
 {
-    int i=-1;
-    if (!PyArg_ParseTuple(args, "|i", &i))
+    int i = -1;
+    if (!PyArg_ParseTuple(args, "|i", &i)) {
         return nullptr;
+    }
 
-    if (i < 1)
+    if (i < 1) {
         getHLRBRep_AlgoPtr()->HideAll();
-    else
+    }
+    else {
         getHLRBRep_AlgoPtr()->HideAll(i);
+    }
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::partialHide(PyObject *args)
+PyObject* HLRBRep_AlgoPy::partialHide(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->PartialHide();
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::select(PyObject *args)
+PyObject* HLRBRep_AlgoPy::select(PyObject* args)
 {
-    int i=-1;
-    if (!PyArg_ParseTuple(args, "|i", &i))
+    int i = -1;
+    if (!PyArg_ParseTuple(args, "|i", &i)) {
         return nullptr;
+    }
 
-    if (i < 1)
+    if (i < 1) {
         getHLRBRep_AlgoPtr()->Select();
-    else
+    }
+    else {
         getHLRBRep_AlgoPtr()->Select(i);
+    }
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::selectEdge(PyObject *args)
+PyObject* HLRBRep_AlgoPy::selectEdge(PyObject* args)
 {
     int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->SelectEdge(index);
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::selectFace(PyObject *args)
+PyObject* HLRBRep_AlgoPy::selectFace(PyObject* args)
 {
     int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->SelectFace(index);
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::initEdgeStatus(PyObject *args)
+PyObject* HLRBRep_AlgoPy::initEdgeStatus(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->InitEdgeStatus();
     Py_Return;
 }
 
-PyObject* HLRBRep_AlgoPy::update(PyObject *args)
+PyObject* HLRBRep_AlgoPy::update(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getHLRBRep_AlgoPtr()->Update();
     Py_Return;
 }
 
-PyObject *HLRBRep_AlgoPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* HLRBRep_AlgoPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -44,15 +44,11 @@ class GuiExport TaskSolverMessages: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    explicit TaskSolverMessages(const QPixmap& icon,
-                                const QString& title);
+    explicit TaskSolverMessages(const QPixmap& icon, const QString& title);
     ~TaskSolverMessages() override;
     FC_DISABLE_COPY_MOVE(TaskSolverMessages)
 
-    void slotSetUp(const QString& state,
-                   const QString& msg,
-                   const QString& link,
-                   const QString& linkText);
+    void slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText);
 
 private:
     void setupConnections();

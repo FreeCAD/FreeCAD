@@ -106,10 +106,12 @@ MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion
             mShape = endmill->toolShape;
         }
         else {
-            endmill->GenerateArcSegmentDL(mRadius,
-                                          mStepAngRad * SWEEP_ARC_PAD,
-                                          mDiff[PZ] / numSimSteps,
-                                          &mShape);
+            endmill->GenerateArcSegmentDL(
+                mRadius,
+                mStepAngRad * SWEEP_ARC_PAD,
+                mDiff[PZ] / numSimSteps,
+                &mShape
+            );
             numSimSteps++;
         }
 
@@ -176,10 +178,12 @@ void MillPathSegment::render(int step)
     mat4x4_identity(mat);
     mat4x4_identity(rmat);
     if (mMotionType == MTCurved) {
-        mat4x4_translate_in_place(mat,
-                                  mCenter[PX],
-                                  mCenter[PY],
-                                  mCenter[PZ] + mDiff[PZ] * (step - 1) / numSimSteps);
+        mat4x4_translate_in_place(
+            mat,
+            mCenter[PX],
+            mCenter[PY],
+            mCenter[PZ] + mDiff[PZ] * (step - 1) / numSimSteps
+        );
         mat4x4_rotate_Z(mat, mat, mStartAngRad - (step - 1) * mStepAngRad);
         mat4x4_rotate_Z(rmat, rmat, mStartAngRad - (step - 1) * mStepAngRad);
 
@@ -197,10 +201,12 @@ void MillPathSegment::render(int step)
                 mat4x4_translate_in_place_v(mat, mStartPos);
             }
             else {
-                mat4x4_translate_in_place(mat,
-                                          mStartPos[PX],
-                                          mStartPos[PY],
-                                          mStartPos[PZ] + mStepNumber * mStepLength[PZ]);
+                mat4x4_translate_in_place(
+                    mat,
+                    mStartPos[PX],
+                    mStartPos[PY],
+                    mStartPos[PZ] + mStepNumber * mStepLength[PZ]
+                );
             }
             endmill->toolShape.Render(mat, rmat);
         }

@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-# include <Precision.hxx>
-# include <TopoDS.hxx>
+#include <Precision.hxx>
+#include <TopoDS.hxx>
 
 
 #include <Base/Exception.h>
@@ -35,35 +35,41 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
-const char *PartDesign::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
-const char *PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
+const char* PartDesign::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
+const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 
-Thickness::Thickness() {
+Thickness::Thickness()
+{
     ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
     ADD_PROPERTY_TYPE(Mode, (0L), "Thickness", App::Prop_None, "Mode");
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join, (0L), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(Reversed, (true), "Thickness", App::Prop_None,
-                      "Apply the thickness towards the solids interior");
-    ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None,
-                      "Enable intersection-handling");
+    ADD_PROPERTY_TYPE(
+        Reversed,
+        (true),
+        "Thickness",
+        App::Prop_None,
+        "Apply the thickness towards the solids interior"
+    );
+    ADD_PROPERTY_TYPE(Intersection, (false), "Thickness", App::Prop_None, "Enable intersection-handling");
 }
 
-int16_t Thickness::mustExecute() const {
-    if (Placement.isTouched() ||
-        Value.isTouched() ||
-        Mode.isTouched() ||
-        Join.isTouched()) {
+int16_t Thickness::mustExecute() const
+{
+    if (Placement.isTouched() || Value.isTouched() || Mode.isTouched() || Join.isTouched()) {
         return 1;
     }
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Thickness::execute() {
-    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+App::DocumentObjectExecReturn* Thickness::execute()
+{
+    if (onlyHaveRefined()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     // Base shape
     Part::TopoShape TopShape;
@@ -89,16 +95,18 @@ App::DocumentObjectExecReturn *Thickness::execute() {
     this->Placement.setValue(Base::Placement());
 
     std::map<int, std::vector<TopoShape>> closeFaces;
-    for ( const auto& it : subStrings ) {
+    for (const auto& it : subStrings) {
         TopoDS_Shape face;
         try {
             face = TopShape.getSubShape(it.c_str());
         }
         catch (...) {
         }
-        if (face.IsNull())
+        if (face.IsNull()) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Invalid face reference"));
+                QT_TRANSLATE_NOOP("Exception", "Invalid face reference")
+            );
+        }
         // We found the sub element (face) so let's get its history index in our shape
         int index = TopShape.findAncestor(face, TopAbs_SOLID);
         if (!index) {
@@ -117,11 +125,13 @@ App::DocumentObjectExecReturn *Thickness::execute() {
 
     std::vector<TopoShape> shapes;
     auto count = static_cast<int>(TopShape.countSubShapes(TopAbs_SOLID));
-    if (!count)
+    if (!count) {
         return new App::DocumentObjectExecReturn("No solid");
+    }
     // we do not offer tangent join type
-    if (join == 1)
+    if (join == 1) {
         join = 2;
+    }
 
     if (fabs(thickness) > 2 * tol) {
         auto mapIterator = closeFaces.begin();
@@ -137,13 +147,15 @@ App::DocumentObjectExecReturn *Thickness::execute() {
             }
             TopoShape res(0);
             try {
-                res = solid.makeElementThickSolid(*faces,
-                                                  thickness,
-                                                  tol,
-                                                  intersection,
-                                                  false,
-                                                  mode,
-                                                  static_cast<Part::JoinType>(join));
+                res = solid.makeElementThickSolid(
+                    *faces,
+                    thickness,
+                    tol,
+                    intersection,
+                    false,
+                    mode,
+                    static_cast<Part::JoinType>(join)
+                );
                 shapes.push_back(res);
             }
             catch (Standard_Failure& e) {
@@ -159,9 +171,11 @@ App::DocumentObjectExecReturn *Thickness::execute() {
     TopoShape result(0);
     if (shapes.size() > 1) {
         result.makeElementFuse(shapes);
-    } else if (shapes.empty()) {
+    }
+    else if (shapes.empty()) {
         result = TopShape;
-    } else {
+    }
+    else {
         result = shapes.front();
     }
     // store shape before refinement

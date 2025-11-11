@@ -74,36 +74,48 @@ public:
     bool OnReadBlock(const std::string& name, int flags) override;
     void OnReadLine(const Base::Vector3d& start, const Base::Vector3d& end, bool hidden) override;
     void OnReadPoint(const Base::Vector3d& start) override;
-    void OnReadText(const Base::Vector3d& point,
-                    double height,
-                    const std::string& text,
-                    double rotation) override;
-    void OnReadArc(const Base::Vector3d& start,
-                   const Base::Vector3d& end,
-                   const Base::Vector3d& center,
-                   bool dir,
-                   bool hidden) override;
-    void OnReadCircle(const Base::Vector3d& start,
-                      const Base::Vector3d& center,
-                      bool dir,
-                      bool hidden) override;
-    void OnReadEllipse(const Base::Vector3d& center,
-                       double major_radius,
-                       double minor_radius,
-                       double rotation,
-                       double start_angle,
-                       double end_angle,
-                       bool dir) override;
+    void OnReadText(
+        const Base::Vector3d& point,
+        double height,
+        const std::string& text,
+        double rotation
+    ) override;
+    void OnReadArc(
+        const Base::Vector3d& start,
+        const Base::Vector3d& end,
+        const Base::Vector3d& center,
+        bool dir,
+        bool hidden
+    ) override;
+    void OnReadCircle(
+        const Base::Vector3d& start,
+        const Base::Vector3d& center,
+        bool dir,
+        bool hidden
+    ) override;
+    void OnReadEllipse(
+        const Base::Vector3d& center,
+        double major_radius,
+        double minor_radius,
+        double rotation,
+        double start_angle,
+        double end_angle,
+        bool dir
+    ) override;
     void OnReadSpline(struct SplineData& sd) override;
-    void OnReadInsert(const Base::Vector3d& point,
-                      const Base::Vector3d& scale,
-                      const std::string& name,
-                      double rotation) override;
-    void OnReadDimension(const Base::Vector3d& start,
-                         const Base::Vector3d& end,
-                         const Base::Vector3d& point,
-                         int dimensionType,
-                         double rotation) override;
+    void OnReadInsert(
+        const Base::Vector3d& point,
+        const Base::Vector3d& scale,
+        const std::string& name,
+        double rotation
+    ) override;
+    void OnReadDimension(
+        const Base::Vector3d& start,
+        const Base::Vector3d& end,
+        const Base::Vector3d& point,
+        int dimensionType,
+        double rotation
+    ) override;
     void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int flags) override;
 
     std::string Deformat(const char* text);  // Removes DXF formatting from texts
@@ -179,8 +191,7 @@ protected:
         }
         return DraftModule;
     }
-    CDxfRead::Layer*
-    MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType) override;
+    CDxfRead::Layer* MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType) override;
 
     TopoDS_Wire BuildWireFromPolyline(std::list<VertexInfo>& vertices, int flags);
     void CreateFlattenedPolyline(const TopoDS_Wire& wire, const char* name);
@@ -191,10 +202,7 @@ protected:
     class Layer: public CDxfRead::Layer
     {
     public:
-        Layer(const std::string& name,
-              ColorIndex_t color,
-              std::string&& lineType,
-              PyObject* drawingLayer);
+        Layer(const std::string& name, ColorIndex_t color, std::string&& lineType, PyObject* drawingLayer);
         Layer(const Layer&) = delete;
         Layer(Layer&&) = delete;
         void operator=(const Layer&) = delete;
@@ -207,8 +215,7 @@ protected:
         App::PropertyLinkListHidden* GroupContents;
     };
 
-    using FeaturePythonBuilder =
-        std::function<App::FeaturePython*(const Base::Matrix4D& transform)>;
+    using FeaturePythonBuilder = std::function<App::FeaturePython*(const Base::Matrix4D& transform)>;
     // Block management
     class Block
     {
@@ -222,10 +229,12 @@ protected:
 
             // NOLINTNEXTLINE(readability/nolint)
             // NOLINTNEXTLINE(modernize-pass-by-value) Pass by value adds unwarranted complexity
-            Insert(const std::string& Name,
-                   const Base::Vector3d& Point,
-                   double Rotation,
-                   const Base::Vector3d& Scale)
+            Insert(
+                const std::string& Name,
+                const Base::Vector3d& Point,
+                double Rotation,
+                const Base::Vector3d& Scale
+            )
                 : Point(Point)
                 , Scale(Scale)
                 , Name(Name)
@@ -302,10 +311,12 @@ protected:
         // Called by OnReadInsert to either remember in a nested block or expand the block into the
         // drawing
         // This method is now obsolete with the App::Link implementation
-        virtual void AddInsert(const Base::Vector3d& point,
-                               const Base::Vector3d& scale,
-                               const std::string& name,
-                               double rotation) = 0;
+        virtual void AddInsert(
+            const Base::Vector3d& point,
+            const Base::Vector3d& scale,
+            const std::string& name,
+            double rotation
+        ) = 0;
 
     protected:
         ImpExpDxfRead& Reader;
@@ -325,10 +336,12 @@ protected:
         void AddGeometry(const GeometryBuilder& builder) override;
         void AddObject(App::DocumentObject* obj, const char* nameBase) override;
         void AddObject(FeaturePythonBuilder shapeBuilder) override;
-        void AddInsert(const Base::Vector3d& point,
-                       const Base::Vector3d& scale,
-                       const std::string& name,
-                       double rotation) override
+        void AddInsert(
+            const Base::Vector3d& point,
+            const Base::Vector3d& scale,
+            const std::string& name,
+            double rotation
+        ) override
         {
             // This is the correct place to create top-level App::Link objects for INSERTs.
 
@@ -376,7 +389,8 @@ protected:
     public:
         ShapeSavingEntityCollector(
             ImpExpDxfRead& reader,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& shapesList)
+            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& shapesList
+        )
             : DrawingEntityCollector(reader)
             , ShapesList(shapesList)
         {}
@@ -429,7 +443,8 @@ protected:
         BlockDefinitionCollector(
             ImpExpDxfRead& reader,
             std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& buildersList,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList)
+            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList
+        )
             : EntityCollector(reader)
             , BuildersList(buildersList)
             , InsertsList(insertsList)
@@ -455,7 +470,8 @@ protected:
             Reader.ImportError(
                 "Internal logic error: Attempted to add a DocumentObject ('%s') to a block "
                 "definition.\n",
-                nameBase);
+                nameBase
+            );
         }
 
         void AddObject(FeaturePythonBuilder /*shapeBuilder*/) override
@@ -464,13 +480,16 @@ protected:
             // primitives or shapes modes.
         }
 
-        void AddInsert(const Base::Vector3d& point,
-                       const Base::Vector3d& scale,
-                       const std::string& name,
-                       double rotation) override
+        void AddInsert(
+            const Base::Vector3d& point,
+            const Base::Vector3d& scale,
+            const std::string& name,
+            double rotation
+        ) override
         {
             InsertsList[Reader.m_entityAttributes].emplace_back(
-                Block::Insert(name, point, rotation, scale));
+                Block::Insert(name, point, rotation, scale)
+            );
         }
 
     private:
@@ -503,31 +522,41 @@ public:
     }
     void setOptions();
 
-    void exportText(const char* text,
-                    Base::Vector3d position1,
-                    Base::Vector3d position2,
-                    double size,
-                    int just);
-    void exportLinearDim(Base::Vector3d textLocn,
-                         Base::Vector3d lineLocn,
-                         Base::Vector3d extLine1Start,
-                         Base::Vector3d extLine2Start,
-                         char* dimText,
-                         int type);
-    void exportAngularDim(Base::Vector3d textLocn,
-                          Base::Vector3d lineLocn,
-                          Base::Vector3d extLine1End,
-                          Base::Vector3d extLine2End,
-                          Base::Vector3d apexPoint,
-                          char* dimText);
-    void exportRadialDim(Base::Vector3d centerPoint,
-                         Base::Vector3d textLocn,
-                         Base::Vector3d arcPoint,
-                         char* dimText);
-    void exportDiametricDim(Base::Vector3d textLocn,
-                            Base::Vector3d arcPoint1,
-                            Base::Vector3d arcPoint2,
-                            char* dimText);
+    void exportText(
+        const char* text,
+        Base::Vector3d position1,
+        Base::Vector3d position2,
+        double size,
+        int just
+    );
+    void exportLinearDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d lineLocn,
+        Base::Vector3d extLine1Start,
+        Base::Vector3d extLine2Start,
+        char* dimText,
+        int type
+    );
+    void exportAngularDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d lineLocn,
+        Base::Vector3d extLine1End,
+        Base::Vector3d extLine2End,
+        Base::Vector3d apexPoint,
+        char* dimText
+    );
+    void exportRadialDim(
+        Base::Vector3d centerPoint,
+        Base::Vector3d textLocn,
+        Base::Vector3d arcPoint,
+        char* dimText
+    );
+    void exportDiametricDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d arcPoint1,
+        Base::Vector3d arcPoint2,
+        char* dimText
+    );
 
 
     static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);

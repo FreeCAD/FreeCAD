@@ -36,37 +36,38 @@
 using namespace Part;
 
 //---------- Geometry Extension
-template <typename T>
-GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val, std::string name):value(val)
+template<typename T>
+GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val, std::string name)
+    : value(val)
 {
     setName(name);
 }
 
 
-template <typename T>
-void GeometryDefaultExtension<T>::copyAttributes(Part::GeometryExtension * cpy) const
+template<typename T>
+void GeometryDefaultExtension<T>::copyAttributes(Part::GeometryExtension* cpy) const
 {
     Part::GeometryPersistenceExtension::copyAttributes(cpy);
-    static_cast<GeometryDefaultExtension<T> *>(cpy)->value = this->value;
+    static_cast<GeometryDefaultExtension<T>*>(cpy)->value = this->value;
 }
 
-template <typename T>
-void GeometryDefaultExtension<T>::restoreAttributes(Base::XMLReader &reader)
+template<typename T>
+void GeometryDefaultExtension<T>::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     value = reader.getAttribute<const char*>("value");
 }
 
-template <typename T>
-void GeometryDefaultExtension<T>::saveAttributes(Base::Writer &writer) const
+template<typename T>
+void GeometryDefaultExtension<T>::saveAttributes(Base::Writer& writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
 
     writer.Stream() << "\" value=\"" << value;
 }
 
-template <typename T>
+template<typename T>
 std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() const
 {
     std::unique_ptr<GeometryDefaultExtension<T>> cpy = std::make_unique<GeometryDefaultExtension<T>>();
@@ -75,29 +76,35 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() con
     return cpy;
 }
 
-template <typename T>
-PyObject * GeometryDefaultExtension<T>::getPyObject()
+template<typename T>
+PyObject* GeometryDefaultExtension<T>::getPyObject()
 {
-    THROWM(Base::NotImplementedError,"Python object not implemented for default geometry extension template type. Template Specialisation missing."); // use template specialisation to provide the actual object
+    THROWM(
+        Base::NotImplementedError,
+        "Python object not implemented for default geometry extension template type. Template "
+        "Specialisation missing."
+    );  // use template specialisation to provide the actual object
 }
 
-namespace Part {
-// ----------------------------- Template specialisations----------------------------------------------------
+namespace Part
+{
+// ----------------------------- Template
+// specialisations----------------------------------------------------
 
-//using GeometryIntExtension = Part::GeometryDefaultExtension<long>;
-//using GeometryStringExtension = Part::GeometryStringExtension<std::string>;
+// using GeometryIntExtension = Part::GeometryDefaultExtension<long>;
+// using GeometryStringExtension = Part::GeometryStringExtension<std::string>;
 
 // ---------- GeometryIntExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension, Part::GeometryPersistenceExtension)
 
-template <>
-PyObject * GeometryDefaultExtension<long>::getPyObject()
+template<>
+PyObject* GeometryDefaultExtension<long>::getPyObject()
 {
     return new GeometryIntExtensionPy(new GeometryIntExtension(*this));
 }
 
-template <>
-void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader &reader)
+template<>
+void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
@@ -105,25 +112,25 @@ void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader &reader)
 }
 
 // ---------- GeometryStringExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension, Part::GeometryPersistenceExtension)
 
-template <>
-PyObject * GeometryDefaultExtension<std::string>::getPyObject()
+template<>
+PyObject* GeometryDefaultExtension<std::string>::getPyObject()
 {
     return new GeometryStringExtensionPy(new GeometryStringExtension(*this));
 }
 
 // ---------- GeometryBoolExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension, Part::GeometryPersistenceExtension)
 
-template <>
-PyObject * GeometryDefaultExtension<bool>::getPyObject()
+template<>
+PyObject* GeometryDefaultExtension<bool>::getPyObject()
 {
     return new GeometryBoolExtensionPy(new GeometryBoolExtension(*this));
 }
 
-template <>
-void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
+template<>
+void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
@@ -131,16 +138,16 @@ void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
 }
 
 // ---------- GeometryDoubleExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension, Part::GeometryPersistenceExtension)
 
-template <>
-PyObject * GeometryDefaultExtension<double>::getPyObject()
+template<>
+PyObject* GeometryDefaultExtension<double>::getPyObject()
 {
     return new GeometryDoubleExtensionPy(new GeometryDoubleExtension(*this));
 }
 
-template <>
-void GeometryDefaultExtension<double>::restoreAttributes(Base::XMLReader &reader)
+template<>
+void GeometryDefaultExtension<double>::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
@@ -149,11 +156,11 @@ void GeometryDefaultExtension<double>::restoreAttributes(Base::XMLReader &reader
 
 
 // instantiate the types so that other translation units (python wrappers) can access template
-//constructors other than the default.
+// constructors other than the default.
 template class GeometryDefaultExtension<long>;
 template class GeometryDefaultExtension<std::string>;
 template class GeometryDefaultExtension<bool>;
 template class GeometryDefaultExtension<double>;
 
 
-} //namespace Part
+}  // namespace Part

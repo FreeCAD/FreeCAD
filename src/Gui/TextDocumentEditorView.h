@@ -39,9 +39,7 @@ class GuiExport TextDocumentEditorView: public MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    TextDocumentEditorView(App::TextDocument* textDocument,
-                           QPlainTextEdit* editor,
-                           QWidget* parent);
+    TextDocumentEditorView(App::TextDocument* textDocument, QPlainTextEdit* editor, QWidget* parent);
     ~TextDocumentEditorView() override;
     const char* getName() const override
     {

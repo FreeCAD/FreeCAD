@@ -33,9 +33,11 @@
 
 class QTabWidget;
 
-namespace Gui {
+namespace Gui
+{
 class PythonConsole;
-namespace DockWnd {
+namespace DockWnd
+{
 
 class ReportOutput;
 class ReportHighlighter;
@@ -46,43 +48,44 @@ class ReportOutputObserver;
  * @see PythonConsole
  * \author Werner Mayer
  */
-class ReportView : public QWidget
+class ReportView: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ReportView( QWidget* parent = nullptr);
+    explicit ReportView(QWidget* parent = nullptr);
     ~ReportView() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     QTabWidget* tabWidget;
-    ReportOutput* tabOutput; /**< Output 'Report view' window */
+    ReportOutput* tabOutput;  /**< Output 'Report view' window */
     PythonConsole* tabPython; /**< Python console */
 };
 
 /** Syntax highlighter to write log or normal messages, warnings and errors in different colors.
  * \author Werner Mayer
  */
-class GuiExport ReportHighlighter : public QSyntaxHighlighter
+class GuiExport ReportHighlighter: public QSyntaxHighlighter
 {
 public:
-    enum Paragraph {
-        Message          = 0, /**< normal text */
-        Warning          = 1, /**< Warning */
-        Error            = 2, /**< Error text */
-        LogText          = 3,  /**< Log text */
-        Critical         = 4, /**< critical text */
+    enum Paragraph
+    {
+        Message = 0,  /**< normal text */
+        Warning = 1,  /**< Warning */
+        Error = 2,    /**< Error text */
+        LogText = 3,  /**< Log text */
+        Critical = 4, /**< critical text */
     };
 
 public:
-    explicit ReportHighlighter(QTextEdit* );
+    explicit ReportHighlighter(QTextEdit*);
     ~ReportHighlighter() override;
 
     /** Parses the given text and highlight it in the right colors. */
-    void highlightBlock ( const QString & text ) override;
+    void highlightBlock(const QString& text) override;
     /**
      * Sets the current paragraph type used in ReportOutput
      * @see ReportOutput::Message
@@ -95,27 +98,27 @@ public:
     /**
      * Sets the text color to  \a col.
      */
-    void setTextColor( const QColor& col );
+    void setTextColor(const QColor& col);
 
     /**
      * Sets the color for log messages to  \a col.
      */
-    void setLogColor( const QColor& col );
+    void setLogColor(const QColor& col);
 
     /**
      * Sets the color for warnings to  \a col.
      */
-    void setWarningColor( const QColor& col );
+    void setWarningColor(const QColor& col);
 
     /**
      * Sets the color for error messages to  \a col.
      */
-    void setErrorColor( const QColor& col );
+    void setErrorColor(const QColor& col);
 
     /**
      * Sets the text color to  \a col.
      */
-    void setCriticalColor( const QColor& col );
+    void setCriticalColor(const QColor& col);
 
 private:
     /** @name for internal use only */
@@ -130,25 +133,33 @@ private:
  * @see QTextEdit
  * \author Werner Mayer
  */
-class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public Base::ILogger
+class GuiExport ReportOutput: public QTextEdit, public WindowParameter, public Base::ILogger
 {
     Q_OBJECT
 
 public:
-    explicit ReportOutput(QWidget* parent=nullptr);
+    explicit ReportOutput(QWidget* parent = nullptr);
     ~ReportOutput() override;
 
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+    void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
-    void sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
-                 Base::IntendedRecipient recipient, Base::ContentType content) override;
+    void sendLog(
+        const std::string& notifiername,
+        const std::string& msg,
+        Base::LogStyle level,
+        Base::IntendedRecipient recipient,
+        Base::ContentType content
+    ) override;
 
     /// returns the name for observer handling
-    const char* name() override {return "ReportOutput";}
+    const char* name() override
+    {
+        return "ReportOutput";
+    }
 
     /** Restore the default font settings. */
-    void restoreFont ();
+    void restoreFont();
 
     /** Returns true whether errors are reported. */
     bool isError() const;
@@ -163,11 +174,11 @@ public:
 
 protected:
     /** For internal use only */
-    void customEvent ( QEvent* ev ) override;
+    void customEvent(QEvent* ev) override;
     /** Handles the change of style sheets */
-    void changeEvent(QEvent *) override;
+    void changeEvent(QEvent*) override;
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e ) override;
+    void contextMenuEvent(QContextMenuEvent* e) override;
     /** Handle shortcut override events */
     bool event(QEvent* event) override;
 
@@ -216,20 +227,20 @@ private:
  * enabled.
  */
 
-class ReportOutputObserver : public QObject
+class ReportOutputObserver: public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ReportOutputObserver (ReportOutput* view);
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    explicit ReportOutputObserver(ReportOutput* view);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected:
-    QPointer <ReportOutput> reportView;
+    QPointer<ReportOutput> reportView;
     void showReportView();
 };
 
-} // namespace DockWnd
-} // namespace Gui
+}  // namespace DockWnd
+}  // namespace Gui
 
-#endif //GUI_DOCKWND_REPORTVIEW_H
+#endif  // GUI_DOCKWND_REPORTVIEW_H

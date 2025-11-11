@@ -35,24 +35,29 @@ public:
     Module()
         : Py::ExtensionModule<Module>("DraftUtils")
     {
-        add_varargs_method("readDXF",
-                           &Module::readDXF,
-                           "readDXF(filename,[document,ignore_errors]): "
-                           "Imports a DXF file into the given document. "
-                           "ignore_errors is True by default. "
-                           "NOTE: DraftUtils.readDXF is removed. "
-                           "Use Import.readDxf instead.");
+        add_varargs_method(
+            "readDXF",
+            &Module::readDXF,
+            "readDXF(filename,[document,ignore_errors]): "
+            "Imports a DXF file into the given document. "
+            "ignore_errors is True by default. "
+            "NOTE: DraftUtils.readDXF is removed. "
+            "Use Import.readDxf instead."
+        );
         initialize(
-            "The DraftUtils module contains utility functions for the Draft module.");  // register
-                                                                                        // with
-                                                                                        // Python
+            "The DraftUtils module contains utility functions for the Draft module."
+        );  // register
+            // with
+            // Python
     }
 
 private:
     Py::Object readDXF(const Py::Tuple& /*args*/)
     {
-        Base::Console().warning("DraftUtils.readDXF is removed. "
-                                "Use Import.readDxf instead.\n");
+        Base::Console().warning(
+            "DraftUtils.readDXF is removed. "
+            "Use Import.readDxf instead.\n"
+        );
         return Py::None();
     }
 };

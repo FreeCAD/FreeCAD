@@ -71,10 +71,7 @@ public:
      * Set iteration convergence criteria for the fit if special values are needed.
      * The default values set in the constructor are suitable for most uses
      */
-    void SetConvergenceCriteria(double posConvLimit,
-                                double dirConvLimit,
-                                double vConvLimit,
-                                int maxIter);
+    void SetConvergenceCriteria(double posConvLimit, double dirConvLimit, double vConvLimit, int maxIter);
     /**
      * Returns the radius of the fitted cylinder. If Fit() has not been called then zero is
      * returned.
@@ -138,28 +135,28 @@ protected:
     /**
      * Set up the normal equations
      */
-    void setupNormalEquationMatrices(SolutionD solDir,
-                                     const std::vector<Base::Vector3d>& residuals,
-                                     Matrix5x5& atpa,
-                                     Eigen::VectorXd& atpl) const;
+    void setupNormalEquationMatrices(
+        SolutionD solDir,
+        const std::vector<Base::Vector3d>& residuals,
+        Matrix5x5& atpa,
+        Eigen::VectorXd& atpl
+    ) const;
     /**
      * Sets up contributions of given observation to the normal equation matrices.
      */
-    void setupObservation(SolutionD solDir,
-                          const Base::Vector3f& point,
-                          const Base::Vector3d& residual,
-                          DoubleArray5& a,
-                          double& f0,
-                          double& qw,
-                          DoubleArray3& b) const;
+    void setupObservation(
+        SolutionD solDir,
+        const Base::Vector3f& point,
+        const Base::Vector3d& residual,
+        DoubleArray5& a,
+        double& f0,
+        double& qw,
+        DoubleArray3& b
+    ) const;
     /**
      * Computes contribution of the given observation equation on the normal equation matrices
      */
-    void addObservationU(DoubleArray5 a,
-                         double li,
-                         double pi,
-                         Matrix5x5& atpa,
-                         Eigen::VectorXd& atpl) const;
+    void addObservationU(DoubleArray5 a, double li, double pi, Matrix5x5& atpa, Eigen::VectorXd& atpl) const;
     /**
      * Set the lower part of the normal matrix equal to the upper part
      */
@@ -168,12 +165,14 @@ protected:
     /**
      * Compute the residuals and sigma0 and check the residual convergence
      */
-    bool computeResiduals(SolutionD solDir,
-                          const Eigen::VectorXd& x,
-                          std::vector<Base::Vector3d>& residuals,
-                          double& sigma0,
-                          double vConvLimit,
-                          bool& vConverged) const;
+    bool computeResiduals(
+        SolutionD solDir,
+        const Eigen::VectorXd& x,
+        std::vector<Base::Vector3d>& residuals,
+        double& sigma0,
+        double vConvLimit,
+        bool& vConverged
+    ) const;
     /**
      * Update the parameters after solving the normal equations
      */

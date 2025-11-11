@@ -33,11 +33,11 @@ import math
 import sys
 
 
-def makeCompoundFilter(name, into_group = None):
-    '''makeCompoundFilter(name): makes a CompoundFilter object.'''
+def makeCompoundFilter(name, into_group=None):
+    """makeCompoundFilter(name): makes a CompoundFilter object."""
     if into_group is None:
         into_group = FreeCAD.ActiveDocument
-    if into_group.isDerivedFrom('App::Document'):
+    if into_group.isDerivedFrom("App::Document"):
         obj = into_group.addObject("Part::FeaturePython", name)
     else:
         obj = into_group.newObject("Part::FeaturePython", name)
@@ -51,40 +51,81 @@ class _CompoundFilter:
     """The CompoundFilter object."""
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base", "CompoundFilter", "Compound to be filtered", locked=True)
+        obj.addProperty(
+            "App::PropertyLink", "Base", "CompoundFilter", "Compound to be filtered", locked=True
+        )
 
-        obj.addProperty("App::PropertyEnumeration",
-                        "FilterType",
-                        "CompoundFilter",
-                        "Type of filter method to use; some of these methods "
-                        "require, or are affected by, a 'Stencil' object.", locked=True)
-        obj.FilterType = ['bypass', 'specific items', 'collision-pass',
-                          'window-volume', 'window-area', 'window-length',
-                          'window-distance']
-        obj.FilterType = 'bypass'
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "FilterType",
+            "CompoundFilter",
+            "Type of filter method to use; some of these methods "
+            "require, or are affected by, a 'Stencil' object.",
+            locked=True,
+        )
+        obj.FilterType = [
+            "bypass",
+            "specific items",
+            "collision-pass",
+            "window-volume",
+            "window-area",
+            "window-length",
+            "window-distance",
+        ]
+        obj.FilterType = "bypass"
 
         # properties controlling "specific items" mode
-        obj.addProperty("App::PropertyString", "items", "CompoundFilter",
-                        "Indices of the pieces to be returned.\n"
-                        "These are numbers separated by a semicolon, '1;3;5'.\n"
-                        "A range can also be provided using a colon, '1;4;8:10'.", locked=True)
+        obj.addProperty(
+            "App::PropertyString",
+            "items",
+            "CompoundFilter",
+            "Indices of the pieces to be returned.\n"
+            "These are numbers separated by a semicolon, '1;3;5'.\n"
+            "A range can also be provided using a colon, '1;4;8:10'.",
+            locked=True,
+        )
 
-        obj.addProperty("App::PropertyLink", "Stencil", "CompoundFilter",
-                        "Object that defines filtering", locked=True)
+        obj.addProperty(
+            "App::PropertyLink",
+            "Stencil",
+            "CompoundFilter",
+            "Object that defines filtering",
+            locked=True,
+        )
 
-        obj.addProperty("App::PropertyFloat", "WindowFrom", "CompoundFilter",
-                        "Value of threshold, expressed as a percentage of maximum value.", locked=True)
+        obj.addProperty(
+            "App::PropertyFloat",
+            "WindowFrom",
+            "CompoundFilter",
+            "Value of threshold, expressed as a percentage of maximum value.",
+            locked=True,
+        )
         obj.WindowFrom = 80.0
-        obj.addProperty("App::PropertyFloat", "WindowTo", "CompoundFilter",
-                        "Value of threshold, expressed as a percentage of maximum value.", locked=True)
+        obj.addProperty(
+            "App::PropertyFloat",
+            "WindowTo",
+            "CompoundFilter",
+            "Value of threshold, expressed as a percentage of maximum value.",
+            locked=True,
+        )
         obj.WindowTo = 100.0
 
-        obj.addProperty("App::PropertyFloat", "OverrideMaxVal", "CompoundFilter",
-                        "Volume threshold, expressed as percentage of the volume of largest child", locked=True)
+        obj.addProperty(
+            "App::PropertyFloat",
+            "OverrideMaxVal",
+            "CompoundFilter",
+            "Volume threshold, expressed as percentage of the volume of largest child",
+            locked=True,
+        )
         obj.OverrideMaxVal = 0
 
-        obj.addProperty("App::PropertyBool", "Invert", "CompoundFilter",
-                        "Output shapes that are rejected by the filter, instead", locked=True)
+        obj.addProperty(
+            "App::PropertyBool",
+            "Invert",
+            "CompoundFilter",
+            "Output shapes that are rejected by the filter, instead",
+            locked=True,
+        )
         obj.Invert = False
 
         self.Type = "CompoundFilter"
@@ -94,36 +135,49 @@ class _CompoundFilter:
         # When operating on the object, it is to be treated as a lattice object.
         # If False, treat as a regular shape.
         if hasattr(obj, "isLattice"):
-            if 'On' in obj.isLattice:
-                print(obj.Name + " A generic shape is expected, but an array of placements was supplied. "
-                      "It will be treated as a generic shape.\n")
+            if "On" in obj.isLattice:
+                print(
+                    obj.Name
+                    + " A generic shape is expected, but an array of placements was supplied. "
+                    "It will be treated as a generic shape.\n"
+                )
 
         rst = []  # variable to receive the final list of shapes
         shps = obj.Base.Shape.childShapes()
-        if obj.FilterType == 'bypass':
+        if obj.FilterType == "bypass":
             rst = shps
-        elif obj.FilterType == 'specific items':
+        elif obj.FilterType == "specific items":
             rst = []
             flags = [False] * len(shps)
             if not obj.items:
-                raise ValueError("The 'items' property must have a number to use this filter: '{}'".format(obj.FilterType))
-            ranges = obj.items.split(';')
+                raise ValueError(
+                    "The 'items' property must have a number to use this filter: '{}'".format(
+                        obj.FilterType
+                    )
+                )
+            ranges = obj.items.split(";")
             for r in ranges:
-                r_v = r.split(':')
+                r_v = r.split(":")
                 if len(r_v) == 1:
                     try:
                         i = int(r_v[0])
                     except ValueError:
-                        raise ValueError("Make sure the 'item' does not have spaces; "
-                                         "a semicolon (;) can only appear between two numbers; "
-                                         "filter: '{}'".format(obj.FilterType))
+                        raise ValueError(
+                            "Make sure the 'item' does not have spaces; "
+                            "a semicolon (;) can only appear between two numbers; "
+                            "filter: '{}'".format(obj.FilterType)
+                        )
                     try:
                         rst.append(shps[i])
-                        len(shps[i].ElementMap) # this calls flushElementMap on the c++ side,
+                        len(shps[i].ElementMap)  # this calls flushElementMap on the c++ side,
                         #                         which allows for the element map to be usable
                         #                         for later use.
                     except IndexError:
-                        raise ValueError("Item index '{}' is out of range for this filter: '{}'".format(i, obj.FilterType))
+                        raise ValueError(
+                            "Item index '{}' is out of range for this filter: '{}'".format(
+                                i, obj.FilterType
+                            )
+                        )
                     flags[i] = True
                 elif len(r_v) == 2 or len(r_v) == 3:
                     if len(r_v) == 2:
@@ -143,37 +197,42 @@ class _CompoundFilter:
                 for i in range(len(shps)):
                     if not flags[i]:
                         rst.append(shps[i])
-        elif obj.FilterType == 'collision-pass':
+        elif obj.FilterType == "collision-pass":
             if not obj.Stencil:
-                raise ValueError("A 'Stencil' object must be set to use this filter: '{}'".format(obj.FilterType))
+                raise ValueError(
+                    "A 'Stencil' object must be set to use this filter: '{}'".format(obj.FilterType)
+                )
 
             stencil = obj.Stencil.Shape
             for s in shps:
                 d = s.distToShape(stencil)
                 if bool(d[0] < Part.Precision.confusion()) ^ bool(obj.Invert):
                     rst.append(s)
-        elif obj.FilterType in ('window-volume', 'window-area',
-                                'window-length', 'window-distance'):
+        elif obj.FilterType in ("window-volume", "window-area", "window-length", "window-distance"):
             vals = [0.0] * len(shps)
             for i in range(len(shps)):
-                if obj.FilterType == 'window-volume':
+                if obj.FilterType == "window-volume":
                     vals[i] = shps[i].Volume
-                elif obj.FilterType == 'window-area':
+                elif obj.FilterType == "window-area":
                     vals[i] = shps[i].Area
-                elif obj.FilterType == 'window-length':
+                elif obj.FilterType == "window-length":
                     vals[i] = shps[i].Length
-                elif obj.FilterType == 'window-distance':
+                elif obj.FilterType == "window-distance":
                     if not obj.Stencil:
-                        raise ValueError("A 'Stencil' object must be set to use this filter: '{}'".format(obj.FilterType))
+                        raise ValueError(
+                            "A 'Stencil' object must be set to use this filter: '{}'".format(
+                                obj.FilterType
+                            )
+                        )
                     vals[i] = shps[i].distToShape(obj.Stencil.Shape)[0]
 
             maxval = max(vals)
             if obj.Stencil:
-                if obj.FilterType == 'window-volume':
+                if obj.FilterType == "window-volume":
                     maxval = obj.Stencil.Shape.Volume
-                elif obj.FilterType == 'window-area':
+                elif obj.FilterType == "window-area":
                     maxval = obj.Stencil.Shape.Area
-                elif obj.FilterType == 'window-length':
+                elif obj.FilterType == "window-length":
                     maxval = obj.Stencil.Shape.Length
             if obj.OverrideMaxVal:
                 maxval = obj.OverrideMaxVal
@@ -197,7 +256,7 @@ class _CompoundFilter:
             obj.Shape = getNullShapeShape(scale)
             # Feeding empty compounds to FreeCAD seems to cause rendering issues,
             # otherwise it would have been a good idea to output nothing.
-            raise ValueError('Nothing passes through the filter')
+            raise ValueError("Nothing passes through the filter")
 
         if len(rst) > 1:
             obj.Shape = Part.makeCompound(rst)
@@ -215,11 +274,14 @@ class _ViewProviderCompoundFilter:
 
     def __init__(self, vobj):
         vobj.Proxy = self
-        vobj.addProperty("App::PropertyBool",
-                         "DontUnhideOnDelete",
-                         "CompoundFilter",
-                         "When this object is deleted, Base and Stencil are unhidden. "
-                         "This flag stops it from happening.", locked=True)
+        vobj.addProperty(
+            "App::PropertyBool",
+            "DontUnhideOnDelete",
+            "CompoundFilter",
+            "When this object is deleted, Base and Stencil are unhidden. "
+            "This flag stops it from happening.",
+            locked=True,
+        )
         vobj.setEditorMode("DontUnhideOnDelete", 2)  # set hidden
 
     def getIcon(self):
@@ -275,8 +337,8 @@ def getNullShapeShape(scale=1.0):
         if not _nullShapeShape:
             _nullShapeShape = Part.Shape()
             import os
-            shapePath = os.path.join(os.path.dirname(__file__),
-                                     "shapes", "empty-shape.brep")
+
+            shapePath = os.path.join(os.path.dirname(__file__), "shapes", "empty-shape.brep")
             f = open(shapePath)
             _nullShapeShape.importBrep(f)
             f.close()

@@ -102,8 +102,8 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &SelectionStyle) {
-        pcHighlight->style =
-            SelectionStyle.getValue() ? Gui::SoFCSelection::BOX : Gui::SoFCSelection::EMISSIVE;
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);
@@ -172,7 +172,8 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                         "ViewProviderPoints::setDisplayMode",
                         "The number of points (%d) doesn't match with the number of colors (%d).",
                         numPoints,
-                        colors->getSize());
+                        colors->getSize()
+                    );
 #endif
                     // fallback
                     setDisplayMaskMode("Point");
@@ -191,15 +192,17 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
         for (const auto& it : Map) {
             Base::Type type = it.second->getTypeId();
             if (type == Points::PropertyGreyValueList::getClassTypeId()) {
-                Points::PropertyGreyValueList* greyValues =
-                    static_cast<Points::PropertyGreyValueList*>(it.second);
+                Points::PropertyGreyValueList* greyValues
+                    = static_cast<Points::PropertyGreyValueList*>(it.second);
                 if (numPoints != greyValues->getSize()) {
 #ifdef FC_DEBUG
-                    SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
-                                              "The number of points (%d) doesn't match with the "
-                                              "number of grey values (%d).",
-                                              numPoints,
-                                              greyValues->getSize());
+                    SoDebugError::postWarning(
+                        "ViewProviderPoints::setDisplayMode",
+                        "The number of points (%d) doesn't match with the "
+                        "number of grey values (%d).",
+                        numPoints,
+                        greyValues->getSize()
+                    );
 #endif
                     // Intensity mode is not possible then set the default () mode instead.
                     setDisplayMaskMode("Point");
@@ -218,15 +221,17 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
         for (const auto& it : Map) {
             Base::Type type = it.second->getTypeId();
             if (type == Points::PropertyNormalList::getClassTypeId()) {
-                Points::PropertyNormalList* normals =
-                    static_cast<Points::PropertyNormalList*>(it.second);
+                Points::PropertyNormalList* normals = static_cast<Points::PropertyNormalList*>(
+                    it.second
+                );
                 if (numPoints != normals->getSize()) {
 #ifdef FC_DEBUG
                     SoDebugError::postWarning(
                         "ViewProviderPoints::setDisplayMode",
                         "The number of points (%d) doesn't match with the number of normals (%d).",
                         numPoints,
-                        normals->getSize());
+                        normals->getSize()
+                    );
 #endif
                     // fallback
                     setDisplayMaskMode("Point");
@@ -265,8 +270,7 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes() const
         std::map<std::string, App::Property*> Map;
         pcObject->getPropertyMap(Map);
 
-        for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end();
-             ++it) {
+        for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
             Base::Type type = it->second->getTypeId();
             if (type == Points::PropertyNormalList::getClassTypeId()) {
                 StrList.push_back("Shaded");
@@ -348,8 +352,9 @@ void ViewProviderPoints::clipPointsCallback(void*, SoEventCallback* n)
         clPoly.push_back(clPoly.front());
     }
 
-    std::vector<Gui::ViewProvider*> views =
-        view->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(
+        ViewProviderPoints::getClassTypeId()
+    );
     for (auto it : views) {
         ViewProviderPoints* that = static_cast<ViewProviderPoints*>(it);
         if (that->getEditingMode() > -1) {
@@ -443,8 +448,7 @@ void ViewProviderScattered::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked,
-                                Gui::View3DInventorViewer& Viewer)
+void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer& Viewer)
 {
     // create the polygon from the picked points
     Base::Polygon2d cPoly;
@@ -464,8 +468,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked,
     removeIndices.reserve(points.size());
 
     unsigned long index = 0;
-    for (Points::PointKernel::const_iterator jt = points.begin(); jt != points.end();
-         ++jt, ++index) {
+    for (Points::PointKernel::const_iterator jt = points.begin(); jt != points.end(); ++jt, ++index) {
         SbVec3f pt(jt->x, jt->y, jt->z);
 
         // project from 3d to 2d
@@ -481,7 +484,8 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked,
 
     // Remove the points from the cloud and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Cut points"));
+        QT_TRANSLATE_NOOP("Command", "Cut points")
+    );
 
     // sets the points outside the polygon to update the Inventor node
     fea->Points.removeIndices(removeIndices);
@@ -499,8 +503,8 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked,
         }
         else if (type == App::PropertyColorList::getClassTypeId()) {
             // static_cast<App::PropertyColorList*>(it->second)->removeIndices(removeIndices);
-            const std::vector<Base::Color>& colors =
-                static_cast<App::PropertyColorList*>(it.second)->getValues();
+            const std::vector<Base::Color>& colors
+                = static_cast<App::PropertyColorList*>(it.second)->getValues();
 
             if (removeIndices.size() > colors.size()) {
                 break;
@@ -606,8 +610,7 @@ void ViewProviderStructured::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked,
-                                 Gui::View3DInventorViewer& Viewer)
+void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer& Viewer)
 {
     // create the polygon from the picked points
     Base::Polygon2d cPoly;
@@ -649,7 +652,8 @@ void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked,
     if (invalidatePoints) {
         // Remove the points from the cloud and open a transaction object for the undo/redo stuff
         Gui::Application::Instance->activeDocument()->openCommand(
-            QT_TRANSLATE_NOOP("Command", "Cut points"));
+            QT_TRANSLATE_NOOP("Command", "Cut points")
+        );
 
         // sets the points outside the polygon to update the Inventor node
         fea->Points.setValue(newKernel);
@@ -674,8 +678,7 @@ template class PointsGuiExport ViewProviderFeaturePythonT<PointsGui::ViewProvide
 
 // -------------------------------------------------
 
-void ViewProviderPointsBuilder::buildNodes(const App::Property* prop,
-                                           std::vector<SoNode*>& nodes) const
+void ViewProviderPointsBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
     SoCoordinate3* pcPointsCoord = nullptr;
     SoPointSet* pcPoints = nullptr;
@@ -700,12 +703,15 @@ void ViewProviderPointsBuilder::buildNodes(const App::Property* prop,
     }
 }
 
-void ViewProviderPointsBuilder::createPoints(const App::Property* prop,
-                                             SoCoordinate3* coords,
-                                             SoPointSet* points) const
+void ViewProviderPointsBuilder::createPoints(
+    const App::Property* prop,
+    SoCoordinate3* coords,
+    SoPointSet* points
+) const
 {
-    const Points::PropertyPointKernel* prop_points =
-        static_cast<const Points::PropertyPointKernel*>(prop);
+    const Points::PropertyPointKernel* prop_points = static_cast<const Points::PropertyPointKernel*>(
+        prop
+    );
     const Points::PointKernel& cPts = prop_points->getValue();
 
     coords->point.setNum(cPts.size());
@@ -724,12 +730,15 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop,
     coords->point.finishEditing();
 }
 
-void ViewProviderPointsBuilder::createPoints(const App::Property* prop,
-                                             SoCoordinate3* coords,
-                                             SoIndexedPointSet* points) const
+void ViewProviderPointsBuilder::createPoints(
+    const App::Property* prop,
+    SoCoordinate3* coords,
+    SoIndexedPointSet* points
+) const
 {
-    const Points::PropertyPointKernel* prop_points =
-        static_cast<const Points::PropertyPointKernel*>(prop);
+    const Points::PropertyPointKernel* prop_points = static_cast<const Points::PropertyPointKernel*>(
+        prop
+    );
     const Points::PointKernel& cPts = prop_points->getValue();
 
     coords->point.setNum(cPts.size());
@@ -745,8 +754,7 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop,
          ++it, idx++) {
         vec[idx].setValue(it->x, it->y, it->z);
         // valid point?
-        if (!(boost::math::isnan(it->x) || boost::math::isnan(it->y)
-              || boost::math::isnan(it->z))) {
+        if (!(boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z))) {
             indices.push_back(idx);
         }
     }

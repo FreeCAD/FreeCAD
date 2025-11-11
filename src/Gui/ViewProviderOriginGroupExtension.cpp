@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
@@ -53,43 +52,51 @@ ViewProviderOriginGroupExtension::ViewProviderOriginGroupExtension()
 }
 
 ViewProviderOriginGroupExtension::~ViewProviderOriginGroupExtension()
-{
-}
+{}
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChildren (
-        const std::vector<App::DocumentObject*> &children ) const
+std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChildren(
+    const std::vector<App::DocumentObject*>& children
+) const
 {
     auto* obj = getExtendedViewProvider()->getObject();
     auto* group = obj ? obj->getExtensionByType<App::OriginGroupExtension>() : nullptr;
-    if(!group)
+    if (!group) {
         return children;
+    }
 
-    App::DocumentObject *originObj = group->Origin.getValue();
+    App::DocumentObject* originObj = group->Origin.getValue();
 
     // Origin must be first
     if (originObj) {
         std::vector<App::DocumentObject*> rv;
-        rv.push_back (originObj);
-        std::copy (children.begin(), children.end(), std::back_inserter (rv));
+        rv.push_back(originObj);
+        std::copy(children.begin(), children.end(), std::back_inserter(rv));
         return rv;
-    } else { // Generally shouldn't happen but must be handled in case origin is lost
+    }
+    else {  // Generally shouldn't happen but must be handled in case origin is lost
         return children;
     }
 }
 
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren () const {
-    return constructChildren ( ViewProviderGeoFeatureGroupExtension::extensionClaimChildren () );
+std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren() const
+{
+    return constructChildren(ViewProviderGeoFeatureGroupExtension::extensionClaimChildren());
 }
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren3D () const {
-    return constructChildren ( ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D () );
+std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren3D() const
+{
+    return constructChildren(ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D());
 }
 
 
-namespace Gui {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginGroupExtensionPython, Gui::ViewProviderOriginGroupExtension)
+namespace Gui
+{
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(
+    Gui::ViewProviderOriginGroupExtensionPython,
+    Gui::ViewProviderOriginGroupExtension
+)
 
 // explicit template instantiation
 template class GuiExport ViewProviderExtensionPythonT<ViewProviderOriginGroupExtension>;
-}
+}  // namespace Gui

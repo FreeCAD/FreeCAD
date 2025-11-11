@@ -48,9 +48,11 @@ class Segmentation: public QWidget
     Q_OBJECT
 
 public:
-    explicit Segmentation(Mesh::Feature* mesh,
-                          QWidget* parent = nullptr,
-                          Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Segmentation(
+        Mesh::Feature* mesh,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~Segmentation() override;
     void accept();
 

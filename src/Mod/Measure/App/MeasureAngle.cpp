@@ -38,27 +38,27 @@ PROPERTY_SOURCE(Measure::MeasureAngle, Measure::MeasureBase)
 
 MeasureAngle::MeasureAngle()
 {
-    ADD_PROPERTY_TYPE(Element1,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "First element of the measurement");
+    ADD_PROPERTY_TYPE(Element1, (nullptr), "Measurement", App::Prop_None, "First element of the measurement");
     Element1.setScope(App::LinkScope::Global);
     Element1.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Element2,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Second element of the measurement");
+    ADD_PROPERTY_TYPE(
+        Element2,
+        (nullptr),
+        "Measurement",
+        App::Prop_None,
+        "Second element of the measurement"
+    );
     Element2.setScope(App::LinkScope::Global);
     Element2.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Angle,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Angle between the two elements");
+    ADD_PROPERTY_TYPE(
+        Angle,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Angle between the two elements"
+    );
     Angle.setUnit(Base::Unit::Angle);
 }
 

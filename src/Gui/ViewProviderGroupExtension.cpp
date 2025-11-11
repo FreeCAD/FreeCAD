@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <QMessageBox>
+#include <QMessageBox>
 
 
 #include <App/Document.h>
@@ -42,48 +41,50 @@
 
 using namespace Gui;
 
-namespace {
-    // helper function to recursively delete group contents while respecting view provider onDelete methods
-    void deleteGroupContentsRecursively(App::GroupExtension* group) {
-        if (!group) {
-            return;
+namespace
+{
+// helper function to recursively delete group contents while respecting view provider onDelete methods
+void deleteGroupContentsRecursively(App::GroupExtension* group)
+{
+    if (!group) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> children = group->Group.getValues();
+
+    for (App::DocumentObject* child : children) {
+        if (!child || !child->isAttachedToDocument() || child->isRemoving()) {
+            continue;
         }
-        
-        std::vector<App::DocumentObject*> children = group->Group.getValues();
-        
-        for (App::DocumentObject* child : children) {
-            if (!child || !child->isAttachedToDocument() || child->isRemoving()) {
-                continue;
-            }
-            
-            // if the child is a group, recursively delete its contents first
-            if (child->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
-                auto* childGroup = child->getExtensionByType<App::GroupExtension>();
-                deleteGroupContentsRecursively(childGroup);
-            }
-            
-            Gui::Document* guiDoc = Application::Instance->getDocument(child->getDocument());
-            if (guiDoc) {
-                ViewProvider* vp = guiDoc->getViewProvider(child);
-                if (vp) {
-                    // give group_recursive_deletion marker to the VP to mark that the deletion
-                    // is supposed to delete all of its children
-                    std::vector<std::string> groupDeletionMarker = {"group_recursive_deletion"};
-                    bool shouldDelete = vp->onDelete(groupDeletionMarker);
-                    
-                    if (!shouldDelete) {
-                        return;
-                    }
+
+        // if the child is a group, recursively delete its contents first
+        if (child->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+            auto* childGroup = child->getExtensionByType<App::GroupExtension>();
+            deleteGroupContentsRecursively(childGroup);
+        }
+
+        Gui::Document* guiDoc = Application::Instance->getDocument(child->getDocument());
+        if (guiDoc) {
+            ViewProvider* vp = guiDoc->getViewProvider(child);
+            if (vp) {
+                // give group_recursive_deletion marker to the VP to mark that the deletion
+                // is supposed to delete all of its children
+                std::vector<std::string> groupDeletionMarker = {"group_recursive_deletion"};
+                bool shouldDelete = vp->onDelete(groupDeletionMarker);
+
+                if (!shouldDelete) {
+                    return;
                 }
             }
-            
-            // if the object still exists and wasn't deleted by its view provider, delete it directly
-            if (child->isAttachedToDocument() && !child->isRemoving()) {
-                child->getDocument()->removeObject(child->getNameInDocument());
-            }
+        }
+
+        // if the object still exists and wasn't deleted by its view provider, delete it directly
+        if (child->isAttachedToDocument() && !child->isRemoving()) {
+            child->getDocument()->removeObject(child->getNameInDocument());
         }
     }
 }
+}  // namespace
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
@@ -94,25 +95,34 @@ ViewProviderGroupExtension::ViewProviderGroupExtension()
 
 ViewProviderGroupExtension::~ViewProviderGroupExtension() = default;
 
-bool ViewProviderGroupExtension::extensionCanDragObjects() const {
+bool ViewProviderGroupExtension::extensionCanDragObjects() const
+{
     return true;
 }
 
-bool ViewProviderGroupExtension::extensionCanDragObject(App::DocumentObject*) const {
+bool ViewProviderGroupExtension::extensionCanDragObject(App::DocumentObject*) const
+{
 
-    //we can drag anything out
+    // we can drag anything out
     return true;
 }
 
-void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
+void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj)
+{
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
-            "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(),
-            obj->getDocument()->getName(), obj->getNameInDocument() );
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.getDocument(\"%s\").getObject(\"%s\").removeObject("
+        "App.getDocument(\"%s\").getObject(\"%s\"))",
+        getExtendedViewProvider()->getObject()->getDocument()->getName(),
+        getExtendedViewProvider()->getObject()->getNameInDocument(),
+        obj->getDocument()->getName(),
+        obj->getNameInDocument()
+    );
 }
 
-bool ViewProviderGroupExtension::extensionCanDropObjects() const {
+bool ViewProviderGroupExtension::extensionCanDropObjects() const
+{
     return true;
 }
 
@@ -125,7 +135,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
     auto extobj = getExtendedViewProvider()->getObject();
     auto group = extobj->getExtensionByType<App::GroupExtension>();
 
-    //we cannot drop thing of this group into it again if it does not allow reorder
+    // we cannot drop thing of this group into it again if it does not allow reorder
     if (group->hasObject(obj) && !getExtendedViewProvider()->acceptReorderingObjects()) {
         return false;
     }
@@ -140,23 +150,29 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
     return group->allowObject(obj);
 }
 
-void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
+void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj)
+{
 
     auto grp = getExtendedViewProvider()->getObject();
     App::Document* doc = grp->getDocument();
 
     // build Python command for execution
     QString cmd;
-    cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                        "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromUtf8(doc->getName()),
-                             QString::fromUtf8(grp->getNameInDocument()),
-                             QString::fromUtf8(obj->getNameInDocument()));
+    cmd = QStringLiteral(
+              "App.getDocument(\"%1\").getObject(\"%2\").addObject("
+              "App.getDocument(\"%1\").getObject(\"%3\"))"
+    )
+              .arg(
+                  QString::fromUtf8(doc->getName()),
+                  QString::fromUtf8(grp->getNameInDocument()),
+                  QString::fromUtf8(obj->getNameInDocument())
+              );
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
-std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren() const {
+std::vector<App::DocumentObject*> ViewProviderGroupExtension::extensionClaimChildren() const
+{
 
     auto* obj = getExtendedViewProvider()->getObject();
     if (!obj) {
@@ -167,11 +183,13 @@ std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimCh
     return group->Group.getValues();
 }
 
-void ViewProviderGroupExtension::extensionShow() {
+void ViewProviderGroupExtension::extensionShow()
+{
 
     // avoid possible infinite recursion
-    if (guard)
+    if (guard) {
         return;
+    }
     Base::StateLocker lock(guard);
 
     // when reading the Visibility property from file then do not hide the
@@ -180,22 +198,25 @@ void ViewProviderGroupExtension::extensionShow() {
     // Property::User1 is used by ViewProviderDocumentObject to mark for
     // temporary visibility changes. Do not propagate the change to children.
     if (!getExtendedViewProvider()->isRestoring()
-            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
+        && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for(auto obj : group->Group.getValues()) {
-            if(obj && !obj->Visibility.getValue())
+        for (auto obj : group->Group.getValues()) {
+            if (obj && !obj->Visibility.getValue()) {
                 obj->Visibility.setValue(true);
+            }
         }
     }
 
     ViewProviderExtension::extensionShow();
 }
 
-void ViewProviderGroupExtension::extensionHide() {
+void ViewProviderGroupExtension::extensionHide()
+{
 
     // avoid possible infinite recursion
-    if (guard)
+    if (guard) {
         return;
+    }
     Base::StateLocker lock(guard);
 
     // when reading the Visibility property from file then do not hide the
@@ -204,45 +225,52 @@ void ViewProviderGroupExtension::extensionHide() {
     // Property::User1 is used by ViewProviderDocumentObject to mark for
     // temporary visibility changes. Do not propagate the change to children.
     if (!getExtendedViewProvider()->isRestoring()
-            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1))
-    {
+        && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for(auto obj : group->Group.getValues()) {
-            if(obj && obj->Visibility.getValue())
+        for (auto obj : group->Group.getValues()) {
+            if (obj && obj->Visibility.getValue()) {
                 obj->Visibility.setValue(false);
+            }
         }
     }
     ViewProviderExtension::extensionHide();
 }
 
-bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >&) {
+bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string>&)
+{
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    
+
     std::vector<App::DocumentObject*> directChildren = group->Group.getValues();
-    
+
     // just delete without messagebox if group is empty
     if (directChildren.empty()) {
         return true;
     }
-    
-    const auto* docGroup =
-        freecad_cast<App::DocumentObjectGroup*>(getExtendedViewProvider()->getObject());
+
+    const auto* docGroup = freecad_cast<App::DocumentObjectGroup*>(
+        getExtendedViewProvider()->getObject()
+    );
     auto allDescendants = docGroup ? docGroup->getAllChildren() : directChildren;
-    
+
     QString message;
     if (allDescendants.size() == directChildren.size()) {
-        message = QObject::tr("The group '%1' contains %2 object(s). Do you want to delete them as well?")
-                      .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
-                      .arg(allDescendants.size());
-    } else {
+        message
+            = QObject::tr("The group '%1' contains %2 object(s). Do you want to delete them as well?")
+                  .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
+                  .arg(allDescendants.size());
+    }
+    else {
         // if we have nested groups
-        message = QObject::tr("The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?")
+        message = QObject::tr(
+                      "The group '%1' contains %2 direct children and %3 total descendants "
+                      "(including nested groups). Do you want to delete all of them recursively?"
+        )
                       .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
                       .arg(directChildren.size())
                       .arg(allDescendants.size());
     }
-    
+
     QMessageBox::StandardButton choice = QMessageBox::question(
         getMainWindow(),
         QObject::tr("Delete group contents recursively?"),
@@ -250,25 +278,26 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
         QMessageBox::No
     );
-    
+
     if (choice == QMessageBox::Cancel) {
         // don't delete anything if user has cancelled
         return false;
     }
-    
+
     if (choice == QMessageBox::Yes) {
         // delete all of the children recursively and call their viewprovider method
         deleteGroupContentsRecursively(group);
     }
     // if user has specified "No" then delete the group but move children to the parent or root
-    
+
     return true;
 }
 
 
-namespace Gui {
+namespace Gui
+{
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGroupExtensionPython, Gui::ViewProviderGroupExtension)
 
 // explicit template instantiation
 template class GuiExport ViewProviderExtensionPythonT<ViewProviderGroupExtension>;
-}
+}  // namespace Gui

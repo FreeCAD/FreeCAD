@@ -29,21 +29,21 @@
 
 
 #if defined(HAVE_PCL_FILTERS)
-#include <pcl/features/normal_3d.h>
-#include <pcl/filters/extract_indices.h>
-#include <pcl/filters/passthrough.h>
+# include <pcl/features/normal_3d.h>
+# include <pcl/filters/extract_indices.h>
+# include <pcl/filters/passthrough.h>
 #endif
 
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-#include <pcl/sample_consensus/method_types.h>
-#include <pcl/sample_consensus/model_types.h>
+# include <pcl/sample_consensus/method_types.h>
+# include <pcl/sample_consensus/model_types.h>
 #endif
 
 #if defined(HAVE_PCL_SEGMENTATION)
-#include <pcl/ModelCoefficients.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/segmentation/sac_segmentation.h>
+# include <pcl/ModelCoefficients.h>
+# include <pcl/io/pcd_io.h>
+# include <pcl/point_types.h>
+# include <pcl/segmentation/sac_segmentation.h>
 #endif
 
 using namespace std;
@@ -180,7 +180,7 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     cloud->width = int(cloud->points.size());
     cloud->height = 1;
 
-#if 0
+# if 0
     // Build a passthrough filter to remove spurious NaNs
     pcl::PointCloud<PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<PointXYZ>);
     pcl::PassThrough<PointXYZ> pass;
@@ -188,7 +188,7 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     pass.setFilterFieldName ("z");
     pass.setFilterLimits (0, 1.5);
     pass.filter (*cloud_filtered);
-#endif
+# endif
 
     // Estimate point normals
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);

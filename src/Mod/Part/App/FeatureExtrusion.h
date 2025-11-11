@@ -38,7 +38,7 @@
 namespace Part
 {
 
-class PartExport Extrusion : public Part::Feature
+class PartExport Extrusion: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Extrusion);
 
@@ -62,10 +62,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderExtrusion";
     }
     //@}
@@ -76,7 +77,11 @@ public:
      * @param source: the shape to be extruded
      * @param params: extrusion parameters
      */
-    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
+    static void extrudeShape(
+        TopoShape& result,
+        const TopoShape& source,
+        const ExtrusionParameters& params
+    );
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
@@ -88,9 +93,11 @@ public:
      * @return true if link was fetched. false if link was empty. Throws if the
      * link is wrong.
      */
-    static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
-                              Base::Vector3d& basepoint,
-                              Base::Vector3d& dir);
+    static bool fetchAxisLink(
+        const App::PropertyLinkSub& axisLink,
+        Base::Vector3d& basepoint,
+        Base::Vector3d& dir
+    );
 
     /**
      * @brief computeFinalParameters: applies mode logic and fetches links, to
@@ -102,8 +109,9 @@ public:
     static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
     void onDocumentRestored() override;
 
-public: //mode enumerations
-    enum eDirMode{
+public:  // mode enumerations
+    enum eDirMode
+    {
         dmCustom,
         dmEdge,
         dmNormal
@@ -116,13 +124,14 @@ protected:
 };
 
 /**
- * @brief FaceMakerExtrusion provides legacy compounding-structure-ignorant behavior of facemaker of Part Extrude.
- * Strengths: makes faces with holes
- * Weaknesses: can't make islands in holes. Ignores compounding nesting. All faces must be on same plane.
+ * @brief FaceMakerExtrusion provides legacy compounding-structure-ignorant behavior of facemaker of
+ * Part Extrude. Strengths: makes faces with holes Weaknesses: can't make islands in holes. Ignores
+ * compounding nesting. All faces must be on same plane.
  */
 class FaceMakerExtrusion: public FaceMakerCheese
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
@@ -134,10 +143,11 @@ public:
 #endif
 
 protected:
-    void Build_Essence() override {}
+    void Build_Essence() override
+    {}
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATUREEXTRUSION_H
+#endif  // PART_FEATUREEXTRUSION_H

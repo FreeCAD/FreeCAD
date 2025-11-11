@@ -97,9 +97,10 @@ public:
     Point MidParam(double param) const;
     double Length() const;
     Point GetVector(double fraction) const;
-    void
-    Intersect(const Span& s,
-              std::list<Point>& pts) const;  // finds all the intersection points between two spans
+    void Intersect(
+        const Span& s,
+        std::list<Point>& pts
+    ) const;  // finds all the intersection points between two spans
 };
 
 class CCurve
@@ -107,14 +108,15 @@ class CCurve
     // a closed curve, please make sure you add an end point, the same as the start point
 
 protected:
-    void AddArcOrLines(bool check_for_arc,
-                       std::list<CVertex>& new_vertices,
-                       std::list<const CVertex*>& might_be_an_arc,
-                       CArc& arc,
-                       bool& arc_found,
-                       bool& arc_added);
-    static bool
-    CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& might_be_an_arc, CArc& arc);
+    void AddArcOrLines(
+        bool check_for_arc,
+        std::list<CVertex>& new_vertices,
+        std::list<const CVertex*>& might_be_an_arc,
+        CArc& arc,
+        bool& arc_found,
+        bool& arc_added
+    );
+    static bool CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& might_be_an_arc, CArc& arc);
 
 public:
     std::list<CVertex> m_vertices;
@@ -136,11 +138,15 @@ public:
     void ChangeStart(const Point& p);
     void ChangeEnd(const Point& p);
     bool Offset(double leftwards_value);
-    void OffsetForward(double forwards_value,
-                       bool refit_arcs = true);  // for drag-knife compensation
+    void OffsetForward(
+        double forwards_value,
+        bool refit_arcs = true
+    );  // for drag-knife compensation
     void Break(const Point& p);
-    void ExtractSeparateCurves(const std::list<Point>& ordered_points,
-                               std::list<CCurve>& separate_curves) const;
+    void ExtractSeparateCurves(
+        const std::list<Point>& ordered_points,
+        std::list<CCurve>& separate_curves
+    ) const;
     double Perim() const;
     Point PerimToPoint(double perim) const;
     double PointToPerim(const Point& p) const;

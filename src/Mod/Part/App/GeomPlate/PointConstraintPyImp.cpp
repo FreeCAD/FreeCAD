@@ -24,8 +24,8 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <memory>
-# include <Standard_Failure.hxx>
+#include <memory>
+#include <Standard_Failure.hxx>
 
 
 #include <Base/VectorPy.h>
@@ -37,7 +37,7 @@
 
 using namespace Part;
 
-PyObject *PointConstraintPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* PointConstraintPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PointConstraintPy
     return new PointConstraintPy(nullptr);
@@ -46,13 +46,21 @@ PyObject *PointConstraintPy::PyMake(struct _typeobject *, PyObject *, PyObject *
 // constructor method
 int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    PyObject *pt;
+    PyObject* pt;
     int order = 0;
     double tolDist = 0.0001;
 
-    static const std::array<const char *, 4> keywords {"Point", "Order", "TolDist", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|id", keywords, &(Base::VectorPy::Type), &pt, &order,
-                                             &tolDist)) {
+    static const std::array<const char*, 4> keywords {"Point", "Order", "TolDist", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!|id",
+            keywords,
+            &(Base::VectorPy::Type),
+            &pt,
+            &order,
+            &tolDist
+        )) {
         return -1;
     }
 
@@ -77,11 +85,12 @@ std::string PointConstraintPy::representation() const
     return {"<GeomPlate_PointConstraint object>"};
 }
 
-PyObject* PointConstraintPy::setOrder(PyObject *args)
+PyObject* PointConstraintPy::setOrder(PyObject* args)
 {
     int order;
-    if (!PyArg_ParseTuple(args, "i", &order))
+    if (!PyArg_ParseTuple(args, "i", &order)) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_PointConstraintPtr()->SetOrder(order);
@@ -93,10 +102,11 @@ PyObject* PointConstraintPy::setOrder(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::order(PyObject *args)
+PyObject* PointConstraintPy::order(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Standard_Integer v = getGeomPlate_PointConstraintPtr()->Order();
@@ -108,10 +118,11 @@ PyObject* PointConstraintPy::order(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::G0Criterion(PyObject *args)
+PyObject* PointConstraintPy::G0Criterion(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Standard_Real v = getGeomPlate_PointConstraintPtr()->G0Criterion();
@@ -123,10 +134,11 @@ PyObject* PointConstraintPy::G0Criterion(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::G1Criterion(PyObject *args)
+PyObject* PointConstraintPy::G1Criterion(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Standard_Real v = getGeomPlate_PointConstraintPtr()->G1Criterion();
@@ -138,10 +150,11 @@ PyObject* PointConstraintPy::G1Criterion(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::G2Criterion(PyObject *args)
+PyObject* PointConstraintPy::G2Criterion(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Standard_Real v = getGeomPlate_PointConstraintPtr()->G2Criterion();
@@ -153,11 +166,12 @@ PyObject* PointConstraintPy::G2Criterion(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::setG0Criterion(PyObject *args)
+PyObject* PointConstraintPy::setG0Criterion(PyObject* args)
 {
     double tolDist;
-    if (!PyArg_ParseTuple(args, "d", &tolDist))
+    if (!PyArg_ParseTuple(args, "d", &tolDist)) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_PointConstraintPtr()->SetG0Criterion(tolDist);
@@ -169,11 +183,12 @@ PyObject* PointConstraintPy::setG0Criterion(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::setG1Criterion(PyObject *args)
+PyObject* PointConstraintPy::setG1Criterion(PyObject* args)
 {
     double tolAng;
-    if (!PyArg_ParseTuple(args, "d", &tolAng))
+    if (!PyArg_ParseTuple(args, "d", &tolAng)) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_PointConstraintPtr()->SetG1Criterion(tolAng);
@@ -185,11 +200,12 @@ PyObject* PointConstraintPy::setG1Criterion(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::setG2Criterion(PyObject *args)
+PyObject* PointConstraintPy::setG2Criterion(PyObject* args)
 {
     double tolCurv;
-    if (!PyArg_ParseTuple(args, "d", &tolCurv))
+    if (!PyArg_ParseTuple(args, "d", &tolCurv)) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_PointConstraintPtr()->SetG2Criterion(tolCurv);
@@ -201,10 +217,11 @@ PyObject* PointConstraintPy::setG2Criterion(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::hasPnt2dOnSurf(PyObject *args)
+PyObject* PointConstraintPy::hasPnt2dOnSurf(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Standard_Boolean ok = getGeomPlate_PointConstraintPtr()->HasPnt2dOnSurf();
@@ -216,11 +233,12 @@ PyObject* PointConstraintPy::hasPnt2dOnSurf(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::setPnt2dOnSurf(PyObject *args)
+PyObject* PointConstraintPy::setPnt2dOnSurf(PyObject* args)
 {
     double x, y;
-    if (!PyArg_ParseTuple(args, "dd", &x, &y))
+    if (!PyArg_ParseTuple(args, "dd", &x, &y)) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_PointConstraintPtr()->SetPnt2dOnSurf(gp_Pnt2d(x, y));
@@ -232,10 +250,11 @@ PyObject* PointConstraintPy::setPnt2dOnSurf(PyObject *args)
     }
 }
 
-PyObject* PointConstraintPy::pnt2dOnSurf(PyObject *args)
+PyObject* PointConstraintPy::pnt2dOnSurf(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         gp_Pnt2d pt = getGeomPlate_PointConstraintPtr()->Pnt2dOnSurf();
@@ -250,7 +269,7 @@ PyObject* PointConstraintPy::pnt2dOnSurf(PyObject *args)
     }
 }
 
-PyObject *PointConstraintPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* PointConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

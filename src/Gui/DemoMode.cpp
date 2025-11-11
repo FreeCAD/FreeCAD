@@ -93,8 +93,9 @@ void DemoMode::reset()
     if (view) {
         view->getViewer()->stopAnimating();
     }
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     hGrp->Notify("UseNavigationAnimations");
 }
 
@@ -276,8 +277,7 @@ void DemoMode::onAutoPlay()
 
 void DemoMode::startAnimation(Gui::View3DInventor* view)
 {
-    view->getViewer()->startSpinningAnimation(getDirection(view),
-                                              getSpeed(ui->speedSlider->value()));
+    view->getViewer()->startSpinningAnimation(getDirection(view), getSpeed(ui->speedSlider->value()));
 }
 
 void DemoMode::onTimerCheckToggled(bool on)

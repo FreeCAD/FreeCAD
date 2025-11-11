@@ -30,7 +30,8 @@
 #include <FCGlobal.h>
 
 
-namespace Gui {
+namespace Gui
+{
 
 class Breakpoint
 {
@@ -44,15 +45,15 @@ public:
     const QString& filename() const;
     void setFilename(const QString& fn);
 
-    bool operator ==(const Breakpoint& bp);
-    bool operator ==(const QString& fn);
+    bool operator==(const Breakpoint& bp);
+    bool operator==(const QString& fn);
 
     void addLine(int line);
     void removeLine(int line);
     bool checkLine(int line);
 
-    int countLines()const;
-    int lineIndex(int ind)const;
+    int countLines() const;
+    int lineIndex(int ind) const;
 
     bool checkBreakpoint(const QString& fn, int line);
 
@@ -61,12 +62,12 @@ private:
     std::set<int> _linenums;
 };
 
-inline const QString& Breakpoint::filename()const
+inline const QString& Breakpoint::filename() const
 {
     return _filename;
 }
 
-inline int Breakpoint::countLines()const
+inline int Breakpoint::countLines() const
 {
     return static_cast<int>(_linenums.size());
 }
@@ -74,19 +75,18 @@ inline int Breakpoint::countLines()const
 inline bool Breakpoint::checkBreakpoint(const QString& fn, int line)
 {
     assert(!_filename.isEmpty());
-    if (_linenums.find(line) != _linenums.end())
-    {
+    if (_linenums.find(line) != _linenums.end()) {
         return fn == _filename;
     }
     return false;
 }
 
-inline bool Breakpoint::operator ==(const Breakpoint& bp)
+inline bool Breakpoint::operator==(const Breakpoint& bp)
 {
     return _filename == bp._filename;
 }
 
-inline bool Breakpoint::operator ==(const QString& fn)
+inline bool Breakpoint::operator==(const QString& fn)
 {
     return _filename == fn;
 }
@@ -94,7 +94,7 @@ inline bool Breakpoint::operator ==(const QString& fn)
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugModule : public Py::ExtensionModule<PythonDebugModule>
+class GuiExport PythonDebugModule: public Py::ExtensionModule<PythonDebugModule>
 {
 public:
     static void init_module();
@@ -103,19 +103,19 @@ public:
     ~PythonDebugModule() override;
 
 private:
-    Py::Object getFunctionCallCount(const Py::Tuple &a);
-    Py::Object getExceptionCount(const Py::Tuple &a);
-    Py::Object getLineCount(const Py::Tuple &a);
-    Py::Object getFunctionReturnCount(const Py::Tuple &a);
+    Py::Object getFunctionCallCount(const Py::Tuple& a);
+    Py::Object getExceptionCount(const Py::Tuple& a);
+    Py::Object getLineCount(const Py::Tuple& a);
+    Py::Object getFunctionReturnCount(const Py::Tuple& a);
 };
 
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugStdout : public Py::PythonExtension<PythonDebugStdout>
+class GuiExport PythonDebugStdout: public Py::PythonExtension<PythonDebugStdout>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     PythonDebugStdout();
     ~PythonDebugStdout() override;
@@ -128,10 +128,10 @@ public:
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugStderr : public Py::PythonExtension<PythonDebugStderr>
+class GuiExport PythonDebugStderr: public Py::PythonExtension<PythonDebugStderr>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     PythonDebugStderr();
     ~PythonDebugStderr() override;
@@ -143,10 +143,10 @@ public:
 /**
  * @author Werner Mayer
  */
-class GuiExport PythonDebugExcept : public Py::PythonExtension<PythonDebugExcept>
+class GuiExport PythonDebugExcept: public Py::PythonExtension<PythonDebugExcept>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     PythonDebugExcept();
     ~PythonDebugExcept() override;
@@ -155,7 +155,7 @@ public:
     Py::Object excepthook(const Py::Tuple&);
 };
 
-class GuiExport PythonDebugger : public QObject
+class GuiExport PythonDebugger: public QObject
 {
     Q_OBJECT
 
@@ -179,12 +179,12 @@ Q_SIGNALS:
     void signalNextStep();
 
 private:
-    static int tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject *arg);
+    static int tracer_callback(PyObject* obj, PyFrameObject* frame, int what, PyObject* arg);
 
 private:
     struct PythonDebuggerP* d;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_PYTHONDEBUG_H
+#endif  // GUI_PYTHONDEBUG_H

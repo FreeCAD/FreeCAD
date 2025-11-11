@@ -39,10 +39,12 @@ DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_z88_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemZ88Imp::onfileNameSelected);
+    connect(
+        ui->fc_z88_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemZ88Imp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
@@ -52,7 +54,8 @@ void DlgSettingsFemZ88Imp::saveSettings()
     ui->fc_z88_binary_path->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
+    );
     hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
     ui->cmb_solver->onSave();
     hGrp->SetInt("MaxGS", ui->sb_Z88_MaxGS->value());
@@ -68,7 +71,8 @@ void DlgSettingsFemZ88Imp::loadSettings()
     ui->sb_Z88_MaxGS->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
+    );
     int index = hGrp->GetInt("Solver", 0);
     if (index > -1) {
         ui->cmb_solver->setCurrentIndex(index);

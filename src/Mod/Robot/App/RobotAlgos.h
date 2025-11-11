@@ -47,11 +47,15 @@ public:
 
 inline KDL::Frame toFrame(const Base::Placement& To)
 {
-    return KDL::Frame(KDL::Rotation::Quaternion(To.getRotation()[0],
-                                                To.getRotation()[1],
-                                                To.getRotation()[2],
-                                                To.getRotation()[3]),
-                      KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2]));
+    return KDL::Frame(
+        KDL::Rotation::Quaternion(
+            To.getRotation()[0],
+            To.getRotation()[1],
+            To.getRotation()[2],
+            To.getRotation()[3]
+        ),
+        KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2])
+    );
 }
 inline Base::Placement toPlacement(const KDL::Frame& To)
 {

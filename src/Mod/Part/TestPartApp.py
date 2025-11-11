@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -20,13 +20,14 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 import FreeCAD, unittest, Part
 import copy
 import math
 from FreeCAD import Units
 from FreeCAD import Base
+
 App = FreeCAD
 
 from parttests.BRep_tests import BRepTests
@@ -35,9 +36,10 @@ from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
 
-#---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 def getCoincidentVertexes(vtx1, vtx2):
     pairs = []
     tol = Part.Precision.confusion()
@@ -54,28 +56,29 @@ class PartTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("PartTest")
 
     def testBoxCase(self):
-        self.Box = self.Doc.addObject("Part::Box","Box")
+        self.Box = self.Doc.addObject("Part::Box", "Box")
         self.Doc.recompute()
         self.assertEqual(len(self.Box.Shape.Faces), 6)
 
     def testIssue2985(self):
-        v1 = App.Vector(0.0,0.0,0.0)
-        v2 = App.Vector(10.0,0.0,0.0)
-        v3 = App.Vector(10.0,0.0,10.0)
-        v4 = App.Vector(0.0,0.0,10.0)
+        v1 = App.Vector(0.0, 0.0, 0.0)
+        v2 = App.Vector(10.0, 0.0, 0.0)
+        v3 = App.Vector(10.0, 0.0, 10.0)
+        v4 = App.Vector(0.0, 0.0, 10.0)
         edge1 = Part.makeLine(v1, v2)
         edge2 = Part.makeLine(v2, v3)
         edge3 = Part.makeLine(v3, v4)
         edge4 = Part.makeLine(v4, v1)
         # Travis build confirms the crash under macOS
-        #result = Part.makeFilledFace([edge1,edge2,edge3,edge4])
-        #self.Doc.addObject("Part::Feature","Face").Shape = result
-        #self.assertTrue(isinstance(result.Surface, Part.BSplineSurface))
+        # result = Part.makeFilledFace([edge1,edge2,edge3,edge4])
+        # self.Doc.addObject("Part::Feature","Face").Shape = result
+        # self.assertTrue(isinstance(result.Surface, Part.BSplineSurface))
 
     def tearDown(self):
-        #closing doc
+        # closing doc
         FreeCAD.closeDocument("PartTest")
-        #print ("omit closing document for debugging")
+        # print ("omit closing document for debugging")
+
 
 class PartTestBSplineCurve(unittest.TestCase):
     def setUp(self):
@@ -87,10 +90,10 @@ class PartTestBSplineCurve(unittest.TestCase):
 
         poles = [[0, 0, 0], [1, 1, 0], [2, 0, 0], [1, -1, 0]]
         self.nurbs = Part.BSplineCurve()
-        self.nurbs.buildFromPolesMultsKnots(poles, (3, 1, 3),(0, 0.5, 1), False, 2)
+        self.nurbs.buildFromPolesMultsKnots(poles, (3, 1, 3), (0, 0.5, 1), False, 2)
 
     def testProperties(self):
-        self.assertEqual(self.spline.Continuity, 'CN')
+        self.assertEqual(self.spline.Continuity, "CN")
         self.assertEqual(self.spline.Degree, 2)
         self.assertEqual(self.spline.EndPoint, App.Vector(2, 0, 0))
         self.assertEqual(self.spline.FirstParameter, 0.0)
@@ -104,7 +107,7 @@ class PartTestBSplineCurve(unittest.TestCase):
         self.assertEqual(self.spline.StartPoint, App.Vector(0.0, 0.0, 0.0))
 
     def testGetters(self):
-        '''only check if the function doesn't crash'''
+        """only check if the function doesn't crash"""
         self.spline.getKnot(1)
         self.spline.getKnots()
         self.spline.getMultiplicities()
@@ -123,30 +126,30 @@ class PartTestBSplineCurve(unittest.TestCase):
         spline.setNotPeriodic()
         # spline.setKnots()
         # spline.setOrigin(2)   # not working?
-        self.spline.setPole(1, App.Vector([1, 0, 0])) # first parameter 0 gives occ error
+        self.spline.setPole(1, App.Vector([1, 0, 0]))  # first parameter 0 gives occ error
 
     def testIssue2671(self):
         if "BUILD_SPREADSHEET" in FreeCAD.__cmake__:
             self.Doc = App.newDocument("Issue2671")
-            Box = self.Doc.addObject("Part::Box","Box")
-            Mirroring = self.Doc.addObject("Part::Mirroring", 'Mirroring')
-            Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
+            Box = self.Doc.addObject("Part::Box", "Box")
+            Mirroring = self.Doc.addObject("Part::Mirroring", "Mirroring")
+            Spreadsheet = self.Doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
             Mirroring.Source = Box
             Mirroring.Base = (8, 5, 25)
             Mirroring.Normal = (0.5, 0.2, 0.9)
-            Spreadsheet.set('A1', '=Mirroring.Base.x')
-            Spreadsheet.set('B1', '=Mirroring.Base.y')
-            Spreadsheet.set('C1', '=Mirroring.Base.z')
-            Spreadsheet.set('A2', '=Mirroring.Normal.x')
-            Spreadsheet.set('B2', '=Mirroring.Normal.y')
-            Spreadsheet.set('C2', '=Mirroring.Normal.z')
+            Spreadsheet.set("A1", "=Mirroring.Base.x")
+            Spreadsheet.set("B1", "=Mirroring.Base.y")
+            Spreadsheet.set("C1", "=Mirroring.Base.z")
+            Spreadsheet.set("A2", "=Mirroring.Normal.x")
+            Spreadsheet.set("B2", "=Mirroring.Normal.y")
+            Spreadsheet.set("C2", "=Mirroring.Normal.z")
             self.Doc.recompute()
-            self.assertEqual(Spreadsheet.A1, Units.Quantity('8 mm'))
-            self.assertEqual(Spreadsheet.B1, Units.Quantity('5 mm'))
-            self.assertEqual(Spreadsheet.C1, Units.Quantity('25 mm'))
-            self.assertEqual(Spreadsheet.A2, Units.Quantity('0.5 mm'))
-            self.assertEqual(Spreadsheet.B2, Units.Quantity('0.2 mm'))
-            self.assertEqual(Spreadsheet.C2, Units.Quantity('0.9 mm'))
+            self.assertEqual(Spreadsheet.A1, Units.Quantity("8 mm"))
+            self.assertEqual(Spreadsheet.B1, Units.Quantity("5 mm"))
+            self.assertEqual(Spreadsheet.C1, Units.Quantity("25 mm"))
+            self.assertEqual(Spreadsheet.A2, Units.Quantity("0.5 mm"))
+            self.assertEqual(Spreadsheet.B2, Units.Quantity("0.2 mm"))
+            self.assertEqual(Spreadsheet.C2, Units.Quantity("0.9 mm"))
             App.closeDocument("Issue2671")
 
     def testIssue2876(self):
@@ -157,17 +160,17 @@ class PartTestBSplineCurve(unittest.TestCase):
             Pipe = self.Doc.addObject("Part::Thickness", "Pipe")
             Pipe.Faces = (Cylinder, ["Face2", "Face3"])
             Pipe.Mode = 1
-            Pipe.Value = -1 # negative wall thickness
-            Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
-            Spreadsheet.set('A1', 'Pipe OD')
-            Spreadsheet.set('B1', 'Pipe WT')
-            Spreadsheet.set('C1', 'Pipe ID')
-            Spreadsheet.set('A2', '=2*Cylinder.Radius')
-            Spreadsheet.set('B2', '=-Pipe.Value')
-            Spreadsheet.set('C2', '=2*(Cylinder.Radius + Pipe.Value)')
+            Pipe.Value = -1  # negative wall thickness
+            Spreadsheet = self.Doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+            Spreadsheet.set("A1", "Pipe OD")
+            Spreadsheet.set("B1", "Pipe WT")
+            Spreadsheet.set("C1", "Pipe ID")
+            Spreadsheet.set("A2", "=2*Cylinder.Radius")
+            Spreadsheet.set("B2", "=-Pipe.Value")
+            Spreadsheet.set("C2", "=2*(Cylinder.Radius + Pipe.Value)")
             self.Doc.recompute()
-            self.assertEqual(Spreadsheet.B2, Units.Quantity('1 mm'))
-            self.assertEqual(Spreadsheet.C2, Units.Quantity('8 mm'))
+            self.assertEqual(Spreadsheet.B2, Units.Quantity("1 mm"))
+            self.assertEqual(Spreadsheet.C2, Units.Quantity("8 mm"))
             App.closeDocument("Issue2876")
 
     def testSubElements(self):
@@ -182,8 +185,9 @@ class PartTestBSplineCurve(unittest.TestCase):
             box.getElement("Face7")
 
     def tearDown(self):
-        #closing doc
+        # closing doc
         FreeCAD.closeDocument("PartTest")
+
 
 class PartTestCurveToNurbs(unittest.TestCase):
     def testCircleToNurbs(self):
@@ -227,6 +231,7 @@ class PartTestCurveToNurbs(unittest.TestCase):
         spline = ellipse.toBSpline()
         self.assertAlmostEqual(ellipse.value(0).distanceToPoint(spline.value(0)), 0)
 
+
 class PartTestBSplineSurface(unittest.TestCase):
     def testTorusToSpline(self):
         to = Part.Toroid()
@@ -245,6 +250,7 @@ class PartTestBSplineSurface(unittest.TestCase):
         self.assertAlmostEqual(bs.bounds()[1], 1.0)
         self.assertAlmostEqual(bs.bounds()[3], 1.0)
 
+
 class PartTestNormals(unittest.TestCase):
     def setUp(self):
         self.face = Part.makePlane(1, 1)
@@ -261,13 +267,14 @@ class PartTestNormals(unittest.TestCase):
     def testPlacement(self):
         self.face.reverse()
         self.face.Placement.Rotation.Angle = 1
-        self.face.Placement.Rotation.Axis = (1,1,1)
+        self.face.Placement.Rotation.Axis = (1, 1, 1)
         vec = Base.Vector(-0.63905, 0.33259, -0.69353)
         self.assertGreater(self.face.normalAt(0, 0).dot(vec), 0.9999)
         self.assertLess(self.face.Surface.normal(0, 0).dot(vec), -0.9999)
 
     def tearDown(self):
         pass
+
 
 class PartTestShapeRotate(unittest.TestCase):
     def testPlacement(self):
@@ -294,6 +301,7 @@ class PartTestShapeRotate(unittest.TestCase):
         self.assertTrue(p4.isSame(p2 * p1, tol))
         self.assertTrue(box.Placement.isSame(p4, tol))
 
+
 class PartTestCircle2D(unittest.TestCase):
     def testValidCircle(self):
         p1 = App.Base.Vector2d(0.01, 0.01)
@@ -307,6 +315,7 @@ class PartTestCircle2D(unittest.TestCase):
         p3 = App.Base.Vector2d(0.04, 0.0399)
         with self.assertRaises(ValueError):
             Part.Geom2d.Circle2d.getCircleCenter(p1, p2, p3)
+
 
 class PartTestCone(unittest.TestCase):
     def testderivatives(self):
@@ -324,7 +333,7 @@ class PartTestCone(unittest.TestCase):
         u, v = (5.0, 5.0)
         vp, v1, v2, v3 = get_dn(cone, u, v)
 
-        shape = cone.toShape(0, 2*math.pi, 0, 10)
+        shape = cone.toShape(0, 2 * math.pi, 0, 10)
         shape = shape.toNurbs()
         spline = shape.Face1.Surface
 
@@ -336,11 +345,12 @@ class PartTestCone(unittest.TestCase):
         self.assertAlmostEqual(v2.getAngle(w2), 0)
         self.assertAlmostEqual(v3.getAngle(w3), 0)
 
+
 class PartTestChFi2dAlgos(unittest.TestCase):
     def testChFi2d_FilletAlgo(self):
         v = FreeCAD.Vector
-        edge1 = Part.makeLine(v(0,0,0), v(0,10,0))
-        edge2 = Part.makeLine(v(0,10,0), v(10,10,0))
+        edge1 = Part.makeLine(v(0, 0, 0), v(0, 10, 0))
+        edge2 = Part.makeLine(v(0, 10, 0), v(10, 10, 0))
         wire = Part.Wire([edge1, edge2])
         pln = Part.Plane()
 
@@ -351,7 +361,7 @@ class PartTestChFi2dAlgos(unittest.TestCase):
         with self.assertRaises(TypeError):
             alg.init()
 
-        print (alg)
+        print(alg)
         # Test without shape
         with self.assertRaises(Base.CADKernelError):
             alg.perform(1)
@@ -372,8 +382,8 @@ class PartTestChFi2dAlgos(unittest.TestCase):
         with self.assertRaises(TypeError):
             alg.result(1)
 
-        self.assertEqual(alg.numberOfResults(Base.Vector(0,10,0)), 1)
-        result = alg.result(Base.Vector(0,10,0))
+        self.assertEqual(alg.numberOfResults(Base.Vector(0, 10, 0)), 1)
+        result = alg.result(Base.Vector(0, 10, 0))
         curve = result[0].Curve
         self.assertEqual(type(curve), Part.Circle)
         self.assertEqual(curve.Axis, pln.Axis)
@@ -381,8 +391,8 @@ class PartTestChFi2dAlgos(unittest.TestCase):
 
     def testChFi2d_AnaFilletAlgo(self):
         v = FreeCAD.Vector
-        edge1 = Part.makeLine(v(0,0,0), v(0,10,0))
-        edge2 = Part.makeLine(v(0,10,0), v(10,10,0))
+        edge1 = Part.makeLine(v(0, 0, 0), v(0, 10, 0))
+        edge2 = Part.makeLine(v(0, 10, 0), v(10, 10, 0))
         wire = Part.Wire([edge1, edge2])
         pln = Part.Plane()
 
@@ -393,7 +403,7 @@ class PartTestChFi2dAlgos(unittest.TestCase):
         with self.assertRaises(TypeError):
             alg.init()
 
-        print (alg)
+        print(alg)
         # Test without shape
         self.assertFalse(alg.perform(1))
 
@@ -417,8 +427,8 @@ class PartTestChFi2dAlgos(unittest.TestCase):
 
     def testChFi2d_ChamferAPI(self):
         v = FreeCAD.Vector
-        edge1 = Part.makeLine(v(0,0,0), v(0,10,0))
-        edge2 = Part.makeLine(v(0,10,0), v(10,10,0))
+        edge1 = Part.makeLine(v(0, 0, 0), v(0, 10, 0))
+        edge2 = Part.makeLine(v(0, 10, 0), v(10, 10, 0))
         wire = Part.Wire([edge1, edge2])
 
         with self.assertRaises(TypeError):
@@ -428,7 +438,7 @@ class PartTestChFi2dAlgos(unittest.TestCase):
         with self.assertRaises(TypeError):
             alg.init()
 
-        print (alg)
+        print(alg)
 
         with self.assertRaises(TypeError):
             alg.perform(1)
@@ -447,13 +457,14 @@ class PartTestChFi2dAlgos(unittest.TestCase):
         curve = result[0].Curve
         self.assertEqual(type(curve), Part.Line)
 
+
 class PartTestRuledSurface(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument()
 
     def testRuledSurfaceFromTwoObjects(self):
-        line1 = Part.makeLine(FreeCAD.Vector(-70,-30,0), FreeCAD.Vector(-50,40,0))
-        line2 = Part.makeLine(FreeCAD.Vector(-40,-30,0), FreeCAD.Vector(-40,10,0))
+        line1 = Part.makeLine(FreeCAD.Vector(-70, -30, 0), FreeCAD.Vector(-50, 40, 0))
+        line2 = Part.makeLine(FreeCAD.Vector(-40, -30, 0), FreeCAD.Vector(-40, 10, 0))
         plm1 = FreeCAD.Placement()
         plm1.Rotation = FreeCAD.Rotation(0.7071067811865476, 0.0, 0.0, 0.7071067811865475)
         line1.Placement = plm1
@@ -532,16 +543,29 @@ class PartTestRuledSurface(unittest.TestCase):
 
     def testRuledSurfaceFromOneObject(self):
         if "BUILD_SKETCHER" in FreeCAD.__cmake__:
-            sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
-            sketch.Placement = FreeCAD.Placement(FreeCAD.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.707107, 0.000000, 0.000000, 0.707107))
+            sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+            sketch.Placement = FreeCAD.Placement(
+                FreeCAD.Vector(0.000000, 0.000000, 0.000000),
+                App.Rotation(0.707107, 0.000000, 0.000000, 0.707107),
+            )
             sketch.MapMode = "Deactivated"
 
-            sketch.addGeometry(Part.LineSegment(App.Vector(-43.475811,34.364464,0),App.Vector(-65.860519,-20.078733,0)),False)
-            sketch.addGeometry(Part.LineSegment(App.Vector(14.004498,27.390331,0),App.Vector(33.577049,-27.952749,0)),False)
+            sketch.addGeometry(
+                Part.LineSegment(
+                    App.Vector(-43.475811, 34.364464, 0), App.Vector(-65.860519, -20.078733, 0)
+                ),
+                False,
+            )
+            sketch.addGeometry(
+                Part.LineSegment(
+                    App.Vector(14.004498, 27.390331, 0), App.Vector(33.577049, -27.952749, 0)
+                ),
+                False,
+            )
 
-            ruled = self.Doc.addObject('Part::RuledSurface', 'Ruled Surface')
-            ruled.Curve1 = (sketch,['Edge1'])
-            ruled.Curve2 = (sketch,['Edge2'])
+            ruled = self.Doc.addObject("Part::RuledSurface", "Ruled Surface")
+            ruled.Curve1 = (sketch, ["Edge1"])
+            ruled.Curve2 = (sketch, ["Edge2"])
             self.Doc.recompute()
 
             same = getCoincidentVertexes(sketch.Shape.Vertexes, ruled.Shape.Vertexes)
@@ -550,13 +574,14 @@ class PartTestRuledSurface(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
 
+
 class PartTestShapeFix(unittest.TestCase):
     def testShapeFix_Root(self):
         with self.assertRaises(TypeError):
             Part.ShapeFix.Root([])
 
         fix = Part.ShapeFix.Root()
-        print (fix)
+        print(fix)
 
         fix.Precision = 0.0
         self.assertEqual(fix.Precision, 0.0)
@@ -578,7 +603,7 @@ class PartTestShapeFix(unittest.TestCase):
 
         fix = Part.ShapeFix.Shape(face)
         fix.init(face)
-        print (fix)
+        print(fix)
         fix.shape()
         fix.fixSolidTool()
         fix.fixShellTool()
@@ -618,7 +643,7 @@ class PartTestShapeFix(unittest.TestCase):
 
         wirefix = Part.ShapeFix.Wire(face.OuterWire, face, 1e-7)
         fix = wirefix.fixEdgeTool()
-        print (fix)
+        print(fix)
 
         fix.fixRemovePCurve(face.Edge1, face)
         fix.fixRemovePCurve(face.Edge1, face.Surface, face.Placement)
@@ -656,7 +681,7 @@ class PartTestShapeFix(unittest.TestCase):
             Part.ShapeFix.Face([])
 
         fix = Part.ShapeFix.Face(face)
-        print (fix)
+        print(fix)
 
         fix.fixOrientation()
         fix.fixAddNaturalBound()
@@ -719,7 +744,7 @@ class PartTestShapeFix(unittest.TestCase):
 
         fix = Part.ShapeFix.Shell(shell)
         fix.init(shell)
-        print (fix)
+        print(fix)
         fix.perform()
         fix.shell()
         fix.shape()
@@ -745,7 +770,7 @@ class PartTestShapeFix(unittest.TestCase):
 
         fix = Part.ShapeFix.Solid()
         fix.init(box)
-        print (fix)
+        print(fix)
 
         fix.perform()
         fix.solid()
@@ -783,7 +808,7 @@ class PartTestShapeFix(unittest.TestCase):
         self.assertEqual(fix.isReady(), True)
         self.assertEqual(fix.numberOfEdges(), 4)
 
-        print (fix)
+        print(fix)
         fix.clearModes()
         fix.clearStatuses()
 
@@ -900,6 +925,7 @@ class PartTestShapeFix(unittest.TestCase):
         fix.fixGap2d(1, False)
         fix.fixTails()
 
+
 class PartBOPTestContainer(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument()
@@ -911,6 +937,7 @@ class PartBOPTestContainer(unittest.TestCase):
         part.addObject(box)
         part.addObject(cyl)
         from BOPTools import BOPFeatures
+
         bp = BOPFeatures.BOPFeatures(self.Doc)
         fuse = bp.make_multi_fuse([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
@@ -922,6 +949,7 @@ class PartBOPTestContainer(unittest.TestCase):
         part.addObject(box)
         part.addObject(cyl)
         from BOPTools import BOPFeatures
+
         bp = BOPFeatures.BOPFeatures(self.Doc)
         fuse = bp.make_cut([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
@@ -933,12 +961,14 @@ class PartBOPTestContainer(unittest.TestCase):
         part.addObject(box)
         part.addObject(cyl)
         from BOPTools import BOPFeatures
+
         bp = BOPFeatures.BOPFeatures(self.Doc)
         fuse = bp.make_multi_common([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
+
 
 class BSplineCurve2d(unittest.TestCase):
     def setUp(self):
@@ -952,10 +982,12 @@ class BSplineCurve2d(unittest.TestCase):
     def testApproximate(self):
         self.bs.approximate(Points=self.pts)
 
+
 class GeometryCurve(unittest.TestCase):
     def testProject(self):
         line = Part.Line()
         line.projectPoint(FreeCAD.Vector())
+
 
 class EmptyEdge(unittest.TestCase):
     def testParameterByLength(self):
@@ -1059,6 +1091,7 @@ class EmptyEdge(unittest.TestCase):
         with self.assertRaises(ValueError):
             edge = Part.Edge()
             edge.LastParameter
+
 
 class EmptyFace(unittest.TestCase):
     def testMakeOffset(self):

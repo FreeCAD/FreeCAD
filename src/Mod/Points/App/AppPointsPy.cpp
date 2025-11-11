@@ -52,10 +52,12 @@ public:
         add_varargs_method("open", &Module::open);
         add_varargs_method("insert", &Module::importer);
         add_varargs_method("export", &Module::exporter);
-        add_varargs_method("show",
-                           &Module::show,
-                           "show(points,[string]) -- Add the points to the active document or "
-                           "create one if no document exists.  Returns document object.");
+        add_varargs_method(
+            "show",
+            &Module::show,
+            "show(points,[string]) -- Add the points to the active document or "
+            "create one if no document exists.  Returns document object."
+        );
         initialize("This module is the Points module.");  // register with Python
     }
 
@@ -97,9 +99,11 @@ private:
             }
             else if (file.hasExtension("e57")) {
                 auto setting = readE57Settings();
-                reader = std::make_unique<E57Reader>(std::get<0>(setting),
-                                                     std::get<1>(setting),
-                                                     std::get<2>(setting));
+                reader = std::make_unique<E57Reader>(
+                    std::get<0>(setting),
+                    std::get<1>(setting),
+                    std::get<2>(setting)
+                );
             }
             else if (file.hasExtension("ply")) {
                 reader = std::make_unique<PlyReader>();
@@ -121,13 +125,15 @@ private:
                 if (reader->isStructured()) {
                     pcFeature = new Points::StructuredCustom();
 
-                    App::PropertyInteger* width =
-                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Width"));
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>(
+                        pcFeature->getPropertyByName("Width")
+                    );
                     if (width) {
                         width->setValue(reader->getWidth());
                     }
-                    App::PropertyInteger* height =
-                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Height"));
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>(
+                        pcFeature->getPropertyByName("Height")
+                    );
                     if (height) {
                         height->setValue(reader->getHeight());
                     }
@@ -139,10 +145,9 @@ private:
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
-                    Points::PropertyGreyValueList* prop =
-                        static_cast<Points::PropertyGreyValueList*>(
-                            pcFeature->addDynamicProperty("Points::PropertyGreyValueList",
-                                                          "Intensity"));
+                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>(
+                        pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity")
+                    );
                     if (prop) {
                         prop->setValues(reader->getIntensities());
                     }
@@ -150,7 +155,8 @@ private:
                 // add colors
                 if (reader->hasColors()) {
                     App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
-                        pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                        pcFeature->addDynamicProperty("App::PropertyColorList", "Color")
+                    );
                     if (prop) {
                         prop->setValues(reader->getColors());
                     }
@@ -158,7 +164,8 @@ private:
                 // add normals
                 if (reader->hasNormals()) {
                     Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>(
-                        pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                        pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal")
+                    );
                     if (prop) {
                         prop->setValues(reader->getNormals());
                     }
@@ -219,9 +226,11 @@ private:
             }
             else if (file.hasExtension("e57")) {
                 auto setting = readE57Settings();
-                reader = std::make_unique<E57Reader>(std::get<0>(setting),
-                                                     std::get<1>(setting),
-                                                     std::get<2>(setting));
+                reader = std::make_unique<E57Reader>(
+                    std::get<0>(setting),
+                    std::get<1>(setting),
+                    std::get<2>(setting)
+                );
             }
             else if (file.hasExtension("ply")) {
                 reader = std::make_unique<PlyReader>();
@@ -246,13 +255,15 @@ private:
                 if (reader->isStructured()) {
                     pcFeature = new Points::StructuredCustom();
 
-                    App::PropertyInteger* width =
-                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Width"));
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>(
+                        pcFeature->getPropertyByName("Width")
+                    );
                     if (width) {
                         width->setValue(reader->getWidth());
                     }
-                    App::PropertyInteger* height =
-                        static_cast<App::PropertyInteger*>(pcFeature->getPropertyByName("Height"));
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>(
+                        pcFeature->getPropertyByName("Height")
+                    );
                     if (height) {
                         height->setValue(reader->getHeight());
                     }
@@ -264,10 +275,9 @@ private:
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
-                    Points::PropertyGreyValueList* prop =
-                        static_cast<Points::PropertyGreyValueList*>(
-                            pcFeature->addDynamicProperty("Points::PropertyGreyValueList",
-                                                          "Intensity"));
+                    Points::PropertyGreyValueList* prop = static_cast<Points::PropertyGreyValueList*>(
+                        pcFeature->addDynamicProperty("Points::PropertyGreyValueList", "Intensity")
+                    );
                     if (prop) {
                         prop->setValues(reader->getIntensities());
                     }
@@ -275,7 +285,8 @@ private:
                 // add colors
                 if (reader->hasColors()) {
                     App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
-                        pcFeature->addDynamicProperty("App::PropertyColorList", "Color"));
+                        pcFeature->addDynamicProperty("App::PropertyColorList", "Color")
+                    );
                     if (prop) {
                         prop->setValues(reader->getColors());
                     }
@@ -283,7 +294,8 @@ private:
                 // add normals
                 if (reader->hasNormals()) {
                     Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>(
-                        pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                        pcFeature->addDynamicProperty("Points::PropertyNormalList", "Normal")
+                    );
                     if (prop) {
                         prop->setValues(reader->getNormals());
                     }
@@ -331,8 +343,8 @@ private:
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                App::DocumentObject* obj =
-                    static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                App::DocumentObject* obj
+                    = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->isDerivedFrom<Points::Feature>()) {
                     // get relative placement
                     Points::Feature* fea = static_cast<Points::Feature*>(obj);
@@ -354,32 +366,36 @@ private:
                     }
 
                     // get additional properties if there
-                    App::PropertyInteger* width =
-                        dynamic_cast<App::PropertyInteger*>(fea->getPropertyByName("Width"));
+                    App::PropertyInteger* width = dynamic_cast<App::PropertyInteger*>(
+                        fea->getPropertyByName("Width")
+                    );
                     if (width) {
                         writer->setWidth(width->getValue());
                     }
-                    App::PropertyInteger* height =
-                        dynamic_cast<App::PropertyInteger*>(fea->getPropertyByName("Height"));
+                    App::PropertyInteger* height = dynamic_cast<App::PropertyInteger*>(
+                        fea->getPropertyByName("Height")
+                    );
                     if (height) {
                         writer->setHeight(height->getValue());
                     }
                     // get gray values
-                    Points::PropertyGreyValueList* grey =
-                        dynamic_cast<Points::PropertyGreyValueList*>(
-                            fea->getPropertyByName("Intensity"));
+                    Points::PropertyGreyValueList* grey = dynamic_cast<Points::PropertyGreyValueList*>(
+                        fea->getPropertyByName("Intensity")
+                    );
                     if (grey) {
                         writer->setIntensities(grey->getValues());
                     }
                     // get colors
-                    App::PropertyColorList* col =
-                        dynamic_cast<App::PropertyColorList*>(fea->getPropertyByName("Color"));
+                    App::PropertyColorList* col = dynamic_cast<App::PropertyColorList*>(
+                        fea->getPropertyByName("Color")
+                    );
                     if (col) {
                         writer->setColors(col->getValues());
                     }
                     // get normals
-                    Points::PropertyNormalList* nor =
-                        dynamic_cast<Points::PropertyNormalList*>(fea->getPropertyByName("Normal"));
+                    Points::PropertyNormalList* nor = dynamic_cast<Points::PropertyNormalList*>(
+                        fea->getPropertyByName("Normal")
+                    );
                     if (nor) {
                         writer->setNormals(nor->getValues());
                     }
@@ -390,8 +406,10 @@ private:
                     break;
                 }
                 else {
-                    Base::Console().message("'%s' is not a point object, export will be ignored.\n",
-                                            obj->Label.getValue());
+                    Base::Console().message(
+                        "'%s' is not a point object, export will be ignored.\n",
+                        obj->Label.getValue()
+                    );
                 }
             }
         }

@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4996)
+# pragma warning(disable : 4251)
+# pragma warning(disable : 4244)
+# pragma warning(disable : 4996)
 #endif
 
 #undef _GCS_DEBUG
@@ -33,7 +33,7 @@
 // This has to be included BEFORE any EIGEN include
 // This format is Sage compatible, so you can just copy/paste the matrix into Sage
 #ifdef _GCS_DEBUG
-#define EIGEN_DEFAULT_IO_FORMAT Eigen::IOFormat(3, 0, ",", ",\n", "[", "]", "[", "]")
+# define EIGEN_DEFAULT_IO_FORMAT Eigen::IOFormat(3, 0, ",", ",\n", "[", "]", "[", "]")
 /* Parameters:
  *
  * StreamPrecision,
@@ -64,9 +64,9 @@
 
 // Extraction of Q matrix for Debugging used to crash
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-#if EIGEN_VERSION >= 30304
-#define SPARSE_Q_MATRIX
-#endif
+# if EIGEN_VERSION >= 30304
+#  define SPARSE_Q_MATRIX
+# endif
 #endif
 
 #if EIGEN_VERSION > 30290  // This regulates that only starting in Eigen 3.3, the problem with
@@ -74,25 +74,25 @@
                            // was solved in Eigen:
                            // https://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
                            // https://forum.kde.org/viewtopic.php?f=74&t=129439
-#define EIGEN_STOCK_FULLPIVLU_COMPUTE
+# define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
 
 // #undef EIGEN_SPARSEQR_COMPATIBLE
 
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-#include <Eigen/OrderingMethods>
+# include <Eigen/OrderingMethods>
 #endif
 
 // _GCS_EXTRACT_SOLVER_SUBSYSTEM_ to be enabled in Constraints.h when needed.
 #if defined(_GCS_EXTRACT_SOLVER_SUBSYSTEM_) || defined(_DEBUG_TO_FILE)
-#include <fstream>
+# include <fstream>
 
-#define CASE_NOT_IMP(X)                                                                            \
-    case X: {                                                                                      \
-        subsystemfile << "//" #X "not yet implemented" << std::endl;                               \
-        break;                                                                                     \
-    }
+# define CASE_NOT_IMP(X) \
+     case X: { \
+         subsystemfile << "//" #X "not yet implemented" << std::endl; \
+         break; \
+     }
 #endif
 
 #include <Base/Console.h>
@@ -191,8 +191,8 @@ FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matri
             m_lu.col(k).tail(rows - k - 1) /= m_lu.coeff(k, k);
         }
         if (k < size - 1) {
-            m_lu.block(k + 1, k + 1, rows - k - 1, cols - k - 1).noalias() -=
-                m_lu.col(k).tail(rows - k - 1) * m_lu.row(k).tail(cols - k - 1);
+            m_lu.block(k + 1, k + 1, rows - k - 1, cols - k - 1).noalias()
+                -= m_lu.col(k).tail(rows - k - 1) * m_lu.row(k).tail(cols - k - 1);
         }
     }
 
@@ -235,16 +235,14 @@ public:
 
     inline void LogToFile(const std::string& str);
 
-    void LogQRSystemInformation(const System& system,
-                                int paramsNum = 0,
-                                int constrNum = 0,
-                                int rank = 0);
+    void LogQRSystemInformation(const System& system, int paramsNum = 0, int constrNum = 0, int rank = 0);
 
-    void LogGroupOfConstraints(const std::string& str,
-                               std::vector<std::vector<Constraint*>> constraintgroups);
+    void LogGroupOfConstraints(
+        const std::string& str,
+        std::vector<std::vector<Constraint*>> constraintgroups
+    );
     void LogSetOfConstraints(const std::string& str, std::set<Constraint*> constraintset);
-    void LogGroupOfParameters(const std::string& str,
-                              std::vector<std::vector<double*>> parametergroups);
+    void LogGroupOfParameters(const std::string& str, std::vector<std::vector<double*>> parametergroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
     void LogMatrix(const std::string str, MatrixIndexType matrix);
@@ -328,17 +326,20 @@ void SolverReportingManager::LogString(const std::string& str)
 #endif
 }
 
-void SolverReportingManager::LogQRSystemInformation(const System& system,
-                                                    int paramsNum,
-                                                    int constrNum,
-                                                    int rank)
+void SolverReportingManager::LogQRSystemInformation(
+    const System& system,
+    int paramsNum,
+    int constrNum,
+    int rank
+)
 {
 
     std::stringstream tempstream;
 
-    tempstream << (system.qrAlgorithm == EigenSparseQR
-                       ? "EigenSparseQR"
-                       : (system.qrAlgorithm == EigenDenseQR ? "DenseQR" : ""));
+    tempstream
+        << (system.qrAlgorithm == EigenSparseQR
+                ? "EigenSparseQR"
+                : (system.qrAlgorithm == EigenDenseQR ? "DenseQR" : ""));
 
     if (paramsNum > 0) {
         tempstream
@@ -367,7 +368,8 @@ void SolverReportingManager::LogQRSystemInformation(const System& system,
 
 void SolverReportingManager::LogGroupOfConstraints(
     const std::string& str,
-    std::vector<std::vector<Constraint*>> constraintgroups)
+    std::vector<std::vector<Constraint*>> constraintgroups
+)
 {
     std::stringstream tempstream;
 
@@ -386,8 +388,10 @@ void SolverReportingManager::LogGroupOfConstraints(
     LogString(tempstream.str());
 }
 
-void SolverReportingManager::LogSetOfConstraints(const std::string& str,
-                                                 std::set<Constraint*> constraintset)
+void SolverReportingManager::LogSetOfConstraints(
+    const std::string& str,
+    std::set<Constraint*> constraintset
+)
 {
     std::stringstream tempstream;
 
@@ -402,8 +406,10 @@ void SolverReportingManager::LogSetOfConstraints(const std::string& str,
     LogString(tempstream.str());
 }
 
-void SolverReportingManager::LogGroupOfParameters(const std::string& str,
-                                                  std::vector<std::vector<double*>> parametergroups)
+void SolverReportingManager::LogGroupOfParameters(
+    const std::string& str,
+    std::vector<std::vector<double*>> parametergroups
+)
 {
     std::stringstream tempstream;
 
@@ -591,11 +597,13 @@ void System::removeConstraint(Constraint* constr)
 
 // basic constraints
 
-int System::addConstraintEqual(double* param1,
-                               double* param2,
-                               int tagId,
-                               bool driving,
-                               Constraint::Alignment internalalignment)
+int System::addConstraintEqual(
+    double* param1,
+    double* param2,
+    int tagId,
+    bool driving,
+    Constraint::Alignment internalalignment
+)
 {
     Constraint* constr = new ConstraintEqual(param1, param2);
     constr->setTag(tagId);
@@ -604,11 +612,7 @@ int System::addConstraintEqual(double* param1,
     return addConstraint(constr);
 }
 
-int System::addConstraintProportional(double* param1,
-                                      double* param2,
-                                      double ratio,
-                                      int tagId,
-                                      bool driving)
+int System::addConstraintProportional(double* param1, double* param2, double ratio, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintEqual(param1, param2, ratio);
     constr->setTag(tagId);
@@ -616,11 +620,7 @@ int System::addConstraintProportional(double* param1,
     return addConstraint(constr);
 }
 
-int System::addConstraintDifference(double* param1,
-                                    double* param2,
-                                    double* difference,
-                                    int tagId,
-                                    bool driving)
+int System::addConstraintDifference(double* param1, double* param2, double* difference, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintDifference(param1, param2, difference);
     constr->setTag(tagId);
@@ -628,11 +628,7 @@ int System::addConstraintDifference(double* param1,
     return addConstraint(constr);
 }
 
-int System::addConstraintP2PDistance(Point& p1,
-                                     Point& p2,
-                                     double* distance,
-                                     int tagId,
-                                     bool driving)
+int System::addConstraintP2PDistance(Point& p1, Point& p2, double* distance, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintP2PDistance(p1, p2, distance);
     constr->setTag(tagId);
@@ -640,12 +636,7 @@ int System::addConstraintP2PDistance(Point& p1,
     return addConstraint(constr);
 }
 
-int System::addConstraintP2PAngle(Point& p1,
-                                  Point& p2,
-                                  double* angle,
-                                  double incrAngle,
-                                  int tagId,
-                                  bool driving)
+int System::addConstraintP2PAngle(Point& p1, Point& p2, double* angle, double incrAngle, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintP2PAngle(p1, p2, angle, incrAngle);
     constr->setTag(tagId);
@@ -690,11 +681,7 @@ int System::addConstraintPointOnPerpBisector(Point& p, Line& l, int tagId, bool 
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnPerpBisector(Point& p,
-                                             Point& lp1,
-                                             Point& lp2,
-                                             int tagId,
-                                             bool driving)
+int System::addConstraintPointOnPerpBisector(Point& p, Point& lp1, Point& lp2, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintPointOnPerpBisector(p, lp1, lp2);
     constr->setTag(tagId);
@@ -718,12 +705,14 @@ int System::addConstraintPerpendicular(Line& l1, Line& l2, int tagId, bool drivi
     return addConstraint(constr);
 }
 
-int System::addConstraintPerpendicular(Point& l1p1,
-                                       Point& l1p2,
-                                       Point& l2p1,
-                                       Point& l2p2,
-                                       int tagId,
-                                       bool driving)
+int System::addConstraintPerpendicular(
+    Point& l1p1,
+    Point& l1p2,
+    Point& l2p1,
+    Point& l2p2,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintPerpendicular(l1p1, l1p2, l2p1, l2p2);
     constr->setTag(tagId);
@@ -739,13 +728,15 @@ int System::addConstraintL2LAngle(Line& l1, Line& l2, double* angle, int tagId, 
     return addConstraint(constr);
 }
 
-int System::addConstraintL2LAngle(Point& l1p1,
-                                  Point& l1p2,
-                                  Point& l2p1,
-                                  Point& l2p2,
-                                  double* angle,
-                                  int tagId,
-                                  bool driving)
+int System::addConstraintL2LAngle(
+    Point& l1p1,
+    Point& l1p2,
+    Point& l2p1,
+    Point& l2p2,
+    double* angle,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintL2LAngle(l1p1, l1p2, l2p1, l2p2, angle);
     constr->setTag(tagId);
@@ -753,12 +744,7 @@ int System::addConstraintL2LAngle(Point& l1p1,
     return addConstraint(constr);
 }
 
-int System::addConstraintAngleViaPoint(Curve& crv1,
-                                       Curve& crv2,
-                                       Point& p,
-                                       double* angle,
-                                       int tagId,
-                                       bool driving)
+int System::addConstraintAngleViaPoint(Curve& crv1, Curve& crv2, Point& p, double* angle, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintAngleViaPoint(crv1, crv2, p, angle);
     constr->setTag(tagId);
@@ -766,13 +752,15 @@ int System::addConstraintAngleViaPoint(Curve& crv1,
     return addConstraint(constr);
 }
 
-int System::addConstraintAngleViaTwoPoints(Curve& crv1,
-                                           Curve& crv2,
-                                           Point& p1,
-                                           Point& p2,
-                                           double* angle,
-                                           int tagId,
-                                           bool driving)
+int System::addConstraintAngleViaTwoPoints(
+    Curve& crv1,
+    Curve& crv2,
+    Point& p1,
+    Point& p2,
+    double* angle,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintAngleViaTwoPoints(crv1, crv2, p1, p2, angle);
     constr->setTag(tagId);
@@ -780,13 +768,15 @@ int System::addConstraintAngleViaTwoPoints(Curve& crv1,
     return addConstraint(constr);
 }
 
-int System::addConstraintAngleViaPointAndParam(Curve& crv1,
-                                               Curve& crv2,
-                                               Point& p,
-                                               double* cparam,
-                                               double* angle,
-                                               int tagId,
-                                               bool driving)
+int System::addConstraintAngleViaPointAndParam(
+    Curve& crv1,
+    Curve& crv2,
+    Point& p,
+    double* cparam,
+    double* angle,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintAngleViaPointAndParam(crv1, crv2, p, cparam, angle);
     constr->setTag(tagId);
@@ -794,17 +784,19 @@ int System::addConstraintAngleViaPointAndParam(Curve& crv1,
     return addConstraint(constr);
 }
 
-int System::addConstraintAngleViaPointAndTwoParams(Curve& crv1,
-                                                   Curve& crv2,
-                                                   Point& p,
-                                                   double* cparam1,
-                                                   double* cparam2,
-                                                   double* angle,
-                                                   int tagId,
-                                                   bool driving)
+int System::addConstraintAngleViaPointAndTwoParams(
+    Curve& crv1,
+    Curve& crv2,
+    Point& p,
+    double* cparam1,
+    double* cparam2,
+    double* angle,
+    int tagId,
+    bool driving
+)
 {
-    Constraint* constr =
-        new ConstraintAngleViaPointAndTwoParams(crv1, crv2, p, cparam1, cparam2, angle);
+    Constraint* constr
+        = new ConstraintAngleViaPointAndTwoParams(crv1, crv2, p, cparam1, cparam2, angle);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -818,12 +810,14 @@ int System::addConstraintMidpointOnLine(Line& l1, Line& l2, int tagId, bool driv
     return addConstraint(constr);
 }
 
-int System::addConstraintMidpointOnLine(Point& l1p1,
-                                        Point& l1p2,
-                                        Point& l2p1,
-                                        Point& l2p2,
-                                        int tagId,
-                                        bool driving)
+int System::addConstraintMidpointOnLine(
+    Point& l1p1,
+    Point& l1p2,
+    Point& l2p1,
+    Point& l2p2,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintMidpointOnLine(l1p1, l1p2, l2p1, l2p2);
     constr->setTag(tagId);
@@ -831,13 +825,15 @@ int System::addConstraintMidpointOnLine(Point& l1p1,
     return addConstraint(constr);
 }
 
-int System::addConstraintTangentCircumf(Point& p1,
-                                        Point& p2,
-                                        double* rad1,
-                                        double* rad2,
-                                        bool internal,
-                                        int tagId,
-                                        bool driving)
+int System::addConstraintTangentCircumf(
+    Point& p1,
+    Point& p2,
+    double* rad1,
+    double* rad2,
+    bool internal,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintTangentCircumf(p1, p2, rad1, rad2, internal);
     constr->setTag(tagId);
@@ -845,11 +841,13 @@ int System::addConstraintTangentCircumf(Point& p1,
     return addConstraint(constr);
 }
 
-int System::addConstraintTangentAtBSplineKnot(BSpline& b,
-                                              Line& l,
-                                              unsigned int knotindex,
-                                              int tagId,
-                                              bool driving)
+int System::addConstraintTangentAtBSplineKnot(
+    BSpline& b,
+    Line& l,
+    unsigned int knotindex,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintSlopeAtBSplineKnot(b, l, knotindex);
     constr->setTag(tagId);
@@ -963,11 +961,7 @@ int System::addConstraintPointOnParabolicArc(Point& p, ArcOfParabola& e, int tag
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnBSpline(Point& p,
-                                        BSpline& b,
-                                        double* pointparam,
-                                        int tagId,
-                                        bool driving)
+int System::addConstraintPointOnBSpline(Point& p, BSpline& b, double* pointparam, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintPointOnBSpline(p.x, pointparam, 0, b);
     constr->setTag(tagId);
@@ -1015,11 +1009,7 @@ int System::addConstraintPointOnArc(Point& p, Arc& a, int tagId, bool driving)
     return addConstraintP2PDistance(p, a.center, a.rad, tagId, driving);
 }
 
-int System::addConstraintPerpendicularLine2Arc(Point& p1,
-                                               Point& p2,
-                                               Arc& a,
-                                               int tagId,
-                                               bool driving)
+int System::addConstraintPerpendicularLine2Arc(Point& p1, Point& p2, Arc& a, int tagId, bool driving)
 {
     using std::numbers::pi;
 
@@ -1034,11 +1024,7 @@ int System::addConstraintPerpendicularLine2Arc(Point& p1,
     }
 }
 
-int System::addConstraintPerpendicularArc2Line(Arc& a,
-                                               Point& p1,
-                                               Point& p2,
-                                               int tagId,
-                                               bool driving)
+int System::addConstraintPerpendicularArc2Line(Arc& a, Point& p1, Point& p2, int tagId, bool driving)
 {
     using std::numbers::pi;
 
@@ -1053,11 +1039,7 @@ int System::addConstraintPerpendicularArc2Line(Arc& a,
     }
 }
 
-int System::addConstraintPerpendicularCircle2Arc(Point& center,
-                                                 double* radius,
-                                                 Arc& a,
-                                                 int tagId,
-                                                 bool driving)
+int System::addConstraintPerpendicularCircle2Arc(Point& center, double* radius, Arc& a, int tagId, bool driving)
 {
     using std::numbers::pi;
 
@@ -1074,11 +1056,7 @@ int System::addConstraintPerpendicularCircle2Arc(Point& center,
     }
 }
 
-int System::addConstraintPerpendicularArc2Circle(Arc& a,
-                                                 Point& center,
-                                                 double* radius,
-                                                 int tagId,
-                                                 bool driving)
+int System::addConstraintPerpendicularArc2Circle(Arc& a, Point& center, double* radius, int tagId, bool driving)
 {
     using std::numbers::pi;
 
@@ -1095,12 +1073,14 @@ int System::addConstraintPerpendicularArc2Circle(Arc& a,
     }
 }
 
-int System::addConstraintPerpendicularArc2Arc(Arc& a1,
-                                              bool reverse1,
-                                              Arc& a2,
-                                              bool reverse2,
-                                              int tagId,
-                                              bool driving)
+int System::addConstraintPerpendicularArc2Arc(
+    Arc& a1,
+    bool reverse1,
+    Arc& a2,
+    bool reverse2,
+    int tagId,
+    bool driving
+)
 {
     Point& p1 = reverse1 ? a1.start : a1.end;
     Point& p2 = reverse2 ? a2.end : a2.start;
@@ -1131,13 +1111,15 @@ int System::addConstraintTangent(Circle& c1, Circle& c2, int tagId, bool driving
     double dx = *(c2.center.x) - *(c1.center.x);
     double dy = *(c2.center.y) - *(c1.center.y);
     double d = sqrt(dx * dx + dy * dy);
-    return addConstraintTangentCircumf(c1.center,
-                                       c2.center,
-                                       c1.rad,
-                                       c2.rad,
-                                       (d < *c1.rad || d < *c2.rad),
-                                       tagId,
-                                       driving);
+    return addConstraintTangentCircumf(
+        c1.center,
+        c2.center,
+        c1.rad,
+        c2.rad,
+        (d < *c1.rad || d < *c2.rad),
+        tagId,
+        driving
+    );
 }
 
 int System::addConstraintTangent(Arc& a1, Arc& a2, int tagId, bool driving)
@@ -1145,13 +1127,15 @@ int System::addConstraintTangent(Arc& a1, Arc& a2, int tagId, bool driving)
     double dx = *(a2.center.x) - *(a1.center.x);
     double dy = *(a2.center.y) - *(a1.center.y);
     double d = sqrt(dx * dx + dy * dy);
-    return addConstraintTangentCircumf(a1.center,
-                                       a2.center,
-                                       a1.rad,
-                                       a2.rad,
-                                       (d < *a1.rad || d < *a2.rad),
-                                       tagId,
-                                       driving);
+    return addConstraintTangentCircumf(
+        a1.center,
+        a2.center,
+        a1.rad,
+        a2.rad,
+        (d < *a1.rad || d < *a2.rad),
+        tagId,
+        driving
+    );
 }
 
 int System::addConstraintTangent(Circle& c, Arc& a, int tagId, bool driving)
@@ -1159,13 +1143,15 @@ int System::addConstraintTangent(Circle& c, Arc& a, int tagId, bool driving)
     double dx = *(a.center.x) - *(c.center.x);
     double dy = *(a.center.y) - *(c.center.y);
     double d = sqrt(dx * dx + dy * dy);
-    return addConstraintTangentCircumf(c.center,
-                                       a.center,
-                                       c.rad,
-                                       a.rad,
-                                       (d < *c.rad || d < *a.rad),
-                                       tagId,
-                                       driving);
+    return addConstraintTangentCircumf(
+        c.center,
+        a.center,
+        c.rad,
+        a.rad,
+        (d < *c.rad || d < *a.rad),
+        tagId,
+        driving
+    );
 }
 
 int System::addConstraintCircleRadius(Circle& c, double* radius, int tagId, bool driving)
@@ -1251,16 +1237,18 @@ int System::addConstraintP2PSymmetric(Point& p1, Point& p2, Point& p, int tagId,
     return addConstraintPointOnLine(p, p1, p2, tagId, driving);
 }
 
-int System::addConstraintSnellsLaw(Curve& ray1,
-                                   Curve& ray2,
-                                   Curve& boundary,
-                                   Point p,
-                                   double* n1,
-                                   double* n2,
-                                   bool flipn1,
-                                   bool flipn2,
-                                   int tagId,
-                                   bool driving)
+int System::addConstraintSnellsLaw(
+    Curve& ray1,
+    Curve& ray2,
+    Curve& boundary,
+    Point p,
+    double* n1,
+    double* n2,
+    bool flipn1,
+    bool flipn2,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintSnell(ray1, ray2, boundary, p, n1, n2, flipn1, flipn2);
     constr->setTag(tagId);
@@ -1268,11 +1256,13 @@ int System::addConstraintSnellsLaw(Curve& ray1,
     return addConstraint(constr);
 }
 
-int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,
-                                                        Point& p1,
-                                                        InternalAlignmentType alignmentType,
-                                                        int tagId,
-                                                        bool driving)
+int System::addConstraintInternalAlignmentPoint2Ellipse(
+    Ellipse& e,
+    Point& p1,
+    InternalAlignmentType alignmentType,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
     constr->setTag(tagId);
@@ -1281,11 +1271,13 @@ int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,
     return addConstraint(constr);
 }
 
-int System::addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e,
-                                                          Point& p1,
-                                                          InternalAlignmentType alignmentType,
-                                                          int tagId,
-                                                          bool driving)
+int System::addConstraintInternalAlignmentPoint2Hyperbola(
+    Hyperbola& e,
+    Point& p1,
+    InternalAlignmentType alignmentType,
+    int tagId,
+    bool driving
+)
 {
     Constraint* constr = new ConstraintInternalAlignmentPoint2Hyperbola(e, p1, alignmentType);
     constr->setTag(tagId);
@@ -1294,11 +1286,13 @@ int System::addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e,
     return addConstraint(constr);
 }
 
-int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse& e,
-                                                               Point& p1,
-                                                               Point& p2,
-                                                               int tagId,
-                                                               bool driving)
+int System::addConstraintInternalAlignmentEllipseMajorDiameter(
+    Ellipse& e,
+    Point& p1,
+    Point& p2,
+    int tagId,
+    bool driving
+)
 {
     double X_1 = *p1.x;
     double Y_1 = *p1.y;
@@ -1310,11 +1304,11 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    double closertopositivemajor =
-        pow(X_1 - X_c
-                - (X_F1 - X_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
-                    / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
-            2)
+    double closertopositivemajor
+        = pow(X_1 - X_c
+                  - (X_F1 - X_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
         - pow(X_2 - X_c
                   - (X_F1 - X_c) * sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                       / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
@@ -1333,30 +1327,24 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse& e,
         addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMajorX, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMajorY, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseNegativeMajorX, tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,
-                                                           p1,
-                                                           EllipseNegativeMajorY,
-                                                           tagId,
-                                                           driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseNegativeMajorY, tagId, driving);
     }
     else {
         // p1 is closer to  positivemajor
         addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMajorX, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMajorY, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipseNegativeMajorX, tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,
-                                                           p2,
-                                                           EllipseNegativeMajorY,
-                                                           tagId,
-                                                           driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipseNegativeMajorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse& e,
-                                                               Point& p1,
-                                                               Point& p2,
-                                                               int tagId,
-                                                               bool driving)
+int System::addConstraintInternalAlignmentEllipseMinorDiameter(
+    Ellipse& e,
+    Point& p1,
+    Point& p2,
+    int tagId,
+    bool driving
+)
 {
     double X_1 = *p1.x;
     double Y_1 = *p1.y;
@@ -1368,8 +1356,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    double closertopositiveminor =
-        pow(X_1 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
+    double closertopositiveminor
+        = pow(X_1 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
         - pow(X_2 - X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
         + pow(-Y_1 + Y_c + b * (X_F1 - X_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
         - pow(-Y_2 + Y_c + b * (X_F1 - X_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
@@ -1378,51 +1366,35 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse& e,
         addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMinorX, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipsePositiveMinorY, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseNegativeMinorX, tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,
-                                                           p1,
-                                                           EllipseNegativeMinorY,
-                                                           tagId,
-                                                           driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseNegativeMinorY, tagId, driving);
     }
     else {
         addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMinorX, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipsePositiveMinorY, tagId, driving);
         addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipseNegativeMinorX, tagId, driving);
-        return addConstraintInternalAlignmentPoint2Ellipse(e,
-                                                           p2,
-                                                           EllipseNegativeMinorY,
-                                                           tagId,
-                                                           driving);
+        return addConstraintInternalAlignmentPoint2Ellipse(e, p2, EllipseNegativeMinorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse& e,
-                                                        Point& p1,
-                                                        int tagId,
-                                                        bool driving)
+int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse& e, Point& p1, int tagId, bool driving)
 {
     addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y,
-                              p1.y,
-                              tagId,
-                              driving,
-                              Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse& e,
-                                                        Point& p1,
-                                                        int tagId,
-                                                        bool driving)
+int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse& e, Point& p1, int tagId, bool driving)
 {
     addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseFocus2X, tagId, driving);
     return addConstraintInternalAlignmentPoint2Ellipse(e, p1, EllipseFocus2Y, tagId, driving);
 }
 
-int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola& e,
-                                                                 Point& p1,
-                                                                 Point& p2,
-                                                                 int tagId,
-                                                                 bool driving)
+int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(
+    Hyperbola& e,
+    Point& p1,
+    Point& p2,
+    int tagId,
+    bool driving
+)
 {
     double X_1 = *p1.x;
     double Y_1 = *p1.y;
@@ -1434,11 +1406,11 @@ int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    double closertopositivemajor =
-        pow(-X_1 + X_c
-                + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
-                    / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
-            2)
+    double closertopositivemajor = pow(-X_1 + X_c
+                                           + (X_F1 - X_c)
+                                               * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                                               / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+                                       2)
         - pow(-X_2 + X_c
                   + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                       / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
@@ -1454,57 +1426,27 @@ int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola& e,
 
     if (closertopositivemajor > 0) {
         // p2 is closer to  positivemajor. Assign constraints back-to-front.
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p2,
-                                                      HyperbolaPositiveMajorX,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p2,
-                                                      HyperbolaPositiveMajorY,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p1,
-                                                      HyperbolaNegativeMajorX,
-                                                      tagId,
-                                                      driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                             p1,
-                                                             HyperbolaNegativeMajorY,
-                                                             tagId,
-                                                             driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaPositiveMajorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaPositiveMajorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaNegativeMajorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaNegativeMajorY, tagId, driving);
     }
     else {
         // p1 is closer to  positivemajor
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p1,
-                                                      HyperbolaPositiveMajorX,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p1,
-                                                      HyperbolaPositiveMajorY,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p2,
-                                                      HyperbolaNegativeMajorX,
-                                                      tagId,
-                                                      driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                             p2,
-                                                             HyperbolaNegativeMajorY,
-                                                             tagId,
-                                                             driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaPositiveMajorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaPositiveMajorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaNegativeMajorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaNegativeMajorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola& e,
-                                                                 Point& p1,
-                                                                 Point& p2,
-                                                                 int tagId,
-                                                                 bool driving)
+int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(
+    Hyperbola& e,
+    Point& p1,
+    Point& p2,
+    int tagId,
+    bool driving
+)
 {
     double X_1 = *p1.x;
     double Y_1 = *p1.y;
@@ -1516,11 +1458,11 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola& e,
     double Y_F1 = *e.focus1.y;
     double b = *e.radmin;
 
-    double closertopositiveminor =
-        pow(-X_1 + X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
-                + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
-                    / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
-            2)
+    double closertopositiveminor
+        = pow(-X_1 + X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                  + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
+                      / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
+              2)
         - pow(-X_2 + X_c + b * (Y_F1 - Y_c) / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                   + (X_F1 - X_c) * (-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                       / sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
@@ -1535,105 +1477,69 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola& e,
               2);
 
     if (closertopositiveminor < 0) {
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p2,
-                                                      HyperbolaPositiveMinorX,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p2,
-                                                      HyperbolaPositiveMinorY,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p1,
-                                                      HyperbolaNegativeMinorX,
-                                                      tagId,
-                                                      driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                             p1,
-                                                             HyperbolaNegativeMinorY,
-                                                             tagId,
-                                                             driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaPositiveMinorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaPositiveMinorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaNegativeMinorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaNegativeMinorY, tagId, driving);
     }
     else {
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p1,
-                                                      HyperbolaPositiveMinorX,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p1,
-                                                      HyperbolaPositiveMinorY,
-                                                      tagId,
-                                                      driving);
-        addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                      p2,
-                                                      HyperbolaNegativeMinorX,
-                                                      tagId,
-                                                      driving);
-        return addConstraintInternalAlignmentPoint2Hyperbola(e,
-                                                             p2,
-                                                             HyperbolaNegativeMinorY,
-                                                             tagId,
-                                                             driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaPositiveMinorX, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p1, HyperbolaPositiveMinorY, tagId, driving);
+        addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaNegativeMinorX, tagId, driving);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e, p2, HyperbolaNegativeMinorY, tagId, driving);
     }
 }
 
-int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola& e,
-                                                         Point& p1,
-                                                         int tagId,
-                                                         bool driving)
+int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola& e, Point& p1, int tagId, bool driving)
 {
     addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y,
-                              p1.y,
-                              tagId,
-                              driving,
-                              Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentParabolaFocus(Parabola& e,
-                                                        Point& p1,
-                                                        int tagId,
-                                                        bool driving)
+int System::addConstraintInternalAlignmentParabolaFocus(Parabola& e, Point& p1, int tagId, bool driving)
 {
     addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y,
-                              p1.y,
-                              tagId,
-                              driving,
-                              Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
-int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline& b,
-                                                              Circle& c,
-                                                              unsigned int poleindex,
-                                                              int tagId,
-                                                              bool driving)
+int System::addConstraintInternalAlignmentBSplineControlPoint(
+    BSpline& b,
+    Circle& c,
+    unsigned int poleindex,
+    int tagId,
+    bool driving
+)
 {
-    addConstraintEqual(b.poles[poleindex].x,
-                       c.center.x,
-                       tagId,
-                       driving,
-                       Constraint::Alignment::InternalAlignment);
-    addConstraintEqual(b.poles[poleindex].y,
-                       c.center.y,
-                       tagId,
-                       driving,
-                       Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(b.weights[poleindex],
-                              c.rad,
-                              tagId,
-                              driving,
-                              Constraint::Alignment::InternalAlignment);
+    addConstraintEqual(
+        b.poles[poleindex].x,
+        c.center.x,
+        tagId,
+        driving,
+        Constraint::Alignment::InternalAlignment
+    );
+    addConstraintEqual(
+        b.poles[poleindex].y,
+        c.center.y,
+        tagId,
+        driving,
+        Constraint::Alignment::InternalAlignment
+    );
+    return addConstraintEqual(
+        b.weights[poleindex],
+        c.rad,
+        tagId,
+        driving,
+        Constraint::Alignment::InternalAlignment
+    );
 }
 
-int System::addConstraintInternalAlignmentKnotPoint(BSpline& b,
-                                                    Point& p,
-                                                    unsigned int knotindex,
-                                                    int tagId,
-                                                    bool driving)
+int System::addConstraintInternalAlignmentKnotPoint(
+    BSpline& b,
+    Point& p,
+    unsigned int knotindex,
+    int tagId,
+    bool driving
+)
 {
     if (b.periodic && knotindex == 0) {
         // This is done here since knotpoints themselves aren't stored
@@ -1679,8 +1585,7 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline& b,
     // cleanest way to handle it.
     if (numpoles > 1) {
         for (size_t i = 0; i < numpoles; ++i) {
-            factors[i] =
-                b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
+            factors[i] = b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
         }
     }
 
@@ -1724,28 +1629,26 @@ double System::calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Poin
     return calculateAngleViaPoint(crv1, crv2, p, p);
 }
 
-double
-System::calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p1, Point& p2) const
+double System::calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p1, Point& p2) const
 {
     GCS::DeriVector2 n1 = crv1.CalculateNormal(p1);
     GCS::DeriVector2 n2 = crv2.CalculateNormal(p2);
     return atan2(-n2.x * n1.y + n2.y * n1.x, n2.x * n1.x + n2.y * n1.y);
 }
 
-double System::calculateAngleViaParams(const Curve& crv1,
-                                       const Curve& crv2,
-                                       double* param1,
-                                       double* param2) const
+double System::calculateAngleViaParams(
+    const Curve& crv1,
+    const Curve& crv2,
+    double* param1,
+    double* param2
+) const
 {
     GCS::DeriVector2 n1 = crv1.CalculateNormal(param1);
     GCS::DeriVector2 n2 = crv2.CalculateNormal(param2);
     return atan2(-n2.x * n1.y + n2.y * n1.x, n2.x * n1.x + n2.y * n1.y);
 }
 
-void System::calculateNormalAtPoint(const Curve& crv,
-                                    const Point& p,
-                                    double& rtnX,
-                                    double& rtnY) const
+void System::calculateNormalAtPoint(const Curve& crv, const Point& p, double& rtnX, double& rtnY) const
 {
     GCS::DeriVector2 n1 = crv.CalculateNormal(p);
     rtnX = n1.x;
@@ -1923,12 +1826,12 @@ void System::initSolution(Algorithm alg)
     subSystemsAux.resize(clists.size(), nullptr);
     for (std::size_t cid = 0; cid < clists.size(); ++cid) {
         std::vector<Constraint*> clist0, clist1;
-        std::ranges::partition_copy(clists[cid],
-                                    std::back_inserter(clist0),
-                                    std::back_inserter(clist1),
-                                    [](auto constr) {
-                                        return constr->getTag() >= 0;
-                                    });
+        std::ranges::partition_copy(
+            clists[cid],
+            std::back_inserter(clist0),
+            std::back_inserter(clist1),
+            [](auto constr) { return constr->getTag() >= 0; }
+        );
 
         if (!clist0.empty()) {
             subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
@@ -1984,8 +1887,7 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
             isReset = true;
         }
         if (subSystems[cid] && subSystemsAux[cid]) {
-            res = std::max(res,
-                           solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
+            res = std::max(res, solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
         }
         else if (subSystems[cid]) {
             res = std::max(res, solve(subSystems[cid], isFine, alg, isRedundantsolving));
@@ -2065,8 +1967,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     int maxIterNumber = (sketchSizeMultiplier ? maxIter * xsize : maxIter);
     double convCriterion = convergence;
     if (isRedundantsolving) {
-        maxIterNumber =
-            (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
+        maxIterNumber = (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
         convCriterion = convergenceRedundant;
     }
 
@@ -2189,8 +2090,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     double tau = LM_tau;
 
     if (isRedundantsolving) {
-        maxIterNumber =
-            (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
+        maxIterNumber = (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
         eps = LM_epsRedundant;
         eps1 = LM_eps1Redundant;
         tau = LM_tauRedundant;
@@ -2358,8 +2258,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         tolx = DL_tolxRedundant;
         tolf = DL_tolfRedundant;
 
-        maxIterNumber =
-            (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
+        maxIterNumber = (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
     }
 
     if (debugMode == IterationLevel) {
@@ -2571,10 +2470,9 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
     int ip = 0;
 
-    subsystemfile << "GCS::VEC_pD plist_;" << std::endl;  // all SYSTEM params
-    subsystemfile << "std::vector<GCS::Constraint *> clist_;"
-                  << std::endl;                              // SUBSYSTEM constraints
-    subsystemfile << "GCS::VEC_pD plistsub_;" << std::endl;  // all SUBSYSTEM params
+    subsystemfile << "GCS::VEC_pD plist_;" << std::endl;                     // all SYSTEM params
+    subsystemfile << "std::vector<GCS::Constraint *> clist_;" << std::endl;  // SUBSYSTEM constraints
+    subsystemfile << "GCS::VEC_pD plistsub_;" << std::endl;                  // all SUBSYSTEM params
     // constraint params not within SYSTEM params
     subsystemfile << "GCS::VEC_pD clist_params_;" << std::endl;
 
@@ -2844,10 +2742,9 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
                 break;
             }
             case P2PAngle: {  // 5
@@ -2971,10 +2868,9 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << std::endl;
                 break;
             }
             case P2LDistance: {  // 7
@@ -3144,11 +3040,10 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
-                              << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5]
+                              << "," << (*it)->pvec[6] << std::endl;
                 break;
             }
             case PointOnLine: {  // 6
@@ -3641,11 +3536,10 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
-                              << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5]
+                              << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
             case Perpendicular: {  // 8
@@ -3838,11 +3732,10 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
-                              << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5]
+                              << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
             case L2LAngle: {  // 9
@@ -4255,11 +4148,10 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
-                              << "," << (*it)->pvec[7] << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5]
+                              << "," << (*it)->pvec[6] << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
             case TangentCircumf: {  // 6
@@ -4583,11 +4475,10 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "]);" << std::endl;
                 subsystemfile << "c" << ic << "->origpvec=c" << ic << "->pvec;" << std::endl;
                 subsystemfile << "c" << ic << "->rescale();" << std::endl;
-                subsystemfile << "clist_.push_back(c" << ic
-                              << "); // addresses = " << (*it)->pvec[0] << "," << (*it)->pvec[1]
-                              << "," << (*it)->pvec[2] << "," << (*it)->pvec[3] << ","
-                              << (*it)->pvec[4] << "," << (*it)->pvec[5] << "," << (*it)->pvec[6]
-                              << std::endl;
+                subsystemfile << "clist_.push_back(c" << ic << "); // addresses = " << (*it)->pvec[0]
+                              << "," << (*it)->pvec[1] << "," << (*it)->pvec[2] << ","
+                              << (*it)->pvec[3] << "," << (*it)->pvec[4] << "," << (*it)->pvec[5]
+                              << "," << (*it)->pvec[6] << std::endl;
                 break;
             }
                 CASE_NOT_IMP(TangentEllipseLine)
@@ -4622,11 +4513,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         std::sort(plistB.begin(), plistB.end());
 
         VEC_pD::const_iterator it;
-        it = std::set_union(plistA.begin(),
-                            plistA.end(),
-                            plistB.begin(),
-                            plistB.end(),
-                            plistAB.begin());
+        it = std::set_union(plistA.begin(), plistA.end(), plistB.begin(), plistB.end(), plistAB.begin());
         plistAB.resize(it - plistAB.begin());
     }
     int xsize = plistAB.size();
@@ -4656,10 +4543,10 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
     subsysA->calcResidual(resA);
 
     // double convergence = isFine ? XconvergenceFine : XconvergenceRough;
-    int maxIterNumber =
-        (isRedundantsolving
-             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
-             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
+    int maxIterNumber
+        = (isRedundantsolving
+               ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
+               : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
 
     double divergingLim = 1e6 * subsysA->error() + 1e12;
 
@@ -4685,9 +4572,11 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             alpha = std::min(alpha, subsysA->maxStep(plistAB, xdir));
 
             // Eq. 18.36
-            mu = std::max(mu,
-                          (grad.dot(xdir) + std::max(0., 0.5 * xdir.dot(B * xdir)))
-                              / ((1. - rho) * resA.lpNorm<1>()));
+            mu = std::max(
+                mu,
+                (grad.dot(xdir) + std::max(0., 0.5 * xdir.dot(B * xdir)))
+                    / ((1. - rho) * resA.lpNorm<1>())
+            );
 
             // Eq. 18.27
             double f0 = subsysB->error() + mu * resA.lpNorm<1>();
@@ -4751,8 +4640,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         }
 
         double err = subsysA->error();
-        if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence)
-            && err <= smallF) {
+        if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence) && err <= smallF) {
             break;
         }
         if (err > divergingLim || err != err) {  // check for diverging and NaN
@@ -4798,10 +4686,12 @@ void System::undoSolution()
     resetToReference();
 }
 
-void System::makeReducedJacobian(Eigen::MatrixXd& J,
-                                 std::map<int, int>& jacobianconstraintmap,
-                                 GCS::VEC_pD& pdiagnoselist,
-                                 std::map<int, int>& tagmultiplicity)
+void System::makeReducedJacobian(
+    Eigen::MatrixXd& J,
+    std::map<int, int>& jacobianconstraintmap,
+    GCS::VEC_pD& pdiagnoselist,
+    std::map<int, int>& tagmultiplicity
+)
 {
     // construct specific parameter list for diagonose ignoring driven constraint parameters
     for (int j = 0; j < int(plist.size()); j++) {
@@ -4964,8 +4854,10 @@ int System::diagnose(Algorithm alg)
 
 #ifndef EIGEN_SPARSEQR_COMPATIBLE
     if (qrAlgorithm == EigenSparseQR) {
-        Base::Console().warning("SparseQR not supported by you current version of Eigen. It "
-                                "requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
+        Base::Console().warning(
+            "SparseQR not supported by you current version of Eigen. It "
+            "requires Eigen 3.2.2 or higher. Falling back to Dense QR\n"
+        );
         qrAlgorithm = EigenDenseQR;
     }
 #endif
@@ -4997,12 +4889,14 @@ int System::diagnose(Algorithm alg)
         //
         // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
         //
-        auto fut = std::async(&System::identifyDependentParametersDenseQR,
-                              this,
-                              J,
-                              jacobianconstraintmap,
-                              pdiagnoselist,
-                              true);
+        auto fut = std::async(
+            &System::identifyDependentParametersDenseQR,
+            this,
+            J,
+            jacobianconstraintmap,
+            pdiagnoselist,
+            true
+        );
 
         makeDenseQRDecomposition(J, jacobianconstraintmap, qrJT, rank, R);
 
@@ -5023,15 +4917,17 @@ int System::diagnose(Algorithm alg)
         if (constrNum > rank) {
             // conflicting or redundant constraints
             int nonredundantconstrNum;
-            identifyConflictingRedundantConstraints(alg,
-                                                    qrJT,
-                                                    jacobianconstraintmap,
-                                                    tagmultiplicity,
-                                                    pdiagnoselist,
-                                                    R,
-                                                    constrNum,
-                                                    rank,
-                                                    nonredundantconstrNum);
+            identifyConflictingRedundantConstraints(
+                alg,
+                qrJT,
+                jacobianconstraintmap,
+                tagmultiplicity,
+                pdiagnoselist,
+                R,
+                constrNum,
+                rank,
+                nonredundantconstrNum
+            );
             if (paramsNum == rank && nonredundantconstrNum > rank) {  // over-constrained
                 dofs = paramsNum - nonredundantconstrNum;
             }
@@ -5048,9 +4944,9 @@ int System::diagnose(Algorithm alg)
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if (qrAlgorithm == EigenSparseQR) {
-#ifdef PROFILE_DIAGNOSE
+# ifdef PROFILE_DIAGNOSE
         Base::TimeElapsed SparseQR_start_time;
-#endif
+# endif
         int rank = 0;
         Eigen::MatrixXd R;
         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> SqrJT;
@@ -5070,20 +4966,24 @@ int System::diagnose(Algorithm alg)
         // auto fut =
         // std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR, this,
         // J, jacobianconstraintmap, pdiagnoselist, false);
-        auto fut = std::async(&System::identifyDependentParametersSparseQR,
-                              this,
-                              J,
-                              jacobianconstraintmap,
-                              pdiagnoselist,
-                              /*silent=*/true);
+        auto fut = std::async(
+            &System::identifyDependentParametersSparseQR,
+            this,
+            J,
+            jacobianconstraintmap,
+            pdiagnoselist,
+            /*silent=*/true
+        );
 
-        makeSparseQRDecomposition(J,
-                                  jacobianconstraintmap,
-                                  SqrJT,
-                                  rank,
-                                  R,
-                                  /*transposed=*/true,
-                                  /*silent=*/false);
+        makeSparseQRDecomposition(
+            J,
+            jacobianconstraintmap,
+            SqrJT,
+            rank,
+            R,
+            /*transposed=*/true,
+            /*silent=*/false
+        );
 
         int paramsNum = SqrJT.rows();
         int constrNum = SqrJT.cols();
@@ -5096,15 +4996,17 @@ int System::diagnose(Algorithm alg)
         if (constrNum > rank) {
             int nonredundantconstrNum;
 
-            identifyConflictingRedundantConstraints(alg,
-                                                    SqrJT,
-                                                    jacobianconstraintmap,
-                                                    tagmultiplicity,
-                                                    pdiagnoselist,
-                                                    R,
-                                                    constrNum,
-                                                    rank,
-                                                    nonredundantconstrNum);
+            identifyConflictingRedundantConstraints(
+                alg,
+                SqrJT,
+                jacobianconstraintmap,
+                tagmultiplicity,
+                pdiagnoselist,
+                R,
+                constrNum,
+                rank,
+                nonredundantconstrNum
+            );
 
             if (paramsNum == rank && nonredundantconstrNum > rank) {
                 // over-constrained
@@ -5112,26 +5014,28 @@ int System::diagnose(Algorithm alg)
             }
         }
 
-#ifdef PROFILE_DIAGNOSE
+# ifdef PROFILE_DIAGNOSE
         Base::TimeElapsed SparseQR_end_time;
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
         Base::Console().log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
-#endif
+# endif
     }
 #endif
 
     return dofs;
 }
 
-void System::makeDenseQRDecomposition(const Eigen::MatrixXd& J,
-                                      const std::map<int, int>& jacobianconstraintmap,
-                                      Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
-                                      int& rank,
-                                      Eigen::MatrixXd& R,
-                                      bool transposeJ,
-                                      bool silent)
+void System::makeDenseQRDecomposition(
+    const Eigen::MatrixXd& J,
+    const std::map<int, int>& jacobianconstraintmap,
+    Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+    int& rank,
+    Eigen::MatrixXd& R,
+    bool transposeJ,
+    bool silent
+)
 {
 
 #ifdef _GCS_DEBUG
@@ -5211,7 +5115,8 @@ void System::makeSparseQRDecomposition(
     int& rank,
     Eigen::MatrixXd& R,
     bool transposeJ,
-    bool silent)
+    bool silent
+)
 {
 
     Eigen::SparseMatrix<double> SJ;
@@ -5222,17 +5127,17 @@ void System::makeSparseQRDecomposition(
     SJ = J.sparseView();
     SJ.makeCompressed();
 
-#ifdef _GCS_DEBUG
+# ifdef _GCS_DEBUG
     if (!silent) {
         SolverReportingManager::Manager().LogMatrix("J", J);
     }
-#endif
+# endif
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+# ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q;   // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2;  // Intended for a trapezoidal matrix, where R is the top triangular matrix
                          // of the R2 trapezoidal matrix
-#endif
+# endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
     // For a non-transposed J SJG rows are constrNum and cols are paramsNum
@@ -5253,10 +5158,10 @@ void System::makeSparseQRDecomposition(
 // Do not ask for Q Matrix!!
 // At Eigen 3.2 still has a bug that this only works for square matrices
 // if enabled it will crash
-#ifdef SPARSE_Q_MATRIX
+# ifdef SPARSE_Q_MATRIX
             Q = SqrJT.matrixQ();
 // Q = QS;
-#endif
+# endif
 
             rowsNum = SqrJT.rows();
             colsNum = SqrJT.cols();
@@ -5270,9 +5175,9 @@ void System::makeSparseQRDecomposition(
                 R = SqrJT.matrixR().topRows(colsNum).triangularView<Eigen::Upper>();
             }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+# ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
             R2 = SqrJT.matrixR();
-#endif
+# endif
         }
         else {
             rowsNum = SJG.rows();
@@ -5284,25 +5189,27 @@ void System::makeSparseQRDecomposition(
         SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
     }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+# ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     if (J.rows() > 0 && !silent) {
 
         SolverReportingManager::Manager().LogMatrix("R", R);
 
         SolverReportingManager::Manager().LogMatrix("R2", R2);
 
-#ifdef SPARSE_Q_MATRIX
+#  ifdef SPARSE_Q_MATRIX
         SolverReportingManager::Manager().LogMatrix("Q", Q);
-#endif
+#  endif
     }
-#endif  //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+# endif  //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 }
 #endif  // EIGEN_SPARSEQR_COMPATIBLE
 
-void System::identifyDependentParametersDenseQR(const Eigen::MatrixXd& J,
-                                                const std::map<int, int>& jacobianconstraintmap,
-                                                const GCS::VEC_pD& pdiagnoselist,
-                                                bool silent)
+void System::identifyDependentParametersDenseQR(
+    const Eigen::MatrixXd& J,
+    const std::map<int, int>& jacobianconstraintmap,
+    const GCS::VEC_pD& pdiagnoselist,
+    bool silent
+)
 {
     Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJ;
     Eigen::MatrixXd Rparams;
@@ -5315,34 +5222,40 @@ void System::identifyDependentParametersDenseQR(const Eigen::MatrixXd& J,
 }
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-void System::identifyDependentParametersSparseQR(const Eigen::MatrixXd& J,
-                                                 const std::map<int, int>& jacobianconstraintmap,
-                                                 const GCS::VEC_pD& pdiagnoselist,
-                                                 bool silent)
+void System::identifyDependentParametersSparseQR(
+    const Eigen::MatrixXd& J,
+    const std::map<int, int>& jacobianconstraintmap,
+    const GCS::VEC_pD& pdiagnoselist,
+    bool silent
+)
 {
     Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> SqrJ;
     Eigen::MatrixXd Rparams;
 
     int nontransprank;
 
-    makeSparseQRDecomposition(J,
-                              jacobianconstraintmap,
-                              SqrJ,
-                              nontransprank,
-                              Rparams,
-                              false,
-                              true);  // do not transpose allow one to diagnose parameters
+    makeSparseQRDecomposition(
+        J,
+        jacobianconstraintmap,
+        SqrJ,
+        nontransprank,
+        Rparams,
+        false,
+        true
+    );  // do not transpose allow one to diagnose parameters
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }
 #endif
 
 template<typename T>
-void System::identifyDependentParameters(T& qrJ,
-                                         Eigen::MatrixXd& Rparams,
-                                         int rank,
-                                         const GCS::VEC_pD& pdiagnoselist,
-                                         bool silent)
+void System::identifyDependentParameters(
+    T& qrJ,
+    Eigen::MatrixXd& Rparams,
+    int rank,
+    const GCS::VEC_pD& pdiagnoselist,
+    bool silent
+)
 {
     (void)silent;  // silent is only used in debug code, but it is important as Base::Console is not
                    // thread-safe. Removes warning in non Debug mode.
@@ -5376,11 +5289,15 @@ void System::identifyDependentParameters(T& qrJ,
 
 #ifdef _GCS_DEBUG
     if (!silent) {
-        SolverReportingManager::Manager().LogMatrix("PermMatrix",
-                                                    (Eigen::MatrixXd)qrJ.colsPermutation());
+        SolverReportingManager::Manager().LogMatrix(
+            "PermMatrix",
+            (Eigen::MatrixXd)qrJ.colsPermutation()
+        );
 
-        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",
-                                                               pDependentParametersGroups);
+        SolverReportingManager::Manager().LogGroupOfParameters(
+            "ParameterGroups",
+            pDependentParametersGroups
+        );
     }
 
 #endif
@@ -5390,7 +5307,8 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
     const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
     const GCS::VEC_pD& pdiagnoselist,
     int paramsNum,
-    int rank)
+    int rank
+)
 {
     // DETECTING CONSTRAINT SOLVER PARAMETERS
     //
@@ -5483,8 +5401,8 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
         for (int row = 0; row < i; row++) {
             if (R(row, i) != 0) {
                 double coef = R(row, i) / R(i, i);
-                R.block(row, i + 1, 1, R.cols() - i - 1) -=
-                    coef * R.block(i, i + 1, 1, R.cols() - i - 1);
+                R.block(row, i + 1, 1, R.cols() - i - 1) -= coef
+                    * R.block(i, i + 1, 1, R.cols() - i - 1);
                 R(row, i) = 0;
             }
         }
@@ -5501,7 +5419,8 @@ void System::identifyConflictingRedundantConstraints(
     Eigen::MatrixXd& R,
     int constrNum,
     int rank,
-    int& nonredundantconstrNum)
+    int& nonredundantconstrNum
+)
 {
     eliminateNonZerosOverPivotInUpperTriangularMatrix(R, rank);
 
@@ -5523,7 +5442,8 @@ void System::identifyConflictingRedundantConstraints(
     if (debugMode == IterationLevel) {
         SolverReportingManager::Manager().LogGroupOfConstraints(
             "Analysing groups of constraints of special interest",
-            conflictGroups);
+            conflictGroups
+        );
     }
 
     // try to remove the conflicting constraints and solve the
@@ -5544,8 +5464,8 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             for (const auto& constr : conflictGroups[i]) {
-                bool isinternalalignment =
-                    (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                bool isinternalalignment
+                    = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
                 bool priorityconstraint = (constr->getTag() == 0);
                 if (!priorityconstraint && !isinternalalignment) {
                     // exclude constraints tagged with zero and internal alignment
@@ -5584,13 +5504,15 @@ void System::identifyConflictingRedundantConstraints(
                 auto tag1 = pair1.first->getTag();
                 auto tag2 = pair2.first->getTag();
 
-                return (sizeOfSet2 > sizeOfSet1  // (1)
-                        || (sizeOfSet2 == sizeOfSet1
-                            && tagmultiplicity.at(tag2) < tagmultiplicity.at(tag1))  // (2)
-                        || (sizeOfSet2 == sizeOfSet1
-                            && tagmultiplicity.at(tag2) == tagmultiplicity.at(tag1)
-                            && tag2 > tag1));  // (3)
-            });
+                return (
+                    sizeOfSet2 > sizeOfSet1  // (1)
+                    || (sizeOfSet2 == sizeOfSet1
+                        && tagmultiplicity.at(tag2) < tagmultiplicity.at(tag1))  // (2)
+                    || (sizeOfSet2 == sizeOfSet1
+                        && tagmultiplicity.at(tag2) == tagmultiplicity.at(tag1) && tag2 > tag1)
+                );  // (3)
+            }
+        );
 
         Constraint* mostPopular = iterMostPopular->first;
         int maxPopularity = iterMostPopular->second.size();
@@ -5647,12 +5569,14 @@ void System::identifyConflictingRedundantConstraints(
 
     if (res == Success) {
         subSysTmp->applySolution();
-        std::ranges::copy_if(skipped,
-                             std::inserter(redundant, redundant.begin()),
-                             [this](const auto& constr) {
-                                 double err = constr->error();
-                                 return (err * err < this->convergenceRedundant);
-                             });
+        std::ranges::copy_if(
+            skipped,
+            std::inserter(redundant, redundant.begin()),
+            [this](const auto& constr) {
+                double err = constr->error();
+                return (err * err < this->convergenceRedundant);
+            }
+        );
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
@@ -5663,10 +5587,10 @@ void System::identifyConflictingRedundantConstraints(
         std::vector<std::vector<Constraint*>> conflictGroupsOrig = conflictGroups;
         conflictGroups.clear();
         for (int i = conflictGroupsOrig.size() - 1; i >= 0; i--) {
-            auto iterRedundantEntry =
-                std::ranges::find_if(conflictGroupsOrig[i], [this](const auto item) {
-                    return (this->redundant.count(item) > 0);
-                });
+            auto iterRedundantEntry = std::ranges::find_if(
+                conflictGroupsOrig[i],
+                [this](const auto item) { return (this->redundant.count(item) > 0); }
+            );
             bool hasRedundant = (iterRedundantEntry != conflictGroupsOrig[i].end());
             if (!hasRedundant) {
                 conflictGroups.push_back(conflictGroupsOrig[i]);
@@ -5674,10 +5598,12 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             if (debugMode == IterationLevel) {
-                Base::Console().log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
-                                    i,
-                                    iterRedundantEntry - conflictGroupsOrig[i].begin(),
-                                    (*iterRedundantEntry)->getTag());
+                Base::Console().log(
+                    "(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                    i,
+                    iterRedundantEntry - conflictGroupsOrig[i].begin(),
+                    (*iterRedundantEntry)->getTag()
+                );
             }
 
             constrNum--;
@@ -5689,14 +5615,15 @@ void System::identifyConflictingRedundantConstraints(
     SET_I conflictingTagsSet;
     for (const auto& cGroup : conflictGroups) {
         // exclude internal alignment
-        std::ranges::transform(cGroup,
-                               std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
-                               [](const auto& constr) {
-                                   bool isinternalalignment =
-                                       (constr->isInternalAlignment()
-                                        == Constraint::Alignment::InternalAlignment);
-                                   return (isinternalalignment ? 0 : constr->getTag());
-                               });
+        std::ranges::transform(
+            cGroup,
+            std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
+            [](const auto& constr) {
+                bool isinternalalignment
+                    = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                return (isinternalalignment ? 0 : constr->getTag());
+            }
+        );
     }
 
     // exclude constraints tagged with zero

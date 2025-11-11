@@ -66,14 +66,17 @@ PyObject* PersistencePy::dumpContent(PyObject* args, PyObject* kwds) const
     }
 
     // setup the stream. the in flag is needed to make "read" work
-    std::stringstream stream(std::stringstream::out | std::stringstream::in
-                             | std::stringstream::binary);
+    std::stringstream stream(
+        std::stringstream::out | std::stringstream::in | std::stringstream::binary
+    );
     try {
         getPersistencePtr()->dumpToStream(stream, compression);
     }
     catch (NotImplementedError&) {
-        PyErr_SetString(PyExc_NotImplementedError,
-                        "Dumping content of this object type is not implemented");
+        PyErr_SetString(
+            PyExc_NotImplementedError,
+            "Dumping content of this object type is not implemented"
+        );
         return nullptr;
     }
     catch (...) {

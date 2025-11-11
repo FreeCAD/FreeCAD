@@ -28,37 +28,41 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 #ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
+# include <OpenGL/gl.h>
 #else
-#include <GL/gl.h>
+# include <GL/gl.h>
 #endif
 
 #include "SoFCBackgroundGradient.h"
 
-static const std::array <GLfloat[2], 32> big_circle = []{
+static const std::array<GLfloat[2], 32> big_circle = [] {
     constexpr float pi = std::numbers::pi_v<float>;
     constexpr float sqrt2 = std::numbers::sqrt2_v<float>;
-    std::array <GLfloat[2], 32> result; int c = 0;
+    std::array<GLfloat[2], 32> result;
+    int c = 0;
     for (GLfloat i = 0; i < 2 * pi; i += 2 * pi / 32, c++) {
         result[c][0] = sqrt2 * cosf(i);
         result[c][1] = sqrt2 * sinf(i);
     }
-    return result; }();
-static const std::array <GLfloat[2], 32> small_oval = []{
+    return result;
+}();
+static const std::array<GLfloat[2], 32> small_oval = [] {
     constexpr float pi = std::numbers::pi_v<float>;
     constexpr float sqrt2 = std::numbers::sqrt2_v<float>;
     static const float sqrt1_2 = std::sqrt(1 / 2.F);
 
-    std::array <GLfloat[2], 32> result; int c = 0;
+    std::array<GLfloat[2], 32> result;
+    int c = 0;
     for (GLfloat i = 0; i < 2 * pi; i += 2 * pi / 32, c++) {
         result[c][0] = 0.3 * sqrt2 * cosf(i);
         result[c][1] = sqrt1_2 * sinf(i);
     }
-    return result; }();
+    return result;
+}();
 
 using namespace Gui;
 
@@ -89,15 +93,15 @@ SoFCBackgroundGradient::~SoFCBackgroundGradient() = default;
 // doc from parent
 void SoFCBackgroundGradient::initClass()
 {
-    SO_NODE_INIT_CLASS(SoFCBackgroundGradient,SoNode,"Node");
+    SO_NODE_INIT_CLASS(SoFCBackgroundGradient, SoNode, "Node");
 }
 
-void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
+void SoFCBackgroundGradient::GLRender(SoGLRenderAction* /*action*/)
 {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(-1,1,-1,1,-1,1);
+    glOrtho(-1, 1, -1, 1, -1, 1);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
@@ -109,54 +113,74 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     if (gradient == Gradient::LINEAR) {
         glBegin(GL_TRIANGLE_STRIP);
         if (mCol[0] < 0) {
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f(-1,-1);
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f( 1, 1);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f( 1,-1);
+            glColor3f(fCol[0], fCol[1], fCol[2]);
+            glVertex2f(-1, 1);
+            glColor3f(tCol[0], tCol[1], tCol[2]);
+            glVertex2f(-1, -1);
+            glColor3f(fCol[0], fCol[1], fCol[2]);
+            glVertex2f(1, 1);
+            glColor3f(tCol[0], tCol[1], tCol[2]);
+            glVertex2f(1, -1);
         }
         else {
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f(-1, 0);
-            glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f( 1, 1);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f( 1, 0);
+            glColor3f(fCol[0], fCol[1], fCol[2]);
+            glVertex2f(-1, 1);
+            glColor3f(mCol[0], mCol[1], mCol[2]);
+            glVertex2f(-1, 0);
+            glColor3f(fCol[0], fCol[1], fCol[2]);
+            glVertex2f(1, 1);
+            glColor3f(mCol[0], mCol[1], mCol[2]);
+            glVertex2f(1, 0);
             glEnd();
             glBegin(GL_TRIANGLE_STRIP);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f(-1, 0);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f(-1,-1);
-            glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f( 1, 0);
-            glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f( 1,-1);
+            glColor3f(mCol[0], mCol[1], mCol[2]);
+            glVertex2f(-1, 0);
+            glColor3f(tCol[0], tCol[1], tCol[2]);
+            glVertex2f(-1, -1);
+            glColor3f(mCol[0], mCol[1], mCol[2]);
+            glVertex2f(1, 0);
+            glColor3f(tCol[0], tCol[1], tCol[2]);
+            glVertex2f(1, -1);
         }
     }
-    else { // radial gradient
+    else {  // radial gradient
         glBegin(GL_TRIANGLE_FAN);
-        glColor3f(fCol[0], fCol[1], fCol[2]); glVertex2f(0.0f, 0.0f);
+        glColor3f(fCol[0], fCol[1], fCol[2]);
+        glVertex2f(0.0f, 0.0f);
 
-        if (mCol[0] < 0) { // simple radial gradient
+        if (mCol[0] < 0) {  // simple radial gradient
             glColor3f(tCol[0], tCol[1], tCol[2]);
-            for (const GLfloat *vertex : big_circle)
-                glVertex2fv( vertex );
-            glVertex2fv( big_circle.front() );
-        } else {
+            for (const GLfloat* vertex : big_circle) {
+                glVertex2fv(vertex);
+            }
+            glVertex2fv(big_circle.front());
+        }
+        else {
             glColor3f(mCol[0], mCol[1], mCol[2]);
-            for (const GLfloat *vertex : small_oval)
-                glVertex2fv( vertex );
-            glVertex2fv( small_oval.front() );
+            for (const GLfloat* vertex : small_oval) {
+                glVertex2fv(vertex);
+            }
+            glVertex2fv(small_oval.front());
             glEnd();
 
             glBegin(GL_TRIANGLE_STRIP);
             for (std::size_t i = 0; i < small_oval.size(); i++) {
-                glColor3f(mCol[0], mCol[1], mCol[2]); glVertex2fv( small_oval[i] );
-                glColor3f(tCol[0], tCol[1], tCol[2]); glVertex2fv( big_circle[i] );
+                glColor3f(mCol[0], mCol[1], mCol[2]);
+                glVertex2fv(small_oval[i]);
+                glColor3f(tCol[0], tCol[1], tCol[2]);
+                glVertex2fv(big_circle[i]);
             }
 
-            glColor3f(mCol[0], mCol[1], mCol[2]); glVertex2fv( small_oval.front() );
-            glColor3f(tCol[0], tCol[1], tCol[2]); glVertex2fv( big_circle.front() );
+            glColor3f(mCol[0], mCol[1], mCol[2]);
+            glVertex2fv(small_oval.front());
+            glColor3f(tCol[0], tCol[1], tCol[2]);
+            glVertex2fv(big_circle.front());
         }
-    } // end of radial gradient
+    }  // end of radial gradient
     glEnd();
 
     glPopAttrib();
-    glPopMatrix(); // restore modelview
+    glPopMatrix();  // restore modelview
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -172,17 +196,18 @@ SoFCBackgroundGradient::Gradient SoFCBackgroundGradient::getGradient() const
     return gradient;
 }
 
-void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor,
-                                              const SbColor& toColor)
+void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor, const SbColor& toColor)
 {
     fCol = fromColor;
     tCol = toColor;
     mCol[0] = -1.0f;
 }
 
-void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor,
-                                              const SbColor& toColor,
-                                              const SbColor& midColor)
+void SoFCBackgroundGradient::setColorGradient(
+    const SbColor& fromColor,
+    const SbColor& toColor,
+    const SbColor& midColor
+)
 {
     fCol = fromColor;
     tCol = toColor;

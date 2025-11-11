@@ -99,8 +99,10 @@ public:
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
 protected:
-    Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
-                                    double tolerance = defaultTolerance) override;
+    Base::Vector3d getTextDirection(
+        Base::Vector3d elementDirection,
+        double tolerance = defaultTolerance
+    ) override;
     void onChanged(const App::Property* prop) override;
 
 private:

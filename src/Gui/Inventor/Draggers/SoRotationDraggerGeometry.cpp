@@ -147,7 +147,7 @@ SoRotatorGeometry2::SoRotatorGeometry2()
     SO_KIT_ADD_CATALOG_ENTRY(leftArrowSeparator, SoSeparator, true, leftArrowSwitch, "", true);
     SO_KIT_ADD_CATALOG_ENTRY(leftArrowTransform, SoTransform, true, leftArrowSeparator, "", true);
     SO_KIT_ADD_CATALOG_ENTRY(leftArrow, SoCone, true, leftArrowSeparator, "", true);
-    
+
     SO_KIT_ADD_CATALOG_ENTRY(rightArrowSwitch, SoToggleSwitch, true, separator, "", true);
     SO_KIT_ADD_CATALOG_ENTRY(rightArrowSeparator, SoSeparator, true, rightArrowSwitch, "", true);
     SO_KIT_ADD_CATALOG_ENTRY(rightArrowTransform, SoTransform, true, rightArrowSeparator, "", true);
@@ -189,11 +189,11 @@ void SoRotatorGeometry2::notify(SoNotList* notList)
         auto radius = arcRadius.getValue();
 
         auto transform = SO_GET_ANY_PART(this, "leftArrowTransform", SoTransform);
-        transform->translation = SbVec3f{radius, 0, 0};
+        transform->translation = SbVec3f {radius, 0, 0};
         transform->rotation = SbRotation({0, 0, 1}, std::numbers::pi_v<float>);
 
         transform = SO_GET_ANY_PART(this, "rightArrowTransform", SoTransform);
-        transform->translation = SbVec3f{radius * std::cos(angle), radius * std::sin(angle), 0};
+        transform->translation = SbVec3f {radius * std::cos(angle), radius * std::sin(angle), 0};
         transform->rotation = SbRotation({0, 0, 1}, angle);
     }
 }
@@ -248,7 +248,8 @@ SoRotatorArrow::SoRotatorArrow()
     arrowTip->bottomRadius.connectFrom(&coneBottomRadius);
 
     auto transform = SO_GET_ANY_PART(this, "_arrowTransform", SoTransform);
-    transform->rotation =  SbRotation({1, 0, 0}, std::numbers::pi) * SbRotation({0, 0, 1}, std::numbers::pi/2);
+    transform->rotation = SbRotation({1, 0, 0}, std::numbers::pi)
+        * SbRotation({0, 0, 1}, std::numbers::pi / 2);
 
     // forces the notify method to get called so that the initial dimensions are set
     cylinderHeight.touch();
@@ -268,9 +269,11 @@ void SoRotatorArrow::notify(SoNotList* notList)
     if (lastField == &cylinderHeight) {
         auto translation = SO_GET_ANY_PART(this, "_arrowBodyTranslation", SoTranslation);
         translation->translation = SbVec3f(0, cylinderHeight.getValue() / 2.0f, 0);
-    } else if (lastField == &radius || lastField == &minRadius ||lastField == &geometryScale) {
+    }
+    else if (lastField == &radius || lastField == &minRadius || lastField == &geometryScale) {
         auto transform = SO_GET_ANY_PART(this, "_arrowTransform", SoTransform);
-        // The geometry nodes are scaled from the parent dragger but in this case the translation itself shouldn't be scaled
+        // The geometry nodes are scaled from the parent dragger but in this case the translation
+        // itself shouldn't be scaled
         pivotPosition = transform->translation = SbVec3f(
             0,
             std::max(minRadius.getValue(), radius.getValue() / geometryScale.getValue()[1]),
@@ -280,7 +283,8 @@ void SoRotatorArrow::notify(SoNotList* notList)
 
     if (lastField == &coneHeight || lastField == &cylinderHeight) {
         auto translation = SO_GET_ANY_PART(this, "_arrowTipTranslation", SoTranslation);
-        translation->translation = SbVec3f(0, (cylinderHeight.getValue() + coneHeight.getValue()) / 2.0f, 0);
+        translation->translation
+            = SbVec3f(0, (cylinderHeight.getValue() + coneHeight.getValue()) / 2.0f, 0);
     }
 }
 
@@ -354,11 +358,13 @@ void SoRotatorBase::notify(SoNotList* notList)
 {
     SoField* lastField = notList->getLastField();
 
-    if (lastField == &arcRadius || lastField == &minArcRadius || lastField == &rotation || lastField == &geometryScale) {
+    if (lastField == &arcRadius || lastField == &minArcRadius || lastField == &rotation
+        || lastField == &geometryScale) {
         SbVec3f axis;
         float angle;
         rotation.getValue(axis, angle);
-        float radius = std::max(minArcRadius.getValue() * geometryScale.getValue()[0], arcRadius.getValue());
+        float radius
+            = std::max(minArcRadius.getValue() * geometryScale.getValue()[0], arcRadius.getValue());
 
         auto coordinates = SO_GET_ANY_PART(this, "arcCoords", SoCoordinate3);
         float angleIncrement = angle / static_cast<float>(segments);

@@ -73,9 +73,11 @@ void CCurve::append(const CVertex& vertex)
     m_vertices.push_back(vertex);
 }
 
-bool CCurve::CheckForArc(const CVertex& prev_vt,
-                         std::list<const CVertex*>& might_be_an_arc,
-                         CArc& arc_returned)
+bool CCurve::CheckForArc(
+    const CVertex& prev_vt,
+    std::list<const CVertex*>& might_be_an_arc,
+    CArc& arc_returned
+)
 {
     // this examines the vertices in might_be_an_arc
     // if they do fit an arc, set arc to be the arc that they fit and return true
@@ -180,12 +182,14 @@ bool CCurve::CheckForArc(const CVertex& prev_vt,
     return true;
 }
 
-void CCurve::AddArcOrLines(bool check_for_arc,
-                           std::list<CVertex>& new_vertices,
-                           std::list<const CVertex*>& might_be_an_arc,
-                           CArc& arc,
-                           bool& arc_found,
-                           bool& arc_added)
+void CCurve::AddArcOrLines(
+    bool check_for_arc,
+    std::list<CVertex>& new_vertices,
+    std::list<const CVertex*>& might_be_an_arc,
+    CArc& arc,
+    bool& arc_found,
+    bool& arc_added
+)
 {
     if (check_for_arc && CheckForArc(new_vertices.back(), might_be_an_arc, arc)) {
         arc_found = true;
@@ -249,7 +253,8 @@ void CCurve::FitArcs(bool retry)
         else {
             might_be_an_arc.push_back(&vt);
 
-            if (might_be_an_arc.size() == 1) {}
+            if (might_be_an_arc.size() == 1) {
+            }
             else {
                 AddArcOrLines(true, new_vertices, might_be_an_arc, arc, arc_found, arc_added);
             }
@@ -307,8 +312,7 @@ void CCurve::UnFitArcs()
     std::list<Point> new_pts;
 
     const CVertex* prev_vertex = NULL;
-    for (std::list<CVertex>::const_iterator It2 = m_vertices.begin(); It2 != m_vertices.end();
-         It2++) {
+    for (std::list<CVertex>::const_iterator It2 = m_vertices.begin(); It2 != m_vertices.end(); It2++) {
         const CVertex& vertex = *It2;
         if (vertex.m_type == 0 || prev_vertex == NULL) {
             new_pts.push_back(vertex.m_p * CArea::m_units);
@@ -606,8 +610,10 @@ void CCurve::Break(const Point& p)
     }
 }
 
-void CCurve::ExtractSeparateCurves(const std::list<Point>& ordered_points,
-                                   std::list<CCurve>& separate_curves) const
+void CCurve::ExtractSeparateCurves(
+    const std::list<Point>& ordered_points,
+    std::list<CCurve>& separate_curves
+) const
 {
     // returns separate curves for this curve split at points
     // the points must be in order along this curve, already, and lie on this curve
@@ -623,8 +629,7 @@ void CCurve::ExtractSeparateCurves(const std::list<Point>& ordered_points,
     std::list<Point>::const_iterator PIt = ordered_points.begin();
     Point point = *PIt;
 
-    for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end();
-         VIt++) {
+    for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end(); VIt++) {
         const CVertex& vertex = *VIt;
         if (prev_p)  // not the first vertex
         {
@@ -690,8 +695,7 @@ void CCurve::ChangeEnd(const Point& p)
 
     const Point* prev_p = NULL;
 
-    for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end();
-         VIt++) {
+    for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end(); VIt++) {
         const CVertex& vertex = *VIt;
 
         if (prev_p) {
@@ -753,9 +757,13 @@ static geoff_geometry::Kurve MakeKurve(const CCurve& curve)
          It != curve.m_vertices.end();
          It++) {
         const CVertex& v = *It;
-        k.Add(geoff_geometry::spVertex(v.m_type,
-                                       geoff_geometry::Point(v.m_p.x, v.m_p.y),
-                                       geoff_geometry::Point(v.m_c.x, v.m_c.y)));
+        k.Add(
+            geoff_geometry::spVertex(
+                v.m_type,
+                geoff_geometry::Point(v.m_p.x, v.m_p.y),
+                geoff_geometry::Point(v.m_c.x, v.m_c.y)
+            )
+        );
     }
     return k;
 }
@@ -774,10 +782,12 @@ static CCurve MakeCCurve(const geoff_geometry::Kurve& k)
 
 static geoff_geometry::Span MakeSpan(const Span& span)
 {
-    return geoff_geometry::Span(span.m_v.m_type,
-                                geoff_geometry::Point(span.m_p.x, span.m_p.y),
-                                geoff_geometry::Point(span.m_v.m_p.x, span.m_v.m_p.y),
-                                geoff_geometry::Point(span.m_v.m_c.x, span.m_v.m_c.y));
+    return geoff_geometry::Span(
+        span.m_v.m_type,
+        geoff_geometry::Point(span.m_p.x, span.m_p.y),
+        geoff_geometry::Point(span.m_v.m_p.x, span.m_v.m_p.y),
+        geoff_geometry::Point(span.m_v.m_c.x, span.m_v.m_c.y)
+    );
 }
 
 bool CCurve::Offset(double leftwards_value)
@@ -1271,9 +1281,11 @@ double Span::GetArea() const
     if (m_v.m_type) {
         double angle = IncludedAngle();
         double radius = m_p.dist(m_v.m_c);
-        return (0.5
-                * ((m_v.m_c.x - m_p.x) * (m_v.m_c.y + m_p.y)
-                   - (m_v.m_c.x - m_v.m_p.x) * (m_v.m_c.y + m_v.m_p.y) - angle * radius * radius));
+        return (
+            0.5
+            * ((m_v.m_c.x - m_p.x) * (m_v.m_c.y + m_p.y)
+               - (m_v.m_c.x - m_v.m_p.x) * (m_v.m_c.y + m_v.m_p.y) - angle * radius * radius)
+        );
     }
 
     return 0.5 * (m_v.m_p.x - m_p.x) * (m_p.y + m_v.m_p.y);

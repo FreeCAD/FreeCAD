@@ -42,8 +42,7 @@ namespace Measure
 {
 
 
-class MeasureExport MeasurePosition
-    : public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
+class MeasureExport MeasurePosition: public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasurePosition);
 

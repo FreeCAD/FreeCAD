@@ -183,19 +183,33 @@ public:
     void clearSelection();
     void deleteSelection();
     bool hasSelection() const;
-    void getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
-                              const Base::ViewProjMethod& proj,
-                              SbBool inner,
-                              std::vector<Mesh::FacetIndex>& indices) const;
-    std::vector<Mesh::FacetIndex>
-    getFacetsOfRegion(const SbViewportRegion&, const SbViewportRegion&, SoCamera*) const;
-    std::vector<Mesh::FacetIndex>
-    getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
+    void getFacetsFromPolygon(
+        const std::vector<SbVec2f>& picked,
+        const Base::ViewProjMethod& proj,
+        SbBool inner,
+        std::vector<Mesh::FacetIndex>& indices
+    ) const;
+    std::vector<Mesh::FacetIndex> getFacetsOfRegion(
+        const SbViewportRegion&,
+        const SbViewportRegion&,
+        SoCamera*
+    ) const;
+    std::vector<Mesh::FacetIndex> getVisibleFacetsAfterZoom(
+        const SbBox2s&,
+        const SbViewportRegion&,
+        SoCamera*
+    ) const;
     std::vector<Mesh::FacetIndex> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
-    virtual void
-    cutMesh(const std::vector<SbVec2f>& polygon, const Base::ViewProjMethod& proj, SbBool inner);
-    virtual void
-    trimMesh(const std::vector<SbVec2f>& polygon, const Base::ViewProjMethod& proj, SbBool inner);
+    virtual void cutMesh(
+        const std::vector<SbVec2f>& polygon,
+        const Base::ViewProjMethod& proj,
+        SbBool inner
+    );
+    virtual void trimMesh(
+        const std::vector<SbVec2f>& polygon,
+        const Base::ViewProjMethod& proj,
+        SbBool inner
+    );
     virtual void appendFacets(const std::vector<Mesh::FacetIndex>&);
     virtual void removeFacets(const std::vector<Mesh::FacetIndex>&);
     /*! The size of the array must be equal to the number of facets. */
@@ -218,10 +232,16 @@ protected:
     void onChanged(const App::Property* prop) override;
     virtual void showOpenEdges(bool);
     void setOpenEdgeColorFrom(const Base::Color& col);
-    virtual void
-    splitMesh(const MeshCore::MeshKernel& toolMesh, const Base::Vector3f& normal, SbBool inner);
-    virtual void
-    segmentMesh(const MeshCore::MeshKernel& toolMesh, const Base::Vector3f& normal, SbBool inner);
+    virtual void splitMesh(
+        const MeshCore::MeshKernel& toolMesh,
+        const Base::Vector3f& normal,
+        SbBool inner
+    );
+    virtual void segmentMesh(
+        const MeshCore::MeshKernel& toolMesh,
+        const Base::Vector3f& normal,
+        SbBool inner
+    );
     virtual void faceInfo(Mesh::FacetIndex facet);
     virtual void fillHole(Mesh::FacetIndex facet);
     virtual void selectArea(short, short, short, short, const SbViewportRegion&, SoCamera*);
@@ -262,10 +282,12 @@ public:
     static void segmMeshCallback(void* ud, SoEventCallback* cb);
     static void selectGLCallback(void* ud, SoEventCallback* cb);
     /// Creates a tool mesh from the previous picked polygon on the viewer
-    static bool createToolMesh(const std::vector<SbVec2f>& rclPoly,
-                               const SbViewVolume& vol,
-                               const Base::Vector3f& rcNormal,
-                               std::vector<MeshCore::MeshGeomFacet>&);
+    static bool createToolMesh(
+        const std::vector<SbVec2f>& rclPoly,
+        const SbViewVolume& vol,
+        const Base::Vector3f& rcNormal,
+        std::vector<MeshCore::MeshGeomFacet>&
+    );
 
 private:
     static void renderGLCallback(void* ud, SoAction* a);

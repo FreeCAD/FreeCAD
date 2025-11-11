@@ -57,23 +57,23 @@ void CmdRobotInsertKukaIR500::activated(int)
     std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr500_1.csv";
 
     openCommand("Place robot");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")",
-              FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              RobotPath.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              KinematicPath.c_str());
+    doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        RobotPath.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        KinematicPath.c_str()
+    );
     doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.Home  = [0.0,-90.0,90.0,0.0,45.0,0.0]",
-              FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Home  = [0.0,-90.0,90.0,0.0,45.0,0.0]", FeatName.c_str());
     updateActive();
     commitCommand();
 }
@@ -108,17 +108,19 @@ void CmdRobotInsertKukaIR16::activated(int)
     std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr_16.csv";
 
     openCommand("Place robot");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")",
-              FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              RobotPath.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              KinematicPath.c_str());
+    doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        RobotPath.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        KinematicPath.c_str()
+    );
     doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
@@ -156,17 +158,19 @@ void CmdRobotInsertKukaIR210::activated(int)
     std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr_210_2.csv";
 
     openCommand("Place robot");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")",
-              FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              RobotPath.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              KinematicPath.c_str());
+    doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        RobotPath.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        KinematicPath.c_str()
+    );
     doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
@@ -203,17 +207,19 @@ void CmdRobotInsertKukaIR125::activated(int)
     std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr_125.csv";
 
     openCommand("Place robot");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")",
-              FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              RobotPath.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              KinematicPath.c_str());
+    doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        RobotPath.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        KinematicPath.c_str()
+    );
     doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
@@ -246,17 +252,22 @@ CmdRobotAddToolShape::CmdRobotAddToolShape()
 
 void CmdRobotAddToolShape::activated(int)
 {
-    std::vector<App::DocumentObject*> robots =
-        getSelection().getObjectsOfType(Robot::RobotObject::getClassTypeId());
-    std::vector<App::DocumentObject*> shapes =
-        getSelection().getObjectsOfType(Base::Type::fromName("Part::Feature"));
-    std::vector<App::DocumentObject*> VRMLs =
-        getSelection().getObjectsOfType(Base::Type::fromName("App::VRMLObject"));
+    std::vector<App::DocumentObject*> robots = getSelection().getObjectsOfType(
+        Robot::RobotObject::getClassTypeId()
+    );
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(
+        Base::Type::fromName("Part::Feature")
+    );
+    std::vector<App::DocumentObject*> VRMLs = getSelection().getObjectsOfType(
+        Base::Type::fromName("App::VRMLObject")
+    );
 
     if (robots.size() != 1 || (shapes.size() != 1 && VRMLs.size() != 1)) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one robot and one shape or VRML object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one robot and one shape or VRML object.")
+        );
         return;
     }
 
@@ -270,10 +281,12 @@ void CmdRobotAddToolShape::activated(int)
     }
 
     openCommand("Add tool to robot");
-    doCommand(Doc,
-              "App.activeDocument().%s.ToolShape = App.activeDocument().%s",
-              RoboName.c_str(),
-              ShapeName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.ToolShape = App.activeDocument().%s",
+        RoboName.c_str(),
+        ShapeName.c_str()
+    );
     // doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",ShapeName.c_str());
     updateActive();
     commitCommand();

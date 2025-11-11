@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QMenu>
-# include <Inventor/nodes/SoTransform.h>
+#include <QMenu>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "ViewProviderBoolean.h"
 
@@ -43,7 +43,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean, PartDesignGui::ViewProvider)
 
 const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result", "Tools", nullptr};
 
@@ -56,7 +56,7 @@ ViewProviderBoolean::ViewProviderBoolean()
 
     ViewProviderGeoFeatureGroupExtension::initExtension(this);
 
-    ADD_PROPERTY(Display,((long)0));
+    ADD_PROPERTY(Display, ((long)0));
     Display.setEnums(DisplayEnum);
 }
 
@@ -69,7 +69,7 @@ void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
+bool ViewProviderBoolean::onDelete(const std::vector<std::string>& s)
 {
     auto* feature = getObject<PartDesign::Boolean>();
 
@@ -88,7 +88,8 @@ const char* ViewProviderBoolean::getDefaultDisplayMode() const
     return "Flat Lines";
 }
 
-void ViewProviderBoolean::onChanged(const App::Property* prop) {
+void ViewProviderBoolean::onChanged(const App::Property* prop)
+{
 
     ViewProvider::onChanged(prop);
 
@@ -118,7 +119,8 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
     auto feature = getObject<PartDesign::Boolean>();
 
     if (prop == &feature->Type) {
-        const auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+        const auto* styleParameterManager
+            = Base::provideService<Gui::StyleParameters::ParameterManager>();
         const auto type = feature->Type.getValueAsString();
 
         const std::map<std::string_view, Gui::StyleParameters::ParameterDefinition<Base::Color>> lookup {
@@ -184,7 +186,9 @@ void ViewProviderBoolean::updatePreview()
             return;
         }
 
-        auto baseFeatureViewProvider = freecad_cast<ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+        auto baseFeatureViewProvider = freecad_cast<ViewProvider*>(
+            Gui::Application::Instance->getViewProvider(baseFeature)
+        );
         if (!baseFeatureViewProvider) {
             return;
         }
@@ -193,7 +197,9 @@ void ViewProviderBoolean::updatePreview()
         updatePreviewShape(baseFeature->Shape.getShape(), pcBaseShapePreview);
 
         pcBaseShapePreview->transparency.setValue(static_cast<float>(toolTransparency));
-        pcBaseShapePreview->color.setValue(baseFeatureViewProvider->ShapeAppearance.getDiffuseColor().asValue<SbColor>());
+        pcBaseShapePreview->color.setValue(
+            baseFeatureViewProvider->ShapeAppearance.getDiffuseColor().asValue<SbColor>()
+        );
         pcBaseShapePreview->lineWidth.connectFrom(&pcPreviewShape->lineWidth);
 
         pcBasePreviewToggle->addChild(pcBaseShapePreview);
@@ -211,7 +217,8 @@ void ViewProviderBoolean::updatePreview()
 
         addBaseShapePreview();
         std::ranges::for_each(tools, addToolPreview);
-    } catch (const Base::Exception& e) {
+    }
+    catch (const Base::Exception& e) {
         e.reportException();
     }
 
@@ -228,5 +235,6 @@ void ViewProviderBoolean::updateBasePreviewVisibility()
     auto feature = getObject<PartDesign::Boolean>();
 
     // enable base preview for Common operation only and when the final result is shown
-    pcBasePreviewToggle->on = strcmp(feature->Type.getValueAsString(), "Common") == 0 && Visibility.getValue();
+    pcBasePreviewToggle->on = strcmp(feature->Type.getValueAsString(), "Common") == 0
+        && Visibility.getValue();
 }

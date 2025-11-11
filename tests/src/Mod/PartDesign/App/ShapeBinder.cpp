@@ -29,7 +29,8 @@ protected:
         _box->Width.setValue(2);
         _box->Height.setValue(3);
         _box->Placement.setValue(
-            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));  // NOLINT
+            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d())
+        );  // NOLINT
         //        _body->addObject(_box); // Invalid, Part::Features can't go in a PartDesign::Body,
         //        but we can bind them.
         _binder = _doc->addObject<PartDesign::ShapeBinder>("ShapeBinderFoo");

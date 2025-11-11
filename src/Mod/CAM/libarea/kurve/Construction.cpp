@@ -185,8 +185,7 @@ Point3d::Point3d(const Vector3d& v)
 bool Point3d::operator==(const Point3d& p) const
 {
     // p1 == p2 (uses TOLERANCE)
-    if (FNE(this->x, p.x, TOLERANCE) || FNE(this->y, p.y, TOLERANCE)
-        || FNE(this->z, p.z, TOLERANCE)) {
+    if (FNE(this->x, p.x, TOLERANCE) || FNE(this->y, p.y, TOLERANCE) || FNE(this->z, p.z, TOLERANCE)) {
         return false;
     }
     return true;
@@ -395,8 +394,10 @@ Point Around(const Circle& c, double d, const Point& p)
         if (fabs(c.radius) > TOLERANCE) {
             double a = sin(-d / c.radius);
             double b = cos(-d / c.radius);
-            return Point(c.pc.x - c.radius * (radial.v.gety() * a - radial.v.getx() * b),
-                         c.pc.y + c.radius * (radial.v.gety() * b + radial.v.getx() * a));
+            return Point(
+                c.pc.x - c.radius * (radial.v.gety() * a - radial.v.getx() * b),
+                c.pc.y + c.radius * (radial.v.gety() * b + radial.v.getx() * a)
+            );
         }
     }
     return INVALID_POINT;
@@ -406,9 +407,11 @@ CLine AtAngle(double angle, const Point& p0, const CLine& s)
     // cline at angle [to a cline] thro' a point
     angle *= DegreesToRadians;
     Vector2d v(cos(angle), sin(angle));
-    return CLine(p0,
-                 v.getx() * s.v.getx() - v.gety() * s.v.gety(),
-                 v.gety() * s.v.getx() + v.getx() * s.v.gety());
+    return CLine(
+        p0,
+        v.getx() * s.v.getx() - v.gety() * s.v.gety(),
+        v.gety() * s.v.getx() + v.getx() * s.v.gety()
+    );
 }
 CLine Parallel(int side, const CLine& s0, double distance)
 {
@@ -583,8 +586,7 @@ Point Intof(int NF, const CLine& s, const Circle& c, Point& otherInters)
     int nRoots;
     double t, tFar, tNear, tOther;
     Vector2d v0(c.pc, s.p);
-    if ((nRoots =
-             quadratic(1, 2 * (v0 * s.v), v0.magnitudesqd() - c.radius * c.radius, tFar, tNear))
+    if ((nRoots = quadratic(1, 2 * (v0 * s.v), v0.magnitudesqd() - c.radius * c.radius, tFar, tNear))
         != 0) {
         if (nRoots == 2 && NF == NEARINT) {
             t = tNear;
@@ -759,8 +761,7 @@ Circle Thro(int LR, const Point& p0, const Point& p1, double rad)
         }
         else {
             // 2 solutions
-            return Circle(Along(Normal(thro, pm), (double)LR * sqrt((rad + d) * (rad - d)), pm),
-                          rad);
+            return Circle(Along(Normal(thro, pm), (double)LR * sqrt((rad + d) * (rad - d)), pm), rad);
         }
     }
     return INVALID_CIRCLE;

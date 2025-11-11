@@ -231,18 +231,20 @@ private:
 class MeshExport MeshDistanceGenericSurfaceFitSegment: public MeshDistanceSurfaceSegment
 {
 public:
-    MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit*,
-                                         const MeshKernel& mesh,
-                                         unsigned long minFacets,
-                                         float tol);
+    MeshDistanceGenericSurfaceFitSegment(
+        AbstractSurfaceFit*,
+        const MeshKernel& mesh,
+        unsigned long minFacets,
+        float tol
+    );
     ~MeshDistanceGenericSurfaceFitSegment() override;
 
     MeshDistanceGenericSurfaceFitSegment(const MeshDistanceGenericSurfaceFitSegment&) = delete;
     MeshDistanceGenericSurfaceFitSegment(MeshDistanceGenericSurfaceFitSegment&&) = delete;
-    MeshDistanceGenericSurfaceFitSegment&
-    operator=(const MeshDistanceGenericSurfaceFitSegment&) = delete;
-    MeshDistanceGenericSurfaceFitSegment&
-    operator=(MeshDistanceGenericSurfaceFitSegment&&) = delete;
+    MeshDistanceGenericSurfaceFitSegment& operator=(
+        const MeshDistanceGenericSurfaceFitSegment&
+    ) = delete;
+    MeshDistanceGenericSurfaceFitSegment& operator=(MeshDistanceGenericSurfaceFitSegment&&) = delete;
 
     bool TestFacet(const MeshFacet& face) const override;
     const char* GetType() const override
@@ -280,9 +282,7 @@ private:
 class MeshExport MeshCurvaturePlanarSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvaturePlanarSegment(const std::vector<CurvatureInfo>& ci,
-                               unsigned long minFacets,
-                               float tol)
+    MeshCurvaturePlanarSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol)
         : MeshCurvatureSurfaceSegment(ci, minFacets)
         , tolerance(tol)
     {}
@@ -299,11 +299,13 @@ private:
 class MeshExport MeshCurvatureCylindricalSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci,
-                                    unsigned long minFacets,
-                                    float tolMin,
-                                    float tolMax,
-                                    float curv)
+    MeshCurvatureCylindricalSegment(
+        const std::vector<CurvatureInfo>& ci,
+        unsigned long minFacets,
+        float tolMin,
+        float tolMax,
+        float curv
+    )
         : MeshCurvatureSurfaceSegment(ci, minFacets)
         , curvature(curv)
         , toleranceMin(tolMin)
@@ -324,10 +326,12 @@ private:
 class MeshExport MeshCurvatureSphericalSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci,
-                                  unsigned long minFacets,
-                                  float tol,
-                                  float curv)
+    MeshCurvatureSphericalSegment(
+        const std::vector<CurvatureInfo>& ci,
+        unsigned long minFacets,
+        float tol,
+        float curv
+    )
         : MeshCurvatureSurfaceSegment(ci, minFacets)
         , curvature(curv)
         , tolerance(tol)
@@ -346,12 +350,14 @@ private:
 class MeshExport MeshCurvatureFreeformSegment: public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureFreeformSegment(const std::vector<CurvatureInfo>& ci,
-                                 unsigned long minFacets,
-                                 float tolMin,
-                                 float tolMax,
-                                 float c1,
-                                 float c2)
+    MeshCurvatureFreeformSegment(
+        const std::vector<CurvatureInfo>& ci,
+        unsigned long minFacets,
+        float tolMin,
+        float tolMax,
+        float c1,
+        float c2
+    )
         : MeshCurvatureSurfaceSegment(ci, minFacets)
         , c1(c1)
         , c2(c2)
@@ -374,11 +380,13 @@ class MeshExport MeshSurfaceVisitor: public MeshFacetVisitor
 {
 public:
     MeshSurfaceVisitor(MeshSurfaceSegment& segm, std::vector<FacetIndex>& indices);
-    bool AllowVisit(const MeshFacet& face,
-                    const MeshFacet&,
-                    FacetIndex,
-                    unsigned long,
-                    unsigned short neighbourIndex) override;
+    bool AllowVisit(
+        const MeshFacet& face,
+        const MeshFacet&,
+        FacetIndex,
+        unsigned long,
+        unsigned short neighbourIndex
+    ) override;
     bool Visit(const MeshFacet& face, const MeshFacet&, FacetIndex ulFInd, unsigned long) override;
 
 private:

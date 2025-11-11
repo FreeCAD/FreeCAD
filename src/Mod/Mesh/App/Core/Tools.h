@@ -54,28 +54,36 @@ public:
      * facets lying inside a sphere of radius \a fDistance, center \a center of the original facet.
      * This method uses the MARKED flags.
      */
-    unsigned long NeighboursFromFacet(FacetIndex ulFacetIdx,
-                                      float fDistance,
-                                      unsigned long ulMinPoints,
-                                      std::vector<Base::Vector3f>& raclResultPoints);
+    unsigned long NeighboursFromFacet(
+        FacetIndex ulFacetIdx,
+        float fDistance,
+        unsigned long ulMinPoints,
+        std::vector<Base::Vector3f>& raclResultPoints
+    );
     /** Searches for facets from the start facet, sample the neighbour facets and accumulates the
      * points. */
-    unsigned long NeighboursFromSampledFacets(FacetIndex ulFacetIdx,
-                                              float fDistance,
-                                              std::vector<Base::Vector3f>& raclResultPoints);
+    unsigned long NeighboursFromSampledFacets(
+        FacetIndex ulFacetIdx,
+        float fDistance,
+        std::vector<Base::Vector3f>& raclResultPoints
+    );
     /** Searches for facets from the start facet. */
-    unsigned long NeighboursFacetFromFacet(FacetIndex ulFacetIdx,
-                                           float fDistance,
-                                           std::vector<Base::Vector3f>& raclResultPoints,
-                                           std::vector<FacetIndex>& raclResultFacets);
+    unsigned long NeighboursFacetFromFacet(
+        FacetIndex ulFacetIdx,
+        float fDistance,
+        std::vector<Base::Vector3f>& raclResultPoints,
+        std::vector<FacetIndex>& raclResultFacets
+    );
 
 protected:
     /** Subsamples the mesh. */
     void SampleAllFacets();
-    inline bool
-    CheckDistToFacet(const MeshFacet& rclF);  // check distance to facet, add points inner radius
-    bool AccumulateNeighbours(const MeshFacet& rclF,
-                              FacetIndex ulFIdx);  // accumulate the sample neighbours facet
+    inline bool CheckDistToFacet(const MeshFacet& rclF);  // check distance to facet, add points
+                                                          // inner radius
+    bool AccumulateNeighbours(
+        const MeshFacet& rclF,
+        FacetIndex ulFIdx
+    );  // accumulate the sample neighbours facet
     inline bool InnerPoint(const Base::Vector3f& rclPt) const;
     inline bool TriangleCutsSphere(const MeshFacet& rclF) const;
     bool ExpandRadius(unsigned long ulMinPoints);
@@ -193,9 +201,7 @@ class MeshNearestIndexToPlane
 {
 public:
     using Index = typename T::Index;
-    MeshNearestIndexToPlane(const MeshKernel& mesh,
-                            const Base::Vector3f& b,
-                            const Base::Vector3f& n)
+    MeshNearestIndexToPlane(const MeshKernel& mesh, const Base::Vector3f& b, const Base::Vector3f& n)
         : nearest_index(-1)
         , it(mesh)
         , base(b)

@@ -73,8 +73,7 @@ public:
     void setDisplayMode(const char* ModeName) override;
     const char* getDefaultDisplayMode() const override;
     std::vector<std::string> getDisplayModes() const override;
-    SoPickedPoint* getPickedPoint(const SbVec2s& pos,
-                                  const Gui::View3DInventorViewer* viewer) const;
+    SoPickedPoint* getPickedPoint(const SbVec2s& pos, const Gui::View3DInventorViewer* viewer) const;
 
     ViewProviderMesh* mesh {nullptr};
     std::vector<int> index;
@@ -129,10 +128,12 @@ public:
     MeshHoleFiller(MeshHoleFiller&&) = delete;
     MeshHoleFiller& operator=(const MeshHoleFiller&) = delete;
     MeshHoleFiller& operator=(MeshHoleFiller&&) = delete;
-    virtual bool fillHoles(Mesh::MeshObject&,
-                           const std::list<std::vector<Mesh::PointIndex>>&,
-                           Mesh::PointIndex,
-                           Mesh::PointIndex)
+    virtual bool fillHoles(
+        Mesh::MeshObject&,
+        const std::list<std::vector<Mesh::PointIndex>>&,
+        Mesh::PointIndex,
+        Mesh::PointIndex
+    )
     {
         return false;
     }
@@ -165,10 +166,7 @@ private:
     static void fileHoleCallback(void* ud, SoEventCallback* n);
     void createPolygons();
     SoNode* getPickedPolygon(const SoRayPickAction& action) const;
-    float findClosestPoint(const SbLine& ray,
-                           const TBoundary& polygon,
-                           Mesh::PointIndex&,
-                           SbVec3f&) const;
+    float findClosestPoint(const SbLine& ray, const TBoundary& polygon, Mesh::PointIndex&, SbVec3f&) const;
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 private:

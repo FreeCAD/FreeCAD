@@ -113,8 +113,7 @@ public:
 
     bool hasException() const
     {
-        return isUsed(EXCEPTION_SET) || isUsed(PARSE_EXCEPTION_SET)
-            || isUsed(RESOLVE_EXCEPTION_SET);
+        return isUsed(EXCEPTION_SET) || isUsed(PARSE_EXCEPTION_SET) || isUsed(RESOLVE_EXCEPTION_SET);
     }
 
     void moveAbsolute(App::CellAddress newAddress);

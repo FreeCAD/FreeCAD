@@ -54,8 +54,9 @@ public:
 
     void appendText(const QString& text, bool error)
     {
-        syntax->setParagraphType(error ? Gui::DockWnd::ReportHighlighter::Error
-                                       : Gui::DockWnd::ReportHighlighter::Message);
+        syntax->setParagraphType(
+            error ? Gui::DockWnd::ReportHighlighter::Error : Gui::DockWnd::ReportHighlighter::Message
+        );
         QTextCursor cursor(ui.outputWindow->document());
         cursor.beginEditBlock();
         cursor.movePosition(QTextCursor::End);

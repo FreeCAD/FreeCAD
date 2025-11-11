@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
+#include <QMenu>
 
 
 #include <Gui/Application.h>
@@ -35,34 +34,38 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe, PartDesignGui::ViewProvider)
 
 ViewProviderPipe::ViewProviderPipe() = default;
 
 ViewProviderPipe::~ViewProviderPipe() = default;
 
-std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Pipe* pcPipe = getObject<PartDesign::Pipe>();
 
     App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
-    if (sketch)
+    if (sketch) {
         temp.push_back(sketch);
+    }
 
-    for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-        if (obj && obj->isDerivedFrom<Part::Part2DObject>())
+    for (App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+        if (obj && obj->isDerivedFrom<Part::Part2DObject>()) {
             temp.push_back(obj);
+        }
     }
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine && spine->isDerivedFrom<Part::Part2DObject>())
+    if (spine && spine->isDerivedFrom<Part::Part2DObject>()) {
         temp.push_back(spine);
+    }
 
     App::DocumentObject* auxspine = pcPipe->AuxiliarySpine.getValue();
-    if (auxspine && auxspine->isDerivedFrom<Part::Part2DObject>())
+    if (auxspine && auxspine->isDerivedFrom<Part::Part2DObject>()) {
         temp.push_back(auxspine);
+    }
 
     return temp;
 }
@@ -73,7 +76,8 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
+TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog()
+{
     return new TaskDlgPipeParameters(this, false);
 }
 
@@ -82,41 +86,54 @@ void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, boo
     PartDesign::Pipe* pcPipe = getObject<PartDesign::Pipe>();
 
     switch (mode) {
-    case Spine:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Spine.getValue()),
-                            pcPipe->Spine.getSubValuesStartsWith("Edge"), on);
-        break;
-    case AuxiliarySpine:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxiliarySpine.getValue()),
-                            pcPipe->AuxiliarySpine.getSubValuesStartsWith("Edge"), on);
-        break;
-    case Profile:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),
-                            pcPipe->Profile.getSubValuesStartsWith("Edge"), on);
-        break;
-    case Section:
-        {
+        case Spine:
+            highlightReferences(
+                dynamic_cast<Part::Feature*>(pcPipe->Spine.getValue()),
+                pcPipe->Spine.getSubValuesStartsWith("Edge"),
+                on
+            );
+            break;
+        case AuxiliarySpine:
+            highlightReferences(
+                dynamic_cast<Part::Feature*>(pcPipe->AuxiliarySpine.getValue()),
+                pcPipe->AuxiliarySpine.getSubValuesStartsWith("Edge"),
+                on
+            );
+            break;
+        case Profile:
+            highlightReferences(
+                dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),
+                pcPipe->Profile.getSubValuesStartsWith("Edge"),
+                on
+            );
+            break;
+        case Section: {
             std::vector<App::DocumentObject*> sections = pcPipe->Sections.getValues();
             for (auto it : sections) {
-                highlightReferences(dynamic_cast<Part::Feature*>(it),
-                                    std::vector<std::string>(), on);
+                highlightReferences(dynamic_cast<Part::Feature*>(it), std::vector<std::string>(), on);
             }
-        }
-        break;
-    default:
-        break;
+        } break;
+        default:
+            break;
     }
 }
 
-void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on)
+void ViewProviderPipe::highlightReferences(
+    Part::Feature* base,
+    const std::vector<std::string>& edges,
+    bool on
+)
 {
-    if (!base)
+    if (!base) {
         return;
+    }
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (!svp)
+        Gui::Application::Instance->getViewProvider(base)
+    );
+    if (!svp) {
         return;
+    }
 
     std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
@@ -129,7 +146,8 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
             highlighter.getEdgeColors(edges, colors);
             svp->LineColorArray.setValues(colors);
         }
-    } else {
+    }
+    else {
         if (!edgeColors.empty()) {
             svp->LineColorArray.setValues(edgeColors);
             edgeColors.clear();
@@ -137,15 +155,19 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderPipe::getIcon() const {
+QIcon ViewProviderPipe::getIcon() const
+{
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Pipe>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
         str += QStringLiteral("Additive");
-    else
+    }
+    else {
         str += QStringLiteral("Subtractive");
+    }
 
     str += QStringLiteral("Pipe.svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+    );
 }
-

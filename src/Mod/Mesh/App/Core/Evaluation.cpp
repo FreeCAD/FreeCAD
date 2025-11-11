@@ -44,10 +44,12 @@ using namespace MeshCore;
 
 MeshOrientationVisitor::MeshOrientationVisitor() = default;
 
-bool MeshOrientationVisitor::Visit(const MeshFacet& rclFacet,
-                                   const MeshFacet& rclFrom,
-                                   FacetIndex ulFInd,
-                                   unsigned long ulLevel)
+bool MeshOrientationVisitor::Visit(
+    const MeshFacet& rclFacet,
+    const MeshFacet& rclFrom,
+    FacetIndex ulFInd,
+    unsigned long ulLevel
+)
 {
     (void)ulFInd;
     (void)ulLevel;
@@ -64,16 +66,20 @@ bool MeshOrientationVisitor::HasNonUnifomOrientedFacets() const
     return _nonuniformOrientation;
 }
 
-MeshOrientationCollector::MeshOrientationCollector(std::vector<FacetIndex>& aulIndices,
-                                                   std::vector<FacetIndex>& aulComplement)
+MeshOrientationCollector::MeshOrientationCollector(
+    std::vector<FacetIndex>& aulIndices,
+    std::vector<FacetIndex>& aulComplement
+)
     : _aulIndices(aulIndices)
     , _aulComplement(aulComplement)
 {}
 
-bool MeshOrientationCollector::Visit(const MeshFacet& rclFacet,
-                                     const MeshFacet& rclFrom,
-                                     FacetIndex ulFInd,
-                                     unsigned long ulLevel)
+bool MeshOrientationCollector::Visit(
+    const MeshFacet& rclFacet,
+    const MeshFacet& rclFrom,
+    FacetIndex ulFInd,
+    unsigned long ulLevel
+)
 {
     (void)ulLevel;
     // different orientation of rclFacet and rclFrom
@@ -108,10 +114,12 @@ MeshSameOrientationCollector::MeshSameOrientationCollector(std::vector<FacetInde
     : _aulIndices(aulIndices)
 {}
 
-bool MeshSameOrientationCollector::Visit(const MeshFacet& rclFacet,
-                                         const MeshFacet& rclFrom,
-                                         FacetIndex ulFInd,
-                                         unsigned long ulLevel)
+bool MeshSameOrientationCollector::Visit(
+    const MeshFacet& rclFacet,
+    const MeshFacet& rclFrom,
+    FacetIndex ulFInd,
+    unsigned long ulLevel
+)
 {
     // different orientation of rclFacet and rclFrom
     (void)ulLevel;
@@ -252,11 +260,7 @@ std::vector<FacetIndex> MeshEvalOrientation::GetIndices() const
 
         std::vector<FacetIndex> diff;
         std::back_insert_iterator<std::vector<FacetIndex>> biit(diff);
-        std::set_difference(uIndices.begin(),
-                            uIndices.end(),
-                            falsePos.begin(),
-                            falsePos.end(),
-                            biit);
+        std::set_difference(uIndices.begin(), uIndices.end(), falsePos.begin(), falsePos.end(), biit);
         uIndices = diff;
 
         cAlg.ResetFacetFlag(MeshFacet::TMP0);
@@ -457,8 +461,7 @@ bool MeshFixTopology::Fixup()
     if (!deletedFaces.empty()) {
         // remove duplicates
         std::sort(deletedFaces.begin(), deletedFaces.end());
-        deletedFaces.erase(std::unique(deletedFaces.begin(), deletedFaces.end()),
-                           deletedFaces.end());
+        deletedFaces.erase(std::unique(deletedFaces.begin(), deletedFaces.end()), deletedFaces.end());
 
         _rclMesh.DeleteFacets(deletedFaces);
         _rclMesh.RebuildNeighbours();
@@ -676,7 +679,8 @@ bool MeshEvalSelfIntersection::Evaluate()
 
 void MeshEvalSelfIntersection::GetIntersections(
     const std::vector<std::pair<FacetIndex, FacetIndex>>& indices,
-    std::vector<std::pair<Base::Vector3f, Base::Vector3f>>& intersection) const
+    std::vector<std::pair<Base::Vector3f, Base::Vector3f>>& intersection
+) const
 {
     intersection.reserve(indices.size());
     MeshFacetIterator cMF1(_rclMesh);
@@ -700,7 +704,8 @@ void MeshEvalSelfIntersection::GetIntersections(
 }
 
 void MeshEvalSelfIntersection::GetIntersections(
-    std::vector<std::pair<FacetIndex, FacetIndex>>& intersection) const
+    std::vector<std::pair<FacetIndex, FacetIndex>>& intersection
+) const
 {
     // Contains bounding boxes for every facet
     std::vector<Base::BoundBox3f> boxes;

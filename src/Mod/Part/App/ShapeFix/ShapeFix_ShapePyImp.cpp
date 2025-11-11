@@ -42,7 +42,7 @@ std::string ShapeFix_ShapePy::representation() const
     return "<ShapeFix_Shape object>";
 }
 
-PyObject *ShapeFix_ShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_ShapePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of ShapeFix_ShapePy
     return new ShapeFix_ShapePy(nullptr);
@@ -52,8 +52,9 @@ PyObject *ShapeFix_ShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 int ShapeFix_ShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &TopoShapePy::Type, &shape)) {
         return -1;
+    }
 
     setHandle(new ShapeFix_Shape);
     if (shape) {
@@ -63,38 +64,42 @@ int ShapeFix_ShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return 0;
 }
 
-PyObject* ShapeFix_ShapePy::init(PyObject *args)
+PyObject* ShapeFix_ShapePy::init(PyObject* args)
 {
     PyObject* shape;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     getShapeFix_ShapePtr()->Init(static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
     Py_Return;
 }
 
-PyObject* ShapeFix_ShapePy::perform(PyObject *args)
+PyObject* ShapeFix_ShapePy::perform(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Standard_Boolean ok = getShapeFix_ShapePtr()->Perform();
     return Py::new_reference_to(Py::Boolean(ok ? true : false));
 }
 
-PyObject* ShapeFix_ShapePy::shape(PyObject *args)
+PyObject* ShapeFix_ShapePy::shape(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape shape = getShapeFix_ShapePtr()->Shape();
     return shape.getPyObject();
 }
 
-PyObject* ShapeFix_ShapePy::fixSolidTool(PyObject *args)
+PyObject* ShapeFix_ShapePy::fixSolidTool(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Handle(ShapeFix_Solid) tool = getShapeFix_ShapePtr()->FixSolidTool();
     ShapeFix_SolidPy* solid = new ShapeFix_SolidPy(nullptr);
@@ -102,10 +107,11 @@ PyObject* ShapeFix_ShapePy::fixSolidTool(PyObject *args)
     return solid;
 }
 
-PyObject* ShapeFix_ShapePy::fixShellTool(PyObject *args)
+PyObject* ShapeFix_ShapePy::fixShellTool(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Handle(ShapeFix_Shell) tool = getShapeFix_ShapePtr()->FixShellTool();
     ShapeFix_ShellPy* shell = new ShapeFix_ShellPy(nullptr);
@@ -113,10 +119,11 @@ PyObject* ShapeFix_ShapePy::fixShellTool(PyObject *args)
     return shell;
 }
 
-PyObject* ShapeFix_ShapePy::fixFaceTool(PyObject *args)
+PyObject* ShapeFix_ShapePy::fixFaceTool(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Handle(ShapeFix_Face) tool = getShapeFix_ShapePtr()->FixFaceTool();
     ShapeFix_FacePy* face = new ShapeFix_FacePy(nullptr);
@@ -124,10 +131,11 @@ PyObject* ShapeFix_ShapePy::fixFaceTool(PyObject *args)
     return face;
 }
 
-PyObject* ShapeFix_ShapePy::fixWireTool(PyObject *args)
+PyObject* ShapeFix_ShapePy::fixWireTool(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Handle(ShapeFix_Wire) tool = getShapeFix_ShapePtr()->FixWireTool();
     ShapeFix_WirePy* wire = new ShapeFix_WirePy(nullptr);
@@ -135,10 +143,11 @@ PyObject* ShapeFix_ShapePy::fixWireTool(PyObject *args)
     return wire;
 }
 
-PyObject* ShapeFix_ShapePy::fixEdgeTool(PyObject *args)
+PyObject* ShapeFix_ShapePy::fixEdgeTool(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     Handle(ShapeFix_Edge) tool = getShapeFix_ShapePtr()->FixEdgeTool();
     ShapeFix_EdgePy* edge = new ShapeFix_EdgePy(nullptr);
@@ -216,7 +225,7 @@ void ShapeFix_ShapePy::setFixVertexTolMode(Py::Boolean arg)
     getShapeFix_ShapePtr()->FixVertexTolMode() = arg;
 }
 
-PyObject *ShapeFix_ShapePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_ShapePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

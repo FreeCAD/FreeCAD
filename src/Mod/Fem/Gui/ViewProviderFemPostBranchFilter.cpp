@@ -29,8 +29,7 @@
 using namespace FemGui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter,
-                                FemGui::ViewProviderFemPostObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter, FemGui::ViewProviderFemPostObject)
 
 ViewProviderFemPostBranchFilter::ViewProviderFemPostBranchFilter()
     : Gui::ViewProviderGroupExtension()
@@ -57,8 +56,10 @@ bool ViewProviderFemPostBranchFilter::acceptReorderingObjects() const
     return true;
 }
 
-bool ViewProviderFemPostBranchFilter::canDragObjectToTarget(App::DocumentObject*,
-                                                            App::DocumentObject* target) const
+bool ViewProviderFemPostBranchFilter::canDragObjectToTarget(
+    App::DocumentObject*,
+    App::DocumentObject* target
+) const
 {
 
     // allow drag only to other post groups

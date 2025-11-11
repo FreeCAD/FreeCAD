@@ -1,26 +1,26 @@
- // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
-  /****************************************************************************
-   *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
-   *   Copyright (c) 2023 FreeCAD Project Association                         *
-   *                                                                          *
-   *   This file is part of FreeCAD.                                          *
-   *                                                                          *
-   *   FreeCAD is free software: you can redistribute it and/or modify it     *
-   *   under the terms of the GNU Lesser General Public License as            *
-   *   published by the Free Software Foundation, either version 2.1 of the   *
-   *   License, or (at your option) any later version.                        *
-   *                                                                          *
-   *   FreeCAD is distributed in the hope that it will be useful, but         *
-   *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
-   *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-   *   Lesser General Public License for more details.                        *
-   *                                                                          *
-   *   You should have received a copy of the GNU Lesser General Public       *
-   *   License along with FreeCAD. If not, see                                *
-   *   <https://www.gnu.org/licenses/>.                                       *
-   *                                                                          *
-   ***************************************************************************/
+/****************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+ *   Copyright (c) 2023 FreeCAD Project Association                         *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
 
 
 #ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
@@ -41,39 +41,43 @@ class QTabWidget;
 class QKeyEvent;
 class QMouseEvent;
 
-namespace Gui::Dialog {
+namespace Gui::Dialog
+{
 class PreferencePage;
 class Ui_DlgPreferences;
 class DlgPreferencesImp;
 
-class GuiExport PreferencesSearchController : public QObject
+class GuiExport PreferencesSearchController: public QObject
 {
     Q_OBJECT
 
 private:
-    enum class PopupAction {
-        KeepOpen,    // don't close popup (used for keyboard navigation)
-        CloseAfter   // close popup (used for mouse clicks and Enter/Return)
+    enum class PopupAction
+    {
+        KeepOpen,   // don't close popup (used for keyboard navigation)
+        CloseAfter  // close popup (used for mouse clicks and Enter/Return)
     };
 
 public:
     // Custom data roles for separating path and widget text
-    enum SearchDataRole {
-        PathRole = Qt::UserRole + 10,        // Path to page (e.g., "Display/3D View")
-        WidgetTextRole = Qt::UserRole + 11   // Text from the widget (e.g., "Enable anti-aliasing")
+    enum SearchDataRole
+    {
+        PathRole = Qt::UserRole + 10,       // Path to page (e.g., "Display/3D View")
+        WidgetTextRole = Qt::UserRole + 11  // Text from the widget (e.g., "Enable anti-aliasing")
     };
 
     // Search results structure
-    struct SearchResult {
+    struct SearchResult
+    {
         QString groupName;
         QString pageName;
         QPointer<QWidget> widget;
         QString matchText;
         QString groupBoxName;
-        QString tabName; // The tab name (like "Display")
-        QString pageDisplayName; // The page display name (like "3D View")
-        bool isPageLevelMatch = false; // True if this is a page title match
-        int score = 0; // Fuzzy search score for sorting
+        QString tabName;                // The tab name (like "Display")
+        QString pageDisplayName;        // The page display name (like "3D View")
+        bool isPageLevelMatch = false;  // True if this is a page title match
+        int score = 0;                  // Fuzzy search score for sorting
     };
 
     explicit PreferencesSearchController(DlgPreferencesImp* parentDialog, QObject* parent = nullptr);
@@ -118,24 +122,36 @@ public Q_SLOTS:
 
 private:
     // Search implementation
-    void collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, 
-                             const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+    void collectSearchResults(
+        QWidget* widget,
+        const QString& searchText,
+        const QString& groupName,
+        const QString& pageName,
+        const QString& pageDisplayName,
+        const QString& tabName
+    );
     void populateSearchResultsList();
-    
+
     template<typename WidgetType>
-    void searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,
-                         const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+    void searchWidgetType(
+        QWidget* parentWidget,
+        const QString& searchText,
+        const QString& groupName,
+        const QString& pageName,
+        const QString& pageDisplayName,
+        const QString& tabName
+    );
 
     // UI helpers
     void configurePopupSize();
     int calculatePopupHeight(int popupWidth);
     void applyHighlightToWidget(QWidget* widget);
     QString getHighlightStyleForWidget(QWidget* widget);
-    
+
     // Search result navigation
     void selectNextSearchResult();
     void selectPreviousSearchResult();
-    
+
     // Utility methods
     QString findGroupBoxForWidget(QWidget* widget);
     bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
@@ -146,11 +162,11 @@ private:
     QStandardItemModel* m_preferencesModel;
     int m_groupNameRole;
     int m_pageNameRole;
-    
+
     // UI components
     QLineEdit* m_searchBox;
     QListWidget* m_searchResultsList;
-    
+
     // Search state
     QList<SearchResult> m_searchResults;
     QString m_lastSearchText;
@@ -158,7 +174,7 @@ private:
     QMap<QWidget*, QString> m_originalStyles;
 };
 
-class PreferencesPageItem : public QStandardItem
+class PreferencesPageItem: public QStandardItem
 {
 public:
     QWidget* getWidget() const;
@@ -187,8 +203,8 @@ private:
  * PrefSpinBox, PrefLineEdit, PrefComboBox, PrefListBox, PrefCheckBox, PrefRadioButton and
  * PrefSlider. If you have compiled and installed the library under src/Tools/plugins/widgets
  * to QTDIR/plugins/designer you should see the new category "Preferences".
- * Moreover you have to make sure to have specified the "prefEntry" and "prefPath" properties for each
- * preference widget you have used inside your form in Qt Designer.
+ * Moreover you have to make sure to have specified the "prefEntry" and "prefPath" properties for
+ * each preference widget you have used inside your form in Qt Designer.
  *
  * \li For each widget inside your page - you want to save or load - you have to call
  * \<objectname\>->onSave() or \<objectname\>->onRestore(). The best way to this is either to
@@ -244,12 +260,13 @@ private:
  * \see PrefWidget
  * \author Werner Mayer, Jürgen Riegel
  */
-class GuiExport DlgPreferencesImp : public QDialog
+class GuiExport DlgPreferencesImp: public QDialog
 {
     Q_OBJECT
 
-    static constexpr double maxScreenWidthCoveragePercent = 0.8; // maximum % of screen width taken by the dialog
-    static constexpr int minVerticalEmptySpace = 100;            // px of vertical space to leave
+    static constexpr double maxScreenWidthCoveragePercent = 0.8;  // maximum % of screen width taken
+                                                                  // by the dialog
+    static constexpr int minVerticalEmptySpace = 100;             // px of vertical space to leave
 
 public:
     static void addPage(const std::string& className, const std::string& group);
@@ -258,7 +275,10 @@ public:
     static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
-    static PreferencePage* createPreferencePage(const std::string& pageName, const std::string& groupName);
+    static PreferencePage* createPreferencePage(
+        const std::string& pageName,
+        const std::string& groupName
+    );
 
     explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPreferencesImp() override;
@@ -271,18 +291,18 @@ public:
     void activeGroupPage(QString& group, int& index) const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void showEvent(QShowEvent*) override;
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected Q_SLOTS:
     void onButtonBoxClicked(QAbstractButton*);
-    void onPageSelected(const QModelIndex &index);
+    void onPageSelected(const QModelIndex& index);
     void onStackWidgetChange(int index);
 
-    void onGroupExpanded(const QModelIndex &index);
-    void onGroupCollapsed(const QModelIndex &index);
-    
+    void onGroupExpanded(const QModelIndex& index);
+    void onGroupCollapsed(const QModelIndex& index);
+
     void onNavigationRequested(const QString& groupName, const QString& pageName);
 
 private:
@@ -311,7 +331,7 @@ private:
     int minimumPageWidth() const;
     int minimumDialogWidth(int) const;
     void expandToMinimumDialogWidth();
-    
+
     // Navigation helper for search controller
     void navigateToSearchResult(const QString& groupName, const QString& pageName);
     //@}
@@ -324,7 +344,8 @@ private:
     QStandardItemModel _model;
     QSize _sizeHintOfPages;
 
-    struct Group {
+    struct Group
+    {
         std::string iconName;
         QString tooltip;
     };
@@ -334,7 +355,7 @@ private:
     bool invalidParameter;
     bool canEmbedScrollArea;
     bool restartRequired;
-    
+
     // Search controller
     std::unique_ptr<PreferencesSearchController> m_searchController;
 
@@ -345,12 +366,13 @@ private:
     static constexpr char const* GroupNameProperty = "GroupName";
     static constexpr char const* PageNameProperty = "PageName";
 
-    static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
+    static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current
+                                                instance if there is one */
 
     // Friend class to allow search controller access to UI
     friend class PreferencesSearchController;
 };
 
-} // namespace Gui
+}  // namespace Gui::Dialog
 
-#endif // GUI_DIALOG_DLGPREFERENCESIMP_H
+#endif  // GUI_DIALOG_DLGPREFERENCESIMP_H

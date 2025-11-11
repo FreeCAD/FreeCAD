@@ -2,7 +2,6 @@ from Base.Metadata import export, constmethod
 from Part.App.Geom2d.Conic2d import Conic2d
 from typing import Final
 
-
 @export(
     Include="Mod/Part/App/Geometry2d.h",
     FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",

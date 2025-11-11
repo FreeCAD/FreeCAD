@@ -189,14 +189,16 @@ public:
         Hidden = 2,
     };
 
-    ElementItem(int elementnr,
-                int startingVertex,
-                int midVertex,
-                int endVertex,
-                Base::Type geometryType,
-                GeometryState state,
-                const QString& lab,
-                ViewProviderSketch* sketchView)
+    ElementItem(
+        int elementnr,
+        int startingVertex,
+        int midVertex,
+        int endVertex,
+        Base::Type geometryType,
+        GeometryState state,
+        const QString& lab,
+        ViewProviderSketch* sketchView
+    )
         : ElementNbr(elementnr)
         , StartingVertex(startingVertex)
         , MidVertex(midVertex)
@@ -940,9 +942,11 @@ ElementItemDelegate::ElementItemDelegate(ElementView* parent)
 {  // This class relies on the parent being an ElementView, see getElementtItem
 }
 
-void ElementItemDelegate::paint(QPainter* painter,
-                                const QStyleOptionViewItem& option,
-                                const QModelIndex& index) const
+void ElementItemDelegate::paint(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     ElementItem* item = getElementItem(index);
 
@@ -971,9 +975,11 @@ void ElementItemDelegate::paint(QPainter* painter,
     drawSubControl(SubControl::Label, painter, option, index);
 }
 
-QRect ElementItemDelegate::subControlRect(SubControl element,
-                                          const QStyleOptionViewItem& option,
-                                          const QModelIndex& index) const
+QRect ElementItemDelegate::subControlRect(
+    SubControl element,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     auto itemOption = option;
 
@@ -981,19 +987,18 @@ QRect ElementItemDelegate::subControlRect(SubControl element,
 
     initStyleOption(&itemOption, index);
 
-    QRect checkBoxRect =
-        style->subElementRect(QStyle::SE_CheckBoxIndicator, &itemOption, option.widget);
+    QRect checkBoxRect
+        = style->subElementRect(QStyle::SE_CheckBoxIndicator, &itemOption, option.widget);
 
-    checkBoxRect.moveTo(gap,
-                        option.rect.top() + (option.rect.height() - checkBoxRect.height()) / 2);
+    checkBoxRect.moveTo(gap, option.rect.top() + (option.rect.height() - checkBoxRect.height()) / 2);
 
     if (element == SubControl::CheckBox) {
         return checkBoxRect;
     }
 
-    QRect selectRect =
-        style->subElementRect(QStyle::SE_ItemViewItemDecoration, &itemOption, option.widget)
-            .translated(checkBoxRect.right() + gap, 0);
+    QRect selectRect
+        = style->subElementRect(QStyle::SE_ItemViewItemDecoration, &itemOption, option.widget)
+              .translated(checkBoxRect.right() + gap, 0);
 
     unsigned pos = element - SubControl::LineSelect;
 
@@ -1008,10 +1013,12 @@ QRect ElementItemDelegate::subControlRect(SubControl element,
     return rect;
 }
 
-void ElementItemDelegate::drawSubControl(SubControl element,
-                                         QPainter* painter,
-                                         const QStyleOptionViewItem& option,
-                                         const QModelIndex& index) const
+void ElementItemDelegate::drawSubControl(
+    SubControl element,
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     auto item = getElementItem(index);
     auto style = option.widget ? option.widget->style() : QApplication::style();
@@ -1066,10 +1073,12 @@ void ElementItemDelegate::drawSubControl(SubControl element,
                 checkboxOption.state |= QStyle::State_Off;
             }
 
-            style->drawPrimitive(QStyle::PE_IndicatorItemViewItemCheck,
-                                 &checkboxOption,
-                                 painter,
-                                 option.widget);
+            style->drawPrimitive(
+                QStyle::PE_IndicatorItemViewItemCheck,
+                &checkboxOption,
+                painter,
+                option.widget
+            );
 
             break;
         }
@@ -1099,10 +1108,11 @@ void ElementItemDelegate::drawSubControl(SubControl element,
 
             auto labelBoundingBox = painter->fontMetrics().tightBoundingRect(item->label);
 
-            painter->drawText(rect.x(),
-                              option.rect.bottom()
-                                  - (option.rect.height() - labelBoundingBox.height()) / 2,
-                              item->label);
+            painter->drawText(
+                rect.x(),
+                option.rect.bottom() - (option.rect.height() - labelBoundingBox.height()) / 2,
+                item->label
+            );
 
             break;
         }
@@ -1508,8 +1518,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
             bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
             // is it this object??
             if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
-                || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument())
-                    != 0) {
+                || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0) {
                 return;
             }
             if (!msg.pSubName) {

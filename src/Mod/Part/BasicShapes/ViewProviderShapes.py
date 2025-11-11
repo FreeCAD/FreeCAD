@@ -34,19 +34,22 @@ import FreeCADGui
 
 from PySide import QtGui
 
+
 class ViewProviderTube:
     def __init__(self, obj):
-        ''' Set this object to the proxy object of the actual view provider '''
+        """Set this object to the proxy object of the actual view provider"""
         obj.Proxy = self
         obj.addExtension("PartGui::ViewProviderAttachExtensionPython")
         obj.setIgnoreOverlayIcon(True, "PartGui::ViewProviderAttachExtensionPython")
 
     def attach(self, obj):
-        ''' Setup the scene sub-graph of the view provider, this method is mandatory '''
+        """Setup the scene sub-graph of the view provider, this method is mandatory"""
         return
 
     def setupContextMenu(self, viewObject, menu):
-        action = menu.addAction(FreeCAD.Qt.translate("QObject", "Edit %1").replace("%1", viewObject.Object.Label))
+        action = menu.addAction(
+            FreeCAD.Qt.translate("QObject", "Edit %1").replace("%1", viewObject.Object.Label)
+        )
         action.triggered.connect(lambda: self.startDefaultEditMode(viewObject))
         return False
 
@@ -73,7 +76,7 @@ class ViewProviderTube:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
 
@@ -95,9 +98,9 @@ class TaskTubeUI:
         self.form.tubeInnerRadius.valueChanged.connect(lambda x: self.onChangeInnerRadius(x))
         self.form.tubeHeight.valueChanged.connect(lambda x: self.onChangeHeight(x))
 
-        FreeCADGui.ExpressionBinding(self.form.tubeOuterRadius).bind(object,"OuterRadius")
-        FreeCADGui.ExpressionBinding(self.form.tubeInnerRadius).bind(object,"InnerRadius")
-        FreeCADGui.ExpressionBinding(self.form.tubeHeight).bind(object,"Height")
+        FreeCADGui.ExpressionBinding(self.form.tubeOuterRadius).bind(object, "OuterRadius")
+        FreeCADGui.ExpressionBinding(self.form.tubeInnerRadius).bind(object, "InnerRadius")
+        FreeCADGui.ExpressionBinding(self.form.tubeHeight).bind(object, "Height")
 
     def onChangeOuterRadius(self, radius):
         object = self.viewObject.Object

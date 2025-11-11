@@ -53,75 +53,95 @@ class gp_Lin;
 class gp_Pln;
 class Bnd_Box;
 
-namespace Base {
+namespace Base
+{
 // Specialization for gp_Pnt
-template <>
-struct vec_traits<gp_Pnt> {
+template<>
+struct vec_traits<gp_Pnt>
+{
     using vec_type = gp_Pnt;
     using float_type = double;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
+
 private:
     const vec_type& v;
 };
 // Specialization for gp_Vec
-template <>
-struct vec_traits<gp_Vec> {
+template<>
+struct vec_traits<gp_Vec>
+{
     using vec_type = gp_Vec;
     using float_type = double;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
+
 private:
     const vec_type& v;
 };
 // Specialization for gp_Dir
-template <>
-struct vec_traits<gp_Dir> {
+template<>
+struct vec_traits<gp_Dir>
+{
     using vec_type = gp_Dir;
     using float_type = double;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
+
 private:
     const vec_type& v;
 };
 // Specialization for gp_XYZ
-template <>
-struct vec_traits<gp_XYZ> {
+template<>
+struct vec_traits<gp_XYZ>
+{
     using vec_type = gp_XYZ;
     using float_type = double;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
+
 private:
     const vec_type& v;
 };
-}
+}  // namespace Base
 
 namespace Part
 {
 
-PartExport
-void closestPointsOnLines(const gp_Lin& lin1, const gp_Lin& lin2, gp_Pnt &p1, gp_Pnt &p2);
-PartExport
-bool intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin);
-PartExport
-bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt& c, gp_Dir& a);
+PartExport void closestPointsOnLines(const gp_Lin& lin1, const gp_Lin& lin2, gp_Pnt& p1, gp_Pnt& p2);
+PartExport bool intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin);
+PartExport bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt& c, gp_Dir& a);
 
 class PartExport Tools
 {
 public:
-    Handle(Geom_Surface) makeSurface (const TColStd_ListOfTransient& theBoundaries,
-                                     const Standard_Real theTol,
-                                     const Standard_Integer theNbPnts,
-                                     const Standard_Integer theNbIter,
-                                     const Standard_Integer theMaxDeg);
+    Handle(Geom_Surface) makeSurface(
+        const TColStd_ListOfTransient& theBoundaries,
+        const Standard_Real theTol,
+        const Standard_Integer theNbPnts,
+        const Standard_Integer theNbIter,
+        const Standard_Integer theMaxDeg
+    );
     /*!
      * @brief getTriangulation
      * The indexes of the triangles are adjusted to the points vector.
@@ -130,7 +150,11 @@ public:
      * @param facets
      * @return true if a triangulation exists or false otherwise
      */
-    static bool getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>& points, std::vector<Poly_Triangle>& facets);
+    static bool getTriangulation(
+        const TopoDS_Face& face,
+        std::vector<gp_Pnt>& points,
+        std::vector<Poly_Triangle>& facets
+    );
     /*!
      * \brief getPolygonOnTriangulation
      * Get the polygon of edge.
@@ -140,7 +164,11 @@ public:
      * \param points
      * \return true if a triangulation exists or false otherwise
      */
-    static bool getPolygonOnTriangulation(const TopoDS_Edge& edge, const TopoDS_Face& face, std::vector<gp_Pnt>& points);
+    static bool getPolygonOnTriangulation(
+        const TopoDS_Edge& edge,
+        const TopoDS_Face& face,
+        std::vector<gp_Pnt>& points
+    );
     /*!
      * \brief getPolygon3D
      * \param edge
@@ -155,32 +183,50 @@ public:
      * \param facets
      * \param normals
      */
-    static void getPointNormals(const std::vector<gp_Pnt>& points, const std::vector<Poly_Triangle>& facets, std::vector<gp_Vec>& vertexnormals);
+    static void getPointNormals(
+        const std::vector<gp_Pnt>& points,
+        const std::vector<Poly_Triangle>& facets,
+        std::vector<gp_Vec>& vertexnormals
+    );
     /*!
      * \brief getPointNormals
-     * Computes the more accurate surface normals for the points. If the calculation for a point fails then the precomputed
-     * point normal of the triangulation is used.
+     * Computes the more accurate surface normals for the points. If the calculation for a point
+     * fails then the precomputed point normal of the triangulation is used.
      * \param points
      * \param face
      * \param vertexnormals
      */
-    static void getPointNormals(const std::vector<gp_Pnt>& points, const TopoDS_Face& face, std::vector<gp_Vec>& vertexnormals);
+    static void getPointNormals(
+        const std::vector<gp_Pnt>& points,
+        const TopoDS_Face& face,
+        std::vector<gp_Vec>& vertexnormals
+    );
     /*!
      * \brief getPointNormals
-     * Computes the exact surface normals for the points by using the UV coordinates of the mesh vertexes.
+     * Computes the exact surface normals for the points by using the UV coordinates of the mesh
+     * vertexes.
      * \param face
      * \param aPoly
      * \param vertexnormals
      */
-    static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, TColgp_Array1OfDir& normals);
+    static void getPointNormals(
+        const TopoDS_Face& face,
+        Handle(Poly_Triangulation) aPoly,
+        TColgp_Array1OfDir& normals
+    );
     /*!
      * \brief getPointNormals
-     * Computes the exact surface normals for the points by using the UV coordinates of the mesh vertexes.
+     * Computes the exact surface normals for the points by using the UV coordinates of the mesh
+     * vertexes.
      * \param face
      * \param aPoly
      * \param vertexnormals
      */
-    static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, std::vector<gp_Vec>& normals);
+    static void getPointNormals(
+        const TopoDS_Face& face,
+        Handle(Poly_Triangulation) aPoly,
+        std::vector<gp_Vec>& normals
+    );
     /*!
      * \brief applyTransformationOnNormals
      * Apply the transformation to the vectors
@@ -190,16 +236,16 @@ public:
     static void applyTransformationOnNormals(const TopLoc_Location& loc, std::vector<gp_Vec>& normals);
     /*!
      * \brief triangulationOfInfinite
-     * Returns the triangulation of the face of the tessellated shape. In case the face has infinite lengths
-     * the triangulation of a limited parameter range is computed.
+     * Returns the triangulation of the face of the tessellated shape. In case the face has infinite
+     * lengths the triangulation of a limited parameter range is computed.
      * \param edge
      * \param loc
      */
-    static Handle (Poly_Triangulation) triangulationOfFace(const TopoDS_Face& face);
+    static Handle(Poly_Triangulation) triangulationOfFace(const TopoDS_Face& face);
     /*!
      * \brief polygonOfEdge
-     * Returns the polygon of the edge of the tessellated shape. In case the edge has infinite length
-     * the polygon of a limited parameter range is computed.
+     * Returns the polygon of the edge of the tessellated shape. In case the edge has infinite
+     * length the polygon of a limited parameter range is computed.
      * \param edge
      * \param loc
      */
@@ -214,7 +260,14 @@ public:
      * \param dir
      * \param done
      */
-    static void getNormal(const Handle(Geom_Surface)& surf, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
+    static void getNormal(
+        const Handle(Geom_Surface) & surf,
+        double u,
+        double v,
+        const Standard_Real tol,
+        gp_Dir& dir,
+        Standard_Boolean& done
+    );
     /*! \brief getNormal
      * Returns the normal at the given parameters on the face and the state of the calculation.
      * The orientation is taken into account
@@ -225,7 +278,14 @@ public:
      * \param dir
      * \param done
      */
-    static void getNormal(const TopoDS_Face& face, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
+    static void getNormal(
+        const TopoDS_Face& face,
+        double u,
+        double v,
+        const Standard_Real tol,
+        gp_Dir& dir,
+        Standard_Boolean& done
+    );
     /*!
      * \brief fromPlacement
      * Converts a placement into a TopLoc_Location
@@ -241,7 +301,7 @@ public:
      * \return true if the face is concave when shown from pointOfVue and looking into direction
      * and false otherwise, plane case included.
      */
-    static bool isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, const gp_Dir &direction);
+    static bool isConcave(const TopoDS_Face& face, const gp_Pnt& pointOfVue, const gp_Dir& direction);
 
     /**
      * \copydoc Part::Tools::isShapeEmpty(const TopoDS_Shape&)
@@ -304,7 +364,7 @@ public:
     static Standard_Real getDeflection(const TopoDS_Shape& shape, double deviation);
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_TOOLS_H
+#endif  // PART_TOOLS_H

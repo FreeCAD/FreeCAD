@@ -248,9 +248,11 @@ public:
 };
 
 template<typename T>
-void InventorFieldWriter::write(const char* fieldName,
-                                const std::vector<T>& fieldData,
-                                InventorOutput& out) const
+void InventorFieldWriter::write(
+    const char* fieldName,
+    const std::vector<T>& fieldData,
+    InventorOutput& out
+) const
 {
     if (fieldData.empty()) {
         return;
@@ -273,9 +275,11 @@ void InventorFieldWriter::write(const char* fieldName,
 }
 
 template<>
-void InventorFieldWriter::write<int>(const char* fieldName,
-                                     const std::vector<int>& fieldData,
-                                     InventorOutput& out) const
+void InventorFieldWriter::write<int>(
+    const char* fieldName,
+    const std::vector<int>& fieldData,
+    InventorOutput& out
+) const
 {
     if (fieldData.empty()) {
         return;
@@ -472,10 +476,12 @@ void ArrowItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-BoundingBoxItem::BoundingBoxItem(const Vector3f& pt1,
-                                 const Vector3f& pt2,
-                                 DrawStyle drawStyle,
-                                 const ColorRGB& rgb)
+BoundingBoxItem::BoundingBoxItem(
+    const Vector3f& pt1,
+    const Vector3f& pt2,
+    DrawStyle drawStyle,
+    const ColorRGB& rgb
+)
     : pt1 {pt1}
     , pt2 {pt2}
     , drawStyle {drawStyle}
@@ -871,8 +877,7 @@ void NurbsSurfaceItem::setControlPoints(int numU, int numV)
     numVControlPoints = numV;
 }
 
-void NurbsSurfaceItem::setKnotVector(const std::vector<float>& uKnots,
-                                     const std::vector<float>& vKnots)
+void NurbsSurfaceItem::setKnotVector(const std::vector<float>& uKnots, const std::vector<float>& vKnots)
 {
     uKnotVector = uKnots;
     vKnotVector = vKnots;
@@ -1010,11 +1015,13 @@ void Builder3D::saveToLog()
 {
     ILogger* obs = Base::Console().get("StatusBar");
     if (obs) {
-        obs->sendLog("Builder3D",
-                     result.str(),
-                     Base::LogStyle::Log,
-                     Base::IntendedRecipient::Developer,
-                     Base::ContentType::Untranslatable);
+        obs->sendLog(
+            "Builder3D",
+            result.str(),
+            Base::LogStyle::Log,
+            Base::IntendedRecipient::Developer,
+            Base::ContentType::Untranslatable
+        );
     }
 }
 
@@ -1152,8 +1159,9 @@ std::vector<std::vector<int32_t>> InventorLoader::split(const std::vector<int32_
     return splitdata;
 }
 
-std::vector<InventorLoader::Face>
-InventorLoader::convert(const std::vector<std::vector<int32_t>>& coordIndex) const
+std::vector<InventorLoader::Face> InventorLoader::convert(
+    const std::vector<std::vector<int32_t>>& coordIndex
+) const
 {
     std::vector<Face> faces;
     faces.reserve(coordIndex.size());

@@ -41,9 +41,11 @@ class DlgBindSheet: public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgBindSheet(Spreadsheet::Sheet* sheet,
-                          const std::vector<App::Range>& range,
-                          QWidget* parent = nullptr);
+    explicit DlgBindSheet(
+        Spreadsheet::Sheet* sheet,
+        const std::vector<App::Range>& range,
+        QWidget* parent = nullptr
+    );
     ~DlgBindSheet() override;
 
     void accept() override;

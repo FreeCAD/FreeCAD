@@ -54,12 +54,14 @@ void Shape::GenerateSinTable(int nSlices)
 }
 
 
-void Shape::RotateProfile(float* profPoints,
-                          int nPoints,
-                          float distance,
-                          float /* deltaHeight */,
-                          int nSlices,
-                          bool isHalfTurn)
+void Shape::RotateProfile(
+    float* profPoints,
+    int nPoints,
+    float distance,
+    float /* deltaHeight */,
+    int nSlices,
+    bool isHalfTurn
+)
 {
     int vidx = 0;
     int iidx = 0;
@@ -124,15 +126,17 @@ void Shape::RotateProfile(float* profPoints,
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::CalculateExtrudeBufferSizes(int nProfilePoints,
-                                        bool capStart,
-                                        bool capEnd,
-                                        int* numVerts,
-                                        int* numIndices,
-                                        int* vc1idx,
-                                        int* vc2idx,
-                                        int* ic1idx,
-                                        int* ic2idx)
+void Shape::CalculateExtrudeBufferSizes(
+    int nProfilePoints,
+    bool capStart,
+    bool capEnd,
+    int* numVerts,
+    int* numIndices,
+    int* vc1idx,
+    int* vc2idx,
+    int* ic1idx,
+    int* ic2idx
+)
 {
     *numVerts = nProfilePoints * 4;        // one face per profile point times 4 vertex per face
     *numIndices = nProfilePoints * 2 * 3;  // 2 triangles per face times 3 indices per triangle
@@ -150,27 +154,31 @@ void Shape::CalculateExtrudeBufferSizes(int nProfilePoints,
     }
 }
 
-void Shape::ExtrudeProfileRadial(float* profPoints,
-                                 int nPoints,
-                                 float radius,
-                                 float angleRad,
-                                 float deltaHeight,
-                                 bool capStart,
-                                 bool capEnd)
+void Shape::ExtrudeProfileRadial(
+    float* profPoints,
+    int nPoints,
+    float radius,
+    float angleRad,
+    float deltaHeight,
+    bool capStart,
+    bool capEnd
+)
 {
     int vidx = 0, vc1idx, vc2idx;
     int iidx = 0, ic1idx, ic2idx;
     int numVerts, numIndices;
 
-    CalculateExtrudeBufferSizes(nPoints,
-                                capStart,
-                                capEnd,
-                                &numVerts,
-                                &numIndices,
-                                &vc1idx,
-                                &vc2idx,
-                                &ic1idx,
-                                &ic2idx);
+    CalculateExtrudeBufferSizes(
+        nPoints,
+        capStart,
+        capEnd,
+        &numVerts,
+        &numIndices,
+        &vc1idx,
+        &vc2idx,
+        &ic1idx,
+        &ic2idx
+    );
     int vc1start = vc1idx;
     int vc2start = vc2idx;
 
@@ -244,28 +252,32 @@ void Shape::ExtrudeProfileRadial(float* profPoints,
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::ExtrudeProfileLinear(float* profPoints,
-                                 int nPoints,
-                                 float fromX,
-                                 float toX,
-                                 float fromZ,
-                                 float toZ,
-                                 bool capStart,
-                                 bool capEnd)
+void Shape::ExtrudeProfileLinear(
+    float* profPoints,
+    int nPoints,
+    float fromX,
+    float toX,
+    float fromZ,
+    float toZ,
+    bool capStart,
+    bool capEnd
+)
 {
     int vidx = 0, vc1idx, vc2idx;
     int iidx = 0, ic1idx, ic2idx;
     int numVerts, numIndices;
 
-    CalculateExtrudeBufferSizes(nPoints,
-                                capStart,
-                                capEnd,
-                                &numVerts,
-                                &numIndices,
-                                &vc1idx,
-                                &vc2idx,
-                                &ic1idx,
-                                &ic2idx);
+    CalculateExtrudeBufferSizes(
+        nPoints,
+        capStart,
+        capEnd,
+        &numVerts,
+        &numIndices,
+        &vc1idx,
+        &vc2idx,
+        &ic1idx,
+        &ic2idx
+    );
     int vc1start = vc1idx;
     int vc2start = vc2idx;
 

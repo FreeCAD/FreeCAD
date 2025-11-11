@@ -3254,10 +3254,12 @@ bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& 
     return ViewProvider2DObject::getElementPicked(pp, subname);
 }
 
-bool ViewProviderSketch::getDetailPath(const char* subname,
-                                       SoFullPath* pPath,
-                                       bool append,
-                                       SoDetail*& det) const
+bool ViewProviderSketch::getDetailPath(
+    const char* subname,
+    SoFullPath* pPath,
+    bool append,
+    SoDetail*& det
+) const
 {
     const auto getLastPartOfName = [](const char* subname) -> const char* {
         const char* realName = strrchr(subname, '.');

@@ -82,7 +82,8 @@ void CmdPointsImport::activated(int iMsg)
         QString(),
         QString(),
         QStringLiteral("%1 (*.asc *.pcd *.ply *.e57);;%2 (*.*)")
-            .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
+            .arg(QObject::tr("Point formats"), QObject::tr("All Files"))
+    );
     if (fn.isEmpty()) {
         return;
     }
@@ -92,10 +93,7 @@ void CmdPointsImport::activated(int iMsg)
         App::Document* doc = getActiveDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
-        doCommand(Command::Doc,
-                  "Points.insert(\"%s\", \"%s\")",
-                  fn.toUtf8().data(),
-                  doc->getName());
+        doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")", fn.toUtf8().data(), doc->getName());
         commitCommand();
 
         updateActive();
@@ -114,9 +112,12 @@ void CmdPointsImport::activated(int iMsg)
                 QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setIcon(QMessageBox::Question);
                 msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
-                msgBox.setText(QObject::tr(
-                    "The bounding box of the imported points does not contain the origin. "
-                    "Translate it to the origin?"));
+                msgBox.setText(
+                    QObject::tr(
+                        "The bounding box of the imported points does not contain the origin. "
+                        "Translate it to the origin?"
+                    )
+                );
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 auto ret = msgBox.exec();
@@ -160,25 +161,29 @@ void CmdPointsExport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     addModule(Command::App, "Points");
-    std::vector<App::DocumentObject*> points =
-        getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(
+        Points::Feature::getClassTypeId()
+    );
     for (auto point : points) {
         QString fn = Gui::FileDialog::getSaveFileName(
             Gui::getMainWindow(),
             QString(),
             QString(),
             QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
-                .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
+                .arg(QObject::tr("Point formats"), QObject::tr("All Files"))
+        );
         if (fn.isEmpty()) {
             break;
         }
 
         if (!fn.isEmpty()) {
             fn = Base::Tools::escapeEncodeFilename(fn);
-            doCommand(Command::Doc,
-                      "Points.export([App.ActiveDocument.%s], \"%s\")",
-                      point->getNameInDocument(),
-                      fn.toUtf8().data());
+            doCommand(
+                Command::Doc,
+                "Points.export([App.ActiveDocument.%s], \"%s\")",
+                point->getNameInDocument(),
+                fn.toUtf8().data()
+            );
         }
     }
 }
@@ -210,19 +215,21 @@ void CmdPointsConvert::activated(int iMsg)
     int decimals = Base::UnitsApi::getDecimals();
     double tolerance_from_decimals = pow(10., -decimals);
 
-    double minimal_tolerance =
-        tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE
+                                                                           : tolerance_from_decimals;
 
     bool ok;
-    double tol = QInputDialog::getDouble(Gui::getMainWindow(),
-                                         QObject::tr("Distance"),
-                                         QObject::tr("Enter maximum distance:"),
-                                         0.1,
-                                         minimal_tolerance,
-                                         10.0,
-                                         decimals,
-                                         &ok,
-                                         Qt::MSWindowsFixedSizeDialogHint);
+    double tol = QInputDialog::getDouble(
+        Gui::getMainWindow(),
+        QObject::tr("Distance"),
+        QObject::tr("Enter maximum distance:"),
+        0.1,
+        minimal_tolerance,
+        10.0,
+        decimals,
+        &ok,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
     if (!ok) {
         return;
     }
@@ -247,8 +254,7 @@ void CmdPointsConvert::activated(int iMsg)
             }
 
             Py::Module commands(module, true);
-            commands.callMemberFunction("make_points_from_geometry",
-                                        Py::TupleN(list, Py::Float(tol)));
+            commands.callMemberFunction("make_points_from_geometry", Py::TupleN(list, Py::Float(tol)));
             return true;
         }
 
@@ -294,10 +300,10 @@ void CmdPointsPolyCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end();
-         ++it) {
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(
+        Points::Feature::getClassTypeId()
+    );
+    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
@@ -305,8 +311,10 @@ void CmdPointsPolyCut::activated(int iMsg)
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Lasso);
-                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                         PointsGui::ViewProviderPoints::clipPointsCallback);
+                viewer->addEventCallback(
+                    SoMouseButtonEvent::getClassTypeId(),
+                    PointsGui::ViewProviderPoints::clipPointsCallback
+                );
             }
             else {
                 return;
@@ -347,8 +355,9 @@ void CmdPointsMerge::activated(int iMsg)
     Points::Feature* pts = doc->addObject<Points::Feature>("Merged Points");
     Points::PointKernel* kernel = pts->Points.startEditing();
 
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(
+        Points::Feature::getClassTypeId()
+    );
     for (auto it : docObj) {
         const Points::PointKernel& k = static_cast<Points::Feature*>(it)->Points.getValue();
         std::size_t numPts = kernel->size();
@@ -373,7 +382,8 @@ void CmdPointsMerge::activated(int iMsg)
     }
 
     if (auto vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-            Gui::Application::Instance->getViewProvider(pts))) {
+            Gui::Application::Instance->getViewProvider(pts)
+        )) {
         vp->DisplayMode.setValue(displayMode.c_str());
     }
 
@@ -407,8 +417,9 @@ void CmdPointsStructure::activated(int iMsg)
     App::Document* doc = App::GetApplication().getActiveDocument();
     doc->openTransaction("Structure point cloud");
 
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(
+        Points::Feature::getClassTypeId()
+    );
     for (auto it : docObj) {
         std::string name = it->Label.getValue();
         name += " (Structured)";
@@ -458,8 +469,7 @@ void CmdPointsStructure::activated(int iMsg)
             // Pre-fill the vector with <nan, nan, nan> points and afterwards replace them
             // with valid point coordinates
             double nan = std::numeric_limits<double>::quiet_NaN();
-            std::vector<Base::Vector3d> sortedPoints(width_l * height_l,
-                                                     Base::Vector3d(nan, nan, nan));
+            std::vector<Base::Vector3d> sortedPoints(width_l * height_l, Base::Vector3d(nan, nan, nan));
 
             for (std::size_t i = 0; i < k.size(); ++i) {
                 Base::Vector3d pnt = k.getPoint(i);

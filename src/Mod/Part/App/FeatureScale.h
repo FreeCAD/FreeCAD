@@ -37,7 +37,7 @@
 namespace Part
 {
 
-class PartExport Scale : public Part::Feature
+class PartExport Scale: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Scale);
 
@@ -55,21 +55,23 @@ public:
      * @brief The ScaleParameters struct is supposed to be filled with final
      * scale parameters and be passed to scaleShape.
      */
-    struct ScaleParameters {
-        bool uniform{true};
-        double uniformScale{1.0};
-        double XScale{1.0};
-        double YScale{1.0};
-        double ZScale{1.0};
+    struct ScaleParameters
+    {
+        bool uniform {true};
+        double uniformScale {1.0};
+        double XScale {1.0};
+        double YScale {1.0};
+        double ZScale {1.0};
     };
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderScale";
     }
     //@}
@@ -86,8 +88,7 @@ public:
     static TopoShape nonuniformScale(const TopoShape& source, const Scale::ScaleParameters& params);
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATURESCALE_H
-
+#endif  // PART_FEATURESCALE_H

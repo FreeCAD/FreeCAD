@@ -27,8 +27,10 @@
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgSettingsDocument;
 
 /**
@@ -36,12 +38,12 @@ class Ui_DlgSettingsDocument;
  * for the document.
  * \author Jürgen Riegel
  */
-class DlgSettingsDocumentImp : public PreferencePage
+class DlgSettingsDocumentImp: public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsDocumentImp( QWidget* parent = nullptr );
+    explicit DlgSettingsDocumentImp(QWidget* parent = nullptr);
     ~DlgSettingsDocumentImp() override;
 
     void saveSettings() override;
@@ -51,14 +53,14 @@ protected Q_SLOTS:
     void onLicenseTypeChanged(int index);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void addLicenseTypes();
 
 private:
     std::unique_ptr<Ui_DlgSettingsDocument> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
+#endif  // GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H

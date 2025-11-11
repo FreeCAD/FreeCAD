@@ -47,52 +47,38 @@ PROPERTY_SOURCE(Surface::FeatureBlendCurve, Part::Spline)
 
 FeatureBlendCurve::FeatureBlendCurve()
 {
-    ADD_PROPERTY_TYPE(StartEdge,
-                      (nullptr),
-                      "FirstEdge",
-                      App::Prop_None,
-                      "Edge support of the start point");
-    ADD_PROPERTY_TYPE(StartContinuity,
-                      (2),
-                      "FirstEdge",
-                      App::Prop_None,
-                      "Geometric continuity at start point");
+    ADD_PROPERTY_TYPE(StartEdge, (nullptr), "FirstEdge", App::Prop_None, "Edge support of the start point");
+    ADD_PROPERTY_TYPE(
+        StartContinuity,
+        (2),
+        "FirstEdge",
+        App::Prop_None,
+        "Geometric continuity at start point"
+    );
     StartContinuity.setConstraints(&ContinuityConstraint);
-    ADD_PROPERTY_TYPE(StartParameter,
-                      (0.0f),
-                      "FirstEdge",
-                      App::Prop_None,
-                      "Parameter of start point along edge");
+    ADD_PROPERTY_TYPE(
+        StartParameter,
+        (0.0f),
+        "FirstEdge",
+        App::Prop_None,
+        "Parameter of start point along edge"
+    );
     StartParameter.setConstraints(&ParameterConstraint);
-    ADD_PROPERTY_TYPE(StartSize,
-                      (1.0f),
-                      "FirstEdge",
-                      App::Prop_None,
-                      "Size of derivatives at start point");
+    ADD_PROPERTY_TYPE(StartSize, (1.0f), "FirstEdge", App::Prop_None, "Size of derivatives at start point");
     StartSize.setConstraints(&SizeConstraint);
 
-    ADD_PROPERTY_TYPE(EndEdge,
-                      (nullptr),
-                      "SecondEdge",
-                      App::Prop_None,
-                      "Edge support of the end point");
-    ADD_PROPERTY_TYPE(EndContinuity,
-                      (2),
-                      "SecondEdge",
-                      App::Prop_None,
-                      "Geometric continuity at end point");
+    ADD_PROPERTY_TYPE(EndEdge, (nullptr), "SecondEdge", App::Prop_None, "Edge support of the end point");
+    ADD_PROPERTY_TYPE(EndContinuity, (2), "SecondEdge", App::Prop_None, "Geometric continuity at end point");
     EndContinuity.setConstraints(&ContinuityConstraint);
-    ADD_PROPERTY_TYPE(EndParameter,
-                      (0.0f),
-                      "SecondEdge",
-                      App::Prop_None,
-                      "Parameter of end point along edge");
+    ADD_PROPERTY_TYPE(
+        EndParameter,
+        (0.0f),
+        "SecondEdge",
+        App::Prop_None,
+        "Parameter of end point along edge"
+    );
     EndParameter.setConstraints(&ParameterConstraint);
-    ADD_PROPERTY_TYPE(EndSize,
-                      (1.0f),
-                      "SecondEdge",
-                      App::Prop_None,
-                      "Size of derivatives at end point");
+    ADD_PROPERTY_TYPE(EndSize, (1.0f), "SecondEdge", App::Prop_None, "Size of derivatives at end point");
     EndSize.setConstraints(&SizeConstraint);
 
     Handle(Geom_BezierCurve) maxDegreeCurve;
@@ -128,23 +114,25 @@ short FeatureBlendCurve::mustExecute() const
     return 0;
 }
 
-BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub& link,
-                                            App::PropertyFloatConstraint& param,
-                                            App::PropertyIntegerConstraint& continuity)
+BlendPoint FeatureBlendCurve::GetBlendPoint(
+    App::PropertyLinkSub& link,
+    App::PropertyFloatConstraint& param,
+    App::PropertyIntegerConstraint& continuity
+)
 {
     auto linked = link.getValue();
 
     TopoDS_Shape axEdge;
     if (link.getSubValues().size() > 0 && link.getSubValues()[0].length() > 0) {
-        axEdge = Part::Feature::getShape(linked,
-                                         Part::ShapeOption::NeedSubElement
-                                             | Part::ShapeOption::ResolveLink
-                                             | Part::ShapeOption::Transform,
-                                         link.getSubValues()[0].c_str());
+        axEdge = Part::Feature::getShape(
+            linked,
+            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                | Part::ShapeOption::Transform,
+            link.getSubValues()[0].c_str()
+        );
     }
     else {
-        axEdge = Feature::getShape(linked,
-                                   Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        axEdge = Feature::getShape(linked, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     }
 
     if (axEdge.IsNull()) {

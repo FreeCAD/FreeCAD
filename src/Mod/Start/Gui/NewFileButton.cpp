@@ -42,7 +42,8 @@ NewFileButton::NewFileButton(const NewButton& newButton)
 {
     setObjectName(QStringLiteral("newFileButton"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
 
     constexpr int defaultWidth = 180;  // #newFileButton width in QSS
     labelWidth = int(hGrp->GetInt("FileCardLabelWith", defaultWidth));

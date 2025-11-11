@@ -134,8 +134,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomPoint)
     auto ptMid = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::none);
 
     // Assert
     EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
@@ -157,12 +156,10 @@ TEST_F(SketchObjectTest, testGetPointFromGeomLineSegment)
     // Act
     auto ptStart = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::start);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptMid =
-        Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::mid);
+    [[maybe_unused]] auto ptMid = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::none);
 
     // Assert
     EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
@@ -187,8 +184,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomCircle)
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptEnd = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: Presently, start/end points of a circle are defined as the point on circle right of the
@@ -219,8 +215,7 @@ TEST_F(SketchObjectTest, testGetPointFromGeomEllipse)
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptEnd = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: Presently, start/end points of an ellipse are defined as the point on the major axis in
@@ -248,8 +243,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfCircle)
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone
+        = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: parameters for arc of circle are CCW angles from positive x-axis
@@ -279,8 +274,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfEllipse)
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone
+        = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: parameters for arc of ellipse are CCW angles from positive x-axis
@@ -306,14 +301,14 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfHyperbola)
     arcOfHyperbola.setRange(startParam, endParam, true);
 
     // Act
-    [[maybe_unused]] auto ptStart =
-        Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::start);
+    [[maybe_unused]] auto ptStart
+        = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::start);
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::mid);
-    [[maybe_unused]] auto ptEnd =
-        Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::end);
+    [[maybe_unused]] auto ptEnd
+        = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone
+        = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::none);
 
     // Assert
     // FIXME: Figure out how this is defined
@@ -337,14 +332,14 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfParabola)
     arcOfParabola.setRange(startParam, endParam, true);
 
     // Act
-    [[maybe_unused]] auto ptStart =
-        Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::start);
+    [[maybe_unused]] auto ptStart
+        = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::start);
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::mid);
-    [[maybe_unused]] auto ptEnd =
-        Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::end);
+    [[maybe_unused]] auto ptEnd
+        = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone
+        = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::none);
 
     // Assert
     // FIXME: Figure out how this is defined
@@ -369,22 +364,18 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurveNonPeriodic)
     std::vector<double> weights(5, 1.0);
     std::vector<double> knotsNonPeriodic = {0.0, 1.0, 2.0};
     std::vector<int> multiplicitiesNonPeriodic = {degree + 1, 1, degree + 1};
-    Part::GeomBSplineCurve nonPeriodicBSpline(poles,
-                                              weights,
-                                              knotsNonPeriodic,
-                                              multiplicitiesNonPeriodic,
-                                              degree,
-                                              false);
+    Part::GeomBSplineCurve
+        nonPeriodicBSpline(poles, weights, knotsNonPeriodic, multiplicitiesNonPeriodic, degree, false);
 
     // Act
     auto ptStart = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::start);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptMid =
-        Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::mid);
+    [[maybe_unused]] auto ptMid
+        = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone
+        = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::none);
 
     // Assert
     EXPECT_DOUBLE_EQ(ptStart[0], poles.front()[0]);
@@ -406,24 +397,20 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     std::vector<double> weights(5, 1.0);
     std::vector<double> knotsPeriodic = {0.0, 0.3, 1.0, 1.5, 1.8, 2.0};
     std::vector<int> multiplicitiesPeriodic(6, 1);
-    Part::GeomBSplineCurve periodicBSpline(poles,
-                                           weights,
-                                           knotsPeriodic,
-                                           multiplicitiesPeriodic,
-                                           degree,
-                                           true);
+    Part::GeomBSplineCurve
+        periodicBSpline(poles, weights, knotsPeriodic, multiplicitiesPeriodic, degree, true);
 
     // Act
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptStart = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::start);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptMid =
-        Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::mid);
+    [[maybe_unused]] auto ptMid
+        = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::mid);
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptEnd = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    [[maybe_unused]] auto ptNone =
-        Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone
+        = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::none);
 
     // Assert
     // With non-trivial values for weights, knots, mults, etc, getting the coordinates is
@@ -523,19 +510,20 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfEllipse)
     // Ensure all internal geometry is satisfied
     // TODO: Also try to ensure types of geometries that have this type
     const auto constraints = getObject()->Constraints.getValues();
-    for (auto alignmentType : {Sketcher::InternalAlignmentType::EllipseMajorDiameter,
-                               Sketcher::InternalAlignmentType::EllipseMinorDiameter,
-                               Sketcher::InternalAlignmentType::EllipseFocus1,
-                               Sketcher::InternalAlignmentType::EllipseFocus2}) {
+    for (auto alignmentType :
+         {Sketcher::InternalAlignmentType::EllipseMajorDiameter,
+          Sketcher::InternalAlignmentType::EllipseMinorDiameter,
+          Sketcher::InternalAlignmentType::EllipseFocus1,
+          Sketcher::InternalAlignmentType::EllipseFocus2}) {
         // TODO: Ensure there exists one and only one curve with this type
-        int numConstraintsOfThisType =
-            std::count_if(constraints.begin(),
-                          constraints.end(),
-                          [&geoId, &alignmentType](const auto* constr) {
-                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                                  && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
-                          });
+        int numConstraintsOfThisType = std::count_if(
+            constraints.begin(),
+            constraints.end(),
+            [&geoId, &alignmentType](const auto* constr) {
+                return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+            }
+        );
         EXPECT_EQ(numConstraintsOfThisType, 1);
     }
 
@@ -570,18 +558,19 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfHyperbola)
     // Ensure all internal geometry is satisfied
     // TODO: Also try to ensure types of geometries that have this type
     const auto constraints = getObject()->Constraints.getValues();
-    for (auto alignmentType : {Sketcher::InternalAlignmentType::HyperbolaMajor,
-                               Sketcher::InternalAlignmentType::HyperbolaMinor,
-                               Sketcher::InternalAlignmentType::HyperbolaFocus}) {
+    for (auto alignmentType :
+         {Sketcher::InternalAlignmentType::HyperbolaMajor,
+          Sketcher::InternalAlignmentType::HyperbolaMinor,
+          Sketcher::InternalAlignmentType::HyperbolaFocus}) {
         // TODO: Ensure there exists one and only one curve with this type
-        int numConstraintsOfThisType =
-            std::count_if(constraints.begin(),
-                          constraints.end(),
-                          [&geoId, &alignmentType](const auto* constr) {
-                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                                  && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
-                          });
+        int numConstraintsOfThisType = std::count_if(
+            constraints.begin(),
+            constraints.end(),
+            [&geoId, &alignmentType](const auto* constr) {
+                return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+            }
+        );
         EXPECT_EQ(numConstraintsOfThisType, 1);
     }
 
@@ -616,17 +605,18 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfParabola)
     // Ensure all internal geometry is satisfied
     // TODO: Also try to ensure types of geometries that have this type
     const auto constraints = getObject()->Constraints.getValues();
-    for (auto alignmentType : {Sketcher::InternalAlignmentType::ParabolaFocalAxis,
-                               Sketcher::InternalAlignmentType::ParabolaFocus}) {
+    for (auto alignmentType :
+         {Sketcher::InternalAlignmentType::ParabolaFocalAxis,
+          Sketcher::InternalAlignmentType::ParabolaFocus}) {
         // TODO: Ensure there exists one and only one curve with this type
-        int numConstraintsOfThisType =
-            std::count_if(constraints.begin(),
-                          constraints.end(),
-                          [&geoId, &alignmentType](const auto* constr) {
-                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                                  && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
-                          });
+        int numConstraintsOfThisType = std::count_if(
+            constraints.begin(),
+            constraints.end(),
+            [&geoId, &alignmentType](const auto* constr) {
+                return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+            }
+        );
         EXPECT_EQ(numConstraintsOfThisType, 1);
     }
 
@@ -664,22 +654,27 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
     // TODO: Also try to ensure types of geometries that have this type
     const auto constraints = getObject()->Constraints.getValues();
     std::map<Sketcher::InternalAlignmentType, int> numConstraintsOfThisType;
-    for (auto alignmentType : {Sketcher::InternalAlignmentType::BSplineControlPoint,
-                               Sketcher::InternalAlignmentType::BSplineKnotPoint}) {
+    for (auto alignmentType :
+         {Sketcher::InternalAlignmentType::BSplineControlPoint,
+          Sketcher::InternalAlignmentType::BSplineKnotPoint}) {
         // TODO: Ensure there exists one and only one curve with this type
-        numConstraintsOfThisType[alignmentType] =
-            std::count_if(constraints.begin(),
-                          constraints.end(),
-                          [&geoId, &alignmentType](const auto* constr) {
-                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                                  && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
-                          });
+        numConstraintsOfThisType[alignmentType] = std::count_if(
+            constraints.begin(),
+            constraints.end(),
+            [&geoId, &alignmentType](const auto* constr) {
+                return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+            }
+        );
     }
-    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineControlPoint],
-              nonPeriodicBSpline->countPoles());
-    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineKnotPoint],
-              nonPeriodicBSpline->countKnots());
+    EXPECT_EQ(
+        numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineControlPoint],
+        nonPeriodicBSpline->countPoles()
+    );
+    EXPECT_EQ(
+        numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineKnotPoint],
+        nonPeriodicBSpline->countKnots()
+    );
 
     // Act
     // Delete internal geometry (again)
@@ -837,13 +832,14 @@ TEST_F(SketchObjectTest, testGetElementName)
     // Act
     // unless it's Export, we are really just testing the superclass App::GeoFeature::getElementName
     // call.
-    auto forward_normal_name =
-        getObject()->getElementName((tagName + ";SKT").c_str(),
-                                    App::GeoFeature::ElementNameType::Normal);
-    auto reverse_normal_name =
-        getObject()->getElementName("Vertex2", App::GeoFeature::ElementNameType::Normal);
-    auto reverse_export_name =
-        getObject()->getElementName("Vertex1", App::GeoFeature::ElementNameType::Export);
+    auto forward_normal_name = getObject()->getElementName(
+        (tagName + ";SKT").c_str(),
+        App::GeoFeature::ElementNameType::Normal
+    );
+    auto reverse_normal_name
+        = getObject()->getElementName("Vertex2", App::GeoFeature::ElementNameType::Normal);
+    auto reverse_export_name
+        = getObject()->getElementName("Vertex1", App::GeoFeature::ElementNameType::Export);
     auto map = getObject()->Shape.getShape().getElementMap();
     ASSERT_EQ(map.size(), 3);
     EXPECT_STREQ(map[0].name.toString().c_str(), (tagName + ";SKT").c_str());

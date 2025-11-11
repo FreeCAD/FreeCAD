@@ -24,7 +24,7 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <TopoDS.hxx>
+#include <TopoDS.hxx>
 
 
 #include "ShapeFix/ShapeFix_FreeBoundsPy.h"
@@ -40,7 +40,7 @@ std::string ShapeFix_FreeBoundsPy::representation() const
     return "<ShapeFix_FreeBounds object>";
 }
 
-PyObject *ShapeFix_FreeBoundsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_FreeBoundsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     return new ShapeFix_FreeBoundsPy(nullptr);
 }
@@ -59,59 +59,91 @@ int ShapeFix_FreeBoundsPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* splitopen;
     double sewtoler;
     double closetoler;
-    if (PyArg_ParseTuple(args, "O!ddO!O!", &TopoShapePy::Type, &shape, &sewtoler, &closetoler,
-                                           &PyBool_Type, &splitclosed, &PyBool_Type, &splitopen)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!ddO!O!",
+            &TopoShapePy::Type,
+            &shape,
+            &sewtoler,
+            &closetoler,
+            &PyBool_Type,
+            &splitclosed,
+            &PyBool_Type,
+            &splitopen
+        )) {
         TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        setTwinPointer(new ShapeFix_FreeBounds(sh, sewtoler, closetoler,
-                                               Base::asBoolean(splitclosed),
-                                               Base::asBoolean(splitopen)));
+        setTwinPointer(new ShapeFix_FreeBounds(
+            sh,
+            sewtoler,
+            closetoler,
+            Base::asBoolean(splitclosed),
+            Base::asBoolean(splitopen)
+        ));
         return 0;
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!dO!O!", &TopoShapePy::Type, &shape, &closetoler,
-                                          &PyBool_Type, &splitclosed, &PyBool_Type, &splitopen)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!dO!O!",
+            &TopoShapePy::Type,
+            &shape,
+            &closetoler,
+            &PyBool_Type,
+            &splitclosed,
+            &PyBool_Type,
+            &splitopen
+        )) {
         TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        setTwinPointer(new ShapeFix_FreeBounds(sh, closetoler,
-                                               Base::asBoolean(splitclosed),
-                                               Base::asBoolean(splitopen)));
+        setTwinPointer(new ShapeFix_FreeBounds(
+            sh,
+            closetoler,
+            Base::asBoolean(splitclosed),
+            Base::asBoolean(splitopen)
+        ));
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "ShapeFix_FreeBounds()\n"
-                                     "ShapeFix_FreeBounds(shape, sewtolerance, closetolerance, splitClosed, splitOpen)\n"
-                                     "ShapeFix_FreeBounds(shape, closetolerance, splitClosed, splitOpen)");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "ShapeFix_FreeBounds()\n"
+        "ShapeFix_FreeBounds(shape, sewtolerance, closetolerance, splitClosed, splitOpen)\n"
+        "ShapeFix_FreeBounds(shape, closetolerance, splitClosed, splitOpen)"
+    );
     return -1;
 }
 
-PyObject* ShapeFix_FreeBoundsPy::closedWires(PyObject *args)
+PyObject* ShapeFix_FreeBoundsPy::closedWires(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape comp = getShapeFix_FreeBoundsPtr()->GetClosedWires();
     return comp.getPyObject();
 }
 
-PyObject* ShapeFix_FreeBoundsPy::openWires(PyObject *args)
+PyObject* ShapeFix_FreeBoundsPy::openWires(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape comp = getShapeFix_FreeBoundsPtr()->GetOpenWires();
     return comp.getPyObject();
 }
 
-PyObject* ShapeFix_FreeBoundsPy::shape(PyObject *args)
+PyObject* ShapeFix_FreeBoundsPy::shape(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape shape = getShapeFix_FreeBoundsPtr()->GetShape();
     return shape.getPyObject();
 }
 
-PyObject *ShapeFix_FreeBoundsPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_FreeBoundsPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

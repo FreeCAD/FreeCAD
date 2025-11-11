@@ -48,23 +48,30 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
     ui->prefSaveTransaction->hide();
     ui->prefDiscardTransaction->hide();
 
-    QString tip = QStringLiteral("<html><head/><body><p>%1</p>"
-                                      "<p>%2: %Y%m%d-%H%M%S</p>"
-                                      "</p></body></html>")
+    QString tip = QStringLiteral(
+                      "<html><head/><body><p>%1</p>"
+                      "<p>%2: %Y%m%d-%H%M%S</p>"
+                      "</p></body></html>"
+    )
                       .arg(tr("The format of the date to use."), tr("Default"));
-    QString link =
-        QString::fromLatin1("<html><head/><body>"
-                            "<a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">%1</a>"
-                            "</body></html>")
-            .arg(tr("Show format documentation"));
+    QString link = QString::fromLatin1(
+                       "<html><head/><body>"
+                       "<a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">%1</a>"
+                       "</body></html>"
+    )
+                       .arg(tr("Show format documentation"));
     ui->prefSaveBackupDateFormat->setToolTip(tip);
     ui->FormatTimeDocsLabel->setText(link);
 
     ui->prefCountBackupFiles->setMaximum(std::numeric_limits<int>::max());
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
-    connect(ui->prefLicenseType, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgSettingsDocumentImp::onLicenseTypeChanged);
+    connect(
+        ui->prefLicenseType,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &DlgSettingsDocumentImp::onLicenseTypeChanged
+    );
 }
 
 /**
@@ -101,8 +108,9 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefCanAbortRecompute->onSave();
 
     int timeout = ui->prefAutoSaveTimeout->value();
-    if (!ui->prefAutoSaveEnabled->isChecked())
+    if (!ui->prefAutoSaveEnabled->isChecked()) {
         timeout = 0;
+    }
     AutoSaver::instance()->setTimeout(timeout * 60000);
 }
 
@@ -138,7 +146,7 @@ void DlgSettingsDocumentImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsDocumentImp::changeEvent(QEvent *e)
+void DlgSettingsDocumentImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -154,8 +162,7 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
 void DlgSettingsDocumentImp::addLicenseTypes()
 {
     auto add = [&](const char* what) {
-        ui->prefLicenseType->addItem(
-            QApplication::translate("Gui::Dialog::DlgSettingsDocument", what));
+        ui->prefLicenseType->addItem(QApplication::translate("Gui::Dialog::DlgSettingsDocument", what));
     };
 
     ui->prefLicenseType->clear();

@@ -138,8 +138,7 @@ bool MeshEvalDuplicatePoints::Evaluate()
 
     // if there are two adjacent vertices which have the same coordinates
     std::sort(vertices.begin(), vertices.end(), Vertex_Less());
-    return (std::adjacent_find(vertices.begin(), vertices.end(), Vertex_EqualTo())
-            == vertices.end());
+    return (std::adjacent_find(vertices.begin(), vertices.end(), Vertex_EqualTo()) == vertices.end());
 }
 
 std::vector<PointIndex> MeshEvalDuplicatePoints::GetIndices() const
@@ -890,8 +889,7 @@ bool MeshEvalDentsOnSurface::Evaluate()
 
     // remove duplicates
     std::sort(this->indices.begin(), this->indices.end());
-    this->indices.erase(std::unique(this->indices.begin(), this->indices.end()),
-                        this->indices.end());
+    this->indices.erase(std::unique(this->indices.begin(), this->indices.end()), this->indices.end());
 
     return this->indices.empty();
 }
@@ -953,8 +951,7 @@ bool MeshEvalFoldsOnSurface::Evaluate()
 
     // remove duplicates
     std::sort(this->indices.begin(), this->indices.end());
-    this->indices.erase(std::unique(this->indices.begin(), this->indices.end()),
-                        this->indices.end());
+    this->indices.erase(std::unique(this->indices.begin(), this->indices.end()), this->indices.end());
     return this->indices.empty();
 }
 
@@ -1114,11 +1111,11 @@ bool MeshEvalRangePoint::Evaluate()
     PointIndex ulCtPoints = _rclMesh.CountPoints();
 
     for (const auto& it : rFaces) {
-        if (std::find_if(it._aulPoints,
-                         it._aulPoints + 3,
-                         [ulCtPoints](PointIndex i) {
-                             return i >= ulCtPoints;
-                         })
+        if (std::find_if(
+                it._aulPoints,
+                it._aulPoints + 3,
+                [ulCtPoints](PointIndex i) { return i >= ulCtPoints; }
+            )
             < it._aulPoints + 3) {
             return false;
         }
@@ -1135,11 +1132,11 @@ std::vector<PointIndex> MeshEvalRangePoint::GetIndices() const
 
     PointIndex ind = 0;
     for (auto it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
-        if (std::find_if(it->_aulPoints,
-                         it->_aulPoints + 3,
-                         [ulCtPoints](PointIndex i) {
-                             return i >= ulCtPoints;
-                         })
+        if (std::find_if(
+                it->_aulPoints,
+                it->_aulPoints + 3,
+                [ulCtPoints](PointIndex i) { return i >= ulCtPoints; }
+            )
             < it->_aulPoints + 3) {
             aInds.push_back(ind);
         }

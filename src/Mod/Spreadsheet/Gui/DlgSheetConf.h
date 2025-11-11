@@ -46,11 +46,13 @@ public:
 
     void accept() override;
 
-    App::Property* prepare(App::CellAddress& from,
-                           App::CellAddress& to,
-                           std::string& rangeConf,
-                           App::ObjectIdentifier& path,
-                           bool init);
+    App::Property* prepare(
+        App::CellAddress& from,
+        App::CellAddress& to,
+        std::string& rangeConf,
+        App::ObjectIdentifier& path,
+        bool init
+    );
 
 public Q_SLOTS:
     void onDiscard();

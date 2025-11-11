@@ -22,26 +22,26 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Approx_Curve3d.hxx>
-# include <BRepAdaptor_CompCurve.hxx>
-# include <BRepBuilderAPI_FindPlane.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepGProp.hxx>
-# include <BRepOffsetAPI_MakeOffset.hxx>
-# include <BRepTools_WireExplorer.hxx>
-# include <GProp_GProps.hxx>
-# include <GProp_PrincipalProps.hxx>
-# include <GCPnts_QuasiUniformAbscissa.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <GCPnts_TangentialDeflection.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-# include <Precision.hxx>
-# include <ShapeAlgo_AlgoContainer.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Wire.hxx>
+#include <Approx_Curve3d.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
+#include <BRepBuilderAPI_FindPlane.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepGProp.hxx>
+#include <BRepOffsetAPI_MakeOffset.hxx>
+#include <BRepTools_WireExplorer.hxx>
+#include <GProp_GProps.hxx>
+#include <GProp_PrincipalProps.hxx>
+#include <GCPnts_QuasiUniformAbscissa.hxx>
+#include <GCPnts_QuasiUniformDeflection.hxx>
+#include <GCPnts_TangentialDeflection.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
+#include <GCPnts_UniformDeflection.hxx>
+#include <Precision.hxx>
+#include <ShapeAlgo_AlgoContainer.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <TopExp.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Wire.hxx>
 
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
@@ -58,8 +58,9 @@
 
 using namespace Part;
 
-namespace Part {
-    extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+namespace Part
+{
+extern Py::Object shape2pyshape(const TopoDS_Shape& shape);
 }
 
 
@@ -72,7 +73,7 @@ std::string TopoShapeWirePy::representation() const
     return str.str();
 }
 
-PyObject *TopoShapeWirePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* TopoShapeWirePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of TopoShapeWirePy and the Twin object
     return new TopoShapeWirePy(new TopoShape);
@@ -88,7 +89,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject *pcObj;
+    PyObject* pcObj;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         BRepBuilderAPI_MakeWire mkWire;
         const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
@@ -96,10 +97,12 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             PyErr_SetString(PyExc_TypeError, "given shape is invalid");
             return -1;
         }
-        if (sh.ShapeType() == TopAbs_EDGE)
+        if (sh.ShapeType() == TopAbs_EDGE) {
             mkWire.Add(TopoDS::Edge(sh));
-        else if (sh.ShapeType() == TopAbs_WIRE)
+        }
+        else if (sh.ShapeType() == TopAbs_WIRE) {
             mkWire.Add(TopoDS::Wire(sh));
+        }
         else {
             PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
             return -1;
@@ -118,7 +121,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O", &pcObj)) {
-        if(!Py::Object(pcObj).isList() && !Py::Object(pcObj).isTuple()) {
+        if (!Py::Object(pcObj).isList() && !Py::Object(pcObj).isTuple()) {
             PyErr_SetString(PyExc_TypeError, "object is neither a list nor a tuple");
             return -1;
         }
@@ -128,15 +131,18 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
+                const TopoDS_Shape& sh
+                    = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
                 if (sh.IsNull()) {
                     PyErr_SetString(PyExc_TypeError, "given shape is invalid");
                     return -1;
                 }
-                if (sh.ShapeType() == TopAbs_EDGE)
+                if (sh.ShapeType() == TopAbs_EDGE) {
                     mkWire.Add(TopoDS::Edge(sh));
-                else if (sh.ShapeType() == TopAbs_WIRE)
+                }
+                else if (sh.ShapeType() == TopAbs_WIRE) {
                     mkWire.Add(TopoDS::Wire(sh));
+                }
                 else {
                     PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
                     return -1;
@@ -163,11 +169,12 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* TopoShapeWirePy::add(PyObject *args)
+PyObject* TopoShapeWirePy::add(PyObject* args)
 {
     PyObject* edge;
-    if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type), &edge))
+    if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &edge)) {
         return nullptr;
+    }
     const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->getShape());
     BRepBuilderAPI_MakeWire mkWire(w);
 
@@ -176,10 +183,12 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "given shape is invalid");
         return nullptr;
     }
-    if (sh.ShapeType() == TopAbs_EDGE)
+    if (sh.ShapeType() == TopAbs_EDGE) {
         mkWire.Add(TopoDS::Edge(sh));
-    else if (sh.ShapeType() == TopAbs_WIRE)
+    }
+    else if (sh.ShapeType() == TopAbs_WIRE) {
         mkWire.Add(TopoDS::Wire(sh));
+    }
     else {
         PyErr_SetString(PyExc_TypeError, "shape is neither edge nor wire");
         return nullptr;
@@ -196,19 +205,22 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
     }
 }
 
-PyObject* TopoShapeWirePy::fixWire(PyObject *args)
+PyObject* TopoShapeWirePy::fixWire(PyObject* args)
 {
-    PyObject* face=nullptr;
+    PyObject* face = nullptr;
     double tol = Precision::Confusion();
-    if (!PyArg_ParseTuple(args, "|O!d",&(TopoShapeFacePy::Type), &face, &tol))
+    if (!PyArg_ParseTuple(args, "|O!d", &(TopoShapeFacePy::Type), &face, &tol)) {
         return nullptr;
+    }
 
     try {
         ShapeFix_Wire aFix;
         const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->getShape());
 
         if (face) {
-            const TopoDS_Face& f = TopoDS::Face(static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape());
+            const TopoDS_Face& f = TopoDS::Face(
+                static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape()
+            );
             aFix.Init(w, f, tol);
         }
         else {
@@ -230,11 +242,12 @@ PyObject* TopoShapeWirePy::fixWire(PyObject *args)
     }
 }
 
-PyObject* TopoShapeWirePy::makeOffset(PyObject *args) const
+PyObject* TopoShapeWirePy::makeOffset(PyObject* args) const
 {
     double dist;
-    if (!PyArg_ParseTuple(args, "d",&dist))
+    if (!PyArg_ParseTuple(args, "d", &dist)) {
         return nullptr;
+    }
     const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->getShape());
     BRepBuilderAPI_FindPlane findPlane(w);
     if (!findPlane.Found()) {
@@ -248,9 +261,9 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject *args) const
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
 }
 
-PyObject* TopoShapeWirePy::makePipe(PyObject *args) const
+PyObject* TopoShapeWirePy::makePipe(PyObject* args) const
 {
-    PyObject *pShape;
+    PyObject* pShape;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pShape)) {
         try {
             TopoDS_Shape profile = static_cast<TopoShapePy*>(pShape)->getTopoShapePtr()->getShape();
@@ -267,28 +280,30 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args) const
     return nullptr;
 }
 
-PyObject* TopoShapeWirePy::makePipeShell(PyObject *args) const
+PyObject* TopoShapeWirePy::makePipeShell(PyObject* args) const
 {
-    PyObject *obj;
-    PyObject *make_solid = Py_False;
-    PyObject *is_Frenet = Py_False;
+    PyObject* obj;
+    PyObject* make_solid = Py_False;
+    PyObject* is_Frenet = Py_False;
     int transition = 0;
 
-    if (PyArg_ParseTuple(args, "O|O!O!i", &obj,
-                             &PyBool_Type, &make_solid,
-                             &PyBool_Type, &is_Frenet,
-                             &transition)) {
+    if (PyArg_ParseTuple(args, "O|O!O!i", &obj, &PyBool_Type, &make_solid, &PyBool_Type, &is_Frenet, &transition)) {
         try {
             TopTools_ListOfShape sections;
             Py::Sequence list(obj);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
-                    const TopoDS_Shape& shape = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                    const TopoDS_Shape& shape
+                        = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
                     sections.Append(shape);
                 }
             }
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections,
-                Base::asBoolean(make_solid), Base::asBoolean(is_Frenet), transition);
+            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(
+                sections,
+                Base::asBoolean(make_solid),
+                Base::asBoolean(is_Frenet),
+                transition
+            );
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure& e) {
@@ -308,7 +323,7 @@ profile = Part.makePolygon([v(0.,0.,0.), v(-60.,-60.,-100.), v(-60.,-60.,-140.)]
 spine = Part.makePolygon([v(0.,0.,0.), v(100.,0.,0.), v(100.,100.,0.), v(0.,100.,0.), v(0.,0.,0.)])
 evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
 */
-PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds) const
+PyObject* TopoShapeWirePy::makeEvolved(PyObject* args, PyObject* kwds) const
 {
     PyObject* Profile;
     PyObject* AxeProf = Py_True;
@@ -317,12 +332,24 @@ PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds) const
     int JoinType = int(GeomAbs_Arc);
     double Tolerance = 0.0000001;
 
-    static const std::array<const char *, 7> kwds_evolve{"Profile", "Join", "AxeProf", "Solid", "ProfOnSpine",
-                                                         "Tolerance", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|iO!O!O!d", kwds_evolve,
-                                             &TopoShapeWirePy::Type, &Profile, &JoinType,
-                                             &PyBool_Type, &AxeProf, &PyBool_Type, &Solid,
-                                             &PyBool_Type, &ProfOnSpine, &Tolerance)) {
+    static const std::array<const char*, 7>
+        kwds_evolve {"Profile", "Join", "AxeProf", "Solid", "ProfOnSpine", "Tolerance", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!|iO!O!O!d",
+            kwds_evolve,
+            &TopoShapeWirePy::Type,
+            &Profile,
+            &JoinType,
+            &PyBool_Type,
+            &AxeProf,
+            &PyBool_Type,
+            &Solid,
+            &PyBool_Type,
+            &ProfOnSpine,
+            &Tolerance
+        )) {
         return nullptr;
     }
 
@@ -333,27 +360,33 @@ PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds) const
         return nullptr;
     }
 
-    const TopoDS_Wire& profile = TopoDS::Wire(static_cast<TopoShapeWirePy*>(Profile)->getTopoShapePtr()->getShape());
+    const TopoDS_Wire& profile = TopoDS::Wire(
+        static_cast<TopoShapeWirePy*>(Profile)->getTopoShapePtr()->getShape()
+    );
 
     GeomAbs_JoinType joinType;
     switch (JoinType) {
-    case GeomAbs_Tangent:
-        joinType = GeomAbs_Tangent;
-        break;
-    case GeomAbs_Intersection:
-        joinType = GeomAbs_Intersection;
-        break;
-    default:
-        joinType = GeomAbs_Arc;
-        break;
+        case GeomAbs_Tangent:
+            joinType = GeomAbs_Tangent;
+            break;
+        case GeomAbs_Intersection:
+            joinType = GeomAbs_Intersection;
+            break;
+        default:
+            joinType = GeomAbs_Arc;
+            break;
     }
 
     try {
-        BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
-                                          Base::asBoolean(AxeProf),
-                                          Base::asBoolean(Solid),
-                                          Base::asBoolean(ProfOnSpine),
-                                          Tolerance);
+        BRepOffsetAPI_MakeEvolved evolved(
+            spine,
+            profile,
+            joinType,
+            Base::asBoolean(AxeProf),
+            Base::asBoolean(Solid),
+            Base::asBoolean(ProfOnSpine),
+            Tolerance
+        );
         TopoDS_Shape shape = evolved.Shape();
         return Py::new_reference_to(shape2pyshape(shape));
     }
@@ -363,17 +396,20 @@ PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds) const
     }
 }
 
-PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args) const
+PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject* args) const
 {
     PyObject* wire;
-    if (!PyArg_ParseTuple(args, "O!",&(Part::TopoShapeWirePy::Type),&wire))
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeWirePy::Type), &wire)) {
         return nullptr;
+    }
     try {
         TopoDS_Wire o1, o2;
         const TopoDS_Wire& w1 = TopoDS::Wire(getTopoShapePtr()->getShape());
-        const TopoDS_Wire& w2 = TopoDS::Wire(static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape());
+        const TopoDS_Wire& w2 = TopoDS::Wire(
+            static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape()
+        );
         ShapeAlgo_AlgoContainer shapeAlgo;
-        if (shapeAlgo.HomoWires(w1,w2,o1,o2,Standard_True)) {
+        if (shapeAlgo.HomoWires(w1, w2, o1, o2, Standard_True)) {
             getTopoShapePtr()->setShape(o1);
             return new TopoShapeWirePy(new TopoShape(o2));
         }
@@ -389,21 +425,29 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args) const
     }
 }
 
-PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds) const
+PyObject* TopoShapeWirePy::approximate(PyObject* args, PyObject* kwds) const
 {
     double tol2d = gp::Resolution();
     double tol3d = 0.0001;
-    int maxseg=10, maxdeg=3;
+    int maxseg = 10, maxdeg = 3;
 
-    static const std::array<const char *, 5> kwds_approx{"Tol2d", "Tol3d", "MaxSegments", "MaxDegree", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|ddii", kwds_approx, &tol2d, &tol3d, &maxseg, &maxdeg)) {
+    static const std::array<const char*, 5>
+        kwds_approx {"Tol2d", "Tol3d", "MaxSegments", "MaxDegree", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "|ddii",
+            kwds_approx,
+            &tol2d,
+            &tol3d,
+            &maxseg,
+            &maxdeg
+        )) {
         return nullptr;
     }
     try {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
-        auto hcurve = adapt.Trim(adapt.FirstParameter(),
-                                 adapt.LastParameter(),
-                                 tol2d);
+        auto hcurve = adapt.Trim(adapt.FirstParameter(), adapt.LastParameter(), tol2d);
         Approx_Curve3d approx(hcurve, tol3d, GeomAbs_C0, maxseg, maxdeg);
         if (approx.IsDone()) {
             return new BSplineCurvePy(new GeomBSplineCurve(approx.Curve()));
@@ -419,7 +463,7 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds) const
     }
 }
 
-PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
+PyObject* TopoShapeWirePy::discretize(PyObject* args, PyObject* kwds) const
 {
     try {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
@@ -448,16 +492,37 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
         }
         else {
             // use Number kwds
-            static const std::array<const char *, 4> kwds_numPoints{"Number", "First", "Last", nullptr};
+            static const std::array<const char*, 4> kwds_numPoints {"Number", "First", "Last", nullptr};
             PyErr_Clear();
-            if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
+            if (Base::Wrapped_ParseTupleAndKeywords(
+                    args,
+                    kwds,
+                    "i|dd",
+                    kwds_numPoints,
+                    &numPoints,
+                    &first,
+                    &last
+                )) {
                 uniformAbscissaPoints = true;
             }
             else {
                 // use Abscissa kwds
-                static const std::array<const char *, 4> kwds_Distance{"Distance", "First", "Last", nullptr};
+                static const std::array<const char*, 4> kwds_Distance {
+                    "Distance",
+                    "First",
+                    "Last",
+                    nullptr
+                };
                 PyErr_Clear();
-                if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
+                if (Base::Wrapped_ParseTupleAndKeywords(
+                        args,
+                        kwds,
+                        "d|dd",
+                        kwds_Distance,
+                        &distance,
+                        &first,
+                        &last
+                    )) {
                     uniformAbscissaDistance = true;
                 }
             }
@@ -465,17 +530,19 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
 
         if (uniformAbscissaPoints || uniformAbscissaDistance) {
             GCPnts_UniformAbscissa discretizer;
-            if (uniformAbscissaPoints)
-                discretizer.Initialize (adapt, numPoints, first, last);
-            else
-                discretizer.Initialize (adapt, distance, first, last);
+            if (uniformAbscissaPoints) {
+                discretizer.Initialize(adapt, numPoints, first, last);
+            }
+            else {
+                discretizer.Initialize(adapt, distance, first, last);
+            }
 
-            if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = adapt.Value(discretizer.Parameter(i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -487,17 +554,25 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
         }
 
         // use Deflection kwds
-        static const std::array<const char *, 4> kwds_Deflection{"Deflection", "First", "Last", nullptr};
+        static const std::array<const char*, 4> kwds_Deflection {"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(
+                args,
+                kwds,
+                "d|dd",
+                kwds_Deflection,
+                &deflection,
+                &first,
+                &last
+            )) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
-            if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = discretizer.Value (i);
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value(i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -509,21 +584,30 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
         }
 
         // use TangentialDeflection kwds
-        static const std::array<const char *, 6> kwds_TangentialDeflection{"Angular", "Curvature", "First", "Last",
-                                                                           "Minimum", nullptr};
+        static const std::array<const char*, 6>
+            kwds_TangentialDeflection {"Angular", "Curvature", "First", "Last", "Minimum", nullptr};
         PyErr_Clear();
         double angular;
         double curvature;
         int minimumPoints = 2;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection,
-                                                &angular, &curvature, &first, &last, &minimumPoints)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(
+                args,
+                kwds,
+                "dd|ddi",
+                kwds_TangentialDeflection,
+                &angular,
+                &curvature,
+                &first,
+                &last,
+                &minimumPoints
+            )) {
             GCPnts_TangentialDeflection discretizer(adapt, first, last, angular, curvature, minimumPoints);
-            if (discretizer.NbPoints () > 0) {
+            if (discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = discretizer.Value (i);
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value(i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -535,18 +619,30 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
         }
 
         // use QuasiNumber kwds
-        static const std::array<const char *, 4> kwds_QuasiNumPoints{"QuasiNumber", "First", "Last", nullptr};
+        static const std::array<const char*, 4> kwds_QuasiNumPoints {
+            "QuasiNumber",
+            "First",
+            "Last",
+            nullptr
+        };
         PyErr_Clear();
         int quasiNumPoints;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints,
-                                                &quasiNumPoints, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(
+                args,
+                kwds,
+                "i|dd",
+                kwds_QuasiNumPoints,
+                &quasiNumPoints,
+                &first,
+                &last
+            )) {
             GCPnts_QuasiUniformAbscissa discretizer(adapt, quasiNumPoints, first, last);
-            if (discretizer.NbPoints () > 0) {
+            if (discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = adapt.Value(discretizer.Parameter(i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -558,18 +654,30 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
         }
 
         // use QuasiDeflection kwds
-        static const std::array<const char *, 4> kwds_QuasiDeflection{"QuasiDeflection", "First", "Last", nullptr};
+        static const std::array<const char*, 4> kwds_QuasiDeflection {
+            "QuasiDeflection",
+            "First",
+            "Last",
+            nullptr
+        };
         PyErr_Clear();
         double quasiDeflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection,
-                                                &quasiDeflection, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(
+                args,
+                kwds,
+                "d|dd",
+                kwds_QuasiDeflection,
+                &quasiDeflection,
+                &first,
+                &last
+            )) {
             GCPnts_QuasiUniformDeflection discretizer(adapt, quasiDeflection, first, last);
-            if (discretizer.NbPoints () > 0) {
+            if (discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = discretizer.Value (i);
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value(i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -585,7 +693,7 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds) const
         return nullptr;
     }
 
-    PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
+    PyErr_SetString(PartExceptionOCCError, "Wrong arguments");
     return nullptr;
 }
 
@@ -594,27 +702,27 @@ Py::String TopoShapeWirePy::getContinuity() const
     BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
     std::string cont;
     switch (adapt.Continuity()) {
-    case GeomAbs_C0:
-        cont = "C0";
-        break;
-    case GeomAbs_G1:
-        cont = "G1";
-        break;
-    case GeomAbs_C1:
-        cont = "C1";
-        break;
-    case GeomAbs_G2:
-        cont = "G2";
-        break;
-    case GeomAbs_C2:
-        cont = "C2";
-        break;
-    case GeomAbs_C3:
-        cont = "C3";
-        break;
-    case GeomAbs_CN:
-        cont = "CN";
-        break;
+        case GeomAbs_C0:
+            cont = "C0";
+            break;
+        case GeomAbs_G1:
+            cont = "G1";
+            break;
+        case GeomAbs_C1:
+            cont = "C1";
+            break;
+        case GeomAbs_G2:
+            cont = "G2";
+            break;
+        case GeomAbs_C2:
+            cont = "C2";
+            break;
+        case GeomAbs_C3:
+            cont = "C3";
+            break;
+        case GeomAbs_CN:
+            cont = "CN";
+            break;
     }
 
     return Py::String(cont);
@@ -633,7 +741,7 @@ Py::Object TopoShapeWirePy::getCenterOfMass() const
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
     gp_Pnt c = props.CentreOfMass();
-    return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+    return Py::Vector(Base::Vector3d(c.X(), c.Y(), c.Z()));
 }
 
 Py::Object TopoShapeWirePy::getMatrixOfInertia() const
@@ -642,9 +750,9 @@ Py::Object TopoShapeWirePy::getMatrixOfInertia() const
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
     gp_Mat m = props.MatrixOfInertia();
     Base::Matrix4D mat;
-    for (int i=0; i<3; i++) {
-        for (int j=0; j<3; j++) {
-            mat[i][j] = m(i+1,j+1);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            mat[i][j] = m(i + 1, j + 1);
         }
     }
     return Py::Matrix(mat);
@@ -654,8 +762,8 @@ Py::Object TopoShapeWirePy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
-    Standard_Real lx,ly,lz;
-    props.StaticMoments(lx,ly,lz);
+    Standard_Real lx, ly, lz;
+    props.StaticMoments(lx, ly, lz);
     Py::Tuple tuple(3);
     tuple.setItem(0, Py::Float(lx));
     tuple.setItem(1, Py::Float(ly));
@@ -672,27 +780,33 @@ Py::Dict TopoShapeWirePy::getPrincipalProperties() const
     Py::Dict dict;
     dict.setItem("SymmetryAxis", Py::Boolean(pprops.HasSymmetryAxis() ? true : false));
     dict.setItem("SymmetryPoint", Py::Boolean(pprops.HasSymmetryPoint() ? true : false));
-    Standard_Real lx,ly,lz;
-    pprops.Moments(lx,ly,lz);
+    Standard_Real lx, ly, lz;
+    pprops.Moments(lx, ly, lz);
     Py::Tuple tuple(3);
     tuple.setItem(0, Py::Float(lx));
     tuple.setItem(1, Py::Float(ly));
     tuple.setItem(2, Py::Float(lz));
-    dict.setItem("Moments",tuple);
-    dict.setItem("FirstAxisOfInertia",Py::Vector(Base::convertTo
-        <Base::Vector3d>(pprops.FirstAxisOfInertia())));
-    dict.setItem("SecondAxisOfInertia",Py::Vector(Base::convertTo
-        <Base::Vector3d>(pprops.SecondAxisOfInertia())));
-    dict.setItem("ThirdAxisOfInertia",Py::Vector(Base::convertTo
-        <Base::Vector3d>(pprops.ThirdAxisOfInertia())));
+    dict.setItem("Moments", tuple);
+    dict.setItem(
+        "FirstAxisOfInertia",
+        Py::Vector(Base::convertTo<Base::Vector3d>(pprops.FirstAxisOfInertia()))
+    );
+    dict.setItem(
+        "SecondAxisOfInertia",
+        Py::Vector(Base::convertTo<Base::Vector3d>(pprops.SecondAxisOfInertia()))
+    );
+    dict.setItem(
+        "ThirdAxisOfInertia",
+        Py::Vector(Base::convertTo<Base::Vector3d>(pprops.ThirdAxisOfInertia()))
+    );
 
-    Standard_Real Rxx,Ryy,Rzz;
-    pprops.RadiusOfGyration(Rxx,Ryy,Rzz);
+    Standard_Real Rxx, Ryy, Rzz;
+    pprops.RadiusOfGyration(Rxx, Ryy, Rzz);
     Py::Tuple rog(3);
     rog.setItem(0, Py::Float(Rxx));
     rog.setItem(1, Py::Float(Ryy));
     rog.setItem(2, Py::Float(Rzz));
-    dict.setItem("RadiusOfGyration",rog);
+    dict.setItem("RadiusOfGyration", rog);
     return dict;
 }
 
@@ -732,7 +846,7 @@ Py::List TopoShapeWirePy::getOrderedVertexes() const
     return ret;
 }
 
-PyObject *TopoShapeWirePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* TopoShapeWirePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

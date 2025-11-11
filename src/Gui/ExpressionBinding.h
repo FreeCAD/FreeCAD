@@ -30,14 +30,16 @@
 #include <boost/signals2.hpp>
 
 
-namespace App {
+namespace App
+{
 class Expression;
 }
 
 class ExpressionLabel;
 class QLineEdit;
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport ExpressionBinding
 {
@@ -45,29 +47,39 @@ public:
     ExpressionBinding();
     virtual ~ExpressionBinding();
 
-    virtual void bind(const App::ObjectIdentifier & _path);
-    virtual void bind(const App::Property & prop);
+    virtual void bind(const App::ObjectIdentifier& _path);
+    virtual void bind(const App::Property& prop);
     bool isBound() const;
     void unbind();
-    virtual bool apply(const std::string &propName);
+    virtual bool apply(const std::string& propName);
     virtual bool apply();
     bool hasExpression() const;
 
-    //auto apply means that the python code is issued not only on apply() but
-    //also on setExpression
-    bool autoApply() const {return m_autoApply;}
-    void setAutoApply(bool value) {m_autoApply = value;}
+    // auto apply means that the python code is issued not only on apply() but
+    // also on setExpression
+    bool autoApply() const
+    {
+        return m_autoApply;
+    }
+    void setAutoApply(bool value)
+    {
+        m_autoApply = value;
+    }
 
 protected:
-    const App::ObjectIdentifier & getPath() const { return path; }
+    const App::ObjectIdentifier& getPath() const
+    {
+        return path;
+    }
     std::shared_ptr<App::Expression> getExpression() const;
-    std::string getExpressionString(bool no_throw=true) const;
+    std::string getExpressionString(bool no_throw = true) const;
     std::string getEscapedExpressionString() const;
-    bool assignToProperty(const std::string & propName, double);
+    bool assignToProperty(const std::string& propName, double);
     virtual void setExpression(std::shared_ptr<App::Expression> expr);
 
-    //gets called when the bound expression is changed, either by this binding or any external action
-    virtual void onChange() {}
+    // gets called when the bound expression is changed, either by this binding or any external action
+    virtual void onChange()
+    {}
 
 private:
     App::ObjectIdentifier path;
@@ -80,24 +92,24 @@ protected:
     boost::signals2::scoped_connection expressionchanged;
     boost::signals2::scoped_connection objectdeleted;
     boost::signals2::scoped_connection documentdeleted;
-    bool m_autoApply{false};
+    bool m_autoApply {false};
 };
 
-class GuiExport ExpressionWidget : public ExpressionBinding
+class GuiExport ExpressionWidget: public ExpressionBinding
 {
 public:
     ExpressionWidget();
-    QPixmap getIcon(const char *name, const QSize &size) const;
+    QPixmap getIcon(const char* name, const QSize& size) const;
 
 protected:
     void makeLabel(QLineEdit* parent);
 
 protected:
-    ExpressionLabel* iconLabel{nullptr};
+    ExpressionLabel* iconLabel {nullptr};
     QPalette defaultPalette;
-    int iconHeight{-1};
+    int iconHeight {-1};
 };
 
-}
+}  // namespace Gui
 
-#endif // EXPRESSIONBINDING_H
+#endif  // EXPRESSIONBINDING_H

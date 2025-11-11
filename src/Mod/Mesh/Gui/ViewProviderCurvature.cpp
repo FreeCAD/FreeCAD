@@ -135,12 +135,14 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
         Base::Console().destructorError(
             "ViewProviderMeshCurvature",
             "ViewProviderMeshCurvature::deleteColorBar() threw an exception: %s\n",
-            e.what());
+            e.what()
+        );
     }
     catch (...) {
         Base::Console().destructorError(
             "ViewProviderInspection",
-            "ViewProviderInspection destructor threw an unknown exception");
+            "ViewProviderInspection destructor threw an unknown exception"
+        );
     }
 }
 
@@ -148,15 +150,11 @@ void ViewProviderMeshCurvature::onChanged(const App::Property* prop)
 {
     if (prop == &TextureMaterial) {
         const App::Material& Mat = TextureMaterial.getValue();
-        pcColorMat->ambientColor.setValue(Mat.ambientColor.r,
-                                          Mat.ambientColor.g,
-                                          Mat.ambientColor.b);
-        pcColorMat->specularColor.setValue(Mat.specularColor.r,
-                                           Mat.specularColor.g,
-                                           Mat.specularColor.b);
-        pcColorMat->emissiveColor.setValue(Mat.emissiveColor.r,
-                                           Mat.emissiveColor.g,
-                                           Mat.emissiveColor.b);
+        pcColorMat->ambientColor.setValue(Mat.ambientColor.r, Mat.ambientColor.g, Mat.ambientColor.b);
+        pcColorMat->specularColor
+            .setValue(Mat.specularColor.r, Mat.specularColor.g, Mat.specularColor.b);
+        pcColorMat->emissiveColor
+            .setValue(Mat.emissiveColor.r, Mat.emissiveColor.g, Mat.emissiveColor.b);
         pcColorMat->shininess.setValue(Mat.shininess);
         pcColorMat->transparency.setValue(Mat.transparency);
     }
@@ -239,8 +237,10 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* prop)
     pcColorBar->setRange(fMin, fMax, 3);
 }
 
-void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj,
-                                                  const App::Property& Prop)
+void ViewProviderMeshCurvature::slotChangedObject(
+    const App::DocumentObject& Obj,
+    const App::Property& Prop
+)
 {
     // we get this for any object for that a property has changed. Thus, we must regard that object
     // which is linked by our link property
@@ -460,10 +460,7 @@ namespace MeshGui
 class Annotation
 {
 public:
-    Annotation(Gui::ViewProviderDocumentObject* vp,
-               const QString& s,
-               const SbVec3f& p,
-               const SbVec3f& n)
+    Annotation(Gui::ViewProviderDocumentObject* vp, const QString& s, const SbVec3f& p, const SbVec3f& n)
         : vp(vp)
         , s(s)
         , p(p)
@@ -528,8 +525,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
         // Mark all incoming mouse button events as handled, especially, to deactivate the
         // selection node
         n->getAction()->setHandled();
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-            && mbe->getState() == SoButtonEvent::UP) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
             n->setHandled();
             // context-menu
             QMenu menu;
@@ -611,8 +607,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
     }
 }
 
-std::string
-ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, int index3) const
+std::string ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, int index3) const
 {
     // get the curvature info of the three points of the picked facet
     App::Property* prop = pcObject->getPropertyByName("CurvInfo");

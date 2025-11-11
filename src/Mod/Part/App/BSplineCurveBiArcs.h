@@ -37,34 +37,51 @@
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace Part {
+namespace Part
+{
 
 class Geometry;
 
 class PartExport BSplineCurveBiArcs
 {
 public:
-    BSplineCurveBiArcs(const Handle(Geom_Curve)&);
+    BSplineCurveBiArcs(const Handle(Geom_Curve) &);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
 private:
-    void createArcs(double tolerance, std::list<Geometry*>& new_spans,
-                    const gp_Pnt &p_start, const gp_Vec &v_start,
-                    double t_start, double t_end, gp_Pnt &p_end, gp_Vec &v_end) const;
-    enum class Type {
+    void createArcs(
+        double tolerance,
+        std::list<Geometry*>& new_spans,
+        const gp_Pnt& p_start,
+        const gp_Vec& v_start,
+        double t_start,
+        double t_end,
+        gp_Pnt& p_end,
+        gp_Vec& v_end
+    ) const;
+    enum class Type
+    {
         SingleArc,
         SplitCurve,
         SingleLine
     };
 
-    Type calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Vec v_start,
-                              double t_end, const gp_Pnt& p4, gp_Vec v_end,
-                              gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const;
+    Type calculateBiArcPoints(
+        double t_start,
+        const gp_Pnt& p0,
+        gp_Vec v_start,
+        double t_end,
+        const gp_Pnt& p4,
+        gp_Vec v_end,
+        gp_Pnt& p1,
+        gp_Pnt& p2,
+        gp_Pnt& p3
+    ) const;
 
 private:
     Handle(Geom_Curve) myCurve;
 };
 
-}
+}  // namespace Part
 
-#endif // PART_BSPLINECURVEBIARCS_H
+#endif  // PART_BSPLINECURVEBIARCS_H

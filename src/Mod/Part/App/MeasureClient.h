@@ -29,7 +29,6 @@
 #include "MeasureInfo.h"
 
 
-
 namespace Part
 {
 
@@ -37,7 +36,6 @@ namespace Part
 class PartExport MeasureClient
 {
 public:
-
     static void initialize();
 
     static CallbackRegistrationList reportLengthCB();
@@ -49,6 +47,6 @@ public:
 };
 
 
-} //namespace Part
+}  // namespace Part
 
 #endif

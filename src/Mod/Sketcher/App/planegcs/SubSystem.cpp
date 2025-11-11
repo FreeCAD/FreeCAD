@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
+# pragma warning(disable : 4251)
 #endif
 
 #include <iostream>
@@ -62,16 +62,11 @@ void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
         SET_pD s2;
         for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
              ++constr) {
-            (*constr)
-                ->revertParams();  // ensure that the constraint points to the original parameters
+            (*constr)->revertParams();  // ensure that the constraint points to the original parameters
             VEC_pD constr_params = (*constr)->params();
             s2.insert(constr_params.begin(), constr_params.end());
         }
-        std::set_intersection(s1.begin(),
-                              s1.end(),
-                              s2.begin(),
-                              s2.end(),
-                              std::back_inserter(tmpplist));
+        std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), std::back_inserter(tmpplist));
     }
 
     plist.clear();
@@ -83,8 +78,7 @@ void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
             MAP_pD_pD::const_iterator itr = reductionmap.find(*itt);
             if (itr != reductionmap.end()) {
                 MAP_pD_I::const_iterator itp = pindex.find(itr->second);
-                if (itp
-                    == pindex.end()) {  // the reduction target is not in plist yet, so add it now
+                if (itp == pindex.end()) {  // the reduction target is not in plist yet, so add it now
                     plist.push_back(itr->second);
                     rindex[itr->first] = i;
                     pindex[itr->second] = i;
@@ -118,8 +112,7 @@ void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
 
     c2p.clear();
     p2c.clear();
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr) {
         (*constr)->revertParams();  // ensure that the constraint points to the original parameters
         VEC_pD constr_params_orig = (*constr)->params();
         SET_pD constr_params;
@@ -147,8 +140,7 @@ void SubSystem::redirectParams()
     }
 
     // redirect constraints to point to pvals
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr) {
         (*constr)->revertParams();  // this line will normally not be necessary
         (*constr)->redirectParams(pmap);
     }
@@ -156,8 +148,7 @@ void SubSystem::redirectParams()
 
 void SubSystem::revertParams()
 {
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr) {
         (*constr)->revertParams();
     }
 }
@@ -312,8 +303,7 @@ double SubSystem::maxStep(VEC_pD& params, Eigen::VectorXd& xdir)
     }
 
     double alpha = 1e10;
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr) {
         alpha = (*constr)->maxStep(dir, alpha);
     }
 

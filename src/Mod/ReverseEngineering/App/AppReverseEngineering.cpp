@@ -35,9 +35,9 @@
 #include <Mod/Part/App/BSplineSurfacePy.h>
 #include <Mod/Points/App/PointsPy.h>
 #if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/point_types.h>
+# include <pcl/filters/passthrough.h>
+# include <pcl/filters/voxel_grid.h>
+# include <pcl/point_types.h>
 #endif
 
 #include "ApproxSurface.h"

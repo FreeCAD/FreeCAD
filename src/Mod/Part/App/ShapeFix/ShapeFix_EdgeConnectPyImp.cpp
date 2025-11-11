@@ -24,7 +24,7 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <TopoDS.hxx>
+#include <TopoDS.hxx>
 
 
 #include "ShapeFix/ShapeFix_EdgeConnectPy.h"
@@ -40,7 +40,7 @@ std::string ShapeFix_EdgeConnectPy::representation() const
     return "<ShapeFix_EdgeConnect object>";
 }
 
-PyObject *ShapeFix_EdgeConnectPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_EdgeConnectPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of ShapeFix_RootPy
     return new ShapeFix_EdgeConnectPy(new ShapeFix_EdgeConnect);
@@ -49,17 +49,17 @@ PyObject *ShapeFix_EdgeConnectPy::PyMake(struct _typeobject *, PyObject *, PyObj
 // constructor method
 int ShapeFix_EdgeConnectPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return -1;
+    }
     return 0;
 }
 
-PyObject* ShapeFix_EdgeConnectPy::add(PyObject *args)
+PyObject* ShapeFix_EdgeConnectPy::add(PyObject* args)
 {
     PyObject* edge1;
     PyObject* edge2;
-    if (PyArg_ParseTuple(args, "O!O!", &TopoShapeEdgePy::Type, &edge1,
-                                       &TopoShapeEdgePy::Type, &edge2)) {
+    if (PyArg_ParseTuple(args, "O!O!", &TopoShapeEdgePy::Type, &edge1, &TopoShapeEdgePy::Type, &edge2)) {
         TopoDS_Shape e1 = static_cast<TopoShapeEdgePy*>(edge1)->getTopoShapePtr()->getShape();
         TopoDS_Shape e2 = static_cast<TopoShapeEdgePy*>(edge2)->getTopoShapePtr()->getShape();
         getShapeFix_EdgeConnectPtr()->Add(TopoDS::Edge(e1), TopoDS::Edge(e2));
@@ -73,30 +73,35 @@ PyObject* ShapeFix_EdgeConnectPy::add(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_TypeError, "add(edge, edge) or\n"
-                                     "add(shape)");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "add(edge, edge) or\n"
+        "add(shape)"
+    );
     return nullptr;
 }
 
-PyObject* ShapeFix_EdgeConnectPy::build(PyObject *args)
+PyObject* ShapeFix_EdgeConnectPy::build(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getShapeFix_EdgeConnectPtr()->Build();
     Py_Return;
 }
 
-PyObject* ShapeFix_EdgeConnectPy::clear(PyObject *args)
+PyObject* ShapeFix_EdgeConnectPy::clear(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getShapeFix_EdgeConnectPtr()->Clear();
     Py_Return;
 }
 
-PyObject *ShapeFix_EdgeConnectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_EdgeConnectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

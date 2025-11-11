@@ -186,13 +186,13 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "</strong></p>"
         "</div></body>"
         "</html>"
-        "\r\n");
+        "\r\n"
+    );
 
     QString header = QStringLiteral("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader =
-        http.arg(pageNotFound).arg(QStringLiteral("File not found"), header);
+    QString httpResponseHeader = http.arg(pageNotFound).arg(QStringLiteral("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -201,31 +201,32 @@ QByteArray PythonOnlineHelp::fileNotFound() const
 QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
 {
     const int pageNotFound = 404;
-    QString contentType =
-        QStringLiteral(
-            "text/html\r\n"
-            "\r\n"
-            "<html><head><title>Error</title></head>"
-            "<body bgcolor=\"#f0f0f8\">"
-            "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
-            "<tr bgcolor=\"#7799ee\">"
-            "<td valign=bottom>&nbsp;<br>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD "
-            "Documentation</strong></big></big></font></td>"
-            "<td align=right valign=bottom>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
-            "<p><p>"
-            "<h1>%1</h1>"
-            "</body>"
-            "</html>"
-            "\r\n")
-            .arg(error);
+    QString contentType
+        = QStringLiteral(
+              "text/html\r\n"
+              "\r\n"
+              "<html><head><title>Error</title></head>"
+              "<body bgcolor=\"#f0f0f8\">"
+              "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
+              "<tr bgcolor=\"#7799ee\">"
+              "<td valign=bottom>&nbsp;<br>"
+              "<font color=\"#ffffff\" face=\"helvetica, "
+              "arial\">&nbsp;<br><big><big><strong>FreeCAD "
+              "Documentation</strong></big></big></font></td>"
+              "<td align=right valign=bottom>"
+              "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
+              "<p><p>"
+              "<h1>%1</h1>"
+              "</body>"
+              "</html>"
+              "\r\n"
+        )
+              .arg(error);
 
     QString header = QStringLiteral("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader =
-        http.arg(pageNotFound).arg(QStringLiteral("File not found"), header);
+    QString httpResponseHeader = http.arg(pageNotFound).arg(QStringLiteral("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -353,11 +354,11 @@ void StdCmdPythonHelp::activated(int iMsg)
         OpenURLInBrowser(url.c_str());
     }
     else {
-        QMessageBox::critical(Gui::getMainWindow(),
-                              QObject::tr("No Server"),
-                              QObject::tr("Unable to start the server to port %1: %2.")
-                                  .arg(port)
-                                  .arg(server->errorString()));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            QObject::tr("No Server"),
+            QObject::tr("Unable to start the server to port %1: %2.").arg(port).arg(server->errorString())
+        );
     }
 }
 
@@ -377,9 +378,11 @@ bool Gui::OpenURLInBrowser(const char* URL)
     }
     catch (Py::Exception& e) {
         e.clear();
-        QMessageBox::critical(Gui::getMainWindow(),
-                              QObject::tr("No Browser"),
-                              QObject::tr("Unable to open your system browser."));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            QObject::tr("No Browser"),
+            QObject::tr("Unable to open your system browser.")
+        );
         return false;
     }
 }

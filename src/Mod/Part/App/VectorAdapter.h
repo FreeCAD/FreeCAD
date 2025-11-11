@@ -50,44 +50,54 @@ public:
     /*!Build a vector from a faceIn
      * @param faceIn vector will be normal to plane and equal to cylindrical axis.
      * @param pickedPointIn location of pick. straight conversion from sbvec. not accurate.*/
-    VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn);
+    VectorAdapter(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn);
     /*!Build a vector from an edgeIn
      * @param edgeIn vector will be lastPoint - firstPoint.
      * @param pickedPointIn location of pick. straight conversion from sbvec. not accurate.*/
-    VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn);
+    VectorAdapter(const TopoDS_Edge& edgeIn, const gp_Vec& pickedPointIn);
     /*!Build a vector From 2 vertices.
      *vector will be equal to @param vertex2In - @param vertex1In.*/
-    VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In);
+    VectorAdapter(const TopoDS_Vertex& vertex1In, const TopoDS_Vertex& vertex2In);
     /*!Build a vector From 2 vectors.
      *vector will be equal to @param vector2 - @param vector1.*/
-    VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2);
+    VectorAdapter(const gp_Vec& vector1, const gp_Vec& vector2);
 
     /*!make sure no errors in vector construction.
      * @return true = vector is good. false = vector is NOT good.*/
-    bool isValid() const {return status;}
+    bool isValid() const
+    {
+        return status;
+    }
     /*!get the calculated vector.
      * @return the vector. use isValid to ensure correct results.*/
-    explicit operator gp_Vec() const {return vector;}
+    explicit operator gp_Vec() const
+    {
+        return vector;
+    }
     /*!build occ line used for extrema calculation*/
     explicit operator gp_Lin() const;
-    gp_Vec getPickPoint() const {return origin;}
+    gp_Vec getPickPoint() const
+    {
+        return origin;
+    }
 
-    explicit operator Base::Vector3d() const {
+    explicit operator Base::Vector3d() const
+    {
         return Base::Vector3d(vector.X(), vector.Y(), vector.Z());
     }
 
     static gp_Vec convert(const TopoDS_Vertex& vertex);
 
 private:
-    void projectOriginOntoVector(const gp_Vec &pickedPointIn);
-    bool handleElementarySurface(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn);
-    bool handlePlanarSurface(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn);
+    void projectOriginOntoVector(const gp_Vec& pickedPointIn);
+    bool handleElementarySurface(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn);
+    bool handlePlanarSurface(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn);
     bool status;
     gp_Vec vector;
     gp_Vec origin;
 };
 
 
-} //namespace Part
+}  // namespace Part
 
 #endif
