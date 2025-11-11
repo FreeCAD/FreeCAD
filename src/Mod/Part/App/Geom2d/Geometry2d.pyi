@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
-
 @export(
     Twin="Geometry2d",
     TwinPointer="Geometry2d",

@@ -9,7 +9,6 @@ from Base.Metadata import constmethod, export
 from App.Part import Part
 from App.DocumentObject import DocumentObject
 
-
 @export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
 class AssemblyObject(Part):
     """
@@ -145,10 +144,8 @@ class AssemblyObject(Part):
 
     @constmethod
     def getDownstreamParts(
-        self,
-        start_part: DocumentObject,
-        joint_to_ignore: DocumentObject,
-        /) -> list[DocumentObject]:
+        self, start_part: DocumentObject, joint_to_ignore: DocumentObject, /
+    ) -> list[DocumentObject]:
         """
         Finds all parts connected to a start_part that are not connected to ground
         when a specific joint is ignored.
@@ -165,6 +162,5 @@ class AssemblyObject(Part):
             A list of App.DocumentObject instances representing the downstream parts.
         """
         ...
-
     Joints: Final[list]
     """A list of all joints this assembly has."""

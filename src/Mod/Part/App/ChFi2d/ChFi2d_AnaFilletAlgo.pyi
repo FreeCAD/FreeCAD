@@ -6,7 +6,6 @@ from Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from typing import Tuple
 
-
 @export(
     Name="ChFi2d_AnaFilletAlgoPy",
     PythonName="Part.ChFi2d.AnaFilletAlgo",

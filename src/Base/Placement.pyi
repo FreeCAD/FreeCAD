@@ -9,7 +9,6 @@ from Rotation import Rotation as RotationPy
 from Vector import Vector
 from typing import Sequence, overload
 
-
 @export(
     Constructor=True,
     Delete=True,
@@ -114,9 +113,7 @@ class Placement(PyObjectBase):
     @overload
     def rotate(
         self, center: Sequence[float], axis: Sequence[float], angle: float, *, comp: bool = False
-    ) -> None:
-        ...
-
+    ) -> None: ...
     @overload
     def rotate(self, center: Vector, axis: Vector, angle: float, *, comp: bool = False) -> None:
         """
@@ -135,9 +132,7 @@ class Placement(PyObjectBase):
         behave like TopoShape.rotate() (i.e. the resulting placements are interchangeable).
         """
 
-    def rotate(self, *args, **kwargs) -> None:
-        ...
-
+    def rotate(self, *args, **kwargs) -> None: ...
     @constmethod
     def multiply(self, placement: "Placement", /) -> "Placement":
         """

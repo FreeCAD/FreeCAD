@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
 
-
 @export(
     PythonName="Part.OffsetCurve",
     Twin="GeomOffsetCurve",

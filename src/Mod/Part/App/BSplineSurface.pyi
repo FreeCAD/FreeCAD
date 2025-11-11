@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from GeometrySurface import GeometrySurface
 from typing import Final, List, Any
 
-
 @export(
     PythonName="Part.BSplineSurface",
     Twin="GeomBSplineSurface",

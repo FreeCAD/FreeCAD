@@ -22,6 +22,7 @@ from model.typedModel import (
 SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
 SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
 
+
 class ArgumentKind(Enum):
     PositionOnly = 0
     Arg = 1
@@ -213,7 +214,7 @@ class Function:
         return any(sig.noargs_flag for sig in self.signatures)
 
     def add_signature_docs(self, doc: Documentation) -> None:
-        if len (self.signatures) == 1:
+        if len(self.signatures) == 1:
             docstring = [self.signatures[0].text]
             signature = [self.signatures[0].annotated_text]
         else:
@@ -226,7 +227,7 @@ class Function:
         user_doc = doc.UserDocu or ""
         marker = SIGNATURE_SEP.search(user_doc)
         if marker:
-            user_doc = user_doc[marker.end():].strip()
+            user_doc = user_doc[marker.end() :].strip()
 
         docstring.append("--\n")  # mark __text_signature__
         docstring.extend(signature)  # Include real annotated signature in user docstring

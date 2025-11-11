@@ -6,7 +6,6 @@ from Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Base.Vector import Vector
 
-
 @export(
     Name="ChFi2d_FilletAlgoPy",
     PythonName="Part.ChFi2d.FilletAlgo",

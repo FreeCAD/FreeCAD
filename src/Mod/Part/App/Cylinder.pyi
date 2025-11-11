@@ -8,7 +8,6 @@ from Circle import Circle
 from GeometrySurface import GeometrySurface
 from typing import overload
 
-
 @export(
     PythonName="Part.Cylinder",
     Twin="GeomCylinder",
@@ -52,21 +51,12 @@ class Cylinder(GeometrySurface):
     """The axis direction of the cylinder"""
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
-    def __init__(self, cylinder: "Cylinder") -> None:
-        ...
-
+    def __init__(self, cylinder: "Cylinder") -> None: ...
     @overload
-    def __init__(self, cylinder: "Cylinder", distance: float) -> None:
-        ...
-
+    def __init__(self, cylinder: "Cylinder", distance: float) -> None: ...
     @overload
-    def __init__(self, point1: Vector, point2: Vector, point3: Vector) -> None:
-        ...
-
+    def __init__(self, point1: Vector, point2: Vector, point3: Vector) -> None: ...
     @overload
-    def __init__(self, circle: Circle) -> None:
-        ...
+    def __init__(self, circle: Circle) -> None: ...

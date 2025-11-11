@@ -7,7 +7,6 @@ from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShapeCompound import TopoShapeCompound
 from Part.App.TopoShape import TopoShape
 
-
 @export(
     PythonName="Part.ShapeFix.FreeBounds",
     Include="ShapeFix_FreeBounds.hxx",

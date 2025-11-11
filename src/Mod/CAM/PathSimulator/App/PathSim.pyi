@@ -53,6 +53,5 @@ class PathSim(BaseClass):
         Apply a single path command on the stock starting from placement.
         """
         ...
-
     Tool: Final[Any]
     """Return current simulation tool."""

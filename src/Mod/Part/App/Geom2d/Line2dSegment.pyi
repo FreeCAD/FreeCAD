@@ -6,7 +6,6 @@ from Base.Metadata import export
 from typing import overload
 from Part.Geom2d import Curve2d
 
-
 @export(
     PythonName="Part.Geom2d.Line2dSegment",
     Twin="Geom2dLineSegment",
@@ -37,17 +36,11 @@ class Line2dSegment(Curve2d):
     """Returns the end point of this line segment."""
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
-    def __init__(self, Line: "Line2dSegment") -> None:
-        ...
-
+    def __init__(self, Line: "Line2dSegment") -> None: ...
     @overload
-    def __init__(self, Point1: object, Point2: object) -> None:
-        ...
-
+    def __init__(self, Point1: object, Point2: object) -> None: ...
     def setParameterRange(self) -> None:
         """
         Set the parameter range of the underlying line segment geometry.

@@ -10,7 +10,6 @@ from Part.App.TopoShapeEdge import TopoShapeEdge
 from Part.App.TopoShapeFace import TopoShapeFace
 from typing import overload
 
-
 @export(
     PythonName="Part.BRepOffsetAPI_MakeFilling",
     Include="BRepOffsetAPI_MakeFilling.hxx",
@@ -63,25 +62,17 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def add(self, Edge: TopoShapeEdge, Order: int, *, IsBound: bool = True) -> None:
-        ...
-
+    def add(self, Edge: TopoShapeEdge, Order: int, *, IsBound: bool = True) -> None: ...
     @overload
-    def add(self, Edge: TopoShapeEdge, Support: TopoShapeFace, Order: int, *, IsBound: bool = True) -> None:
-        ...
-
+    def add(
+        self, Edge: TopoShapeEdge, Support: TopoShapeFace, Order: int, *, IsBound: bool = True
+    ) -> None: ...
     @overload
-    def add(self, Support: TopoShapeFace, Order: int) -> None:
-        ...
-
+    def add(self, Support: TopoShapeFace, Order: int) -> None: ...
     @overload
-    def add(self, Point: Point) -> None:
-        ...
-
+    def add(self, Point: Point) -> None: ...
     @overload
-    def add(self, U: float, V: float, Support: TopoShapeFace, Order: int) -> None:
-        ...
-
+    def add(self, U: float, V: float, Support: TopoShapeFace, Order: int) -> None: ...
     def add(self, **kwargs) -> None:
         """
         add(Edge, Order, IsBound=True)
@@ -106,13 +97,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G0Error(self, /) -> float:
-        ...
-
+    def G0Error(self, /) -> float: ...
     @overload
-    def G0Error(self, arg: int, /) -> float:
-        ...
-
+    def G0Error(self, arg: int, /) -> float: ...
     def G0Error(self, arg: int = 0, /) -> float:
         """
         G0Error([int])
@@ -121,13 +108,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G1Error(self, /) -> float:
-        ...
-
+    def G1Error(self, /) -> float: ...
     @overload
-    def G1Error(self, arg: int, /) -> float:
-        ...
-
+    def G1Error(self, arg: int, /) -> float: ...
     def G1Error(self, arg: int = 0, /) -> float:
         """
         G1Error([int])
@@ -136,13 +119,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G2Error(self, /) -> float:
-        ...
-
+    def G2Error(self, /) -> float: ...
     @overload
-    def G2Error(self, arg: int, /) -> float:
-        ...
-
+    def G2Error(self, arg: int, /) -> float: ...
     def G2Error(self, arg: int = 0, /) -> float:
         """
         G2Error([int])

@@ -7,7 +7,6 @@ from Base.Vector import Vector
 from TrimmedCurve import TrimmedCurve
 from typing import overload
 
-
 @export(
     Father="TrimmedCurvePy",
     PythonName="Part.ArcOfConic",
@@ -26,8 +25,7 @@ class ArcOfConic(TrimmedCurve):
     """
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...
 
     Location: Vector = ...
     """Center of the conic."""

@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.GeometryExtension import GeometryExtension
 
-
 @export(
     Father="GeometryExtensionPy",
     Name="GeometryIntExtensionPy",

@@ -7,7 +7,6 @@ from typing import Tuple
 
 from Base.PyObjectBase import PyObjectBase
 
-
 @export(
     PythonName="Part.ChFi2d.ChamferAPI",
     Twin="ChFi2d_ChamferAPI",

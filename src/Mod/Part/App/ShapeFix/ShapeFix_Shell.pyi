@@ -5,7 +5,6 @@ from __future__ import annotations
 from Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 
-
 @export(
     PythonName="Part.ShapeFix.Shell",
     Twin="ShapeFix_Shell",

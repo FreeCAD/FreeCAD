@@ -6,7 +6,6 @@ from Base.Metadata import export
 from typing import Final
 from Part.Geom2d import Curve2d
 
-
 @export(
     PythonName="Part.Geom2d.ArcOfConic2d",
     Twin="Geom2dArcOfConic",

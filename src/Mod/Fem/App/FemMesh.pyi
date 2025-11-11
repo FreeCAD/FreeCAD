@@ -51,10 +51,8 @@ class FemMesh(ComplexGeoData):
 
     @overload
     def addEdge(self, n1: int, n2: int, /) -> int: ...
-
     @overload
     def addEdge(self, nodes: list[int], elem_id: int | None = None, /) -> int: ...
-
     def addEdge(self, *args) -> int:
         """Add an edge by setting two node indices."""
         ...
@@ -65,10 +63,8 @@ class FemMesh(ComplexGeoData):
 
     @overload
     def addFace(self, n1: int, n2: int, n3: int, /) -> int: ...
-
     @overload
     def addFace(self, nodes: list[int], elem_id: int | None = None, /) -> int: ...
-
     def addFace(self) -> Any:
         """Add a face by setting three node indices."""
         ...
@@ -83,10 +79,8 @@ class FemMesh(ComplexGeoData):
 
     @overload
     def addVolume(self, n1: int, n2: int, n3: int, n4: int, /) -> int: ...
-
     @overload
     def addVolume(self, nodes: list[int], elem_id: int | None = None, /) -> int: ...
-
     def addVolume(self, *args) -> int:
         """Add a volume by setting an arbitrary number of node indices."""
         ...
@@ -121,7 +115,8 @@ class FemMesh(ComplexGeoData):
         groupParam: bool,
         volVariant: str = "standard",
         faceVariant: str = "shell",
-        edgeVariant: str = "beam") -> None:
+        edgeVariant: str = "beam",
+    ) -> None:
         """
         Write out as ABAQUS inp.
 
@@ -295,7 +290,6 @@ class FemMesh(ComplexGeoData):
     def getIdByElementType(self, elem_type: str, /) -> tuple[int, ...]:
         """Return a tuple of IDs to a given element type"""
         ...
-
     Nodes: Final[dict]
     """Dictionary of Nodes by ID (int ID:Vector())"""
 

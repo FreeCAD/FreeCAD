@@ -8,7 +8,6 @@ from Base.Placement import Placement
 from App.DocumentObject import DocumentObject
 from typing import Final, Optional
 
-
 @export(
     Include="Mod/Part/App/Attacher.h",
     Namespace="Attacher",

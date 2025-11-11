@@ -8,7 +8,6 @@ from App.ExtensionContainer import ExtensionContainer
 from typing import Any, Final, List, Optional
 import enum
 
-
 class ViewProvider(ExtensionContainer):
     """
     This is the ViewProvider base class
@@ -290,7 +289,6 @@ class ViewProvider(ExtensionContainer):
             Default to active view. Optional.
         """
         ...
-
     Annotation: Any = ...
     """A pivy Separator to add a custom scenegraph to this ViewProvider."""
 

@@ -8,7 +8,6 @@ from Part.TopoShapeFace import TopoShapeFace
 from Part.TopoShapeShell import TopoShapeShell
 from typing import Union
 
-
 @export(
     PythonName="Part.ShapeFix.Face",
     Include="ShapeFix_Face.hxx",

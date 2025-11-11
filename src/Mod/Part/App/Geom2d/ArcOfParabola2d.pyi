@@ -6,7 +6,6 @@ from Metadata import export, overload
 from typing import Final
 from Part.Geom2d import ArcOfConic2d
 
-
 @export(
     PythonName="Part.Geom2d.ArcOfParabola2d",
     Twin="Geom2dArcOfParabola",
@@ -30,5 +29,4 @@ class ArcOfParabola2d(ArcOfConic2d):
     """The internal parabola representation."""
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...

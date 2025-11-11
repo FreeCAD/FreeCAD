@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.Geom2d.Curve2d import Curve2d
 
-
 @export(
     PythonName="Part.Geom2d.Line2d",
     Twin="Geom2dLine",

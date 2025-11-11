@@ -7,7 +7,6 @@ from PyObjectBase import PyObjectBase
 from typing import overload, Final, Tuple, Union
 from Unit import Unit as UnitPy
 
-
 @export(
     NumberProtocol=True,
     RichCompare=True,
@@ -56,13 +55,9 @@ class Quantity(PyObjectBase):
     # fmt: on
 
     @overload
-    def toStr(self, /) -> str:
-        ...
-
+    def toStr(self, /) -> str: ...
     @overload
-    def toStr(self, decimals: int, /) -> str:
-        ...
-
+    def toStr(self, decimals: int, /) -> str: ...
     @constmethod
     def toStr(self, decimals: int = ..., /) -> str:
         """
@@ -79,21 +74,13 @@ class Quantity(PyObjectBase):
         ...
 
     @overload
-    def getValueAs(self, unit: str, /) -> float:
-        ...
-
+    def getValueAs(self, unit: str, /) -> float: ...
     @overload
-    def getValueAs(self, translation: float, unit_signature: int, /) -> float:
-        ...
-
+    def getValueAs(self, translation: float, unit_signature: int, /) -> float: ...
     @overload
-    def getValueAs(self, unit: UnitPy, /) -> float:
-        ...
-
+    def getValueAs(self, unit: UnitPy, /) -> float: ...
     @overload
-    def getValueAs(self, quantity: "Quantity", /) -> float:
-        ...
-
+    def getValueAs(self, quantity: "Quantity", /) -> float: ...
     @constmethod
     def getValueAs(self, *args) -> float:
         """
@@ -109,13 +96,9 @@ class Quantity(PyObjectBase):
         ...
 
     @overload
-    def __round__(self, /) -> int:
-        ...
-
+    def __round__(self, /) -> int: ...
     @overload
-    def __round__(self, ndigits: int, /) -> float:
-        ...
-
+    def __round__(self, ndigits: int, /) -> float: ...
     @constmethod
     def __round__(self, ndigits: int = ..., /) -> Union[int, float]:
         """

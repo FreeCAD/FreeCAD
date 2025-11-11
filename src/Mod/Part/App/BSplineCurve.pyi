@@ -9,7 +9,6 @@ from Part.App.Arc import Arc
 from Part.App.BezierCurve import BezierCurve
 from typing import Final, List, overload, Any
 
-
 @export(
     PythonName="Part.BSplineCurve",
     Twin="GeomBSplineCurve",
@@ -107,13 +106,9 @@ class BSplineCurve(BoundedCurve):
         ...
 
     @overload
-    def increaseMultiplicity(self, index: int, mult: int, /) -> None:
-        ...
-
+    def increaseMultiplicity(self, index: int, mult: int, /) -> None: ...
     @overload
-    def increaseMultiplicity(self, start: int, end: int, mult: int, /) -> None:
-        ...
-
+    def increaseMultiplicity(self, start: int, end: int, mult: int, /) -> None: ...
     def increaseMultiplicity(self, *args, **kwargs) -> None:
         """
         increaseMultiplicity(int index, int mult)
@@ -347,9 +342,7 @@ class BSplineCurve(BoundedCurve):
         TorsionWeight: float = 0.0,
         Parameters: List[float] = None,
         ParamType: str = "Uniform",
-    ) -> None:
-        ...
-
+    ) -> None: ...
     def approximate(self, **kwargs) -> None:
         """
         Replaces this B-Spline curve by approximating a set of points.
@@ -386,9 +379,7 @@ class BSplineCurve(BoundedCurve):
 
     @overload
     @constmethod
-    def getCardinalSplineTangents(self, **kwargs) -> List[Vector]:
-        ...
-
+    def getCardinalSplineTangents(self, **kwargs) -> List[Vector]: ...
     @constmethod
     def getCardinalSplineTangents(self, **kwargs) -> List[Vector]:
         """
@@ -407,9 +398,7 @@ class BSplineCurve(BoundedCurve):
         FinalTangent: Vector = None,
         Tangents: List[Vector] = None,
         TangentFlags: List[bool] = None,
-    ) -> None:
-        ...
-
+    ) -> None: ...
     def interpolate(self, **kwargs) -> None:
         """
         Replaces this B-Spline curve by interpolating a set of points.
@@ -486,9 +475,7 @@ class BSplineCurve(BoundedCurve):
         degree: int,
         weights: List[float] = None,
         CheckRational: bool = False,
-    ) -> None:
-        ...
-
+    ) -> None: ...
     def buildFromPolesMultsKnots(self, **kwargs) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.

@@ -6,7 +6,6 @@ from Base.Metadata import constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, Dict, List, Optional
 
-
 class Command(PyObjectBase):
     """
     FreeCAD Python wrapper of Command functions

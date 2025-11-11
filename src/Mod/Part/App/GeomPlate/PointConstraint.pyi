@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from typing import Tuple
 
-
 @export(
     PythonName="Part.GeomPlate.PointConstraintPy",
     Twin="GeomPlate_PointConstraint",

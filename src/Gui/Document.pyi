@@ -7,7 +7,6 @@ from Base.Persistence import Persistence
 from Base.Matrix import Matrix
 from typing import Any, Final, List, Optional
 
-
 class Document(Persistence):
     """
     This is a Document class
@@ -188,7 +187,6 @@ class Document(Persistence):
         obj : Gui.ViewProvider
         """
         ...
-
     ActiveObject: Any = ...
     """The active object of the document."""
 

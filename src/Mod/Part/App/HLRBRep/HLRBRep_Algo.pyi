@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 
-
 @export(
     Twin="HLRBRep_Algo",
     TwinPointer="HLRBRep_Algo",

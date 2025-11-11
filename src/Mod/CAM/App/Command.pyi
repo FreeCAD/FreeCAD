@@ -4,7 +4,6 @@ from Base.Metadata import class_declarations, constmethod, export
 from Base.Persistence import Persistence
 from Base.Placement import Placement
 
-
 @export(
     Include="Mod/CAM/App/Command.h",
     Namespace="Path",
@@ -32,7 +31,6 @@ class Command(Persistence):
     def transform(self, placement: Placement, /) -> Command:
         """returns a copy of this command transformed by the given placement"""
         ...
-
     Name: str
     """The name of the command"""
 

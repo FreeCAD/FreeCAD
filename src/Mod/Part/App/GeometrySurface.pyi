@@ -10,7 +10,6 @@ from GeometryCurve import GeometryCurve
 from Line import Line
 from typing import Final, overload, Any, Tuple, List, Literal, Union
 
-
 @export(
     Twin="GeomSurface",
     TwinPointer="GeomSurface",
@@ -86,29 +85,23 @@ class GeometrySurface(Geometry):
         ...
 
     @overload
-    def projectPoint(self, Point: Vector, Method: Literal["NearestPoint"] = "NearestPoint") -> Vector:
-        ...
-
+    def projectPoint(
+        self, Point: Vector, Method: Literal["NearestPoint"] = "NearestPoint"
+    ) -> Vector: ...
     @overload
-    def projectPoint(self, Point: Vector, Method: Literal["LowerDistance"]) -> float:
-        ...
-
+    def projectPoint(self, Point: Vector, Method: Literal["LowerDistance"]) -> float: ...
     @overload
-    def projectPoint(self, Point: Vector, Method: Literal["LowerDistanceParameters"]) -> Tuple[float, float]:
-        ...
-
+    def projectPoint(
+        self, Point: Vector, Method: Literal["LowerDistanceParameters"]
+    ) -> Tuple[float, float]: ...
     @overload
-    def projectPoint(self, Point: Vector, Method: Literal["Distance"]) -> List[float]:
-        ...
-
+    def projectPoint(self, Point: Vector, Method: Literal["Distance"]) -> List[float]: ...
     @overload
-    def projectPoint(self, Point: Vector, Method: Literal["Parameters"]) -> List[Tuple[float, float]]:
-        ...
-
+    def projectPoint(
+        self, Point: Vector, Method: Literal["Parameters"]
+    ) -> List[Tuple[float, float]]: ...
     @overload
-    def projectPoint(self, Point: Vector, Method: Literal["Point"]) -> List[Vector]:
-        ...
-
+    def projectPoint(self, Point: Vector, Method: Literal["Point"]) -> List[Vector]: ...
     @constmethod
     def projectPoint(self, Point: Vector, Method: str = ...) -> Any:
         """
@@ -242,9 +235,7 @@ class GeometrySurface(Geometry):
         max_degree_v: int = 25,
         max_segments: int = 1000,
         precision_code: int = 0,
-    ) -> Any:
-        ...
-
+    ) -> Any: ...
     @constmethod
     def toBSpline(
         self,

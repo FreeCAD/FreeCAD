@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 
-
 @export(
     PythonName="Part.ShapeFix.Edge",
     Include="ShapeFix_Edge.hxx",
