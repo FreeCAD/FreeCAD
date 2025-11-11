@@ -1310,13 +1310,16 @@ public:
 // C2LDistance
 class ConstraintC2LDistance: public Constraint
 {
-private:
+public:
     Circle circle;
     Line line;
+
+private:
     double* distance()
     {
         return pvec[0];
     }
+
     // writes pointers in pvec to the parameters of c, l
     void ReconstructGeomPointers();
     void errorgrad(double* err, double* grad, double* param) override;
