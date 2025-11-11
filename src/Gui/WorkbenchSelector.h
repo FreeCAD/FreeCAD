@@ -71,7 +71,9 @@ class GuiExport WorkbenchTabWidget : public QWidget
 
     class WbTabBar : public QTabBar {
     public:
-        explicit WbTabBar(QWidget* parent) : QTabBar(parent) {}
+        explicit WbTabBar(QWidget* parent) : QTabBar(parent) {
+	    setIconSize(iconSize());
+	}
 
         QSize tabSizeHint(int index) const override {
             auto sizeFromParent = QTabBar::tabSizeHint(index);
@@ -126,6 +128,14 @@ class GuiExport WorkbenchTabWidget : public QWidget
             _itemStyle = itemStyle;
             setProperty("style", QString::fromUtf8(workbenchItemStyleToString(itemStyle)));
         }
+
+        QSize iconSize() const {
+	    auto size = WindowParameter::getDefaultParameter()->GetGroup("General")->GetInt("ToolbarIconSize", 16);
+	    if (size > 16) {
+	      size = size - 8; // do not grow the toolbar height
+	    }
+	    return QSize(size, size);
+	}
 
     private:
         WorkbenchItemStyle _itemStyle{WorkbenchItemStyle::IconAndText};
