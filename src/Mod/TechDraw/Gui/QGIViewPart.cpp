@@ -471,19 +471,19 @@ void QGIViewPart::drawAllVertexes()
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
     auto vert = verts.begin();
-    bool hideCenters = hideCenterMarks();
     for (int i = 0; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter()) {
-            if (showCenterMarks()) {
-                auto* cmItem = new QGICMark(i);
-                addToGroup(cmItem);
-                cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
-                cmItem->setThick(0.5F * getLineWidth());//need minimum?
-                cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
-                cmItem->setPrettyNormal();
-                cmItem->setZValue(ZVALUE::VERTEX);
-                cmItem->setVisible(!hideCenters);
-            }
+            auto* cmItem = new QGICMark(i);
+            addToGroup(cmItem);
+            cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
+            cmItem->setThick(0.5F * getLineWidth());    //need minimum?
+            cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
+            cmItem->setPrettyNormal();
+            cmItem->setZValue(ZVALUE::VERTEX);
+            bool showMark =
+                ( (!isExporting() && vp->ArcCenterMarks.getValue()) ||
+                  (isExporting() && Preferences::printCenterMarks()) );
+            cmItem->setVisible(showMark);
         } else {
             //regular Vertex
             if (showVertices()) {
@@ -1295,7 +1295,13 @@ void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     for (auto& child : childItems()) {
         if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
             child->show();
+            continue;
         }
+        if (child->type() == UserType::QGICMark &&
+            !hideCenterMarks()) {
+            child->show();
+        }
+
     }
 
     update();
@@ -1349,23 +1355,12 @@ bool QGIViewPart::isExporting() const
 
 
 // returns true if vertex dots should be shown
+// note this is only one of the "rules" around showing or hiding vertices.
 bool QGIViewPart::showVertices() const
 {
     // dvp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
-
-    if (dvp->CoarseView.getValue()) {
-        // never show vertices in CoarseView
-        return false;
-    }
-
-    // if (isSelected()) {
-    //     return true;
-    // }
-
-    // if we have selected verts?
-
-    return true;
+    return !dvp->CoarseView.getValue();
 }
 
 
