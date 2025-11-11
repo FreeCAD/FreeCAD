@@ -104,7 +104,25 @@ void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Locatio
 void ImportOCAF::loadShapes()
 {
     myRefShapes.clear();
+    TDF_ChildIterator labelIterator(pDoc->Main(), true);
+    int duplicateKeys = 0;
+    int totalLabels = 0;
+    int labelsWithShapes = 0;
+    TopoDS_Shape sh;
+    while (labelIterator.More()) {
+        totalLabels++;
+        TDF_Label l(labelIterator.Value());
+        if (aShapeTool->GetShape(l, sh)) {
+            labelsWithShapes++;
+            if (!shapeToLabelMap.emplace(sh, l).second) {
+                ++duplicateKeys;
+            }
+        }
+        labelIterator.Next();
+    }
     loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
+    if (mapHits > 0 || mapMisses > 0 || unlabeled > 0)
+        mapShapeToLabel(sh);
 }
 
 void ImportOCAF::setMerge(bool merge)
@@ -251,8 +269,7 @@ App::DocumentObject* ImportOCAF::loadShapes(
             }
 
             if (!localValue.empty() && aShapeTool->IsAssembly(label)) {
-                App::Part* pcPart = nullptr;
-                pcPart = doc->addObject<App::Part>(asm_name.c_str());
+                App::Part* pcPart = doc->addObject<App::Part>(asm_name.c_str());
                 pcPart->Label.setValue(asm_name);
                 pcPart->addObjects(localValue);
 
@@ -285,9 +302,7 @@ App::DocumentObject* ImportOCAF::createShape(
     }
     if (aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
-        int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
-        App::Part* pcPart = nullptr;
-
+        
         if (this->merge) {
             // Combine all the SOLID, SHELL, EDGE, and VERTEX subshapes into a new compound as a
             // single Part::Feature
@@ -330,26 +345,25 @@ App::DocumentObject* ImportOCAF::createShape(
             }
 
             // Create the single compound shape, setting its Placement from loc.
-            return comp.IsNull() ? nullptr : createShape(comp, loc, true, name);
+            // TODO: We have built a new compound but all its components are also components of aShape. If we pass aShape's Label that might speed up colour searching
+            return comp.IsNull() ? nullptr : createShape(comp, label, loc, true, name);
         }
         else {
             // Create a new Part::Feature for each of the subshapes, and nest them all into an
             // App::Part
             std::vector<App::DocumentObject*> partComponents;
+            // TODO: We want the labels of each subshape, and we should be able to find these nested in Label and pass to createShape
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next()) {
-                partComponents.push_back(createShape(xp.Current(), loc, false, name));
+                partComponents.push_back(createShape(xp.Current(), TDF_Label(), loc, false, name));
             }
             for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
-                partComponents.push_back(createShape(xp.Current(), loc, false, name));
+                partComponents.push_back(createShape(xp.Current(), TDF_Label(), loc, false, name));
             }
             if (partComponents.empty()) {
                 return nullptr;
             }
-            pcPart = doc->addObject<App::Part>(name.c_str());
+            App::Part* pcPart = doc->addObject<App::Part>(name.c_str());
             pcPart->Label.setValue(name);
-
-            // partComponents contain the objects that must added to the local Part
-            // We must add the PartOrigin and the Part itself
             pcPart->addObjects(partComponents);
 
             return pcPart;
@@ -357,12 +371,23 @@ App::DocumentObject* ImportOCAF::createShape(
     }
     else {
         // aShape is not a Compound Shape, make a single Part::Feature for it
-        return createShape(aShape, loc, false, name);
+        // TODO: Pass its Label
+        return createShape(aShape, label, loc, false, name);
     }
+}
+
+TDF_Label ImportOCAF::mapShapeToLabel(const TopoDS_Shape& shape) {
+    if (shapeToLabelMap.contains(shape)) {
+        mapHits++;
+        return shapeToLabelMap[shape];
+    }
+    unlabeled++;
+    return TDF_Label();
 }
 
 App::DocumentObject* ImportOCAF::createShape(
     const TopoDS_Shape& aShape,
+    const TDF_Label &shapesLabel,
     const TopLoc_Location& loc,
     bool setPlacementFromLocation,
     const std::string& name
@@ -382,18 +407,16 @@ App::DocumentObject* ImportOCAF::createShape(
 
     part->Label.setValue(name);
 
-    loadColors(part, aShape);
-
-    return part;
-}
-
-void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
-{
+    // Find and apply colours to the creted part.
+    // There may be a colour for the overall Part, and/or some of the topology that makes up the shape
+    // may have their own colours.
     Quantity_ColorRGBA aColor;
     Base::Color color(0.8f, 0.8f, 0.8f);
-    if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
-        || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
-        || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
+    TDF_Label mainShapeLabel = shapesLabel.IsNull() ? mapShapeToLabel(aShape) : shapesLabel;
+    if (!mainShapeLabel.IsNull()
+        && (aColorTool->GetColor(mainShapeLabel, XCAFDoc_ColorGen, aColor)
+            || aColorTool->GetColor(mainShapeLabel, XCAFDoc_ColorSurf, aColor)
+            || aColorTool->GetColor(mainShapeLabel, XCAFDoc_ColorCurv, aColor))) {
         color = Tools::convertColor(aColor);
         std::vector<Base::Color> colors;
         colors.push_back(color);
@@ -417,17 +440,11 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
     int face_index = 0;
     for (xp.Init(aShape, TopAbs_FACE); xp.More(); xp.Next()) {
         ++face_index;
-        TDF_Label currentShapeLabel;
-        // XCAFDoc_ShapeTool::Search is a slow operation, proportional to the number of shapes in
-        // the document. Perhaps we can build a dictionary of the shapes' labels as we build aShape;
-        // a lookup in such a dictionary would be much faster (O(log(n)) perhaps, where n is the
-        // number of sub-shapes in aShape rather than in the document)
-        if (!aColorTool->ShapeTool()->Search(xp.Current(), currentShapeLabel)) {
-            continue;
-        }
-        if (aColorTool->GetColor(currentShapeLabel, XCAFDoc_ColorGen, aColor)
-            || aColorTool->GetColor(currentShapeLabel, XCAFDoc_ColorSurf, aColor)
-            || aColorTool->GetColor(currentShapeLabel, XCAFDoc_ColorCurv, aColor)) {
+        TDF_Label currentShapeLabel = mapShapeToLabel(xp.Current());
+        if (!currentShapeLabel.IsNull()
+            && (aColorTool->GetColor(currentShapeLabel, XCAFDoc_ColorGen, aColor)
+                || aColorTool->GetColor(currentShapeLabel, XCAFDoc_ColorSurf, aColor)
+                || aColorTool->GetColor(currentShapeLabel, XCAFDoc_ColorCurv, aColor))) {
             color = Tools::convertColor(aColor);
             faceColors[face_index - 1] = color;
             found_face_color = true;
@@ -437,6 +454,8 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
     if (found_face_color) {
         applyColors(part, faceColors);
     }
+
+    return part;
 }
 
 // ----------------------------------------------------------------------------
