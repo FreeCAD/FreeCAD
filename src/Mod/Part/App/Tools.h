@@ -295,13 +295,18 @@ public:
 
     /*!
      * \brief isConcave
+     * Return 1 if the face is concave for its U coordinate when shown from pointOfVue and looking
+     * into direction
+     * 2 when it is for its V coordinate
+     * 3 when it is for both coordinate
+     * and 0 otherwise, plane case included.
      * \param face
      * \param pointOfVue
      * \param direction
-     * \return true if the face is concave when shown from pointOfVue and looking into direction
-     * and false otherwise, plane case included.
+     * \return int
      */
-    static bool isConcave(const TopoDS_Face& face, const gp_Pnt& pointOfVue, const gp_Dir& direction);
+    static int isConcave(const TopoDS_Face& face, const gp_Pnt& pointOfVue, const gp_Dir& direction);
+
 
     /**
      * \copydoc Part::Tools::isShapeEmpty(const TopoDS_Shape&)

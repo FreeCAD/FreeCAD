@@ -811,14 +811,14 @@ TopLoc_Location Part::Tools::fromPlacement(const Base::Placement& plm)
     return {trf};
 }
 
-bool Part::Tools::isConcave(const TopoDS_Face& face, const gp_Pnt& pointOfVue, const gp_Dir& direction)
+int Part::Tools::isConcave(const TopoDS_Face& face, const gp_Pnt& pointOfVue, const gp_Dir& direction)
 {
-    bool result = false;
+    using Part::Tools;
 
     Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
     GeomAdaptor_Surface adapt(surf);
     if (adapt.GetType() == GeomAbs_Plane) {
-        return false;
+        return 0;
     }
 
     // create a line through the point of vue
@@ -830,18 +830,17 @@ bool Part::Tools::isConcave(const TopoDS_Face& face, const gp_Pnt& pointOfVue, c
     BRepIntCurveSurface_Inter mkSection;
     mkSection.Init(face, line, Precision::Confusion());
 
-    result = mkSection.Transition() == IntCurveSurface_In;
-
     // compute normals at the intersection
     gp_Pnt iPnt;
     gp_Vec dU, dV;
     surf->D1(mkSection.U(), mkSection.V(), iPnt, dU, dV);
 
     // check normals orientation
+    int result = 0;
     gp_Dir dirdU(dU);
-    result = (dirdU.Angle(direction) - std::numbers::pi / 2) <= Precision::Confusion();
+    result += ((dirdU.Angle(direction) - std::numbers::pi / 2) <= Precision::Confusion() ? 1 : 0);
     gp_Dir dirdV(dV);
-    result = result || ((dirdV.Angle(direction) - std::numbers::pi / 2) <= Precision::Confusion());
+    result += ((dirdV.Angle(direction) - std::numbers::pi / 2) <= Precision::Confusion() ? 2 : 0);
 
     return result;
 }
