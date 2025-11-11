@@ -27,6 +27,8 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QTextBlock>
+#include <QGuiApplication>
+#include <QScreen>
 
 
 #include <App/Application.h>
@@ -1279,9 +1281,14 @@ void ExpressionTextEdit::adjustCompleterToCursor()
         return;
     }
 
+    const int completionsCount = completer->completionModel()->rowCount();
+    if (!completionsCount) {
+        return;
+    }
+
     // get longest string width
     int maxCompletionWidth = 0;
-    for (int i = 0; i < completer->completionModel()->rowCount(); ++i) {
+    for (int i = 0; i < completionsCount; ++i) {
         const QModelIndex index = completer->completionModel()->index(i, 0);
         const QString element = completer->completionModel()->data(index).toString();
         maxCompletionWidth = std::max(
@@ -1298,27 +1305,45 @@ void ExpressionTextEdit::adjustCompleterToCursor()
     int posY = cursorPos.y();
 
     completer->popup()->setMaximumWidth(this->viewport()->width() * 0.6);
-    completer->popup()->setMaximumHeight(this->viewport()->height() * 0.6);
 
-    const QSize completerSize {
-        maxCompletionWidth + 40,
-        completer->popup()->size().height()
-    };  // 40 is margin for scrollbar
-    completer->popup()->resize(completerSize);
+    const int rowHeight = completer->popup()->fontMetrics().height();
+    int rowsToEdge = (QGuiApplication::primaryScreen()->availableGeometry().height() * 0.95
+                      - (mapToGlobal(cursorPos).y() + rowHeight))
+        / rowHeight;  // keep 5% margin to screen edge
+    const auto adjustHeight = [&rowHeight, &completionsCount](const int _rowsToEdge) -> int {
+        return std::min({
+            rowHeight * 20,                   // up to 20 elements shall be shown at once
+            _rowsToEdge * rowHeight,          // or less limited to screen edge
+            completionsCount * rowHeight + 5  // or all, if only there are only few; 5 is magic
+                                              // number, somehow last entry is partly hovered
+        });
+    };
 
-    // vertical correction
-    if (posY + completerSize.height() > viewport()->height()) {
-        posY -= completerSize.height();
+    int adjustedPopupHeight = adjustHeight(rowsToEdge);
+
+    // vertical correction to cursor
+    if (rowsToEdge < 4) {
+        // display above cursor
+        rowsToEdge = mapToGlobal(cursorPos).y()
+            - QGuiApplication::primaryScreen()->availableGeometry().height()
+                * 0.05;  // keep 5% margin to screen edge
+        adjustedPopupHeight = adjustHeight(rowsToEdge);
+        posY -= adjustedPopupHeight;
     }
     else {
-        posY += fontMetrics().height();
+        // display under cursor
+        posY += rowHeight;
     }
 
-    // horizontal correction
+    const QSize completerSize {maxCompletionWidth + 40, adjustedPopupHeight};  // 40 is margin for
+                                                                               // scrollbar
+
+    // horizontal correction to cursor
     if (posX + completerSize.width() > viewport()->width()) {
         posX = viewport()->width() - completerSize.width();
     }
 
+    completer->popup()->resize(completerSize);
     completer->popup()->move(mapToGlobal(QPoint {posX, posY}));
     completer->popup()->setVisible(true);
 }
