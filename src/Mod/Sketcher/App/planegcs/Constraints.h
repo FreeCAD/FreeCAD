@@ -1277,9 +1277,11 @@ public:
 
 class ConstraintEqualLineLength: public Constraint
 {
-private:
+public:
     Line l1;
     Line l2;
+
+private:
     // writes pointers in pvec to the parameters of line1, line2
     void ReconstructGeomPointers();
     void errorgrad(double* err, double* grad, double* param) override;

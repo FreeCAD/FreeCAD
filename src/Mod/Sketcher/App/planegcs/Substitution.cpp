@@ -107,13 +107,19 @@ struct SubstitutionFactory
         }
         return foundB->second == 0.0;
     }
+    bool isVertical(const Line& line) const
+    {
+        return areEqual(line.p1.x, line.p2.x);
+    }
+    bool isHorizontal(const Line& line) const
+    {
+        return areEqual(line.p1.y, line.p2.y);
+    }
     bool areBothConstAndEqual(double* unknownA, double* unknownB) const
     {
-        std::optional<double> valueA = value(unknownA);
-        std::optional<double> valueB = value(unknownB);
+        std::optional<double> maybeDist = constDistance(unknownA, unknownB);
 
-        return valueA.has_value() && valueB.has_value()
-            && std::abs(*valueA - *valueB) < Precision::Confusion();
+        return maybeDist.has_value() && *maybeDist < Precision::Confusion();
     }
     bool haveRelationship(double* unknownA, double* unknownB) const
     {
@@ -127,6 +133,29 @@ struct SubstitutionFactory
             return false;
         }
         return true;
+    }
+    std::optional<double> constDistance(double* unknownA, double* unknownB) const
+    {
+        std::optional<double> valueA = value(unknownA);
+        std::optional<double> valueB = value(unknownB);
+
+        if (valueA.has_value() && valueB.has_value()) {
+            return std::abs(*valueA - *valueB);
+        }
+        return std::nullopt;
+    }
+    std::optional<double> distance(double* unknownA, double* unknownB) const
+    {
+        const auto& foundA = adjacencyList.find(unknownA);
+        if (foundA == adjacencyList.end()) {
+            return constDistance(unknownA, unknownB);
+        }
+
+        const auto& foundB = foundA->second.find(unknownB);
+        if (foundB == foundA->second.end()) {
+            return constDistance(unknownA, unknownB);
+        }
+        return std::abs(foundB->second);
     }
     bool hasARelationship(double* unknown) const
     {
@@ -437,6 +466,71 @@ ConstraintSubstitutionAttempt substitutionForC2LDist(ConstraintC2LDistance* cons
 
     return ConstraintSubstitutionAttempt::Maybe;
 }
+ConstraintSubstitutionAttempt substitutionForEqualLineLength(ConstraintEqualLineLength* constr,
+                                                             const USET_pD& unknowns,
+                                                             SubstitutionFactory& factory)
+{
+    Line line1 = constr->l1;
+    Line line2 = constr->l2;
+
+    if (!unknowns.count(line1.p1.x) || !unknowns.count(line1.p1.y) || !unknowns.count(line1.p2.x)
+        || !unknowns.count(line1.p2.y) || !unknowns.count(line2.p1.x) || !unknowns.count(line2.p1.y)
+        || !unknowns.count(line2.p2.x) || !unknowns.count(line2.p2.y)) {
+        return ConstraintSubstitutionAttempt::No;
+    }
+    bool l1horiz = false;
+    std::optional<double> l1length = std::nullopt;
+
+    bool l2horiz = false;
+    std::optional<double> l2length = std::nullopt;
+
+    if (factory.isHorizontal(line1)) {
+        l1horiz = true;
+        l1length = factory.distance(line1.p1.x, line1.p2.x);
+    }
+    else if (factory.isVertical(line1)) {
+        l1horiz = false;
+        l1length = factory.distance(line1.p1.y, line1.p2.y);
+    }
+    else {
+        return ConstraintSubstitutionAttempt::Maybe;
+    }
+
+    if (factory.isHorizontal(line2)) {
+        l2horiz = true;
+        l2length = factory.distance(line2.p1.x, line2.p2.x);
+    }
+    else if (factory.isVertical(line2)) {
+        l2horiz = false;
+        l2length = factory.distance(line2.p1.y, line2.p2.y);
+    }
+    else {
+        return ConstraintSubstitutionAttempt::Maybe;
+    }
+
+    if (l1length.has_value() && l2length.has_value()) {
+        return ConstraintSubstitutionAttempt::No;
+    }
+    else if (l1length.has_value()) {
+        if (l2horiz) {
+            factory.addRelationship(line2.p1.x, line2.p2.x, *l1length);
+        }
+        else {
+            factory.addRelationship(line2.p1.y, line2.p2.y, *l1length);
+        }
+        return ConstraintSubstitutionAttempt::Yes;
+    }
+    else if (l2length.has_value()) {
+        if (l1horiz) {
+            factory.addRelationship(line1.p1.x, line1.p2.x, *l2length);
+        }
+        else {
+            factory.addRelationship(line1.p1.y, line1.p2.y, *l2length);
+        }
+        return ConstraintSubstitutionAttempt::Yes;
+    }
+    return ConstraintSubstitutionAttempt::Maybe;
+}
 
 Substitution::Substitution(const VEC_pD& initialUnknowns,
                            const std::vector<Constraint*>& initialConstraints)
@@ -498,6 +592,11 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
                 case P2PDistance:
                     attempt = substitutionForP2PDist(constr, unknownsSet, factory);
                     break;
+                case EqualLineLength:
+                    attempt = substitutionForEqualLineLength(
+                        static_cast<ConstraintEqualLineLength*>(constr),
+                        unknownsSet,
+                        factory);
             }
             attempts[i] = attempt;
             if (attempt == ConstraintSubstitutionAttempt::Yes) {
