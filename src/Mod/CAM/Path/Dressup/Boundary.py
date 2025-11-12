@@ -283,7 +283,6 @@ class PathBoundary:
                                         Path.Geom.cmdsForEdge(
                                             e,
                                             flip,
-                                            False,
                                             tc.HorizFeed.Value,
                                             tc.VertFeed.Value,
                                         )
