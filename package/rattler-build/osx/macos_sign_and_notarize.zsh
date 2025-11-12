@@ -120,7 +120,76 @@ echo "Creating disk image ${DMG_NAME}"
 dmgbuild -s ${DMG_SETTINGS} -Dcontaining_folder="${CONTAINING_FOLDER}" -Dapp_name="${APP_NAME}" "${VOLUME_NAME}" "${DMG_NAME}"
 
 # Submit it for notarization (requires that an App Store API Key has been set up in the notarytool)
-time xcrun notarytool submit --wait --keychain-profile "${KEYCHAIN_PROFILE}" "${DMG_NAME}"
+# This is a *very slow* process, and occasionally the GitHub runners lose the internet connection for a short time
+# during the run. So in order to be fault-tolerant, this script polls, instead of using --wait
+submit_notarization_request() {
+  if [[ -s "$ID_FILE" ]]; then
+    cat "$ID_FILE"
+    return
+  fi
+  local out
+  if ! out=$(xcrun notarytool submit --keychain-profile "$KEYCHAIN_PROFILE" \
+                --output-format json --no-progress "$DMG_NAME" 2>&1); then
+      print -r -- "$out" >&2
+      return 1
+  fi
+  # We asked for JSON output so we had something stable, but of course parsing JSON with ZSH is ugly, so a quick bit of
+  # Python does it instead...
+  local id
+  id=$(print -r -- "$out" | /usr/bin/python3 - <<'PY'
+  import sys, json
+  j=json.load(sys.stdin)
+  print(j.get("id",""))
+  PY
+  )
+  [[ -n "$id" ]] || { print -r -- "Could not parse submission id" >&2; return 1; }
+  print -r -- "$id" > "$ID_FILE"
+  print -r -- "$id"  # ID is a string here, not an integer, so I can't just return it
+}
 
-# Assuming that notarization succeeded, it's a good practice to staple that notarization to the DMG
-xcrun stapler staple "${DMG_NAME}"
+wait_for_notarization_result() {
+  local id="$1" attempt=0
+  while :; do
+    if xcrun notarytool wait "$id" --keychain-profile "$KEYCHAIN_PROFILE" \
+          --timeout 10m --no-progress >/dev/null; then
+      return 0
+    fi
+
+    (( attempt++ ))
+    # If the failure was transient (timeout/HTTP/connection) just retry, but make sure to check to see if the problem
+    # was actually that the signing failed before retrying.
+    xcrun notarytool info "$id" --keychain-profile "$KEYCHAIN_PROFILE" \
+      --output-format json 2>/dev/null | /usr/bin/python3 - <<'PY' || true
+import sys, json
+try:
+  j=json.load(sys.stdin)
+  s=(j.get("status") or "").lower()
+  if s in ("invalid","rejected"):
+    sys.exit(2)
+except Exception:
+  pass
+PY
+
+    if [[ $? -eq 2 ]]; then
+      print -r -- "Notarization was not accepted by Apple:" >&2
+      xcrun notarytool log "$id" --keychain-profile "$KEYCHAIN_PROFILE"
+      return 1
+    fi
+
+    sleep $(( (attempt<6? 2**attempt : 60) + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
+  done
+}
+
+id="$(submit_notarization_request)"
+print "Notarization submission ID: $id"
+
+if wait_for_notarization_result "$id"; then
+  print "✅ Notarization succeeded. Stapling..."
+  xcrun stapler staple "$DMG_NAME"
+  print "Stapled: $DMG_NAME"
+  rm -f "$ID_FILE"
+else
+  rc=$?
+  print "❌ Notarization failed (code $rc)." >&2
+  exit "$rc"
+fi
