@@ -2087,14 +2087,15 @@ int Sketch::addConstraint(const Constraint* constraint)
             if (constraint->FirstPos != PointPos::none && constraint->SecondPos != PointPos::none
                 && constraint->Third != GeoEnum::GeoUndef) {
                 // point point line perpendicularity
-                rtn = addPerpendicularConstraint(constraint->First,
-                                                 constraint->FirstPos,
-                                                 constraint->Second,
-                                                 constraint->SecondPos,
-                                                 constraint->Third);
+                rtn = addPerpendicularConstraint(
+                    constraint->First,
+                    constraint->FirstPos,
+                    constraint->Second,
+                    constraint->SecondPos,
+                    constraint->Third
+                );
             }
-            else if (constraint->FirstPos == PointPos::none
-                     && constraint->SecondPos == PointPos::none
+            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                      && constraint->Third == GeoEnum::GeoUndef) {
                 // simple perpendicularity
                 rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
@@ -2916,11 +2917,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
     return -1;
 }
 
-int Sketch::addPerpendicularConstraint(int geoId1,
-                                       PointPos pos1,
-                                       int geoId2,
-                                       PointPos pos2,
-                                       int geoId3)
+int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
@@ -2937,9 +2934,11 @@ int Sketch::addPerpendicularConstraint(int geoId1,
         GCSsys.addConstraintPerpendicular(p1, p2, l, tag);
         return ConstraintsCounter;
     }
-    Base::Console().warning("Perpendicular constraints need a line.\n",
-                            nameByType(Geoms[geoId1].type),
-                            nameByType(Geoms[geoId2].type));
+    Base::Console().warning(
+        "Perpendicular constraints need a line.\n",
+        nameByType(Geoms[geoId1].type),
+        nameByType(Geoms[geoId2].type)
+    );
     return -1;
 }
 
