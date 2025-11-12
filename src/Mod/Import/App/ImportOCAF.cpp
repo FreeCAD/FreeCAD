@@ -40,7 +40,6 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS_Iterator.hxx>
-#include <TopoDS_Shape.hxx>
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
@@ -57,6 +56,7 @@
 #include "ImportOCAF.h"
 #include "Tools.h"
 
+#include <unordered_map>
 
 #ifdef HAVE_TBB
 # include <tbb/blocked_range.h>
