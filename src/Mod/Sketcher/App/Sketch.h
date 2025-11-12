@@ -490,7 +490,8 @@ public:
         int geoIdBnd,
         double* value,
         double* second,
-        bool driving = true);
+        bool driving = true
+    );
     /**
      *   add a point on a segment line constraint
      */

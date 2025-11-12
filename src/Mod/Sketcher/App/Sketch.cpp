@@ -2469,16 +2469,20 @@ int Sketch::addConstraint(const Constraint* constraint)
             );
         } break;
         case PointOnSegment: {
-            rtn = addPointOnSegmentConstraint(constraint->First,
-                                              constraint->FirstPos,
-                                              constraint->Second,
-                                              c.driving);
+            rtn = addPointOnSegmentConstraint(
+                constraint->First,
+                constraint->FirstPos,
+                constraint->Second,
+                c.driving
+            );
         } break;
         case PointOnArcRange: {
-            rtn = addPointOnArcRangeConstraint(constraint->First,
-                                               constraint->FirstPos,
-                                               constraint->Second,
-                                               c.driving);
+            rtn = addPointOnArcRangeConstraint(
+                constraint->First,
+                constraint->FirstPos,
+                constraint->Second,
+                c.driving
+            );
         } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
