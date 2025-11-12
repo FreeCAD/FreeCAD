@@ -40,6 +40,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS_Iterator.hxx>
+#include <TopoDS_Shape.hxx>
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
@@ -409,7 +410,7 @@ App::DocumentObject* ImportOCAF::createShape(
 
     part->Label.setValue(name);
 
-    // Find and apply colours to the creted part.
+    // Find and apply colours to the created part.
     // There may be a colour for the overall Part, and/or some of the topology that makes up the
     // shape may have their own colours.
     std::vector<Base::Color> faceColors;
@@ -422,7 +423,7 @@ App::DocumentObject* ImportOCAF::createShape(
     // Obtain a vector of face colors parallel with the TopExp_Explorer iteration order
     // This code assumes consistent iteration order each time, and that this
     // order also matches the ordering expected in the color vector we are creating.
-    int face_index = 0;
+    size_t face_index = 0;
     TopExp_Explorer xp(aShape, TopAbs_FACE);
     for (; xp.More(); xp.Next(), ++face_index) {
         if (getShapeColour(xp.Current(), TDF_Label(), color)) {
