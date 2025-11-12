@@ -801,14 +801,14 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         return;
     }
 
-    const char* defaultWidgets = "";
-
     // If overlay was ever used and disabled by the user it should respect that choice
-    if (handle->GetInt("Width", 0) == 0 || handle->GetInt("Height", 0) == 0) {
-        defaultWidgets = getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : "";
+    if (handle->GetInt("Width", 0) != 0 || handle->GetInt("Height", 0) != 0) {
+        // save current value with old default to prevent layout change
+        handle->SetASCII("Widgets", handle->GetASCII("Widgets", ""));
     }
 
-    std::string widgets = handle->GetASCII("Widgets", defaultWidgets);
+    std::string widgets
+        = handle->GetASCII("Widgets", getDockArea() == Qt::RightDockWidgetArea ? "Tasks," : "");
 
     for (auto& name : QString::fromUtf8(widgets.c_str()).split(QLatin1Char(','))) {
         if (name.isEmpty()) {
