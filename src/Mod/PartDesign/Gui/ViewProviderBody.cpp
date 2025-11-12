@@ -508,4 +508,3 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::Docu
 
     return ViewProviderPart::canDragObjectToTarget(obj, target);
 }
-
