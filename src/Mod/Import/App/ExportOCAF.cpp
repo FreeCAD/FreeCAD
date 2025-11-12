@@ -195,8 +195,8 @@ int ExportOCAF::exportObject(
         findColors(part, colors);
 
         const char* label = (originalObj != obj) ? originalObj->Label.getValue() : nullptr;
-        return_label =
-            saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part, label);
+        return_label
+            = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part, label);
     }
 
     return return_label;
@@ -235,12 +235,14 @@ void ExportOCAF::createNode(
     root_id = hierarchical_label.size();
 }
 
-int ExportOCAF::saveShape(Part::Feature* part,
-                          const std::vector<Base::Color>& colors,
-                          std::vector<TDF_Label>& hierarchical_label,
-                          std::vector<TopLoc_Location>& hierarchical_loc,
-                          std::vector<App::DocumentObject*>& hierarchical_part,
-                          const char* labelOverride)
+int ExportOCAF::saveShape(
+    Part::Feature* part,
+    const std::vector<Base::Color>& colors,
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TopLoc_Location>& hierarchical_loc,
+    std::vector<App::DocumentObject*>& hierarchical_part,
+    const char* labelOverride
+)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
     if (shape.IsNull()) {
