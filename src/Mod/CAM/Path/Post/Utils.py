@@ -227,7 +227,9 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         # OK and Cancel buttons
         self.buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+            QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Discard
+            | QtGui.QDialogButtonBox.Cancel,
             QtCore.Qt.Horizontal,
             self,
         )
@@ -245,8 +247,16 @@ class GCodeEditorDialog(QtGui.QDialog):
         if width > 0 and height > 0:
             self.resize(width, height)
 
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
+        self.buttons.clicked.connect(self.clicked)
+
+    def clicked(self, button):
+        match self.buttons.buttonRole(button):
+            case QtGui.QDialogButtonBox.RejectRole:
+                self.done(0)
+            case QtGui.QDialogButtonBox.ApplyRole:
+                self.done(1)
+            case QtGui.QDialogButtonBox.DestructiveRole:
+                self.done(2)
 
     def done(self, *args, **kwargs):
         params = FreeCAD.ParamGet(self.paramKey)

@@ -275,6 +275,7 @@ def export_common(values: Values, objectslist, filename: str) -> str:
     final: str
     final_for_editor: str
     gcode: Gcode = []
+    editor_result: int
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -339,12 +340,14 @@ def export_common(values: Values, objectslist, filename: str) -> str:
             # the editor expects lines to end in "\n", and returns lines ending in "\n"
             if values["END_OF_LINE_CHARACTERS"] == "\n":
                 dia.editor.setText(final)
-                if dia.exec_():
+                editor_result = dia.exec_()
+                if editor_result == 1:
                     final = dia.editor.toPlainText()
             else:
                 final_for_editor = "\n".join(gcode)
                 dia.editor.setText(final_for_editor)
-                if dia.exec_():
+                editor_result = dia.exec_()
+                if editor_result == 1:
                     final_for_editor = dia.editor.toPlainText()
                     # convert all "\n" to the appropriate end-of-line characters
                     if values["END_OF_LINE_CHARACTERS"] == "\n\n":
@@ -360,21 +363,23 @@ def export_common(values: Values, objectslist, filename: str) -> str:
 
     print("done postprocessing.")
 
-    if not filename == "-":
-        if final[0:2] == "\n\n":
-            # write out the gcode using "\n" as the end-of-line characters
-            with open(filename, "w", encoding="utf-8", newline="") as gfile:
-                gfile.write(final[2:])
-        elif "\r" in final:
-            with open(filename, "w", encoding="utf-8", newline="") as gfile:
-                # write out the gcode with whatever end-of-line characters it already has,
-                # presumably either "\r" or "\r\n"
-                gfile.write(final)
-        else:
-            with open(filename, "w", encoding="utf-8", newline=None) as gfile:
-                # The gcode has "\n" as the end-of-line characters, which means
-                # "write out the gcode with whatever end-of-line characters the system
-                # that is running the postprocessor uses".
-                gfile.write(final)
-
-    return final
+    if editor_result in [0, 1]:
+        if not filename == "-":
+            if final[0:2] == "\n\n":
+                # write out the gcode using "\n" as the end-of-line characters
+                with open(filename, "w", encoding="utf-8", newline="") as gfile:
+                    gfile.write(final[2:])
+            elif "\r" in final:
+                with open(filename, "w", encoding="utf-8", newline="") as gfile:
+                    # write out the gcode with whatever end-of-line characters it already has,
+                    # presumably either "\r" or "\r\n"
+                    gfile.write(final)
+            else:
+                with open(filename, "w", encoding="utf-8", newline=None) as gfile:
+                    # The gcode has "\n" as the end-of-line characters, which means
+                    # "write out the gcode with whatever end-of-line characters the system
+                    # that is running the postprocessor uses".
+                    gfile.write(final)
+        return final
+    else:
+        return None
