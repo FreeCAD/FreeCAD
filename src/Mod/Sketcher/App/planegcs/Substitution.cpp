@@ -605,10 +605,18 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
                                                        SubstitutionFactory::Attempt::Unknown);
 
 
+    bool hasTmpConstr = false;
     bool done = true;
     for (size_t i = 0; i < initialConstraints.size(); ++i) {
         auto constr = initialConstraints[i];
 
+        // No substitution for temporary constraints,
+        if (constr->getTag() < 0) {
+            hasTmpConstr = true;
+            continue;
+        }
+
+        // first pass handles all equalities
         if (constr->getTypeId() != Equal) {
             continue;
         }
@@ -619,7 +627,6 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
                            // other constraints
         }
     }
-
     // As new substitution & reductions are discovered, previously incompatible
     // constraints may appear to be substitutable so we try until no constraint
     // can be substituted
@@ -652,29 +659,39 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
                                                     attempts[i]);
                     break;
                 case C2LDistance:
-                    attempt = factory.trySubstitute(static_cast<ConstraintC2LDistance*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = hasTmpConstr
+                        ? SubstitutionFactory::Attempt::No
+                        : factory.trySubstitute(static_cast<ConstraintC2LDistance*>(constr),
+                                                unknownsSet,
+                                                attempts[i]);
                     break;
                 case P2LDistance:
-                    attempt = factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = hasTmpConstr
+                        ? SubstitutionFactory::Attempt::No
+                        : factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr),
+                                                unknownsSet,
+                                                attempts[i]);
                     break;
                 case P2PDistance:
-                    attempt = factory.trySubstitute(static_cast<ConstraintP2PDistance*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = hasTmpConstr
+                        ? SubstitutionFactory::Attempt::No
+                        : factory.trySubstitute(static_cast<ConstraintP2PDistance*>(constr),
+                                                unknownsSet,
+                                                attempts[i]);
                     break;
                 case EqualLineLength:
-                    attempt = factory.trySubstitute(static_cast<ConstraintEqualLineLength*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = hasTmpConstr
+                        ? SubstitutionFactory::Attempt::No
+                        : factory.trySubstitute(static_cast<ConstraintEqualLineLength*>(constr),
+                                                unknownsSet,
+                                                attempts[i]);
                     break;
                 case Difference:
-                    attempt = factory.trySubstitute(static_cast<ConstraintDifference*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = hasTmpConstr
+                        ? SubstitutionFactory::Attempt::No
+                        : factory.trySubstitute(static_cast<ConstraintDifference*>(constr),
+                                                unknownsSet,
+                                                attempts[i]);
                     break;
             }
             attempts[i] = attempt;

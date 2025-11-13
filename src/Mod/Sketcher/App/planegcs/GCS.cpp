@@ -1927,8 +1927,6 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
         return Success;
     }
 
-    subsys->redirectParams();
-
     Eigen::MatrixXd D = Eigen::MatrixXd::Identity(xsize, xsize);
     Eigen::VectorXd x(xsize);
     Eigen::VectorXd xdir(xsize);
@@ -2032,8 +2030,6 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
         }
     }
 
-    subsys->revertParams();
-
     if (err <= smallF) {
         return Success;
     }
@@ -2061,8 +2057,6 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     Eigen::MatrixXd J(csize, xsize);  // Jacobi of the subsystem
     Eigen::MatrixXd A(xsize, xsize);
     Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize), diag_A(xsize);
-
-    subsys->redirectParams();
 
     subsys->getParams(x);
     subsys->calcResidual(e);
@@ -2217,8 +2211,6 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     if (iter >= maxIterNumber) {
         stop = 5;
     }
-
-    subsys->revertParams();
 
     return (stop == 1) ? Success : Failed;
 }
@@ -4515,10 +4507,6 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
     Eigen::VectorXd y(xsize);
     Eigen::VectorXd Bh(xsize);
 
-    // We assume that there are no common constraints in subsysA and subsysB
-    subsysA->redirectParams();
-    subsysB->redirectParams();
-
     SubSystem::getParams(plistAB, x);
     substitution.applySubst();
 
@@ -4643,8 +4631,6 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         ret = Failed;
     }
 
-    subsysA->revertParams();
-    subsysB->revertParams();
     return ret;
 }
 void System::applySolution()
@@ -4679,7 +4665,8 @@ void System::makeReducedJacobian(
     int jacobianconstraintcount = 0;
     int allcount = 0;
     for (auto& constr : clist) {
-        constr->revertParams();
+        // constr->revertParams();
+        // TODO-theo-vt --^
         ++allcount;
         if (constr->getTag() >= 0 && constr->isDriving()) {
             jacobianconstraintcount++;

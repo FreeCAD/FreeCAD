@@ -240,3 +240,37 @@ TEST_F(ConstraintsTest, rectangleWithOneOffsetDim)  // NOLINT
 
     EXPECT_NEAR(*l1.p2.y, *l1.p1.y + l1length, 1e-12);
 }
+TEST_F(ConstraintsTest, simpleDrag)  // NOLINT
+{
+    double lp1x = 0.0;
+    double lp1y = 0.0;
+    double lp2x = 0.0;
+    double lp2y = 20.0;
+    double llength = 20;
+    GCS::Line line(GCS::Point(&lp1x, &lp1y), GCS::Point(&lp2x, &lp2y));
+
+    double dragPointx = 5.0;
+    double dragPointy = 2.0;
+    GCS::Point dragPoint(&dragPointx, &dragPointy);
+
+    std::vector<double*> unknowns;
+    line.PushOwnParams(unknowns);
+
+    System()->addConstraintVertical(line);
+
+
+    System()->addConstraintDifference(line.p1.y, line.p2.y, &llength);
+    System()->addConstraintP2PCoincident(line.p1, dragPoint, GCS::DefaultTemporaryConstraint);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lp1x, dragPointx, 1e-12);
+    EXPECT_NEAR(lp1y, dragPointy, 1e-12);
+    EXPECT_NEAR(lp2y, lp1y + llength, 1e-12);
+}

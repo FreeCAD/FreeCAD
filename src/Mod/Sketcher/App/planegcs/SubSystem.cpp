@@ -64,8 +64,8 @@ void SubSystem::initialize(UMAP_pD_pD& reductionmap)
         VEC_pD constr_params_orig = constr->origParams();
         SET_pD constr_params;
         for (const auto& constrParam : constr_params_orig) {
-            auto pmapfind = pmap.find(constrParam);
-            if (pmapfind != pmap.end()) {
+            auto pmapfind = reductionmap.find(constrParam);
+            if (pmapfind != reductionmap.end()) {
                 constr_params.insert(pmapfind->second);
             }
         }
@@ -133,9 +133,8 @@ void SubSystem::getConstraintList(std::vector<Constraint*>& clist_)
 double SubSystem::error()
 {
     double err = 0.;
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        double tmp = (*constr)->error();
+    for (const auto& constr : clist) {
+        double tmp = constr->error();
         err += tmp * tmp;
     }
     err *= 0.5;
@@ -147,9 +146,9 @@ void SubSystem::calcResidual(Eigen::VectorXd& r)
     assert(r.size() == csize);
 
     int i = 0;
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr, i++) {
-        r[i] = (*constr)->error();
+    for (const auto& constr : clist) {
+        r[i] = constr->error();
+        i++;
     }
 }
 
@@ -159,10 +158,10 @@ void SubSystem::calcResidual(Eigen::VectorXd& r, double& err)
 
     int i = 0;
     err = 0.;
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr, i++) {
-        r[i] = (*constr)->error();
+    for (const auto& constr : clist) {
+        r[i] = constr->error();
         err += r[i] * r[i];
+        i++;
     }
     err *= 0.5;
 }
