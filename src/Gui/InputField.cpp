@@ -825,4 +825,3 @@ QValidator::State InputValidator::validate(QString& input, int& pos) const
 
 
 #include "moc_InputField.cpp"
-
