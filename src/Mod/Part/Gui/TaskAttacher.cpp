@@ -1533,7 +1533,6 @@ bool TaskDlgAttacher::reject()
     if (document) {
         // roll back the done things
         Gui::Command::abortCommand();
-        Gui::Command::doCommand(Gui::Command::Gui, "%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 
@@ -1543,3 +1542,4 @@ bool TaskDlgAttacher::reject()
 }
 
 #include "moc_TaskAttacher.cpp"
+
