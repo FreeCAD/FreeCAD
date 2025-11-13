@@ -26,7 +26,6 @@ import FreeCAD
 from FreeCAD import Rotation
 from FreeCAD import Vector
 
-import Fem
 import ObjectsFem
 
 from . import manager
@@ -174,13 +173,10 @@ def setup(doc=None, solvertype="ccxtools"):
     from femmesh import gmshtools
 
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
+    gmsh_mesh.create_mesh()
 
     doc.recompute()
     return doc
+
 
 
