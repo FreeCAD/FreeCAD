@@ -119,6 +119,8 @@ run_codesign "${CONTAINING_FOLDER}/${APP_NAME}"
 echo "Creating disk image ${DMG_NAME}"
 dmgbuild -s ${DMG_SETTINGS} -Dcontaining_folder="${CONTAINING_FOLDER}" -Dapp_name="${APP_NAME}" "${VOLUME_NAME}" "${DMG_NAME}"
 
+ID_FILE="${DMG_NAME}.notarization_id"
+
 # Submit it for notarization (requires that an App Store API Key has been set up in the notarytool)
 # This is a *very slow* process, and occasionally the GitHub runners lose the internet connection for a short time
 # during the run. So in order to be fault-tolerant, this script polls, instead of using --wait
@@ -136,11 +138,8 @@ submit_notarization_request() {
   # We asked for JSON output so we had something stable, but of course parsing JSON with ZSH is ugly, so a quick bit of
   # Python does it instead...
   local id
-  id=$(print -r -- "$out" | /usr/bin/python3 - <<'PY'
-  import sys, json
-  j=json.load(sys.stdin)
-  print(j.get("id",""))
-  PY
+  id=$(print -r -- "$out" |
+    /usr/bin/python3 -c 'import sys, json; print(json.load(sys.stdin).get("id",""))'
   )
   [[ -n "$id" ]] || { print -r -- "Could not parse submission id" >&2; return 1; }
   print -r -- "$id" > "$ID_FILE"
@@ -158,29 +157,49 @@ wait_for_notarization_result() {
     (( attempt++ ))
     # If the failure was transient (timeout/HTTP/connection) just retry, but make sure to check to see if the problem
     # was actually that the signing failed before retrying.
-    xcrun notarytool info "$id" --keychain-profile "$KEYCHAIN_PROFILE" \
-      --output-format json 2>/dev/null | /usr/bin/python3 - <<'PY' || true
+    local tmp_json
+    tmp_json=$(mktemp)
+    trap 'rm -f "$tmp_json"' EXIT INT TERM
+
+    xcrun notarytool info "$id" --keychain-profile "$KEYCHAIN_PROFILE" --output-format json 2>/dev/null > "$tmp_json"
+    /usr/bin/python3 - "$tmp_json" <<'PY'
 import sys, json
 try:
-  j=json.load(sys.stdin)
-  s=(j.get("status") or "").lower()
-  if s in ("invalid","rejected"):
-    sys.exit(2)
+    with open(sys.argv[1]) as f:
+        s = (json.load(f).get("status") or "").lower()
+    if s in ("invalid", "rejected"):
+        sys.exit(2)
+    else:
+        sys.exit(0)
 except Exception:
-  pass
+    sys.exit(1)
 PY
+    rc=$?
 
-    if [[ $? -eq 2 ]]; then
+    rm -f "$tmp_json"
+
+    if [[ $rc == 2 ]]; then
       print -r -- "Notarization was not accepted by Apple:" >&2
-      xcrun notarytool log "$id" --keychain-profile "$KEYCHAIN_PROFILE"
-      return 1
+      xcrun notarytool log "$id" --keychain-profile "$KEYCHAIN_PROFILE" >&2
+      return 3
     fi
 
-    sleep $(( (attempt<6? 2**attempt : 60) + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
+    if [[ $attempt -gt 120 ]]; then
+      print -r -- "🏳️ Notarization is taking too long, bailing out. 🏳️" >&2
+      return 4
+    fi
+    sleep $(( (attempt<6?2**attempt:60) + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
   done
 }
 
-id="$(submit_notarization_request)"
+if ! id="$(submit_notarization_request)"; then
+  print -r -- "❌ Failed to submit notarization request" >&2
+  exit 1
+fi
+if [[ -z "$id" ]]; then
+  print -r -- "❌ Submission succeeded but no ID was returned" >&2
+  exit 1
+fi
 print "Notarization submission ID: $id"
 
 if wait_for_notarization_result "$id"; then
