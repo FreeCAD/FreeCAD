@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -38,7 +40,7 @@
 #include <vector>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // OpenCasCade Base

@@ -28,12 +28,14 @@
 #include <Base/Rotation.h>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport Camera
 {
 public:
-    enum Orientation {
+    enum Orientation
+    {
         Top,
         Bottom,
         Front,
@@ -61,6 +63,6 @@ public:
     static SbRotation convert(const Base::Rotation&);
 };
 
-}
+}  // namespace Gui
 
-#endif // GUI_CAMERA_H
+#endif  // GUI_CAMERA_H

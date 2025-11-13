@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -24,6 +26,12 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include <App/Document.h>
+#include <App/Datums.h>
+#include <App/ObjectIdentifier.h>
+#include <App/Expression.h>
+#include <App/ExpressionParser.h>
+
 #include "AttachExtension.h"
 #include "AttachExtensionPy.h"
 
@@ -33,109 +41,119 @@ using namespace Attacher;
 
 namespace
 {
-    std::vector<std::string> EngineEnums = {"Engine 3D",
-                                            "Engine Plane",
-                                            "Engine Line",
-                                            "Engine Point"};
+std::vector<std::string> EngineEnums = {"Engine 3D", "Engine Plane", "Engine Line", "Engine Point"};
 
-    const char* enumToClass(const char* mode)
-    {
-        if (EngineEnums.at(0) == mode) {
-            return "Attacher::AttachEngine3D";
-        }
-        if (EngineEnums.at(1) == mode) {
-            return "Attacher::AttachEnginePlane";
-        }
-        if (EngineEnums.at(2) == mode) {
-            return "Attacher::AttachEngineLine";
-        }
-        if (EngineEnums.at(3) == mode) {
-            return "Attacher::AttachEnginePoint";
-        }
-
+const char* enumToClass(const char* mode)
+{
+    if (EngineEnums.at(0) == mode) {
         return "Attacher::AttachEngine3D";
     }
+    if (EngineEnums.at(1) == mode) {
+        return "Attacher::AttachEnginePlane";
+    }
+    if (EngineEnums.at(2) == mode) {
+        return "Attacher::AttachEngineLine";
+    }
+    if (EngineEnums.at(3) == mode) {
+        return "Attacher::AttachEnginePoint";
+    }
 
-    const char* classToEnum(const char* type)
-    {
-        if (strcmp(type, "Attacher::AttachEngine3D") == 0) {
-            return EngineEnums.at(0).c_str();
-        }
-        if (strcmp(type, "Attacher::AttachEnginePlane") == 0) {
-            return EngineEnums.at(1).c_str();
-        }
-        if (strcmp(type, "Attacher::AttachEngineLine") == 0) {
-            return EngineEnums.at(2).c_str();
-        }
-        if (strcmp(type, "Attacher::AttachEnginePoint") == 0) {
-            return EngineEnums.at(3).c_str();
-        }
+    return "Attacher::AttachEngine3D";
+}
 
+const char* classToEnum(const char* type)
+{
+    if (strcmp(type, "Attacher::AttachEngine3D") == 0) {
         return EngineEnums.at(0).c_str();
     }
+    if (strcmp(type, "Attacher::AttachEnginePlane") == 0) {
+        return EngineEnums.at(1).c_str();
+    }
+    if (strcmp(type, "Attacher::AttachEngineLine") == 0) {
+        return EngineEnums.at(2).c_str();
+    }
+    if (strcmp(type, "Attacher::AttachEnginePoint") == 0) {
+        return EngineEnums.at(3).c_str();
+    }
 
-    void restoreAttacherEngine(AttachExtension* self)
-    {
-        const char* mode = enumToClass(self->AttacherEngine.getValueAsString());
-        const char* type = self->AttacherType.getValue();
-        if (strcmp(mode, type) != 0) {
-            self->AttacherEngine.setValue(classToEnum(type));
-        }
+    return EngineEnums.at(0).c_str();
+}
+
+void restoreAttacherEngine(AttachExtension* self)
+{
+    const char* mode = enumToClass(self->AttacherEngine.getValueAsString());
+    const char* type = self->AttacherType.getValue();
+    if (strcmp(mode, type) != 0) {
+        self->AttacherEngine.setValue(classToEnum(type));
     }
 }
+}  // namespace
 
 EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 AttachExtension::AttachExtension()
 {
-    EXTENSION_ADD_PROPERTY_TYPE(AttacherType,
-                                ("Attacher::AttachEngine3D"),
-                                "Attachment",
-                                (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
-                                "Class name of attach engine object driving the attachment.");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        AttacherType,
+        ("Attacher::AttachEngine3D"),
+        "Attachment",
+        (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
+        "Class name of attach engine object driving the attachment."
+    );
 
-    EXTENSION_ADD_PROPERTY_TYPE(AttacherEngine,
-                                (0L),
-                                "Attachment",
-                                (App::PropertyType)(App::Prop_None),
-                                "Attach engine object driving the attachment.");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        AttacherEngine,
+        (0L),
+        "Attachment",
+        (App::PropertyType)(App::Prop_None),
+        "Attach engine object driving the attachment."
+    );
     AttacherEngine.setEnums(EngineEnums);
 
-    EXTENSION_ADD_PROPERTY_TYPE(AttachmentSupport,
-                                (nullptr, nullptr),
-                                "Attachment",
-                                (App::PropertyType)(App::Prop_None),
-                                "Support of the 2D geometry");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        AttachmentSupport,
+        (nullptr, nullptr),
+        "Attachment",
+        (App::PropertyType)(App::Prop_None),
+        "Support of the 2D geometry"
+    );
     AttachmentSupport.setScope(App::LinkScope::Global);
 
-    EXTENSION_ADD_PROPERTY_TYPE(MapMode,
-                                (mmDeactivated),
-                                "Attachment",
-                                App::Prop_None,
-                                "Mode of attachment to other object");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        MapMode,
+        (mmDeactivated),
+        "Attachment",
+        App::Prop_None,
+        "Mode of attachment to other object"
+    );
     MapMode.setEditorName("PartGui::PropertyEnumAttacherItem");
     MapMode.setEnums(AttachEngine::eMapModeStrings);
     // a rough test if mode string list in Attacher.cpp is in sync with eMapMode enum.
     assert(MapMode.getEnumVector().size() == mmDummy_NumberOfModes);
 
-    EXTENSION_ADD_PROPERTY_TYPE(MapReversed,
-                                (false),
-                                "Attachment",
-                                App::Prop_None,
-                                "Reverse Z-direction (flip sketch upside down)");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        MapReversed,
+        (false),
+        "Attachment",
+        App::Prop_None,
+        "Reverse Z-direction (flip sketch upside down)"
+    );
 
-    EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter,
-                                (0.0),
-                                "Attachment",
-                                App::Prop_None,
-                                "Sets point of curve to map the sketch to. 0..1 = start..end");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        MapPathParameter,
+        (0.0),
+        "Attachment",
+        App::Prop_None,
+        "Sets point of curve to map the sketch to. 0..1 = start..end"
+    );
 
     EXTENSION_ADD_PROPERTY_TYPE(
         AttachmentOffset,
         (Base::Placement()),
         "Attachment",
         App::Prop_None,
-        "Extra placement to apply in addition to attachment (in local coordinates)");
+        "Extra placement to apply in addition to attachment (in local coordinates)"
+    );
 
     // Only show these properties when applicable. Controlled by extensionOnChanged
     this->MapPathParameter.setStatus(App::Property::Status::Hidden, true);
@@ -160,12 +178,14 @@ AttachExtension::~AttachExtension()
 {}
 
 template<class T>
-static inline bool getProp(bool force,
-                           T*& prop,
-                           Base::Type type,
-                           App::PropertyContainer* owner,
-                           const char* name,
-                           const char* doc)
+static inline bool getProp(
+    bool force,
+    T*& prop,
+    Base::Type type,
+    App::PropertyContainer* owner,
+    const char* name,
+    const char* doc
+)
 {
     prop = freecad_cast<T*>(owner->getDynamicPropertyByName(name));
     if (prop || !force) {
@@ -181,8 +201,13 @@ static inline bool getProp(bool force,
 }
 
 template<class T>
-static inline bool
-getProp(bool force, T*& prop, App::PropertyContainer* owner, const char* name, const char* doc)
+static inline bool getProp(
+    bool force,
+    T*& prop,
+    App::PropertyContainer* owner,
+    const char* name,
+    const char* doc
+)
 {
     return getProp(force, prop, T::getClassTypeId(), owner, name, doc);
 }
@@ -203,25 +228,30 @@ void AttachExtension::initBase(bool force)
             props.attacherType,
             obj,
             "BaseAttacherType",
-            "Class name of attach engine object driving the attachment for base geometry.")) {
+            "Class name of attach engine object driving the attachment for base geometry."
+        )) {
         props.attacherType->setValue(_baseProps.attacher->getTypeId().getName());
     }
     else if (!props.attacherType) {
         return;
     }
 
-    getProp<App::PropertyLinkSubList>(force,
-                                      props.attachment,
-                                      App::PropertyLinkSubListHidden::getClassTypeId(),
-                                      obj,
-                                      "BaseAttachment",
-                                      "Link to base geometry.");
+    getProp<App::PropertyLinkSubList>(
+        force,
+        props.attachment,
+        App::PropertyLinkSubListHidden::getClassTypeId(),
+        obj,
+        "BaseAttachment",
+        "Link to base geometry."
+    );
 
-    if (getProp<App::PropertyEnumeration>(force,
-                                          props.mapMode,
-                                          obj,
-                                          "BaseMapMode",
-                                          "Mode of attachment for the base geometry")) {
+    if (getProp<App::PropertyEnumeration>(
+            force,
+            props.mapMode,
+            obj,
+            "BaseMapMode",
+            "Mode of attachment for the base geometry"
+        )) {
         props.mapMode->setStatus(App::Property::Status::Hidden, false);
     }
     if (props.mapMode) {
@@ -229,17 +259,21 @@ void AttachExtension::initBase(bool force)
         props.mapMode->setEnums(AttachEngine::eMapModeStrings);
     }
 
-    getProp<App::PropertyBool>(force,
-                               props.mapReversed,
-                               obj,
-                               "BaseMapReversed",
-                               "Reverse Z-direction of the base geometry attachment");
+    getProp<App::PropertyBool>(
+        force,
+        props.mapReversed,
+        obj,
+        "BaseMapReversed",
+        "Reverse Z-direction of the base geometry attachment"
+    );
 
-    getProp<App::PropertyFloat>(force,
-                                props.mapPathParameter,
-                                obj,
-                                "BaseMapPathParameter",
-                                "Sets point of base curve to map 0..1 = start..end");
+    getProp<App::PropertyFloat>(
+        force,
+        props.mapPathParameter,
+        obj,
+        "BaseMapPathParameter",
+        "Sets point of base curve to map 0..1 = start..end"
+    );
 
     static_cast<Properties&>(_baseProps) = props;
 }
@@ -289,8 +323,9 @@ bool AttachExtension::changeAttacherType(const char* typeName, bool base)
     }
     Base::Type t = Base::Type::fromName(typeName);
     if (t.isDerivedFrom(AttachEngine::getClassTypeId())) {
-        AttachEngine* pNewAttacher =
-            static_cast<Attacher::AttachEngine*>(Base::Type::createInstanceByName(typeName));
+        AttachEngine* pNewAttacher = static_cast<Attacher::AttachEngine*>(
+            Base::Type::createInstanceByName(typeName)
+        );
         this->setAttacher(pNewAttacher, base);
         return true;
     }
@@ -305,7 +340,8 @@ bool AttachExtension::positionBySupport()
     _active = 0;
     if (!_props.attacher) {
         throw Base::RuntimeError(
-            "AttachExtension: can't positionBySupport, because no AttachEngine is set.");
+            "AttachExtension: can't positionBySupport, because no AttachEngine is set."
+        );
     }
     updateAttacherVals();
     Base::Placement plaOriginal = getPlacement().getValue();
@@ -319,11 +355,13 @@ bool AttachExtension::positionBySupport()
 
         Base::Placement basePlacement;
         if (_baseProps.attacher && _baseProps.attacher->mapMode != mmDeactivated) {
-            basePlacement =
-                _baseProps.attacher->calculateAttachedPlacement(Base::Placement(), &subChanged);
+            basePlacement
+                = _baseProps.attacher->calculateAttachedPlacement(Base::Placement(), &subChanged);
             if (subChanged) {
-                _baseProps.attachment->setValues(_baseProps.attachment->getValues(),
-                                                 _baseProps.attacher->getSubValues());
+                _baseProps.attachment->setValues(
+                    _baseProps.attachment->getValues(),
+                    _baseProps.attacher->getSubValues()
+                );
             }
         }
 
@@ -333,9 +371,9 @@ bool AttachExtension::positionBySupport()
         if (subChanged) {
             Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
                 App::Property::User3,
-                &AttachmentSupport);
-            AttachmentSupport.setValues(AttachmentSupport.getValues(),
-                                        _props.attacher->getSubValues());
+                &AttachmentSupport
+            );
+            AttachmentSupport.setValues(AttachmentSupport.getValues(), _props.attacher->getSubValues());
         }
         getPlacement().setValue(placement);
         _active = 1;
@@ -402,23 +440,20 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     if (!getExtendedObject()->isRestoring()) {
         // If we change anything that affects our position, update it immediately so you can see it
         // interactively.
-        if ((prop == &AttachmentSupport
-             || prop == &MapMode
-             || prop == &MapPathParameter
-             || prop == &MapReversed
-             || prop == &AttachmentOffset)){
+        if ((prop == &AttachmentSupport || prop == &MapMode || prop == &MapPathParameter
+             || prop == &MapReversed || prop == &AttachmentOffset)) {
             bool bAttached = false;
-            try{
+            try {
                 bAttached = positionBySupport();
             }
-            catch (Base::Exception &e) {
+            catch (Base::Exception& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n",e.what());
-                //set error message - how?
+                Base::Console().error("PositionBySupport: %s\n", e.what());
+                // set error message - how?
             }
-            catch (Standard_Failure &e){
+            catch (Standard_Failure& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n",e.GetMessageString());
+                Base::Console().error("PositionBySupport: %s\n", e.GetMessageString());
             }
 
             updateSinglePropertyStatus(bAttached);
@@ -447,9 +482,11 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     App::DocumentObjectExtension::extensionOnChanged(prop);
 }
 
-bool AttachExtension::extensionHandleChangedPropertyName(Base::XMLReader& reader,
-                                                         const char* TypeName,
-                                                         const char* PropName)
+bool AttachExtension::extensionHandleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    const char* PropName
+)
 {
     Base::Type type = Base::Type::fromName(TypeName);
     // superPlacement -> AttachmentOffset
@@ -477,6 +514,166 @@ bool AttachExtension::extensionHandleChangedPropertyName(Base::XMLReader& reader
     return App::DocumentObjectExtension::extensionHandleChangedPropertyName(reader, TypeName, PropName);
 }
 
+void AttachExtension::handleLegacyTangentPlaneOrientation()
+{
+    // check attachment mode
+    if (_props.attacher->mapMode != mmTangentPlane) {
+        return;
+    }
+
+    // check stored document program version (applies to v1.0 and earlier only)
+    int major, minor;
+    if (sscanf(getExtendedObject()->getDocument()->getProgramVersion(), "%d.%d", &major, &minor)
+        != 2) {
+        return;
+    }
+    if (major > 1 || (major == 1 && minor > 0)) {
+        return;
+    }
+
+    // check for an App::Plane support object exists
+    App::GeoFeature* geof = nullptr;
+    for (auto obj : this->AttachmentSupport.linkedObjects()) {
+        if (obj->isDerivedFrom<App::Plane>()) {
+            geof = freecad_cast<App::GeoFeature*>(obj);
+            break;
+        }
+    }
+    if (!geof) {
+        return;
+    }
+
+    /*
+     * determine which global axis (X/Y/Z) is closest to the plane normal
+     */
+
+    // extract the plane normal
+    Base::Vector3d norm;
+    geof->Placement.getValue().getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), norm);
+    gp_Dir normal(norm.x, norm.y, norm.z);
+
+    // determine the dominant global axis
+    std::array<double, 3> cosXYZ = {
+        fabs(normal.Dot(gp_Dir(1, 0, 0))),  // normal dot global X axis
+        fabs(normal.Dot(gp_Dir(0, 1, 0))),  // normal dot global Y axis
+        fabs(normal.Dot(gp_Dir(0, 0, 1)))   // normal dot global Z axis
+    };
+    std::size_t axis = std::distance(cosXYZ.begin(), std::ranges::max_element(cosXYZ));
+
+    // if Z is dominant, no changes needed
+    if (axis == 2) {
+        return;
+    }
+
+    /*
+     * correct attachment offset position and rotation based on dominant axis
+     */
+
+    App::DocumentObject* owner = getExtendedObject();
+    Base::Console().message("Converting attachment offset of %s\n", owner->getNameInDocument());
+
+    try {
+        // extract current attachment offset values
+        Base::Placement placement = this->AttachmentOffset.getValue();
+        Base::Vector3d position = placement.getPosition();
+        Base::Rotation rotation = placement.getRotation();
+        double yaw, pitch, roll;
+        rotation.getYawPitchRoll(yaw, pitch, roll);
+
+        // extract existing expressions
+        auto buildOID = [owner](const std::vector<std::string>& path) {
+            App::ObjectIdentifier oid(owner, true);
+            for (const auto& name : path) {
+                oid.addComponent(App::ObjectIdentifier::SimpleComponent(name));
+            }
+            return oid;
+        };
+        App::ObjectIdentifier oidX = buildOID({"AttachmentOffset", "Base", "x"});
+        App::ObjectIdentifier oidY = buildOID({"AttachmentOffset", "Base", "y"});
+        App::ObjectIdentifier oidYaw = buildOID({"AttachmentOffset", "Rotation", "Yaw"});
+        const App::Expression* exprX = nullptr;
+        const App::Expression* exprY = nullptr;
+        const App::Expression* exprYaw = nullptr;
+        for (const auto& [oid, expr] : owner->ExpressionEngine.getExpressions()) {
+            if (oid == oidX) {
+                exprX = expr;
+            }
+            else if (oid == oidY) {
+                exprY = expr;
+            }
+            else if (oid == oidYaw) {
+                exprYaw = expr;
+            }
+        }
+
+        // convert placement and expressions according to the dominant axis
+        App::Expression* newExprX = nullptr;
+        App::Expression* newExprY = nullptr;
+        App::Expression* newExprYaw = nullptr;
+        if (axis == 0) {  // normal mostly X
+            // values
+            std::swap(position.x, position.y);
+            position.x = -position.x;
+            rotation.setYawPitchRoll(yaw + 90, pitch, roll);
+
+            // expressions
+            if (exprX) {
+                newExprY = App::ExpressionParser::parse(owner, exprX->toString().c_str());
+            }
+            if (exprY) {
+                std::string expr = "-1 * (" + exprY->toString() + ")";
+                newExprX = App::ExpressionParser::parse(owner, expr.c_str());
+            }
+            if (exprYaw) {
+                std::string expr = "(" + exprYaw->toString() + ") + 90 deg";
+                newExprYaw = App::ExpressionParser::parse(owner, expr.c_str());
+            }
+        }
+        else if (axis == 1) {  // normal mostly Y
+            // values
+            std::swap(position.x, position.y);
+            position.y = -position.y;
+            rotation.setYawPitchRoll(yaw - 90, pitch, roll);
+
+            // expressions
+            if (exprX) {
+                std::string expr = "-1 * (" + exprX->toString() + ")";
+                newExprY = App::ExpressionParser::parse(owner, expr.c_str());
+            }
+            if (exprY) {
+                newExprX = App::ExpressionParser::parse(owner, exprY->toString().c_str());
+            }
+            if (exprYaw) {
+                std::string expr = "(" + exprYaw->toString() + ") - 90 deg";
+                newExprYaw = App::ExpressionParser::parse(owner, expr.c_str());
+            }
+        }
+        else {
+            // should not happen
+            return;
+        }
+
+        // store updated placement and expressions back to the document object
+
+        // expressions
+        owner->ExpressionEngine.setValue(oidX, App::ExpressionPtr(newExprX));
+        owner->ExpressionEngine.setValue(oidY, App::ExpressionPtr(newExprY));
+        owner->ExpressionEngine.setValue(oidYaw, App::ExpressionPtr(newExprYaw));
+
+        // values
+        placement.setPosition(position);
+        placement.setRotation(rotation);
+        this->AttachmentOffset.setValue(placement);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().error(
+            "Error converting legacy attachment offset of %s: %s\n",
+            owner->getNameInDocument(),
+            e.what()
+        );
+    }
+}
+
 void AttachExtension::onExtendedDocumentRestored()
 {
     try {
@@ -491,6 +688,10 @@ void AttachExtension::onExtendedDocumentRestored()
         updatePropertyStatus(isAttacherActive());
 
         restoreAttacherEngine(this);
+
+        if (_props.attacher->mapMode == mmTangentPlane) {
+            handleLegacyTangentPlaneOrientation();
+        }
 
         bool bAttached = positionBySupport();
 
@@ -511,14 +712,17 @@ void AttachExtension::updateSinglePropertyStatus(bool bAttached, bool base)
 
     // Hide properties when not applicable to reduce user confusion
     eMapMode mmode = eMapMode(props.mapMode->getValue());
-    bool modeIsPointOnCurve =
-        (mmode == mmNormalToPath || mmode == mmFrenetNB || mmode == mmFrenetTN
-         || mmode == mmFrenetTB || mmode == mmRevolutionSection || mmode == mmConcentric);
+    bool modeIsPointOnCurve
+        = (mmode == mmNormalToPath || mmode == mmFrenetNB || mmode == mmFrenetTN
+           || mmode == mmFrenetTB || mmode == mmRevolutionSection || mmode == mmConcentric);
 
     // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
     bool hasOneRef = props.attacher && props.attacher->subnames.size() == 1;
 
-    props.mapPathParameter->setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+    props.mapPathParameter->setStatus(
+        App::Property::Status::Hidden,
+        !bAttached || !(modeIsPointOnCurve && hasOneRef)
+    );
     props.mapReversed->setStatus(App::Property::Status::Hidden, !bAttached);
 
     if (base) {
@@ -548,12 +752,14 @@ void AttachExtension::updateAttacherVals(bool base) const
     if (!props.attachment) {
         return;
     }
-    attacher(base).setUp(*props.attachment,
-                         eMapMode(props.mapMode->getValue()),
-                         props.mapReversed->getValue(),
-                         props.mapPathParameter->getValue(),
-                         0.0,
-                         0.0);
+    attacher(base).setUp(
+        *props.attachment,
+        eMapMode(props.mapMode->getValue()),
+        props.mapReversed->getValue(),
+        props.mapPathParameter->getValue(),
+        0.0,
+        0.0
+    );
 }
 
 AttachExtension::Properties AttachExtension::getProperties(bool base) const
@@ -573,7 +779,8 @@ AttachExtension::Properties AttachExtension::getInitedProperties(bool base)
 App::PropertyPlacement& AttachExtension::getPlacement() const
 {
     auto pla = freecad_cast<App::PropertyPlacement*>(
-        getExtendedObject()->getPropertyByName("Placement"));
+        getExtendedObject()->getPropertyByName("Placement")
+    );
     if (!pla) {
         throw Base::RuntimeError("AttachExtension cannot find placement property");
     }
@@ -614,12 +821,12 @@ AttachEngineException::AttachEngineException(const std::string& sMessage)
     : Base::Exception(sMessage)
 {}
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
-  EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::AttachExtensionPython, Part::AttachExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::AttachExtensionPython, Part::AttachExtension)
 /// @endcond
 
 // explicit template instantiation
-  template class PartExport ExtensionPythonT<Part::AttachExtension>;
-}
-
+template class PartExport ExtensionPythonT<Part::AttachExtension>;
+}  // namespace App

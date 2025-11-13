@@ -20,14 +20,14 @@
  *                                                                            *
  ******************************************************************************/
 
-# include <limits>
+#include <limits>
 
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Ax2.hxx>
-# include <BRepAdaptor_Curve.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <gp_Lin.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Ax2.hxx>
+#include <BRepAdaptor_Curve.hxx>
 
 #include "DatumLine.h"
 #include <Base/Axis.h>
@@ -41,62 +41,74 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = {
-    1, std::numeric_limits<int>::max(), 1 };
-const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences
+    = {1, std::numeric_limits<int>::max(), 1};
+const App::PropertyAngle::Constraints PolarPattern::floatAngle
+    = {Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0};
 
-const char* PolarPattern::ModeEnums[] = { "Extent", "Spacing", nullptr};
+const char* PolarPattern::ModeEnums[] = {"Extent", "Spacing", nullptr};
 
 PolarPattern::PolarPattern()
 {
     auto initialMode = PolarPatternMode::Extent;
 
-    ADD_PROPERTY_TYPE(Axis,
-                      (nullptr),
-                      "PolarPattern",
-                      App::Prop_None,
-                      "The axis of rotation for the pattern. This can be a datum axis, a sketch "
-                      "axis, a circular edge, or the normal of a planar face.");
+    ADD_PROPERTY_TYPE(
+        Axis,
+        (nullptr),
+        "PolarPattern",
+        App::Prop_None,
+        "The axis of rotation for the pattern. This can be a datum axis, a sketch "
+        "axis, a circular edge, or the normal of a planar face."
+    );
     ADD_PROPERTY_TYPE(
         Reversed,
         (0),
         "PolarPattern",
         App::Prop_None,
-        "Reverses the pattern direction from counter-clockwise (default) to clockwise.");
+        "Reverses the pattern direction from counter-clockwise (default) to clockwise."
+    );
     ADD_PROPERTY_TYPE(
         Mode,
         (long(initialMode)),
         "PolarPattern",
         App::Prop_None,
         "Selects how the pattern is dimensioned.\n'Extent': Uses the total angle to contain all "
-        "instances.\n'Spacing': Uses the angle between consecutive instances.");
+        "instances.\n'Spacing': Uses the angle between consecutive instances."
+    );
     Mode.setEnums(PolarPattern::ModeEnums);
-    ADD_PROPERTY_TYPE(Angle,
-                      (360.0),
-                      "PolarPattern",
-                      App::Prop_None,
-                      "The total angle of the pattern, measured from the first to the last "
-                      "instance. This is only used when the Mode is set to 'Extent'.");
+    ADD_PROPERTY_TYPE(
+        Angle,
+        (360.0),
+        "PolarPattern",
+        App::Prop_None,
+        "The total angle of the pattern, measured from the first to the last "
+        "instance. This is only used when the Mode is set to 'Extent'."
+    );
     Angle.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(Offset,
-                      (120.0),
-                      "PolarPattern",
-                      App::Prop_None,
-                      "The angular distance between each instance of the pattern. This is only "
-                      "used when the Mode is set to 'Spacing'.");
+    ADD_PROPERTY_TYPE(
+        Offset,
+        (120.0),
+        "PolarPattern",
+        App::Prop_None,
+        "The angular distance between each instance of the pattern. This is only "
+        "used when the Mode is set to 'Spacing'."
+    );
     Offset.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(Spacings,
-                      ({-1.0, -1.0, -1.0}),
-                      "PolarPattern",
-                      App::Prop_None,
-                      "A list of custom angular spacings between instances. If a value is -1, the "
-                      "global 'Offset' is used for that spacing. The list should have one less "
-                      "item than the number of occurrences.");
+    ADD_PROPERTY_TYPE(
+        Spacings,
+        ({-1.0, -1.0, -1.0}),
+        "PolarPattern",
+        App::Prop_None,
+        "A list of custom angular spacings between instances. If a value is -1, the "
+        "global 'Offset' is used for that spacing. The list should have one less "
+        "item than the number of occurrences."
+    );
     ADD_PROPERTY_TYPE(
         SpacingPattern,
         ({}),
@@ -105,13 +117,15 @@ PolarPattern::PolarPattern()
         "(Experimental and subject to change. To enable "
         "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
-        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
+    );
     ADD_PROPERTY_TYPE(
         Occurrences,
         (3),
         "PolarPattern",
         App::Prop_None,
-        "The total number of instances in the pattern, including the original feature.");
+        "The total number of instances in the pattern, including the original feature."
+    );
     Occurrences.setConstraints(&intOccurrences);
 
     setReadWriteStatusForMode(initialMode);
@@ -119,93 +133,106 @@ PolarPattern::PolarPattern()
 
 short PolarPattern::mustExecute() const
 {
-    if (Axis.isTouched() ||
-        Reversed.isTouched() ||
-        Mode.isTouched() ||
+    if (Axis.isTouched() || Reversed.isTouched() || Mode.isTouched() ||
         // Angle and Offset are mutually exclusive, only one could be updated at once
-        Angle.isTouched() || 
-        Offset.isTouched() ||
-        Spacings.isTouched() ||
-        SpacingPattern.isTouched() ||
-        Occurrences.isTouched())
+        Angle.isTouched() || Offset.isTouched() || Spacings.isTouched()
+        || SpacingPattern.isTouched() || Occurrences.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     int occurrences = Occurrences.getValue();
-    if (occurrences < 1)
+    if (occurrences < 1) {
         throw Base::ValueError("At least one occurrence required");
+    }
 
-    if (occurrences == 1)
+    if (occurrences == 1) {
         return {gp_Trsf()};
+    }
 
     bool reversed = Reversed.getValue();
 
     App::DocumentObject* refObject = Axis.getValue();
-    if (!refObject)
+    if (!refObject) {
         throw Base::ValueError("No axis reference specified");
+    }
     std::vector<std::string> subStrings = Axis.getSubValues();
-    if (subStrings.empty())
+    if (subStrings.empty()) {
         throw Base::ValueError("No axis reference specified");
+    }
 
     gp_Pnt axbase;
     gp_Dir axdir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
-        if (subStrings[0] == "H_Axis")
+        if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0] == "V_Axis")
+        }
+        else if (subStrings[0] == "V_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
-        else if (subStrings[0] == "N_Axis")
+        }
+        else if (subStrings[0] == "N_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+        }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
-            int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < refSketch->getAxisCount())
+            int AxId = std::atoi(subStrings[0].substr(4, 4000).c_str());
+            if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
+            }
         }
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->isDerivedFrom<PartDesign::Line>()) {
+    }
+    else if (refObject->isDerivedFrom<PartDesign::Line>()) {
         PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
         Base::Vector3d base = line->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = line->getDirection();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (refObject->isDerivedFrom<App::Line>()) {
+    }
+    else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
         Base::Vector3d base = line->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d d = line->getDirection();
         axdir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->isDerivedFrom<Part::Feature>()) {
-        if (subStrings[0].empty())
+    }
+    else if (refObject->isDerivedFrom<Part::Feature>()) {
+        if (subStrings[0].empty()) {
             throw Base::ValueError("No axis reference specified");
+        }
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
 
         if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
+            if (refEdge.IsNull()) {
                 throw Base::ValueError("Failed to extract axis edge");
+            }
             BRepAdaptor_Curve adapt(refEdge);
             if (adapt.GetType() == GeomAbs_Line) {
                 axbase = adapt.Line().Location();
                 axdir = adapt.Line().Direction();
-            } else if (adapt.GetType() == GeomAbs_Circle) {
+            }
+            else if (adapt.GetType() == GeomAbs_Circle) {
                 axbase = adapt.Circle().Location();
                 axdir = adapt.Circle().Axis().Direction();
-            } else {
+            }
+            else {
                 throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
             }
-         } else {
+        }
+        else {
             throw Base::TypeError("Axis reference must be an edge");
         }
-    } else {
+    }
+    else {
         throw Base::TypeError("Axis reference must be edge of a feature or datum line");
     }
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
@@ -214,21 +241,25 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
 
     gp_Ax2 axis(axbase, axdir);
 
-    if (reversed)
+    if (reversed) {
         axis.SetDirection(axis.Direction().Reversed());
+    }
 
     double angle;
 
     if (Mode.getValue() == (int)PolarPatternMode::Extent) {
         angle = Angle.getValue();
 
-        if (std::fabs(angle - 360.0) < Precision::Confusion())
-            angle /= occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
-        else
+        if (std::fabs(angle - 360.0) < Precision::Confusion()) {
+            angle /= occurrences;  // Because e.g. two occurrences in 360 degrees need to be 180
+                                   // degrees apart
+        }
+        else {
             angle /= occurrences - 1;
+        }
 
         angle = Base::toRadians(angle);
-        if (angle < Precision::Angular()){
+        if (angle < Precision::Angular()) {
             throw Base::ValueError("Pattern angle too small");
         }
     }
@@ -273,10 +304,15 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     return transformations;
 }
 
-void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+void PolarPattern::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 // transforms properties that had been changed
 {
-    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    // property Occurrences had the App::PropertyInteger and was changed to
+    // App::PropertyIntegerConstraint
     if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger OccurrencesProperty;
         // restore the PropertyInteger to be able to set its value
@@ -333,5 +369,4 @@ void PolarPattern::updateSpacings()
     Spacings.setValues(spacings);
 }
 
-}
-
+}  // namespace PartDesign

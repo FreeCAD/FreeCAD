@@ -53,7 +53,8 @@ protected:
                 {.name = "FontSize", .value = "12px"},
                 {.name = "BoxWidth", .value = "100px"},
             },
-            {.name = "Fixture Source"}));
+            {.name = "Fixture Source"}
+        ));
     }
 };
 

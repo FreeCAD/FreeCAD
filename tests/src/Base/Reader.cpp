@@ -5,8 +5,8 @@
 #include <QString>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)
-#pragma warning(disable : 4305)
+# pragma warning(disable : 4996)
+# pragma warning(disable : 4305)
 #endif
 
 #include "Base/Exception.h"
@@ -43,8 +43,7 @@ public:
     ReaderXML()
     {
         _tempDir = fs::temp_directory_path();
-        fs::path filename =
-            std::string("unit_test_Reader-") + random_string(4) + std::string(".xml");
+        fs::path filename = std::string("unit_test_Reader-") + random_string(4) + std::string(".xml");
         _tempFile = _tempDir / filename;
     }
     ~ReaderXML()
@@ -64,8 +63,8 @@ public:
 
     void givenDataAsXMLStream(const std::string& data)
     {
-        auto stringData =
-            R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data + "</document>";
+        auto stringData = R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data
+            + "</document>";
         std::istringstream stream(stringData);
         std::ofstream fileStream(_tempFile.string());
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
@@ -366,8 +365,7 @@ TEST_F(ReaderTest, readNextStartEndElement)
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node7");
-    EXPECT_EQ(xml.Reader()->getAttribute<std::string>("attr"),
-              std::string("const char* is faster :'("));
+    EXPECT_EQ(xml.Reader()->getAttribute<std::string>("attr"), std::string("const char* is faster :'("));
 
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
@@ -440,8 +438,7 @@ TEST_F(ReaderTest, validDefaults)
     bool value14 = xml.Reader()->getAttribute<bool>("missing", 1);
     bool value16 = xml.Reader()->getAttribute<bool>("missing", -10);
     bool value18 = xml.Reader()->getAttribute<bool>("missing", 10);
-    TimesIGoToBed value20 =
-        xml.Reader()->getAttribute<TimesIGoToBed>("missing", TimesIGoToBed::Late);
+    TimesIGoToBed value20 = xml.Reader()->getAttribute<TimesIGoToBed>("missing", TimesIGoToBed::Late);
 
     // Assert
     EXPECT_THROW({ xml.Reader()->getAttribute<const char*>("missing"); }, Base::XMLBaseException);

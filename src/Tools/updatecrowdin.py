@@ -141,6 +141,11 @@ locations = [
         "../Mod/Material/Gui/Resources/Material.qrc",
     ],
     [
+        "Measure",
+        "../Mod/Measure/Gui/Resources/translations",
+        "../Mod/Measure/Gui/Resources/Measure.qrc",
+    ],
+    [
         "Mesh",
         "../Mod/Mesh/Gui/Resources/translations",
         "../Mod/Mesh/Gui/Resources/Mesh.qrc",

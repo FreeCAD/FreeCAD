@@ -26,7 +26,7 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#include <xercesc/sax/SAXParseException.hpp>
+# include <xercesc/sax/SAXParseException.hpp>
 #endif
 #include <list>
 #include <sstream>
@@ -34,7 +34,7 @@
 #include <utility>
 
 #ifdef FC_OS_LINUX
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include "Parameter.h"
@@ -166,11 +166,13 @@ public:
     // NOLINTEND
 
 private:
-    void tryCall(ParameterGrpObserver* obs,
-                 ParameterGrp* Param,
-                 ParameterGrp::ParamType Type,
-                 const char* Name,
-                 const char* Value);
+    void tryCall(
+        ParameterGrpObserver* obs,
+        ParameterGrp* Param,
+        ParameterGrp::ParamType Type,
+        const char* Name,
+        const char* Value
+    );
 
 private:
     ParameterGrp::handle _cParamGrp;
@@ -223,7 +225,8 @@ void ParameterGrpPy::init_type()
         "For 'FCParamGroup' type, the observer will be notified in the following events.\n"
         "* Group creation: both 'name' and 'value' contain the name of the new group\n"
         "* Group removal: both 'name' and 'value' are empty\n"
-        "* Group rename: 'name' is the new name, and 'value' is the old name");
+        "* Group rename: 'name' is the new name, and 'value' is the old name"
+    );
     add_varargs_method("Detach", &ParameterGrpPy::detach, "Detach()");
     add_varargs_method("Notify", &ParameterGrpPy::notify, "Notify()");
     add_varargs_method("NotifyAll", &ParameterGrpPy::notifyAll, "NotifyAll()");
@@ -760,17 +763,21 @@ Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
     return Py::None();
 }
 
-void ParameterGrpPy::tryCall(ParameterGrpObserver* obs,
-                             ParameterGrp* Param,
-                             ParameterGrp::ParamType Type,
-                             const char* Name,
-                             const char* Value)
+void ParameterGrpPy::tryCall(
+    ParameterGrpObserver* obs,
+    ParameterGrp* Param,
+    ParameterGrp::ParamType Type,
+    const char* Name,
+    const char* Value
+)
 {
     Base::PyGILStateLocker lock;
-    Py::TupleN args(Py::asObject(new ParameterGrpPy(Param)),
-                    Py::String(ParameterGrp::TypeName(Type)),
-                    Py::String(Name ? Name : ""),
-                    Py::String(Value ? Value : ""));
+    Py::TupleN args(
+        Py::asObject(new ParameterGrpPy(Param)),
+        Py::String(ParameterGrp::TypeName(Type)),
+        Py::String(Name ? Name : ""),
+        Py::String(Value ? Value : "")
+    );
     try {
         Py::Callable(obs->callable).apply(args);
     }
@@ -809,20 +816,20 @@ Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
 
     auto obs = new ParameterGrpObserver(o, attr, _cParamGrp);
     ParameterManager* man = _cParamGrp->Manager();
-    obs->conn = man->signalParamChanged.connect([obs, this](ParameterGrp* Param,
-                                                            ParameterGrp::ParamType Type,
-                                                            const char* Name,
-                                                            const char* Value) {
-        if (!Param) {
-            return;
-        }
-        for (auto p = Param; p; p = p->Parent()) {
-            if (p == obs->_target) {
-                tryCall(obs, Param, Type, Name, Value);
-                break;
+    obs->conn = man->signalParamChanged.connect(
+        [obs,
+         this](ParameterGrp* Param, ParameterGrp::ParamType Type, const char* Name, const char* Value) {
+            if (!Param) {
+                return;
+            }
+            for (auto p = Param; p; p = p->Parent()) {
+                if (p == obs->_target) {
+                    tryCall(obs, Param, Type, Name, Value);
+                    break;
+                }
             }
         }
-    });
+    );
 
     _observers.push_back(obs);
     return Py::None();

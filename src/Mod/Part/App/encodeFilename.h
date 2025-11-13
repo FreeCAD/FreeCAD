@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Sebastian Hoogen <github[at]sebastianhoogen.de>    *
  *                                                                         *
@@ -31,6 +33,6 @@ inline std::string encodeFilename(std::string fn)
     return fn;
 }
 
-} //namespace Part
+}  // namespace Part
 
-#endif // PART_ENCODEFILENAME_H
+#endif  // PART_ENCODEFILENAME_H

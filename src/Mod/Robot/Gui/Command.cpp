@@ -65,9 +65,11 @@ void CmdRobotSetHomePos::activated(int)
         pcRobotObject = static_cast<Robot::RobotObject*>(filter.Result[0][0].getObject());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot to set home position"));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot to set home position")
+        );
         return;
     }
 
@@ -76,18 +78,20 @@ void CmdRobotSetHomePos::activated(int)
 
     const char* n = FeatName.c_str();
     openCommand("Set home");
-    doCommand(Doc,
-              "App.activeDocument().%s.Home = "
-              "[App.activeDocument().%s.Axis1,App.activeDocument().%s.Axis2,App.activeDocument().%"
-              "s.Axis3,App.activeDocument().%s.Axis4,App.activeDocument().%s.Axis5,App."
-              "activeDocument().%s.Axis6]",
-              n,
-              n,
-              n,
-              n,
-              n,
-              n,
-              n);
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.Home = "
+        "[App.activeDocument().%s.Axis1,App.activeDocument().%s.Axis2,App.activeDocument().%"
+        "s.Axis3,App.activeDocument().%s.Axis4,App.activeDocument().%s.Axis5,App."
+        "activeDocument().%s.Axis6]",
+        n,
+        n,
+        n,
+        n,
+        n,
+        n,
+        n
+    );
     updateActive();
     commitCommand();
 }
@@ -124,9 +128,11 @@ void CmdRobotRestoreHomePos::activated(int)
         pcRobotObject = static_cast<Robot::RobotObject*>(filter.Result[0][0].getObject());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot"));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot")
+        );
         return;
     }
 
@@ -175,17 +181,19 @@ void CmdRobotConstraintAxle::activated(int)
     std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr500_1.csv";
 
     openCommand("Place robot");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")",
-              FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              RobotPath.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              KinematicPath.c_str());
+    doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        RobotPath.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
+        FeatName.c_str(),
+        KinematicPath.c_str()
+    );
     doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
@@ -230,9 +238,11 @@ void CmdRobotSimulate::activated(int)
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(filter.Result[1][0].getObject());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot and one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot and one Trajectory object.")
+        );
         return;
     }
 
@@ -240,7 +250,8 @@ void CmdRobotSimulate::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             QObject::tr("Trajectory not valid"),
-            QObject::tr("You need at least two waypoints in a trajectory to simulate."));
+            QObject::tr("You need at least two waypoints in a trajectory to simulate.")
+        );
         return;
     }
 

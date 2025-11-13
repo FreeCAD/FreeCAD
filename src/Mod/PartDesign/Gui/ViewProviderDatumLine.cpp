@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCoordinate3.h>
 
 
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
@@ -33,26 +33,29 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine,PartDesignGui::ViewProviderDatum)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine, PartDesignGui::ViewProviderDatum)
 
-ViewProviderDatumLine::ViewProviderDatumLine() {
+ViewProviderDatumLine::ViewProviderDatumLine()
+{
     sPixmap = "PartDesign_Line.svg";
 
     pCoords = new SoCoordinate3();
-    pCoords->ref ();
+    pCoords->ref();
 }
 
-ViewProviderDatumLine::~ViewProviderDatumLine() {
-    pCoords->unref ();
+ViewProviderDatumLine::~ViewProviderDatumLine()
+{
+    pCoords->unref();
 }
 
-void ViewProviderDatumLine::attach ( App::DocumentObject *obj ) {
-    ViewProviderDatum::attach ( obj );
+void ViewProviderDatumLine::attach(App::DocumentObject* obj)
+{
+    ViewProviderDatum::attach(obj);
 
     PartGui::SoBrepEdgeSet* lineSet;
 
-    ViewProviderDatum::setExtents ( defaultBoundBox () );
-    getShapeRoot ()->addChild(pCoords);
+    ViewProviderDatum::setExtents(defaultBoundBox());
+    getShapeRoot()->addChild(pCoords);
 
     lineSet = new PartGui::SoBrepEdgeSet();
     lineSet->coordIndex.setNum(3);
@@ -60,51 +63,53 @@ void ViewProviderDatumLine::attach ( App::DocumentObject *obj ) {
     lineSet->coordIndex.set1Value(1, 1);
     lineSet->coordIndex.set1Value(2, SO_END_LINE_INDEX);
 
-    getShapeRoot ()->addChild(lineSet);
+    getShapeRoot()->addChild(lineSet);
 }
 
 void ViewProviderDatumLine::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    if (strcmp(prop->getName(),"Placement") == 0) {
-        updateExtents ();
+    if (strcmp(prop->getName(), "Placement") == 0) {
+        updateExtents();
     }
-    else if (strcmp(prop->getName(),"Length") == 0) {
+    else if (strcmp(prop->getName(), "Length") == 0) {
         PartDesign::Line* pcDatum = this->getObject<PartDesign::Line>();
-        if (pcDatum->ResizeMode.getValue() != 0)
+        if (pcDatum->ResizeMode.getValue() != 0) {
             setExtents(pcDatum->Length.getValue());
+        }
     }
 
     ViewProviderDatum::updateData(prop);
 }
 
 
-void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
+void ViewProviderDatumLine::setExtents(Base::BoundBox3d bbox)
+{
     PartDesign::Line* pcDatum = this->getObject<PartDesign::Line>();
     // set manual size
     if (pcDatum->ResizeMode.getValue() != 0) {
         setExtents(pcDatum->Length.getValue());
         return;
     }
-    Base::Placement plm = pcDatum->Placement.getValue ().inverse ();
+    Base::Placement plm = pcDatum->Placement.getValue().inverse();
 
     // Transform the box to the line's coordinates, the result line will be larger than the bbox
-    bbox = bbox.Transformed ( plm.toMatrix() );
+    bbox = bbox.Transformed(plm.toMatrix());
     // Add origin of the line to the box if it's not
-    bbox.Add ( Base::Vector3d (0, 0, 0) );
+    bbox.Add(Base::Vector3d(0, 0, 0));
 
-    double margin = bbox.LengthZ () * marginFactor ();
+    double margin = bbox.LengthZ() * marginFactor();
 
     // Display the line
-    pCoords->point.setNum (2);
-    pCoords->point.set1Value(0, 0, 0, bbox.MaxZ + margin );
-    pCoords->point.set1Value(1, 0, 0, bbox.MinZ - margin );
+    pCoords->point.setNum(2);
+    pCoords->point.set1Value(0, 0, 0, bbox.MaxZ + margin);
+    pCoords->point.set1Value(1, 0, 0, bbox.MinZ - margin);
 }
 
 void ViewProviderDatumLine::setExtents(double l)
 {
     // Change the coordinates of the line
-    pCoords->point.setNum (2);
-    pCoords->point.set1Value(0, 0, 0, l/2 );
-    pCoords->point.set1Value(1, 0, 0, -l/2 );
+    pCoords->point.setNum(2);
+    pCoords->point.set1Value(0, 0, 0, l / 2);
+    pCoords->point.set1Value(1, 0, 0, -l / 2);
 }

@@ -7,7 +7,7 @@ from typing import Final, overload
     PythonName="Part.ShapeFix.FixSmallFace",
     Include="ShapeFix_FixSmallFace.hxx",
     FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True
+    Constructor=True,
 )
 class ShapeFix_FixSmallFace(ShapeFix_Root):
     """

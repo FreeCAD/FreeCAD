@@ -4,7 +4,6 @@ from App.ExtensionContainer import ExtensionContainer
 from typing import Any, Final, List, Optional
 import enum
 
-
 class ViewProvider(ExtensionContainer):
     """
     This is the ViewProvider base class
@@ -16,7 +15,6 @@ class ViewProvider(ExtensionContainer):
     class ToggleVisibilityMode(enum.Enum):
         CanToggleVisibility = "CanToggleVisibility"
         NoToggleVisibility = "NoToggleVisibility"
-
 
     def addProperty(
         self,
@@ -120,12 +118,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def canDropObject(
-        self,
-        *,
-        obj: Any = None,
-        owner: Any = None,
-        subname: str,
-        elem: Optional[List[str]] = None
+        self, *, obj: Any = None, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> bool:
         """
         canDropObject(obj=None, owner=None, subname, elem=None) -> bool
@@ -146,12 +139,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def dropObject(
-        self,
-        *,
-        obj: Any,
-        owner: Any = None,
-        subname: str,
-        elem: Optional[List[str]] = None
+        self, *, obj: Any, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> str:
         """
         dropObject(obj, owner=None, subname, elem=None) -> str
@@ -350,7 +338,6 @@ class ViewProvider(ExtensionContainer):
             Default to active view. Optional.
         """
         ...
-
     Annotation: Any = ...
     """A pivy Separator to add a custom scenegraph to this ViewProvider."""
 

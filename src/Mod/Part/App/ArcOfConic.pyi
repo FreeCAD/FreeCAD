@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from TrimmedCurve import TrimmedCurve
 from typing import overload
 
-
 @export(
     Father="TrimmedCurvePy",
     PythonName="Part.ArcOfConic",

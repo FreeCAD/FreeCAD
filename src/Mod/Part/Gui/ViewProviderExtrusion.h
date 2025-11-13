@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,9 +31,10 @@
 #include "ViewProvider.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderExtrusion : public ViewProviderPart
+class PartGuiExport ViewProviderExtrusion: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderExtrusion);
 
@@ -45,7 +48,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDEREXTRUSION_H
+#endif  // PARTGUI_VIEWPROVIDEREXTRUSION_H

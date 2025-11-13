@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) YEAR YOUR NAME <Your e-mail address>                    *
  *                                                                         *
@@ -28,9 +30,9 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-#define _TEMPLATE_AppExport __declspec(dllexport)
+# define _TEMPLATE_AppExport __declspec(dllexport)
 #else  // for Linux
-#define _TEMPLATE_AppExport
+# define _TEMPLATE_AppExport
 #endif
 
 // standard

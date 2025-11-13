@@ -526,7 +526,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <location filename="../../../JointObject.py" line="249"/>
       <location filename="../../../JointObject.py" line="558"/>
       <source>This is the attachment offset of the first connector of the joint</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint</translation>
+      <translation>Este es el desplazamiento de adjunción del primer conector de la articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="271"/>
@@ -542,7 +542,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <location filename="../../../JointObject.py" line="295"/>
       <location filename="../../../JointObject.py" line="569"/>
       <source>This is the attachment offset of the second connector of the joint</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint</translation>
+      <translation>Este es el desplazamiento de adjunción del segundo conector de la articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="317"/>
@@ -625,30 +625,30 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>El objeto a fijar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="354"/>
+      <location filename="../../../CommandCreateView.py" line="391"/>
       <source>The objects moved by the move</source>
       <translation>Los objetos movidos por el movimiento</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="366"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Este es el rango del movimiento. La posición final es el resultado de la posición inicial * esta posición.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="375"/>
       <source>The type of the move</source>
       <translation>El tipo de movimiento</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="111"/>
       <source>Simulation start time.</source>
-      <translation>Inicio de la simulación (Tiempo)</translation>
+      <translation>Tiempo de inicio de la simulación.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="123"/>
       <source>Simulation end time.</source>
-      <translation>Fin de la simulación (Tiempo)</translation>
+      <translation>Tiempo de fin de la simulación.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="135"/>
@@ -663,7 +663,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="159"/>
       <source>Frames Per Second.</source>
-      <translation>Cuadros por Segundo</translation>
+      <translation>Fotogramas por segundo.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="211"/>
@@ -741,12 +741,12 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation type="unfinished">Sets the attachment offset of the joint’s first marker (coordinate system)</translation>
+      <translation>Establece el desplazamiento de adjunción del primer marcador de la articulación (sistema de coordenadas)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
-      <translation type="unfinished">Sets the attachment offset of the second marker (coordinate system) of the joint</translation>
+      <translation>Establece el desplazamiento de adjunción del segundo marcador (sistema de coordenadas) de la articulación</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
@@ -893,53 +893,53 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>¿Quiere mover el objeto y eliminar las articulaciones asociadas?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
       <source>Move part</source>
       <translation>Mover parte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
       <source>Empty Assembly</source>
       <translation type="unfinished">Empty Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
       <source>Redundant joints:</source>
       <translation type="unfinished">Redundant joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
       <source>Partially redundant:</source>
       <translation>Parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -947,7 +947,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>
@@ -1082,7 +1082,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
       <source>Joints</source>
       <translation>Articulaciones</translation>
     </message>
@@ -1468,27 +1468,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation type="unfinished">Solver messages</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
       <source>Click to select these conflicting joints.</source>
       <translation type="unfinished">Click to select these conflicting joints.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these redundant joints.</source>
       <translation type="unfinished">Click to select these redundant joints.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
       <source>Click to select these malformed joints.</source>
       <translation type="unfinished">Click to select these malformed joints.</translation>
     </message>

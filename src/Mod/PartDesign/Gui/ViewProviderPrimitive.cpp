@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-# include <QMenu>
-# include <QMessageBox>
+#include <QMenu>
+#include <QMessageBox>
 
 
 #include <Gui/BitmapFactory.h>
@@ -38,7 +38,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive, PartDesignGui::ViewProvider)
 
 ViewProviderPrimitive::ViewProviderPrimitive() = default;
 
@@ -55,42 +55,47 @@ TaskDlgFeatureParameters* ViewProviderPrimitive::getEditDialog()
     return new TaskDlgPrimitiveParameters(this);
 }
 
-QIcon ViewProviderPrimitive::getIcon() const {
+QIcon ViewProviderPrimitive::getIcon() const
+{
 
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::FeaturePrimitive>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
         str += QStringLiteral("Additive");
-    else
+    }
+    else {
         str += QStringLiteral("Subtractive");
+    }
 
-    switch(prim->getPrimitiveType()) {
-    case PartDesign::FeaturePrimitive::Box:
-        str += QStringLiteral("Box");
-        break;
-    case PartDesign::FeaturePrimitive::Cylinder:
-        str += QStringLiteral("Cylinder");
-        break;
-    case PartDesign::FeaturePrimitive::Sphere:
-        str += QStringLiteral("Sphere");
-        break;
-    case PartDesign::FeaturePrimitive::Cone:
-        str += QStringLiteral("Cone");
-        break;
-    case PartDesign::FeaturePrimitive::Ellipsoid:
-        str += QStringLiteral("Ellipsoid");
-        break;
-    case PartDesign::FeaturePrimitive::Torus:
-        str += QStringLiteral("Torus");
-        break;
-    case PartDesign::FeaturePrimitive::Prism:
-        str += QStringLiteral("Prism");
-        break;
-    case PartDesign::FeaturePrimitive::Wedge:
-        str += QStringLiteral("Wedge");
-        break;
+    switch (prim->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            str += QStringLiteral("Box");
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder:
+            str += QStringLiteral("Cylinder");
+            break;
+        case PartDesign::FeaturePrimitive::Sphere:
+            str += QStringLiteral("Sphere");
+            break;
+        case PartDesign::FeaturePrimitive::Cone:
+            str += QStringLiteral("Cone");
+            break;
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            str += QStringLiteral("Ellipsoid");
+            break;
+        case PartDesign::FeaturePrimitive::Torus:
+            str += QStringLiteral("Torus");
+            break;
+        case PartDesign::FeaturePrimitive::Prism:
+            str += QStringLiteral("Prism");
+            break;
+        case PartDesign::FeaturePrimitive::Wedge:
+            str += QStringLiteral("Wedge");
+            break;
     }
 
     str += QStringLiteral(".svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+    );
 }

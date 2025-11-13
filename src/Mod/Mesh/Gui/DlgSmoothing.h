@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,7 +31,7 @@
 #include <Gui/TaskView/TaskView.h>
 
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 class QButtonGroup;

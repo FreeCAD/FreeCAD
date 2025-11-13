@@ -66,7 +66,6 @@ public:
                 const QStyleOptionGraphicsItem * option,
                 QWidget * widget = nullptr ) override;
     QRectF boundingRect() const override;
-    QRectF frameRect() const;
 
     void drawBorder() override;
     void updateView(bool update = false) override;

@@ -78,7 +78,7 @@ FreeCADwiki at https://wiki.freecad.org</source>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Les pages de la documentation seront extraites à partir d'une conversion automatique avec Markdown du wiki de FreeCAD, hébergé sur le compte GitHub de FreeCAD. Ceci peut être personnalisé avec une feuille de style et peut être plus agréable que l'option du wiki. Les modules Python "Markdown" ou "Pandoc" doivent être installés pour des résultats optimaux.</translation>
+      <translation>Les pages de documentation seront récupérées à partir d'une conversion automatique de Markdown du wiki FreeCAD, hébergé sur le compte GitHub de FreeCAD. Elles peuvent être personnalisées à l'aide d'une feuille de style ci-dessous et peuvent être plus agréables que l'option wiki. Le module Python « Markdown » ou « Pandoc » doit être installé pour obtenir des résultats optimaux.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
@@ -149,29 +149,29 @@ Cela ne s'applique que si Markdown est sélectionné ci-dessus.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="73"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Le contenu de cette page n'a pas pu être récupéré.
 Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="77"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>L'emplacement des fichiers d'aide n'a pas pu être déterminé.
 Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="81"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Le module QtWebEngineWidgets de PySide n'est pas disponible. Le rendu de l'aide est effectué avec le navigateur du système.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="85"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Le moteur de rendu Markdown n'est pas installé sur votre système, cette page d'aide est donc rendue telle quelle. Installer les modules Python "Markdown" ou "Pandoc" pour améliorer le rendu de cette page.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="117"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Aide</translation>
     </message>
@@ -179,7 +179,7 @@ Vérifier les paramètres dans le menu Édition → Préférences → Général 
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="433"/>
+      <location filename="../../Help.py" line="435"/>
       <source>General</source>
       <translation>Général</translation>
     </message>

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <sstream>
+#include <sstream>
 
 
 #include <App/DocumentObjectPy.h>
@@ -44,31 +43,37 @@ std::string ViewProviderDocumentObjectPy::representation() const
     return str.str();
 }
 
-PyObject* ViewProviderDocumentObjectPy::update(PyObject *args)
+PyObject* ViewProviderDocumentObjectPy::update(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
-    PY_TRY {
+    }
+    PY_TRY
+    {
         getViewProviderDocumentObjectPtr()->updateView();
         Py_Return;
-    } PY_CATCH;
+    }
+    PY_CATCH;
 }
 
 Py::Object ViewProviderDocumentObjectPy::getObject() const
 {
     App::DocumentObject* obj = getViewProviderDocumentObjectPtr()->getObject();
-    return Py::Object(obj->getPyObject(), true); // do not inc'ref twice
+    return Py::Object(obj->getPyObject(), true);  // do not inc'ref twice
 }
 
 void ViewProviderDocumentObjectPy::setObject(Py::Object pyobj)
 {
-    if(!PyObject_TypeCheck(*pyobj,&App::DocumentObjectPy::Type))
+    if (!PyObject_TypeCheck(*pyobj, &App::DocumentObjectPy::Type)) {
         throw Py::TypeError("Expect document object");
+    }
     App::DocumentObject* obj = getViewProviderDocumentObjectPtr()->getObject();
-    if(obj)
+    if (obj) {
         throw Py::RuntimeError("View object already attached");
+    }
     getViewProviderDocumentObjectPtr()->attach(
-            static_cast<App::DocumentObjectPy*>(*pyobj)->getDocumentObjectPtr());
+        static_cast<App::DocumentObjectPy*>(*pyobj)->getDocumentObjectPtr()
+    );
 }
 
 Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const
@@ -84,10 +89,10 @@ void ViewProviderDocumentObjectPy::setForceUpdate(Py::Boolean arg)
 Py::Object ViewProviderDocumentObjectPy::getDocument() const
 {
     Document* doc = getViewProviderDocumentObjectPtr()->getDocument();
-    return Py::asObject(doc->getPyObject()); // do not inc'ref twice
+    return Py::asObject(doc->getPyObject());  // do not inc'ref twice
 }
 
-PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

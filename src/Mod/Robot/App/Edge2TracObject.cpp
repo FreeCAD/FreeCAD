@@ -44,16 +44,8 @@ PROPERTY_SOURCE(Robot::Edge2TracObject, Robot::TrajectoryObject)
 Edge2TracObject::Edge2TracObject()
 {
 
-    ADD_PROPERTY_TYPE(Source,
-                      (nullptr),
-                      "Edge2Trac",
-                      Prop_None,
-                      "Edges to generate the Trajectory");
-    ADD_PROPERTY_TYPE(SegValue,
-                      (0.5),
-                      "Edge2Trac",
-                      Prop_None,
-                      "Max deviation from original geometry");
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Edge2Trac", Prop_None, "Edges to generate the Trajectory");
+    ADD_PROPERTY_TYPE(SegValue, (0.5), "Edge2Trac", Prop_None, "Max deviation from original geometry");
     ADD_PROPERTY_TYPE(UseRotation, (0), "Edge2Trac", Prop_None, "use orientation of the edge");
     NbrOfEdges = 0;
     NbrOfCluster = 0;
@@ -137,8 +129,7 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
                         P2 = tmpP;
                     }
                     if (first) {
-                        Waypoint wp("Pt",
-                                    Base::Placement(Base::Vector3d(P1.X(), P1.Y(), P1.Z()), R1));
+                        Waypoint wp("Pt", Base::Placement(Base::Vector3d(P1.X(), P1.Y(), P1.Z()), R1));
                         trac.addWaypoint(wp);
                         first = false;
                     }
@@ -167,8 +158,10 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
                     else {
                         beg += stp;
                     }
-                    Base::SequencerLauncher seq("Create waypoints",
-                                                static_cast<size_t>((end - beg) / stp));
+                    Base::SequencerLauncher seq(
+                        "Create waypoints",
+                        static_cast<size_t>((end - beg) / stp)
+                    );
                     if (reversed) {
                         for (; beg > end; beg += stp) {
                             gp_Pnt P = adapt.Value(beg);
@@ -179,8 +172,7 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
                                 // R1 = ;
                             }
 
-                            Waypoint wp("Pt",
-                                        Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
+                            Waypoint wp("Pt", Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
                             trac.addWaypoint(wp);
                             seq.next();
                         }
@@ -194,8 +186,7 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
                                 // here get the orientation of the start and end point...
                                 // R1 = ;
                             }
-                            Waypoint wp("Pt",
-                                        Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
+                            Waypoint wp("Pt", Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
                             trac.addWaypoint(wp);
                             seq.next();
                         }
@@ -225,8 +216,7 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
                                 // here get the orientation of the start and end point...
                                 // R1 = ;
                             }
-                            Waypoint wp("Pt",
-                                        Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
+                            Waypoint wp("Pt", Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
                             trac.addWaypoint(wp);
                         }
                     }
@@ -246,8 +236,7 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
                                 // here get the orientation of the start and end point...
                                 // R1 = ;
                             }
-                            Waypoint wp("Pt",
-                                        Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
+                            Waypoint wp("Pt", Base::Placement(Base::Vector3d(P.X(), P.Y(), P.Z()), R1));
                             trac.addWaypoint(wp);
                         }
                     }

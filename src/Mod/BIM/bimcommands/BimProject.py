@@ -35,7 +35,7 @@ class BIM_Project:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Project",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Project", "Project"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Project", "IFC Project"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Project", "Creates an empty NativeIFC project"),
         }
 

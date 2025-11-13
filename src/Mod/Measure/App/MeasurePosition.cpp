@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -35,20 +37,18 @@ PROPERTY_SOURCE(Measure::MeasurePosition, Measure::MeasureBase)
 
 MeasurePosition::MeasurePosition()
 {
-    ADD_PROPERTY_TYPE(Element,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Element to get the position from");
+    ADD_PROPERTY_TYPE(Element, (nullptr), "Measurement", App::Prop_None, "Element to get the position from");
     Element.setScope(App::LinkScope::Global);
     Element.setAllowExternal(true);
 
 
-    ADD_PROPERTY_TYPE(Position,
-                      (0.0, 0.0, 0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "The absolute position");
+    ADD_PROPERTY_TYPE(
+        Position,
+        (0.0, 0.0, 0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "The absolute position"
+    );
 }
 
 MeasurePosition::~MeasurePosition() = default;
@@ -135,10 +135,8 @@ QString MeasurePosition::getResultString()
     int precision = 2;
     QString text;
 
-    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit
-                       << Qt::endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit
-                       << Qt::endl
+    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
+                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
                        << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
     return text;
 }

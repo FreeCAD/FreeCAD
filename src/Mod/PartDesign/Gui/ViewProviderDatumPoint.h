@@ -27,9 +27,10 @@
 
 #include "ViewProviderDatum.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderDatumPoint : public PartDesignGui::ViewProviderDatum
+class PartDesignGuiExport ViewProviderDatumPoint: public PartDesignGui::ViewProviderDatum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDatumPoint);
 
@@ -38,7 +39,7 @@ public:
     ViewProviderDatumPoint();
     ~ViewProviderDatumPoint() override;
 
-    void attach ( App::DocumentObject *obj ) override;
+    void attach(App::DocumentObject* obj) override;
 
     // Note: don't overload setExtents () here because point doesn't really depends on it
 
@@ -46,7 +47,7 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDatumPoint_H
+#endif  // PARTGUI_ViewProviderDatumPoint_H

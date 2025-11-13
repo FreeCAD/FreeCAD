@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -29,9 +31,10 @@
 #include "ViewProvider.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderScale : public ViewProviderPart
+class PartGuiExport ViewProviderScale: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderScale);
 
@@ -45,7 +48,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERSCALE_H
+#endif  // PARTGUI_VIEWPROVIDERSCALE_H

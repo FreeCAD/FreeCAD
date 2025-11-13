@@ -130,12 +130,12 @@ public:
 
             std::list<T*> result(source.size());
 
-            std::transform(source.begin(),
-                           source.end(),
-                           result.begin(),
-                           [](const ServiceDescriptor& descriptor) {
-                               return descriptor.get<T>();
-                           });
+            std::transform(
+                source.begin(),
+                source.end(),
+                result.begin(),
+                [](const ServiceDescriptor& descriptor) { return descriptor.get<T>(); }
+            );
 
             return result;
         }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -34,19 +36,17 @@ PROPERTY_SOURCE(Measure::MeasureArea, Measure::MeasureBase)
 
 MeasureArea::MeasureArea()
 {
-    ADD_PROPERTY_TYPE(Elements,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Element to get the area from");
+    ADD_PROPERTY_TYPE(Elements, (nullptr), "Measurement", App::Prop_None, "Element to get the area from");
     Elements.setScope(App::LinkScope::Global);
     Elements.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Area,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Area of element");
+    ADD_PROPERTY_TYPE(
+        Area,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Area of element"
+    );
 }
 
 MeasureArea::~MeasureArea() = default;

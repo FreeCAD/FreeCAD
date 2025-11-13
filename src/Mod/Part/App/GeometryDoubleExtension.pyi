@@ -1,7 +1,6 @@
 from Base.Metadata import export
 from GeometryExtension import GeometryExtension
 
-
 @export(
     PythonName="Part.GeometryDoubleExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",

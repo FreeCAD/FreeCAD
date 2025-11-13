@@ -130,13 +130,18 @@ class BIM_ProjectManager:
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
-                from nativeifc import ifc_tools
-
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
+            levels = []
+            if self.building and self.project:
+                from nativeifc import ifc_tools
+
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
-                if levels:
-                    self.form.countLevels.setValue(len(levels))
+                levels = list(filter(None, [ifc_tools.get_object(l) for l in levels]))
+            if not levels:
+                levels = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building Storey"]
+            if levels:
+                self.form.countLevels.setValue(len(levels))
 
         # show dialog
         self.form.show()
@@ -200,13 +205,14 @@ class BIM_ProjectManager:
             elif self.form.radioNative3.isChecked():
                 self.project = ifc_tools.convert_document(doc, silent=True)
 
-        # human
+        # Human
         human = None
         if self.form.addHumanFigure.isChecked():
-            humanshape = Part.Shape()
-            humanshape.importBrep(":/geometry/HumanFigure.brep")
+            from draftguitools import gui_trackers
+
+            pts = gui_trackers.gridTracker.get_human_figure(None)
             human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-            human.Shape = humanshape
+            human.Shape = Part.makePolygon(pts)
             human.Placement.move(FreeCAD.Vector(500, 500, 0))
 
         # Site creation or edition

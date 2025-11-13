@@ -89,7 +89,8 @@ TEST_F(VarSet, addProperty)
 
     // Act
     auto prop = dynamic_cast<App::PropertyInteger*>(
-        varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+        varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables")
+    );
     prop->setValue(VALUE);
 
     // Assert

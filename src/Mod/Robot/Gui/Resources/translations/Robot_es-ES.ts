@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="240"/>
       <source>Adds a tool shape to the robot</source>
-      <translation type="unfinished">Adds a tool shape to the robot</translation>
+      <translation>Añade una forma de herramienta al robot</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>Colocar robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <source>Places a robot in the scene</source>
-      <translation type="unfinished">Places a robot in the scene</translation>
+      <translation>Coloca un robot en la escena</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="55"/>
       <source>Creates a new empty trajectory</source>
-      <translation type="unfinished">Creates a new empty trajectory</translation>
+      <translation>Crea una nueva trayectoria vacía</translation>
     </message>
   </context>
   <context>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="88"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>Insertar en trayectoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="89"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="157"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>Insertar en trayectoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="158"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set Default Values</source>
-      <translation type="unfinished">Set Default Values</translation>
+      <translation>Establecer valores por defecto</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -364,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -390,8 +390,8 @@
     <message>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccione un robot y un objeto trayectoria.</translation>
     </message>
@@ -568,7 +568,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
       <source>Edges: 0</source>
-      <translation>Bordes: 0</translation>
+      <translation>Aristas: 0</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="61"/>
@@ -879,12 +879,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
       <source>Acceleration</source>
-      <translation type="unfinished">Acceleration</translation>
+      <translation>Aceleración</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
       <source>Do not change continuous mode</source>
-      <translation type="unfinished">Do not change continuous mode</translation>
+      <translation>No cambiar el modo continuo</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
@@ -899,27 +899,27 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
       <source>Position and orientation</source>
-      <translation type="unfinished">Position and orientation</translation>
+      <translation>Posición y orientación</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Do not change position &amp; orientation</source>
-      <translation type="unfinished">Do not change position &amp; orientation</translation>
+      <translation>No cambiar posición y orientación</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
       <source>Use orientation</source>
-      <translation type="unfinished">Use orientation</translation>
+      <translation>Usar orientación</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
       <source>Add position</source>
-      <translation type="unfinished">Add position</translation>
+      <translation>Añadir posición</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
       <source>Add orientation</source>
-      <translation type="unfinished">Add orientation</translation>
+      <translation>Añadir orientación</translation>
     </message>
   </context>
   <context>
@@ -937,7 +937,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Export Trajectory</source>
-      <translation type="unfinished">Export Trajectory</translation>
+      <translation>Exportar trayectoria</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>

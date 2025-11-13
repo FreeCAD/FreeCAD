@@ -21,11 +21,11 @@
  ******************************************************************************/
 
 
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
 
 
 #include <App/Datums.h>
@@ -38,14 +38,21 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 
 Mirrored::Mirrored()
 {
-    ADD_PROPERTY_TYPE(MirrorPlane,(nullptr),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
+    ADD_PROPERTY_TYPE(
+        MirrorPlane,
+        (nullptr),
+        "Mirrored",
+        (App::PropertyType)(App::Prop_None),
+        "Mirror plane"
+    );
 }
 
 short Mirrored::mustExecute() const
@@ -77,11 +84,17 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
                 axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
             }
             else if (subStrings[0].compare(0, 4, "Axis") == 0) {
-                int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
+                int AxId = std::atoi(subStrings[0].substr(4, 4000).c_str());
                 if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                     axis = refSketch->getAxis(AxId);
                     axis.setBase(axis.getBase() + 0.5 * axis.getDirection());
-                    axis.setDirection(Base::Vector3d(-axis.getDirection().y, axis.getDirection().x, axis.getDirection().z));
+                    axis.setDirection(
+                        Base::Vector3d(
+                            -axis.getDirection().y,
+                            axis.getDirection().x,
+                            axis.getDirection().z
+                        )
+                    );
                 }
                 else {
                     throw Base::ValueError("No valid axis specified");
@@ -179,7 +192,9 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         }
     }
 
-    throw Base::ValueError("Mirror plane reference must be a sketch axis, a face of a feature or a datum plane");
+    throw Base::ValueError(
+        "Mirror plane reference must be a sketch axis, a face of a feature or a datum plane"
+    );
 }
 
 std::list<gp_Trsf> Mirrored::createTransformations(gp_Pnt& axbase, gp_Dir& axdir) const
@@ -192,10 +207,10 @@ std::list<gp_Trsf> Mirrored::createTransformations(gp_Pnt& axbase, gp_Dir& axdir
 
     std::list<gp_Trsf> transformations;
     gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
+    transformations.push_back(trans);  // identity transformation
     trans.SetMirror(mirrorAxis);
-    transformations.push_back(trans); // mirrored transformation
+    transformations.push_back(trans);  // mirrored transformation
     return transformations;
 }
 
-}
+}  // namespace PartDesign

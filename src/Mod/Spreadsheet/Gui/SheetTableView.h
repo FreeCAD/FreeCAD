@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -76,9 +78,7 @@ public Q_SLOTS:
     void copySelection();
     void cutSelection();
     void pasteClipboard();
-    void finishEditWithMove(int keyPressed,
-                            Qt::KeyboardModifiers modifiers,
-                            bool handleTabMotion = false);
+    void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
     void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
@@ -100,8 +100,7 @@ protected:
     bool event(QEvent* event) override;
     void closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint) override;
     void mousePressEvent(QMouseEvent* event) override;
-    void selectionChanged(const QItemSelection& selected,
-                          const QItemSelection& deselected) override;
+    void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected) override;
 
     void contextMenuEvent(QContextMenuEvent* e) override;
 

@@ -284,12 +284,10 @@ private:
 };
 
 // PyCXX wrapper classes Py::Matrix, Py::Rotation, Py::Placement, ...
-using BoundingBox =
-    GeometryT<Base::BoundBox3d, Base::BoundBoxPy, &Base::BoundBoxPy::getBoundBoxPtr>;
+using BoundingBox = GeometryT<Base::BoundBox3d, Base::BoundBoxPy, &Base::BoundBoxPy::getBoundBoxPtr>;
 using Matrix = GeometryT<Base::Matrix4D, Base::MatrixPy, &Base::MatrixPy::getMatrixPtr>;
 using Rotation = GeometryT<Base::Rotation, Base::RotationPy, &Base::RotationPy::getRotationPtr>;
-using Placement =
-    GeometryT<Base::Placement, Base::PlacementPy, &Base::PlacementPy::getPlacementPtr>;
+using Placement = GeometryT<Base::Placement, Base::PlacementPy, &Base::PlacementPy::getPlacementPtr>;
 
 }  // namespace Py
 

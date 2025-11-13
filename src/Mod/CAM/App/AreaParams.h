@@ -35,35 +35,37 @@
 #include "ParamsHelper.h"
 
 /** clipper fill type */
-#define AREA_CLIPPER_FILL_TYPE                                                                     \
+#define AREA_CLIPPER_FILL_TYPE \
     (NonZero)(EvenOdd)(Positive)(Negative), (ClipperLib::PolyFillType, ClipperLib::pft)
 
 /** Parameters of clipper fill types */
-#define AREA_PARAMS_CLIPPER_FILL                                                                   \
-    ((enum2,                                                                                       \
-      subject_fill,                                                                                \
-      SubjectFill,                                                                                 \
-      0,                                                                                           \
-      "ClipperLib subject fill type. \nSee https://goo.gl/5pYQQP",                                 \
-      AREA_CLIPPER_FILL_TYPE))((enum2,                                                             \
-                                clip_fill,                                                         \
-                                ClipFill,                                                          \
-                                0,                                                                 \
-                                "ClipperLib clip fill type. \nSee https://goo.gl/5pYQQP",          \
-                                AREA_CLIPPER_FILL_TYPE))
+#define AREA_PARAMS_CLIPPER_FILL \
+    ((enum2, \
+      subject_fill, \
+      SubjectFill, \
+      0, \
+      "ClipperLib subject fill type. \nSee https://goo.gl/5pYQQP", \
+      AREA_CLIPPER_FILL_TYPE))( \
+        (enum2, \
+         clip_fill, \
+         ClipFill, \
+         0, \
+         "ClipperLib clip fill type. \nSee https://goo.gl/5pYQQP", \
+         AREA_CLIPPER_FILL_TYPE) \
+    )
 
 /** Deflection parameter */
-#define AREA_PARAMS_DEFLECTION                                                                     \
-    ((double,                                                                                      \
-      deflection,                                                                                  \
-      Deflection,                                                                                  \
-      0.01,                                                                                        \
-      "Deflection for non circular curve discretization. It also also used for\n"                  \
-      "discretizing circular wires when you 'Explode' the shape for wire operations",              \
+#define AREA_PARAMS_DEFLECTION \
+    ((double, \
+      deflection, \
+      Deflection, \
+      0.01, \
+      "Deflection for non circular curve discretization. It also also used for\n" \
+      "discretizing circular wires when you 'Explode' the shape for wire operations", \
       App::PropertyPrecision))
 
 /** Base parameters */
-#define AREA_PARAMS_BASE                                                                           \
+#define AREA_PARAMS_BASE \
     ((enum,                                                                                        \
       fill,                                                                                        \
       Fill,                                                                                        \
@@ -108,50 +110,28 @@
 #define AREA_PARAMS_FIT_ARCS ((bool, fit_arcs, FitArcs, true, "Enable arc fitting"))
 
 /** libarea algorithm option parameters */
-#define AREA_PARAMS_CAREA                                                                          \
-    ((double,                                                                                      \
-      tolerance,                                                                                   \
-      Tolerance,                                                                                   \
-      Precision::Confusion(),                                                                      \
-      "Point coincidence tolerance",                                                               \
-      App::PropertyPrecision))                                                                     \
-        AREA_PARAMS_FIT_ARCS((bool,                                                                \
-                              clipper_simple,                                                      \
-                              Simplify,                                                            \
-                              false,                                                               \
-                              "Simplify polygons after operation. See https://goo.gl/Mh9XK1"))(    \
-            (double,                                                                               \
-             clipper_clean_distance,                                                               \
-             CleanDistance,                                                                        \
-             0.0,                                                                                  \
-             "Clean polygon smaller than this distance. See https://goo.gl/jox3JY",                \
-             App::PropertyLength))(                                                                \
-            (double, accuracy, Accuracy, 0.01, "Arc fitting accuracy", App::PropertyPrecision))(   \
-            (double,                                                                               \
-             units,                                                                                \
-             Unit,                                                                                 \
-             1.0,                                                                                  \
-             "Scaling factor for conversion to inch",                                              \
-             App::PropertyFloat))(                                                                 \
-            (short, min_arc_points, MinArcPoints, 4, "Minimum segments for arc discretization"))(  \
-            (short,                                                                                \
-             max_arc_points,                                                                       \
-             MaxArcPoints,                                                                         \
-             100,                                                                                  \
-             "Maximum segments for arc discretization (ignored currently)"))(                      \
-            (double,                                                                               \
-             clipper_scale,                                                                        \
-             ClipperScale,                                                                         \
-             1e7,                                                                                  \
-             "ClipperLib operate on integers. This is the scale factor to convert\n"               \
-             "floating points.",                                                                   \
-             App::PropertyFloat))
+#define AREA_PARAMS_CAREA \
+    ((double, \
+      tolerance, \
+      Tolerance, \
+      Precision::Confusion(), \
+      "Point coincidence tolerance", \
+      App::PropertyPrecision)) \
+        AREA_PARAMS_FIT_ARCS((bool, clipper_simple, Simplify, false, "Simplify polygons after operation. See https://goo.gl/Mh9XK1"))((double, clipper_clean_distance, CleanDistance, 0.0, "Clean polygon smaller than this distance. See https://goo.gl/jox3JY", App::PropertyLength))((double, accuracy, Accuracy, 0.01, "Arc fitting accuracy", App::PropertyPrecision))((double, units, Unit, 1.0, "Scaling factor for conversion to inch", App::PropertyFloat))((short, min_arc_points, MinArcPoints, 4, "Minimum segments for arc discretization"))((short, max_arc_points, MaxArcPoints, 100, "Maximum segments for arc discretization (ignored currently)"))( \
+            (double, \
+             clipper_scale, \
+             ClipperScale, \
+             1e7, \
+             "ClipperLib operate on integers. This is the scale factor to convert\n" \
+             "floating points.", \
+             App::PropertyFloat) \
+        )
 
 /** Pocket parameters
  *
  * These parameters corresponds to CAreaPocketParams in libarea
  * */
-#define AREA_PARAMS_POCKET                                                                         \
+#define AREA_PARAMS_POCKET \
     ((enum,                                                                                        \
       mode,                                                                                        \
       PocketMode,                                                                                  \
@@ -197,66 +177,62 @@
                                "and 'Triangle'",                                                   \
                                App::PropertyDistance))
 
-#define AREA_PARAMS_POCKET_CONF                                                                    \
+#define AREA_PARAMS_POCKET_CONF \
     ((bool, thicken, Thicken, false, "Thicken the resulting wires with ToolRadius"))
 
 /** Operation code */
-#define AREA_PARAMS_OPCODE                                                                         \
-    ((enum,                                                                                        \
-      op,                                                                                          \
-      Operation,                                                                                   \
-      0,                                                                                           \
-      "Boolean operation.\n"                                                                       \
-      "For the first four operations, see https://goo.gl/Gj8RUu.\n"                                \
-      "'Compound' means no operation, normally used to do Area.sortWires().",                      \
+#define AREA_PARAMS_OPCODE \
+    ((enum, \
+      op, \
+      Operation, \
+      0, \
+      "Boolean operation.\n" \
+      "For the first four operations, see https://goo.gl/Gj8RUu.\n" \
+      "'Compound' means no operation, normally used to do Area.sortWires().", \
       (Union)(Difference)(Intersection)(Xor)(Compound)))
 
 /** Offset parameters */
-#define AREA_PARAMS_OFFSET                                                                         \
-    ((double,                                                                                      \
-      offset,                                                                                      \
-      Offset,                                                                                      \
-      0.0,                                                                                         \
-      "Offset value, positive for expansion, negative for shrinking",                              \
-      App::PropertyDistance))(                                                                     \
-        (long, extra_pass, ExtraPass, 0, "Number of extra offset pass to generate."))(             \
-        (double,                                                                                   \
-         stepover,                                                                                 \
-         Stepover,                                                                                 \
-         0.0,                                                                                      \
-         "Cutter diameter to step over on each pass. If =0, use Offset",                           \
-         App::PropertyLength))((double,                                                            \
-                                last_stepover,                                                     \
-                                LastStepover,                                                      \
-                                0.0,                                                               \
-                                "Cutter diameter to step over for the last loop when shrinking "   \
-                                "with ExtraPass<0, i.e. for\n"                                     \
-                                "offset pocketing. If =0, use 0.5*Offset.",                        \
-                                App::PropertyLength))
+#define AREA_PARAMS_OFFSET \
+    ((double, \
+      offset, \
+      Offset, \
+      0.0, \
+      "Offset value, positive for expansion, negative for shrinking", \
+      App::PropertyDistance))((long, extra_pass, ExtraPass, 0, "Number of extra offset pass to generate."))((double, stepover, Stepover, 0.0, "Cutter diameter to step over on each pass. If =0, use Offset", App::PropertyLength))( \
+        (double, \
+         last_stepover, \
+         LastStepover, \
+         0.0, \
+         "Cutter diameter to step over for the last loop when shrinking " \
+         "with ExtraPass<0, i.e. for\n" \
+         "offset pocketing. If =0, use 0.5*Offset.", \
+         App::PropertyLength) \
+    )
 
-#define AREA_PARAMS_SECTION_EXTRA                                                                  \
-    ((enum,                                                                                        \
-      mode,                                                                                        \
-      SectionMode,                                                                                 \
-      2,                                                                                           \
-      "Section offset coordinate mode.\n"                                                          \
-      "'Absolute' means the absolute Z height (given in SectionOffset) to start slicing.\n"        \
-      "'BoundBox' means relative Z height to the bounding box of all the children shape.\n"        \
-      "'Workplane' means relative to workplane, minus SectionOffset.\n"                            \
-      "Note that OCC has trouble getting the minimum bounding box of some solids, particularly\n"  \
-      "those with non-planar surface. It is recommended to use Workplane to specify the "          \
-      "intended\n"                                                                                 \
-      "starting z height.\n",                                                                      \
-      (Absolute)(BoundBox)(Workplane)))(                                                           \
-        (bool,                                                                                     \
-         project,                                                                                  \
-         Project,                                                                                  \
-         false,                                                                                    \
-         "The section is produced by normal projecting the outline\n"                              \
-         "of all added shapes to the section plane, instead of slicing."))
+#define AREA_PARAMS_SECTION_EXTRA \
+    ((enum, \
+      mode, \
+      SectionMode, \
+      2, \
+      "Section offset coordinate mode.\n" \
+      "'Absolute' means the absolute Z height (given in SectionOffset) to start slicing.\n" \
+      "'BoundBox' means relative Z height to the bounding box of all the children shape.\n" \
+      "'Workplane' means relative to workplane, minus SectionOffset.\n" \
+      "Note that OCC has trouble getting the minimum bounding box of some solids, particularly\n" \
+      "those with non-planar surface. It is recommended to use Workplane to specify the " \
+      "intended\n" \
+      "starting z height.\n", \
+      (Absolute)(BoundBox)(Workplane)))( \
+        (bool, \
+         project, \
+         Project, \
+         false, \
+         "The section is produced by normal projecting the outline\n" \
+         "of all added shapes to the section plane, instead of slicing.") \
+    )
 
 /** Section parameters */
-#define AREA_PARAMS_SECTION                                                                        \
+#define AREA_PARAMS_SECTION \
     ((long, count, SectionCount, 0, "Number of sections to generate. -1 means full sections."))(   \
         (double,                                                                                   \
          stepdown,                                                                                 \
@@ -285,76 +261,78 @@
          App::PropertyPrecision))AREA_PARAMS_SECTION_EXTRA
 
 #ifdef AREA_OFFSET_ALGO
-#define AREA_PARAMS_OFFSET_ALGO ((enum, algo, Algo, 0, "Offset algorithm type", (Clipper)(libarea)))
+# define AREA_PARAMS_OFFSET_ALGO \
+     ((enum, algo, Algo, 0, "Offset algorithm type", (Clipper)(libarea)))
 #else
-#define AREA_PARAMS_OFFSET_ALGO
+# define AREA_PARAMS_OFFSET_ALGO
 #endif
 
 /** Offset configuration parameters */
-#define AREA_PARAMS_OFFSET_CONF                                                                    \
-    AREA_PARAMS_OFFSET_ALGO((enum2,                                                                \
-                             join_type,                                                            \
-                             JoinType,                                                             \
-                             0,                                                                    \
-                             "ClipperOffset join type. \nSee https://goo.gl/4odfQh",               \
-                             (Round)(Square)(Miter),                                               \
-                             (ClipperLib::JoinType, ClipperLib::jt)))                              \
-    ((enum2,                                                                                       \
-      end_type,                                                                                    \
-      EndType,                                                                                     \
-      0,                                                                                           \
-      "\nClipperOffset end type. See https://goo.gl/tj7gkX",                                       \
-      (OpenRound)(ClosedPolygon)(ClosedLine)(OpenSquare)(OpenButt),                                \
-      (ClipperLib::EndType, ClipperLib::et)))(                                                     \
-        (double,                                                                                   \
-         miter_limit,                                                                              \
-         MiterLimit,                                                                               \
-         2.0,                                                                                      \
-         "Miter limit for joint type Miter. See https://goo.gl/K8xX9h",                            \
-         App::PropertyFloat))((double,                                                             \
-                               round_precision,                                                    \
-                               RoundPrecision,                                                     \
-                               0.0,                                                                \
-                               "Round joint precision. If =0, it defaults to Accuracy. \n"         \
-                               "See https://goo.gl/4odfQh",                                        \
-                               App::PropertyPrecision))
+#define AREA_PARAMS_OFFSET_CONF \
+    AREA_PARAMS_OFFSET_ALGO( \
+        (enum2, \
+         join_type, \
+         JoinType, \
+         0, \
+         "ClipperOffset join type. \nSee https://goo.gl/4odfQh", \
+         (Round)(Square)(Miter), \
+         (ClipperLib::JoinType, ClipperLib::jt)) \
+    ) \
+    ((enum2, \
+      end_type, \
+      EndType, \
+      0, \
+      "\nClipperOffset end type. See https://goo.gl/tj7gkX", \
+      (OpenRound)(ClosedPolygon)(ClosedLine)(OpenSquare)(OpenButt), \
+      ( \
+          ClipperLib::EndType, \
+          ClipperLib::et \
+      )))((double, miter_limit, MiterLimit, 2.0, "Miter limit for joint type Miter. See https://goo.gl/K8xX9h", App::PropertyFloat))( \
+        (double, \
+         round_precision, \
+         RoundPrecision, \
+         0.0, \
+         "Round joint precision. If =0, it defaults to Accuracy. \n" \
+         "See https://goo.gl/4odfQh", \
+         App::PropertyPrecision) \
+    )
 
-#define AREA_PARAMS_MIN_DIST                                                                       \
-    ((double,                                                                                      \
-      min_dist,                                                                                    \
-      MinDistance,                                                                                 \
-      0.0,                                                                                         \
-      "minimum distance for the generated new wires. Wires maybe broken if the\n"                  \
-      "algorithm see fits. Set to zero to disable wire breaking.",                                 \
+#define AREA_PARAMS_MIN_DIST \
+    ((double, \
+      min_dist, \
+      MinDistance, \
+      0.0, \
+      "minimum distance for the generated new wires. Wires maybe broken if the\n" \
+      "algorithm see fits. Set to zero to disable wire breaking.", \
       App::PropertyLength))
 
 /** Arc plane */
-#define AREA_PARAMS_ARC_PLANE                                                                      \
-    ((enum,                                                                                        \
-      arc_plane,                                                                                   \
-      ArcPlane,                                                                                    \
-      1,                                                                                           \
-      "Arc drawing plane, corresponding to G17, G18, and G19.\n"                                   \
-      "If not 'None', the output wires will be transformed to align with the selected plane,\n"    \
-      "and the corresponding GCode will be inserted.\n"                                            \
-      "'Auto' means the plane is determined by the first encountered arc plane. If the found\n"    \
-      "plane does not align to any GCode plane, XY plane is used.\n"                               \
-      "'Variable' means the arc plane can be changed during operation to align to the\n"           \
-      "arc encountered.",                                                                          \
+#define AREA_PARAMS_ARC_PLANE \
+    ((enum, \
+      arc_plane, \
+      ArcPlane, \
+      1, \
+      "Arc drawing plane, corresponding to G17, G18, and G19.\n" \
+      "If not 'None', the output wires will be transformed to align with the selected plane,\n" \
+      "and the corresponding GCode will be inserted.\n" \
+      "'Auto' means the plane is determined by the first encountered arc plane. If the found\n" \
+      "plane does not align to any GCode plane, XY plane is used.\n" \
+      "'Variable' means the arc plane can be changed during operation to align to the\n" \
+      "arc encountered.", \
       (None)(Auto)(XY)(ZX)(YZ)(Variable)))
 
-#define AREA_PARAMS_ORIENTATION                                                                    \
-    ((enum,                                                                                        \
-      orientation,                                                                                 \
-      Orientation,                                                                                 \
-      0,                                                                                           \
-      "Enforce loop orientation\n"                                                                 \
-      "'Normal' means CCW for outer wires when looking against the positive axis direction, \n"    \
-      "and CW for inner wires. 'Reversed' means the other way round",                              \
+#define AREA_PARAMS_ORIENTATION \
+    ((enum, \
+      orientation, \
+      Orientation, \
+      0, \
+      "Enforce loop orientation\n" \
+      "'Normal' means CCW for outer wires when looking against the positive axis direction, \n" \
+      "and CW for inner wires. 'Reversed' means the other way round", \
       (Normal)(Reversed)))
 
 /** Area wire sorting parameters */
-#define AREA_PARAMS_SORT                                                                           \
+#define AREA_PARAMS_SORT \
     ((enum,                                                                                        \
       sort_mode,                                                                                   \
       SortMode,                                                                                    \
@@ -400,14 +378,16 @@
             (enum, retract_axis, RetractAxis, 2, "Tool retraction axis", (X)(Y)(Z)))
 
 /** Area path generation parameters */
-#define AREA_PARAMS_PATH                                                                           \
-    AREA_PARAMS_ARC_PLANE                                                                          \
-    AREA_PARAMS_SORT((double,                                                                      \
-                      retraction,                                                                  \
-                      Retraction,                                                                  \
-                      0.0,                                                                         \
-                      "Tool retraction absolute coordinate along retraction axis",                 \
-                      App::PropertyLength))                                                        \
+#define AREA_PARAMS_PATH \
+    AREA_PARAMS_ARC_PLANE \
+    AREA_PARAMS_SORT( \
+        (double, \
+         retraction, \
+         Retraction, \
+         0.0, \
+         "Tool retraction absolute coordinate along retraction axis", \
+         App::PropertyLength) \
+    ) \
     ((double,                                                                                      \
       resume_height,                                                                               \
       ResumeHeight,                                                                                \
@@ -438,22 +418,22 @@
         (bool, preamble, EmitPreamble, true, "Emit preambles"))AREA_PARAMS_DEFLECTION
 
 /** Group of all Area configuration parameters except CArea's*/
-#define AREA_PARAMS_AREA                                                                           \
-    AREA_PARAMS_BASE                                                                               \
-    AREA_PARAMS_OFFSET                                                                             \
-    AREA_PARAMS_OFFSET_CONF                                                                        \
-    AREA_PARAMS_POCKET                                                                             \
-    AREA_PARAMS_POCKET_CONF                                                                        \
+#define AREA_PARAMS_AREA \
+    AREA_PARAMS_BASE \
+    AREA_PARAMS_OFFSET \
+    AREA_PARAMS_OFFSET_CONF \
+    AREA_PARAMS_POCKET \
+    AREA_PARAMS_POCKET_CONF \
     AREA_PARAMS_SECTION
 
 /** Group of all Area configuration parameters */
-#define AREA_PARAMS_CONF                                                                           \
-    AREA_PARAMS_CAREA                                                                              \
+#define AREA_PARAMS_CONF \
+    AREA_PARAMS_CAREA \
     AREA_PARAMS_AREA
 
 /** Group of all Area parameters */
-#define AREA_PARAMS_ALL                                                                            \
-    AREA_PARAMS_CONF                                                                               \
+#define AREA_PARAMS_ALL \
+    AREA_PARAMS_CONF \
     AREA_PARAMS_OPCODE
 
 #define AREA_PARAMS_STATIC_CONF AREA_PARAMS_CONF

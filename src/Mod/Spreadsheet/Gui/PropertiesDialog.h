@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -39,9 +41,11 @@ class PropertiesDialog: public QDialog
     Q_OBJECT
 
 public:
-    explicit PropertiesDialog(Spreadsheet::Sheet* _sheet,
-                              const std::vector<App::Range>& _ranges,
-                              QWidget* parent = nullptr);
+    explicit PropertiesDialog(
+        Spreadsheet::Sheet* _sheet,
+        const std::vector<App::Range>& _ranges,
+        QWidget* parent = nullptr
+    );
     ~PropertiesDialog() override;
 
     void apply();

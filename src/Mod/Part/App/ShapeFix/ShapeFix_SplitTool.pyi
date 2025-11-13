@@ -2,7 +2,6 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import overload
 
-
 @export(
     PythonName="Part.ShapeFix.SplitTool",
     Include="ShapeFix_SplitTool.hxx",

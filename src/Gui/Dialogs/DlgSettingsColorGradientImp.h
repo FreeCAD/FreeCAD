@@ -30,8 +30,10 @@
 
 class QDoubleValidator;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgSettingsColorGradient;
 
 /**
@@ -39,14 +41,16 @@ class Ui_DlgSettingsColorGradient;
  * for the color gradient bar.
  * @author Werner Mayer
  */
-class DlgSettingsColorGradientImp : public QDialog
+class DlgSettingsColorGradientImp: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsColorGradientImp(const App::ColorGradient& cg,
-                                QWidget* parent = nullptr,
-                                Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgSettingsColorGradientImp(
+        const App::ColorGradient& cg,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~DlgSettingsColorGradientImp() override;
 
     void accept() override;
@@ -73,14 +77,14 @@ private:
     //@}
     /** @name Color style */
     //@{
-    void setColorStyle( App::ColorBarStyle tStyle );
+    void setColorStyle(App::ColorBarStyle tStyle);
     App::ColorBarStyle colorStyle() const;
     //@}
     /** @name Display mode */
     //@{
-    void setOutGrayed( bool grayed );
+    void setOutGrayed(bool grayed);
     bool isOutGrayed() const;
-    void setOutInvisible( bool invisible );
+    void setOutInvisible(bool invisible);
     bool isOutInvisible() const;
     //@}
     /** @name Parameter range and scale */
@@ -99,7 +103,7 @@ private:
     std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
+#endif  // GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
