@@ -1880,7 +1880,7 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
             substitution.initParams();
             substitution.applyConst();
         }
-        substitution.applyReduction();
+        substitution.applySubst();
 
         for (std::set<Constraint*>::const_iterator constr = redundant.begin();
              constr != redundant.end();

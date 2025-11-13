@@ -574,16 +574,22 @@ struct SubstitutionFactory
     Attempt
     trySubstitute(ConstraintDifference* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
-        double* p1 = constr->param1();
-        double* p2 = constr->param2();
-        double* diff = constr->difference();
+        double* p1 = constr->origParams()[0];
+        double* p2 = constr->origParams()[1];
+        double* diff = constr->origParams()[2];
 
         if (previousAttempt == Attempt::Unknown
             && (!unknowns.count(p1) || !unknowns.count(p2) || unknowns.count(diff))) {
             return Attempt::No;
         }
 
-        addRelationship(p1, p2, *diff, RelationshipOptions::Absolute);
+        // Using absolute because the constraint was created with an order
+        // in mind
+        // however this is a bit confusing because relationships in substitutions
+        // are defined from left to rigth such that p1 = p2 + diff
+        // but in the constraint it is defined such that p2 = p1 + diff
+        // so we have to negate the difference
+        addRelationship(p1, p2, -*diff, RelationshipOptions::Absolute);
         return Attempt::Yes;
     }
 };
@@ -662,6 +668,11 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
                     break;
                 case EqualLineLength:
                     attempt = factory.trySubstitute(static_cast<ConstraintEqualLineLength*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
+                    break;
+                case Difference:
+                    attempt = factory.trySubstitute(static_cast<ConstraintDifference*>(constr),
                                                     unknownsSet,
                                                     attempts[i]);
                     break;
