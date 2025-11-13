@@ -423,7 +423,7 @@ class TaskFillTemplateFields:
                     QtCore.QObject.connect(
                         self.okbox, QtCore.SIGNAL("rejected()"), self.close
                     )
-                    self.okbox.button(QtGui.QDialogButtonBox.Ok).setText("&Ok")
+                    self.okbox.button(QtGui.QDialogButtonBox.Ok).setText("&OK")
                     self.okbox.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancel")
                     self.button = self.okbox.button(QtGui.QDialogButtonBox.Ok)
                     self.button.setEnabled(True)
